@@ -45,6 +45,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         }
 
         try {
+
+            // 로그인 시 form data로 전송해야 함
+            // String username = request.getParameter("username");
+            // String password = request.getParameter("password");
+
             // form data가 아닌 json 데이터를 받기 때문에 json -> object로 mapping함
             ObjectMapper objectMapper = new ObjectMapper();
             LoginDto loginDto = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDto.class);
@@ -88,7 +93,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         //response.setHeader("access_token", access_token);
         //response.setHeader("refresh_token", refresh_token);
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access", access_token); // access_token -> access
+        tokens.put("access", access_token); // access_token -> access 프론트에서는 access와 refresh로 받음
         tokens.put("refresh", refresh_token); // refresh_token -> refresh
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
