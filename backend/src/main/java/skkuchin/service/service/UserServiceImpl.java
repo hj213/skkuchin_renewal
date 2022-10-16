@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.AppUser;
 import skkuchin.service.domain.Role;
+import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
 
@@ -51,8 +52,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public AppUser saveUser(AppUser user) {
-        AppUser existingUser = userRepo.findByUsername(user.getUsername());
-
         log.info("Saving new user {} to the database", user.getNickname());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
@@ -78,7 +77,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("Adding role {} to user {}", roleName, username);
         AppUser user = userRepo.findByUsername(username);
         Role role = roleRepo.findByName(roleName);
-        user.getRoles().add(role); //@Transactional 덕분에? db에 바로 저장됨?
+        //user.getRoles().add(role);
+        if (user.getRoles().contains(role)) {
+            throw new DuplicateException("role_duplicate_error");
+        } else {
+            user.getRoles().add(role);
+        }
     }
 
     @Override
