@@ -5,20 +5,23 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import skkuchin.service.domain.AppUser;
 import skkuchin.service.domain.Role;
+import skkuchin.service.exception.BlankException;
+import skkuchin.service.exception.DiscordException;
+import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.service.UserService;
 
@@ -47,12 +50,6 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    /*
-    @PostMapping("/user/saveinit")
-    public ResponseEntity<AppUser>saveUser(@RequestBody AppUser user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
-    }*/
 
     @PostMapping("/user/save")
     public ResponseEntity<AppUser> saveUser(@RequestBody SignUpForm signUpForm) {
@@ -63,12 +60,21 @@ public class UserController {
 
         //비밀번호 일치 여부 확인
         if (!signUpForm.checkPassword()) {
-            throw new RuntimeException("re_password_error");
+            throw new DiscordException("re_password_error");
         }
-        AppUser appUser = signUpForm.toEntity();
-        appUser.getRoles().add(userService.getRole("ROLE_USER"));
+        try {
+            AppUser appUser = signUpForm.toEntity();
+            appUser.getRoles().add(userService.getRole("ROLE_USER"));
 
-        return ResponseEntity.created(uri).body(userService.saveUser(appUser));
+            return ResponseEntity.created(uri).body(userService.saveUser(appUser));
+        } catch (DataIntegrityViolationException exception) {
+            //username 또는 nickname 중복 시 에러
+            throw new DuplicateException("duplicate_error");
+        } catch(TransactionSystemException exception) {
+            //null 또는 blank data가 있을 경우 에러
+            throw new BlankException("blank_error");
+        }
+
     }
 
     /*
@@ -86,8 +92,6 @@ public class UserController {
 
     @GetMapping("/token/verify")
     public ResponseEntity<Boolean> verifyToken(HttpServletRequest request, HttpServletResponse response) {
-        // 201은 생성됐다는 건데 verify는 검증하는 단계이므로 200이 맞다고 판단 따라서 주석 처리
-        // URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/token/verify").toString());
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
@@ -144,7 +148,6 @@ public class UserController {
     public ResponseEntity<AppUser> getApiUser(HttpServletRequest request, HttpServletResponse response) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-
             String access_token = authorizationHeader.substring("Bearer ".length());
             Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
             JWTVerifier verifier = JWT.require(algorithm).build();
@@ -164,7 +167,8 @@ class RoleToUser {
     private String roleName;
 }
 
-@Data @Builder
+@Data @Builder @NoArgsConstructor
+@AllArgsConstructor
 class SignUpForm {
 
     private String nickname;
