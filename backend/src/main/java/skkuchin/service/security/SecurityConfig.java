@@ -37,7 +37,7 @@ public class SecurityConfig {
 //        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/user/save", "/api/token/refresh/**", "/api/token/verify/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**", "/api/user/save", "/api/token/refresh/**", "/api/token/verify/**", "/api/confirmEmail").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();

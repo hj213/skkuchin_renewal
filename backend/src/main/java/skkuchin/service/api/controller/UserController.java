@@ -1,4 +1,4 @@
-package skkuchin.service.api;
+package skkuchin.service.api.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -9,26 +9,26 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import skkuchin.service.api.dto.EmailAuthRequestDto;
+import skkuchin.service.api.dto.RoleToUser;
+import skkuchin.service.api.dto.SignUpForm;
 import skkuchin.service.domain.AppUser;
 import skkuchin.service.domain.Role;
 import skkuchin.service.exception.BlankException;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.repo.RoleRepo;
+import skkuchin.service.mail.EmailService;
 import skkuchin.service.service.UserService;
 
-import javax.persistence.Column;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,6 +44,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final EmailService mailService;
 
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>>getUsers() {
@@ -73,8 +74,19 @@ public class UserController {
         } catch(TransactionSystemException exception) {
             //null 또는 blank data가 있을 경우 에러
             throw new BlankException("blank_error");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
 
+    }
+
+    @GetMapping("/confirmEmail")
+    public ResponseEntity<Boolean> mailConfirm(@ModelAttribute EmailAuthRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
+
+        log.info("success");
+        return ResponseEntity.ok().body(userService.confirmEmail(requestDto));
     }
 
     /*
@@ -158,34 +170,6 @@ public class UserController {
         }else {
             throw new RuntimeException("Refresh token is missing");
         }
-    }
-}
-
-@Data
-class RoleToUser {
-    private String username;
-    private String roleName;
-}
-
-@Data @Builder @NoArgsConstructor
-@AllArgsConstructor
-class SignUpForm {
-
-    private String nickname;
-    private String username;
-    private String password;
-    private String re_password;
-
-    public boolean checkPassword() {
-        if (this.password.equals(this.re_password)) return true;
-        else return false;
-    }
-
-    public AppUser toEntity() {
-        return AppUser
-                .builder().nickname(this.nickname).username(this.username).password(this.password)
-                .roles(new ArrayList<>())
-                .build();
     }
 }
 
