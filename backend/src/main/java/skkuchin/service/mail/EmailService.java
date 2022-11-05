@@ -50,7 +50,7 @@ public class EmailService {
     //메일 양식 작성
     public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
         createCode();
-        String setFrom = "syejin9755@gmail.com";
+        String setFrom = "skkuchin@gmail.com";
         String toEmail = email; //받는 사람
         String title = "SKKUCHIN 이메일 인증";
         String mailContent = "<h1>[이메일 인증]</h1><br><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
