@@ -12,7 +12,10 @@ import java.util.Collection;
 
 import static javax.persistence.GenerationType.AUTO;
 
-@Entity @Data @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class AppUser {
     @Id @GeneratedValue(strategy = AUTO)
@@ -25,4 +28,9 @@ public class AppUser {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
+    private Boolean emailAuth;
+
+    public void emailVerifiedSuccess() {
+        this.emailAuth = true;
+    }
 }

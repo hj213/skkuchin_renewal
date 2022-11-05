@@ -22,6 +22,8 @@ import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -50,7 +52,7 @@ public class UserServiceTest extends MockTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
         given(userRepo.findByUsername(any())).willReturn(user);
 
         //when
@@ -70,11 +72,11 @@ public class UserServiceTest extends MockTest {
     }
 
     @Test
-    public void saveUser_성공() {
+    public void saveUser_성공() throws MessagingException, UnsupportedEncodingException {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
         given(passwordEncoder.encode(anyString())).willReturn("encoderPassword");
         given(userRepo.save(any())).willReturn(user);
 
@@ -93,7 +95,7 @@ public class UserServiceTest extends MockTest {
         //given
         Role role = new Role(1L, "ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
 
@@ -108,7 +110,7 @@ public class UserServiceTest extends MockTest {
         Role role = new Role(1L, "ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
 
