@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static javax.persistence.GenerationType.AUTO;
-
+// test
 @Entity
 @Data
 @NoArgsConstructor
