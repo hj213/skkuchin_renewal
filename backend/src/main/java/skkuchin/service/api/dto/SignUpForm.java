@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import skkuchin.service.domain.AppUser;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Major;
+import skkuchin.service.domain.User.Mbti;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Data
@@ -18,6 +21,12 @@ public class SignUpForm {
     private String username;
     private String password;
     private String re_password;
+    private String email;
+    private String student_id;
+    private String major;
+    private String image;
+    private Boolean agreement;
+    private Mbti mbti;
 
     public boolean checkPassword() {
         if (this.password.equals(this.re_password)) return true;
@@ -25,8 +34,16 @@ public class SignUpForm {
     }
 
     public AppUser toEntity() {
-        return AppUser
-                .builder().nickname(this.nickname).username(this.username).password(this.password)
+        return AppUser.builder()
+                .nickname(this.nickname)
+                .username(this.username)
+                .password(this.password)
+                .email(this.email)
+                .student_id(this.student_id)
+                .major(this.major)
+                .image(this.image)
+                .mbti(this.mbti)
+                .start_date(LocalDateTime.now())
                 .roles(new ArrayList<>())
                 .emailAuth(false)
                 .build();

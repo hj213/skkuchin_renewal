@@ -9,8 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
-import skkuchin.service.domain.AppUser;
-import skkuchin.service.domain.Role;
+import skkuchin.service.api.dto.SignUpForm;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Role;
+import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.exception.EmailAuthNumNotFoundException;
 import skkuchin.service.exception.EmailNotAuthenticatedException;
@@ -27,7 +29,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -74,11 +75,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return newUser;
     }
 
+    @Override
+    public AppUser saveUser2(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
+        log.info("Saving new user {} to the database", signUpForm.getNickname());
+        if (!signUpForm.getPassword().equals(signUpForm.getRe_password())) {
+            throw new DiscordException("re_password_error");
+        }
+        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        AppUser appUser = signUpForm.toEntity();
+        appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
+        AppUser newUser = userRepo.save(appUser);
+        emailService.sendEmail(newUser.getEmail());
+        return newUser;
+    }
+
     public Boolean confirmEmail(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                 requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
-        AppUser user = userRepo.findByUsername(requestDto.getEmail());
+        AppUser user = userRepo.findByEmail(requestDto.getEmail());
         emailAuth.useToken();
         user.emailVerifiedSuccess();
         return true;

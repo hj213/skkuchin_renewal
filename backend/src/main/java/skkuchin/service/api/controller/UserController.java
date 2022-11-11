@@ -16,8 +16,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.RoleToUser;
 import skkuchin.service.api.dto.SignUpForm;
-import skkuchin.service.domain.AppUser;
-import skkuchin.service.domain.Role;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.BlankException;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
@@ -51,7 +51,26 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-
+    @PostMapping("/user/saves")
+    public ResponseEntity<AppUser> saveUser2(@RequestBody SignUpForm signUpForm) {
+        URI uri = URI.create(
+                ServletUriComponentsBuilder
+                        .fromCurrentContextPath()
+                        .path("/api/user/saves").toUriString());
+        try {
+            return ResponseEntity.created(uri).body(userService.saveUser2(signUpForm));
+        } catch (DataIntegrityViolationException exception) {
+            //username 또는 nickname 중복 시 에러
+            throw new DuplicateException("duplicate_error");
+        } catch(TransactionSystemException exception) {
+            //null 또는 blank data가 있을 경우 에러
+            throw new BlankException("blank_error");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @PostMapping("/user/save")
     public ResponseEntity<AppUser> saveUser(@RequestBody SignUpForm signUpForm) {
         URI uri = URI.create(
@@ -84,7 +103,6 @@ public class UserController {
 
     @GetMapping("/confirmEmail")
     public ResponseEntity<Boolean> mailConfirm(@ModelAttribute EmailAuthRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
-
         log.info("success");
         return ResponseEntity.ok().body(userService.confirmEmail(requestDto));
     }

@@ -1,4 +1,4 @@
-package skkuchin.service.domain;
+package skkuchin.service.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.AUTO;
 // test
 @Entity
@@ -26,6 +28,18 @@ public class AppUser {
     private String username;
     @NotBlank
     private String password;
+    @Column(unique = true) @NotBlank
+    private String email;
+    @Column(unique = true) @NotBlank
+    private String student_id;
+    @NotBlank //@Enumerated(STRING)
+    private String major;
+    @NotBlank
+    private String image;
+    @Enumerated(STRING)
+    private Mbti mbti;
+    private LocalDateTime start_date;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private Boolean emailAuth;
