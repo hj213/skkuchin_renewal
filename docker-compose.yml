@@ -15,7 +15,9 @@ services:
         - skkuchin-network
 
   server:
-    image: skkuchin-backend-image
+    build:
+        context: "./backend"
+        dockerfile: Dockerfile 
     restart: always
     ports:
       - 8080:8080
@@ -26,11 +28,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/service?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
+    volumes:
+      - ./backend:/app
+    working_dir: /app
     networks:
       - skkuchin-network
 
   client:
-    image: skkuchin-front-image
+    build:
+        context: "./frontend"
+        dockerfile: Dockerfile 
     restart: always
     container_name: skkuchin-frontend
     ports:
@@ -40,6 +47,9 @@ services:
     environment:
       - NODE_ENV=prod
       - NEXT_PUBLIC_API_URL=http://server:8080
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
     stdin_open: true
     tty: true
     networks:
