@@ -1,14 +1,8 @@
 package skkuchin.service.service;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
-import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import skkuchin.service.common.MockTest;
-import skkuchin.service.domain.AppUser;
-import skkuchin.service.domain.Role;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;

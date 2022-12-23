@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /*
 @Getter
@@ -33,6 +34,7 @@ public class EmailAuth {
         this.authNum = authNum;
         this.isExpired = isExpired;
         this.expireDate = LocalDateTime.now().plusMinutes(MAX_EXPIRE_TIME);
+        //this.expireDate = now.plusMinutes(MAX_EXPIRE_TIME);
     }
 
     public void useToken() {

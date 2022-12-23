@@ -2,11 +2,10 @@ package skkuchin.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import skkuchin.service.domain.AppUser;
-import skkuchin.service.domain.Role;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Role;
 import skkuchin.service.repo.UserRepo;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
