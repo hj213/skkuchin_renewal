@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.UserSetUp;
-import skkuchin.service.domain.Role;
+import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
 

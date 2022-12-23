@@ -1,7 +1,7 @@
 package skkuchin.service.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import skkuchin.service.domain.Role;
+import skkuchin.service.domain.User.Role;
 
 public interface RoleRepo extends JpaRepository<Role, Long> {
     Role findByName(String name);

@@ -1,4 +1,4 @@
-package skkuchin.service.domain;
+package skkuchin.service.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
