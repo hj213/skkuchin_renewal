@@ -1,0 +1,10 @@
+{
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/_app": "pages/_app.js",
+  "/login": "pages/login.js",
+  "/api/account/verify": "pages/api/account/verify.js",
+  "/api/account/user": "pages/api/account/user.js",
+  "/api/account/refresh": "pages/api/account/refresh.js",
+  "/dashboard": "pages/dashboard.js"
+}
