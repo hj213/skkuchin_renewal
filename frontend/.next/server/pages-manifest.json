@@ -1,10 +1,12 @@
 {
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
   "/_app": "pages/_app.js",
-  "/login": "pages/login.js",
-  "/api/account/verify": "pages/api/account/verify.js",
-  "/api/account/user": "pages/api/account/user.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
   "/api/account/refresh": "pages/api/account/refresh.js",
+  "/login": "pages/login.js",
+  "/api/account/login": "pages/api/account/login.js",
+  "/api/account/user": "pages/api/account/user.js",
+  "/api/account/verify": "pages/api/account/verify.js",
   "/dashboard": "pages/dashboard.js"
 }

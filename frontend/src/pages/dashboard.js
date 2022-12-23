@@ -20,7 +20,7 @@ const Dashboard = () => {
         >
             <div className="p-5 bg-light rounded-3">
                 <div className="container-fluid py-3">
-                    <h1 className="display-5 fw-bold">User Dashboard</h1>
+                    <h1 className="display-5 fw-bold">My Dashboard</h1>
                     <p className="fs-4 mt-3">welcome {user !== null && user.nickname} to 스꾸친</p>
                 </div>
 
