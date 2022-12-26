@@ -1,0 +1,33 @@
+- docs: Pull Request 템플릿 수정
+- docs: Pull Request 템플릿 적용
+- Merge pull request #9 from pja9362/jina
+- message
+- Merge pull request #8 from myungjunlee/myungjun
+- gitignore build/libs 제외
+- gitignore build/libs 제외
+- gitignore build 제외
+- gitignore build 제외
+- Merge pull request #7 from myungjunlee/myungjun
+- Merge branch 'Team-SKKUCHIN:main' into myungjun
+- modify: docker compose 파일 수정
+- Merge pull request #6 from myungjunlee/myungjun
+- Merge remote-tracking branch 'upstream/main' into myungjun
+- feat: 머지 시도
+- Merge pull request #5 from syj0396/email
+- 이메일 주소로 인증 메일 전송, AppUser Entity 수정
+- 테스트
+- Merge pull request #3 from myungjunlee/main
+- 이메일 앱 비밀번호 변경
+- 이메일 skkuchin으로 변경
+- Merge pull request #2 from syj0396/email
+- 이메일 인증 구현 완료
+- Merge pull request #1 from syj0396/test
+- deprecated 문제 해결, test code 작성
+- Merge branch 'main' of https://github.com/Team-SKKUCHIN/skkuchin_renewal
+- first
+- Delete .DS_Store
+- Delete .DS_Store
+- start
+- start
+- start
+- start
