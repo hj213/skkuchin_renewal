@@ -35,7 +35,7 @@ const LoginPage = () => {
 
         if(dispatch && dispatch !== null && dispatch !== undefined)
             dispatch(login(username, password));
-           
+
     };
 
     if (typeof window !== 'undefined' && isAuthenticated){
@@ -78,7 +78,7 @@ const LoginPage = () => {
                         </button>
                     )
                 }
-               
+
             </form>
         </Layout>
     )

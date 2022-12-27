@@ -14,7 +14,7 @@ import { REGISTER_SUCCESS,
         AUTHENTICATED_SUCCESS,
         REFRESH_SUCCESS,
         REFRESH_FAIL
-      } 
+    } 
         from './types';
 
 //load_user
@@ -106,13 +106,23 @@ export const register = (
     nickname,
     username,
     password,
-    re_password
+    re_password,
+    email,
+    student_id,
+    major,
+    mbti,
+    image
 ) => async dispatch => {
     const body = JSON.stringify({
         nickname,
         username,
         password,
-        re_password
+        re_password,
+        email,
+        student_id,
+        major,
+        mbti,
+        image
     });
 
     dispatch({

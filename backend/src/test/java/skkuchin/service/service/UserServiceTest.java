@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.repo.RoleRepo;
@@ -18,6 +19,7 @@ import skkuchin.service.repo.UserRepo;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -46,7 +48,7 @@ public class UserServiceTest extends MockTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, LocalDateTime.now(), roles, false);
         given(userRepo.findByUsername(any())).willReturn(user);
 
         //when
@@ -70,7 +72,7 @@ public class UserServiceTest extends MockTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, LocalDateTime.now(), roles, false);
         given(passwordEncoder.encode(anyString())).willReturn("encoderPassword");
         given(userRepo.save(any())).willReturn(user);
 
@@ -89,7 +91,7 @@ public class UserServiceTest extends MockTest {
         //given
         Role role = new Role(1L, "ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, LocalDateTime.now(), roles, false);
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
 
@@ -104,7 +106,7 @@ public class UserServiceTest extends MockTest {
         Role role = new Role(1L, "ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
-        AppUser user = new AppUser(1L, "user", "user111", "1234", roles, false);
+        AppUser user = new AppUser(1L, "user", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, LocalDateTime.now(), roles, false);
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
 
