@@ -6,18 +6,30 @@ export default async( req, res )=> {
             nickname,
             username,
             password,
-            re_password
+            re_password,
+            email,
+            student_id,
+            major,
+            mbti,
+            image
         } = req.body;
 
         const body = JSON.stringify({
             nickname,
             username,
             password,
-            re_password
+            re_password,
+            email,
+            student_id,
+            major,
+            mbti,
+            image
         });
 
+        console.log(body)
+
         try {
-            const apiRes = await fetch(`${API_URL}/api/user/save`, {
+            const apiRes = await fetch(`${API_URL}/api/user/saves`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
