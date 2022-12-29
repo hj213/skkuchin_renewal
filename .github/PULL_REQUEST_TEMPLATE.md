@@ -1,12 +1,13 @@
 <!-- Thank you for contributing a pull request! -->
 <!-- * are required. -->
 
+
+#### Notion Task Number *
+<!-- Copy the Notion Task Number. e.g. B-MJ-167221944 -->
+
+
 #### Assignee *
 <!-- Github Username. e.g. myungjunlee -->
-
-
-#### Notion Link *
-<!-- Link the Notion. e.g. https://www.notion.so/DB-718e69af56694f0eb050dd32dfb1d3c1 -->
 
 
 #### PR Summary *
