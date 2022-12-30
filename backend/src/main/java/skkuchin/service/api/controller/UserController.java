@@ -52,13 +52,13 @@ public class UserController {
     }
 
     @PostMapping("/user/saves")
-    public ResponseEntity<AppUser> saveUser2(@RequestBody SignUpForm signUpForm) {
+    public ResponseEntity<AppUser> saveUser(@RequestBody SignUpForm signUpForm) {
         URI uri = URI.create(
                 ServletUriComponentsBuilder
                         .fromCurrentContextPath()
                         .path("/api/user/saves").toUriString());
         try {
-            return ResponseEntity.created(uri).body(userService.saveUser2(signUpForm));
+            return ResponseEntity.created(uri).body(userService.saveUser(signUpForm));
         } catch (DataIntegrityViolationException exception) {
             //username 또는 nickname 중복 시 에러
             throw new DuplicateException("duplicate_error");
@@ -70,35 +70,6 @@ public class UserController {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-    }
-    @PostMapping("/user/save")
-    public ResponseEntity<AppUser> saveUser(@RequestBody SignUpForm signUpForm) {
-        URI uri = URI.create(
-                ServletUriComponentsBuilder
-                        .fromCurrentContextPath()
-                        .path("/api/user/save").toUriString());
-
-        //비밀번호 일치 여부 확인
-        if (!signUpForm.checkPassword()) {
-            throw new DiscordException("re_password_error");
-        }
-        try {
-            AppUser appUser = signUpForm.toEntity();
-            appUser.getRoles().add(userService.getRole("ROLE_USER"));
-
-            return ResponseEntity.created(uri).body(userService.saveUser(appUser));
-        } catch (DataIntegrityViolationException exception) {
-            //username 또는 nickname 중복 시 에러
-            throw new DuplicateException("duplicate_error");
-        } catch(TransactionSystemException exception) {
-            //null 또는 blank data가 있을 경우 에러
-            throw new BlankException("blank_error");
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     @GetMapping("/confirmEmail")

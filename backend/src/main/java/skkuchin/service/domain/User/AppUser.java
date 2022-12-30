@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +21,7 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 @Builder
 public class AppUser {
-    @Id @GeneratedValue(strategy = AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true) @NotBlank // nickname도 중복되면 안되기에 unique 적용
     private String nickname;
@@ -32,11 +33,12 @@ public class AppUser {
     private String email;
     @Column(unique = true) @NotBlank
     private String student_id;
-    @NotBlank //@Enumerated(STRING)
-    private String major;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Major major;
     @NotBlank
     private String image;
-    @Enumerated(STRING)
+    @Enumerated(EnumType.STRING)
     private Mbti mbti;
     private LocalDateTime start_date;
 

@@ -23,7 +23,7 @@ public class SignUpForm {
     private String re_password;
     private String email;
     private String student_id;
-    private String major;
+    private Major major;
     private String image;
     private Boolean agreement;
     private Mbti mbti;

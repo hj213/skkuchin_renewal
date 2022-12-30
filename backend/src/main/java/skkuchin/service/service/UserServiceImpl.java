@@ -67,16 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public AppUser saveUser(AppUser user) throws MessagingException, UnsupportedEncodingException {
-        log.info("Saving new user {} to the database", user.getNickname());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        AppUser newUser = userRepo.save(user);
-        emailService.sendEmail(user.getUsername());
-        return newUser;
-    }
-
-    @Override
-    public AppUser saveUser2(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
+    public AppUser saveUser(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
         log.info("Saving new user {} to the database", signUpForm.getNickname());
         if (!signUpForm.getPassword().equals(signUpForm.getRe_password())) {
             throw new DiscordException("re_password_error");

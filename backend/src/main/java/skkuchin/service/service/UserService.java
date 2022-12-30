@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface UserService {
     boolean checkUsername(String username);
-    AppUser saveUser(AppUser user) throws MessagingException, UnsupportedEncodingException;
-    AppUser saveUser2(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException;
+    //AppUser saveUser(AppUser user) throws MessagingException, UnsupportedEncodingException;
+    AppUser saveUser(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException;
     Boolean confirmEmail(EmailAuthRequestDto requestDto);
     void saveRole(Role role);
     Role getRole(String roleName);
