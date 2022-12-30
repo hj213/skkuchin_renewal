@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.UserSetUp;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DiscordException;
@@ -51,8 +52,8 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, roles);
-        userSetUp.saveUser("user2", "user222", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user2", "user222", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
 
         //when
         ResultActions resultActions = mvc.perform(get("/api/users")
@@ -115,7 +116,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         //userSetUp.saveUser("user1", "user111", "1234", roles);
         //ConstraintViolationException DataIntegrityViolationException
 
@@ -144,7 +145,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
@@ -172,7 +173,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
@@ -203,7 +204,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
