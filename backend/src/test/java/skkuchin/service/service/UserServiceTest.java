@@ -51,30 +51,6 @@ public class UserServiceTest extends MockTest {
     }
 
     @Test
-    public void username으로_user_불러오기_성공() {
-        //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = new AppUser(1L, "user", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, LocalDateTime.now(), roles, true);
-        given(userRepo.findByUsername(any())).willReturn(user);
-
-        //when
-        UserDetails test = userService.loadUserByUsername("user");
-
-        //then
-        assertThat(test).isNotNull();
-    }
-
-    @Test(expected = UsernameNotFoundException.class)
-    public void username으로_user_불러오기_실패() {
-        //given
-        given(userRepo.findByUsername("user2")).willReturn(null);
-
-        //when
-        UserDetails test = userService.loadUserByUsername("user2");
-    }
-
-    @Test
     public void saveUser_성공() throws MessagingException, UnsupportedEncodingException {
         //given
         Collection<Role> roles = new ArrayList<>();

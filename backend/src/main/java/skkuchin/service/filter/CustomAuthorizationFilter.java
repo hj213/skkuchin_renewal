@@ -10,6 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.repo.UserRepo;
+import skkuchin.service.security.auth.PrincipalDetails;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,6 +31,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+    private final UserRepo userRepo;
+
+    public CustomAuthorizationFilter(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
@@ -46,8 +55,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
+                    AppUser user = userRepo.findByUsername(username);
+                    PrincipalDetails principalDetails = new PrincipalDetails(user);
                     UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, authorities);
+                            new UsernamePasswordAuthenticationToken(principalDetails, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception exception) {
