@@ -6,10 +6,6 @@
 <!-- Copy the Notion Task Number. e.g. 167220840-P-SYHJ -->
 
 
-#### Assignee *
-<!-- Github Username. e.g. myungjunlee -->
-
-
 #### PR Summary *
 <!-- A short description of what this pull request does. e.g. 새로운 페이지 진입 시, 스크립트 에러 버그 수정 PR입니다 -->
 
