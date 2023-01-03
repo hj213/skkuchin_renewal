@@ -9,7 +9,7 @@ const homePage = () => (
       <div className="container-fluid py-3">
         <h1>Home Page</h1>
         <p className="fs-4 mt-3">
-          Welcome to the httpOnly auth Tutorial Site!
+          Welcome to the httpOnly auth Tutorial Site!!
         </p>
       </div>
     </div>

@@ -11,13 +11,16 @@ services:
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     ports:
         - 3306:3306
+    # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기    
+    # volumes:
+    #   - ./db/data:/var/lib/mysql
     networks:
         - skkuchin-network
 
   server:
     build:
         context: "./backend"
-        dockerfile: Dockerfile 
+        dockerfile: Dockerfile
     restart: always
     ports:
       - 8080:8080
@@ -49,6 +52,7 @@ services:
       - NEXT_PUBLIC_API_URL=http://server:8080
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     working_dir: /app
     stdin_open: true
     tty: true

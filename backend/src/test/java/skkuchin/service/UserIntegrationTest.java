@@ -16,10 +16,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.UserSetUp;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Major;
+import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -48,8 +52,8 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        userSetUp.saveUser("user1", "user111", "1234", roles);
-        userSetUp.saveUser("user2", "user222", "1234", roles);
+        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user2", "user222", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
 
         //when
         ResultActions resultActions = mvc.perform(get("/api/users")
@@ -68,7 +72,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY); //SignUpForm을 읽어들이기 위함.
         String form = objectMapper.writeValueAsString(
-                new SignUpFormTestVer("user", "user111", "1234", "1234"));
+                new SignUpFormTestVer("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP));
 
         //when
         ResultActions resultActions = mvc.perform(post("/api/user/save")
@@ -89,7 +93,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(
-                new SignUpFormTestVer("user", "user111", "124", "1234"));
+                new SignUpFormTestVer("user", "user111", "124", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP));
 
         //when
         ResultActions resultActions = mvc.perform(post("/api/user/save")
@@ -112,13 +116,13 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        userSetUp.saveUser("user1", "user111", "1234", roles);
+        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         //userSetUp.saveUser("user1", "user111", "1234", roles);
         //ConstraintViolationException DataIntegrityViolationException
 
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(
-                new SignUpFormTestVer("user1", "user222", "1234", "1234"));
+                new SignUpFormTestVer("user1", "user222", "1234", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP));
 
         //when
         ResultActions resultActions = mvc.perform(post("/api/user/save")
@@ -141,7 +145,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
@@ -169,7 +173,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
@@ -200,7 +204,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
@@ -232,12 +236,22 @@ class SignUpFormTestVer {
     private String username;
     private String password;
     private String re_password;
+    private String email;
+    private String student_id;
+    private String major;
+    private String image;
+    private Mbti mbti;
 
-    public SignUpFormTestVer(String nickname, String username, String password, String re_password) {
+    public SignUpFormTestVer(String nickname, String username, String password, String re_password, String email, String student_id, String major, String image, Mbti mbti) {
         this.nickname = nickname;
         this.username = username;
         this.password = password;
         this.re_password = re_password;
+        this.email = email;
+        this.student_id = student_id;
+        this.major = major;
+        this.image = image;
+        this.mbti = mbti;
     }
 }
 

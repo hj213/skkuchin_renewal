@@ -2,6 +2,7 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +22,7 @@ import skkuchin.service.mail.EmailAuthRepo;
 import skkuchin.service.mail.EmailService;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
+import skkuchin.service.security.auth.PrincipalDetails;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
@@ -31,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final EmailAuthRepo emailAuthRepo;
@@ -47,36 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        AppUser user = userRepo.findByUsername(username);
-        if (user == null) {
-            log.info("User not found in the database");
-            throw new UsernameNotFoundException("User not found in the database");
-        } else {
-            log.info("User found in the database: {}", username);
-        }
-        if (!user.getEmailAuth()) {
-            throw new EmailNotAuthenticatedException("email_auth_error");
-        }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
-    }
-
-    @Override
-    public AppUser saveUser(AppUser user) throws MessagingException, UnsupportedEncodingException {
-        log.info("Saving new user {} to the database", user.getNickname());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        AppUser newUser = userRepo.save(user);
-        emailService.sendEmail(user.getUsername());
-        return newUser;
-    }
-
-    @Override
-    public AppUser saveUser2(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
+    public AppUser saveUser(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
         log.info("Saving new user {} to the database", signUpForm.getNickname());
         if (!signUpForm.getPassword().equals(signUpForm.getRe_password())) {
             throw new DiscordException("re_password_error");
