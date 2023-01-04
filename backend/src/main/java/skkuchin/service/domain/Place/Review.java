@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
@@ -38,11 +39,17 @@ public class Review {
     @ManyToOne
     private AppUser user;
 
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
 
     @PrePersist
-    public void createDate() {
-        this.createdDate = LocalDateTime.now();
+    public void preCreateDate() {
+        this.createDate = LocalDateTime.now();
+    }
+
+    public void update(ReviewDto.PutRequest dto) {
+        this.setContent(dto.getContent());
+        this.setRate(dto.getRate());
+        this.setImage(dto.getImage());
     }
 }

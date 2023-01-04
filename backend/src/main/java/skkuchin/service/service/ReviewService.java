@@ -1,6 +1,7 @@
 package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Place.Review;
@@ -8,26 +9,60 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ReviewRepo;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService {
 
     private final ReviewRepo reviewRepo;
+    //private final PlaceRepo placeRepo;
 
     @Transactional
-    public void write(AppUser user, ReviewDto dto) {
+    public List<ReviewDto.Response> getAll() {
+        return reviewRepo.findAll()
+                .stream().map(review -> new ReviewDto.Response(review)).collect(Collectors.toList());
+    }
 
-        //place 관련 코드
+    @Transactional
+    public ReviewDto.Response getDetail(Long reviewId) {
+        Review review = reviewRepo.findById(reviewId).orElseThrow();
+        return new ReviewDto.Response(review);
+    }
 
-        /*
-        Review review = Review.builder()
-                .content(dto.getContent())
-                .rate(dto.getRate())
-                .image(dto.getImage())
-                .user(user)
-                .build();*/
+    @Transactional
+    public void write(AppUser user, ReviewDto.PostRequest dto) {
+        //Place place = placeRepo.findById
 
-        //reviewRepo.save(review);
+        Review review = dto.toEntity(user);
+        reviewRepo.save(review);
+    }
+
+    @Transactional
+    public void update(Long reviewId, ReviewDto.PutRequest dto, Long userId) {
+        Review review = reviewRepo.findById(reviewId).orElseThrow();
+        isMyReview(review.getUser().getId(), userId);
+        review.update(dto);
+    }
+
+    @Transactional
+    public void delete(Long reviewId, Long userId) {
+        Review review = reviewRepo.findById(reviewId).orElseThrow();
+        isMyReview(review.getUser().getId(), userId);
+        reviewRepo.delete(review);
+    }
+
+    @Transactional
+    public List<ReviewDto.Response> getMyReview(AppUser user) {
+        //List<Review> myReviews = reviewRepo.findByUser(user);
+        return reviewRepo.findByUser(user)
+                .stream().map(review -> new ReviewDto.Response(review)).collect(Collectors.toList());
+    }
+
+    public void isMyReview(Long reviewUserId, Long userId) {
+        if (reviewUserId != userId) throw new IllegalArgumentException("리뷰 작성자가 아닙니다.");
     }
 }
