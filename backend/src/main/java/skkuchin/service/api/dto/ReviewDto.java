@@ -1,8 +1,8 @@
 package skkuchin.service.api.dto;
 
-import lombok.Data;
 import lombok.Getter;
-import skkuchin.service.domain.Place.Review;
+import skkuchin.service.domain.Map.Place;
+import skkuchin.service.domain.Map.Review;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 
@@ -13,14 +13,14 @@ public class ReviewDto {
 
     @Getter
     public static class PostRequest {
-        //private Long placeId;
+        private Long placeId;
         private float rate;
         private String content;
         private String image;
 
-        public Review toEntity(AppUser user) { //toEntity(AppUser user, Place place) {
+        public Review toEntity(AppUser user, Place place) {
             return Review.builder()
-                    //.place(place)
+                    .place(place)
                     .content(content)
                     .rate(rate)
                     .image(image)
@@ -34,17 +34,7 @@ public class ReviewDto {
         private float rate;
         private String content;
         private String image;
-
-        public Review toEntity(AppUser user) {
-            return Review.builder()
-                    .content(content)
-                    .rate(rate)
-                    .image(image)
-                    .user(user)
-                    .build();
-        }
     }
-
 
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
     @Getter

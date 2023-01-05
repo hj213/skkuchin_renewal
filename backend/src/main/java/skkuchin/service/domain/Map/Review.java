@@ -1,10 +1,9 @@
-package skkuchin.service.domain.Place;
+package skkuchin.service.domain.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
@@ -31,9 +30,9 @@ public class Review {
 
     private String image;
 
-    //@JoinColumn(name = "place_id")
-    //@ManyToOne
-    //private Place place;
+    @JoinColumn(name = "place_id")
+    @ManyToOne
+    private Place place;
 
     @JoinColumn(name = "user_id")
     @ManyToOne
@@ -45,11 +44,5 @@ public class Review {
     @PrePersist
     public void preCreateDate() {
         this.createDate = LocalDateTime.now();
-    }
-
-    public void update(ReviewDto.PutRequest dto) {
-        this.setContent(dto.getContent());
-        this.setRate(dto.getRate());
-        this.setImage(dto.getImage());
     }
 }
