@@ -4,15 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ReviewDto;
-import skkuchin.service.domain.Place.Review;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.security.auth.PrincipalDetails;
 import skkuchin.service.service.ReviewService;
@@ -60,11 +55,16 @@ public class ReviewController {
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 삭제 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getMyReview(@PathVariable Long userId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity<?> getPlaceReview(@PathVariable Long placeId) {
+        List<ReviewDto.Response> placeReviews = reviewService.getPlaceReview(placeId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "내가 쓴 리뷰 조회 완료", placeReviews), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/me")
+    public ResponseEntity<?> getMyReview(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         List<ReviewDto.Response> myReviews = reviewService.getMyReview(user);
         return new ResponseEntity<>(new CMRespDto<>(1, "내가 쓴 리뷰 조회 완료", myReviews), HttpStatus.OK);
     }
-
 }
