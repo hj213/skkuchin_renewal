@@ -58,7 +58,7 @@ public class ReviewController {
     @GetMapping("/place/{placeId}")
     public ResponseEntity<?> getPlaceReview(@PathVariable Long placeId) {
         List<ReviewDto.Response> placeReviews = reviewService.getPlaceReview(placeId);
-        return new ResponseEntity<>(new CMRespDto<>(1, "내가 쓴 리뷰 조회 완료", placeReviews), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "장소별 리뷰 가져오기 완료", placeReviews), HttpStatus.OK);
     }
 
     @GetMapping("/user/me")
