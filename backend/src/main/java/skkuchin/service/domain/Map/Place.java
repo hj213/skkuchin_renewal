@@ -27,6 +27,7 @@ public class Place {
     @Enumerated(EnumType.STRING)
     private Campus campus;
 
+    @Enumerated(EnumType.STRING)
     private Gate gate;
 
     @Column(nullable = false)

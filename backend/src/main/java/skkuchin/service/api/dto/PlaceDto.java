@@ -11,11 +11,10 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaceDto {
 
     @Getter
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Request {
         @NotBlank
         private String name;
@@ -62,6 +61,7 @@ public class PlaceDto {
 
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private String name;
