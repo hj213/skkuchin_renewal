@@ -10,6 +10,7 @@ import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ImageDto;
 import skkuchin.service.service.ImageService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,14 +37,14 @@ public class ImageController {
 
     @PostMapping("")
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> upload(@RequestBody ImageDto.PostRequest dto) {
+    public ResponseEntity<?> upload(@Valid @RequestBody ImageDto.PostRequest dto) {
         imageService.upload(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "이미지 업로드 완료", null), HttpStatus.CREATED);
     }
 
     @PutMapping("/{imageId}")
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long imageId, @RequestBody ImageDto.PutRequest dto) {
+    public ResponseEntity<?> update(@PathVariable Long imageId, @Valid @RequestBody ImageDto.PutRequest dto) {
         imageService.update(imageId, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "이미지 업데이트 완료", null), HttpStatus.OK);
     }

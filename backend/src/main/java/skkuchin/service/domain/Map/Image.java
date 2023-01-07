@@ -1,17 +1,15 @@
 package skkuchin.service.domain.Map;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Image {
     @Id
@@ -22,6 +20,6 @@ public class Image {
     @ManyToOne
     private Place place;
 
-    @NotBlank
+    @Column(nullable = false)
     private String url;
 }
