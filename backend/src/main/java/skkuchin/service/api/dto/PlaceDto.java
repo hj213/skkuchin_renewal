@@ -1,5 +1,6 @@
 package skkuchin.service.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
@@ -13,25 +14,32 @@ import java.util.stream.Collectors;
 public class PlaceDto {
 
     @Getter
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Request {
         @NotBlank
         private String name;
+        private Category category;
+        @JsonProperty
         private String detailCategory;
+        @NotNull
+        private Campus campus;
         private Gate gate;
         @NotBlank
         private String address;
         @NotNull
+        @JsonProperty
         private Double xCoordinate;
         @NotNull
+        @JsonProperty
         private Double yCoordinate;
+        @JsonProperty
         private String serviceTime;
+        @JsonProperty
         private String breakTime;
+        @JsonProperty
         private Boolean discountAvailability;
+        @JsonProperty
         private String discountContent;
-        private Category category;
-        @NotNull
-        private Campus campus;
 
         public Place toEntity() {
             return Place.builder()
