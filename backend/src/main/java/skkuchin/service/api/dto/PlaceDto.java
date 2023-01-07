@@ -3,6 +3,7 @@ package skkuchin.service.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import skkuchin.service.domain.Map.*;
 
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class PlaceDto {
 
     @Getter
+    @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Request {
         @NotBlank
@@ -27,11 +29,9 @@ public class PlaceDto {
         @NotBlank
         private String address;
         @NotNull
-        @JsonProperty
-        private Double xCoordinate;
+        private Double xcoordinate;
         @NotNull
-        @JsonProperty
-        private Double yCoordinate;
+        private Double ycoordinate;
         @JsonProperty
         private String serviceTime;
         @JsonProperty
@@ -47,8 +47,8 @@ public class PlaceDto {
                     .detailCategory(this.detailCategory)
                     .gate(this.gate)
                     .address(this.address)
-                    .xCoordinate(this.xCoordinate)
-                    .yCoordinate(this.yCoordinate)
+                    .xcoordinate(this.xcoordinate)
+                    .ycoordinate(this.ycoordinate)
                     .serviceTime(this.serviceTime)
                     .breakTime(this.breakTime)
                     .discountAvailability(this.discountAvailability)
@@ -71,10 +71,8 @@ public class PlaceDto {
         private Campus campus;
         private Gate gate;
         private String address;
-        @JsonProperty
-        private Double xCoordinate;
-        @JsonProperty
-        private Double yCoordinate;
+        private Double xcoordinate;
+        private Double ycoordinate;
         @JsonProperty
         private String serviceTime;
         @JsonProperty
@@ -94,8 +92,8 @@ public class PlaceDto {
             this.detailCategory = place.getDetailCategory();
             this.gate = place.getGate();
             this.address = place.getAddress();
-            this.xCoordinate = place.getXCoordinate();
-            this.yCoordinate = place.getYCoordinate();
+            this.xcoordinate = place.getXcoordinate();
+            this.ycoordinate = place.getYcoordinate();
             this.serviceTime = place.getServiceTime();
             this.breakTime = place.getBreakTime();
             this.discountAvailability = place.getDiscountAvailability();

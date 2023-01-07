@@ -17,8 +17,13 @@ public class ImageDto {
         @NotNull
         @JsonProperty
         private Long placeId;
+
         @NotBlank
         private String url;
+
+        public PostRequest(String url) {
+            this.url = url;
+        }
 
         public Image toEntity(Place place) {
             return Image.builder()

@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ImageDto;
-import skkuchin.service.domain.Map.Image;
-import skkuchin.service.domain.Map.Place;
+import skkuchin.service.domain.Map.*;
 import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
 

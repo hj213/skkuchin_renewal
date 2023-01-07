@@ -34,10 +34,10 @@ public class Place {
     private String address;
 
     @Column(nullable = false)
-    private Double xCoordinate;
+    private Double xcoordinate;
 
     @Column(nullable = false)
-    private Double yCoordinate;
+    private Double ycoordinate;
 
     private String serviceTime;
 
