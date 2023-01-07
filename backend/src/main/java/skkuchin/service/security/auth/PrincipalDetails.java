@@ -2,11 +2,14 @@ package skkuchin.service.security.auth;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import skkuchin.service.domain.User.AppUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class PrincipalDetails implements UserDetails {
@@ -17,10 +20,8 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(() -> {
-            return "" + user.getRoles();
-        });
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.addAll(user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList()));
         return authorities;
     }
 

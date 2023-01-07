@@ -34,7 +34,7 @@ public class ServiceApplication {
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
 			//admin 계정 생성
-			userService.saveAdmin(new SignUpForm("admin", "admin", "1234", "1234", "test@test", "0000000000", Major.건축학과, "img", true, Mbti.ENTP));
+			userService.saveAdmin(new SignUpForm("admin", "admin", "12341234", "12341234", "test@test", "0000000000", Major.건축학과, "img", true, Mbti.ENTP));
 
 			//데이터 자동 주입
 			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; //공통 경로
