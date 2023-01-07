@@ -118,6 +118,18 @@ public class ReviewService {
                 ).collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<ReviewDto.Response> getUserReview(Long userId) {
+        return reviewRepo.findAll()
+                .stream()
+                .filter(review -> review.getUser().getId() == userId)
+                .map(review -> new ReviewDto.Response(
+                        review,
+                        reviewReviewKeywordRepo.findByReview(review).stream().collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+    }
+
     public void isMyReview(Long reviewUserId, Long userId) {
         if (reviewUserId != userId) throw new IllegalArgumentException("리뷰 작성자가 아닙니다.");
     }

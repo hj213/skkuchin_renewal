@@ -6,7 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import skkuchin.service.api.dto.SignUpForm;
+import skkuchin.service.domain.User.Major;
+import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
+import skkuchin.service.service.ReviewKeywordService;
 import skkuchin.service.service.UserService;
 
 @SpringBootApplication
@@ -23,19 +27,19 @@ public class ServiceApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(UserService userService) {
+	CommandLineRunner run(UserService userService, ReviewKeywordService reviewKeywordService) {
 		return args -> {
 
 			userService.saveRole(new Role(null, "ROLE_USER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
-/*
-			userService.saveUser(new AppUser(null, "yejin", "syj0396", "1234", new ArrayList<>()));
-			userService.saveUser(new AppUser(null, "admin", "admin", "1234", new ArrayList<>()));
 
+			//admin 계정 생성
+			userService.saveAdmin(new SignUpForm("admin", "admin", "1234", "1234", "test@test", "0000000000", Major.건축학과, "img", true, Mbti.ENTP));
 
-			userService.addRoleToUser("syj0396", "ROLE_USER");
-			userService.addRoleToUser("admin", "ROLE_USER");
-			userService.addRoleToUser("admin", "ROLE_ADMIN");*/
+			//데이터 자동 주입
+			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; //공통 경로
+			reviewKeywordService.insertData(path);
+
 		};
 	}
 }

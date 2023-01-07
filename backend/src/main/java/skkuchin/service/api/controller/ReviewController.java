@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
@@ -23,12 +24,14 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> getAll() {
         List<ReviewDto.Response> reviews = reviewService.getAll();
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 리뷰 가져오기 완료", reviews), HttpStatus.OK);
     }
 
     @GetMapping("/{reviewId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getDetail(@PathVariable Long reviewId) {
         ReviewDto.Response review = reviewService.getDetail(reviewId);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 상세 정보 가져오기 완료", review), HttpStatus.OK);
@@ -67,4 +70,12 @@ public class ReviewController {
         List<ReviewDto.Response> myReviews = reviewService.getMyReview(user);
         return new ResponseEntity<>(new CMRespDto<>(1, "내가 쓴 리뷰 조회 완료", myReviews), HttpStatus.OK);
     }
+
+    @GetMapping("/user/{userId}")
+    //@PreAuthorize
+    public ResponseEntity<?> getUserReview(@PathVariable Long userId) {
+        List<ReviewDto.Response> userReviews = reviewService.getUserReview(userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "사용자 id별 리뷰 조회 완료", userReviews), HttpStatus.OK);
+    }
+
 }

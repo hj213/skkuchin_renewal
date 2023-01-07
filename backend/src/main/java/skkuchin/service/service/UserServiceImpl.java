@@ -62,6 +62,17 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
+    @Override
+    public void saveAdmin(SignUpForm signUpForm) {
+        if (userRepo.findByUsername("admin") == null) {
+            signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+            AppUser appUser = signUpForm.toEntity();
+            appUser.getRoles().add(roleRepo.findByName("ROLE_ADMIN"));
+            appUser.emailVerifiedSuccess();
+            userRepo.save(appUser);
+        }
+    }
+
     public Boolean confirmEmail(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                 requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
