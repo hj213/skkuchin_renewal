@@ -69,6 +69,7 @@ public class PlaceService {
         existingPlace.setBreak_time(dto.getBreak_time());
         existingPlace.setDiscount_availability(dto.getDiscount_availability());
         existingPlace.setDiscount_content(dto.getDiscount_content());
+        existingPlace.setCategory(dto.getCategory());
         existingPlace.setCampus(dto.getCampus());
 
         placeRepo.save(existingPlace);
