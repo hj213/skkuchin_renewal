@@ -2,6 +2,7 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.Image;
@@ -50,28 +51,15 @@ public class PlaceService {
     }
 
     @Transactional
-    public void add(PlaceDto.PostRequest dto) {
+    public void add(PlaceDto.Request dto) {
         Place place = dto.toEntity();
         placeRepo.save(place);
     }
 
     @Transactional
-    public void update(Long placeId, PlaceDto.PutRequest dto) {
+    public void update(Long placeId, PlaceDto.Request dto) {
         Place existingPlace = placeRepo.findById(placeId).orElseThrow();
-
-        existingPlace.setName(dto.getName());
-        existingPlace.setDetail_category(dto.getDetail_category());
-        existingPlace.setLocation(dto.getLocation());
-        existingPlace.setAddress(dto.getAddress());
-        existingPlace.setX_coordinate(dto.getX_coordinate());
-        existingPlace.setY_coordinate(dto.getY_coordinate());
-        existingPlace.setService_time(dto.getService_time());
-        existingPlace.setBreak_time(dto.getBreak_time());
-        existingPlace.setDiscount_availability(dto.getDiscount_availability());
-        existingPlace.setDiscount_content(dto.getDiscount_content());
-        existingPlace.setCategory(dto.getCategory());
-        existingPlace.setCampus(dto.getCampus());
-
+        BeanUtils.copyProperties(dto, existingPlace);
         placeRepo.save(existingPlace);
     }
 

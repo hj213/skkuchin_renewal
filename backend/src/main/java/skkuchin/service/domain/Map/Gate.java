@@ -1,5 +1,5 @@
 package skkuchin.service.domain.Map;
 
-public enum Location {
+public enum Gate {
     정문, 쪽문, 후문
 }

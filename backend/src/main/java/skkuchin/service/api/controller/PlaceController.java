@@ -10,6 +10,7 @@ import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.service.PlaceService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,14 +37,14 @@ public class PlaceController {
 
     @PostMapping("")
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> add(@RequestBody PlaceDto.PostRequest dto) {
+    public ResponseEntity<?> add(@Valid @RequestBody PlaceDto.Request dto) {
         placeService.add(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 추가 완료", null), HttpStatus.CREATED);
     }
 
     @PutMapping("/{placeId}")
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long placeId, @RequestBody PlaceDto.PutRequest dto) {
+    public ResponseEntity<?> update(@PathVariable Long placeId, @Valid @RequestBody PlaceDto.Request dto) {
         placeService.update(placeId, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 수정 완료", null), HttpStatus.OK);
     }

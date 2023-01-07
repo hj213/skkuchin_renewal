@@ -3,58 +3,49 @@ package skkuchin.service.api.dto;
 import lombok.Getter;
 import skkuchin.service.domain.Map.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlaceDto {
 
     @Getter
-    public static class PostRequest {
+    public static class Request {
+        @NotBlank
         private String name;
-        private String detail_category;
-        private Location location;
+        private String detailCategory;
+        private Gate gate;
+        @NotBlank
         private String address;
-        private Double x_coordinate;
-        private Double y_coordinate;
-        private String service_time;
-        private String break_time;
-        private Boolean discount_availability;
-        private String discount_content;
+        @NotNull
+        private Double xCoordinate;
+        @NotNull
+        private Double yCoordinate;
+        private String serviceTime;
+        private String breakTime;
+        private Boolean discountAvailability;
+        private String discountContent;
         private Category category;
+        @NotNull
         private Campus campus;
 
         public Place toEntity() {
             return Place.builder()
                     .name(this.name)
-                    .detail_category(this.detail_category)
-                    .location(this.location)
+                    .detailCategory(this.detailCategory)
+                    .gate(this.gate)
                     .address(this.address)
-                    .x_coordinate(this.x_coordinate)
-                    .y_coordinate(this.y_coordinate)
-                    .service_time(this.service_time)
-                    .break_time(this.break_time)
-                    .discount_availability(this.discount_availability)
-                    .discount_content(this.discount_content)
+                    .xCoordinate(this.xCoordinate)
+                    .yCoordinate(this.yCoordinate)
+                    .serviceTime(this.serviceTime)
+                    .breakTime(this.breakTime)
+                    .discountAvailability(this.discountAvailability)
+                    .discountContent(this.discountContent)
                     .category(this.category)
                     .campus(this.campus)
                     .build();
         }
-    }
-
-    @Getter
-    public static class PutRequest {
-        private String name;
-        private String detail_category;
-        private Location location;
-        private String address;
-        private Double x_coordinate;
-        private Double y_coordinate;
-        private String service_time;
-        private String break_time;
-        private Boolean discount_availability;
-        private String discount_content;
-        private Category category;
-        private Campus campus;
     }
 
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
@@ -62,37 +53,37 @@ public class PlaceDto {
     public static class Response {
         private Long id;
         private String name;
-        private String detail_category;
-        private Location location;
+        private String detailCategory;
+        private Gate gate;
         private String address;
-        private Double x_coordinate;
-        private Double y_coordinate;
-        private String service_time;
-        private String break_time;
-        private Boolean discount_availability;
-        private String discount_content;
+        private Double xCoordinate;
+        private Double yCoordinate;
+        private String serviceTime;
+        private String breakTime;
+        private Boolean discountAvailability;
+        private String discountContent;
         private Category category;
         private Campus campus;
         private List<String> image;
-        private Long review_count;
+        private Long reviewCount;
         private Double rate;
 
         public Response(Place place, List<Image> images, List<Review> reviews) {
             this.id = place.getId();
             this.name = place.getName();
-            this.detail_category = place.getDetail_category();
-            this.location = place.getLocation();
+            this.detailCategory = place.getDetailCategory();
+            this.gate = place.getGate();
             this.address = place.getAddress();
-            this.x_coordinate = place.getX_coordinate();
-            this.y_coordinate = place.getY_coordinate();
-            this.service_time = place.getService_time();
-            this.break_time = place.getBreak_time();
-            this.discount_availability = place.getDiscount_availability();
-            this.discount_content = place.getDiscount_content();
+            this.xCoordinate = place.getXCoordinate();
+            this.yCoordinate = place.getYCoordinate();
+            this.serviceTime = place.getServiceTime();
+            this.breakTime = place.getBreakTime();
+            this.discountAvailability = place.getDiscountAvailability();
+            this.discountContent = place.getDiscountContent();
             this.category = place.getCategory();
             this.campus = place.getCampus();
             this.image = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
-            this.review_count = reviews.stream().count();
+            this.reviewCount = reviews.stream().count();
             this.rate = Math.round(
                     reviews
                     .stream()
