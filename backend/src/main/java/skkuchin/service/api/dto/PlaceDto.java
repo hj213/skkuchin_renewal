@@ -1,5 +1,7 @@
 package skkuchin.service.api.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import skkuchin.service.domain.Map.*;
 
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 public class PlaceDto {
 
     @Getter
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Request {
         @NotBlank
         private String name;
@@ -50,6 +53,7 @@ public class PlaceDto {
 
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
     @Getter
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private String name;
