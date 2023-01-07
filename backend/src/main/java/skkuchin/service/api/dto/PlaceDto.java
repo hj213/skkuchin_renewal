@@ -53,7 +53,6 @@ public class PlaceDto {
 
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
     @Getter
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private String name;
