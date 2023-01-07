@@ -42,6 +42,13 @@ public class PlaceController {
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 추가 완료", null), HttpStatus.CREATED);
     }
 
+    @PostMapping("/all")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> addAll(@Valid @RequestBody List<PlaceDto.Request> dto) {
+        placeService.addAll(dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "여러 장소 추가 완료", null), HttpStatus.CREATED);
+    }
+
     @PutMapping("/{placeId}")
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> update(@PathVariable Long placeId, @Valid @RequestBody PlaceDto.Request dto) {

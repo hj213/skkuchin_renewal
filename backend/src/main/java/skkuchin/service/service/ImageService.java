@@ -42,6 +42,17 @@ public class ImageService {
     }
 
     @Transactional
+    public void uploadAll(List<ImageDto.PostRequest> dto) {
+        List<Image> images = dto
+                .stream()
+                .map(imageDto -> imageDto.toEntity(placeRepo
+                        .findById(imageDto.getPlaceId())
+                        .orElseThrow()))
+                .collect(Collectors.toList());
+        imageRepo.saveAll(images);
+    }
+
+    @Transactional
     public void update(Long imageId, ImageDto.PutRequest dto) {
         Image existingImage = imageRepo.findById(imageId).orElseThrow();
         existingImage.setUrl(dto.getUrl());

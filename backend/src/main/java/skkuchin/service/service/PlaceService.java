@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ImageDto;
 import skkuchin.service.api.dto.PlaceDto;
+import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
@@ -63,6 +64,12 @@ public class PlaceService {
     }
 
     @Transactional
+    public void addAll(List<PlaceDto.Request> dto) {
+        List<Place> places = dto.stream().map(placeDto -> placeDto.toEntity()).collect(Collectors.toList());
+        placeRepo.saveAll(places);
+    }
+
+    @Transactional
     public void update(Long placeId, PlaceDto.Request dto) {
         Place existingPlace = placeRepo.findById(placeId).orElseThrow();
         BeanUtils.copyProperties(dto, existingPlace);
@@ -108,6 +115,8 @@ public class PlaceService {
                 PlaceDto.Request dto = new PlaceDto.Request(name, category, detailCategory, campus, gate, address, xcoordinate, ycoordinate, serviceTime, breakTime, discountAvailability, discountContent);
                 places.add(dto.toEntity());
             }
+
+            inputStream.close();
             return places;
         } catch (IOException e) {
             throw new RuntimeException("Failed to load places from JSON file", e);
@@ -132,6 +141,8 @@ public class PlaceService {
                 ImageDto.PostRequest dto = new ImageDto.PostRequest(url);
                 images.add(dto.toEntity(place));
             }
+
+            inputStream.close();
             return images;
         } catch (IOException e) {
             throw new RuntimeException("Failed to load images from JSON file", e);
