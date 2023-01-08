@@ -1,98 +1,107 @@
 package skkuchin.service.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import skkuchin.service.domain.Map.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlaceDto {
 
     @Getter
-    public static class PostRequest {
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class Request {
+        @NotBlank
         private String name;
-        private String detail_category;
-        private Location location;
-        private String address;
-        private Double x_coordinate;
-        private Double y_coordinate;
-        private String service_time;
-        private String break_time;
-        private Boolean discount_availability;
-        private String discount_content;
         private Category category;
+        @JsonProperty
+        private String detailCategory;
+        @NotNull
         private Campus campus;
+        private Gate gate;
+        @NotBlank
+        private String address;
+        @NotNull
+        private Double xcoordinate;
+        @NotNull
+        private Double ycoordinate;
+        @JsonProperty
+        private String serviceTime;
+        @JsonProperty
+        private String breakTime;
+        @JsonProperty
+        private Boolean discountAvailability;
+        @JsonProperty
+        private String discountContent;
 
         public Place toEntity() {
             return Place.builder()
                     .name(this.name)
-                    .detail_category(this.detail_category)
-                    .location(this.location)
+                    .detailCategory(this.detailCategory)
+                    .gate(this.gate)
                     .address(this.address)
-                    .x_coordinate(this.x_coordinate)
-                    .y_coordinate(this.y_coordinate)
-                    .service_time(this.service_time)
-                    .break_time(this.break_time)
-                    .discount_availability(this.discount_availability)
-                    .discount_content(this.discount_content)
+                    .xcoordinate(this.xcoordinate)
+                    .ycoordinate(this.ycoordinate)
+                    .serviceTime(this.serviceTime)
+                    .breakTime(this.breakTime)
+                    .discountAvailability(this.discountAvailability)
+                    .discountContent(this.discountContent)
                     .category(this.category)
                     .campus(this.campus)
                     .build();
         }
     }
 
-    @Getter
-    public static class PutRequest {
-        private String name;
-        private String detail_category;
-        private Location location;
-        private String address;
-        private Double x_coordinate;
-        private Double y_coordinate;
-        private String service_time;
-        private String break_time;
-        private Boolean discount_availability;
-        private String discount_content;
-        private Category category;
-        private Campus campus;
-    }
-
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private String name;
-        private String detail_category;
-        private Location location;
-        private String address;
-        private Double x_coordinate;
-        private Double y_coordinate;
-        private String service_time;
-        private String break_time;
-        private Boolean discount_availability;
-        private String discount_content;
         private Category category;
+        @JsonProperty
+        private String detailCategory;
         private Campus campus;
+        private Gate gate;
+        private String address;
+        private Double xcoordinate;
+        private Double ycoordinate;
+        @JsonProperty
+        private String serviceTime;
+        @JsonProperty
+        private String breakTime;
+        @JsonProperty
+        private Boolean discountAvailability;
+        @JsonProperty
+        private String discountContent;
         private List<String> image;
-        private Long review_count;
+        @JsonProperty
+        private Long reviewCount;
         private Double rate;
 
         public Response(Place place, List<Image> images, List<Review> reviews) {
             this.id = place.getId();
             this.name = place.getName();
-            this.detail_category = place.getDetail_category();
-            this.location = place.getLocation();
+            this.detailCategory = place.getDetailCategory();
+            this.gate = place.getGate();
             this.address = place.getAddress();
-            this.x_coordinate = place.getX_coordinate();
-            this.y_coordinate = place.getY_coordinate();
-            this.service_time = place.getService_time();
-            this.break_time = place.getBreak_time();
-            this.discount_availability = place.getDiscount_availability();
-            this.discount_content = place.getDiscount_content();
+            this.xcoordinate = place.getXcoordinate();
+            this.ycoordinate = place.getYcoordinate();
+            this.serviceTime = place.getServiceTime();
+            this.breakTime = place.getBreakTime();
+            this.discountAvailability = place.getDiscountAvailability();
+            this.discountContent = place.getDiscountContent();
             this.category = place.getCategory();
             this.campus = place.getCampus();
             this.image = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
-            this.review_count = reviews.stream().count();
+            this.reviewCount = reviews.stream().count();
             this.rate = Math.round(
                     reviews
                     .stream()

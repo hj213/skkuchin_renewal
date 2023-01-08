@@ -19,9 +19,7 @@ import skkuchin.service.api.dto.SignUpForm;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.BlankException;
-import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.mail.EmailService;
 import skkuchin.service.service.UserService;
 
 import javax.mail.MessagingException;
@@ -33,7 +31,6 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -44,7 +41,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class UserController {
     private final UserService userService;
-    private final EmailService mailService;
 
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>>getUsers() {
