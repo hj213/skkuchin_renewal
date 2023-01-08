@@ -1,32 +1,32 @@
 {
-  "places" : [
+  "place" : [
     {
       "name": "칸다소바",
       "category": "일식",
-      "detail_category": "일본식라멘",
+      "detailCategory": "일본식라멘",
       "campus": "명륜",
       "gate": "쪽문",
       "address": "서울 종로구 성균관로2",
       "xcoordinate": 122.123,
       "ycoordinate": 221.123,
-      "service_time": "09:30~15:00",
-      "break_time": "10:00~11:00",
-      "discount_availability": 0,
-      "discount_content": "음료 1잔"
+      "serviceTime": "09:30~15:00",
+      "breakTime": "10:00~11:00",
+      "discountAvailability": true,
+      "discountContent": "음료 1잔"
     },
     {
       "name": "쇼타돈부리",
       "category": "일식",
-      "detail_category": "일식당",
+      "detailCategory": "일식당",
       "campus": "명륜",
       "gate": "정문",
       "address": "서울 종로구 성균관로3",
       "xcoordinate": 250.3123,
       "ycoordinate": 123.4312,
-      "service_time": "11:30~22:00",
-      "break_time": "15:00~17:00",
-      "discount_availability": 0,
-      "discount_content": "음료 1잔"
+      "serviceTime": "11:30~22:00",
+      "breakTime": "15:00~17:00",
+      "discountAvailability": false,
+      "discountContent": null
     }
   ]
 }

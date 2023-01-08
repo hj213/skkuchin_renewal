@@ -3,7 +3,6 @@ package skkuchin.service.domain.Map;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
