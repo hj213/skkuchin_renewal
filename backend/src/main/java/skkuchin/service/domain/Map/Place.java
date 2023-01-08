@@ -1,52 +1,49 @@
 package skkuchin.service.domain.Map;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @Column(nullable = false)
     private String name;
-
-    private String detail_category;
-
-    private Location location;
-
-    @NotNull
-    private String address;
-
-    @NotNull
-    private Double x_coordinate;
-
-    @NotNull
-    private Double y_coordinate;
-
-    private String service_time;
-
-    private String break_time;
-
-    private Boolean discount_availability;
-
-    private String discount_content;
 
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @NotNull
+    private String detailCategory;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Campus campus;
+
+    @Enumerated(EnumType.STRING)
+    private Gate gate;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = false)
+    private Double xcoordinate;
+
+    @Column(nullable = false)
+    private Double ycoordinate;
+
+    private String serviceTime;
+
+    private String breakTime;
+
+    private Boolean discountAvailability;
+
+    private String discountContent;
 }
