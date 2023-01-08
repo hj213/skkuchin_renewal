@@ -10,6 +10,8 @@ import skkuchin.service.api.dto.SignUpForm;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
+import skkuchin.service.service.ImageService;
+import skkuchin.service.service.PlaceService;
 import skkuchin.service.service.TagService;
 import skkuchin.service.service.UserService;
 
@@ -20,26 +22,33 @@ public class ServiceApplication {
 		SpringApplication.run(ServiceApplication.class, args);
 	}
 
-
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
-	CommandLineRunner run(UserService userService, TagService tagService) {
+	CommandLineRunner run(UserService userService,
+						  TagService tagService,
+						  PlaceService placeService,
+						  ImageService imageService) {
 		return args -> {
 
 			userService.saveRole(new Role(null, "ROLE_USER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
 			//admin 계정 생성
-			userService.saveAdmin(new SignUpForm("admin", "admin", "12341234", "12341234", "test@test", "0000000000", Major.건축학과, "img", true, Mbti.ENTP));
+			userService.saveAdmin(new SignUpForm("스꾸친관리자", "admin", "12341234", "12341234", "test@test", "0000000000", Major.건축학과, "img", true, Mbti.ENTP));
+
+			//test 계정 생성
+			userService.saveTestUser(new SignUpForm("테스트", "test", "12341234", "12341234", "test1@test1", "0000000001", Major.건축학과, "img", true, Mbti.ENTP));
 
 			//데이터 자동 주입
-			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; //공통 경로
+//			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; // Windows 공통 경로
+			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
 			tagService.insertData(path);
-
+			placeService.insertData(path);
+			imageService.insertData(path);
 		};
 	}
 }

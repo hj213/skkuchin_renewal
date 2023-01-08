@@ -9,6 +9,7 @@ import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.TagDto;
 import skkuchin.service.service.TagService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,14 +27,14 @@ public class TagController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> add(@RequestBody TagDto.Request dto) {
+    public ResponseEntity<?> add(@Valid @RequestBody TagDto.Request dto) {
         tagService.add(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 태그 추가 완료", null), HttpStatus.CREATED);
     }
 
     @PutMapping("/{tagId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long tagId, @RequestBody TagDto.Request dto) {
+    public ResponseEntity<?> update(@PathVariable Long tagId, @Valid @RequestBody TagDto.Request dto) {
         tagService.update(tagId, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 태그 수정 완료", null), HttpStatus.OK);
     }
