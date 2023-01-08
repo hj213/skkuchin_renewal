@@ -1,16 +1,16 @@
 package skkuchin.service.api.dto;
 
 import lombok.Getter;
-import skkuchin.service.domain.Map.ReviewKeyword;
+import skkuchin.service.domain.Map.Tag;
 
-public class ReviewKeywordDto {
+public class TagDto {
 
     @Getter
     public static class Request {
         private String name;
 
-        public ReviewKeyword toEntity() {
-            return ReviewKeyword.builder()
+        public Tag toEntity() {
+            return Tag.builder()
                     .name(name)
                     .build();
         }
@@ -21,9 +21,9 @@ public class ReviewKeywordDto {
         private Long id;
         private String name;
 
-        public Response(ReviewKeyword keyword) {
-            this.id = keyword.getId();
-            this.name = keyword.getName();
+        public Response(Tag tag) {
+            this.id = tag.getId();
+            this.name = tag.getName();
         }
     }
 }

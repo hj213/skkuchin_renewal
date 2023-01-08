@@ -6,23 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewReviewKeyword {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "review_id")
-    private Review review;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "reviewKeyword_id")
-    private ReviewKeyword reviewKeyword;
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    private List<Review_Tag> reviewTags = new ArrayList<>();
 }

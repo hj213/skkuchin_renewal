@@ -41,7 +41,7 @@ public class Review {
     private AppUser user;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    private List<ReviewReviewKeyword> reviewReviewKeywords = new ArrayList<>();
+    private List<Review_Tag> reviewTags = new ArrayList<>();
 
     @Column(name = "create_date")
     private LocalDateTime createDate;

@@ -10,7 +10,7 @@ import skkuchin.service.api.dto.SignUpForm;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
-import skkuchin.service.service.ReviewKeywordService;
+import skkuchin.service.service.TagService;
 import skkuchin.service.service.UserService;
 
 @SpringBootApplication
@@ -27,7 +27,7 @@ public class ServiceApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(UserService userService, ReviewKeywordService reviewKeywordService) {
+	CommandLineRunner run(UserService userService, TagService tagService) {
 		return args -> {
 
 			userService.saveRole(new Role(null, "ROLE_USER"));
@@ -38,7 +38,7 @@ public class ServiceApplication {
 
 			//데이터 자동 주입
 			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; //공통 경로
-			reviewKeywordService.insertData(path);
+			tagService.insertData(path);
 
 		};
 	}

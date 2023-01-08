@@ -18,7 +18,7 @@ public class ReviewDto {
         private float rate;
         private String content;
         private String image;
-        private List<String> keywords;
+        private List<String> tags;
 
         public Review toEntity(AppUser user, Place place) {
             return Review.builder()
@@ -30,10 +30,10 @@ public class ReviewDto {
                     .build();
         }
 
-        public ReviewReviewKeyword toReviewReviewKeywordEntity(Review review, ReviewKeyword reviewKeyword) {
-            return ReviewReviewKeyword.builder()
+        public Review_Tag toReview_TagEntity(Review review, Tag tag) {
+            return Review_Tag.builder()
                     .review(review)
-                    .reviewKeyword(reviewKeyword)
+                    .tag(tag)
                     .build();
         }
     }
@@ -43,12 +43,12 @@ public class ReviewDto {
         private float rate;
         private String content;
         private String image;
-        private List<String> keywords;
+        private List<String> tags;
 
-        public ReviewReviewKeyword toReviewReviewKeywordEntity(Review review, ReviewKeyword reviewKeyword) {
-            return ReviewReviewKeyword.builder()
+        public Review_Tag toReview_TagEntity(Review review, Tag tag) {
+            return Review_Tag.builder()
                     .review(review)
-                    .reviewKeyword(reviewKeyword)
+                    .tag(tag)
                     .build();
         }
     }
@@ -65,9 +65,9 @@ public class ReviewDto {
         private Major major;
         private String student_id;
         private String user_image;
-        private List<String> keywords;
+        private List<String> tags;
 
-        public Response(Review review, List<ReviewReviewKeyword> keywords) {
+        public Response(Review review, List<Review_Tag> tags) {
             this.id = review.getId();
             this.rate = review.getRate();
             this.content = review.getContent();
@@ -77,7 +77,7 @@ public class ReviewDto {
             this.major = review.getUser().getMajor();
             this.student_id = review.getUser().getStudent_id();
             this.user_image = review.getUser().getImage();
-            this.keywords = keywords.stream().map(keyword -> keyword.getReviewKeyword().getName()).collect(Collectors.toList());
+            this.tags = tags.stream().map(tag -> tag.getTag().getName()).collect(Collectors.toList());
         }
     }
 }
