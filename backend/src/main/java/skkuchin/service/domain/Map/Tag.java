@@ -22,5 +22,5 @@ public class Tag {
     private String name;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
-    private List<Review_Tag> reviewTags = new ArrayList<>();
+    private List<ReviewTag> reviewTags = new ArrayList<>();
 }

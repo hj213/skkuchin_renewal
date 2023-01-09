@@ -74,7 +74,7 @@ public class ImageController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> deletePlaceImages(@PathVariable Long placeId) {
         imageService.deletePlaceImages(placeId);
-        return new ResponseEntity<>(new CMRespDto<>(1, "장소 모든 이미지 조회 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "장소 모든 이미지 삭제 완료", null), HttpStatus.OK);
     }
 
 }

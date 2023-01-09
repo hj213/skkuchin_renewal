@@ -22,14 +22,12 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> getAll() {
         List<PlaceDto.Response> places = placeService.getAll();
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 장소 조회 완료", places), HttpStatus.OK);
     }
 
     @GetMapping("/{placeId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> getDetail(@PathVariable Long placeId) {
         PlaceDto.Response place = placeService.getDetail(placeId);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 상세 정보 조회 완료", place), HttpStatus.OK);
