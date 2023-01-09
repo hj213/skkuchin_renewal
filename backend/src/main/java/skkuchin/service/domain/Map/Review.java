@@ -5,8 +5,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +38,8 @@ public class Review {
     private AppUser user;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    private List<Review_Tag> reviewTags = new ArrayList<>();
+    private List<ReviewTag> reviewTags = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createDate;
-/*
-    @PrePersist
-    public void preCreateDate() {
-        this.createDate = LocalDateTime.now();
-    }*/
 }

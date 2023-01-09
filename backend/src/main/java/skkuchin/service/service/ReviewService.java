@@ -7,12 +7,12 @@ import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.Place;
 import skkuchin.service.domain.Map.Review;
 import skkuchin.service.domain.Map.Tag;
-import skkuchin.service.domain.Map.Review_Tag;
+import skkuchin.service.domain.Map.ReviewTag;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.PlaceRepo;
 import skkuchin.service.repo.TagRepo;
 import skkuchin.service.repo.ReviewRepo;
-import skkuchin.service.repo.Review_TagRepo;
+import skkuchin.service.repo.ReviewTagRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ReviewService {
     private final ReviewRepo reviewRepo;
     private final PlaceRepo placeRepo;
     private final TagRepo tagRepo;
-    private final Review_TagRepo reviewTagRepo;
+    private final ReviewTagRepo reviewTagRepo;
 
     @Transactional
     public List<ReviewDto.Response> getAll() {
@@ -42,7 +42,7 @@ public class ReviewService {
     @Transactional
     public ReviewDto.Response getDetail(Long reviewId) {
         Review review = reviewRepo.findById(reviewId).orElseThrow();
-        List<Review_Tag> reviewTags = reviewTagRepo.findByReview(review)
+        List<ReviewTag> reviewTags = reviewTagRepo.findByReview(review)
                 .stream().collect(Collectors.toList());
         return new ReviewDto.Response(review, reviewTags);
     }
@@ -53,11 +53,11 @@ public class ReviewService {
         Review review = dto.toEntity(user, place);
         reviewRepo.save(review);
 
-        List<Review_Tag> reviewTags = dto.getTags()
+        List<ReviewTag> reviewTags = dto.getTags()
                 .stream()
                 .map(k -> {
                     Tag tag = tagRepo.findByName(k);
-                    return dto.toReview_TagEntity(review, tag);
+                    return dto.toReviewTagEntity(review, tag);
                 })
                 .collect(Collectors.toList());
         reviewTagRepo.saveAll(reviewTags);
@@ -74,7 +74,7 @@ public class ReviewService {
 
         reviewRepo.save(existingReview);
 
-        List<Review_Tag> existingTags = reviewTagRepo.findByReview(existingReview);
+        List<ReviewTag> existingTags = reviewTagRepo.findByReview(existingReview);
 
         // 새로운 키워드 리스트에 없는 기존의 키워드는 삭제
         for (int i = 0; i < existingTags.size(); i++) {
@@ -85,7 +85,7 @@ public class ReviewService {
         for (int i = 0; i < dto.getTags().size(); i++) {
             if (!existingTags.stream().map(object -> object.getTag().getName()).collect(Collectors.toList()).contains(dto.getTags().get(i))) {
                 Tag tag = tagRepo.findByName(dto.getTags().get(i));
-                reviewTagRepo.save(dto.toReview_TagEntity(existingReview, tag));
+                reviewTagRepo.save(dto.toReviewTagEntity(existingReview, tag));
             }
         }
     }

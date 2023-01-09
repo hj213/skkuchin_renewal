@@ -4,11 +4,13 @@ import lombok.Getter;
 import skkuchin.service.domain.Map.Tag;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class TagDto {
 
     @Getter
     public static class Request {
+        @NotBlank
         private String name;
 
         public Tag toEntity() {
@@ -20,6 +22,7 @@ public class TagDto {
 
     @Getter
     public static class Response {
+        @NotNull
         private Long id;
         @NotBlank
         private String name;

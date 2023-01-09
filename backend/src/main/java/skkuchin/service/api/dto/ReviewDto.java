@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Data
 public class ReviewDto {
 
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
+        @NotNull
         @JsonProperty
         private Long placeId;
         @NotNull
@@ -39,8 +39,8 @@ public class ReviewDto {
                     .build();
         }
 
-        public Review_Tag toReview_TagEntity(Review review, Tag tag) {
-            return Review_Tag.builder()
+        public ReviewTag toReviewTagEntity(Review review, Tag tag) {
+            return ReviewTag.builder()
                     .review(review)
                     .tag(tag)
                     .build();
@@ -49,13 +49,15 @@ public class ReviewDto {
 
     @Getter
     public static class PutRequest {
+        @NotNull
         private float rate;
+        @NotBlank
         private String content;
         private String image;
         private List<String> tags;
 
-        public Review_Tag toReview_TagEntity(Review review, Tag tag) {
-            return Review_Tag.builder()
+        public ReviewTag toReviewTagEntity(Review review, Tag tag) {
+            return ReviewTag.builder()
                     .review(review)
                     .tag(tag)
                     .build();
@@ -64,28 +66,32 @@ public class ReviewDto {
 
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private float rate;
         private String content;
         private String image;
-        private LocalDateTime create_date;
+        @JsonProperty
+        private LocalDateTime createDate;
         private String nickname;
         private Major major;
-        private String student_id;
-        private String user_image;
+        @JsonProperty
+        private String studentId;
+        @JsonProperty
+        private String userImage;
         private List<String> tags;
 
-        public Response(Review review, List<Review_Tag> tags) {
+        public Response(Review review, List<ReviewTag> tags) {
             this.id = review.getId();
             this.rate = review.getRate();
             this.content = review.getContent();
             this.image = review.getImage();
-            this.create_date = review.getCreateDate();
+            this.createDate = review.getCreateDate();
             this.nickname = review.getUser().getNickname();
             this.major = review.getUser().getMajor();
-            this.student_id = review.getUser().getStudent_id();
-            this.user_image = review.getUser().getImage();
+            this.studentId = review.getUser().getStudent_id();
+            this.userImage = review.getUser().getImage();
             this.tags = tags.stream().map(tag -> tag.getTag().getName()).collect(Collectors.toList());
         }
     }
