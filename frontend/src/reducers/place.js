@@ -1,4 +1,3 @@
-
 import {
     LOAD_PLACE_FAIL,
     LOAD_PLACE_SUCCESS,
