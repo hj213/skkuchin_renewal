@@ -1,10 +1,15 @@
 package skkuchin.service.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,12 +18,16 @@ import java.util.stream.Collectors;
 public class ReviewDto {
 
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
+        @JsonProperty
         private Long placeId;
+        @NotNull
         private float rate;
+        @NotBlank
         private String content;
         private String image;
-        private List<String> keywords;
+        private List<String> tags;
 
         public Review toEntity(AppUser user, Place place) {
             return Review.builder()
@@ -30,10 +39,10 @@ public class ReviewDto {
                     .build();
         }
 
-        public ReviewReviewKeyword toReviewReviewKeywordEntity(Review review, ReviewKeyword reviewKeyword) {
-            return ReviewReviewKeyword.builder()
+        public Review_Tag toReview_TagEntity(Review review, Tag tag) {
+            return Review_Tag.builder()
                     .review(review)
-                    .reviewKeyword(reviewKeyword)
+                    .tag(tag)
                     .build();
         }
     }
@@ -43,12 +52,12 @@ public class ReviewDto {
         private float rate;
         private String content;
         private String image;
-        private List<String> keywords;
+        private List<String> tags;
 
-        public ReviewReviewKeyword toReviewReviewKeywordEntity(Review review, ReviewKeyword reviewKeyword) {
-            return ReviewReviewKeyword.builder()
+        public Review_Tag toReview_TagEntity(Review review, Tag tag) {
+            return Review_Tag.builder()
                     .review(review)
-                    .reviewKeyword(reviewKeyword)
+                    .tag(tag)
                     .build();
         }
     }
@@ -65,9 +74,9 @@ public class ReviewDto {
         private Major major;
         private String student_id;
         private String user_image;
-        private List<String> keywords;
+        private List<String> tags;
 
-        public Response(Review review, List<ReviewReviewKeyword> keywords) {
+        public Response(Review review, List<Review_Tag> tags) {
             this.id = review.getId();
             this.rate = review.getRate();
             this.content = review.getContent();
@@ -77,7 +86,7 @@ public class ReviewDto {
             this.major = review.getUser().getMajor();
             this.student_id = review.getUser().getStudent_id();
             this.user_image = review.getUser().getImage();
-            this.keywords = keywords.stream().map(keyword -> keyword.getReviewKeyword().getName()).collect(Collectors.toList());
+            this.tags = tags.stream().map(tag -> tag.getTag().getName()).collect(Collectors.toList());
         }
     }
 }
