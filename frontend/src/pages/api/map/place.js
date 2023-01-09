@@ -26,12 +26,12 @@ export default async(req, res) => {
         } catch (error) {
             console.log(error)
             return res.status(500).json({
-                error: 'Something went wrong when retrieving place id'
+                error: 'Something went wrong when retrieving place'
             });
         }
     } else {
         res.setHeader('Allow', ['GET']);
-        return res.statusa(405).json({
+        return res.status(405).json({
             error: `Method ${req.method} not allowed`
         });
     }
