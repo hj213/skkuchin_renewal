@@ -5,7 +5,7 @@ export default async(req, res) => {
     if(req.method == 'GET'){
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/map/place`, {
+            const apiRes = await fetch(`${API_URL}/api/place/place_id`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -16,7 +16,7 @@ export default async(req, res) => {
 
             if(apiRes.status == 200){
                 return res.status(200).json({
-                    place:data
+                    place:data.data
                 });
             } else {
                 return res.status(apiRes.status).json({
@@ -31,7 +31,7 @@ export default async(req, res) => {
         }
     } else {
         res.setHeader('Allow', ['GET']);
-        return res.statusa(405).json({
+        return res.status(405).json({
             error: `Method ${req.method} not allowed`
         });
     }
