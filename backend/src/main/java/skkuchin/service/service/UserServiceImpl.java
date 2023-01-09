@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
             roleRepo.save(role);
         }
     }
-
+ 
     @Override
     public Role getRole(String roleName) {
         log.info("Fetching role {}", roleName);

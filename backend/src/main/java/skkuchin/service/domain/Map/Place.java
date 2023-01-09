@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -49,4 +51,8 @@ public class Place {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Campus campus;
+
+
+    @OneToMany(mappedBy = "place")
+    private List<Place> place = new ArrayList<>();
 }
