@@ -8,7 +8,7 @@ import {
 //load_places
 export const load_places = () => async dispatch => {
     try {
-        const res = await fetch('/api/map/places', {
+        const res = await fetch(`/api/place/all`, {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'
@@ -35,13 +35,15 @@ export const load_places = () => async dispatch => {
 }
 
 //load_place
-export const load_place = () => async dispatch => {
+export const load_place = (id) => async dispatch => {
+
     try {
-        const res = await fetch('/api/map/place', {
+        const res = await fetch(`/api/place/${id}`, {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'
-            }
+            },
+            body: body
         });
 
         const data = await res.json();

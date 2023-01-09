@@ -1,6 +1,14 @@
+import { useDispatch } from "react-redux";
+import { load_place, load_places } from "../actions/place/place";
 import Layout from "../hocs/Layout";
 
-const homePage = () => (
+const homePage = () => {
+  
+  // const dispatch = useDispatch();
+  // dispatch(load_place(1));
+  // dispatch(load_places());
+  
+  return(
   <Layout
     title='스꾸친 home'
     content = '스꾸친의 메인 페이지입니다.'
@@ -14,6 +22,7 @@ const homePage = () => (
       </div>
     </div>
   </Layout>
-);
+  )
+  };
 
 export default homePage;
