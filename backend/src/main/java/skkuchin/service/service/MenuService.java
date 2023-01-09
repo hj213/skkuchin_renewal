@@ -5,14 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.MenuDto;
-import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.Menu;
 import skkuchin.service.domain.Map.Place;
-import skkuchin.service.domain.Map.Review;
-import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.MenuRepo;
 import skkuchin.service.repo.PlaceRepo;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;

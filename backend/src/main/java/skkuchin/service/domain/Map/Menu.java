@@ -1,16 +1,15 @@
 package skkuchin.service.domain.Map;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+//@Data
 @Entity
+@Getter
+@Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Menu {
 
@@ -18,13 +17,14 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @JoinColumn(name = "place_id")
     @ManyToOne
     private Place place;
 
-
+    @Column(nullable = false)
     private int price;
 
 }
