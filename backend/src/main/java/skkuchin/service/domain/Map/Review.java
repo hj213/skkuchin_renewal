@@ -1,31 +1,30 @@
 package skkuchin.service.domain.Map;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+//@Data
 @Entity
+@Getter
+@Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(nullable = false)
     private float rate;
 
-    @NotNull
-    @Size(min = 1) //리뷰 최대 글자 수 나중에 추가
+    @Column(nullable = false)
     private String content;
 
     private String image;
@@ -38,11 +37,9 @@ public class Review {
     @ManyToOne
     private AppUser user;
 
-    @Column(name = "create_date")
-    private LocalDateTime createDate;
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<ReviewTag> reviewTags = new ArrayList<>();
 
-    @PrePersist
-    public void preCreateDate() {
-        this.createDate = LocalDateTime.now();
-    }
+    @CreationTimestamp
+    private LocalDateTime createDate;
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,6 +17,7 @@ import skkuchin.service.repo.UserRepo;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final UserRepo userRepo;
     @Bean
@@ -24,9 +26,6 @@ public class SecurityConfig {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**", "/api/user/save", "/api/user/saves", "/api/token/refresh/**", "/api/token/verify/**", "/api/confirmEmail").permitAll();
-//        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
-//        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
-//        http.authorizeRequests().anyRequest().authenticated();
         http.apply(new MyCustomDsl());
 
         return http.build();
