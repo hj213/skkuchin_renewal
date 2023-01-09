@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch} from 'react-redux';
-import { logout } from '../actions/auth';
+import { logout } from '../actions/auth/auth';
 
 const navbar = () => {
 
@@ -24,6 +24,16 @@ const navbar = () => {
                         'nav-link active' : 'nav-link'
                     }>
                         Dashboard
+                    </a>
+                </Link>
+            </li>
+            <li className='nav-item'>
+                <Link href='/favorite'>
+                    <a className={
+                        router.pathname === '/favorite' ? 
+                        'nav-link active' : 'nav-link'
+                    }>
+                        Favorite
                     </a>
                 </Link>
             </li>

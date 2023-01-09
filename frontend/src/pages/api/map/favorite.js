@@ -1,5 +1,7 @@
+// get favorite : GET
 import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
+
 
 export default async (req, res) => {
     if(req.method == 'GET'){
@@ -13,22 +15,25 @@ export default async (req, res) => {
         }
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/user`, {
+            const apiRes = await fetch(`${API_URL}/api/place`, {
+            // const apiRes = await fetch(`${API_URL}/api/favorite`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Authorization' : `Bearer ${access}`
+                    // 'Authorization' : `Bearer ${access}`
                 }
             });
+            
             const data = await apiRes.json();
-
             console.log(apiRes);
-            console.log("load user: "+ data +" "+ apiRes.status);
+            console.log("get place: "+data +" "+ apiRes.status);
             console.log("required method : "+ req.method);
 
+    
             if(apiRes.status === 200){
                 return res.status(200).json({
-                    user: data
+                    // favorite: data
+                    place: data.data
                 });
             } else {
                 return res.status(apiRes.status).json({
@@ -37,9 +42,9 @@ export default async (req, res) => {
             }
             
         } catch (error) {
-            console.log(error)
+            console.log("error!"+res);
             return res.status(500).json({
-                error: 'Something went wrong when retrieving user'
+                error: 'Something went wrong when retrieving users favorite place'
             });
         }
     }else {
