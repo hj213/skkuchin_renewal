@@ -1,18 +1,16 @@
 package skkuchin.service.domain.Map;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class ReviewReviewKeyword {
+public class Review_Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +22,5 @@ public class ReviewReviewKeyword {
 
     @ManyToOne
     @JoinColumn(name = "reviewKeyword_id")
-    private ReviewKeyword reviewKeyword;
+    private Tag tag;
 }

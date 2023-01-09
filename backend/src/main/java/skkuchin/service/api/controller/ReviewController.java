@@ -13,6 +13,7 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.security.auth.PrincipalDetails;
 import skkuchin.service.service.ReviewService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class ReviewController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> write(@RequestBody ReviewDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> write(@Valid @RequestBody ReviewDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         reviewService.write(user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 작성 완료", null), HttpStatus.CREATED);
@@ -47,7 +48,7 @@ public class ReviewController {
 
     @PutMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long reviewId, @RequestBody ReviewDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> update(@PathVariable Long reviewId, @Valid @RequestBody ReviewDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long userId = principalDetails.getUser().getId();
         reviewService.update(reviewId, dto, userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 수정 완료", null), HttpStatus.OK);
