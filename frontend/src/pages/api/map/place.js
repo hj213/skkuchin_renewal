@@ -4,12 +4,6 @@ import { API_URL } from "../../../config";
 export default async(req, res) => {
     if(req.method == 'GET'){
 
-        // if(access = false){
-        //     return res.status(401).json({
-        //         error: ''
-        //     });
-        // }
-
         try {
             const apiRes = await fetch(`${API_URL}/api/map/place`, {
                 method: 'GET',

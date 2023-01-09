@@ -1,3 +1,4 @@
+
 import {
     LOAD_PLACE_FAIL,
     LOAD_PLACE_SUCCESS,
@@ -6,7 +7,7 @@ import {
 } from '../actions/place/types'
 
 const initialState = {
-    user: null
+    place: null
 };
 
 const placeReducer = (state= initialState, action) => {
@@ -16,18 +17,22 @@ const placeReducer = (state= initialState, action) => {
         case LOAD_PLACE_SUCCESS:
             return {
                 ...state,
+                place: payload.place
             }
         case LOAD_PLACE_FAIL:
             return {
                 ...state,
+                place: null
             }
         case LOAD_PLACE_ID_SUCCESS:
             return {
                 ...state,
+                place: payload.place
             }
         case LOAD_PLACE_ID_FAIL:
             return {
                 ...state,
+                place: null
             }
         default:
             return state;

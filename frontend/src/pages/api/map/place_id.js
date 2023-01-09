@@ -4,12 +4,6 @@ import { API_URL } from "../../../config";
 export default async(req, res) => {
     if(req.method == 'GET'){
 
-        // if(access = false){
-        //     return res.status(401).json({
-        //         error: ''
-        //     });
-        // }
-
         try {
             const apiRes = await fetch(`${API_URL}/api/map/place/place_id`, {
                 method: 'GET',
@@ -22,7 +16,7 @@ export default async(req, res) => {
 
             if(apiRes.status == 200){
                 return res.status(200).json({
-                    user:data
+                    place:data
                 });
             } else {
                 return res.status(apiRes.status).json({
