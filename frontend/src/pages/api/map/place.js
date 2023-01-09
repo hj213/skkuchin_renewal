@@ -5,7 +5,7 @@ export default async(req, res) => {
     if(req.method == 'GET'){
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/map/place`, {
+            const apiRes = await fetch(`${API_URL}/api/place/place_id`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -16,7 +16,7 @@ export default async(req, res) => {
 
             if(apiRes.status == 200){
                 return res.status(200).json({
-                    place:data
+                    place:data.data
                 });
             } else {
                 return res.status(apiRes.status).json({
@@ -26,7 +26,7 @@ export default async(req, res) => {
         } catch (error) {
             console.log(error)
             return res.status(500).json({
-                error: 'Something went wrong when retrieving place'
+                error: 'Something went wrong when retrieving place id'
             });
         }
     } else {
