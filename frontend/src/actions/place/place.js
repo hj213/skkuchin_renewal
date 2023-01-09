@@ -60,5 +60,5 @@ export const load_place_id = () => async dispatch => {
         dispatch({
             type: LOAD_PLACE_ID_FAIL
         });
-    }
+    };
 }
