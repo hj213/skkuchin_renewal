@@ -23,6 +23,7 @@ export default async (req, res) => {
 
             const data = await apiRes.json();
             console.log(apiRes);
+
             console.log("login: "+data +" "+ apiRes.status);
             console.log("required method : "+ req.method);
 

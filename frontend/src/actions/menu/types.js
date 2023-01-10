@@ -1,0 +1,2 @@
+export const LOAD_MENU_FAIL = "LOAD_MENU_FAIL";
+export const LOAD_MENU_SUCCESS = "LOAD_MENU_SUCCESS";
