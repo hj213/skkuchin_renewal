@@ -1,3 +1,4 @@
+// 지역별 메뉴 불러오기
 import { API_URL } from "../../../../config";
 
 export default async(req, res) => {
