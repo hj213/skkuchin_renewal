@@ -18,10 +18,10 @@ public class ReviewTag {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "review_id")
+    @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
 }

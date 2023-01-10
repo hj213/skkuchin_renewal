@@ -8,6 +8,7 @@ import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 public class FavoriteDto {
@@ -33,21 +34,33 @@ public class FavoriteDto {
     @Getter
     public static class Response {
 
-        private Long placeId;
-        private Long userId;
         private Long id;
         private String name;
+        private Long placeId;
+        private Category category;
         private String detailCategory;
-        private String gate;
+        private Campus campus;
+        private Gate gate;
         private String address;
         private Double xCoordinate;
         private Double yCoordinate;
         private String serviceTime;
         private String breakTime;
-        private boolean discountAvailability;
+        private Boolean discountAvailability;
         private String discountContent;
-        private Category category;
-        private Campus campus;
+        private List<String> image;
+        @JsonProperty
+        private Long reviewCount;
+        private Double rate;
+        private List<String> tags;
+
+
+
+
+
+
+
+
 
 
         public Response(Favorite favorite) {
@@ -56,6 +69,16 @@ public class FavoriteDto {
             this.name = favorite.getPlace().getName() ;
             this.category =  favorite.getPlace().getCategory();
             this.campus =  favorite.getPlace().getCampus();
+            this.gate = favorite.getPlace().getGate();
+            this.address = favorite.getPlace().getAddress();
+            this.xCoordinate = favorite.getPlace().getXcoordinate();
+            this.yCoordinate = favorite.getPlace().getYcoordinate();
+            this.serviceTime = favorite.getPlace().getServiceTime();
+            this.breakTime = favorite.getPlace().getBreakTime();
+            this.discountAvailability = favorite.getPlace().getDiscountAvailability();
+            this.discountContent = favorite.getPlace().getDiscountContent();
+
+
         }
 
     }

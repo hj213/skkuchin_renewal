@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-//@Data
 @Entity
 @Getter
 @Setter
@@ -12,19 +11,17 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Menu {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "place_id", nullable = false)
     @ManyToOne
     private Place place;
 
     @Column(nullable = false)
     private int price;
-
 }

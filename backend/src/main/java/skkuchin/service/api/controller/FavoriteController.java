@@ -25,9 +25,11 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
     private final UserRepo userRepo;
     @PostMapping("")
-    public ResponseEntity<?> write(@RequestBody FavoriteDto.PostRequest dto) {
-        AppUser user = userRepo.findByEmail("test@test");
-        System.out.println("user = " + user.getUsername());
+    public ResponseEntity<?> write(@RequestBody FavoriteDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        AppUser user = principalDetails.getUser();
+        //AppUser user = userRepo.findByEmail("test@test");
+        //System.out.println("user = " + user.getUsername());
         favoriteService.write(user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 저장 완료", null), HttpStatus.CREATED);
     }
@@ -35,18 +37,20 @@ public class FavoriteController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> getPlaceReview() {
-        AppUser user = userRepo.findByEmail("test@test");
+    public ResponseEntity<?> getPlaceReview(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        //AppUser user = userRepo.findByEmail("test@test");
         List<FavoriteDto.Response> favoriteMenus = favoriteService.getMyFavorite(user);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 조회 완료", favoriteMenus), HttpStatus.OK);
     }
 
     @DeleteMapping("/{favoriteId}")
-    public ResponseEntity<?> delete(@PathVariable Long favoriteId) {
-        AppUser user = userRepo.findByEmail("test@test");
+    public ResponseEntity<?> delete(@PathVariable Long favoriteId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        //AppUser user = userRepo.findByEmail("test@test");
         Long userId = user.getId();
         favoriteService.delete(favoriteId, userId);
-        return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 삭제 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 삭제 완료", null), HttpStatus.OK);
     }
 
 }
