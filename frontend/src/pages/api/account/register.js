@@ -26,8 +26,6 @@ export default async( req, res )=> {
             image
         });
 
-        console.log(body)
-
         try {
             const apiRes = await fetch(`${API_URL}/api/user/saves`, {
                 method: 'POST',
@@ -39,7 +37,7 @@ export default async( req, res )=> {
             });
 
             const data = await apiRes.json();
-
+           
             if(apiRes.status === 201){
                 return res.status(201).json({success: 'Sign up successfully!'});
             } else {

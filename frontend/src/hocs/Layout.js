@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { request_refresh } from "../actions/auth";
+import { request_refresh } from "../actions/auth/auth";
 import Head from "next/head";
 import Navbar from "../components/Navbar";
 
@@ -29,7 +29,7 @@ const Layout = ({title, content, children}) => {
 
 Layout.defaultProps = {
     title: '스꾸친',
-    content: 'hos의 layout.js의 페이지입니다.'
+    content: 'hocs의 layout.js의 페이지입니다.'
 }
 
 export default Layout;
