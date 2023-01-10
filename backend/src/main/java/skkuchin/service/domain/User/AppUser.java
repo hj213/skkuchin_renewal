@@ -46,12 +46,14 @@ public class AppUser {
 
     private LocalDateTime start_date;
 
+    @OneToMany(mappedBy = "user")
+    private List<Favorite> favorites = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private Boolean emailAuth;
 
-    @OneToMany(mappedBy = "user")
-    private List<Favorite> favorites = new ArrayList<>();
+
 
     public void emailVerifiedSuccess() {
         this.emailAuth = true;

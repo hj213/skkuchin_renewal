@@ -1,5 +1,6 @@
 package skkuchin.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +17,9 @@ import skkuchin.service.service.TagService;
 import skkuchin.service.service.UserService;
 import skkuchin.service.service.MenuService;
 
+
 @SpringBootApplication
 public class ServiceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ServiceApplication.class, args);
 	}
@@ -44,7 +45,6 @@ public class ServiceApplication {
 
 			//test 계정 생성
 			userService.saveTestUser(new SignUpForm("테스트", "test", "12341234", "12341234", "test1@test1", "0000000001", Major.건축학과, "img", true, Mbti.ENTP));
-
 			//데이터 자동 주입
 			//String path = System.getProperty("user.dir") + "\\backend\\src\\main\\java\\skkuchin\\service\\data\\";
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
