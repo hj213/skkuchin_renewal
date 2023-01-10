@@ -26,8 +26,6 @@ export default async( req, res )=> {
             image
         });
 
-        console.log(body)
-
         try {
             const apiRes = await fetch(`${API_URL}/api/user/saves`, {
                 method: 'POST',
