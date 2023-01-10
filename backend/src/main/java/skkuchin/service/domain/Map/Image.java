@@ -15,8 +15,8 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "place_id")
     @ManyToOne
+    @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
     @Column(nullable = false)

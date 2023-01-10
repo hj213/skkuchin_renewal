@@ -14,6 +14,7 @@ import skkuchin.service.service.ImageService;
 import skkuchin.service.service.PlaceService;
 import skkuchin.service.service.TagService;
 import skkuchin.service.service.UserService;
+import skkuchin.service.service.MenuService;
 
 @SpringBootApplication
 public class ServiceApplication {
@@ -31,7 +32,8 @@ public class ServiceApplication {
 	CommandLineRunner run(UserService userService,
 						  TagService tagService,
 						  PlaceService placeService,
-						  ImageService imageService) {
+						  ImageService imageService,
+						  MenuService menuService) {
 		return args -> {
 
 			userService.saveRole(new Role(null, "ROLE_USER"));
@@ -44,11 +46,12 @@ public class ServiceApplication {
 			userService.saveTestUser(new SignUpForm("테스트", "test", "12341234", "12341234", "test1@test1", "0000000001", Major.건축학과, "img", true, Mbti.ENTP));
 
 			//데이터 자동 주입
-//			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; // Windows 공통 경로
+			//String path = System.getProperty("user.dir") + "\\backend\\src\\main\\java\\skkuchin\\service\\data\\";
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
 			tagService.insertData(path);
 			placeService.insertData(path);
 			imageService.insertData(path);
+			menuService.insertData(path);
 		};
 	}
 }
