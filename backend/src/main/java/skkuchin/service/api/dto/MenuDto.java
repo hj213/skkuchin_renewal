@@ -7,10 +7,8 @@ import lombok.Getter;
 import skkuchin.service.domain.Map.Menu;
 import skkuchin.service.domain.Map.Place;
 
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 
 public class MenuDto {
 
@@ -45,17 +43,11 @@ public class MenuDto {
         private String name;
         private int price;
 
-
-
         public Response(Menu menu) {
             this.id = menu.getId();
             this.placeId = menu.getPlace().getId();
             this.name = menu.getName();
             this.price = menu.getPrice();
-
-
-
-
         }
     }
 

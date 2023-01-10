@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 // test
 @Entity
-//@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -18,13 +17,12 @@ public class Favorite {
     @Column(name = "favorite_id")
     private Long id;
 
-
     @ManyToOne
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 
 
