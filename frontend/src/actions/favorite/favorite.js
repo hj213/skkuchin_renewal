@@ -1,3 +1,4 @@
+import favorite from '../../pages/api/favorite';
 import { 
     GET_FAV_SUCCESS,
     GET_FAV_FAIL,
@@ -9,10 +10,10 @@ import {
     from './types';
 
 
-// load(get) FAV
+// load FAV
 export const load_favorite = () => async dispatch => {
     try {
-        const res = await fetch('/api/favorite/favorite',{
+        const res = await fetch('/api/favorite',{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -47,7 +48,7 @@ export const enroll_favorite = (place_id) => async dispatch => {
     });
 
     try {
-        const res = await fetch('/api/favorite/enrollFav', {
+        const res = await fetch('/api/favorite', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -74,13 +75,14 @@ export const enroll_favorite = (place_id) => async dispatch => {
 };
 
 // del fav
-export const delete_favorite = (place_id) => async dispatch => {
+export const delete_favorite = (favorite_id) => async dispatch => {
+
     const body = JSON.stringify({
-        place_id
+        favorite_id
     });
 
     try {
-        const res = await fetch('/api/favorite/delFav', {
+        const res = await fetch(`/api/favorite/${favorite_id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
