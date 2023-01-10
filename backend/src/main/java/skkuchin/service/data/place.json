@@ -1,6 +1,20 @@
 {
   "place" : [
     {
+      "name": "기꾸스시",
+      "category": "일식",
+      "detailCategory": "초밥,롤",
+      "campus": "명륜",
+      "gate": "정문",
+      "address": "서울 종로구 성균관로2 (우)03074",
+      "xcoordinate": 122.123,
+      "ycoordinate": 221.123,
+      "serviceTime": "11:30~22:00",
+      "breakTime": "15:00~17:00",
+      "discountAvailability": true,
+      "discountContent": "음료수 1잔 무료"
+    },
+    {
       "name": "칸다소바",
       "category": "일식",
       "detailCategory": "일본식라멘",

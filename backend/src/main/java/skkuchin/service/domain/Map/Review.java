@@ -29,11 +29,11 @@ public class Review {
 
     private String image;
 
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "place_id", nullable = false)
     @ManyToOne
     private Place place;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
     private AppUser user;
 
