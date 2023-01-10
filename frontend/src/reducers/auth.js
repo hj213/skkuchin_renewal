@@ -14,7 +14,7 @@ import {
     REFRESH_FAIL,
     SET_AUTH_LOADING,
     REMOVE_AUTH_LOADING,
-} from '../actions/types';
+} from '../actions/auth/types';
 
 const initialState = {
     user: null,

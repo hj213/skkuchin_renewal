@@ -1,4 +1,3 @@
-
 import { REGISTER_SUCCESS, 
         REGISTER_FAIL, 
         SET_AUTH_LOADING, 

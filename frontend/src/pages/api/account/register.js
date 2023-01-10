@@ -37,7 +37,9 @@ export default async( req, res )=> {
             });
 
             const data = await apiRes.json();
-
+            // 지우기
+            console.log("register: "+data +" "+ apiRes.status);
+            console.log("required method : "+ req.method);
             if(apiRes.status === 201){
                 return res.status(201).json({success: 'Sign up successfully!'});
             } else {

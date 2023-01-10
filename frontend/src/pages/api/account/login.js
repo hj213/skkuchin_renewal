@@ -23,8 +23,10 @@ export default async (req, res) => {
 
             const data = await apiRes.json();
             console.log(apiRes);
-            console.log("login " + data + " state " + apiRes.status);
-            console.log("request method " + req.method);
+
+            console.log("login: "+data +" "+ apiRes.status);
+            console.log("required method : "+ req.method);
+
             if (apiRes.status === 200) {
                 res.setHeader('Set-Cookie', [
                     cookie.serialize(
