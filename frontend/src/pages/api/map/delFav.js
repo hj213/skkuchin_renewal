@@ -40,8 +40,8 @@ export default async (req, res) => {
             console.log("delete fav: "+data +" "+ apiRes.status);
             console.log("required method : "+ req.method);
 
-            if(apiRes.status === 201){
-                return res.status(201).json({success: 'DELETE favorite place successfully!'});
+            if(apiRes.status === 200){
+                return res.status(200).json({success: 'DELETE favorite place successfully!'});
             } else {
                 return res.status(apiRes.status).json({error: data.error});
             }

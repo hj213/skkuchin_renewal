@@ -24,6 +24,7 @@ export default async (req, res) => {
         console.log("body "+body); 
         console.log("place_id : "+ place_id);
         try {
+            // const apiRes = await fetch(`${API_URL}/api/review`, {
             const apiRes = await fetch(`${API_URL}/api/favorite`, {
                 method: 'POST',
                 headers: {
@@ -46,6 +47,7 @@ export default async (req, res) => {
                 return res.status(apiRes.status).json({error: data.error});
             }
         } catch(err) {
+            console.log("Error!!");
             return res.status(500).json({
                 'error': 'Something went wrong when enroll favorite place'
             });

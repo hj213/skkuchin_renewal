@@ -1,9 +1,6 @@
 package skkuchin.service.domain.User;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,27 +13,28 @@ import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.AUTO;
 // test
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class AppUser {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true) @NotBlank // nickname도 중복되면 안되기에 unique 적용
+    @Column(unique = true, nullable = false)
     private String nickname;
-    @Column(unique = true) @NotBlank
+    @Column(unique = true, nullable = false)
     private String username;
-    @NotBlank
+    @Column(nullable = false)
     private String password;
-    @Column(unique = true) @NotBlank
+    @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true) @NotBlank
+    @Column(unique = true, nullable = false)
     private String student_id;
-    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Major major;
-    @NotBlank
+    @Column(nullable = false)
     private String image;
     @Enumerated(EnumType.STRING)
     private Mbti mbti;

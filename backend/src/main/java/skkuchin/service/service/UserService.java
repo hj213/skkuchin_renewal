@@ -13,6 +13,8 @@ public interface UserService {
     boolean checkUsername(String username);
     //AppUser saveUser(AppUser user) throws MessagingException, UnsupportedEncodingException;
     AppUser saveUser(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException;
+    void saveAdmin(SignUpForm signUpForm);
+    void saveTestUser(SignUpForm signUpForm);
     Boolean confirmEmail(EmailAuthRequestDto requestDto);
     void saveRole(Role role);
     Role getRole(String roleName);

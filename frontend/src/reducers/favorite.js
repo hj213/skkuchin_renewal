@@ -5,9 +5,7 @@ import {
     ENROLL_FAV_FAIL,
     DELETE_FAV_SUCCESS,
     DELETE_FAV_FAIL,
-    // RESET_GET_FAV_SUCCESS,
-    // SET_FAV_LOADING,
-    // REMOVE_FAV_LOADING
+
 } from '../actions/favorite/types';
 
 const initialState = {
@@ -24,7 +22,6 @@ const favoriteReducer = (state = initialState, action) => {
                 ...state,
                 // favorite: payload.favorite
                 place: payload.place
-                // get_fav_success: true,
             }
         case GET_FAV_FAIL:
             return {
@@ -35,7 +32,6 @@ const favoriteReducer = (state = initialState, action) => {
         case ENROLL_FAV_SUCCESS:
             return {
                 ...state,
-                favorite: payload.favorite
             }
         case ENROLL_FAV_FAIL:
             return {
@@ -49,8 +45,6 @@ const favoriteReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
-        
-        
        
         default:
             return state;

@@ -5,9 +5,6 @@ import {
     ENROLL_FAV_FAIL,
     DELETE_FAV_SUCCESS,
     DELETE_FAV_FAIL,
-    // RESET_GET_FAV_SUCCESS,
-    // SET_FAV_LOADING,
-    // REMOVE_FAV_LOADING
 } 
     from './types';
 
@@ -59,7 +56,7 @@ export const enroll_favorite = (place_id) => async dispatch => {
             body: body
         });
 
-        if (res.status === 200) {
+        if (res.status === 201) {
             dispatch({
                 type: ENROLL_FAV_SUCCESS
             });
@@ -109,9 +106,3 @@ export const delete_favorite = (place_id) => async dispatch => {
     }
 };
 
-
-// export const reset_get_fav_success =() => dispatch => {
-//     dispatch({
-//         type: RESET_GET_FAV_SUCCESS
-//     });    
-// }

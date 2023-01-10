@@ -8,6 +8,8 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -17,13 +19,20 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class SignUpForm {
 
+    @NotBlank
     private String nickname;
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
     private String re_password;
+    @NotBlank
     private String email;
+    @NotBlank
     private String student_id;
+    @NotNull
     private Major major;
+    @NotBlank
     private String image;
     private Boolean agreement;
     private Mbti mbti;

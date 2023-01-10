@@ -2,11 +2,6 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
@@ -16,20 +11,16 @@ import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.exception.EmailAuthNumNotFoundException;
-import skkuchin.service.exception.EmailNotAuthenticatedException;
 import skkuchin.service.mail.EmailAuth;
 import skkuchin.service.mail.EmailAuthRepo;
 import skkuchin.service.mail.EmailService;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
-import skkuchin.service.security.auth.PrincipalDetails;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
@@ -60,6 +51,28 @@ public class UserServiceImpl implements UserService {
         AppUser newUser = userRepo.save(appUser);
         emailService.sendEmail(newUser.getEmail());
         return newUser;
+    }
+
+    @Override
+    public void saveAdmin(SignUpForm signUpForm) {
+        if (userRepo.findByUsername("admin") == null) {
+            signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+            AppUser appUser = signUpForm.toEntity();
+            appUser.getRoles().add(roleRepo.findByName("ROLE_ADMIN"));
+            appUser.emailVerifiedSuccess();
+            userRepo.save(appUser);
+        }
+    }
+
+    @Override
+    public void saveTestUser(SignUpForm signUpForm) {
+        if (userRepo.findByUsername("test") == null) {
+            signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+            AppUser appUser = signUpForm.toEntity();
+            appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
+            appUser.emailVerifiedSuccess();
+            userRepo.save(appUser);
+        }
     }
 
     public Boolean confirmEmail(EmailAuthRequestDto requestDto) {
