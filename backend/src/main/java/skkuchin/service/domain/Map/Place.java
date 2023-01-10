@@ -57,4 +57,7 @@ public class Place {
 
     private String discountContent;
 
+    @OneToMany(mappedBy = "place")
+    private List<Favorite> favorites = new ArrayList<>();
+
 }

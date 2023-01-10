@@ -21,6 +21,7 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
+
     @PostMapping("")
     public ResponseEntity<?> write(@Valid @RequestBody MenuDto.PostRequest dto) {
 
