@@ -4,6 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
 @Getter
 @Setter
 @Entity
@@ -27,6 +34,9 @@ public class Place {
     @Enumerated(EnumType.STRING)
     private Campus campus;
 
+    @OneToMany(mappedBy = "place")
+    private List<Place> place = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private Gate gate;
 
@@ -46,4 +56,5 @@ public class Place {
     private Boolean discountAvailability;
 
     private String discountContent;
+
 }

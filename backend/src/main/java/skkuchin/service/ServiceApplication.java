@@ -44,11 +44,11 @@ public class ServiceApplication {
 			userService.saveTestUser(new SignUpForm("테스트", "test", "12341234", "12341234", "test1@test1", "0000000001", Major.건축학과, "img", true, Mbti.ENTP));
 
 			//데이터 자동 주입
-//			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; // Windows 공통 경로
+			//String path = System.getProperty("user.dir") + "\\backend\\src\\main\\java\\skkuchin\\service\\data\\";
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
-			tagService.insertData(path);
-			placeService.insertData(path);
-			imageService.insertData(path);
+			//tagService.insertData(path);
+			//placeService.insertData(path);
+			//imageService.insertData(path);
 		};
 	}
 }
