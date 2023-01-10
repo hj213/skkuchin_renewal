@@ -42,8 +42,7 @@ export const load_place = (id) => async dispatch => {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'
-            },
-            body: body
+            }
         });
 
         const data = await res.json();

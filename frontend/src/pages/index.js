@@ -4,9 +4,9 @@ import Layout from "../hocs/Layout";
 
 const homePage = () => {
   
-  // const dispatch = useDispatch();
-  // dispatch(load_place(1));
-  // dispatch(load_places());
+  const dispatch = useDispatch();
+  dispatch(load_place(3));
+  dispatch(load_places());
   
   return(
   <Layout
