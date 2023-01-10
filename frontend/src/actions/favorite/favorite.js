@@ -12,7 +12,7 @@ import {
 // load(get) FAV
 export const load_favorite = () => async dispatch => {
     try {
-        const res = await fetch('/api/map/favorite',{
+        const res = await fetch('/api/favorite/favorite',{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -47,7 +47,7 @@ export const enroll_favorite = (place_id) => async dispatch => {
     });
 
     try {
-        const res = await fetch('/api/map/enrollFav', {
+        const res = await fetch('/api/favorite/enrollFav', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -80,7 +80,7 @@ export const delete_favorite = (place_id) => async dispatch => {
     });
 
     try {
-        const res = await fetch('/api/map/delFav', {
+        const res = await fetch('/api/favorite/delFav', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

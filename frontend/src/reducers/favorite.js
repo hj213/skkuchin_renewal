@@ -9,8 +9,7 @@ import {
 } from '../actions/favorite/types';
 
 const initialState = {
-    // favorite: [],
-    place: [],
+    favorite: [],
 };
 
 const favoriteReducer = (state = initialState, action) => {
@@ -20,14 +19,12 @@ const favoriteReducer = (state = initialState, action) => {
         case GET_FAV_SUCCESS:
             return {
                 ...state,
-                // favorite: payload.favorite
-                place: payload.place
+                favorite: payload.favorite
             }
         case GET_FAV_FAIL:
             return {
                 ...state,
-                // favorite: null
-                place: null
+                favorite: null
             }
         case ENROLL_FAV_SUCCESS:
             return {

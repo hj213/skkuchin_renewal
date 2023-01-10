@@ -15,12 +15,12 @@ export default async (req, res) => {
         }
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/place`, {
-            // const apiRes = await fetch(`${API_URL}/api/favorite`, {
+            // const apiRes = await fetch(`${API_URL}/api/place`, {
+            const apiRes = await fetch(`${API_URL}/api/favorite`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    // 'Authorization' : `Bearer ${access}`
+                    'Authorization' : `Bearer ${access}`
                 }
             });
             
@@ -32,8 +32,8 @@ export default async (req, res) => {
     
             if(apiRes.status === 200){
                 return res.status(200).json({
-                    // favorite: data
-                    place: data.data
+                    favorite: data.data
+                    // place: data.data
                 });
             } else {
                 return res.status(apiRes.status).json({
