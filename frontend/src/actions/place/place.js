@@ -5,10 +5,10 @@ import {
     LOAD_PLACES_SUCCESS
 } from './types'
 
-//load_places
-export const load_places = () => async dispatch => {
+//load_place
+export const load_place = (place_id) => async dispatch => {
     try {
-        const res = await fetch('/api/map/places', {
+        const res = await fetch(`/api/place/${place_id}`, {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'
@@ -34,10 +34,10 @@ export const load_places = () => async dispatch => {
     }
 }
 
-//load_place
-export const load_place = () => async dispatch => {
+//load_places
+export const load_places = () => async dispatch => {
     try {
-        const res = await fetch('/api/map/place', {
+        const res = await fetch('/api/place', {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'

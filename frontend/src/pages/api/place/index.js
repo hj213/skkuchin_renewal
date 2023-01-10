@@ -5,7 +5,7 @@ export default async(req, res) => {
     if(req.method == 'GET'){
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/place/place_id`, {
+            const apiRes = await fetch(`${API_URL}/api/place`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

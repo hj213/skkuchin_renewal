@@ -2,10 +2,13 @@
 import { API_URL } from "../../../config";
 
 export default async(req, res) => {
-    if(req.method == 'GET'){
 
+    const place_id = parseInt(req.query.id, 10);
+
+    if(req.method == 'GET'){
+        
         try {
-            const apiRes = await fetch(`${API_URL}/api/place`, {
+            const apiRes = await fetch(`${API_URL}/api/place/${place_id}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -26,7 +29,7 @@ export default async(req, res) => {
         } catch (error) {
             console.log(error)
             return res.status(500).json({
-                error: 'Something went wrong when retrieving places'
+                error: 'Something went wrong when retrieving place'
             });
         }
     } else {
