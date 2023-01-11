@@ -81,8 +81,8 @@ public class FavoriteDto {
             this.campus =  favorite.getPlace().getCampus();
             this.gate = favorite.getPlace().getGate();
             this.address = favorite.getPlace().getAddress();
-            this.xCoordinate = favorite.getPlace().getXcoordinate();
-            this.yCoordinate = favorite.getPlace().getYcoordinate();
+            this.xcoordinate = favorite.getPlace().getXcoordinate();
+            this.ycoordinate = favorite.getPlace().getYcoordinate();
             this.serviceTime = favorite.getPlace().getServiceTime();
             this.breakTime = favorite.getPlace().getBreakTime();
             this.discountAvailability = favorite.getPlace().getDiscountAvailability();
