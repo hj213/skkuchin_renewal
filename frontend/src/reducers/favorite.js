@@ -1,6 +1,6 @@
 import {
-    GET_FAV_SUCCESS,
-    GET_FAV_FAIL,
+    LOAD_FAV_SUCCESS,
+    LOAD_FAV_FAIL,
     ENROLL_FAV_SUCCESS,
     ENROLL_FAV_FAIL,
     DELETE_FAV_SUCCESS,
@@ -16,12 +16,12 @@ const favoriteReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch(type) {
-        case GET_FAV_SUCCESS:
+        case LOAD_FAV_SUCCESS:
             return {
                 ...state,
                 favorite: payload.favorite
             }
-        case GET_FAV_FAIL:
+        case LOAD_FAV_FAIL:
             return {
                 ...state,
                 favorite: null
