@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.MenuDto;
@@ -21,6 +22,7 @@ public class MenuController {
 
 
     @PostMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> write(@Valid @RequestBody MenuDto.PostRequest dto) {
         menuService.write(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "메뉴 작성 완료", null), HttpStatus.CREATED);
