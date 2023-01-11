@@ -6,7 +6,7 @@ import {
 //load_menu
 export const load_menu = (place_id) => async dispatch => {
     try {
-        const res = await fetch('/api/menu/place/${place_id}', {
+        const res = await fetch(`/api/menu/place/${place_id}`, {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'

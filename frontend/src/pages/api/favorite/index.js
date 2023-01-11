@@ -23,7 +23,6 @@ export default async (req, res) => {
                 }
             });
 
-           
             const data = await apiRes.json();
             
             if(apiRes.status === 200){
