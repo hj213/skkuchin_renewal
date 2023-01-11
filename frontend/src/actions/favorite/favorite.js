@@ -1,7 +1,6 @@
-import favorite from '../../pages/api/favorite';
 import { 
-    GET_FAV_SUCCESS,
-    GET_FAV_FAIL,
+    LOAD_FAV_SUCCESS,
+    LOAD_FAV_FAIL,
     ENROLL_FAV_SUCCESS,
     ENROLL_FAV_FAIL,
     DELETE_FAV_SUCCESS,
@@ -24,18 +23,18 @@ export const load_favorite = () => async dispatch => {
 
         if(res.status === 200){
             dispatch({
-                type: GET_FAV_SUCCESS,
+                type: LOAD_FAV_SUCCESS,
                 payload: data
             });
         }else {
             dispatch({
-                type: GET_FAV_FAIL
+                type: LOAD_FAV_FAIL
             });
         }
 
     } catch (error) {
         dispatch({
-            type: GET_FAV_FAIL
+            type: LOAD_FAV_FAIL
         });
     }
 }
