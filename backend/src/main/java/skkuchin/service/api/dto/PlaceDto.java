@@ -85,8 +85,9 @@ public class PlaceDto {
         @JsonProperty
         private Long reviewCount;
         private Double rate;
+        private List<String> tags;
 
-        public Response(Place place, List<Image> images, List<Review> reviews) {
+        public Response(Place place, List<Image> images, List<Review> reviews, List<Tag> tags) {
             this.id = place.getId();
             this.name = place.getName();
             this.detailCategory = place.getDetailCategory();
@@ -108,6 +109,7 @@ public class PlaceDto {
                     .mapToDouble(review -> review.getRate())
                     .average()
                     .orElse(0.0)*10)/10.0;
+            this.tags = tags.stream().map(tag -> tag.getName()).collect(Collectors.toList());
         }
     }
 }
