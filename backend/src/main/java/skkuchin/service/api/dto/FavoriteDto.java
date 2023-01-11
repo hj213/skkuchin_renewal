@@ -45,8 +45,8 @@ public class FavoriteDto {
         private Campus campus;
         private Gate gate;
         private String address;
-        private Double xCoordinate;
-        private Double yCoordinate;
+        private Double xcoordinate;
+        private Double ycoordinate;
         @JsonProperty
         private String serviceTime;
         @JsonProperty
