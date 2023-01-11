@@ -14,12 +14,16 @@ import skkuchin.service.domain.Map.*;
 import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
 import skkuchin.service.repo.ReviewRepo;
+import skkuchin.service.repo.ReviewTagRepo;
 
 import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,15 +34,18 @@ public class PlaceService {
     private final PlaceRepo placeRepo;
     private final ImageRepo imageRepo;
     private final ReviewRepo reviewRepo;
+    private final ReviewTagRepo reviewTagRepo;
 
     @Transactional
     public List<PlaceDto.Response> getAll() {
+
         return placeRepo.findAll()
                 .stream()
                 .map(place -> new PlaceDto.Response(
                         place,
                         imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList())
+                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        getTop3TagsByPlace(place)
                 ))
                 .collect(Collectors.toList());
     }
@@ -53,7 +60,9 @@ public class PlaceService {
         List<Review> reviews = reviewRepo.findByPlace(place)
                 .stream().collect(Collectors.toList());
 
-        return new PlaceDto.Response(place, images, reviews);
+        List<Tag> tags = getTop3TagsByPlace(place);
+
+        return new PlaceDto.Response(place, images, reviews, tags);
     }
 
     @Transactional
@@ -97,5 +106,24 @@ public class PlaceService {
                 placeRepo.save(dto.toEntity());
             }
         }
+    }
+
+    private List<Tag> getTop3TagsByPlace(Place place) {
+        List<Review> reviews = reviewRepo.findByPlace(place);
+        Map<Tag, Long> tagsCount = new HashMap<>();
+
+        for (Review review : reviews) {
+            List<ReviewTag> reviewTags = reviewTagRepo.findByReview(review);
+            for (ReviewTag reviewTag : reviewTags) {
+                Tag tag = reviewTag.getTag();
+                tagsCount.put(tag, tagsCount.getOrDefault(tag, 0L) + 1);
+            }
+        }
+
+        return tagsCount.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }
