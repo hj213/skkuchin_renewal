@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 //@Disabled
 @AutoConfigureMockMvc
 @Transactional
-@Ignore
+//@Ignore
 public class BaseIntegrationTest { //통합 테스트의 부모 클래스
     @Autowired
     protected MockMvc mvc;
