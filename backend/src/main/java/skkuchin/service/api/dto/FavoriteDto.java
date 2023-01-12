@@ -9,6 +9,7 @@ import skkuchin.service.domain.User.AppUser;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class FavoriteDto {
@@ -21,7 +22,6 @@ public class FavoriteDto {
         @NotNull
         private Long placeId;
 
-
         public Favorite toEntity(AppUser user, Place place) {
             return Favorite.builder()
                     .user(user)
@@ -32,21 +32,28 @@ public class FavoriteDto {
 
 
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
 
         private Long id;
         private String name;
+        @JsonProperty
         private Long placeId;
         private Category category;
+        @JsonProperty
         private String detailCategory;
         private Campus campus;
         private Gate gate;
         private String address;
-        private Double xCoordinate;
-        private Double yCoordinate;
+        private Double xcoordinate;
+        private Double ycoordinate;
+        @JsonProperty
         private String serviceTime;
+        @JsonProperty
         private String breakTime;
+        @JsonProperty
         private Boolean discountAvailability;
+        @JsonProperty
         private String discountContent;
         private List<String> image;
         @JsonProperty
@@ -63,23 +70,36 @@ public class FavoriteDto {
 
 
 
-        public Response(Favorite favorite) {
+        public Response(Favorite favorite,List<Image> images,List<Review> reviews,List<Tag> tags) {
+            Place place = favorite.getPlace();
+
             this.placeId = favorite.getPlace().getId();
             this.id = favorite.getId();
             this.name = favorite.getPlace().getName() ;
             this.category =  favorite.getPlace().getCategory();
+            this.detailCategory = favorite.getPlace().getDetailCategory();
             this.campus =  favorite.getPlace().getCampus();
             this.gate = favorite.getPlace().getGate();
             this.address = favorite.getPlace().getAddress();
-            this.xCoordinate = favorite.getPlace().getXcoordinate();
-            this.yCoordinate = favorite.getPlace().getYcoordinate();
+            this.xcoordinate = favorite.getPlace().getXcoordinate();
+            this.ycoordinate = favorite.getPlace().getYcoordinate();
             this.serviceTime = favorite.getPlace().getServiceTime();
             this.breakTime = favorite.getPlace().getBreakTime();
             this.discountAvailability = favorite.getPlace().getDiscountAvailability();
             this.discountContent = favorite.getPlace().getDiscountContent();
+            this.image = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
+            this.reviewCount = reviews.stream().count();
+            this.rate = Math.round(
+                    reviews
+                            .stream()
+                            .mapToDouble(review -> review.getRate())
+                            .average()
+                            .orElse(0.0)*10)/10.0;
 
+            this.tags = tags.stream().map(tag -> tag.getName()).collect(Collectors.toList());
 
         }
+
 
     }
 

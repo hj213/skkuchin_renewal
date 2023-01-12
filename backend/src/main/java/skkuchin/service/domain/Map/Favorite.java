@@ -12,6 +12,14 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
+@Table(
+        name="favorite",
+        uniqueConstraints={
+                @UniqueConstraint(
+                        columnNames={"place_id", "user_id"}
+                )
+        }
+)
 public class Favorite {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favorite_id")
