@@ -3,6 +3,7 @@ package skkuchin.service.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class ReviewDto {
 
     @Getter
+    @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
         @NotNull
@@ -48,6 +50,7 @@ public class ReviewDto {
     }
 
     @Getter
+    @AllArgsConstructor
     public static class PutRequest {
         @NotNull
         private float rate;
@@ -69,6 +72,7 @@ public class ReviewDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
+        private Long placeId;
         private float rate;
         private String content;
         private String image;
@@ -84,6 +88,7 @@ public class ReviewDto {
 
         public Response(Review review, List<ReviewTag> tags) {
             this.id = review.getId();
+            this.placeId = review.getPlace().getId();
             this.rate = review.getRate();
             this.content = review.getContent();
             this.image = review.getImage();
