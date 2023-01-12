@@ -13,6 +13,7 @@ import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.Map.Place;
+import skkuchin.service.repo.FavoriteRepo;
 import skkuchin.service.repo.UserRepo;
 import skkuchin.service.security.auth.PrincipalDetails;
 import skkuchin.service.service.FavoriteService;
@@ -26,6 +27,7 @@ import java.util.List;
 public class FavoriteController {
     private final FavoriteService favoriteService;
     private final UserRepo userRepo;
+    private final FavoriteRepo favoriteRepo;
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> write(@Valid @RequestBody FavoriteDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -52,8 +54,8 @@ public class FavoriteController {
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long favoriteId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        //AppUser user = userRepo.findByEmail("test@test");
         Long userId = user.getId();
+        //AppUser user = userRepo.findByEmail("test@test");
         favoriteService.delete(favoriteId, userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 삭제 완료", null), HttpStatus.OK);
     }
