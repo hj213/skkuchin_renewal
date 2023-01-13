@@ -1,7 +1,7 @@
-// GET
+// 리뷰 등록
+
 import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
-
 
 export default async (req, res) => {
     if (req.method === 'POST') {
@@ -15,15 +15,15 @@ export default async (req, res) => {
             });
         }
 
-        const { place_id, rate, content, image, tags } = req.body;
+        // const { place_id, rate, content, image, tags } = req.body;
 
-        const body = JSON.stringify({
-            place_id,
-            rate,
-            content : "",
-            image: "",
-            tags : []
-        });
+        // const body = JSON.stringify({
+        //     place_id,
+        //     rate,
+        //     content,
+        //     image,
+        //     tags
+        // });
 
         try {
             const apiRes = await fetch(`${API_URL}/api/review`, {
@@ -36,10 +36,12 @@ export default async (req, res) => {
                 body: body
             });
 
-            const data = await apiRes.json();
+            const returnValue = await apiRes.json();
 
             if(apiRes.status === 201){
-                return res.status(201).json({success: 'Enrolled review successfully!'});
+                return res.status(201).json({
+                    review: returnValue.data
+                });
             } else {
                 return res.status(apiRes.status).json({error: data.error});
             }

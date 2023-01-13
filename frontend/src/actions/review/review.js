@@ -41,7 +41,8 @@ export const load_reviews = (place_id) => async dispatch => {
 }
 
 //load_review (유저 리뷰)
-export const load_review = (place_id) => async dispatch => {
+//0113 매개변수 삭제 완료
+export const load_review = () => async dispatch => {
     try {
         const res = await fetch('/api/review/user/me', {
             method: 'GET',
@@ -85,7 +86,6 @@ export const enroll_review = (place_id, rate, content,image, tags) => async disp
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'application/json'
             },
             body: body
         });
@@ -122,7 +122,6 @@ export const modify_review = (review_id) => async dispatch => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'application/json'
             },
             body: body
         });
@@ -146,9 +145,10 @@ export const modify_review = (review_id) => async dispatch => {
 
 // delete review
 export const delete_review = (review_id) => async dispatch => {
-    const body = JSON.stringify({
-        review_id
-    });
+    // 0113 body 삭제 완료
+    // const body = JSON.stringify({
+    //     review_id
+    // });
 
     try {
         const res = await fetch(`/api/review/${review_id}`, {
@@ -157,7 +157,6 @@ export const delete_review = (review_id) => async dispatch => {
                 'Accept': 'application/json',
                 'Authorization': 'application/json',
             },
-            body: body
         });
 
         if (res.status === 200) {

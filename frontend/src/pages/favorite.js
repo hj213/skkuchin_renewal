@@ -35,7 +35,6 @@ const FavoritePage = () => {
         alert('add button clicked! ' + place_id);
         if(dispatch && dispatch !== null && dispatch !== undefined)
             dispatch(enroll_favorite(place_id));
-
     };
 
     const delBtnClick = e => {

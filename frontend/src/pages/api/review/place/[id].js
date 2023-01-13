@@ -13,7 +13,7 @@ export default async(req, res) => {
                 error: 'User unauthorized to make this request'
             });
         }
-        
+
         try {
             const apiRes = await fetch(`${API_URL}/api/reivew/place/${place_id}`, {
                 method: 'GET',
@@ -22,11 +22,11 @@ export default async(req, res) => {
                 }
             });
 
-            const data = await apiRes.json();
+            const returnValue = await apiRes.json();
 
             if(apiRes.status == 200){
                 return res.status(200).json({
-                    review: data
+                    review: returnValue.data
                 });
             } else {
                 return res.status(apiRes.status).json({
