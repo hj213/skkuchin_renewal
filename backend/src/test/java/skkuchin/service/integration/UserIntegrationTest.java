@@ -1,4 +1,4 @@
-package skkuchin.service;
+package skkuchin.service.integration;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -16,14 +16,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.UserSetUp;
-import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -53,7 +51,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
         userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
-        userSetUp.saveUser("user2", "user222", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user2", "user222", "1234", "dlaudwns780@gmail.com", "2016310373", Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
 
         //when
         ResultActions resultActions = mvc.perform(get("/api/users")
@@ -63,11 +61,11 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", equalTo(2)));
+                .andExpect(jsonPath("$.length()", equalTo(4))); //자동 주입 유저 포함 4명
     }
 
     @Test
-    @DisplayName("[POST] /api/user/save 성공")
+    @DisplayName("[POST] /api/user/saves 성공")
     void 회원가입_성공() throws Exception {
         //given
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY); //SignUpForm을 읽어들이기 위함.
@@ -75,7 +73,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 new SignUpFormTestVer("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP));
 
         //when
-        ResultActions resultActions = mvc.perform(post("/api/user/save")
+        ResultActions resultActions = mvc.perform(post("/api/user/saves")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(form)
                 .accept(MediaType.APPLICATION_JSON))
@@ -88,7 +86,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    @DisplayName("[POST] /api/user/save 실패")
+    @DisplayName("[POST] /api/user/saves 실패")
     void 비밀번호_불일치() throws Exception {
         //given
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -96,7 +94,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 new SignUpFormTestVer("user", "user111", "124", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP));
 
         //when
-        ResultActions resultActions = mvc.perform(post("/api/user/save")
+        ResultActions resultActions = mvc.perform(post("/api/user/saves")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))
@@ -111,7 +109,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
 
     @Test
     @Disabled
-    @DisplayName("[POST] /api/user/save 실패")
+    @DisplayName("[POST] /api/user/saves 실패")
     void nickname_중복_확인() throws Exception {
         //given
         Collection<Role> roles = new ArrayList<>();
@@ -125,7 +123,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 new SignUpFormTestVer("user1", "user222", "1234", "1234", "dlaudwns789@gmail.com", "2016310372", "글로벌경영학과", "이미지", Mbti.ENFP));
 
         //when
-        ResultActions resultActions = mvc.perform(post("/api/user/save")
+        ResultActions resultActions = mvc.perform(post("/api/user/saves")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))

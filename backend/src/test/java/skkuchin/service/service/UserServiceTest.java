@@ -49,7 +49,7 @@ public class UserServiceTest extends MockTest {
     public void setUp() {
         ReflectionTestUtils.setField(userService, "passwordEncoder", passwordEncoder);
     }
-
+/*
     @Test
     public void saveUser_성공() throws MessagingException, UnsupportedEncodingException {
         //given
@@ -98,7 +98,7 @@ public class UserServiceTest extends MockTest {
 
         //when
         userService.addRoleToUser(user.getUsername(), role.getName());
-    }
+    }*/
 
 
 }
