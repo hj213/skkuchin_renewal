@@ -95,7 +95,7 @@ public class ReviewDto {
             this.createDate = review.getCreateDate();
             this.nickname = review.getUser().getNickname();
             this.major = review.getUser().getMajor();
-            this.studentId = review.getUser().getStudent_id();
+            this.studentId = review.getUser().getStudentId();
             this.userImage = review.getUser().getImage();
             this.tags = tags.stream().map(tag -> tag.getTag().getName()).collect(Collectors.toList());
         }

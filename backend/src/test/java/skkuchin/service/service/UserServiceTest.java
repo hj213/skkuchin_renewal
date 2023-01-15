@@ -1,37 +1,17 @@
 package skkuchin.service.service;
 
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
-import skkuchin.service.api.dto.SignUpForm;
 import skkuchin.service.common.MockTest;
-import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
-import skkuchin.service.domain.User.Role;
-import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.mail.EmailAuthRepo;
 import skkuchin.service.mail.EmailService;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 
 public class UserServiceTest extends MockTest {
     @InjectMocks

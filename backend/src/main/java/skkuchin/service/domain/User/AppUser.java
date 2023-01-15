@@ -32,7 +32,7 @@ public class AppUser {
     private String email;
 
     @Column(unique = true, nullable = false)
-    private String student_id;
+    private String studentId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -44,7 +44,7 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private Mbti mbti;
 
-    private LocalDateTime start_date;
+    private LocalDateTime startDate;
 
     @OneToMany(mappedBy = "user")
     private List<Favorite> favorites = new ArrayList<>();

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
-import skkuchin.service.api.dto.SignUpForm;
+import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DiscordException;
@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class UserServiceImpl implements UserService {
@@ -40,9 +41,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser saveUser(SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
+    public AppUser saveUser(UserDto.SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
         log.info("Saving new user {} to the database", signUpForm.getNickname());
-        if (!signUpForm.getPassword().equals(signUpForm.getRe_password())) {
+        if (!signUpForm.getPassword().equals(signUpForm.getRePassword())) {
             throw new DiscordException("re_password_error");
         }
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveAdmin(SignUpForm signUpForm) {
+    public void saveAdmin(UserDto.SignUpForm signUpForm) {
         if (userRepo.findByUsername("admin") == null) {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveTestUser(SignUpForm signUpForm) {
+    public void saveTestUser(UserDto.SignUpForm signUpForm) {
         if (userRepo.findByUsername("test") == null) {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
@@ -114,16 +115,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser getUser(String username) {
+    public UserDto.Response getUser(String username) {
         log.info("Fetching user {}", username);
+        return new UserDto.Response(userRepo.findByUsername(username));
+    }
+
+    @Override
+    public AppUser getUserForRefresh(String username) {
         return userRepo.findByUsername(username);
     }
 
     @Override
-    public List<AppUser> getUsers() {
+    public List<UserDto.Response> getUsers() {
         log.info("Fetching all users");
-
-        return userRepo.findAll();
+        return userRepo.findAll()
+                .stream()
+                .map(user -> new UserDto.Response(user))
+                .collect(Collectors.toList());
     }
 
 

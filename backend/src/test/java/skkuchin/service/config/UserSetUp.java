@@ -23,7 +23,7 @@ public class UserSetUp {
                 .username(username)
                 .password(password)
                 .email(email)
-                .student_id(student_id)
+                .studentId(student_id)
                 .major(major)
                 .image(image)
                 .mbti(mbti)

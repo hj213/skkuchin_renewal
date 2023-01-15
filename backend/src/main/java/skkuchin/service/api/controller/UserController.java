@@ -8,18 +8,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import skkuchin.service.api.dto.EmailAuthRequestDto;
-import skkuchin.service.api.dto.RoleToUser;
-import skkuchin.service.api.dto.SignUpForm;
+import skkuchin.service.api.dto.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.BlankException;
 import skkuchin.service.exception.DuplicateException;
+import skkuchin.service.security.auth.PrincipalDetails;
 import skkuchin.service.service.UserService;
 
 import javax.mail.MessagingException;
@@ -43,18 +45,19 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<AppUser>>getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getUsers() {
+
+        //return ResponseEntity.ok().body(userService.getUsers());
+        List<UserDto.Response> users = userService.getUsers();
+        return new ResponseEntity<>(new CMRespDto<>(1, "유저 전체 조회 완료", users), HttpStatus.OK);
     }
 
     @PostMapping("/user/saves")
-    public ResponseEntity<AppUser> saveUser(@RequestBody SignUpForm signUpForm) {
-        URI uri = URI.create(
-                ServletUriComponentsBuilder
-                        .fromCurrentContextPath()
-                        .path("/api/user/saves").toUriString());
+    public ResponseEntity<?> saveUser(@RequestBody UserDto.SignUpForm signUpForm) {
         try {
-            return ResponseEntity.created(uri).body(userService.saveUser(signUpForm));
+            userService.saveUser(signUpForm);
+            return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException exception) {
             //username 또는 nickname 중복 시 에러
             throw new DuplicateException("duplicate_error");
@@ -82,13 +85,14 @@ public class UserController {
     }*/
 
     @PostMapping("/role/addtouser")
-    public ResponseEntity<Role>addRoleToUser(@RequestBody RoleToUser form) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> addRoleToUser(@RequestBody UserDto.RoleToUser form) {
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(new CMRespDto<>(1, "role 추가 완료", null), HttpStatus.OK);
     }
 
     @GetMapping("/token/verify")
-    public ResponseEntity<Boolean> verifyToken(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> verifyToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
@@ -97,7 +101,8 @@ public class UserController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(access_token);
                 Date current = new Date(System.currentTimeMillis());
-                return ResponseEntity.ok().body(current.before(decodedJWT.getExpiresAt())); // created(uri) -> ok()
+                //return ResponseEntity.ok().body(current.before(decodedJWT.getExpiresAt()));
+            return new ResponseEntity<>(new CMRespDto<>(1, "토큰 유효성 검증 완료", current.before(decodedJWT.getExpiresAt())), HttpStatus.OK);
 
         } else {
             throw new RuntimeException("Access token is missing");
@@ -114,7 +119,7 @@ public class UserController {
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
-                AppUser user = userService.getUser(username);
+                AppUser user = userService.getUserForRefresh(username);
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000)) //10분
@@ -142,19 +147,11 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<AppUser> getApiUser(HttpServletRequest request, HttpServletResponse response) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String access_token = authorizationHeader.substring("Bearer ".length());
-            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT decodedJWT = verifier.verify(access_token);
-            String username = decodedJWT.getSubject();
-
-            return ResponseEntity.ok().body(userService.getUser(username));
-        }else {
-            throw new RuntimeException("Refresh token is missing");
-        }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        UserDto.Response userResp = userService.getUser(user.getUsername());
+        return new ResponseEntity<>(new CMRespDto<>(1, "계정 상세 정보 가져오기 완료", userResp), HttpStatus.OK);
     }
 }
 
