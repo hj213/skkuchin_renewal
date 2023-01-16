@@ -1,9 +1,12 @@
+import { ThemeProvider } from '@emotion/react';
+import { CssBaseline } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch} from 'react-redux';
 import { logout } from '../actions/auth/auth';
+import theme from '../theme/theme';
 
-const navbar = () => {
+const Navbar = () => {
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -79,33 +82,36 @@ const navbar = () => {
     );
 
     return (
-        <nav className='navbar navbar-expand-lg bg-light'>
-            <div className='container-fluid'>
-                <Link href='/'>
-                    <a className='navbar-brand'>
-                        스꾸친
-                    </a>
-                </Link>
-                <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'>
-                <span className='navbar-toggler-icon'></span>
-                </button>
-                <div className='collapse navbar-collapse' id='navbarNav'>
-                    <ul className='navbar-nav'>
-                        <li className='nav-item'>
-                            <Link href='/'>
-                                <a className={router.pathname === '/' ? 'nav-link active' : 'nav-link'}>
-                                    Home
-                                </a>
-                            </Link>
-                        </li>
-                        {
-                            isAuthenticated ? authLinks: guestLinks
-                        }
-                    </ul>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <nav className='navbar navbar-expand-lg bg-light'>
+                <div className='container-fluid'>
+                    <Link href='/'>
+                        <a className='navbar-brand'>
+                            스꾸친
+                        </a>
+                    </Link>
+                    <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'>
+                    <span className='navbar-toggler-icon'></span>
+                    </button>
+                    <div className='collapse navbar-collapse' id='navbarNav'>
+                        <ul className='navbar-nav'>
+                            <li className='nav-item'>
+                                <Link href='/'>
+                                    <a className={router.pathname === '/' ? 'nav-link active' : 'nav-link'}>
+                                        Home
+                                    </a>
+                                </Link>
+                            </li>
+                            {
+                                isAuthenticated ? authLinks: guestLinks
+                            }
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </ThemeProvider>
 )};
 
-export default navbar;
+export default Navbar;
 
