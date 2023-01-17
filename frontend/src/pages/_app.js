@@ -12,7 +12,7 @@ const App = ({ Component, pageProps }) => {
           <title>HTTPOnly Auth</title>
           <meta name='viewport' content='width=device-width, initial-scale=1' />
         </Head>
-        <Container maxWidth="sm">
+        <Container style={{padding:'0px'}} maxWidth="sm">
           <Component {...pageProps} />
         </Container>
       </Provider>
