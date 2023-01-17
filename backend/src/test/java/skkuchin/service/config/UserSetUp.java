@@ -27,7 +27,7 @@ public class UserSetUp {
                 .major(major)
                 .image(image)
                 .mbti(mbti)
-                .start_date(LocalDateTime.now())
+                .startDate(LocalDateTime.now())
                 .roles(roles)
                 .build();
         return userRepo.save(user).getId();

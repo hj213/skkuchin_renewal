@@ -70,6 +70,12 @@ public class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class TokenResponse {
+        private String access;
+        private String refresh;
+    }
+    @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;

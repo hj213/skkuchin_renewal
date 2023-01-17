@@ -110,7 +110,7 @@ public class UserController {
     }
 
     @GetMapping("/token/refresh")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
@@ -122,28 +122,27 @@ public class UserController {
                 AppUser user = userService.getUserForRefresh(username);
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000)) //10분
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) //10분
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access", access_token); // access_token -> access
-                tokens.put("refresh", refresh_token); // refresh_token -> refresh
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+                UserDto.TokenResponse response = new UserDto.TokenResponse(access_token, refresh_token);
+                return new ResponseEntity<>(new CMRespDto<>(1, "access token 재발급 완료", response), HttpStatus.OK);
             } catch (Exception exception) {
+                /*
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());
                 //response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_message", exception.getMessage());
                 response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);*/
             }
-
         } else {
             throw new RuntimeException("Refresh token is missing");
         }
+        return null;
     }
 
     @GetMapping("/user")
