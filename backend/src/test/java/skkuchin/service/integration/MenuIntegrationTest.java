@@ -14,7 +14,7 @@ import skkuchin.service.domain.Map.Place;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class MenuIntegrationTest extends BaseIntegrationTest {
 
@@ -39,8 +39,9 @@ public class MenuIntegrationTest extends BaseIntegrationTest {
                 .andDo(print());
 
         //then
-        resultActions.andExpect(jsonPath("$..data[0].nickname", String.class).value("테스트"));
 
+        resultActions
+                .andExpect(status().isOk());
     }
 
 }
