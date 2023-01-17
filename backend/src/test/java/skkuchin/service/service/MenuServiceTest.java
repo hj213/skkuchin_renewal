@@ -8,20 +8,17 @@ import skkuchin.service.api.dto.MenuDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Map.Menu;
 import skkuchin.service.domain.Map.Place;
-import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.MenuRepo;
 import skkuchin.service.repo.PlaceRepo;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class MenuServiceTest extends MockTest {
 
@@ -66,6 +63,12 @@ public class MenuServiceTest extends MockTest {
         System.out.println("menus.get(0).getPrice() = " + menus.get(0).getPrice());
 
 
+
+    }
+    @Test
+    public void get_없는_장소_메뉴(){
+        given(placeRepo.findById(5L)).willThrow(new NoSuchElementException());
+        assertThrows(NoSuchElementException.class, () -> menuService.getPlaceReview(5L));
     }
 
 }
