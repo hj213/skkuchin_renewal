@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch} from 'react-redux';
@@ -24,6 +25,16 @@ const navbar = () => {
                         'nav-link active' : 'nav-link'
                     }>
                         Dashboard
+                    </a>
+                </Link>
+            </li>
+            <li className='nav-item'>
+                <Link href='/place'>
+                    <a className={
+                        router.pathname === '/place' ? 
+                        'nav-link active' : 'nav-link'
+                    }>
+                        Place
                     </a>
                 </Link>
             </li>
