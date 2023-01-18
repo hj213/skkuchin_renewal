@@ -3,7 +3,9 @@ package skkuchin.service.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 public class FavoriteDto {
 
     @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
 
@@ -81,8 +85,8 @@ public class FavoriteDto {
             this.campus =  favorite.getPlace().getCampus();
             this.gate = favorite.getPlace().getGate();
             this.address = favorite.getPlace().getAddress();
-            this.xCoordinate = favorite.getPlace().getXcoordinate();
-            this.yCoordinate = favorite.getPlace().getYcoordinate();
+            this.xcoordinate = favorite.getPlace().getXcoordinate();
+            this.ycoordinate = favorite.getPlace().getYcoordinate();
             this.serviceTime = favorite.getPlace().getServiceTime();
             this.breakTime = favorite.getPlace().getBreakTime();
             this.discountAvailability = favorite.getPlace().getDiscountAvailability();

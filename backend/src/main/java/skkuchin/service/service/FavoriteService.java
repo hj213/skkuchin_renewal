@@ -55,6 +55,7 @@ public class FavoriteService {
     @Transactional
     public void delete(Long favoriteId, Long userId) {
         Favorite favorite = favoriteRepo.findById(favoriteId).orElseThrow();
+        isMyFavorite(favorite.getUser().getId(),userId);
         favoriteRepo.delete(favorite);
 
 
@@ -89,6 +90,11 @@ public class FavoriteService {
 
                 }
         }
+    }
+
+
+    public void isMyFavorite(Long favoriteUserId, Long userId) {
+        if (favoriteUserId != userId) throw new IllegalArgumentException("내 즐겨찾기가 아닙니다.");
     }
 
 }

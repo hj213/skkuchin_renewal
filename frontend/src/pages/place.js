@@ -1,10 +1,11 @@
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import Map from '../components/Map';
+import Layout from "../hocs/Layout";
+import theme from '../theme/theme';
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { load_place, load_places } from "../actions/place/place";
-
-import Layout from "../hocs/Layout";
-import Loader from "react-loader-spinner";
 
 const PlacePage = () => {
 const router = useRouter();
@@ -21,18 +22,21 @@ useEffect( () => {
         dispatch(load_places());
 }, [dispatch]);
 
-const onChangePId = e => setPlaceId(e.target.value);
 
 const handleStoreClick = (id) => {
-  dispatch(load_place(id))
-    .then(data => setPlaceInfo(data.payload))
+//   dispatch(load_place(id))
+//     .then(data => setPlaceInfo(data.payload))
+    alert(id);
 }
 
 
 return (
-    <Layout title= '스꾸친 | Place' content='Place page'>
-        <h1 className='display-4'>Place Page</h1>
-        <p className="fs-4 mt-3">Hello {user !== null && user.nickname}!</p>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Layout
+        title='스꾸친 | Place'
+        content = 'Place page'
+      >
         <div className='bg-light p-5 mt-5 mb-5'>
             <h3>*Place 목록</h3>
 
@@ -46,12 +50,35 @@ return (
                   places.map((place, index) => (
                     <div className='p-3' key={index} onClick={() => handleStoreClick(place.id)}>
                         <h4>{place.name}</h4>
-                        
                     </div>
                 ))}
             </div>
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} />
         </div>
-    </Layout>
+      </Layout>
+    </ThemeProvider>
+    // <Layout title= '스꾸친 | Place' content='Place page'>
+    //     <h1 className='display-4'>Place Page</h1>
+    //     <p className="fs-4 mt-3">Hello {user !== null && user.nickname}!</p>
+        // <div className='bg-light p-5 mt-5 mb-5'>
+        //     <h3>*Place 목록</h3>
+
+        //     <div>
+        //         { placeInfo !== null ? 
+        //           <div>
+        //             <h4>{placeInfo.name}</h4>
+        //             <p>{placeInfo.category}</p>
+        //             <p>{placeInfo.campus}</p>
+        //           </div> :
+        //           places.map((place, index) => (
+        //             <div className='p-3' key={index} onClick={() => handleStoreClick(place.id)}>
+        //                 <h4>{place.name}</h4>
+                        
+        //             </div>
+        //         ))}
+        //     </div>
+        // </div>
+    // </Layout>
 );
 };
 
