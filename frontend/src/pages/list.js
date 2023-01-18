@@ -21,7 +21,8 @@ export default function list(){
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
-        visibility: 'visible',
+        cardVisibility: 'visible',
+        iconVisibility: 'visible',
     });
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
@@ -57,7 +58,7 @@ export default function list(){
         const cardHeight = 140 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
         const TARGET_HEIGHT = window.innerHeight * 0.9;
-        if( TARGET_HEIGHT > cardHeight){
+        if( TARGET_HEIGHT >= cardHeight){
             setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
         } else {
             setHeight(Math.max(newHeight, MinHeight));
@@ -67,25 +68,36 @@ export default function list(){
                 bool: true,
                 visibility: 'visible'
             });
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
           } else {
             setOpen({
                 bool: false,
                 visibility: 'hidden'
             });
-            
-          }
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility:'visible'
+            });
+        }
     };
 
     // 아이콘 클릭했을 때 이벤트
     const handleOnclick = (event) =>{
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
-                visibility:'hidden'});
+                Visibility:'hidden'});
             setHeight('32%');
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility: 'visible'
+            })
         } else{
-            setCardStyle({visibility:'hidden'});
+            setCardStyle({cardVisibility:'hidden'});
             setOpen({ bool:false,
-                visibility:'hidden'});
+                Visibility:'hidden'});
             setHeight('32%');
         }
     };
@@ -101,7 +113,7 @@ export default function list(){
                     position: 'absolute',
                     top: '0px',
                     width: '100%',
-                    height: 98,
+                    height: '98px',
                     overflowX: 'x',
                     zIndex: '2',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
@@ -134,12 +146,12 @@ export default function list(){
                 overflowX: 'x',
                 zIndex: '1',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
-                visibility: cardStyle.visibility,
+                visibility: cardStyle.cardVisibility,
                 }} 
                 ref = {cardRef}
                 >
                 <div>
-                <div style={{textAlign:'center',}}>
+                <div style={{textAlign:'center', visibility:cardStyle.iconVisibility}}>
                     <Image width={60} height={4} src={line} /> 
                 </div>
                 
