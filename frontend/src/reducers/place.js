@@ -6,7 +6,7 @@ import {
 } from '../actions/place/types'
 
 const initialState = {
-    place: []
+    place: [],
 };
 
 const placeReducer = (state= initialState, action) => {

@@ -33,7 +33,7 @@ const Map = ({latitude, longitude}) => {
 
 const MapContainer = styled.div`
     weight: 100%;
-    height: 100vh
+    height: 100vh;
 `;
 
 export default Map;
