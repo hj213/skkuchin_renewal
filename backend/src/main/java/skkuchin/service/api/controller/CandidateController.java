@@ -26,8 +26,8 @@ public class CandidateController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getCandidate(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        candidateService.getCandidate(user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "gg", null), HttpStatus.OK);
+        List<CandidateDto.Response> candidates = candidateService.getCandidate(user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "매칭 3명 불러오기 완료", candidates), HttpStatus.OK);
     }
 
     @PostMapping("")

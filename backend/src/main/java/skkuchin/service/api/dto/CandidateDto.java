@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import skkuchin.service.domain.Match.Candidate;
-import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Keyword;
-import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.UserKeyword;
+import skkuchin.service.domain.User.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -54,6 +51,7 @@ public class CandidateDto {
         private Major major;
         @JsonProperty
         private String studentId;
+        private Mbti mbti;
         private List<String> keywords;
         private String introduction;
 
@@ -62,6 +60,7 @@ public class CandidateDto {
             this.image = user.getImage();
             this.major = user.getMajor();
             this.studentId = user.getStudentId();
+            this.mbti = user.getMbti();
             this.keywords = keywords.stream().map(keyword -> keyword.getKeyword().getName()).collect(Collectors.toList());
             this.introduction = user.getIntroduction();
         }

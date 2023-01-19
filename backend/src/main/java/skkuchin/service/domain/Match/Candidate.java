@@ -21,15 +21,15 @@ public class Candidate {
     private AppUser user;
 
     @ManyToOne
-    @JoinColumn(name = "candidate1_id", nullable = false)
+    @JoinColumn(name = "candidate1_id")
     private AppUser candidate1;
 
     @ManyToOne
-    @JoinColumn(name = "candidate2_id", nullable = false)
+    @JoinColumn(name = "candidate2_id")
     private AppUser candidate2;
 
     @ManyToOne
-    @JoinColumn(name = "candidate3_id", nullable = false)
+    @JoinColumn(name = "candidate3_id")
     private AppUser candidate3;
 
     private LocalDateTime expireDate;
