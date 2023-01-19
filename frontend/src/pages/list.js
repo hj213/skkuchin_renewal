@@ -107,7 +107,7 @@ export default function list(){
       <CssBaseline />
        <Layout>
             <Map style={{ position: 'relative'}} latitude={37.58622450673971} longitude={126.99709024757782} />
-            <Slide direction="up" in={open.bool} >
+            <Slide direction="up" in={open.bool} timeout={1}>
                 <Container fixed style={{padding: '0px 16px 0px 0px', }}>
                     <Card style={{
                     position: 'absolute',
