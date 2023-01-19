@@ -48,7 +48,6 @@ const PlacePage = () => {
 
     useEffect(() => {
         dispatch(load_places());
-        console.log(places);
     }, [dispatch]);
 
 
@@ -75,6 +74,8 @@ const PlacePage = () => {
         
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
+        event.preventDefault();
+
         const MinHeight = window.innerHeight * 0.32;
         const cardHeight = 140 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
@@ -119,7 +120,7 @@ const PlacePage = () => {
                 </div>
                 ))}
                             
-                <Map style={{ position: 'relative'}} latitude={37.58622450673971} longitude={126.99709024757782} />
+                <Map style={{ position: 'relative' }} latitude={37.58622450673971} longitude={126.99709024757782} />
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} >
                     <Container fixed style={{padding: '0px 16px 0px 0px', }}>
@@ -299,7 +300,7 @@ const PlacePage = () => {
                                                     </Grid>
                                                 </Grid>
                                             </CardContent>
-                                            <CardContent>
+                                            <CardContent sx={{mb: '10px'}}>
                                                 메뉴 {menus.length}
                                                
                                                 { menus.map((menu, index) => (
