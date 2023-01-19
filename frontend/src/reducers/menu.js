@@ -5,7 +5,7 @@ import {
 } from '../actions/menu/types'
 
 const initialState = {
-    menu: null
+    menu: [],
 };
 
 const menuReducer = (state= initialState, action) => {
