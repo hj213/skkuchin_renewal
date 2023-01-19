@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import skkuchin.service.api.dto.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Role;
@@ -26,16 +23,12 @@ import skkuchin.service.service.UserService;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api")
@@ -151,6 +144,14 @@ public class UserController {
         AppUser user = principalDetails.getUser();
         UserDto.Response userResp = userService.getUser(user.getUsername());
         return new ResponseEntity<>(new CMRespDto<>(1, "계정 상세 정보 가져오기 완료", userResp), HttpStatus.OK);
+    }
+
+    @PutMapping("/user/additional")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> addInfo(@RequestBody UserDto.AdditionalRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        userService.addInfo(user, dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력 완료", null), HttpStatus.OK);
     }
 }
 

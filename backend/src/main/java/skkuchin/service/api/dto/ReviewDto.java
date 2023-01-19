@@ -72,6 +72,7 @@ public class ReviewDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
+        @JsonProperty
         private Long placeId;
         private float rate;
         private String content;

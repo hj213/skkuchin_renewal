@@ -38,13 +38,23 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private Major major;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String image;
 
     @Enumerated(EnumType.STRING)
     private Mbti mbti;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    private String introduction;
+
+    private Boolean matching;
+
     private LocalDateTime startDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserKeyword> userKeywords = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Favorite> favorites = new ArrayList<>();

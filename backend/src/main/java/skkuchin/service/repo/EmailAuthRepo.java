@@ -1,7 +1,7 @@
-package skkuchin.service.mail;
+package skkuchin.service.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import skkuchin.service.mail.EmailAuth;
+import skkuchin.service.domain.User.EmailAuth;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package skkuchin.service.mail;
+package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,11 +7,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import skkuchin.service.domain.User.EmailAuth;
+import skkuchin.service.repo.EmailAuthRepo;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service

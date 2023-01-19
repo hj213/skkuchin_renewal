@@ -2,7 +2,6 @@ package skkuchin.service.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,14 +13,12 @@ import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.mail.EmailService;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.mail.MessagingException;
 
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,7 +31,7 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceTest extends MockTest {
     @InjectMocks
-    private UserServiceImpl userService;
+    private UserService userService;
     @Mock
     private UserRepo userRepo;
     @Mock
@@ -54,8 +51,10 @@ public class UserServiceTest extends MockTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
-        AppUser userReturnedByRepo = new AppUser(1L, "user", "user111", "encoderPassword", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, LocalDateTime.now(), null, roles, false);
-        UserDto.SignUpForm signUpForm = new UserDto.SignUpForm("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지",  Mbti.ENFP);
+        AppUser userReturnedByRepo = AppUser.builder()
+                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId("2016310372").major(Major.글로벌경영학과).roles(roles)
+                .build();
+        UserDto.SignUpForm signUpForm = new UserDto.SignUpForm("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과);
 
         given(passwordEncoder.encode(anyString())).willReturn("encoderPassword");
         given(userRepo.save(any())).willReturn(userReturnedByRepo);
@@ -77,7 +76,9 @@ public class UserServiceTest extends MockTest {
         //given
         Role role = new Role(1L, "ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
-        AppUser user = new AppUser(1L, "user", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, LocalDateTime.now(), null, roles, false);
+        AppUser user = AppUser.builder()
+                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId("2016310372").major(Major.글로벌경영학과).image("이미지").mbti(Mbti.ENFP).roles(roles)
+                .build();
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
 
@@ -95,7 +96,9 @@ public class UserServiceTest extends MockTest {
         Role role = new Role(1L, "ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
-        AppUser user = new AppUser(1L, "user", "user111", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과, "이미지", Mbti.ENFP, LocalDateTime.now(), null, roles, false);
+        AppUser user = AppUser.builder()
+                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId("2016310372").major(Major.글로벌경영학과).image("이미지").mbti(Mbti.ENFP).roles(roles)
+                .build();
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
 
