@@ -30,7 +30,7 @@ export default async(req, res) => {
 
             if(apiRes.status == 200){
                 return res.status(200).json({
-                    menu:data
+                    menu: data.data
                 });
             } else {
                 return res.status(apiRes.status).json({

@@ -17,12 +17,17 @@ import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png'
 import closeIcon from '../image/close.png'
 
+import ReviewStar from '../components/ReviewStar'
+
 const PlacePage = () => {
 
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = useState('');
     const places = useSelector(state => state.place.place);
+
+    // const [menu, setMenu] = useState([]);
+    const menus = useSelector(state => state.menu.menu);
 
     // *슬라이드탭 카드 애니메이션 관리
     const [height, setHeight] = useState('32%');
@@ -43,12 +48,15 @@ const PlacePage = () => {
 
     useEffect(() => {
         dispatch(load_places());
+        console.log(places);
     }, [dispatch]);
+
 
 
     const handleOpen = (id) => {
         setPlaceId(id);
         setIsCardVisible(true);
+        dispatch(load_menu(id));
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
         }
@@ -96,15 +104,8 @@ const PlacePage = () => {
             });
         }
     };
-    //
 
-    // Part 2) menu , 메뉴 정보 (menu API)
-    const menus = useSelector(state => state.menu.menu);
-    useEffect(() => {
-        if(place_id != '')
-            dispatch(load_menu(place_id));
-    }, [dispatch]);
-
+    
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -117,7 +118,7 @@ const PlacePage = () => {
                     <h4>{place.name}</h4>
                 </div>
                 ))}
-                
+                            
                 <Map style={{ position: 'relative'}} latitude={37.58622450673971} longitude={126.99709024757782} />
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} >
@@ -132,24 +133,24 @@ const PlacePage = () => {
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                             visibility: setOpen.visibility,
                         }}>
-                            <Grid container style={{padding:'50px 15px 0px 15px'}}>
+                            <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px'}}>
                                     <Image src={mapIcon} width={37} height={36} name='map' />
                                 </Grid>
-                                <Grid>
-                                {places.filter(item => item.id === place_id).map(item => (
-                            
-                                    <Grid xm >
-                                        <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
-                                            {item.name}
-                                        </Typography>
-                                        <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="div" >
-                                            {item.detail_category}
-                                        </Typography>
-                                    </Grid>
-                            
-                                ))}
+                          
+                                <Grid xm >
+                                    {places.filter(item => item.id === place_id).map(item => (
+                                        <Grid style={{flexDirection: 'row'}}>
+                                            <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
+                                                {item.name}
+                                            </Typography>
+                                            <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
+                                                {item.detail_category}
+                                            </Typography>
+                                        </Grid>
+                                    ))}
                                 </Grid>
+                            
                                 <Grid>
                                     <Image src={closeIcon} width={36} height={36} name='close'/>
                                 </Grid>
@@ -199,7 +200,7 @@ const PlacePage = () => {
                                                 </Grid>
                                                 <Grid container style={{marginTop: '10px'}}>
                                                     <Grid >
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                         스꾸친 평점 :
                                                         </Typography>
                                                     </Grid>
@@ -207,27 +208,27 @@ const PlacePage = () => {
                                                         <Image width={15} height={14} src={star}/>
                                                     </Grid>
                                                     <Grid >
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
                                                         {item.rate}
                                                         </Typography>
                                                     </Grid >
                                                     <Grid style={{margin:'0px 7px 0px 0px'}}>
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#A1A1A1" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'3px'}} color="#A1A1A1" component="div">
                                                         /5
                                                         </Typography>
                                                     </Grid>
                                                     <Grid style={{margin:'0px 7px 0px 0px'}}>
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
                                                         |
                                                         </Typography>
                                                     </Grid>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
                                                         스꾸 리뷰
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
                                                         {item.review_count}
                                                         </Typography>
                                                     </Grid>
@@ -258,58 +259,58 @@ const PlacePage = () => {
                                                 </Grid>
                                                 <Grid container style={{marginTop: '6px'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#505050" component="div">
                                                         위치 : {item.gate}   
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#a1a1a1" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#a1a1a1" component="div">
                                                         ({item.address})
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{marginTop: '6px'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#505050" component="div">
                                                         학생 할인 : {(item.discount_content != null) ? 'O' : 'X'}   
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#a1a1a1" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#a1a1a1" component="div">
                                                         {(item.discount_content != null) ? '('+item.discount_content+')' : ''}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{marginTop: '6px', flexDirection: 'column'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                        <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#505050" component="div">
                                                         영업시간 
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                        <Typography  sx={{marginTop: '6px', fontSize: '15px', fontWeight:'400'}} color="#505050" component="div">
                                                         매일 : {item.service_time}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
-                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                        <Typography  sx={{marginTop: '6px',fontSize: '15px', fontWeight:'400'}} color="#505050" component="div">
                                                         브레이크 타임 : {item.break_time}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                             </CardContent>
                                             <CardContent>
-                                                메뉴
+                                                메뉴 {menus.length}
                                                
-                                                <Grid container style={{marginTop: '6px'}}>
                                                 { menus.map((menu, index) => (
-                                                    <Grid key={index} style={{margin:'0px 3px 0px 0px'}}>
-                                                        <Typography sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
-                                                            <h4>{menu.data.name}</h4>
-                                                        </Typography>
+                                                    <Grid container style={{marginTop: '6px',borderBottom: '0.5px solid gray'}}>
+                                                        <Grid style={{margin:'0'}}>
+                                                            <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#505050" component="div">
+                                                                {menu.name}  ({menu.price}원)
+                                                            </Typography>
+                                                        </Grid>
                                                     </Grid>
                                                 ))}
-                                                </Grid>
                                             </CardContent>
                                         </Grid>
 
@@ -319,8 +320,12 @@ const PlacePage = () => {
                         ))}
                         </ul>
                         </div>
+                        <Grid style={{padding:'20px'}}>
+                         <ReviewStar />
+                        </Grid>
                     </Card>
                 </Container>
+
             </Layout>
         </ThemeProvider>
     );
