@@ -37,12 +37,16 @@ export default function list(){
     }, [dispatch]);
 
     // 사용자 터치에 따라 카드 사이즈 변화
-    useEffect(()=>{
-        cardRef.current.addEventListener('touchmove', handleTouchMove);
+    useEffect(() => {
+        if (cardRef.current) {
+            cardRef.current.addEventListener("touchmove", handleTouchMove);
+        }
         return () => {
-          cardRef.current.removeEventListener('touchmove', handleTouchMove);
+            if (cardRef.current) {
+                cardRef.current.removeEventListener("touchmove", handleTouchMove);
+            }
         };
-    }, []);
+      }, [cardRef]);
 
     // 장소 정보 불러오기
     const place = useSelector(state => state.place.place);
@@ -107,7 +111,7 @@ export default function list(){
       <CssBaseline />
        <Layout>
             <Map style={{ position: 'relative'}} latitude={37.58622450673971} longitude={126.99709024757782} />
-            <Slide direction="up" in={open.bool} >
+            <Slide direction="up" in={open.bool} timeout={1}>
                 <Container fixed style={{padding: '0px 16px 0px 0px', }}>
                     <Card style={{
                     position: 'absolute',
