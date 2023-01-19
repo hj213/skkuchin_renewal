@@ -30,6 +30,8 @@ export default function list(){
         visibility: 'hidden'
     });
     const cardRef = useRef(null);
+    const animationDuration = '0.3s';
+    const animationTimingFunction = 'ease-out';
 
     // api에서 데이터 불러오기
     useEffect(()=>{
@@ -40,6 +42,7 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
+            setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
@@ -110,9 +113,9 @@ export default function list(){
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
-            <Map style={{ position: 'relative'}} latitude={37.58622450673971} longitude={126.99709024757782} />
+            <Map style={{ position: 'relative',}} latitude={37.58622450673971} longitude={126.99709024757782} />
             <Slide direction="up" in={open.bool} timeout={1}>
-                <Container fixed style={{padding: '0px 16px 0px 0px', }}>
+                <Container fixed style={{padding: '0px 16px 0px 0px'}}>
                     <Card style={{
                     position: 'absolute',
                     top: '0px',
@@ -140,17 +143,17 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container fixed style={{padding: '0px 16px 0px 0px'}}>
+            <Container fixed style={{padding: '0px 16px 0px 0px'}} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
                 bottom: '0px',
                 width: '100%',
                 height: height,
-                overflowX: 'x',
                 zIndex: '1',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
+                transition: `height ${animationDuration} ${animationTimingFunction}`,
                 }} 
                 ref = {cardRef}
                 >
@@ -190,7 +193,7 @@ export default function list(){
                                                 </Grid>
                                                 <Grid >
                                                     <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                    4.5
+                                                    {item.rate}
                                                     </Typography>
                                                 </Grid >
                                                 <Grid style={{margin:'0px 7px 0px 0px'}}>
@@ -210,7 +213,7 @@ export default function list(){
                                                 </Grid>
                                                 <Grid xs>
                                                     <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                    33개
+                                                    {item.review_count}
                                                     </Typography>
                                                 </Grid>
                                                 

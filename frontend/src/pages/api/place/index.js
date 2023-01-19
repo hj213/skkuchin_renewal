@@ -1,14 +1,23 @@
 
-import { API_URL } from "../../../config";
+import { API_URL } from "../../../config/index";
+import cookie from 'cookie';
 
 export default async(req, res) => {
     if(req.method == 'GET'){
+        const cookies = cookie.parse(req.headers.cookie ?? '');
+        const access = cookies.access ?? false;
 
+        if(access == false){
+            return res.status(401).json({
+                error: 'User unauthorized to make this request'
+            });
+        }
         try {
             const apiRes = await fetch(`${API_URL}/api/place`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
+                    'Authorization':`Bearer ${access}`
                 }
             });
 
