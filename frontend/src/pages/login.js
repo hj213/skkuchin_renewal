@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { login, reset_register_success } from "../actions/auth/auth";
 import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
+import { load_place } from "../actions/place/place";
 
 const LoginPage = () => {
 
@@ -35,6 +36,8 @@ const LoginPage = () => {
 
         if(dispatch && dispatch !== null && dispatch !== undefined)
             dispatch(login(username, password));
+            
+        
 
     };
 

@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
-import skkuchin.service.api.dto.FavoriteDto;
 import skkuchin.service.api.dto.MenuDto;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.MenuSetUp;
 import skkuchin.service.domain.Map.Place;
-import skkuchin.service.domain.User.AppUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -41,8 +39,9 @@ public class MenuIntegrationTest extends BaseIntegrationTest {
                 .andDo(print());
 
         //then
-        resultActions
-                .andExpect(status().is2xxSuccessful());
 
+        resultActions
+                .andExpect(status().isOk());
     }
+
 }
