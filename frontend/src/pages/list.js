@@ -37,12 +37,16 @@ export default function list(){
     }, [dispatch]);
 
     // 사용자 터치에 따라 카드 사이즈 변화
-    useEffect(()=>{
-        cardRef.current.addEventListener('touchmove', handleTouchMove);
+    useEffect(() => {
+        if (cardRef.current) {
+            cardRef.current.addEventListener("touchmove", handleTouchMove);
+        }
         return () => {
-          cardRef.current.removeEventListener('touchmove', handleTouchMove);
+            if (cardRef.current) {
+                cardRef.current.removeEventListener("touchmove", handleTouchMove);
+            }
         };
-    }, []);
+      }, [cardRef]);
 
     // 장소 정보 불러오기
     const place = useSelector(state => state.place.place);
