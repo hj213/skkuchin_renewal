@@ -30,6 +30,8 @@ export default function list(){
         visibility: 'hidden'
     });
     const cardRef = useRef(null);
+    const animationDuration = '0.3s';
+    const animationTimingFunction = 'ease-out';
 
     // api에서 데이터 불러오기
     useEffect(()=>{
@@ -40,6 +42,7 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
+            setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
@@ -109,9 +112,9 @@ export default function list(){
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
-            <Map style={{ position: 'relative'}} latitude={37.58622450673971} longitude={126.99709024757782} />
+            <Map style={{ position: 'relative',}} latitude={37.58622450673971} longitude={126.99709024757782} />
             <Slide direction="up" in={open.bool} timeout={1}>
-                <Container fixed style={{padding: '0px 16px 0px 0px', }}>
+                <Container fixed style={{padding: '0px 16px 0px 0px'}}>
                     <Card style={{
                     position: 'absolute',
                     top: '0px',
@@ -123,33 +126,33 @@ export default function list(){
                     visibility: setOpen.visibility,
                     }}>
                         <Grid container style={{padding:'50px 15px 0px 15px'}}>
-                            <Grid style={{padding: '0px 10px 0px 0px'}}>
+                            <Grid item style={{padding: '0px 10px 0px 0px'}}>
                             <Image src={mapIcon} width={37} height={36} onClick={handleOnclick} name='map' />
                             </Grid>
-                            <Grid>
+                            <Grid item >
                             <Image src={tag14} width={64} height={40} />
                             </Grid>
-                            <Grid xs>
+                            <Grid item xs>
                             <Image src={tag14} width={64} height={40} />
                             </Grid>
-                            <Grid>
+                            <Grid item >
                             <Image src={closeIcon} width={36} height={36} onClick={handleOnclick} name='close'/>
                             </Grid>
                         </Grid>
                     </Card>
                 </Container>
             </Slide>
-            <Container fixed style={{padding: '0px 16px 0px 0px'}}>
+            <Container fixed style={{padding: '0px 16px 0px 0px'}} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
                 bottom: '0px',
                 width: '100%',
                 height: height,
-                overflowX: 'x',
                 zIndex: '1',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
+                transition: `height ${animationDuration} ${animationTimingFunction}`,
                 }} 
                 ref = {cardRef}
                 >
@@ -164,21 +167,21 @@ export default function list(){
                         <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}}>
                             <>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>
-                                    <Grid xs >
+                                    <Grid item xs >
                                         <CardContent style={{padding:'0px'}}>
-                                            <Grid container spacing={2} style={{margin:'0px'}}>
-                                                <Grid xm style={{marginTop:'15px'}}>
+                                            <Grid container spacing={2} style={{margin:'0px',}}>
+                                                <Grid item style={{marginTop:'15px',  padding:'0px'}}>
                                                     <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                         {item.name}
                                                     </Typography>
                                                 </Grid>
-                                                <Grid xs style={{padding:'0px 0px 0px 8px'}}>
+                                                <Grid item xs style={{padding:'0px 0px 0px 8px'}}>
                                                     <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                         {item.detail_category}
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Grid container style={{marginTop: '10px'}}>
+                                            <Grid item container style={{marginTop: '10px'}}>
                                                 <Grid >
                                                     <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                     스꾸친 평점 :
@@ -189,7 +192,7 @@ export default function list(){
                                                 </Grid>
                                                 <Grid >
                                                     <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                    4.5
+                                                    {item.rate}
                                                     </Typography>
                                                 </Grid >
                                                 <Grid style={{margin:'0px 7px 0px 0px'}}>
@@ -207,9 +210,9 @@ export default function list(){
                                                     스꾸리뷰
                                                     </Typography>
                                                 </Grid>
-                                                <Grid xs>
+                                                <Grid item xs>
                                                     <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                    33개
+                                                    {item.review_count}
                                                     </Typography>
                                                 </Grid>
                                                 
