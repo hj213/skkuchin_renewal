@@ -1,4 +1,4 @@
-package skkuchin.service.mail;
+package skkuchin.service.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

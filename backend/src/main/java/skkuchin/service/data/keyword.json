@@ -1,0 +1,216 @@
+{
+  "keyword": [
+    {
+      "category": "음식",
+      "name": "한식"
+    },
+    {
+      "category": "음식",
+      "name": "일식"
+    },
+    {
+      "category": "음식",
+      "name": "중식"
+    },
+    {
+      "category": "음식",
+      "name": "양식"
+    },
+    {
+      "category": "음식",
+      "name": "남미음식"
+    },
+    {
+      "category": "음식",
+      "name": "분식"
+    },
+    {
+      "category": "음식",
+      "name": "아시아음식"
+    },
+    {
+      "category": "음식",
+      "name": "카페"
+    },
+    {
+      "category": "운동",
+      "name": "축구"
+    },
+    {
+      "category": "운동",
+      "name": "야구"
+    },
+    {
+      "category": "운동",
+      "name": "농구"
+    },
+    {
+      "category": "운동",
+      "name": "골프"
+    },
+    {
+      "category": "운동",
+      "name": "테니스"
+    },
+    {
+      "category": "운동",
+      "name": "당구"
+    },
+    {
+      "category": "운동",
+      "name": "헬스"
+    },
+    {
+      "category": "운동",
+      "name": "주짓수"
+    },
+    {
+      "category": "운동",
+      "name": "보드 & 스키"
+    },
+    {
+      "category": "운동",
+      "name": "서핑"
+    },
+    {
+      "category": "운동",
+      "name": "등산"
+    },
+    {
+      "category": "운동",
+      "name": "스포츠 관람"
+    },
+    {
+      "category": "운동",
+      "name": "러닝"
+    },
+    {
+      "category": "운동",
+      "name": "볼링"
+    },
+    {
+      "category": "운동",
+      "name": "댄스"
+    },
+    {
+      "category": "운동",
+      "name": "배드민턴"
+    },
+    {
+      "category": "문화예술",
+      "name": "영화"
+    },
+    {
+      "category": "문화예술",
+      "name": "음악"
+    },
+    {
+      "category": "문화예술",
+      "name": "전시회"
+    },
+    {
+      "category": "문화예술",
+      "name": "연극/뮤지컬"
+    },
+    {
+      "category": "문화예술",
+      "name": "덕질"
+    },
+    {
+      "category": "문화예술",
+      "name": "여행"
+    },
+    {
+      "category": "문화예술",
+      "name": "게임"
+    },
+    {
+      "category": "문화예술",
+      "name": "노래방"
+    },
+    {
+      "category": "문화예술",
+      "name": "방탈출"
+    },
+    {
+      "category": "문화예술",
+      "name": "보드게임"
+    },
+    {
+      "category": "문화예술",
+      "name": "반려동물"
+    },
+    {
+      "category": "문화예술",
+      "name": "요리"
+    },
+    {
+      "category": "문화예술",
+      "name": "맛집탐방"
+    },
+    {
+      "category": "문화예술",
+      "name": "만화"
+    },
+    {
+      "category": "학술",
+      "name": "학회"
+    },
+    {
+      "category": "학술",
+      "name": "동아리"
+    },
+    {
+      "category": "학술",
+      "name": "교환학생"
+    },
+    {
+      "category": "학술",
+      "name": "봉사"
+    },
+    {
+      "category": "학술",
+      "name": "재테크"
+    },
+    {
+      "category": "학술",
+      "name": "빅데이터"
+    },
+    {
+      "category": "학술",
+      "name": "금융"
+    },
+    {
+      "category": "학술",
+      "name": "문학"
+    },
+    {
+      "category": "학술",
+      "name": "토론"
+    },
+    {
+      "category": "학술",
+      "name": "시사"
+    },
+    {
+      "category": "학술",
+      "name": "어학"
+    },
+    {
+      "category": "학술",
+      "name": "CPA"
+    },
+    {
+      "category": "학술",
+      "name": "로스쿨"
+    },
+    {
+      "category": "학술",
+      "name": "행시"
+    },
+    {
+      "category": "학술",
+      "name": "피트"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-package skkuchin.service.mail;
+package skkuchin.service.domain.User;
 
 import lombok.*;
 
