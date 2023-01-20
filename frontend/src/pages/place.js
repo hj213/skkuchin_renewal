@@ -6,16 +6,17 @@ import { load_menu }  from "../actions/menu/menu";
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
 import tag16 from '../image/tag16.png';
 import tag17 from '../image/tag17.png';
-import tag14 from '../image/tag14.png';
+import bookmarkAdd from '../image/bookmark_add.png';
+import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png'
-import closeIcon from '../image/close.png'
+import back from '../image/arrow_back_ios.png'
 
 import ReviewStar from '../components/ReviewStar'
 
@@ -27,6 +28,9 @@ const PlacePage = () => {
     const places = useSelector(state => state.place.place);
 
     const menus = useSelector(state => state.menu.menu);
+
+    // 북마크 여부. favorite에서 가져와야하나? favorite이랑은 또 다른 state가 아닌가
+    const [isBookmarked, setIsBookmarked] = useState(false);
 
     // *슬라이드탭 카드 애니메이션 관리
     const [height, setHeight] = useState('32%');
@@ -53,6 +57,7 @@ const PlacePage = () => {
     const handleOpen = (id) => {
         setPlaceId(id);
         setIsCardVisible(true);
+        setHeight('32%');
         if(dispatch && dispatch !== null && dispatch !== undefined)
             dispatch(load_menu(id));
         if (cardRef.current) {
@@ -104,6 +109,19 @@ const PlacePage = () => {
             });
         }
     };
+
+     // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
+     const handleOnclick = (event) =>{
+        if(event.target.name == 'back' ){
+            setOpen({ bool:false,
+                Visibility:'hidden'});
+            setHeight('32%');
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility: 'visible'
+            })
+        } 
+    };
     
     return (
         <ThemeProvider theme={theme}>
@@ -112,31 +130,35 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >
-                { places.map((place) => (
-                    <Grid key={place.id}>
-                        <div className='p-3' onClick={() => handleOpen(place.id)}>
-                            <h4>{place.name}</h4>
-                        </div>
-                    </Grid>
-                ))}
+                <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
+                    { places.map((place) => (
+                        <Grid key={place.id}>
+                            <div className='p-3' onClick={() => handleOpen(place.id)}>
+                                <h4>{place.name}</h4>
+                            </div>
+                        </Grid>
+                    ))}
+                </div>
+                
                             
                 <Map style={{ position: 'relative' }} latitude={37.58622450673971} longitude={126.99709024757782} />
+                    
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} >
-                    <Container fixed style={{padding: '0px 16px 0px 0px', }}>
+                    <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"  }}>
                         <Card style={{
                             position: 'absolute',
                             top: '0px',
                             width: '100%',
                             height: '98px',
                             overflowX: 'x',
-                            zIndex: '2',
+                            zIndex: '4',
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                             visibility: setOpen.visibility,
                         }}>
                             <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px'}}>
-                                    <Image src={mapIcon} width={37} height={36} name='map' />
+                                    <Image src={back} width={37} height={36} name='back' onClick={handleOnclick}/>
                                 </Grid>
                           
                                 <Grid>
@@ -153,14 +175,14 @@ const PlacePage = () => {
                                 </Grid>
                             
                                 <Grid>
-                                    <Image src={closeIcon} width={36} height={36} name='close'/>
+                                    <Image width={25} height={28} src={bookmarkAdd} />
                                 </Grid>
                             </Grid>
                         </Card>
                     </Container>
                 </Slide>
                 {/* 카드 Content */}
-                <Container fixed style={{padding: '0px 16px 0px 0px'}}>
+                <Container fixed style={{padding: '0px 16px 0px 0px', overflow: 'hidden'}}>
                     <Card style={{
                         borderRadius: cardStyle.radius,
                         position: 'absolute',
@@ -168,7 +190,8 @@ const PlacePage = () => {
                         width: '100%',
                         height: height,
                         overflowX: 'x',
-                        zIndex: '1',
+                        overflowY: 'auto',
+                        zIndex: '3',
                         boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                         visibility: cardStyle.cardVisibility,
                     }} 
@@ -176,9 +199,21 @@ const PlacePage = () => {
                     >
                     <div>
 
-                    <div style={{textAlign:'center', visibility:cardStyle.iconVisibility}}>
-                        <Image width={60} height={4} src={line} /> 
-                    </div>
+
+                    <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" style={{ visibility:cardStyle.iconVisibility}}>
+                        <Box gridColumn="span 4"></Box>
+                        <Box style={{textAlign: 'center'}}gridColumn="span 4">
+                            <Image  width={60} height={4} src={line} /> 
+                        </Box>
+                        <Box style={{textAlign: 'right', padding: '5px 15px'}} gridColumn="span 4">
+                            {isBookmarked ? (
+                                <Image onClick={() => setIsBookmarked(false)} width={20} height={20} src={bookmarkOn} />
+                            ) : (
+                                <Image onClick={() => setIsBookmarked(true)} width={20} height={20} src={bookmarkAdd} />
+                            )}
+                        </Box>
+                    </Box>
+                    
                     
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                     {places.filter(item => item.id === place_id).map(item => (
