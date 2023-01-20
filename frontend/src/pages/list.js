@@ -50,7 +50,6 @@ export default function list(){
             }
         };
       }, [cardRef]);
-
     // 장소 정보 불러오기
     const place = useSelector(state => state.place.place);
 
