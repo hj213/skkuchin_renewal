@@ -5,7 +5,6 @@ import emptyStar from '../image/Star border-1.png';
 import filledStar from '../image/Star-1.png';
 import character from '../image/character.png';
 
-import { Grid } from '@mui/material';
 import Image from 'next/image';
 
 const ReviewStar = () => {
@@ -28,7 +27,7 @@ const ReviewStar = () => {
           starImage = filledStar;
         }
         return (
-            <Image width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index + 1)} alt='star' />
+            <Image key={index} width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index + 1)} alt='star' />
         );
       })}
       </div>

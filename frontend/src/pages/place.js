@@ -26,7 +26,6 @@ const PlacePage = () => {
     const [place_id, setPlaceId] = useState('');
     const places = useSelector(state => state.place.place);
 
-    // const [menu, setMenu] = useState([]);
     const menus = useSelector(state => state.menu.menu);
 
     // *슬라이드탭 카드 애니메이션 관리
@@ -47,15 +46,15 @@ const PlacePage = () => {
     const [isCardVisible, setIsCardVisible] = useState(false);
 
     useEffect(() => {
-        dispatch(load_places());
+        if(dispatch && dispatch !== null && dispatch !== undefined)
+            dispatch(load_places());
     }, [dispatch]);
-
-
 
     const handleOpen = (id) => {
         setPlaceId(id);
         setIsCardVisible(true);
-        dispatch(load_menu(id));
+        if(dispatch && dispatch !== null && dispatch !== undefined)
+            dispatch(load_menu(id));
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
         }
@@ -105,7 +104,6 @@ const PlacePage = () => {
             });
         }
     };
-
     
     return (
         <ThemeProvider theme={theme}>
@@ -114,10 +112,12 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >
-                { places.map((place, index) => (
-                <div className='p-3' key={index} onClick={() => handleOpen(place.id)}>
-                    <h4>{place.name}</h4>
-                </div>
+                { places.map((place) => (
+                    <Grid key={place.id}>
+                        <div className='p-3' onClick={() => handleOpen(place.id)}>
+                            <h4>{place.name}</h4>
+                        </div>
+                    </Grid>
                 ))}
                             
                 <Map style={{ position: 'relative' }} latitude={37.58622450673971} longitude={126.99709024757782} />
@@ -139,7 +139,7 @@ const PlacePage = () => {
                                     <Image src={mapIcon} width={37} height={36} name='map' />
                                 </Grid>
                           
-                                <Grid xm >
+                                <Grid>
                                     {places.filter(item => item.id === place_id).map(item => (
                                         <Grid style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
@@ -188,7 +188,7 @@ const PlacePage = () => {
                                         <Grid>
                                             <CardContent style={{padding:'15px'}}>
                                                 <Grid container >
-                                                    <Grid xm >
+                                                    <Grid>
                                                         <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                             {item.name}
                                                         </Typography>
