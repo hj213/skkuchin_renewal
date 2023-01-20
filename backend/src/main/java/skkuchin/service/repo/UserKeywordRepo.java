@@ -4,14 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Keyword;
-import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.UserKeyword;
+import skkuchin.service.domain.Matching.UserKeyword;
 
 import java.util.List;
 
 public interface UserKeywordRepo extends JpaRepository<UserKeyword, Long> {
     List<UserKeyword> findByUser(AppUser user);
+
+    void deleteByUserId(Long userId);
 
     @Query("SELECT uk.keyword.id FROM UserKeyword uk WHERE uk.user.id = :userId")
     List<Long> findKeywordIdsByUserId(@Param("userId") Long userId);

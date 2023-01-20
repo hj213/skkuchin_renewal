@@ -1,4 +1,4 @@
-package skkuchin.service.domain.Match;
+package skkuchin.service.domain.Matching;
 
 import lombok.*;
 import skkuchin.service.domain.User.AppUser;

@@ -5,39 +5,50 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import skkuchin.service.domain.Matching.Candidate;
+import skkuchin.service.domain.Matching.Gender;
+import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
-import skkuchin.service.domain.User.*;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Major;
+import skkuchin.service.domain.User.Mbti;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CandidateDto {
+public class MatchingUserDto {
 
     @Getter
-    @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class PostRequest {
+    public static class Request {
+
         @NotNull
-        @JsonProperty
-        private Long userId;
+        private Gender gender;
+        @Size(min = 3)
+        private List<String> keywords;
+        private String introduction;
+        private Mbti mbti;
+        @NotNull
+        private String image;
 
-        @JsonProperty
-        private Long candidate1Id;
-
-        @JsonProperty
-        private Long candidate2Id;
-
-        @JsonProperty
-        private Long candidate3Id;
-
-        public Candidate toEntity(AppUser user, AppUser candidate1, AppUser candidate2, AppUser candidate3) {
-            return Candidate.builder()
+        public UserKeyword toUserKeywordEntity(AppUser user, Keyword keyword) {
+            return UserKeyword.builder()
                     .user(user)
-                    .candidate1(candidate1)
-                    .candidate2(candidate2)
-                    .candidate3(candidate3)
+                    .keyword(keyword)
+                    .build();
+        }
+    }
+
+    @Getter
+    public static class KeywordUpdate {
+        @Size(min = 3)
+        private List<String> keywords;
+        private String introduction;
+
+        public UserKeyword toUserKeywordEntity(AppUser user, Keyword keyword) {
+            return UserKeyword.builder()
+                    .user(user)
+                    .keyword(keyword)
                     .build();
         }
     }
@@ -54,6 +65,7 @@ public class CandidateDto {
         @JsonProperty
         private String studentId;
         private Mbti mbti;
+        private Boolean matching;
         private List<String> keywords;
         private String introduction;
 
@@ -64,6 +76,7 @@ public class CandidateDto {
             this.major = user.getMajor();
             this.studentId = user.getStudentId();
             this.mbti = user.getMbti();
+            this.matching = user.getMatching();
             this.keywords = keywords.stream().map(keyword -> keyword.getKeyword().getName()).collect(Collectors.toList());
             this.introduction = user.getIntroduction();
         }

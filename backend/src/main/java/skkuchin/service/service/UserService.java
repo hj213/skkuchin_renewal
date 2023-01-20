@@ -6,6 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.domain.Matching.Keyword;
+import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.*;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
@@ -13,8 +15,6 @@ import skkuchin.service.exception.EmailAuthNumNotFoundException;
 import skkuchin.service.repo.*;
 
 import javax.mail.MessagingException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
@@ -41,6 +41,7 @@ public class UserService {
         } else return true;
     }
 
+    @Transactional
     public AppUser saveUser(UserDto.SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
         log.info("Saving new user {} to the database", signUpForm.getNickname());
         if (!signUpForm.getPassword().equals(signUpForm.getRePassword())) {
@@ -109,6 +110,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public UserDto.Response getUser(String username) {
         log.info("Fetching user {}", username);
         return new UserDto.Response(userRepo.findByUsername(username));
@@ -118,6 +120,7 @@ public class UserService {
         return userRepo.findByUsername(username);
     }
 
+    @Transactional
     public List<UserDto.Response> getUsers() {
         log.info("Fetching all users");
         return userRepo.findAll()
@@ -126,20 +129,4 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void addInfo(AppUser user, UserDto.AdditionalRequest dto) {
-        AppUser existingUser = userRepo.findById(user.getId()).orElseThrow();
-        existingUser.setGender(dto.getGender());
-        existingUser.setMbti(dto.getMbti());
-        existingUser.setImage(dto.getImage());
-        userRepo.save(existingUser);
-
-        List<UserKeyword> userKeywords = dto.getKeywords()
-                .stream()
-                .map(k -> {
-                    Keyword keyword = keywordRepo.findByName(k);
-                    return dto.toUserKeywordEntity(user, keyword);
-                })
-                .collect(Collectors.toList());
-        userKeywordRepo.saveAll(userKeywords);
-    }
 }

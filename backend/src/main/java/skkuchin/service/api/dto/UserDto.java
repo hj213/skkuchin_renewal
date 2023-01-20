@@ -6,10 +6,14 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import skkuchin.service.domain.Matching.Gender;
+import skkuchin.service.domain.Matching.Keyword;
+import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,20 +74,6 @@ public class UserDto {
         private String refresh;
     }
 
-    @Getter
-    public static class AdditionalRequest {
-        private Gender gender;
-        private List<String> keywords;
-        private Mbti mbti;
-        private String image;
-
-        public UserKeyword toUserKeywordEntity(AppUser user, Keyword keyword) {
-            return UserKeyword.builder()
-                    .user(user)
-                    .keyword(keyword)
-                    .build();
-        }
-    }
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {

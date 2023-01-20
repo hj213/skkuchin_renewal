@@ -1,4 +1,4 @@
-package skkuchin.service.domain.User;
+package skkuchin.service.domain.Matching;
 
 public enum Gender {
     여성, 남성

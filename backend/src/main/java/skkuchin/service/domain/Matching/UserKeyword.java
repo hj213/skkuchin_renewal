@@ -1,6 +1,7 @@
-package skkuchin.service.domain.User;
+package skkuchin.service.domain.Matching;
 
 import lombok.*;
+import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
 

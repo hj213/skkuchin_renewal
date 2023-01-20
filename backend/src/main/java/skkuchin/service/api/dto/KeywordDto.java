@@ -1,7 +1,7 @@
 package skkuchin.service.api.dto;
 
 import lombok.Getter;
-import skkuchin.service.domain.User.Keyword;
+import skkuchin.service.domain.Matching.Keyword;
 
 import javax.validation.constraints.NotBlank;
 

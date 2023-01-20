@@ -2,6 +2,8 @@ package skkuchin.service.domain.User;
 
 import lombok.*;
 import skkuchin.service.domain.Map.Favorite;
+import skkuchin.service.domain.Matching.Gender;
+import skkuchin.service.domain.Matching.UserKeyword;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

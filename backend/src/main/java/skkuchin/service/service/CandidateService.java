@@ -3,16 +3,13 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.CandidateDto;
-import skkuchin.service.domain.Match.Candidate;
+import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Major;
 import skkuchin.service.repo.CandidateRepo;
-import skkuchin.service.repo.KeywordRepo;
 import skkuchin.service.repo.UserKeywordRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

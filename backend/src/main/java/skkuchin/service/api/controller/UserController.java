@@ -23,6 +23,7 @@ import skkuchin.service.service.UserService;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/user/saves")
-    public ResponseEntity<?> saveUser(@RequestBody UserDto.SignUpForm signUpForm) {
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UserDto.SignUpForm signUpForm) {
         try {
             userService.saveUser(signUpForm);
             return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);
@@ -146,13 +147,6 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "계정 상세 정보 가져오기 완료", userResp), HttpStatus.OK);
     }
 
-    @PutMapping("/user/additional")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> addInfo(@RequestBody UserDto.AdditionalRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser user = principalDetails.getUser();
-        userService.addInfo(user, dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력 완료", null), HttpStatus.OK);
-    }
 }
 
 
