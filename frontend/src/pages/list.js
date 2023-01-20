@@ -127,16 +127,16 @@ export default function list(){
                     visibility: setOpen.visibility,
                     }}>
                         <Grid container style={{padding:'50px 15px 0px 15px'}}>
-                            <Grid style={{padding: '0px 10px 0px 0px'}}>
+                            <Grid item style={{padding: '0px 10px 0px 0px'}}>
                             <Image src={mapIcon} width={37} height={36} onClick={handleOnclick} name='map' />
                             </Grid>
-                            <Grid>
+                            <Grid item >
                             <Image src={tag14} width={64} height={40} />
                             </Grid>
-                            <Grid xs>
+                            <Grid item xs>
                             <Image src={tag14} width={64} height={40} />
                             </Grid>
-                            <Grid>
+                            <Grid item >
                             <Image src={closeIcon} width={36} height={36} onClick={handleOnclick} name='close'/>
                             </Grid>
                         </Grid>
@@ -168,21 +168,21 @@ export default function list(){
                         <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}}>
                             <>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>
-                                    <Grid xs >
+                                    <Grid item xs >
                                         <CardContent style={{padding:'0px'}}>
-                                            <Grid container spacing={2} style={{margin:'0px'}}>
-                                                <Grid xm style={{marginTop:'15px'}}>
+                                            <Grid container spacing={2} style={{margin:'0px',}}>
+                                                <Grid item style={{marginTop:'15px',  padding:'0px'}}>
                                                     <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                         {item.name}
                                                     </Typography>
                                                 </Grid>
-                                                <Grid xs style={{padding:'0px 0px 0px 8px'}}>
+                                                <Grid item xs style={{padding:'0px 0px 0px 8px'}}>
                                                     <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                         {item.detail_category}
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Grid container style={{marginTop: '10px'}}>
+                                            <Grid item container style={{marginTop: '10px'}}>
                                                 <Grid >
                                                     <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                     스꾸친 평점 :
@@ -211,7 +211,7 @@ export default function list(){
                                                     스꾸리뷰
                                                     </Typography>
                                                 </Grid>
-                                                <Grid xs>
+                                                <Grid item xs>
                                                     <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
                                                     {item.review_count}
                                                     </Typography>
