@@ -27,11 +27,12 @@ export default function list(){
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
         bool:false,
-        visibility: 'hidden'
+        visibility: 'hidden',
     });
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
+    const mouseClicked = false;
 
     // api에서 데이터 불러오기
     useEffect(()=>{
@@ -42,11 +43,14 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
+            // cardRef.current.addEventListener("click", handleClickMove);
             setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
+                // cardRef.current.removeEventListener("click", handleClickMove);
+
             }
         };
       }, [cardRef]);
@@ -60,10 +64,16 @@ export default function list(){
 
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
+        event.preventDefault();
+
+        const WINDOW_HEIGHT = window.innerHeight;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
+        if(WINDOW_HEIGHT > 1000){
+            TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
+        }
         const MinHeight = window.innerHeight * 0.32;
         const cardHeight = 140 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        const TARGET_HEIGHT = window.innerHeight * 0.9;
         if( TARGET_HEIGHT >= cardHeight){
             setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
         } else {
@@ -72,7 +82,7 @@ export default function list(){
         if (newHeight >= TARGET_HEIGHT) {
             setOpen({
                 bool: true,
-                visibility: 'visible'
+                visibility: 'visible',
             });
             setCardStyle({
                 radius:'0px',
@@ -81,7 +91,7 @@ export default function list(){
           } else {
             setOpen({
                 bool: false,
-                visibility: 'hidden'
+                visibility: 'hidden',
             });
             setCardStyle({
                 radius:'30px 30px 0px 0px',
@@ -89,6 +99,43 @@ export default function list(){
             });
         }
     };
+
+    // 웹 페이지에서 카드를 마우스로 클릭했을 때+스크롤
+    // const handleClickMove = (event) => {
+    //     event.preventDefault();
+
+    //     const WINDOW_HEIGHT = window.innerHeight;
+    //     const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
+    //     if(WINDOW_HEIGHT > 1000){
+    //         TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
+    //     }
+
+    //     mouseClicked = !mouseClicked;
+    //     if(mouseClicked == false){
+    //         setHeight('32%');
+            
+    //         setOpen({
+    //             bool: false,
+    //             visibility: 'hidden'
+    //         });
+    //         setCardStyle({
+    //             radius:'30px 30px 0px 0px',
+    //             iconVisibility:'visible'
+    //         });
+            
+    //     } else if(mouseClicked == true){
+    //         setHeight(`${TARGET_HEIGHT}px`);
+    //         setOpen({
+    //             bool: true,
+    //             visibility: 'visible'
+    //         });
+    //         setCardStyle({
+    //             radius:'0px',
+    //             iconVisibility:'hidden'
+    //         });
+            
+    //     }
+    // }
 
     // 아이콘 클릭했을 때 이벤트
     const handleOnclick = (event) =>{
@@ -112,18 +159,19 @@ export default function list(){
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
-            <Map style={{ position: 'relative',}} latitude={37.58622450673971} longitude={126.99709024757782} />
-            <Slide direction="up" in={open.bool} timeout={1}>
-                <Container fixed style={{padding: '0px 16px 0px 0px'}}>
+            <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} />
+            
+            <Slide direction="up" in={open.bool} timeout={1} >
+                <Container fixed style={{padding: '0px 16px 0px 0px', }}>
                     <Card style={{
                     position: 'absolute',
                     top: '0px',
                     width: '100%',
                     height: '98px',
-                    overflowX: 'x',
                     zIndex: '2',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
-                    visibility: setOpen.visibility,
+                    visibility: open.visibility,
                     }}>
                         <Grid container style={{padding:'50px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
@@ -142,7 +190,7 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container fixed style={{padding: '0px 16px 0px 0px'}} >
+            <Container style={{padding: '0px 16px 0px 0px',}} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
@@ -153,6 +201,7 @@ export default function list(){
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
+                
                 }} 
                 ref = {cardRef}
                 >
@@ -266,9 +315,8 @@ export default function list(){
                     </ul>
                     </div>
                 </Card>
-                
             </Container>
-
+            </div>
         </Layout>
     </ThemeProvider>
     )
