@@ -11,7 +11,12 @@ const ReviewStar = () => {
   const [rating, setRating] = useState(0);
 
   const handleTouch = (index) => {
-    setRating(index);
+    // setRating(index);
+    if (index + 1 === rating) {
+      setRating(0);
+    } else {
+      setRating(index + 1);
+    }
   };
 
   const user = useSelector(state => state.auth.user);
@@ -27,7 +32,7 @@ const ReviewStar = () => {
           starImage = filledStar;
         }
         return (
-            <Image key={index} width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index + 1)} alt='star' />
+            <Image key={index} width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' />
         );
       })}
       </div>
