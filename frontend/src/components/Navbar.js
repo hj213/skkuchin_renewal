@@ -20,6 +20,7 @@ const Navbar = () => {
 
     const authLinks = (
         <>
+        
             <li className='nav-item'>
                 <Link href='/dashboard'>
                     <a className={
