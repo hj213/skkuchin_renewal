@@ -72,6 +72,7 @@ public class ReviewDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
+        @JsonProperty
         private Long placeId;
         private float rate;
         private String content;
@@ -95,7 +96,7 @@ public class ReviewDto {
             this.createDate = review.getCreateDate();
             this.nickname = review.getUser().getNickname();
             this.major = review.getUser().getMajor();
-            this.studentId = review.getUser().getStudent_id();
+            this.studentId = review.getUser().getStudentId();
             this.userImage = review.getUser().getImage();
             this.tags = tags.stream().map(tag -> tag.getTag().getName()).collect(Collectors.toList());
         }

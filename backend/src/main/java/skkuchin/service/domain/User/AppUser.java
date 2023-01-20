@@ -2,6 +2,8 @@ package skkuchin.service.domain.User;
 
 import lombok.*;
 import skkuchin.service.domain.Map.Favorite;
+import skkuchin.service.domain.Matching.Gender;
+import skkuchin.service.domain.Matching.UserKeyword;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,19 +34,29 @@ public class AppUser {
     private String email;
 
     @Column(unique = true, nullable = false)
-    private String student_id;
+    private String studentId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Major major;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String image;
 
     @Enumerated(EnumType.STRING)
     private Mbti mbti;
 
-    private LocalDateTime start_date;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    private String introduction;
+
+    private Boolean matching;
+
+    private LocalDateTime startDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserKeyword> userKeywords = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Favorite> favorites = new ArrayList<>();
