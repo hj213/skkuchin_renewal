@@ -37,4 +37,11 @@ public class CandidateController {
         candidateService.addCandidate(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "매칭 3명 추가 완료", null), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteExpiredData() {
+        candidateService.deleteExpiredData();
+        return new ResponseEntity<>(new CMRespDto<>(1, "만료 기간 지난 데이터 삭제 완료", null), HttpStatus.OK);
+    }
 }

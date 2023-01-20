@@ -1,6 +1,7 @@
 package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.CandidateDto;
 import skkuchin.service.domain.Matching.Candidate;
@@ -10,6 +11,7 @@ import skkuchin.service.repo.UserKeywordRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -121,5 +123,11 @@ public class CandidateService {
         List<Long> secondUsers = usersOrderByCategory.stream().map(u -> u.getId()).collect(Collectors.toList());
         excludeIds.addAll(secondUsers); //2순위로 뽑힌 유저들은 제외 대상
         return userKeywordRepo.findRemainUsers(excludeIds, user.getMajor().name());
+    }
+
+    @Scheduled(cron = "0 0 9 * * ?") //매일 오전 9시에 만료된 데이터가 삭제됨
+    public void deleteExpiredData() {
+        List<Candidate> candidates = candidateRepo.findByExpireDateBefore(LocalDateTime.now());
+        candidateRepo.deleteAll(candidates);
     }
 }

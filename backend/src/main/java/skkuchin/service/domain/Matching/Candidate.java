@@ -33,4 +33,10 @@ public class Candidate {
     private AppUser candidate3;
 
     private LocalDateTime expireDate;
+
+    @PrePersist
+    public void setDate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.expireDate = now.plusDays(14);
+    }
 }
