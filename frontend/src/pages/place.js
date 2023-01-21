@@ -2,20 +2,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_places } from "../actions/place/place";
 import { load_menu }  from "../actions/menu/menu";
-
+import { load_favorite, enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
 import tag16 from '../image/tag16.png';
 import tag17 from '../image/tag17.png';
-import tag14 from '../image/tag14.png';
+import bookmarkAdd from '../image/bookmark_add.png';
+import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png'
-import closeIcon from '../image/close.png'
+import back from '../image/arrow_back_ios.png'
 
 import ReviewStar from '../components/ReviewStar'
 
@@ -25,9 +26,12 @@ const PlacePage = () => {
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = useState('');
     const places = useSelector(state => state.place.place);
-
-    // const [menu, setMenu] = useState([]);
+    
+    // Part 2) menu, 가게 정보 (menu API)
     const menus = useSelector(state => state.menu.menu);
+    
+    // Part 3) favorite, 스크랩 정보 (favorite API)
+    const favorites = useSelector(state => state.favorite.favorite);
 
     // *슬라이드탭 카드 애니메이션 관리
     const [height, setHeight] = useState('32%');
@@ -43,19 +47,27 @@ const PlacePage = () => {
         visibility: 'hidden'
     });
     const cardRef = useRef(null);
+    const animationDuration = '0.3s';
+    const animationTimingFunction = 'ease-out';
 
     const [isCardVisible, setIsCardVisible] = useState(false);
 
     useEffect(() => {
-        dispatch(load_places());
+        if(dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_places());
+            dispatch(load_favorite());
+        }
     }, [dispatch]);
 
-
-
     const handleOpen = (id) => {
+
         setPlaceId(id);
         setIsCardVisible(true);
-        dispatch(load_menu(id));
+        setHeight('32%');
+
+        if(dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_menu(id));
+        }
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
         }
@@ -76,10 +88,15 @@ const PlacePage = () => {
     const handleTouchMove = (event) => {
         event.preventDefault();
 
+        const WINDOW_HEIGHT = window.innerHeight;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
+        if(WINDOW_HEIGHT > 1000){
+            TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
+        }
         const MinHeight = window.innerHeight * 0.32;
         const cardHeight = 140 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        const TARGET_HEIGHT = window.innerHeight * 0.9;
+
         if( TARGET_HEIGHT >= cardHeight){
             setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
         } else {
@@ -106,6 +123,33 @@ const PlacePage = () => {
         }
     };
 
+     // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
+     const handleOnclick = (event) =>{
+        if(event.target.name == 'back' ){
+            setOpen({ bool:false,
+                Visibility:'hidden'});
+            setHeight('32%');
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility: 'visible'
+            })
+        } 
+    };
+
+    // Favorite 관리
+    const isFavorite = (placeId) => {
+        return favorites.some(favorite => favorite.place_id === placeId);
+    }
+    
+    const handleFavClick = (placeId) => {
+        dispatch(load_favorite());
+        const favorite_id = favorites.find(favorite => favorite.place_id === placeId);
+        if(favorite_id) {
+            dispatch(delete_favorite(favorite_id.id));
+        } else {
+            dispatch(enroll_favorite(placeId));
+        }
+    }
     
     return (
         <ThemeProvider theme={theme}>
@@ -114,32 +158,36 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >
-                { places.map((place, index) => (
-                <div className='p-3' key={index} onClick={() => handleOpen(place.id)}>
-                    <h4>{place.name}</h4>
+                <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
+                    { places.map((place) => (
+                        <Grid key={place.id}>
+                            <div className='p-3' onClick={() => handleOpen(place.id)}>
+                                <h4>{place.name}</h4>
+                            </div>
+                        </Grid>
+                    ))}
                 </div>
-                ))}
                             
-                <Map style={{ position: 'relative' }} latitude={37.58622450673971} longitude={126.99709024757782} />
+                <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+                <Map latitude={37.58622450673971} longitude={126.99709024757782} />                    
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
-                <Slide direction="up" in={open.bool} >
-                    <Container fixed style={{padding: '0px 16px 0px 0px', }}>
+                <Slide direction="up" in={open.bool} timeout={1} >
+                <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
                         <Card style={{
                             position: 'absolute',
                             top: '0px',
                             width: '100%',
                             height: '98px',
-                            overflowX: 'x',
-                            zIndex: '2',
+                            zIndex: '4',
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
-                            visibility: setOpen.visibility,
+                            visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px'}}>
-                                    <Image src={mapIcon} width={37} height={36} name='map' />
+                                    <Image src={back} width={37} height={36} name='back' onClick={handleOnclick}/>
                                 </Grid>
                           
-                                <Grid xm >
+                                <Grid>
                                     {places.filter(item => item.id === place_id).map(item => (
                                         <Grid style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
@@ -152,43 +200,52 @@ const PlacePage = () => {
                                     ))}
                                 </Grid>
                             
-                                <Grid>
-                                    <Image src={closeIcon} width={36} height={36} name='close'/>
-                                </Grid>
+                                <Grid onClick={()=> handleFavClick(place_id)}>
+                                    <Image width={25} height={28}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd}/>
+                                </Grid> 
                             </Grid>
                         </Card>
                     </Container>
                 </Slide>
                 {/* 카드 Content */}
-                <Container fixed style={{padding: '0px 16px 0px 0px'}}>
+                <Container style={{padding: '0px 16px 0px 0px', overflow: 'hidden'}}>
                     <Card style={{
                         borderRadius: cardStyle.radius,
                         position: 'absolute',
                         bottom: '0px',
                         width: '100%',
                         height: height,
-                        overflowX: 'x',
-                        zIndex: '1',
+                        overflowY: 'auto',
+                        zIndex: '3',
                         boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                         visibility: cardStyle.cardVisibility,
+                        transition: `height ${animationDuration} ${animationTimingFunction}`,
                     }} 
                     ref = {cardRef}
                     >
                     <div>
 
-                    <div style={{textAlign:'center', visibility:cardStyle.iconVisibility}}>
-                        <Image width={60} height={4} src={line} /> 
-                    </div>
+
+                    <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" style={{ visibility:cardStyle.iconVisibility}}>
+                        <Box gridColumn="span 4"></Box>
+                        <Box style={{textAlign: 'center'}}gridColumn="span 4">
+                            <Image width={60} height={4} src={line} /> 
+                        </Box>
+                        <Box style={{textAlign: 'right', padding: '5px 15px'}} gridColumn="span 4" onClick={()=> handleFavClick(place_id)}>
+                            <Image width={25} height={28}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd}/>
+                        </Box> 
+                    </Box>
+                    
                     
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                     {places.filter(item => item.id === place_id).map(item => (
-                            <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}}>
+                            <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9', }}>
                                 <>
                                     <Grid container>
                                         <Grid>
                                             <CardContent style={{padding:'15px'}}>
                                                 <Grid container >
-                                                    <Grid xm >
+                                                    <Grid>
                                                         <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                             {item.name}
                                                         </Typography>
@@ -326,7 +383,7 @@ const PlacePage = () => {
                         </Grid>
                     </Card>
                 </Container>
-
+                </div>
             </Layout>
         </ThemeProvider>
     );

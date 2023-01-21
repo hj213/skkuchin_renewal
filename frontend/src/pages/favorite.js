@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { enroll_favorite, delete_favorite, load_favorite } from "../actions/favorite/favorite";
+import { Typography, Grid } from '@mui/material';
 
 import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
@@ -9,16 +10,11 @@ import Loader from "react-loader-spinner";
 const FavoritePage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.auth.loading);
 
-    // const [formData, setFormData] = useState({
-    //     place_id: '',
-    // });
-
-    // const { place_id } = formData;
     const [place_id, setPlaceId] = useState('');
     const [favorite_id, setFavoriteId] = useState('');
     const user = useSelector(state => state.auth.user);
+    const favorites = useSelector(state => state.favorite.favorite);
 
     useEffect( () => {
         if(dispatch && dispatch !== null && dispatch !== undefined)
@@ -41,6 +37,7 @@ const FavoritePage = () => {
         e.preventDefault();
         alert('delete button clicked! ' + favorite_id);
         if(dispatch && dispatch !== null && dispatch !== undefined)
+            // dispatch(delete_favorite(favorite_id));
             dispatch(delete_favorite(favorite_id));
 
     };
@@ -68,19 +65,11 @@ const FavoritePage = () => {
                         required />
                 </div>
                 
-                {
-                    loading ? (
-                        <div className="d-flex justify-content-center align-items-center mt-5">
-                            <Loader type = 'Oval' color = '#00bfff' width={50} height={50}></Loader>
-                        </div>
-                    ) : (
-                        <div>
-                            <button className='btn btn-primary m-5' id="delBtn"  type='submit' style={{backgroundColor: "green", border: 0}} onClick={addBtnClick}>
-                                ADD
-                            </button>
-                        </div>
-                    )
-                }
+                <div>
+                    <button className='btn btn-primary m-5' id="delBtn"  type='submit' style={{backgroundColor: "green", border: 0}} onClick={addBtnClick}>
+                            ADD
+                    </button>
+                </div>
             </form>
             <form className='bg-light p-5 mt-5 mb-5'>
                 <h3>*삭제할 Favorite Place의 favorite_id를 입력해주세요</h3>
@@ -93,25 +82,27 @@ const FavoritePage = () => {
                         placeholder ='FAVORITE ID' onChange={onChangeFId} value={favorite_id}
                         required />
                 </div>
-                {
-                    loading ? (
-                        <div className="d-flex justify-content-center align-items-center mt-5">
-                            <Loader type = 'Oval' color = '#00bfff' width={50} height={50}></Loader>
-                        </div>
-                    ) : (
-                        <div>
-                            <button className='btn btn-primary m-5' id="delBtn"  type='submit' style={{backgroundColor: "red", border: 0}} onClick={delBtnClick}>
-                                DELETE
-                            </button>
-                        </div>
-                    )
-                }
+
+                <div>
+                    <button className='btn btn-primary m-5' id="delBtn"  type='submit' style={{backgroundColor: "red", border: 0}} onClick={delBtnClick}>
+                        DELETE
+                    </button>
+                </div>
             </form>
             <div className='bg-light p-5 mt-5 mb-5'>
                 <h3>*Favorite Place 목록</h3>
                 <button className='btn btn-primary m-5' id="getBtn"  type='submit' style={{backgroundColor: "orange", border: 0}} onClick={getBtnClick}>
                     목록 표시
                 </button>
+                { favorites.map((favorite, index) => (
+                    <Grid container style={{marginTop: '6px',borderBottom: '0.5px solid gray'}}>
+                            <Grid style={{margin:'0'}}>
+                                    <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#505050" component="div">
+                                        {favorite.name}  
+                                    </Typography>
+                            </Grid>
+                    </Grid>
+                ))}
             </div>
         </Layout>
     );
