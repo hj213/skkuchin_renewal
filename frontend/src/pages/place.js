@@ -89,7 +89,7 @@ const PlacePage = () => {
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
         }

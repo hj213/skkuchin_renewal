@@ -5,6 +5,7 @@ import { load_favorite } from "../actions/favorite/favorite";
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
+import Link from 'next/link';
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
@@ -71,7 +72,7 @@ export default function list(){
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
         }
@@ -165,7 +166,13 @@ export default function list(){
             return <Image width={15} height={15} src={bookmarkOn}/>
         }
         return null;
-    }
+    };
+
+    //place 페이지로 넘어가는
+    const handleLiClick = (e) => {
+        e.preventDefault();
+        console.log("clicked");
+      }
 
     return(
     <ThemeProvider theme={theme}>
@@ -202,32 +209,31 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '0px 16px 0px 0px',}} >
+            <Container style={{padding: '0px 16px 0px 0px', }} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
                 bottom: '0px',
                 width: '100%',
                 height: height,
-                overflowY: 'scroll',
+                overflowY:'scroll',
                 zIndex: '1',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
-               
                 }} 
                 ref = {cardRef}
                 >
                 <div>
-                <div style={{textAlign:'center', visibility:cardStyle.iconVisibility}}>
-                    <Image width={60} height={4} src={line} /> 
+                <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
+                    <Image width={70} height={4} src={line} /> 
                 </div>
                 
                
                 <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                     {place.map((item) => (
-                        <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}}>
-                            <>
+                            <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
+                                <Link href={`/place?id=${item.id}`} key={item.id}>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>
                                     <Grid item xs >
                                         <CardContent style={{padding:'0px'}}>
@@ -325,8 +331,8 @@ export default function list(){
                                         src={food}/>
                                     </Grid>
                                 </Grid>
-                            </>
-                        </li>
+                                </Link>
+                            </li>
                     ))}
                     </ul>
                     </div>
