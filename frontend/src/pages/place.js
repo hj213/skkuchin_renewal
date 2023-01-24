@@ -94,9 +94,9 @@ const PlacePage = () => {
             TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
         }
         const MinHeight = window.innerHeight * 0.32;
-        const cardHeight = 140 * numOfLi;
+        const cardHeight = 150 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
-
+        
         if( TARGET_HEIGHT >= cardHeight){
             setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
         } else {
