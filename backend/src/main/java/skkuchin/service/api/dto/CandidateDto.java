@@ -52,7 +52,8 @@ public class CandidateDto {
         private String image;
         private Major major;
         @JsonProperty
-        private String studentId;
+        //private String studentId;
+        private int studentId;
         private Mbti mbti;
         private List<String> keywords;
         private String introduction;

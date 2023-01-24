@@ -11,9 +11,7 @@ import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +33,11 @@ public class UserDto {
         private String rePassword;
         @NotBlank
         private String email;
-        @NotBlank
+        @NotNull
         @JsonProperty
-        private String studentId;
+        @Min(value = 10)
+        @Max(value = 23)
+        private int studentId;
         @NotNull
         private Major major;
 
@@ -82,7 +82,8 @@ public class UserDto {
         private String username;
         private String email;
         @JsonProperty
-        private String studentId;
+        //private String studentId;
+        private int studentId;
         private Major major;
         private String image;
         private Mbti mbti;
