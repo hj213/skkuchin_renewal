@@ -243,15 +243,15 @@ const PlacePage = () => {
                     </Box>
                     )}
                     {open.bool && (
-                        <Box sx={{paddingTop: '34px'}}></Box>
+                        <Box sx={{paddingTop: '10px'}}></Box>
                     )}
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
                     {places.filter(item => item.id === place_id).map(item => (
                             <li key={item.id} data={item}>
                                 <>
-                                    <Grid container >
+                                    <Grid container style={{padding: '10px 15px'}}>
                                         <Grid style={{width: '100%'}}>
-                                            <CardContent style={{padding:'10px 15px'}}>
+                                            <CardContent>
                                             {!open.bool && (
                                                 <Grid container sx={{mt: 0, pt: 0}}>
                                                     <Grid>
@@ -266,7 +266,8 @@ const PlacePage = () => {
                                                     </Grid>
                                                 </Grid>
                                             )}
-                                                <Grid container style={{paddingTop: '11px', alignItems: 'center'}}>
+                                            <Grid sx={{width: '100%'}}>
+                                            <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: open.bool? 'center' : 'left'}}>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                         스꾸친 평점 :
@@ -301,7 +302,7 @@ const PlacePage = () => {
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
-                                                <Grid container style={{margin: '4px 0px 11px 0px'}}>
+                                                <Grid container style={{margin: '4px 0px 11px 0px',  justifyContent: open.bool? 'center' : 'left'}}>
                                                     <Stack direction="row" spacing={2}>
                                                     <Image
                                                         width= {90}
@@ -323,7 +324,9 @@ const PlacePage = () => {
                                                     />
                                                     </Stack>
                                                 </Grid>
-                                                <Grid container style={{marginTop: '18px'}}>
+                                            </Grid>
+                                            <Grid container style={{width: '100%', paddingTop: '14px', padding: open.bool? '0px 10%' : '0'}}>
+                                                <Grid container>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
                                                         위치 : {item.gate}   
@@ -364,9 +367,10 @@ const PlacePage = () => {
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
+                                            </Grid>
                                             </CardContent>
                                             <CardContent>
-                                                <Grid sx={{display: 'flex'}}>
+                                                <Grid sx={{display: 'flex', mb: '10px'}}>
                                                     <Typography sx={{fontSize: '17px', fontWeight: '700', pr: '4px'}}>
                                                         메뉴
                                                     </Typography>
@@ -376,8 +380,8 @@ const PlacePage = () => {
                                                 </Grid>
                                                
                                                 { menus.map((menu, index) => (
-                                                    <Grid container style={{marginTop: '8px',borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
-                                                        <Grid style={{margin:'0', padding: '11px 0px'}}>
+                                                    <Grid container style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
+                                                        <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
                                                             <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
                                                                 {menu.name}  ({addComma(menu.price)}원)
                                                             </Typography>
