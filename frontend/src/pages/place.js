@@ -22,6 +22,8 @@ import ReviewStar from '../components/ReviewStar'
 
 const PlacePage = () => {
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = useState('');
@@ -51,6 +53,10 @@ const PlacePage = () => {
     const animationTimingFunction = 'ease-out';
 
     const [isCardVisible, setIsCardVisible] = useState(false);
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {

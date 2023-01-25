@@ -17,6 +17,8 @@ import closeIcon from '../image/close.png'
 
 export default function list(){
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    
     const dispatch = useDispatch();
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
@@ -33,6 +35,10 @@ export default function list(){
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
     const mouseClicked = false;
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
     // api에서 데이터 불러오기
     useEffect(()=>{
