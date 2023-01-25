@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_places } from "../actions/place/place";
@@ -20,7 +21,10 @@ import bookmarkOn from '../image/bookmark-1.png'
 
 export default function list(){
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
     const dispatch = useDispatch();
+    const router = useRouter();
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
@@ -36,6 +40,10 @@ export default function list(){
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
     const mouseClicked = false;
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
     // api에서 데이터 불러오기
     useEffect(()=>{
@@ -162,7 +170,8 @@ export default function list(){
 
     //북마크 기능
     const isFavorite = (placeId) => {
-        if(favorites.some(favorite => favorite.place_id === placeId)){
+        const favorite = favorites.some(favorite => favorite.place_id === placeId)
+        if(favorite){
             return <Image width={15} height={15} src={bookmarkOn}/>
         }
         return null;
@@ -231,7 +240,7 @@ export default function list(){
                 
                
                 <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    {place.map((item) => (
+                    {place? place.map((item) => (
                             <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                 <Link href={`/place?id=${item.id}`} key={item.id}>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>
@@ -333,7 +342,7 @@ export default function list(){
                                 </Grid>
                                 </Link>
                             </li>
-                    ))}
+                    )): null}
                     </ul>
                     </div>
                 </Card>

@@ -35,14 +35,14 @@ export default async (req, res) => {
                 body: body
             });
 
-            const returnValue = await apiRes.json();
+            const resValue = await apiRes.json();
 
             if(apiRes.status === 201){
                 return res.status(201).json({
-                    review: returnValue.data
+                    review: resValue.data
                 });
             } else {
-                return res.status(apiRes.status).json({error: data.error});
+                return res.status(apiRes.status).json({error: resValue.error_message});
             }
         } catch(err) {
             return res.status(500).json({
@@ -73,14 +73,14 @@ export default async (req, res) => {
                 },
             });
 
-            const returnValue = await apiRes.json();
+            const resValue = await apiRes.json();
 
             if(apiRes.status === 200){
                 return res.status(200).json({
-                    review: returnValue.data
+                    review: resValue.data
                 });
             } else {
-                return res.status(apiRes.status).json({error: data.error});
+                return res.status(apiRes.status).json({error: resValue.error_message});
             }
         } catch(err) {
             return res.status(500).json({

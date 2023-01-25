@@ -52,9 +52,9 @@ public class UserServiceTest extends MockTest {
         Collection<Role> roles = new ArrayList<>();
         roles.add(new Role(1L, "ROLE_USER"));
         AppUser userReturnedByRepo = AppUser.builder()
-                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId("2016310372").major(Major.글로벌경영학과).roles(roles)
+                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId(16).major(Major.글로벌경영학과).roles(roles)
                 .build();
-        UserDto.SignUpForm signUpForm = new UserDto.SignUpForm("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", "2016310372", Major.글로벌경영학과);
+        UserDto.SignUpForm signUpForm = new UserDto.SignUpForm("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과);
 
         given(passwordEncoder.encode(anyString())).willReturn("encoderPassword");
         given(userRepo.save(any())).willReturn(userReturnedByRepo);
@@ -77,7 +77,7 @@ public class UserServiceTest extends MockTest {
         Role role = new Role(1L, "ROLE_USER");
         Collection<Role> roles = new ArrayList<>();
         AppUser user = AppUser.builder()
-                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId("2016310372").major(Major.글로벌경영학과).image("이미지").mbti(Mbti.ENFP).roles(roles)
+                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId(16).major(Major.글로벌경영학과).image("이미지").mbti(Mbti.ENFP).roles(roles)
                 .build();
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
@@ -97,7 +97,7 @@ public class UserServiceTest extends MockTest {
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
         AppUser user = AppUser.builder()
-                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId("2016310372").major(Major.글로벌경영학과).image("이미지").mbti(Mbti.ENFP).roles(roles)
+                .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId(16).major(Major.글로벌경영학과).image("이미지").mbti(Mbti.ENFP).roles(roles)
                 .build();
         given(userRepo.findByUsername("user111")).willReturn(user);
         given(roleRepo.findByName("ROLE_USER")).willReturn(role);
