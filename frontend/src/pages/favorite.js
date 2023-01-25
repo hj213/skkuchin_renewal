@@ -8,6 +8,9 @@ import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
 
 const FavoritePage = () => {
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -15,6 +18,10 @@ const FavoritePage = () => {
     const [favorite_id, setFavoriteId] = useState('');
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
     useEffect( () => {
         if(dispatch && dispatch !== null && dispatch !== undefined)
