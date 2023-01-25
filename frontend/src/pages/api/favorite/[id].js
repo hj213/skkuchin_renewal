@@ -25,12 +25,12 @@ export default async (req, res) => {
                 },
             });
 
-            const data = await apiRes.json();
+            const resValue = await apiRes.json();
 
             if(apiRes.status === 200){
                 return res.status(200).json({success: 'DELETE favorite place successfully!'});
             } else {
-                return res.status(apiRes.status).json({error: data.error});
+                return res.status(apiRes.status).json({error: resValue.error_message});
             }
         } catch(err) {
             return res.status(500).json({
