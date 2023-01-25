@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_places } from "../actions/place/place";
@@ -18,8 +19,9 @@ import closeIcon from '../image/close.png'
 export default function list(){
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    
+
     const dispatch = useDispatch();
+    const router = useRouter();
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_places } from "../actions/place/place";
@@ -23,6 +24,7 @@ import ReviewStar from '../components/ReviewStar'
 const PlacePage = () => {
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const router = useRouter();
     
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
