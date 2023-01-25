@@ -24,10 +24,12 @@ const PlacePage = () => {
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const router = useRouter();
-    
+    // list.js 에서 전달 받은 id 값 받아오기
+    const { id } = router.query;
+
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
-    const [place_id, setPlaceId] = useState('');
+    const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     const places = useSelector(state => state.place.place);
     
     // Part 2) menu, 가게 정보 (menu API)
@@ -37,7 +39,7 @@ const PlacePage = () => {
     const favorites = useSelector(state => state.favorite.favorite);
 
     // *슬라이드탭 카드 애니메이션 관리
-    const [height, setHeight] = useState('32%');
+    const [height, setHeight] =  useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
@@ -46,9 +48,9 @@ const PlacePage = () => {
 
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
-        bool:false,
-        visibility: 'hidden'
-    });
+            bool:false,
+            visibility: 'hidden'
+        });
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
@@ -63,18 +65,15 @@ const PlacePage = () => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_places());
             dispatch(load_favorite());
+            dispatch(load_menu(id));
         }
     }, [dispatch]);
 
     const handleOpen = (id) => {
-
         setPlaceId(id);
         setIsCardVisible(true);
         setHeight('32%');
 
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_menu(id));
-        }
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
         }
@@ -145,12 +144,12 @@ const PlacePage = () => {
 
     // Favorite 관리
     const isFavorite = (placeId) => {
-        return favorites.some(favorite => favorite.place_id === placeId);
+        return favorites.some(favorite => favorite.place_id == placeId);
     }
     
     const handleFavClick = (placeId) => {
         dispatch(load_favorite());
-        const favorite_id = favorites.find(favorite => favorite.place_id === placeId);
+        const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
         if(favorite_id) {
             dispatch(delete_favorite(favorite_id.id));
         } else {
@@ -200,7 +199,7 @@ const PlacePage = () => {
                                 </Grid>
                           
                                 <Grid>
-                                    {places ? places.filter(item => item.id === place_id).map(item => (
+                                    {places ? places.filter(item => item.id == place_id).map(item => (
                                         <Grid style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
@@ -253,7 +252,7 @@ const PlacePage = () => {
                     )}
                     
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
-                    {places.filter(item => item.id === place_id).map(item => (
+                    {places.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
 
                                 <>
