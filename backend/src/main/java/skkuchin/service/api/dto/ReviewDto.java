@@ -82,7 +82,8 @@ public class ReviewDto {
         private String nickname;
         private Major major;
         @JsonProperty
-        private String studentId;
+        //private String studentId;
+        private int studentId;
         @JsonProperty
         private String userImage;
         private List<String> tags;

@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "user")
 public class AppUser {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,8 +34,8 @@ public class AppUser {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true, nullable = false)
-    private String studentId;
+    @Column(nullable = false)
+    private int studentId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
