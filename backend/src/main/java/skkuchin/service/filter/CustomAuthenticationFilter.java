@@ -13,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StreamUtils;
+import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.security.auth.PrincipalDetails;
 
 import javax.servlet.FilterChain;
@@ -97,6 +98,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("access", access_token); // access_token -> access 프론트에서는 access와 refresh로 받음
         tokens.put("refresh", refresh_token); // refresh_token -> refresh
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+        new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(1, "dd", tokens));
     }
 }
