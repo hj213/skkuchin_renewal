@@ -212,7 +212,7 @@ export default function list(){
                 
                
                 <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    {place.map((item) => (
+                    {place ? place.map((item) => (
                         <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}}>
                             <>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>
@@ -311,7 +311,7 @@ export default function list(){
                                 </Grid>
                             </>
                         </li>
-                    ))}
+                    )) : null}
                     </ul>
                     </div>
                 </Card>

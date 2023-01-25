@@ -26,7 +26,7 @@ const Map = ({latitude, longitude}) => {
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
     }, [latitude, longitude]);
     return (
-         <MapContainer id="map" style={{width:'100%', height:'65vh'}}/>
+        <MapContainer id="map" style={{width:'100%', height:'65vh'}}/>
 
     );
 }

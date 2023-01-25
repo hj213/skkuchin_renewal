@@ -21,6 +21,7 @@ export default async (req, res) => {
                 }
             });
             const data = await apiRes.json();
+            console.log(user)
 
             if(apiRes.status === 200){
                 return res.status(200).json({
