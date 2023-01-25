@@ -159,13 +159,13 @@ const PlacePage = () => {
                 content='Place page'
             >
                 <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
-                    { places ? places.map((place) => (
+                    { places.map((place) => (
                         <Grid key={place.id}>
                             <div className='p-3' onClick={() => handleOpen(place.id)}>
                                 <h4>{place.name}</h4>
                             </div>
                         </Grid>
-                    )) : null}
+                    ))}
                 </div>
                             
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
@@ -188,7 +188,7 @@ const PlacePage = () => {
                                 </Grid>
                           
                                 <Grid>
-                                    {places ? places.filter(item => item.id === place_id).map(item => (
+                                    {places.filter(item => item.id === place_id).map(item => (
                                         <Grid style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
@@ -197,7 +197,7 @@ const PlacePage = () => {
                                                 {item.detail_category}
                                             </Typography>
                                         </Grid>
-                                    )) : null}
+                                    ))}
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
@@ -238,7 +238,7 @@ const PlacePage = () => {
                     
                     
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    {places ? places.filter(item => item.id === place_id).map(item => (
+                    {places.filter(item => item.id === place_id).map(item => (
                             <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9', }}>
                                 <>
                                     <Grid container>
@@ -375,7 +375,7 @@ const PlacePage = () => {
                                     </Grid>
                                 </>
                             </li> 
-                        )) : null}
+                        ))}
                         </ul>
                         </div>
                         <Grid style={{padding:'20px'}}>

@@ -39,10 +39,10 @@ public class ServiceApplication {
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
 			//admin 계정 생성
-			userService.saveAdmin(new UserDto.SignUpForm("스꾸친관리자", "admin", "12341234", "12341234", "test@test", "0000000000", Major.건축학과));
+			userService.saveAdmin(new UserDto.SignUpForm("스꾸친관리자", "admin", "12341234", "12341234", "test@test", 16, Major.건축학과));
 
 			//test 계정 생성
-			userService.saveTestUser(new UserDto.SignUpForm("테스트", "test", "12341234", "12341234", "test1@test1", "0000000001", Major.건축학과));
+			userService.saveTestUser(new UserDto.SignUpForm("테스트", "test", "12341234", "12341234", "test1@test1", 20, Major.건축학과));
 			//데이터 자동 주입
 			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\";
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
