@@ -169,7 +169,7 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >
-                <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
+                {/* <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
                     {places ? places.map((place) => (
                         <Grid key={place.id}>
                             <div className='p-3' onClick={() => handleOpen(place.id)}>
@@ -177,7 +177,7 @@ const PlacePage = () => {
                             </div>
                         </Grid>
                     )) : null}
-                </div>
+                </div> */}
                             
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} />                    
@@ -193,7 +193,7 @@ const PlacePage = () => {
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                             visibility: open.visibility,
                         }}>
-                            <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between'}}>
+                            <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px'}}>
                                     <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
                                 </Grid>
@@ -212,7 +212,7 @@ const PlacePage = () => {
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
-                                    <Image width={25} height={28}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd}/>
+                                    <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd}/>
                                 </Grid> 
                             </Grid>
                         </Card>
