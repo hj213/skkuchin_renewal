@@ -21,12 +21,12 @@ export default async (req, res ) => {
                 }
             })
 
-            const data = await apiRes.json();
+            const returnValue = await apiRes.json();
 
             if(apiRes.status === 200){
                 res.setHeader('Set-Cookie', [
                     cookie.serialize(
-                        'access', data.access, {
+                        'access', returnValue.data.access, {
                             httpOnly: true,
                             secure: process.env.NODE_ENV !== 'prod',
                             maxAge: 60*30,
@@ -35,7 +35,7 @@ export default async (req, res ) => {
                         }
                     ),
                     cookie.serialize(
-                        'refresh', data.refresh, {
+                        'refresh', returnValue.data.refresh, {
                             httpOnly: true,
                             secure: process.env.NODE_ENV !== 'prod',
                             maxAge: 60*60*24,

@@ -36,12 +36,12 @@ export default async( req, res )=> {
                 body: body
             });
 
-            const data = await apiRes.json();
+            const resValue = await apiRes.json();
            
             if(apiRes.status === 201){
                 return res.status(201).json({success: 'Sign up successfully!'});
             } else {
-                return res.status(apiRes.status).json({error: data.error});
+                return res.status(apiRes.status).json({error: resValue.error_message});
             }
 
         } catch (error) {

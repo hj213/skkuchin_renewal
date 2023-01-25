@@ -90,10 +90,10 @@ public class UserController {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
-                String access_token = authorizationHeader.substring("Bearer ".length());
+                String access = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(access_token);
+                DecodedJWT decodedJWT = verifier.verify(access);
                 Date current = new Date(System.currentTimeMillis());
                 //return ResponseEntity.ok().body(current.before(decodedJWT.getExpiresAt()));
             return new ResponseEntity<>(new CMRespDto<>(1, "토큰 유효성 검증 완료", current.before(decodedJWT.getExpiresAt())), HttpStatus.OK);
@@ -108,20 +108,20 @@ public class UserController {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
-                String refresh_token = authorizationHeader.substring("Bearer ".length());
+                String refresh = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refresh_token);
+                DecodedJWT decodedJWT = verifier.verify(refresh);
                 String username = decodedJWT.getSubject();
                 AppUser user = userService.getUserForRefresh(username);
-                String access_token = JWT.create()
+                String access = JWT.create()
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) //10분
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
 
-                UserDto.TokenResponse response = new UserDto.TokenResponse(access_token, refresh_token);
+                UserDto.TokenResponse response = new UserDto.TokenResponse(access, refresh);
                 return new ResponseEntity<>(new CMRespDto<>(1, "access token 재발급 완료", response), HttpStatus.OK);
             } catch (Exception exception) {
                 /*
