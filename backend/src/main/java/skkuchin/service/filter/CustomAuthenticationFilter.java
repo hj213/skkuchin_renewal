@@ -13,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StreamUtils;
+import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.security.auth.PrincipalDetails;
 
 import javax.servlet.FilterChain;
@@ -80,23 +81,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         //User user = (User)authentication.getPrincipal();
         PrincipalDetails user = (PrincipalDetails) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-        String access_token = JWT.create()
+        String access = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) //10분
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
-        String refresh_token = JWT.create()
+        String refresh = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-        //response.setHeader("access_token", access_token);
-        //response.setHeader("refresh_token", refresh_token);
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access", access_token); // access_token -> access 프론트에서는 access와 refresh로 받음
-        tokens.put("refresh", refresh_token); // refresh_token -> refresh
+        tokens.put("access", access);
+        tokens.put("refresh", refresh);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+        new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(1, "로그인 완료", tokens));
     }
 }
