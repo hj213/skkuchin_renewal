@@ -8,7 +8,7 @@ const theme = createTheme({
     palette: {
         primary: {
             main: '#ffce00',
-        },햐
+        },
     },
     typography: {
         fontFamily: 'Noto Sans KR, sans-serif',
