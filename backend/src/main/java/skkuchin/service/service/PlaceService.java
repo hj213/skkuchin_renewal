@@ -20,10 +20,7 @@ import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,6 +84,44 @@ public class PlaceService {
     @Transactional
     public void delete(Long placeId) {
         placeRepo.deleteById(placeId);
+    }
+
+    @Transactional
+    public List<PlaceDto.Response> searchPlace(String keyword) {
+        List<Place> places = placeRepo.findAll();
+        List<Place> matchingPlaces = new ArrayList<>();
+
+        for (Place place : places) {
+            if (place.getCategory().name().contains(keyword)
+                    || (place.getDetailCategory() != null && place.getDetailCategory().contains(keyword))
+                    || (place.getGate() != null && place.getGate().name().contains(keyword))
+                    || place.getName().contains(keyword)) {
+                matchingPlaces.add(place);
+                System.out.println(matchingPlaces);
+            }
+        }
+
+        matchingPlaces.sort((place1, place2) -> {
+            if (place1.getCategory() != place2.getCategory()) {
+                return place1.getCategory().compareTo(place2.getCategory());
+            } else if (place1.getDetailCategory() != null && place2.getDetailCategory() != null && !place1.getDetailCategory().equals(place2.getDetailCategory())) {
+                return place1.getDetailCategory().compareTo(place2.getDetailCategory());
+            } else if (place1.getGate() != null && place2.getGate() != null && place1.getGate() != place2.getGate()) {
+                return place1.getGate().compareTo(place2.getGate());
+            } else {
+                return place1.getName().compareTo(place2.getName());
+            }
+        });
+
+        return matchingPlaces
+                .stream()
+                .map(place -> new PlaceDto.Response(
+                        place,
+                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        getTop3TagsByPlace(place)
+                ))
+                .collect(Collectors.toList());
     }
 
     public void insertData(String path) throws IOException, ParseException {
