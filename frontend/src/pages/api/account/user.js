@@ -13,7 +13,7 @@ export default async (req, res) => {
         }
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/user`, {
+            const apiRes = await fetch(`${API_URL}/api/user/me`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
