@@ -11,10 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.*;
-import skkuchin.service.repo.ImageRepo;
-import skkuchin.service.repo.PlaceRepo;
-import skkuchin.service.repo.ReviewRepo;
-import skkuchin.service.repo.ReviewTagRepo;
+import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
 import java.io.FileInputStream;
@@ -32,6 +29,7 @@ public class PlaceService {
     private final ImageRepo imageRepo;
     private final ReviewRepo reviewRepo;
     private final ReviewTagRepo reviewTagRepo;
+    private final TagRepo tagRepo;
 
     @Transactional
     public List<PlaceDto.Response> getAll() {
@@ -91,27 +89,25 @@ public class PlaceService {
         List<Place> places = placeRepo.findAll();
         List<Place> matchingPlaces = new ArrayList<>();
 
-        for (Place place : places) {
-            if (place.getCategory().name().contains(keyword)
-                    || (place.getDetailCategory() != null && place.getDetailCategory().contains(keyword))
-                    || (place.getGate() != null && place.getGate().name().contains(keyword))
-                    || place.getName().contains(keyword)) {
-                matchingPlaces.add(place);
-                System.out.println(matchingPlaces);
+        Tag tag = tagRepo.findByName(keyword);
+
+        if (tag != null) {
+            for (Place place : places) {
+                if (getTop3TagsByPlace(place).contains(tag)) {
+                    matchingPlaces.add(place);
+                }
+            }
+        } else {
+            for (Place place : places) {
+                if (place.getCategory().name().contains(keyword)
+                        || (place.getDetailCategory() != null && place.getDetailCategory().contains(keyword))
+                        || (place.getGate() != null && place.getGate().name().contains(keyword))
+                        || place.getName().contains(keyword)) {
+                    matchingPlaces.add(place);
+                    System.out.println(matchingPlaces);
+                }
             }
         }
-
-        matchingPlaces.sort((place1, place2) -> {
-            if (place1.getCategory() != place2.getCategory()) {
-                return place1.getCategory().compareTo(place2.getCategory());
-            } else if (place1.getDetailCategory() != null && place2.getDetailCategory() != null && !place1.getDetailCategory().equals(place2.getDetailCategory())) {
-                return place1.getDetailCategory().compareTo(place2.getDetailCategory());
-            } else if (place1.getGate() != null && place2.getGate() != null && place1.getGate() != place2.getGate()) {
-                return place1.getGate().compareTo(place2.getGate());
-            } else {
-                return place1.getName().compareTo(place2.getName());
-            }
-        });
 
         return matchingPlaces
                 .stream()
