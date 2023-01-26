@@ -21,7 +21,7 @@ import back from '../image/arrow_back_ios.png'
 import ReviewStar from '../components/ReviewStar'
 
 const PlacePage = () => {
-
+    
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const router = useRouter();
     // list.js 에서 전달 받은 id 값 받아오기
