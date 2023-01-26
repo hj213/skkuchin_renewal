@@ -31,7 +31,8 @@ public class ServiceApplication {
 						  PlaceService placeService,
 						  ImageService imageService,
 						  MenuService menuService,
-						  KeywordService keywordService) {
+						  KeywordService keywordService,
+						  ReviewService reviewService) {
 		return args -> {
 
 			userService.saveRole(new Role(null, "ROLE_USER"));
@@ -43,8 +44,8 @@ public class ServiceApplication {
 			//test 계정 생성
 			userService.saveTestUser(new UserDto.SignUpForm("테스트", "test", "12341234", "12341234", "test1@test1", 20, Major.건축학과));
 			//데이터 자동 주입
-			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\";
-			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
+			String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\";
+			//String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
 
 			try {
 				tagService.insertData(path);
@@ -52,6 +53,7 @@ public class ServiceApplication {
 				imageService.insertData(path);
 				menuService.insertData(path);
 				keywordService.insertData(path);
+				reviewService.insertData(path);
 			} catch (Exception e) {
 				System.out.println(e);
 			}

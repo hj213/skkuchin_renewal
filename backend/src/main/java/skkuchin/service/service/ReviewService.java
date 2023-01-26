@@ -1,7 +1,12 @@
 package skkuchin.service.service;
 
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.*;
@@ -9,6 +14,9 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +30,7 @@ public class ReviewService {
     private final TagRepo tagRepo;
     private final ReviewTagRepo reviewTagRepo;
     private final ReviewImageRepo reviewImageRepo;
+    private final UserRepo userRepo;
 
     @Transactional
     public List<ReviewDto.Response> getAll() {
@@ -145,5 +154,28 @@ public class ReviewService {
     public void canHandleReview(AppUser reviewUser, AppUser user) {
         if (!(reviewUser.getId().equals(user.getId()) || user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN")))
             throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");
+    }
+
+    public void insertData(String path) throws IOException, ParseException {
+        if (reviewRepo.count() < 1) { //db가 비어있을 때만 실행
+
+            FileInputStream ins = new FileInputStream(path + "review.json");
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject)parser.parse(
+                    new InputStreamReader(ins, "UTF-8")
+            );
+            JSONArray jsonArray = (JSONArray) jsonObject.get("review");
+            Gson gson = new Gson();
+
+            List<AppUser> users = userRepo.findAll();
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject temp = (JSONObject) jsonArray.get(i);
+                ReviewDto.PostRequest dto = gson.fromJson(temp.toString(), ReviewDto.PostRequest.class);
+                Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
+                reviewRepo.save(dto.toEntity(users.get(i%2), place));
+
+            }
+        }
     }
 }
