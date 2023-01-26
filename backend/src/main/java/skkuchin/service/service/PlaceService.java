@@ -91,20 +91,23 @@ public class PlaceService {
 
     public void insertData(String path) throws IOException, ParseException {
         if (placeRepo.count() < 1) { //db가 비어있을 때만 실행
+           String[] campusNames = {"명륜", "율전"};
 
-            FileInputStream ins = new FileInputStream(path + "place.json");
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)parser.parse(
-                    new InputStreamReader(ins, "UTF-8")
-            );
-            JSONArray jsonArray = (JSONArray) jsonObject.get("place");
-            Gson gson = new Gson();
+           for (String campusName : campusNames) {
+               FileInputStream ins = new FileInputStream(path + "place_" + campusName + ".json");
+               JSONParser parser = new JSONParser();
+               JSONObject jsonObject = (JSONObject)parser.parse(
+                       new InputStreamReader(ins, "UTF-8")
+               );
+               JSONArray jsonArray = (JSONArray) jsonObject.get("place");
+               Gson gson = new Gson();
 
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject temp = (JSONObject) jsonArray.get(i);
-                PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
-                placeRepo.save(dto.toEntity());
-            }
+               for (int i = 0; i < jsonArray.size(); i++) {
+                   JSONObject temp = (JSONObject) jsonArray.get(i);
+                   PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
+                   placeRepo.save(dto.toEntity());
+               }
+           }
         }
     }
 

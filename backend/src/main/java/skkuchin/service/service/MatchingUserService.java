@@ -23,8 +23,8 @@ public class MatchingUserService {
     private final KeywordRepo keywordRepo;
 
     @Transactional
-    public void addInfo(AppUser user, MatchingUserDto.Request dto) {
-        AppUser existingUser = userRepo.findById(user.getId()).orElseThrow();
+    public void addInfo(Long userId, MatchingUserDto.Request dto) {
+        AppUser existingUser = userRepo.findById(userId).orElseThrow();
         existingUser.setGender(dto.getGender());
         existingUser.setIntroduction(dto.getIntroduction());
         existingUser.setMbti(dto.getMbti());
@@ -36,7 +36,7 @@ public class MatchingUserService {
                 .stream()
                 .map(k -> {
                     Keyword keyword = keywordRepo.findByName(k);
-                    return dto.toUserKeywordEntity(user, keyword);
+                    return dto.toUserKeywordEntity(existingUser, keyword);
                 })
                 .collect(Collectors.toList());
         userKeywordRepo.saveAll(userKeywords);

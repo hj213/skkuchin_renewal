@@ -64,9 +64,10 @@ public class ReviewService {
     }
 
     @Transactional
-    public void update(Long reviewId, ReviewDto.PutRequest dto, Long userId) {
+    public void update(Long reviewId, ReviewDto.PutRequest dto, AppUser user) {
         Review existingReview = reviewRepo.findById(reviewId).orElseThrow();
-        isMyReview(existingReview.getUser().getId(), userId);
+        //isMyReview(existingReview.getUser().getId(), userId);
+        canHandleReview(existingReview.getUser(), user);
 
         existingReview.setRate(dto.getRate());
         existingReview.setContent(dto.getContent());
@@ -91,9 +92,9 @@ public class ReviewService {
     }
 
     @Transactional
-    public void delete(Long reviewId, Long userId) {
+    public void delete(Long reviewId, AppUser user) {
         Review review = reviewRepo.findById(reviewId).orElseThrow();
-        isMyReview(review.getUser().getId(), userId);
+        canHandleReview(review.getUser(), user);
         reviewRepo.delete(review);
     }
 
@@ -129,7 +130,8 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    public void isMyReview(Long reviewUserId, Long userId) {
-        if (reviewUserId != userId) throw new IllegalArgumentException("리뷰 작성자가 아닙니다.");
+    public void canHandleReview(AppUser reviewUser, AppUser user) {
+        if (!(reviewUser.getId().equals(user.getId()) || user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN")))
+            throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");
     }
 }

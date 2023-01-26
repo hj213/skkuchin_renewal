@@ -75,28 +75,37 @@ public class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class PutRequest {
+        @NotBlank
+        private String nickname;
+        @NotNull
+        private Major major;
+        private String image;
+    }
+
+    @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private String nickname;
         private String username;
-        private String email;
+        //private String email;
         @JsonProperty
-        //private String studentId;
         private int studentId;
         private Major major;
         private String image;
-        private Mbti mbti;
+        //private Mbti mbti;
 
         public Response(AppUser user) {
             this.id = user.getId();
             this.nickname = user.getNickname();
             this.username = user.getUsername();
-            this.email = user.getEmail();
+            //this.email = user.getEmail();
             this.studentId = user.getStudentId();
             this.major = user.getMajor();
             this.image = user.getImage();
-            this.mbti = user.getMbti();
+            //this.mbti = user.getMbti();
         }
     }
 }

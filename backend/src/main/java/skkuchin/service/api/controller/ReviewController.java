@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Role;
 import skkuchin.service.security.auth.PrincipalDetails;
 import skkuchin.service.service.ReviewService;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -49,16 +51,16 @@ public class ReviewController {
     @PutMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> update(@PathVariable Long reviewId, @Valid @RequestBody ReviewDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Long userId = principalDetails.getUser().getId();
-        reviewService.update(reviewId, dto, userId);
+        AppUser user = principalDetails.getUser();
+        reviewService.update(reviewId, dto, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 수정 완료", null), HttpStatus.OK);
     }
 
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long reviewId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Long userId = principalDetails.getUser().getId();
-        reviewService.delete(reviewId, userId);
+        AppUser user = principalDetails.getUser();
+        reviewService.delete(reviewId, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 삭제 완료", null), HttpStatus.OK);
     }
 

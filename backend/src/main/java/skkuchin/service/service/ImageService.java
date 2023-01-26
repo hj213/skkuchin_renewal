@@ -1,12 +1,7 @@
 package skkuchin.service.service;
 
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ImageDto;
 import skkuchin.service.domain.Map.*;
@@ -14,9 +9,7 @@ import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
 
 import javax.transaction.Transactional;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,22 +84,31 @@ public class ImageService {
         }
     }
 
-    public void insertData(String path) throws IOException, ParseException {
-        if (imageRepo.count() < 1) { //db가 비어있을 때만 실행
+    public void insertData(String path) throws Exception {
 
-            FileInputStream ins = new FileInputStream(path + "image.json");
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)parser.parse(
-                    new InputStreamReader(ins, "UTF-8")
-            );
-            JSONArray jsonArray = (JSONArray) jsonObject.get("image");
-            Gson gson = new Gson();
+        String[] campusNames = {"명륜", "율전"};
 
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject temp = (JSONObject) jsonArray.get(i);
-                ImageDto.PostRequest dto = gson.fromJson(temp.toString(), ImageDto.PostRequest.class);
-                Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
-                imageRepo.save(dto.toEntity(place));
+        for (String campusName : campusNames) {
+            File imageDirectory = new File(path + "image/" + campusName + "/");
+            File[] placeImageFolders = imageDirectory.listFiles();
+
+            for (File folder : placeImageFolders) {
+                String placeName = folder.getName();
+                Place place = placeRepo.findByName(placeName);
+
+                if (place == null) {
+                    continue;
+                }
+
+                File[] images = folder.listFiles();
+                for (File image : images) {
+                    String imageUrl = image.getAbsolutePath();
+                    Image newImage = Image.builder()
+                            .place(place)
+                            .url(imageUrl)
+                            .build();
+                    imageRepo.save(newImage);
+                }
             }
         }
     }
