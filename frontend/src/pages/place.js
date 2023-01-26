@@ -22,10 +22,10 @@ import back from '../image/arrow_back_ios.png'
 import ReviewStar from '../components/ReviewStar'
 
 const PlacePage = () => {
-
+    
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const router = useRouter();
-    
+
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = useState('');
