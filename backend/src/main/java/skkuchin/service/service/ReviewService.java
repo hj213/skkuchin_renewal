@@ -14,9 +14,11 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -169,12 +171,22 @@ public class ReviewService {
 
             List<AppUser> users = userRepo.findAll();
 
+            File imageDirectory = new File(path + "image/임시_리뷰/");
+            File[] images = imageDirectory.listFiles();
+            String imageUrl = null;
+                for (File image : images) {
+                    imageUrl = image.getAbsolutePath();
+                }
+
+
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject temp = (JSONObject) jsonArray.get(i);
                 ReviewDto.PostRequest dto = gson.fromJson(temp.toString(), ReviewDto.PostRequest.class);
                 Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
-                reviewRepo.save(dto.toEntity(users.get(i%2), place));
-
+                Review review = dto.toEntity(users.get(i%2), place);
+                reviewRepo.save(review);
+                ReviewImage reviewImage = ReviewImage.builder().review(review).url(imageUrl).build();
+                reviewImageRepo.save(reviewImage);
             }
         }
     }
