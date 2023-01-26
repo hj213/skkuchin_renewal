@@ -27,8 +27,6 @@ public class Review {
     @Column(nullable = false)
     private String content;
 
-    private String image;
-
     @JoinColumn(name = "place_id", nullable = false)
     @ManyToOne
     private Place place;

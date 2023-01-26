@@ -4,15 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ReviewDto;
-import skkuchin.service.domain.Map.Place;
-import skkuchin.service.domain.Map.Review;
-import skkuchin.service.domain.Map.Tag;
-import skkuchin.service.domain.Map.ReviewTag;
+import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.PlaceRepo;
-import skkuchin.service.repo.TagRepo;
-import skkuchin.service.repo.ReviewRepo;
-import skkuchin.service.repo.ReviewTagRepo;
+import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -27,6 +21,7 @@ public class ReviewService {
     private final PlaceRepo placeRepo;
     private final TagRepo tagRepo;
     private final ReviewTagRepo reviewTagRepo;
+    private final ReviewImageRepo reviewImageRepo;
 
     @Transactional
     public List<ReviewDto.Response> getAll() {
@@ -34,7 +29,8 @@ public class ReviewService {
                 .stream()
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList())
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
     }
@@ -44,7 +40,9 @@ public class ReviewService {
         Review review = reviewRepo.findById(reviewId).orElseThrow();
         List<ReviewTag> reviewTags = reviewTagRepo.findByReview(review)
                 .stream().collect(Collectors.toList());
-        return new ReviewDto.Response(review, reviewTags);
+        List<ReviewImage> reviewImages = reviewImageRepo.findByReview(review)
+                .stream().collect(Collectors.toList());
+        return new ReviewDto.Response(review, reviewTags, reviewImages);
     }
 
     @Transactional
@@ -53,14 +51,19 @@ public class ReviewService {
         Review review = dto.toEntity(user, place);
         reviewRepo.save(review);
 
-        List<ReviewTag> reviewTags = dto.getTags()
-                .stream()
+        List<ReviewTag> reviewTags = dto.getTags().stream()
                 .map(k -> {
                     Tag tag = tagRepo.findByName(k);
                     return dto.toReviewTagEntity(review, tag);
                 })
                 .collect(Collectors.toList());
+
+        List<ReviewImage> reviewImages = dto.getImage().stream()
+                .map(image -> ReviewImage.builder().review(review).url(image).build())
+                .collect(Collectors.toList());
+
         reviewTagRepo.saveAll(reviewTags);
+        reviewImageRepo.saveAll(reviewImages);
     }
 
     @Transactional
@@ -71,7 +74,6 @@ public class ReviewService {
 
         existingReview.setRate(dto.getRate());
         existingReview.setContent(dto.getContent());
-        existingReview.setImage(dto.getImage());
 
         reviewRepo.save(existingReview);
 
@@ -89,6 +91,13 @@ public class ReviewService {
                 reviewTagRepo.save(dto.toReviewTagEntity(existingReview, tag));
             }
         }
+
+        List<ReviewImage> existingImages = reviewImageRepo.findByReview(existingReview);
+        reviewImageRepo.deleteAll(existingImages);
+        List<ReviewImage> newImages = dto.getImage().stream()
+                .map(image -> ReviewImage.builder().review(existingReview).url(image).build())
+                .collect(Collectors.toList());
+        reviewImageRepo.saveAll(newImages);
     }
 
     @Transactional
@@ -105,7 +114,8 @@ public class ReviewService {
                 .stream()
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()))
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList()))
                 ).collect(Collectors.toList());
     }
 
@@ -114,7 +124,8 @@ public class ReviewService {
         return reviewRepo.findByUser(user)
                 .stream().map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()))
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList()))
                 ).collect(Collectors.toList());
     }
 
@@ -125,7 +136,8 @@ public class ReviewService {
                 .filter(review -> review.getUser().getId() == userId)
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList())
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
     }
