@@ -41,8 +41,6 @@ public class UserController {
     @GetMapping("/users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getUsers() {
-
-        //return ResponseEntity.ok().body(userService.getUsers());
         List<UserDto.Response> users = userService.getUsers();
         return new ResponseEntity<>(new CMRespDto<>(1, "유저 전체 조회 완료", users), HttpStatus.OK);
     }
@@ -86,6 +84,7 @@ public class UserController {
     }
 
     @GetMapping("/token/verify")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> verifyToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -104,6 +103,7 @@ public class UserController {
     }
 
     @GetMapping("/token/refresh")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> refreshToken(HttpServletRequest request) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -139,14 +139,50 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/me")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> getUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        UserDto.Response userResp = userService.getUser(user.getUsername());
-        return new ResponseEntity<>(new CMRespDto<>(1, "계정 상세 정보 가져오기 완료", userResp), HttpStatus.OK);
+        UserDto.Response userResp = userService.getUser(user.getId());
+        return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 상세 정보 조회 완료", userResp), HttpStatus.OK);
     }
 
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
+        UserDto.Response userResp = userService.getUser(userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 상세 정보 조회 완료", userResp), HttpStatus.OK);
+    }
+
+    @PutMapping("/user/me")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UserDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        userService.updateUser(user.getId(), dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 수정 완료", null), HttpStatus.OK);
+    }
+
+    @PutMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto.PutRequest dto) {
+        userService.updateUser(userId, dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 계정 수정 완료", null), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/me")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> deleteUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        userService.deleteUser(user.getId());
+        return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 삭제 완료", null), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteAnotherUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 삭제 완료", null), HttpStatus.OK);
+    }
 }
 
 
