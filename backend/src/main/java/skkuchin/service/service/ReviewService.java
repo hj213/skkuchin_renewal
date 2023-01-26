@@ -187,6 +187,14 @@ public class ReviewService {
                 reviewRepo.save(review);
                 ReviewImage reviewImage = ReviewImage.builder().review(review).url(imageUrl).build();
                 reviewImageRepo.save(reviewImage);
+
+                List<ReviewTag> reviewTags = dto.getTags().stream()
+                        .map(k -> {
+                            Tag tag = tagRepo.findByName(k);
+                            return dto.toReviewTagEntity(review, tag);
+                        })
+                        .collect(Collectors.toList());
+                reviewTagRepo.saveAll(reviewTags);
             }
         }
     }
