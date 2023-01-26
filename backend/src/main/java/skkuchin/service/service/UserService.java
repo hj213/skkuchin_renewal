@@ -111,9 +111,9 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto.Response getUser(String username) {
-        log.info("Fetching user {}", username);
-        return new UserDto.Response(userRepo.findByUsername(username));
+    public UserDto.Response getUser(Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        return new UserDto.Response(user);
     }
 
     public AppUser getUserForRefresh(String username) {
@@ -129,4 +129,19 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void updateUser(Long userId, UserDto.PutRequest dto) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        user.setNickname(dto.getNickname());
+        user.setMajor(dto.getMajor());
+        user.setImage(dto.getImage());
+
+        userRepo.save(user);
+    }
+
+    @Transactional
+    public void deleteUser(Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        userRepo.delete(user);
+    }
 }
