@@ -31,7 +31,8 @@ public class ServiceApplication {
 						  PlaceService placeService,
 						  ImageService imageService,
 						  MenuService menuService,
-						  KeywordService keywordService) {
+						  KeywordService keywordService,
+						  ReviewService reviewService) {
 		return args -> {
 
 			userService.saveRole(new Role(null, "ROLE_USER"));
@@ -52,6 +53,7 @@ public class ServiceApplication {
 				imageService.insertData(path);
 				menuService.insertData(path);
 				keywordService.insertData(path);
+				reviewService.insertData(path);
 			} catch (Exception e) {
 				System.out.println(e);
 			}
