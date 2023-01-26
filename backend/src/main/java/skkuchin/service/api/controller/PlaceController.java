@@ -64,6 +64,7 @@ public class PlaceController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> search(@RequestParam("q") String keyword) {
         List<PlaceDto.Response> places = placeService.searchPlace(keyword);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 검색 완료", places), HttpStatus.OK);
