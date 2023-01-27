@@ -3,6 +3,7 @@ package skkuchin.service.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,9 @@ import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.security.auth.PrincipalDetails;
 import skkuchin.service.service.ChatService;
 
 import java.util.List;
@@ -58,8 +61,15 @@ public class ChatRoomController {
         List<ChatRoomDto.Response> responses = chatService.getAllRoom();
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
     }
-  /*  @PostMapping("/rooms")
-    public ResponseEntity<?> makeRoom*/
+     @PostMapping("/rooms")
+    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+         AppUser user = principalDetails.getUser();
+         chatService.makeRoom(user,dto);
+         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
+
+
+     }
 
     @GetMapping("chat/room/{roomId}")
     public ResponseEntity<?> getCertainMessage(@PathVariable String roomId) {
@@ -69,5 +79,31 @@ public class ChatRoomController {
         List<ChatMessageDto.Response> responses = chatService.getAllMessage(chatRoom);
         System.out.println("responses = " + responses.size());
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 채팅방 조회 완료", responses), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/rooms/{roomId}")
+    public ResponseEntity<?> updateUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        AppUser user = principalDetails.getUser();
+        chatService.update(chatRoom,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 개설 완료", null), HttpStatus.CREATED);
+
+
+    }
+
+
+    @GetMapping("/roomsss")
+    public String getRooms(){
+        return "chat/rooms";
+    }
+
+    @GetMapping(value = "/roomss")
+    public String getRoom(String chatRoomId, String sender, Model model){
+
+        model.addAttribute("chatRoomId", chatRoomId);
+        model.addAttribute("sender", sender);
+
+        return "chat/rooms";
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepository;
 import skkuchin.service.repo.ChatRoomRepository;
 
@@ -64,6 +65,30 @@ public class ChatService {
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         chatRoomRepository.save(chatRoom);
         return chatRoom;
+    }
+
+    public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
+
+        ChatRoom chatRoom = dto.toEntity(user);
+        chatRoomRepository.save(chatRoom);
+
+    }
+
+    public void update(ChatRoom chatRoom,AppUser user){
+
+        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
+        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
+        chatRoom1.setUser1(user);
+        chatRoom1.setSenderAccepted(true);
+
+        chatRoomRepository.save(chatRoom1);
+
+    }
+
+    public ChatRoom findChatroom(String roomId){
+
+        ChatRoom chatroom = chatRoomRepository.findByRoomId(roomId);
+        return chatroom;
     }
 }
 

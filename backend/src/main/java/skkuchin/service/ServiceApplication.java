@@ -46,11 +46,11 @@ public class ServiceApplication {
 			//데이터 자동 주입
 			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\";
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
-			tagService.insertData(path);
-			placeService.insertData(path);
-			imageService.insertData(path);
-			menuService.insertData(path);
-			keywordService.insertData(path);
+			//tagService.insertData(path);
+			//placeService.insertData(path);
+			//imageService.insertData(path);
+			//menuService.insertData(path);
+			//keywordService.insertData(path);
 		};
 	}
 }

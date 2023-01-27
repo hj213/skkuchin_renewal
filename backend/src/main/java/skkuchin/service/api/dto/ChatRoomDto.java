@@ -26,7 +26,7 @@ public class ChatRoomDto {
         room.name = name;
         return room;
     }
-    /*@Getter
+    @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static  class PostRequest{
@@ -35,10 +35,16 @@ public class ChatRoomDto {
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
+                    .user(user)
+                    .roomName(this.roomName)
+                    .receiverAccepted(true)
+                    .roomId(UUID.randomUUID().toString())
+                    .build();
 
 
         }
-    }*/
+    }
+
 
 
     @Getter
