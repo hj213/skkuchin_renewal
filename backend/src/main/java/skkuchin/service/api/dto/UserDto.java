@@ -113,7 +113,7 @@ public class UserDto {
             List<Major> majorList = new ArrayList<>();
             majorList.addAll(majors);
 
-            if (majorList.indexOf(major) < majorList.indexOf(Major.사학과)) {
+            if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
                 return Campus.명륜;
             } else {
                 return Campus.율전;
