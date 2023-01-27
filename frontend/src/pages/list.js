@@ -15,9 +15,11 @@ import tag16 from '../image/tag16.png';
 import tag17 from '../image/tag17.png';
 import tag14 from '../image/tag14.png';
 import star from '../image/Star-1.png';
-import mapIcon from '../image/map-1.png'
-import closeIcon from '../image/close.png'
-import bookmarkOn from '../image/bookmark-1.png'
+import mapIcon from '../image/map-1.png';
+import closeIcon from '../image/close.png';
+import bookmarkOn from '../image/bookmark-1.png';
+import image from '../image/명륜/호호식당/7.jpeg';
+import PlacePage from "./place";
 
 export default function list(){
 
@@ -350,7 +352,7 @@ export default function list(){
                                     <Grid style={{marginTop:'15px'}}>
                                         <Image
                                         width= {98} height= {98}
-                                        alt="img" 
+                                        alt={item.name} 
                                         src={food}/>
                                     </Grid>
                                 </Grid>
