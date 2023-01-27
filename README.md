@@ -8,7 +8,7 @@
 
 ## 도커 종료
 1. 다른 터미널 창 켜기
-2. docker-compose down 입력
+2. docker volume prune -f && docker image prune -f && docker-compose down 입력
 
 <br>
 
