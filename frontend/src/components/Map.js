@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 
 const Map = ({latitude, longitude}) => {
     useEffect(() => {
-        console.log(latitude, longitude);
         const mapScript = document.createElement("script");
         
         mapScript.async = true;

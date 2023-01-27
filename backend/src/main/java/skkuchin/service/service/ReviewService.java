@@ -1,20 +1,24 @@
 package skkuchin.service.service;
 
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ReviewDto;
-import skkuchin.service.domain.Map.Place;
-import skkuchin.service.domain.Map.Review;
-import skkuchin.service.domain.Map.Tag;
-import skkuchin.service.domain.Map.ReviewTag;
+import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.PlaceRepo;
-import skkuchin.service.repo.TagRepo;
-import skkuchin.service.repo.ReviewRepo;
-import skkuchin.service.repo.ReviewTagRepo;
+import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +31,8 @@ public class ReviewService {
     private final PlaceRepo placeRepo;
     private final TagRepo tagRepo;
     private final ReviewTagRepo reviewTagRepo;
+    private final ReviewImageRepo reviewImageRepo;
+    private final UserRepo userRepo;
 
     @Transactional
     public List<ReviewDto.Response> getAll() {
@@ -34,7 +40,8 @@ public class ReviewService {
                 .stream()
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList())
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
     }
@@ -44,7 +51,9 @@ public class ReviewService {
         Review review = reviewRepo.findById(reviewId).orElseThrow();
         List<ReviewTag> reviewTags = reviewTagRepo.findByReview(review)
                 .stream().collect(Collectors.toList());
-        return new ReviewDto.Response(review, reviewTags);
+        List<ReviewImage> reviewImages = reviewImageRepo.findByReview(review)
+                .stream().collect(Collectors.toList());
+        return new ReviewDto.Response(review, reviewTags, reviewImages);
     }
 
     @Transactional
@@ -53,14 +62,19 @@ public class ReviewService {
         Review review = dto.toEntity(user, place);
         reviewRepo.save(review);
 
-        List<ReviewTag> reviewTags = dto.getTags()
-                .stream()
+        List<ReviewTag> reviewTags = dto.getTags().stream()
                 .map(k -> {
                     Tag tag = tagRepo.findByName(k);
                     return dto.toReviewTagEntity(review, tag);
                 })
                 .collect(Collectors.toList());
+
+        List<ReviewImage> reviewImages = dto.getImage().stream()
+                .map(image -> ReviewImage.builder().review(review).url(image).build())
+                .collect(Collectors.toList());
+
         reviewTagRepo.saveAll(reviewTags);
+        reviewImageRepo.saveAll(reviewImages);
     }
 
     @Transactional
@@ -71,7 +85,6 @@ public class ReviewService {
 
         existingReview.setRate(dto.getRate());
         existingReview.setContent(dto.getContent());
-        existingReview.setImage(dto.getImage());
 
         reviewRepo.save(existingReview);
 
@@ -89,6 +102,13 @@ public class ReviewService {
                 reviewTagRepo.save(dto.toReviewTagEntity(existingReview, tag));
             }
         }
+
+        List<ReviewImage> existingImages = reviewImageRepo.findByReview(existingReview);
+        reviewImageRepo.deleteAll(existingImages);
+        List<ReviewImage> newImages = dto.getImage().stream()
+                .map(image -> ReviewImage.builder().review(existingReview).url(image).build())
+                .collect(Collectors.toList());
+        reviewImageRepo.saveAll(newImages);
     }
 
     @Transactional
@@ -105,7 +125,8 @@ public class ReviewService {
                 .stream()
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()))
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList()))
                 ).collect(Collectors.toList());
     }
 
@@ -114,7 +135,8 @@ public class ReviewService {
         return reviewRepo.findByUser(user)
                 .stream().map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()))
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList()))
                 ).collect(Collectors.toList());
     }
 
@@ -125,7 +147,8 @@ public class ReviewService {
                 .filter(review -> review.getUser().getId() == userId)
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList())
+                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
+                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
     }
@@ -133,5 +156,46 @@ public class ReviewService {
     public void canHandleReview(AppUser reviewUser, AppUser user) {
         if (!(reviewUser.getId().equals(user.getId()) || user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN")))
             throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");
+    }
+
+    public void insertData(String path) throws IOException, ParseException {
+        if (reviewRepo.count() < 1) { //db가 비어있을 때만 실행
+
+            FileInputStream ins = new FileInputStream(path + "review.json");
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject)parser.parse(
+                    new InputStreamReader(ins, "UTF-8")
+            );
+            JSONArray jsonArray = (JSONArray) jsonObject.get("review");
+            Gson gson = new Gson();
+
+            List<AppUser> users = userRepo.findAll();
+
+            File imageDirectory = new File(path + "image/임시_리뷰/");
+            File[] images = imageDirectory.listFiles();
+            String imageUrl = null;
+                for (File image : images) {
+                    imageUrl = image.getAbsolutePath();
+                }
+
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject temp = (JSONObject) jsonArray.get(i);
+                ReviewDto.PostRequest dto = gson.fromJson(temp.toString(), ReviewDto.PostRequest.class);
+                Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
+                Review review = dto.toEntity(users.get(i%2), place);
+                reviewRepo.save(review);
+                ReviewImage reviewImage = ReviewImage.builder().review(review).url(imageUrl).build();
+                reviewImageRepo.save(reviewImage);
+
+                List<ReviewTag> reviewTags = dto.getTags().stream()
+                        .map(k -> {
+                            Tag tag = tagRepo.findByName(k);
+                            return dto.toReviewTagEntity(review, tag);
+                        })
+                        .collect(Collectors.toList());
+                reviewTagRepo.saveAll(reviewTags);
+            }
+        }
     }
 }

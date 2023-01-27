@@ -40,6 +40,7 @@ export default function list(){
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
     const mouseClicked = false;
+    const tagClicked = false;
 
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
@@ -151,7 +152,7 @@ export default function list(){
     // }
 
     // 아이콘 클릭했을 때 이벤트
-    const handleOnclick = (event) =>{
+    const handleIconOnclick = (event) =>{
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
@@ -181,7 +182,14 @@ export default function list(){
     const handleLiClick = (e) => {
         e.preventDefault();
         console.log("clicked");
-      }
+      };
+
+    //태그 클릭했을 때 사라지도록
+    const handleTagClick = (e) => {
+        e.preventDefault();
+        
+        e.currentTarget.style.display = 'none';
+    }
 
     return(
     <ThemeProvider theme={theme}>
@@ -203,16 +211,20 @@ export default function list(){
                     }}>
                         <Grid container style={{padding:'50px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={mapIcon} width={37} height={36} onClick={handleOnclick} name='map' />
-                            </Grid>
-                            <Grid item >
-                            <Image src={tag14} width={64} height={40} />
+                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
                             </Grid>
                             <Grid item xs>
-                            <Image src={tag14} width={64} height={40} />
+                                <Grid container>
+                                    <Grid item onClick={handleTagClick}>
+                                    <Image src={tag14} width={64} height={40} />
+                                    </Grid>
+                                    <Grid item xs onClick={handleTagClick}>
+                                    <Image src={tag14} width={64} height={40} />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item >
-                            <Image src={closeIcon} width={36} height={36} onClick={handleOnclick} name='close'/>
+                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close'/>
                             </Grid>
                         </Grid>
                     </Card>

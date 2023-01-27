@@ -25,14 +25,14 @@ public class ServiceApplication {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
 	@Bean
 	CommandLineRunner run(UserService userService,
 						  TagService tagService,
 						  PlaceService placeService,
 						  ImageService imageService,
 						  MenuService menuService,
-						  KeywordService keywordService) {
+						  KeywordService keywordService,
+						  ReviewService reviewService) {
 		return args -> {
 
 			userService.saveRole(new Role(null, "ROLE_USER"));
@@ -46,11 +46,17 @@ public class ServiceApplication {
 			//데이터 자동 주입
 			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\";
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
-			tagService.insertData(path);
-			placeService.insertData(path);
-			imageService.insertData(path);
-			menuService.insertData(path);
-			keywordService.insertData(path);
+
+			try {
+				tagService.insertData(path);
+				placeService.insertData(path);
+				imageService.insertData(path);
+				menuService.insertData(path);
+				keywordService.insertData(path);
+				reviewService.insertData(path);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 		};
 	}
 }

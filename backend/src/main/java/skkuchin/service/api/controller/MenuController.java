@@ -31,6 +31,7 @@ public class MenuController {
 
 
     @GetMapping("/place/{placeId}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> getPlaceReview(@PathVariable Long placeId) {
         List<MenuDto.Response> placeMenus = menuService.getPlaceReview(placeId);
         return new ResponseEntity<>(new CMRespDto<>(1, "메뉴 조회 완료", placeMenus), HttpStatus.OK);

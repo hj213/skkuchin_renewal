@@ -1,4 +1,3 @@
-
 import { API_URL } from "../../../config/index";
 import cookie from 'cookie';
 
@@ -7,7 +6,7 @@ export default async(req, res) => {
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
 
-        if(access == false){
+        if (access == false) {
             return res.status(401).json({
                 error: 'User unauthorized to make this request'
             });

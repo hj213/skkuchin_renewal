@@ -21,7 +21,7 @@ import back from '../image/arrow_back_ios.png'
 import ReviewStar from '../components/ReviewStar'
 
 const PlacePage = () => {
-
+    
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const router = useRouter();
     // list.js 에서 전달 받은 id 값 받아오기
@@ -199,7 +199,7 @@ const PlacePage = () => {
                                 </Grid>
                           
                                 <Grid>
-                                    {places ? places.filter(item => item.id == place_id).map(item => (
+                                    { places ? places.filter(item => item.id == place_id).map(item => (
                                         <Grid style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
@@ -208,7 +208,7 @@ const PlacePage = () => {
                                                 {item.detail_category}
                                             </Typography>
                                         </Grid>
-                                    )) : null}
+                                    )) : null }
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
@@ -252,7 +252,7 @@ const PlacePage = () => {
                     )}
                     
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
-                    {places.filter(item => item.id == place_id).map(item => (
+                    { places ? places.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
 
                                 <>
@@ -385,11 +385,10 @@ const PlacePage = () => {
                                                         메뉴
                                                     </Typography>
                                                     <Typography sx={{fontSize: '17px', fontWeight: '700', color: '#FFCE00'}}>
-                                                        {menus.length}
+                                                        { menus? menus.length : null }
                                                     </Typography>
                                                 </Grid>
-                                               
-                                                { menus.map((menu, index) => (
+                                                { menus ? menus.map((menu, index) => (
                                                     <Grid container style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
                                                         <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
                                                             <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
@@ -397,19 +396,19 @@ const PlacePage = () => {
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
-                                                ))}
+                                                )) : null }
                                             </CardContent>
                                         </Grid>
 
                                     </Grid>
                                 </>
                             </li> 
-                            ))}
+                            )) : null }
                         </Container>
                         
                         </div>
                         <Grid>
-                         <ReviewStar />
+                        <ReviewStar />
                         </Grid>
                     </Card>
                 </Container>

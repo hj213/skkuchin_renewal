@@ -11,19 +11,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.*;
-import skkuchin.service.repo.ImageRepo;
-import skkuchin.service.repo.PlaceRepo;
-import skkuchin.service.repo.ReviewRepo;
-import skkuchin.service.repo.ReviewTagRepo;
+import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +29,7 @@ public class PlaceService {
     private final ImageRepo imageRepo;
     private final ReviewRepo reviewRepo;
     private final ReviewTagRepo reviewTagRepo;
+    private final TagRepo tagRepo;
 
     @Transactional
     public List<PlaceDto.Response> getAll() {
@@ -89,22 +84,61 @@ public class PlaceService {
         placeRepo.deleteById(placeId);
     }
 
+    @Transactional
+    public List<PlaceDto.Response> searchPlace(String keyword) {
+        List<Place> places = placeRepo.findAll();
+        List<Place> matchingPlaces = new ArrayList<>();
+
+        Tag tag = tagRepo.findByName(keyword);
+
+        if (tag != null) {
+            for (Place place : places) {
+                if (getTop3TagsByPlace(place).contains(tag)) {
+                    matchingPlaces.add(place);
+                }
+            }
+        } else {
+            for (Place place : places) {
+                if (place.getCategory().name().contains(keyword)
+                        || (place.getDetailCategory() != null && place.getDetailCategory().contains(keyword))
+                        || (place.getGate() != null && place.getGate().name().contains(keyword))
+                        || place.getName().contains(keyword)) {
+                    matchingPlaces.add(place);
+                    System.out.println(matchingPlaces);
+                }
+            }
+        }
+
+        return matchingPlaces
+                .stream()
+                .map(place -> new PlaceDto.Response(
+                        place,
+                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        getTop3TagsByPlace(place)
+                ))
+                .collect(Collectors.toList());
+    }
+
     public void insertData(String path) throws IOException, ParseException {
         if (placeRepo.count() < 1) { //db가 비어있을 때만 실행
+           String[] campusNames = {"명륜", "율전"};
 
-            FileInputStream ins = new FileInputStream(path + "place.json");
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)parser.parse(
-                    new InputStreamReader(ins, "UTF-8")
-            );
-            JSONArray jsonArray = (JSONArray) jsonObject.get("place");
-            Gson gson = new Gson();
+           for (String campusName : campusNames) {
+               FileInputStream ins = new FileInputStream(path + "place_" + campusName + ".json");
+               JSONParser parser = new JSONParser();
+               JSONObject jsonObject = (JSONObject)parser.parse(
+                       new InputStreamReader(ins, "UTF-8")
+               );
+               JSONArray jsonArray = (JSONArray) jsonObject.get("place");
+               Gson gson = new Gson();
 
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject temp = (JSONObject) jsonArray.get(i);
-                PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
-                placeRepo.save(dto.toEntity());
-            }
+               for (int i = 0; i < jsonArray.size(); i++) {
+                   JSONObject temp = (JSONObject) jsonArray.get(i);
+                   PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
+                   placeRepo.save(dto.toEntity());
+               }
+           }
         }
     }
 

@@ -62,4 +62,11 @@ public class PlaceController {
         placeService.delete(placeId);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 삭제 완료", null), HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> search(@RequestParam("q") String keyword) {
+        List<PlaceDto.Response> places = placeService.searchPlace(keyword);
+        return new ResponseEntity<>(new CMRespDto<>(1, "장소 검색 완료", places), HttpStatus.OK);
+    }
 }

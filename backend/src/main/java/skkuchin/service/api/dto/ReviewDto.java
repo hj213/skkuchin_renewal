@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class ReviewDto {
 
     @Getter
+    @Setter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
@@ -28,7 +30,7 @@ public class ReviewDto {
         private float rate;
         @NotBlank
         private String content;
-        private String image;
+        private List<String> image;
         private List<String> tags;
 
         public Review toEntity(AppUser user, Place place) {
@@ -36,7 +38,7 @@ public class ReviewDto {
                     .place(place)
                     .content(content)
                     .rate(rate)
-                    .image(image)
+                    //.image(image)
                     .user(user)
                     .build();
         }
@@ -56,7 +58,7 @@ public class ReviewDto {
         private float rate;
         @NotBlank
         private String content;
-        private String image;
+        private List<String> image;
         private List<String> tags;
 
         public ReviewTag toReviewTagEntity(Review review, Tag tag) {
@@ -76,7 +78,7 @@ public class ReviewDto {
         private Long placeId;
         private float rate;
         private String content;
-        private String image;
+        private List<String> image;
         @JsonProperty
         private LocalDateTime createDate;
         private String nickname;
@@ -88,12 +90,12 @@ public class ReviewDto {
         private String userImage;
         private List<String> tags;
 
-        public Response(Review review, List<ReviewTag> tags) {
+        public Response(Review review, List<ReviewTag> tags, List<ReviewImage> images) {
             this.id = review.getId();
             this.placeId = review.getPlace().getId();
             this.rate = review.getRate();
             this.content = review.getContent();
-            this.image = review.getImage();
+            this.image = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
             this.createDate = review.getCreateDate();
             this.nickname = review.getUser().getNickname();
             this.major = review.getUser().getMajor();
