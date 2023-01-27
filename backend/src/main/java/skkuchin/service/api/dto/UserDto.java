@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Matching.Gender;
 import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
@@ -14,6 +15,7 @@ import skkuchin.service.domain.User.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 
@@ -90,22 +92,32 @@ public class UserDto {
         private Long id;
         private String nickname;
         private String username;
-        //private String email;
         @JsonProperty
         private int studentId;
         private Major major;
+        private Campus campus;
         private String image;
-        //private Mbti mbti;
 
         public Response(AppUser user) {
             this.id = user.getId();
             this.nickname = user.getNickname();
             this.username = user.getUsername();
-            //this.email = user.getEmail();
             this.studentId = user.getStudentId();
             this.major = user.getMajor();
+            this.campus = findCampus(user.getMajor());
             this.image = user.getImage();
-            //this.mbti = user.getMbti();
+        }
+
+        public Campus findCampus(Major major) {
+            EnumSet<Major> majors = EnumSet.allOf(Major.class);
+            List<Major> majorList = new ArrayList<>();
+            majorList.addAll(majors);
+
+            if (majorList.indexOf(major) < majorList.indexOf(Major.사학과)) {
+                return Campus.명륜;
+            } else {
+                return Campus.율전;
+            }
         }
     }
 }
