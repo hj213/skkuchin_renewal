@@ -1,10 +1,11 @@
-import { API_URL } from "../../../config/index";
+import { API_URL } from "../../../../config/index";
 import cookie from 'cookie';
 
 export default async(req, res) => {
     if(req.method == 'GET'){
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
+        const keyword = req.query.keyword;
 
         if (access == false) {
             return res.status(401).json({
@@ -12,7 +13,7 @@ export default async(req, res) => {
             });
         }
         try {
-            const apiRes = await fetch(`${API_URL}/api/place`, {
+            const apiRes = await fetch(`${API_URL}/api/place/search?q=${keyword}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

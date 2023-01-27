@@ -3,8 +3,26 @@ import Map from '../components/Map';
 import Layout from "../hocs/Layout";
 import theme from '../theme/theme';
 import styled from '@emotion/styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { search_places } from '../actions/place/place';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const homePage = () => {
+
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  if(typeof window !== 'undefined' && !isAuthenticated){
+    router.push('/login');
+}
+
+  useEffect(() => {
+      if (dispatch && dispatch !== null && dispatch !== undefined) {
+          dispatch(search_places("맛집"));
+      }
+  }, [dispatch]);
   
   return(
     <ThemeProvider theme={theme}>
@@ -23,6 +41,7 @@ const homePage = () => {
         <Typography variant='h3' sx={{fontSize: 30}}>레귤러</Typography>
         <Box color='primary.main'>Haha</Box>
         <Box sx={{ color: theme.palette.primary.light }}>Haha</Box>
+        <Box></Box>
       </Layout>
     </ThemeProvider>
   )

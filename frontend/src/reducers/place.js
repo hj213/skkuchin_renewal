@@ -1,8 +1,10 @@
 import {
-    LOAD_PLACE_FAIL,
     LOAD_PLACE_SUCCESS,
+    LOAD_PLACE_FAIL,
     LOAD_PLACES_SUCCESS,
-    LOAD_PLACES_FAIL
+    LOAD_PLACES_FAIL,
+    SEARCH_PLACES_SUCCESS,
+    SEARCH_PLACES_FAIL,
 } from '../actions/place/types'
 
 const initialState = {
@@ -29,6 +31,16 @@ const placeReducer = (state= initialState, action) => {
                 place: payload.place
             }
         case LOAD_PLACE_FAIL:
+            return {
+                ...state,
+                place: null
+            }
+        case SEARCH_PLACES_SUCCESS:
+            return {
+                ...state,
+                place: payload.place
+            }
+        case SEARCH_PLACES_FAIL:
             return {
                 ...state,
                 place: null
