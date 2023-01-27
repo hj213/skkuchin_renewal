@@ -175,7 +175,7 @@ public class ReviewService {
             File[] images = imageDirectory.listFiles();
             String imageUrl = null;
                 for (File image : images) {
-                    imageUrl = image.getAbsolutePath();
+                    imageUrl = "/app/src/image/임시_리뷰/" + image.getName();
                 }
 
 
