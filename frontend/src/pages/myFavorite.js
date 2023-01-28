@@ -48,7 +48,6 @@ export default function myFavorite(){
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
-        console.log("clicked");
     };
     
     //아이콘 클릭시
@@ -67,10 +66,13 @@ export default function myFavorite(){
     };
 
     //favorite
-    const handleFavClick = (favorites_id) => {
+    const handleFavClick = (placeId) => (e) => {
+        e.preventDefault();
         dispatch(load_favorite());
-        dispatch(delete_favorite(favorites_id));
-        console.log(favorite_id);
+        const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
+        if(favorite_id) {
+            dispatch(delete_favorite(favorite_id.id));
+        }
     };
 
     //최신순 버튼
@@ -179,8 +181,8 @@ export default function myFavorite(){
                                                             {item.detail_category}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
-                                                        <Image width={15} height={15} onClick={handleFavClick(item.id)} src={bookmarkOn}/>
+                                                    <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}} onClick={handleFavClick(item.place_id)}>
+                                                        <Image width={15} height={15} src={bookmarkOn}/>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid item container style={{marginTop: '10px'}}>

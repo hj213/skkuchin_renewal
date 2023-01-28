@@ -124,9 +124,7 @@ export default function MapDrawer({openID}){
                             <Image src={bookmark} alt='즐겨찾기' width={16} height={16}/>
                         </Grid>
                         <Grid item>
-                            
-                                <ListItemText primary="즐겨찾기 장소" style={{marginTop:'0px'}} onClick={handleMove} />
-                            
+                            <ListItemText primary="즐겨찾기 장소" style={{marginTop:'0px'}} onClick={handleMove} />  
                         </Grid>
                     </Grid>
                 </ListItem>
@@ -136,9 +134,7 @@ export default function MapDrawer({openID}){
                             <Image src={star} alt='나의 리뷰' width={20} height={20} style={{marginTop:'3px'}}/>
                         </Grid>
                         <Grid item>
-                            <Link href={`/place`}>
-                                <ListItemText primary="나의 리뷰" style={{marginTop:'0px'}} />
-                            </Link>
+                            <ListItemText primary="나의 리뷰" style={{marginTop:'0px'}} onClick={handleMove}/>
                         </Grid>
                     </Grid>
                 </ListItem>
