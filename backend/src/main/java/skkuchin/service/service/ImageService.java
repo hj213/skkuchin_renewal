@@ -102,7 +102,7 @@ public class ImageService {
 
                 File[] images = folder.listFiles();
                 for (File image : images) {
-                    String imageUrl = image.getAbsolutePath();
+                    String imageUrl = "/app/src/image/" + campusName + "/" + placeName + "/" + image.getName();
                     Image newImage = Image.builder()
                             .place(place)
                             .url(imageUrl)
