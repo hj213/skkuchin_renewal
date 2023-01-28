@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { search_places } from '../actions/place/place';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import MapDrawer from '../components/MapDrawer';
 
 const homePage = () => {
 
@@ -23,6 +24,9 @@ const homePage = () => {
           dispatch(search_places("맛집"));
       }
   }, [dispatch]);
+
+  //뒤로가기에서 drawer 열어두기 위하여
+  const {openID} = router.query;
   
   return(
     <ThemeProvider theme={theme}>
@@ -31,6 +35,7 @@ const homePage = () => {
         title='스꾸친 home'
         content = '스꾸친의 메인 페이지입니다.'
       >
+        <MapDrawer openID={openID}/>
         <Map latitude={37.58622450673971} longitude={126.99709024757782} />
         <Test1>dasds</Test1>
         <Test2>dasds</Test2>

@@ -19,7 +19,7 @@ import mapIcon from '../image/map-1.png';
 import closeIcon from '../image/close.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import image from '../image/명륜/호호식당/7.jpeg';
-import PlacePage from "./place";
+
 
 export default function list(){
 
@@ -185,13 +185,11 @@ export default function list(){
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
-        console.log("clicked");
       };
 
     //태그 클릭했을 때 사라지도록
     const handleTagClick = (e) => {
         e.preventDefault();
-        
         e.currentTarget.style.display = 'none';
     }
 
