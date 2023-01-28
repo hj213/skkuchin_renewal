@@ -6,7 +6,6 @@ import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
 
 const RegisterPage = () => {
-
     const dispatch = useDispatch();
     const router = useRouter();
     const register_success = useSelector(state => state.auth.register_success);
