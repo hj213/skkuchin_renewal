@@ -37,8 +37,15 @@ public class UserService {
     public boolean checkUsername(String username) {
         AppUser existingUser = userRepo.findByUsername(username);
         if (existingUser == null) {
-            return false;
-        } else return true;
+            return true;
+        } else return false;
+    }
+
+    public boolean checkNickName(String nickName) {
+        AppUser existingUser = userRepo.findByNickname(nickName);
+        if (existingUser == null) {
+            return true;
+        } else return false;
     }
 
     @Transactional

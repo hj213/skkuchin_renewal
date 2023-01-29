@@ -181,6 +181,18 @@ public class UserController {
         userService.deleteUser(userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 삭제 완료", null), HttpStatus.OK);
     }
+
+    @GetMapping("/user/check/username/{username}")
+    public ResponseEntity<?> checkUsername(@PathVariable String username) {
+        Boolean canUse = userService.checkUsername(username);
+        return new ResponseEntity<>(new CMRespDto<>(1, "아이디 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/check/nickname/{nickName}")
+    public ResponseEntity<?> checkNickName(@PathVariable String nickName) {
+        Boolean canUse = userService.checkNickName(nickName);
+        return new ResponseEntity<>(new CMRespDto<>(1, "닉네임 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
+    }
 }
 
 
