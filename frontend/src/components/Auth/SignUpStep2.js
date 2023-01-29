@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem} from '@mui/material';
+import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, InputAdornment} from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
@@ -95,14 +95,14 @@ const SignUpStep2 = (props) => {
             }}
             required
             InputProps={{
-              endAdornment: (student_id.length == 10) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
-          }}
+              endAdornment: <InputAdornment position="end"><span style={{color: "#000", fontSize: '12px', fontWeight: '500'}}>학번</span></InputAdornment>,
+            }}
           />
           { (student_id != '') ?
-            (student_id.length != 10) ?
-            <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>학번 10자리를 입력해주세요.</Typography>
+            (student_id.length != 2) ?
+            <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>숫자 2자리를 입력해주세요.</Typography>
             : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>&nbsp; </Typography>
-          : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '34px'}}>학번 10자리 입력</Typography>
+          : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '34px'}}>숫자 2자리 입력</Typography>
         }
         </div>
         <div style={{margin: '0 36px 12px'}}>

@@ -16,6 +16,7 @@ const SignUpStep1 = (props) => {
 
     const [validPW, setValidPW] = useState(false);
 
+    
     const handleNextStep = () => {
         props.handleNextStep({username, password, re_password});
     }
@@ -101,7 +102,7 @@ const SignUpStep1 = (props) => {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (password === re_password) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
+                    endAdornment: (password === re_password && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
                 }}
                 />
                 { (re_password != '') ? ((password == re_password) ? 
@@ -110,9 +111,16 @@ const SignUpStep1 = (props) => {
                 : null}
             </div>
             <div style={{margin: '53px 36px 12px'}}>
-            <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                다음
-            </Button>
+            {/* 아이디 중복확인 처리 필요 */}
+            { validPW && (password == re_password) && username != null ?
+                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+                :
+                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+            }
             </div>
         </form>
         <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
