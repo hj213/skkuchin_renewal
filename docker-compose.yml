@@ -53,6 +53,8 @@ services:
       - NODE_ENV=prod
       - NEXT_PUBLIC_API_URL=http://server:8080
       - NEXT_PUBLIC_KAKAOMAP_APPKEY=0d8f0e65047ebb4fce295a83614d7fae
+      - AWS_ACCESS_KEY='AKIAZTEOD3CVDU4TKCBL'
+      - AWS_SECRET_KEY='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'
     volumes:
       - ./frontend:/app
       - /app/node_modules

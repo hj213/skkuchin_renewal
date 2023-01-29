@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Role;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.ReviewService;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.List;
 
 @RestController

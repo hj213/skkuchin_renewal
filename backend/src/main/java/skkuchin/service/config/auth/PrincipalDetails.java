@@ -1,4 +1,4 @@
-package skkuchin.service.security.auth;
+package skkuchin.service.config.auth;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

@@ -9,14 +9,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.FavoriteDto;
-import skkuchin.service.api.dto.MenuDto;
-import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.Map.Favorite;
-import skkuchin.service.domain.Map.Place;
 import skkuchin.service.repo.FavoriteRepo;
 import skkuchin.service.repo.UserRepo;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.FavoriteService;
 
 import javax.validation.Valid;

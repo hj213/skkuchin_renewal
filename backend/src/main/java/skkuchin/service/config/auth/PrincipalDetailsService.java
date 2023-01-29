@@ -1,19 +1,13 @@
-package skkuchin.service.security.auth;
+package skkuchin.service.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.exception.EmailNotAuthenticatedException;
 import skkuchin.service.repo.UserRepo;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
