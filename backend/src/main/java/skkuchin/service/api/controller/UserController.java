@@ -188,10 +188,23 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "아이디 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
     }
 
-    @GetMapping("/user/check/nickname/{nickName}")
-    public ResponseEntity<?> checkNickName(@PathVariable String nickName) {
-        Boolean canUse = userService.checkNickName(nickName);
+    @GetMapping("/user/check/nickname/{nickname}")
+    public ResponseEntity<?> checkNickName(@PathVariable String nickname) {
+        Boolean canUse = userService.checkNickname(nickname);
         return new ResponseEntity<>(new CMRespDto<>(1, "닉네임 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
+    }
+
+    /*
+    @PutMapping("/user/password")
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody UserDto.PutPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+    }*/
+
+    @DeleteMapping("/email/resend/{email}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> resendEmail(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
+        userService.resendEmail(email);
+        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 재전송 완료", null), HttpStatus.OK);
     }
 }
 

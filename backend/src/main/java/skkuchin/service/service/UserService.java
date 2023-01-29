@@ -41,8 +41,8 @@ public class UserService {
         } else return false;
     }
 
-    public boolean checkNickName(String nickName) {
-        AppUser existingUser = userRepo.findByNickname(nickName);
+    public boolean checkNickname(String nickname) {
+        AppUser existingUser = userRepo.findByNickname(nickname);
         if (existingUser == null) {
             return true;
         } else return false;
@@ -90,6 +90,16 @@ public class UserService {
         emailAuth.useToken();
         user.emailVerifiedSuccess();
         return true;
+    }
+
+    public void resendEmail(String email) throws MessagingException, UnsupportedEncodingException {
+
+        EmailAuth emailAuth = emailAuthRepo.findByEmailAndExpireDateAfter(email, LocalDateTime.now());
+        if (emailAuth != null) {
+            throw new RuntimeException("인증 메일은 5분에 한 번만 전송할 수 있습니다.");
+        } else {
+            emailService.sendEmail(email);
+        }
     }
 
     public void saveRole(Role role) {
