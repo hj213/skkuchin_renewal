@@ -14,11 +14,9 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -171,13 +169,7 @@ public class ReviewService {
 
             List<AppUser> users = userRepo.findAll();
 
-            File imageDirectory = new File(path + "image/임시_리뷰/");
-            File[] images = imageDirectory.listFiles();
-            String imageUrl = null;
-                for (File image : images) {
-                    imageUrl = "/app/src/image/임시_리뷰/" + image.getName();
-                }
-
+            String imageUrl = "https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/dev/임시_리뷰/p4v9hOJorE9sAR9clE068RRB.jpeg";
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject temp = (JSONObject) jsonArray.get(i);
