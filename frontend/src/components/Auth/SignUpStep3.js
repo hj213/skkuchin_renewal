@@ -1,39 +1,49 @@
-import { useState, useEffect } from "react";
-import {  TextField, Button, InputLabel, Input, Typography,  Box, FormControl, Select, MenuItem} from '@mui/material';
+import { useState } from "react";
+import {  TextField, Button,  Typography,  Box, Select, MenuItem} from '@mui/material';
+import { useSelector, useDispatch } from "react-redux";
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from "next/router";
-import { NodeNextRequest } from "next/dist/server/base-http/node";
+import { register} from "../../actions/auth/auth";
 
 const SignUpStep3 = (props) => {
-  
+    const dispatch = useDispatch();
     const [emailId, setEmailId] = useState('');
     const [domain, setDomain] = useState('@g.skku.edu');
-
-    const [email, setEmail] = useState(emailId+domain);
 
     const [checkState, setCheckState] = useState(false);
     
     const handlePrevStep = () => {
       props.handlePrevStep();
     }
-    const handleSubmit= () => {
-      props.handleNextStep({email: emailId + domain});
+    const handleSubmit= (e) => {
+      e.preventDefault();
+      localStorage.setItem("email",emailId+domain);
+
+      const username = localStorage.getItem("username");
+      const password = localStorage.getItem("password");
+      const re_password = localStorage.getItem("re_password");
+      const nickname = localStorage.getItem("nickname");
+      const student_id = localStorage.getItem("student_id");
+      const major = localStorage.getItem("major");
+      const email = localStorage.getItem("email");
+
+      if (dispatch && dispatch !== null && dispatch !== undefined)
+        dispatch(register(nickname, username, password, re_password, email, student_id, major));
+
+      console.log(nickname, username, password, re_password, email, student_id, major);
     }
 
     const handleCheck = () => {
       setCheckState(!checkState);
     }
       
-
     return (
       <Box
             sx={{
-            margin: '45px 24px 0',
+            marginTop: '45px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -51,6 +61,8 @@ const SignUpStep3 = (props) => {
                         원활한 서비스 이용을 위해 <br/>
                         이메일 인증을 완료해주세요</Typography>
         </div>
+
+        <form onSubmit={handleSubmit}>
         <div style={{textAlign: 'center', display: 'flex', marginBottom: '10.75px'}}>
           <TextField
             variant="standard"
@@ -89,10 +101,26 @@ const SignUpStep3 = (props) => {
             }
           <Typography sx={{fontSize: '10px', fontWeight: '400', ml: '5.58px'}}>개인정보처리방침 및 이용약관에 동의합니다</Typography>
         </div>
-        
-        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-            이메일 인증하기
-        </Button>
+        {/* { validPW && (password == re_password) && username != null ?
+                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+                :
+                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+            } */}
+          {emailId != '' && checkState ?
+              <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+                  이메일 인증하기
+              </Button>
+          :
+              <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+                  이메일 인증하기
+              </Button>
+          }
+
+        </form>
       </Box>
     );
   };

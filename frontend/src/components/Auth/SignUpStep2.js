@@ -31,6 +31,9 @@ const SignUpStep2 = (props) => {
 
     const handleNextStep = () => {
       props.handleNextStep({nickname, major, student_id});
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("major", major);
+      localStorage.setItem("student_id", student_id);
     }
 
 
@@ -106,10 +109,16 @@ const SignUpStep2 = (props) => {
         }
         </div>
         <div style={{margin: '0 36px 12px'}}>
-            <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                다음
-            </Button>
-            </div>
+            { (nickname != '' && major != '' && student_id.length == 2 && student_id < 24) ?
+                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+                    :
+                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+            }
+        </div>
         </form>
         <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
                 이미 회원이신가요? <Link href={`/login`} > 로그인 </Link> 

@@ -1,6 +1,6 @@
 // 아이디, 비밀번호
-import { useState, useEffect } from "react";
-import {  TextField, Button, Container, Typography, Box } from '@mui/material';
+import { useState } from "react";
+import {  TextField, Button, Typography, Box } from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
@@ -16,9 +16,11 @@ const SignUpStep1 = (props) => {
 
     const [validPW, setValidPW] = useState(false);
 
-    
     const handleNextStep = () => {
         props.handleNextStep({username, password, re_password});
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+        localStorage.setItem("re_password", re_password);
     }
     
     const handlePasswordChange = (e) => {
