@@ -1,4 +1,4 @@
-import { Grid,ThemeProvider, Button, Grow, Paper, MenuList, MenuItem, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
+import { Grid,ThemeProvider, Button, Grow, Box, Paper, MenuList, MenuItem, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
 import { useDispatch, useSelector, } from "react-redux";
 import { useState, useEffect, useRef, } from 'react';
 import { useRouter } from "next/router";
@@ -12,12 +12,12 @@ import tag17 from '../image/tag17.png';
 import star from '../image/Star-1.png';
 import back from '../image/arrow_back_ios.png';
 import closeIcon from '../image/close.png';
+import down from '../image/down.png';
 import theme from '../theme/theme';
-
-
 
 export default function myFavorite(){
     const [open, setOpen] = useState(false);
+    const [color, setColor] = useState(true);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const router = useRouter();
@@ -27,8 +27,6 @@ export default function myFavorite(){
     // if(typeof window !== 'undefined' && !isAuthenticated){
     //     router.push('/login');
     // }
-
-    
 
     // api에서 데이터 불러오기
     useEffect(()=>{
@@ -82,7 +80,7 @@ export default function myFavorite(){
 
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
-          return;
+            return;
         }
     
         setOpen(false);
@@ -95,6 +93,7 @@ export default function myFavorite(){
       }
       prevOpen.current = open;
     }, [open]);
+
 
     return(
         <ThemeProvider theme={theme}>
@@ -117,51 +116,71 @@ export default function myFavorite(){
                     <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick}/>
                 </Grid>
             </Grid>
-            <div style={{float:'right', margin:'5px 0px 15px 0px'}}>
-            <Button
-            ref={anchorRef}
-            id="composition-button"
-            aria-controls={open ? 'composition-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-haspopup="true"
-            onClick={handleToggle}
-            >
-            최신순
-            </Button>
-            <Popper
-            open={open}
-            anchorEl={anchorRef.current}
-            role={undefined}
-            placement="bottom-start"
-            transition
-            disablePortal
-            >
-            {({ TransitionProps, placement }) => (
-                <Grow
-                {...TransitionProps}
-                style={{
-                    transformOrigin:
-                    placement === 'bottom-start' ? 'left top' : 'left bottom',
-                }}
+            <div style={{float:'right', margin:'20px 0px 0px 0px'}}>
+                <Grid container style={{marginRight:'21px'}} onClick={handleToggle}>
+                    <Grid item style={{margin:'0px'}}>
+                        <Button
+                        ref={anchorRef}
+                        id="composition-button"
+                        aria-controls={open ? 'composition-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup="true"
+                        style={{padding:'0px'}}
+                        color="fontColor"
+                        >
+                        최신순
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Image src={down} width={15} height={8} />
+                    </Grid>
+                </Grid>
+                <Popper
+                open={open}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                placement="bottom-start"
+                transition
+                disablePortal
+                style={{zIndex:'3', }}
                 >
-                <Paper style={{position:'static'}}>
-                    <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList
-                        autoFocusItem={open}
-                        id="composition-menu"
-                        aria-labelledby="composition-button"
-                        style={{position:'relative',zIndex:'30000'}}
+                {({ TransitionProps, placement }) => (
+                    <Grow
+                    {...TransitionProps}
+                    style={{
+                        transformOrigin:
+                        placement === 'bottom-start' ? 'left top' : 'left bottom',
+                        boxShadow: '0px 0px 4px 0px rgb(0,0,0, 0.16)', 
+                        borderRadius:'5px',
+                        padding:'4px 5px 4px 5px',
+                        height:'113px'
+                    }}
                     >
-                        <MenuItem onClick={handleClose}>최신순</MenuItem>
-                        <MenuItem onClick={handleClose}>이름순</MenuItem>
-                        <MenuItem onClick={handleClose}>오래된순</MenuItem>
-                    </MenuList>
-                    </ClickAwayListener>
-                </Paper>
-                </Grow>
-            )}
-            </Popper>
-        </div>
+                    <Paper>
+                        <ClickAwayListener onClickAway={handleClose}>
+                        <MenuList
+                            autoFocusItem={open}
+                            id="composition-menu"
+                            aria-labelledby="composition-button"
+                            dense={true}
+                            autoFocus={true}
+                        >
+                            <Grid container justifyContent='center' >
+                                <MenuItem style={{fontSize:'15px'}} color={color? theme.palette.primary : '#000'} name='최신순' onClick={handleClose}>최신순</MenuItem>
+                            </Grid>
+                            <Grid container justifyContent='center' >
+                                <MenuItem style={{fontSize:'15px'}} name='이름순' onClick={handleClose}>이름순</MenuItem>
+                            </Grid>
+                            <Grid container justifyContent='center' >
+                                <MenuItem style={{fontSize:'15px'}} name='오래된순' onClick={handleClose}>오래된순</MenuItem>
+                            </Grid>
+                        </MenuList>
+                        </ClickAwayListener>
+                    </Paper>
+                    </Grow>
+                )}
+                </Popper>
+            </div>
             <Container >
                 <ul style={{listStyleType: "none", padding: '0px 0px 0px 0px', margin: '0px', }} >
                         {favorites? favorites.map((item) => (

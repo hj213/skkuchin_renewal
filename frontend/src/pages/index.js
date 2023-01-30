@@ -21,7 +21,7 @@ const homePage = () => {
 
   useEffect(() => {
       if (dispatch && dispatch !== null && dispatch !== undefined) {
-          dispatch(search_places("맛집"));
+          dispatch(search_places("일식당"));
       }
   }, [dispatch]);
 
@@ -37,6 +37,7 @@ const homePage = () => {
       >
         <MapDrawer openID={openID}/>
         <Map latitude={37.58622450673971} longitude={126.99709024757782} />
+
         <Test1>dasds</Test1>
         <Test2>dasds</Test2>
         <Test3>dasds</Test3>
