@@ -48,7 +48,7 @@ public class UserController {
     @PostMapping("/user/saves")
     public ResponseEntity<?> saveUser(@Valid @RequestBody UserDto.SignUpForm signUpForm) {
         try {
-            userService.saveUser(signUpForm);
+            AppUser user = userService.saveUser(signUpForm);
             return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException exception) {
             //username 또는 nickname 중복 시 에러
@@ -200,11 +200,16 @@ public class UserController {
 
     }*/
 
-    @DeleteMapping("/email/resend/{email}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> resendEmail(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
-        userService.resendEmail(email);
-        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 재전송 완료", null), HttpStatus.OK);
+    @GetMapping("/email")
+    public ResponseEntity<?> sendEmail(@Valid @RequestBody UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
+        userService.sendEmail(dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 전송 완료", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/email/check/{username}")
+    public ResponseEntity<?> checkEmail(@PathVariable String username) {
+        Boolean isAuth = userService.checkEmail(username);
+        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 인증 여부 확인 완료", isAuth), HttpStatus.OK);
     }
 }
 

@@ -6,8 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
-import skkuchin.service.domain.Matching.Keyword;
-import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.*;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
@@ -19,6 +17,7 @@ import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,9 +55,8 @@ public class UserService {
         }
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         AppUser appUser = signUpForm.toEntity();
-        appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
+        //appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
         AppUser newUser = userRepo.save(appUser);
-        emailService.sendEmail(newUser.getEmail());
         return newUser;
     }
 
@@ -92,14 +90,28 @@ public class UserService {
         return true;
     }
 
-    public void resendEmail(String email) throws MessagingException, UnsupportedEncodingException {
+    public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
+        AppUser user = userRepo.findByUsername(dto.getUsername());
+        if (user == null) throw new RuntimeException("회원가입한 유저에게만 이메일 전송이 가능합니다.");
 
-        EmailAuth emailAuth = emailAuthRepo.findByEmailAndExpireDateAfter(email, LocalDateTime.now());
+        EmailAuth emailAuth = emailAuthRepo.findByEmailAndExpireDateAfter(dto.getEmail(), LocalDateTime.now());
+
         if (emailAuth != null) {
             throw new RuntimeException("인증 메일은 5분에 한 번만 전송할 수 있습니다.");
         } else {
-            emailService.sendEmail(email);
+            user.setEmail(dto.getEmail());
+            emailService.sendEmail(dto.getEmail());
         }
+    }
+
+    //이메일 인증 완료한 유저인지 확인
+    public Boolean checkEmail(String username) {
+        AppUser user = userRepo.findByUsername(username);
+        if (user == null) throw new RuntimeException("회원이 아닙니다.");
+        if (user.getEmailAuth()) {
+            user.getRoles().add(roleRepo.findByName("ROLE_USER"));
+            return true;
+        } else return false;
     }
 
     public void saveRole(Role role) {

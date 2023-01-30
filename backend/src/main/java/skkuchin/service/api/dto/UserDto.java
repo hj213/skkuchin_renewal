@@ -33,8 +33,8 @@ public class UserDto {
         private String password;
         @JsonProperty
         private String rePassword;
-        @NotBlank
-        private String email;
+        //@NotBlank
+        //private String email;
         @NotNull
         @JsonProperty
         @Min(value = 10)
@@ -53,7 +53,7 @@ public class UserDto {
                     .nickname(this.nickname)
                     .username(this.username)
                     .password(this.password)
-                    .email(this.email)
+                    //.email(this.email)
                     .studentId(this.studentId)
                     .major(this.major)
                     .startDate(LocalDateTime.now())
@@ -78,6 +78,15 @@ public class UserDto {
 
     @Getter
     @AllArgsConstructor
+    public static class EmailRequest {
+        @NotBlank
+        private String username;
+        @NotBlank
+        private String email;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class PutRequest {
         @NotBlank
         private String nickname;
@@ -90,6 +99,7 @@ public class UserDto {
     @AllArgsConstructor
     public static class PutPassword {
         @NotBlank
+        @JsonProperty
         private String nickname;
         @NotNull
         private Major major;
