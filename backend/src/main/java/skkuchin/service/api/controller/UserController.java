@@ -22,7 +22,7 @@ import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.BlankException;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.UserService;
 
 import javax.mail.MessagingException;

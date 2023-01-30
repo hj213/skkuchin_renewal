@@ -50,7 +50,7 @@ public class ServiceApplication {
 			try {
 				tagService.insertData(path);
 				placeService.insertData(path);
-				imageService.insertData(path);
+				imageService.insertData();
 				menuService.insertData(path);
 				keywordService.insertData(path);
 				reviewService.insertData(path);

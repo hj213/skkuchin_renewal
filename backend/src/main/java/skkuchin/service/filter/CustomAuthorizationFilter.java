@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.UserRepo;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

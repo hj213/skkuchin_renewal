@@ -19,7 +19,7 @@ public class Menu {
     private String name;
 
     @JoinColumn(name = "place_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Place place;
 
     @Column(nullable = false)

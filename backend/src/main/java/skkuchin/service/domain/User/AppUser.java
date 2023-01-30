@@ -3,6 +3,8 @@ package skkuchin.service.domain.User;
 import lombok.*;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Map.Favorite;
+import skkuchin.service.domain.Map.Review;
+import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.Matching.Gender;
 import skkuchin.service.domain.Matching.UserKeyword;
 
@@ -45,7 +47,6 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private Campus toggle;
 
-    //@Column(nullable = false)
     private String image;
 
     @Enumerated(EnumType.STRING)
@@ -60,19 +61,23 @@ public class AppUser {
 
     private LocalDateTime startDate;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserKeyword> userKeywords = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Favorite> favorites = new ArrayList<>();
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private Boolean emailAuth;
 
-
-
     public void emailVerifiedSuccess() {
         this.emailAuth = true;
     }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserKeyword> userKeywords = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> candidates = new ArrayList<>();
 }
