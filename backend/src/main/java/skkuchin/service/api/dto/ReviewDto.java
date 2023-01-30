@@ -22,10 +22,8 @@ public class ReviewDto {
     @Getter
     @Setter
     @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
         @NotNull
-        @JsonProperty
         private Long placeId;
         @NotNull
         private float rate;
