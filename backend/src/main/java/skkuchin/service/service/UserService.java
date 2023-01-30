@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.User.*;
-import skkuchin.service.exception.CustomValidationApiException;
-import skkuchin.service.exception.DiscordException;
-import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.exception.EmailAuthNumNotFoundException;
+import skkuchin.service.exception.*;
 import skkuchin.service.repo.*;
 
 import javax.mail.MessagingException;
@@ -53,15 +50,13 @@ public class UserService {
     @Transactional
     public AppUser saveUser(UserDto.SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
         log.info("Saving new user {} to the database", signUpForm.getNickname());
-        Map<String, String> errorMap = new HashMap<>();
+
         if (!signUpForm.getPassword().equals(signUpForm.getRePassword())) {
             //throw new DiscordException("re_password_error");
-            errorMap.put("content", "일치하지 않는 비밀번호입니다.");
-            throw new CustomValidationApiException("회원가입 실패", errorMap);
+            throw new CustomRuntimeException("회원가입 실패", "일치하지 않는 비밀번호입니다.");
         }
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         AppUser appUser = signUpForm.toEntity();
-        //appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
         AppUser newUser = userRepo.save(appUser);
         return newUser;
     }
@@ -99,18 +94,16 @@ public class UserService {
     public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
         AppUser user = userRepo.findByUsername(dto.getUsername());
 
-        Map<String, String> errorMap = new HashMap<>();
         if (user == null) {
-            errorMap.put("content", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
-            throw new CustomValidationApiException("이메일 전송 실패", errorMap);
+            throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
         }
         if (user.getEmailAuth()) {
-            errorMap.put("content", "이미 인증 완료하였습니다.");
-            throw new CustomValidationApiException("이메일 전송 실패", errorMap);
+            throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
         }
-        if (userRepo.findByEmail(dto.getEmail()) != null) {
-            errorMap.put("content", "사용 중인 이메일입니다.");
-            throw new CustomValidationApiException("이메일 전송 실패", errorMap);
+
+        AppUser existingUser = userRepo.findByEmail(dto.getEmail());
+        if (existingUser != null && existingUser.getEmailAuth()) {
+            throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
         } else {
             user.setEmail(dto.getEmail());
             emailService.sendEmail(dto.getEmail());
@@ -185,5 +178,20 @@ public class UserService {
     public void deleteUser(Long userId) {
         AppUser user = userRepo.findById(userId).orElseThrow();
         userRepo.delete(user);
+    }
+
+    @Transactional
+    public void updatePassword(UserDto.PutPassword dto, Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            throw new CustomRuntimeException("비밀번호 변경 실패", "현재 비밀번호가 일치하지 않습니다.");
+        }
+        if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
+            throw new CustomRuntimeException("비밀번호 변경 실패", "신규 비밀번호가 일치하지 않습니다.");
+        }
+        String newPassword = passwordEncoder.encode(dto.getNewPassword());
+        user.setPassword(newPassword);
+
+        userRepo.save(user);
     }
 }

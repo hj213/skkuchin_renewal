@@ -97,13 +97,16 @@ public class UserDto {
 
     @Getter
     @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PutPassword {
         @NotBlank
+        private String password;
         @JsonProperty
-        private String nickname;
-        @NotNull
-        private Major major;
-        private String image;
+        @NotBlank
+        private String newPassword;
+        @JsonProperty
+        @NotBlank
+        private String newRePassword;
     }
 
     @Getter
