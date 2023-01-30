@@ -200,7 +200,7 @@ public class UserController {
 
     }*/
 
-    @GetMapping("/email")
+    @GetMapping("/email/send")
     public ResponseEntity<?> sendEmail(@Valid @RequestBody UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
         userService.sendEmail(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "이메일 전송 완료", null), HttpStatus.OK);

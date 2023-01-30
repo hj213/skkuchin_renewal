@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.User.*;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.exception.EmailAuthNumNotFoundException;
@@ -92,12 +93,15 @@ public class UserService {
 
     public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
         AppUser user = userRepo.findByUsername(dto.getUsername());
-        if (user == null) throw new RuntimeException("회원가입한 유저에게만 이메일 전송이 가능합니다.");
+        if (user.getEmailAuth()) throw new CustomValidationApiException("이미 인증 완료하였습니다.");
+        if (user == null) throw new CustomValidationApiException("회원가입한 유저에게만 이메일 전송이 가능합니다.");
 
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndExpireDateAfter(dto.getEmail(), LocalDateTime.now());
 
         if (emailAuth != null) {
-            throw new RuntimeException("인증 메일은 5분에 한 번만 전송할 수 있습니다.");
+            if (userRepo.findByEmail(dto.getEmail()) != null)
+                throw new CustomValidationApiException("이미 사용 중인 이메일입니다.");
+            throw new CustomValidationApiException("인증 메일은 5분에 한 번만 전송할 수 있습니다.");
         } else {
             user.setEmail(dto.getEmail());
             emailService.sendEmail(dto.getEmail());
