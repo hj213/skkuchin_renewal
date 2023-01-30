@@ -18,7 +18,8 @@ export default function MapDrawer({openID}){
     const router = useRouter();
     let open = false;
     let campus = true;
-  
+
+    console.log(openID);
     //api
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);

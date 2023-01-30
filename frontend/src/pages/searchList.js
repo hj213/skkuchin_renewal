@@ -5,14 +5,15 @@ import { search_places } from "../actions/place/place";
 import Image from 'next/image';
 import Link from 'next/link';
 import theme from "../theme/theme";
-import {CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack} from '@mui/material';
+import {CssBaseline, Box,InputBase, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack} from '@mui/material';
 import bookmarkOn from '../image/bookmark-1.png';
-import closeIcon from '../image/close.png';
 import star from '../image/Star-1.png';
 import tag16 from '../image/tag16.png';
 import food from '../image/food.png';
 import tag17 from '../image/tag17.png';
+import mapIcon from '../image/map-1.png';
 import searchBox from '../image/검색창2.png';
+import closeIcon from '../image/close.png';
 
 export default function searchList(){
     const router = useRouter();
@@ -20,6 +21,9 @@ export default function searchList(){
 
     //user의 input값 받아오기
     const { keyword } = router.query;
+
+    const [value, setValue] = useState('');
+    const [passValue, setPassValue] = useState(value);
 
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
@@ -45,10 +49,51 @@ export default function searchList(){
         return null;
     };
 
+    //아이콘 클릭시
+    const handleIconOnclick = (event) =>{
+        if(event.target.name == 'map' ){
+            router.push({
+                pathname: '/',
+                query: passValue
+              });
+            //추가해야할 부분
+        } else{
+            router.push('/');
+        }
+    };
+
+    const handleValue = (e) => {
+        setValue(e.target.value);
+        
+    }
+
+    const handleKeyDown = (e) => {
+        if(e.keyCode === 13){
+            dispatch(search_places(value));
+            setPassValue(value);
+            setValue('');
+        }
+    }
+
     return(
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <Image src={searchBox} />
+            <Container style={{padding:'0px',}}>
+            <Grid container style={{position:'relative', marginTop:'10px',}}>
+                <Grid item name='map' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36}/></Grid>
+                <Grid item name='close' style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
+                    <InputBase 
+                    sx={{ ml: 1, width:'150%'}}
+                    value={value}
+                    onChange={handleValue}
+                    onKeyDown={handleKeyDown}
+                    />   
+                </Grid>
+                <Grid item name='close' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image src={closeIcon} width={37} height={36}/></Grid>
+                <Grid item ><Image src={searchBox} /></Grid>
+            </Grid>
+            </Container>
+            
             <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                         {place? place.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>

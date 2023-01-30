@@ -6,11 +6,11 @@ import Image from 'next/image';
 import {Grid, CssBaseline, InputBase, ThemeProvider} from '@mui/material';
 import searchBox from '../image/검색창.png';
 
-export default function SearchBox(){
+export default function SearchBox(openID){
 
     const router = useRouter();
     const [value, setValue] = useState('');
-
+    
     const handleValue = (e) => {
         setValue(e.target.value);
         
@@ -33,9 +33,9 @@ export default function SearchBox(){
             <div style={{marginTop:'5px'}}>
                 <Grid container style={{position:'absolute', zIndex:'2', alignItems: 'center'}}>
                     <Grid item style={{marginTop:'4%', marginLeft: '5%'}}>
-                        <MapDrawer/>
+                        <MapDrawer open={openID}/>
                     </Grid>
-                    <Grid item style={{marginTop:'3.7%', marginLeft: '2%'}}>
+                    <Grid item style={{marginTop:'3.5%', marginLeft: '2%'}}>
                         <InputBase
                             sx={{ ml: 1, width:'180%'}}
                             placeholder="오늘은 라멘 어때요?"

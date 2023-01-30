@@ -49,21 +49,21 @@ export default function list(){
     const mouseClicked = false;
     const tagClicked = false;
 
+    //api 받아오기
+    useEffect(() => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_places());
+            dispatch(load_favorite());
+        }
+    }, [dispatch]);
+
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
     }
 
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
-
-    //api 받아오기
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(search_places("일식당"));
-            dispatch(load_places());
-            dispatch(load_favorite());
-        }
-    }, [dispatch]);
+    const { passedValue } = router.query;
 
     // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
@@ -205,11 +205,10 @@ export default function list(){
         e.currentTarget.style.display = 'none';
     }
 
-    //검색값 받아오기
+    //다른 페이지로부터 검색값 받아오기
     const handleSearchValue = (newData) =>{
         setValue(newData);
         dispatch(search_places(newData));
-        
     }
 
     return(
@@ -218,7 +217,7 @@ export default function list(){
        <Layout>
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>
                 <Container style={{position:'absolute', zIndex:'2'}}>
-                    <SearchBox/>   
+                    <SearchBox openID={openID}/>   
                 </Container> 
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} />
                 <Slide direction="up" in={open.bool} timeout={1} >
