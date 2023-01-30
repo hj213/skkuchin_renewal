@@ -56,10 +56,23 @@ public class UserDto {
                     //.email(this.email)
                     .studentId(this.studentId)
                     .major(this.major)
+                    .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
                     .roles(new ArrayList<>())
                     .emailAuth(false)
                     .build();
+        }
+
+        public Campus findCampus(Major major) {
+            EnumSet<Major> majors = EnumSet.allOf(Major.class);
+            List<Major> majorList = new ArrayList<>();
+            majorList.addAll(majors);
+
+            if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
+                return Campus.명륜;
+            } else {
+                return Campus.율전;
+            }
         }
     }
 

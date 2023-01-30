@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.*;
 import skkuchin.service.exception.*;
 import skkuchin.service.repo.*;
@@ -192,6 +193,13 @@ public class UserService {
         String newPassword = passwordEncoder.encode(dto.getNewPassword());
         user.setPassword(newPassword);
 
+        userRepo.save(user);
+    }
+
+    @Transactional
+    public void updateToggleValue(Campus campus, Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        user.setToggle(campus);
         userRepo.save(user);
     }
 }

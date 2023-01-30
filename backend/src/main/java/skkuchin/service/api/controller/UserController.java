@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.*;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.BlankException;
@@ -190,15 +191,15 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 삭제 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/user/check/username/{username}")
-    public ResponseEntity<?> checkUsername(@PathVariable String username) {
-        Boolean canUse = userService.checkUsername(username);
+    @GetMapping("/user/check/username")
+    public ResponseEntity<?> checkUsername(@RequestBody Map<String, String> usernameMap) {
+        Boolean canUse = userService.checkUsername(usernameMap.get("username"));
         return new ResponseEntity<>(new CMRespDto<>(1, "아이디 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
     }
 
-    @GetMapping("/user/check/nickname/{nickname}")
-    public ResponseEntity<?> checkNickName(@PathVariable String nickname) {
-        Boolean canUse = userService.checkNickname(nickname);
+    @GetMapping("/user/check/nickname")
+    public ResponseEntity<?> checkNickName(@RequestBody Map<String, String> nicknameMap) {
+        Boolean canUse = userService.checkNickname(nicknameMap.get("nickname"));
         return new ResponseEntity<>(new CMRespDto<>(1, "닉네임 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
     }
 
@@ -217,11 +218,20 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "이메일 전송 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/email/check/{username}")
-    public ResponseEntity<?> checkEmail(@PathVariable String username) {
-        Boolean isAuth = userService.checkEmail(username);
+    @GetMapping("/email/check")
+    public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> usernameMap) {
+        Boolean isAuth = userService.checkEmail(usernameMap.get("username"));
         return new ResponseEntity<>(new CMRespDto<>(1, "이메일 인증 여부 확인 완료", isAuth), HttpStatus.OK);
     }
+
+    @PutMapping("/user/toggle")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updateToggleValue(@RequestBody Map<String, Campus> campusMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long userId = principalDetails.getUser().getId();
+        userService.updateToggleValue(campusMap.get("campus"), userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "토글값 변경 완료", null), HttpStatus.OK);
+    }
+
 }
 
 

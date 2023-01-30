@@ -1,6 +1,7 @@
 package skkuchin.service.domain.User;
 
 import lombok.*;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.Matching.Gender;
 import skkuchin.service.domain.Matching.UserKeyword;
@@ -40,6 +41,9 @@ public class AppUser {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Major major;
+
+    @Enumerated(EnumType.STRING)
+    private Campus toggle;
 
     //@Column(nullable = false)
     private String image;
