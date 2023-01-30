@@ -17,7 +17,9 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -51,8 +53,11 @@ public class UserService {
     @Transactional
     public AppUser saveUser(UserDto.SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
         log.info("Saving new user {} to the database", signUpForm.getNickname());
+        Map<String, String> errorMap = new HashMap<>();
         if (!signUpForm.getPassword().equals(signUpForm.getRePassword())) {
-            throw new DiscordException("re_password_error");
+            //throw new DiscordException("re_password_error");
+            errorMap.put("content", "일치하지 않는 비밀번호입니다.");
+            throw new CustomValidationApiException("회원가입 실패", errorMap);
         }
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         AppUser appUser = signUpForm.toEntity();
@@ -93,15 +98,19 @@ public class UserService {
 
     public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
         AppUser user = userRepo.findByUsername(dto.getUsername());
-        if (user.getEmailAuth()) throw new CustomValidationApiException("이미 인증 완료하였습니다.");
-        if (user == null) throw new CustomValidationApiException("회원가입한 유저에게만 이메일 전송이 가능합니다.");
 
-        EmailAuth emailAuth = emailAuthRepo.findByEmailAndExpireDateAfter(dto.getEmail(), LocalDateTime.now());
-
-        if (emailAuth != null) {
-            if (userRepo.findByEmail(dto.getEmail()) != null)
-                throw new CustomValidationApiException("이미 사용 중인 이메일입니다.");
-            throw new CustomValidationApiException("인증 메일은 5분에 한 번만 전송할 수 있습니다.");
+        Map<String, String> errorMap = new HashMap<>();
+        if (user == null) {
+            errorMap.put("content", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
+            throw new CustomValidationApiException("이메일 전송 실패", errorMap);
+        }
+        if (user.getEmailAuth()) {
+            errorMap.put("content", "이미 인증 완료하였습니다.");
+            throw new CustomValidationApiException("이메일 전송 실패", errorMap);
+        }
+        if (userRepo.findByEmail(dto.getEmail()) != null) {
+            errorMap.put("content", "사용 중인 이메일입니다.");
+            throw new CustomValidationApiException("이메일 전송 실패", errorMap);
         } else {
             user.setEmail(dto.getEmail());
             emailService.sendEmail(dto.getEmail());
