@@ -9,6 +9,11 @@ const theme = createTheme({
         primary: {
             main: '#ffce00',
         },
+        fontColor: {
+            main: '#BABABA', 
+            light: '#A1A1A1',
+            dark: '#505050' //가장 어두운 색
+        }
     },
     typography: {
         fontFamily: 'Noto Sans KR, sans-serif',
