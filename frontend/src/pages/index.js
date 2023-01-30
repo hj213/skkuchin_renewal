@@ -32,14 +32,17 @@ export default function list(){
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
-        cardVisibility: 'visible',
-        iconVisibility: 'visible',
+        cardVisibility: 'hidden',
+        iconVisibility: 'hidden',
+        bool: false
     });
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
         bool:false,
         visibility: 'hidden',
     });
+    const [value, setValue] = useState('');
+
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
@@ -202,6 +205,13 @@ export default function list(){
         e.currentTarget.style.display = 'none';
     }
 
+    //검색값 받아오기
+    const handleSearchValue = (newData) =>{
+        setValue(newData);
+        dispatch(search_places(newData));
+        
+    }
+
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -262,7 +272,6 @@ export default function list(){
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
                         <Image width={70} height={4} src={line} /> 
                     </div>
-                    
                 
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                         {place? place.map((item) => (

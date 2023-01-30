@@ -1,32 +1,41 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import MapDrawer from "./MapDrawer";
 import theme from "../theme/theme";
 import Image from 'next/image';
-import {Grid, InputBase, ThemeProvider} from '@mui/material';
+import {Grid, CssBaseline, InputBase, ThemeProvider} from '@mui/material';
 import searchBox from '../image/검색창.png';
 
 export default function SearchBox(){
 
+    const router = useRouter();
     const [value, setValue] = useState('');
 
     const handleValue = (e) => {
         setValue(e.target.value);
+        
     }
 
     const handleKeyDown = (e) => {
         if(e.keyCode === 13){
+            setValue(e.target.value);
+            router.push({
+                pathname: '/searchList',
+                query: { keyword: value}
+              });
             setValue('');
         }
     }
 
     return(
         <ThemeProvider theme={theme}>
+            <CssBaseline/>
             <div style={{marginTop:'5px'}}>
                 <Grid container style={{position:'absolute', zIndex:'2', alignItems: 'center'}}>
-                    <Grid item style={{margin:'17px 0px 0px 20px'}}>
+                    <Grid item style={{marginTop:'4%', marginLeft: '5%'}}>
                         <MapDrawer/>
                     </Grid>
-                    <Grid item style={{margin:'15px 0px 0px 4px'}}>
+                    <Grid item style={{marginTop:'3.7%', marginLeft: '2%'}}>
                         <InputBase
                             sx={{ ml: 1, width:'180%'}}
                             placeholder="오늘은 라멘 어때요?"
@@ -37,7 +46,7 @@ export default function SearchBox(){
                     </Grid>
                 </Grid>
                 <div style={{position: 'relative'}}>
-                    <Image src={searchBox}/>
+                    <Image src={searchBox} />
                 </div>
             </div>
         </ThemeProvider>
