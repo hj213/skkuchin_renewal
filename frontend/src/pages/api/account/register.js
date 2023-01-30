@@ -10,8 +10,6 @@ export default async( req, res )=> {
             email,
             student_id,
             major,
-            mbti,
-            image
         } = req.body;
 
         const body = JSON.stringify({
@@ -22,8 +20,6 @@ export default async( req, res )=> {
             email,
             student_id,
             major,
-            mbti,
-            image
         });
 
         try {
