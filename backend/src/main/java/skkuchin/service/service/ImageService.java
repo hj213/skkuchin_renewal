@@ -4,17 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ImageDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
-import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,15 +22,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ImageService {
     private static final List<String> IMAGE_FORMATS = Arrays.asList(".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff");
+    private static final String CATEGORY = "place";
     private final ImageRepo imageRepo;
     private final PlaceRepo placeRepo;
-    private final S3Client s3Client;
-    @Value("${aws.region.static}")
-    private String region;
-    @Value("${aws.bucket}")
-    private String bucket;
-    @Value("${aws.prefix}")
-    private String prefix;
+    private final S3Service s3Service;
+    @Value("${aws.s3.start-url}")
+    private String startUrl;
+
 
     @Transactional
     public List<ImageDto.Response> getAll() {
@@ -50,32 +46,58 @@ public class ImageService {
 
     @Transactional
     public void upload(ImageDto.PostRequest dto) {
+        checkFile(dto.getImage());
+
         Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
-        Image image = dto.toEntity(place);
+
+        String url = s3Service.uploadObject(dto.getImage(), CATEGORY, place.getCampus().name(), place.getName());
+
+        Image image = dto.toEntity(place, url);
         imageRepo.save(image);
     }
 
     @Transactional
-    public void uploadAll(List<ImageDto.PostRequest> dto) {
-        List<Image> images = dto
-                .stream()
-                .map(imageDto -> imageDto.toEntity(placeRepo
-                        .findById(imageDto.getPlaceId())
-                        .orElseThrow()))
-                .collect(Collectors.toList());
+    public void uploadAll(List<ImageDto.PostRequest> dtos) {
+        List<Image> images = new ArrayList<>();
+
+        for (ImageDto.PostRequest dto : dtos) {
+            checkFile(dto.getImage());
+
+            Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
+
+            String url = s3Service.uploadObject(dto.getImage(), CATEGORY, place.getCampus().name(), place.getName());
+
+            Image image = dto.toEntity(place, url);
+            images.add(image);
+        }
+
         imageRepo.saveAll(images);
     }
 
+
     @Transactional
     public void update(Long imageId, ImageDto.PutRequest dto) {
+        checkFile(dto.getImage());
+
         Image existingImage = imageRepo.findById(imageId).orElseThrow();
-        existingImage.setUrl(dto.getUrl());
+        Place place = existingImage.getPlace();
+
+        String originalUrl = existingImage.getUrl();
+        String updatedUrl = s3Service.uploadObject(dto.getImage(), CATEGORY, place.getCampus().name(), place.getName());
+
+        existingImage.setUrl(updatedUrl);
         imageRepo.save(existingImage);
+
+        s3Service.deleteObject(originalUrl);
     }
 
     @Transactional
     public void delete(Long imageId) {
+        Image existingImage = imageRepo.findById(imageId).orElseThrow();
+        String url = existingImage.getUrl();
+
         imageRepo.deleteById(imageId);
+        s3Service.deleteObject(url);
     }
 
     @Transactional
@@ -92,75 +114,46 @@ public class ImageService {
     public void deletePlaceImages(Long placeId) {
         Place place = placeRepo.findById(placeId).orElseThrow();
         List<Image> images =  imageRepo.findByPlace(place);
+
         for (Image image : images) {
+            String url = image.getUrl();
             imageRepo.delete(image);
+            s3Service.deleteObject(url);
         }
     }
 
-    public void insertData() throws Exception {
-        try {
-            ListObjectsRequest listObjects = ListObjectsRequest
-                    .builder()
-                    .bucket(this.bucket)
-                    .prefix(this.prefix)
+    public void insertData() {
+        List<S3Object> objects = s3Service.getObjects(CATEGORY);
+
+        for (S3Object object : objects) {
+            if (isImage(object.key())) {
+                String placeName = object.key().split("/")[4];
+                Place place = placeRepo.findByName(placeName);
+                System.out.println(placeName);
+
+                if (place == null) {
+                    continue;
+                }
+
+                String objectUrl = this.startUrl + object.key();
+
+                Image image = Image.builder()
+                    .place(place)
+                    .url(objectUrl)
                     .build();
 
-            ListObjectsResponse res = s3Client.listObjects(listObjects);
-            List<S3Object> objects = res.contents();
-
-            for (S3Object object : objects) {
-                if (isImage(object.key())) {
-                    String placeName = object.key().split("/")[2];
-                    Place place = placeRepo.findByName(placeName);
-
-                    if (place == null) {
-                        continue;
-                    }
-
-                    String objectUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + object.key();
-
-                    Image image = Image.builder()
-                        .place(place)
-                        .url(objectUrl)
-                        .build();
-                    imageRepo.save(image);
-
-                }
+                imageRepo.save(image);
             }
-
-        } catch (S3Exception e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
-            System.exit(1);
         }
     }
 
-//        String[] campusNames = {"명륜", "율전"};
-//
-//        for (String campusName : campusNames) {
-//            File imageDirectory = new File(path + "image/" + campusName + "/");
-//            File[] placeImageFolders = imageDirectory.listFiles();
-//
-//            for (File folder : placeImageFolders) {
-//                String placeName = folder.getName();
-//                Place place = placeRepo.findByName(placeName);
-//
-//                if (place == null) {
-//                    continue;
-//                }
-//
-//                File[] images = folder.listFiles();
-//                for (File image : images) {
-//                    String imageUrl = "/app/src/image/" + campusName + "/" + placeName + "/" + image.getName();
-//                    Image newImage = Image.builder()
-//                            .place(place)
-//                            .url(imageUrl)
-//                            .build();
-//                    imageRepo.save(newImage);
-//                }
-//            }
-//        }
+    private void checkFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 비어있습니다.");
+        }
+    }
 
-    public static boolean isImage(String objectKey) {
+    private boolean isImage(String objectKey) {
         for (String format : IMAGE_FORMATS) {
             if (objectKey.endsWith(format)) {
                 return true;

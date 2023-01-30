@@ -70,8 +70,8 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void getAll_성공() {
         //given
-        Review review1 = new Review(1L, 5.0F, "맛있어요", "img", place, user, null, null);
-        Review review2 = new Review(2L, 4.5F, "맛있네용~", "img2", place, user, null, null);
+        Review review1 = new Review(1L, 5.0F, "맛있어요", place, user, null, null);
+        Review review2 = new Review(2L, 4.5F, "맛있네용~", place, user, null, null);
         List<ReviewTag> review1Tags = List.of(new ReviewTag(1L, review1, tag1), new ReviewTag(2L, review1, tag2));
         List<ReviewTag> review2Tags = List.of(new ReviewTag(2L, review2, tag1));
 
@@ -92,7 +92,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void getDetail_성공() {
         //given
-        Review review = new Review(1L, 3.0F, "보통입니다", null, place, user, null, null);
+        Review review = new Review(1L, 3.0F, "보통입니다", place, user, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, review, tag1), new ReviewTag(2L, review, tag2));
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
@@ -118,7 +118,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void write_성공() {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5.0F, "굿!", "이미지", List.of("맛집", "가성비"));
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5.0F, "굿!", null, List.of("맛집", "가성비"));
 
         given(placeRepo.findById(1L)).willReturn(Optional.ofNullable(place));
         given(tagRepo.findByName("맛집")).willReturn(tag1);
@@ -137,7 +137,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void write_존재하지않는_placeId로_등록_시도_오류() {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(2L, 5.0F, "굿!", "이미지", null);
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(2L, 5.0F, "굿!", null, null);
 
         given(placeRepo.findById(2L)).willThrow(new NoSuchElementException());
 
@@ -149,8 +149,8 @@ public class ReviewServiceTest extends MockTest {
     public void update_성공() {
         //given
         Tag tag3 = Tag.builder().name("분위기 좋은").build();
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "맛있어요", "이미지", List.of("분위기 좋은", "맛집"));
-        Review existingReview = new Review(1L, 4.5F, "맛있다", "img", place, user, null, null);
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "맛있어요", null, List.of("분위기 좋은", "맛집"));
+        Review existingReview = new Review(1L, 4.5F, "맛있다", place, user, null, null);
         List<ReviewTag> existingTags = List.of(new ReviewTag(1L, existingReview, tag1), new ReviewTag(2L, existingReview, tag2));
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(existingReview));
@@ -158,7 +158,7 @@ public class ReviewServiceTest extends MockTest {
         given(tagRepo.findByName("분위기 좋은")).willReturn(tag3);
 
         //when
-        reviewService.update(1L, dto, 1L);
+        reviewService.update(1L, dto, user);
 
         //then
         verify(reviewRepo, times(1)).findById(1L);
@@ -170,24 +170,24 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void update_존재하지않는_reviewId로_수정_시도_오류() {
         //given
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "굿!", "이미지", null);
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "굿!", null, null);
 
         given(reviewRepo.findById(5L)).willThrow(new NoSuchElementException());
 
         //when
-        assertThrows(NoSuchElementException.class, () -> reviewService.update(5L, dto, 1L));
+        assertThrows(NoSuchElementException.class, () -> reviewService.update(5L, dto, user));
     }
 
     @Test
     public void update_다른_유저가_리뷰_수정_시도_오류() {
         //given
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "굿!", "이미지", null);
-        Review review = new Review(1L, 5.0F, "맛있어요", null, null, user, null, null);
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "굿!", null, null);
+        Review review = new Review(1L, 5.0F, "맛있어요", place, user, null, null);
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
 
         //when
-        assertThrows(IllegalArgumentException.class, () -> reviewService.update(1L, dto, 2L));
+        assertThrows(IllegalArgumentException.class, () -> reviewService.update(1L, dto, user));
     }
 
 
@@ -195,13 +195,13 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void delete_성공() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", "이미지", place, user, null, null);
+        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
         willDoNothing().given(reviewRepo).delete(review);
 
         //when
-        reviewService.delete(1L, 1L);
+        reviewService.delete(1L, user);
 
         //then
         verify(reviewRepo, times(1)).delete(review);
@@ -210,18 +210,18 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void delete_다른_유저가_리뷰_삭제_시도_오류() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", "이미지", place, user, null, null);
+        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
 
         //when
-        assertThrows(IllegalArgumentException.class, () -> reviewService.delete(1L, 2L));
+        assertThrows(IllegalArgumentException.class, () -> reviewService.delete(1L, user));
     }
 
     @Test
     public void getPlaceReview_성공() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", "이미지", place, user, null, null);
+        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, review, tag1), new ReviewTag(2L, review, tag2));
 
         given(placeRepo.findById(1L)).willReturn(Optional.ofNullable(place));
@@ -240,7 +240,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void getMyReview_성공() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", "이미지", place, user, null, null);
+        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, review, tag1), new ReviewTag(2L, review, tag2));
 
         given(reviewRepo.findByUser(user)).willReturn(List.of(review));
@@ -263,8 +263,8 @@ public class ReviewServiceTest extends MockTest {
         AppUser user2 = AppUser.builder()
                 .id(2L).nickname("test2").username("test2").password("1234").email("test").studentId(20)
                 .build();
-        Review review1 = new Review(1L, 4.0F, "또 갈래요", "이미지", place, user, null, null);
-        Review review2 = new Review(2L, 5.0F, "짱", "img", place, user2, null, null);
+        Review review1 = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
+        Review review2 = new Review(2L, 5.0F, "짱", place, user2, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, null, tag1), new ReviewTag(2L, null, tag2));
 
         given(reviewRepo.findAll()).willReturn(List.of(review1, review2));

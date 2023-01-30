@@ -7,7 +7,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
@@ -17,6 +19,7 @@ import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +27,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ReviewService {
-
+    private static final String CATEGORY = "review";
     private final ReviewRepo reviewRepo;
     private final PlaceRepo placeRepo;
     private final TagRepo tagRepo;
     private final ReviewTagRepo reviewTagRepo;
     private final ReviewImageRepo reviewImageRepo;
     private final UserRepo userRepo;
+    private final S3Service s3Service;
+    @Value("${aws.s3.start-url}")
+    private String startUrl;
+    @Value("${aws.s3.prefix}")
+    private String prefix;
 
     @Transactional
     public List<ReviewDto.Response> getAll() {
@@ -56,6 +64,8 @@ public class ReviewService {
 
     @Transactional
     public void write(AppUser user, ReviewDto.PostRequest dto) {
+        List<ReviewImage> reviewImages = new ArrayList<>();
+
         Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
         Review review = dto.toEntity(user, place);
         reviewRepo.save(review);
@@ -67,9 +77,13 @@ public class ReviewService {
                 })
                 .collect(Collectors.toList());
 
-        List<ReviewImage> reviewImages = dto.getImage().stream()
-                .map(image -> ReviewImage.builder().review(review).url(image).build())
-                .collect(Collectors.toList());
+        for (MultipartFile image : dto.getImages()) {
+            checkFile(image);
+
+            String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
+            ReviewImage reviewImage = ReviewImage.builder().review(review).url(url).build();
+            reviewImages.add(reviewImage);
+        }
 
         reviewTagRepo.saveAll(reviewTags);
         reviewImageRepo.saveAll(reviewImages);
@@ -78,7 +92,8 @@ public class ReviewService {
     @Transactional
     public void update(Long reviewId, ReviewDto.PutRequest dto, AppUser user) {
         Review existingReview = reviewRepo.findById(reviewId).orElseThrow();
-        //isMyReview(existingReview.getUser().getId(), userId);
+        Place place = existingReview.getPlace();
+        List<ReviewImage> newImages = new ArrayList<>();
         canHandleReview(existingReview.getUser(), user);
 
         existingReview.setRate(dto.getRate());
@@ -102,18 +117,33 @@ public class ReviewService {
         }
 
         List<ReviewImage> existingImages = reviewImageRepo.findByReview(existingReview);
-        reviewImageRepo.deleteAll(existingImages);
-        List<ReviewImage> newImages = dto.getImage().stream()
-                .map(image -> ReviewImage.builder().review(existingReview).url(image).build())
-                .collect(Collectors.toList());
+
+        for (MultipartFile image : dto.getImages()) {
+            checkFile(image);
+            String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
+            ReviewImage newImage = ReviewImage.builder().review(existingReview).url(url).build();
+            newImages.add(newImage);
+        }
+
         reviewImageRepo.saveAll(newImages);
+        reviewImageRepo.deleteAll(existingImages);
+
+        for (ReviewImage existingImage : existingImages) {
+            s3Service.deleteObject(existingImage.getUrl());
+        }
     }
 
     @Transactional
     public void delete(Long reviewId, AppUser user) {
         Review review = reviewRepo.findById(reviewId).orElseThrow();
         canHandleReview(review.getUser(), user);
+        List<ReviewImage> reviewImages = reviewImageRepo.findByReview(review);
+
         reviewRepo.delete(review);
+
+        for (ReviewImage reviewImage : reviewImages) {
+            s3Service.deleteObject(reviewImage.getUrl());
+        }
     }
 
     @Transactional
@@ -151,11 +181,6 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    public void canHandleReview(AppUser reviewUser, AppUser user) {
-        if (!(reviewUser.getId().equals(user.getId()) || user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN")))
-            throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");
-    }
-
     public void insertData(String path) throws IOException, ParseException {
         if (reviewRepo.count() < 1) { //db가 비어있을 때만 실행
 
@@ -169,7 +194,7 @@ public class ReviewService {
 
             List<AppUser> users = userRepo.findAll();
 
-            String imageUrl = "https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/dev/임시_리뷰/p4v9hOJorE9sAR9clE068RRB.jpeg";
+            String imageUrl = this.startUrl + this.prefix + CATEGORY + "/p4v9hOJorE9sAR9clE068RRB.jpeg";
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject temp = (JSONObject) jsonArray.get(i);
@@ -188,6 +213,17 @@ public class ReviewService {
                         .collect(Collectors.toList());
                 reviewTagRepo.saveAll(reviewTags);
             }
+        }
+    }
+
+    private void canHandleReview(AppUser reviewUser, AppUser user) {
+        if (!(reviewUser.getId().equals(user.getId()) || user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN")))
+            throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");
+    }
+
+    private void checkFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 비어있습니다.");
         }
     }
 }

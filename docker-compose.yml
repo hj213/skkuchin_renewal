@@ -8,19 +8,23 @@ services:
       - MYSQL_DATABASE=service
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=1234
-    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command:
+      [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+      ]
     ports:
-        - 3306:3306
+      - 3306:3306
     # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기    
     # volumes:
     #   - ./db/data:/var/lib/mysql
     networks:
-        - skkuchin-network
+      - skkuchin-network
 
   server:
     build:
-        context: "./backend"
-        dockerfile: Dockerfile
+      context: "./backend"
+      dockerfile: Dockerfile
     restart: always
     ports:
       - 8080:8080
@@ -41,8 +45,8 @@ services:
 
   client:
     build:
-        context: "./frontend"
-        dockerfile: Dockerfile 
+      context: "./frontend"
+      dockerfile: Dockerfile
     restart: always
     container_name: skkuchin-frontend
     ports:
@@ -53,8 +57,8 @@ services:
       - NODE_ENV=prod
       - NEXT_PUBLIC_API_URL=http://server:8080
       - NEXT_PUBLIC_KAKAOMAP_APPKEY=0d8f0e65047ebb4fce295a83614d7fae
-      - AWS_ACCESS_KEY='AKIAZTEOD3CVDU4TKCBL'
-      - AWS_SECRET_KEY='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'
+      - AWS_ACCESS_KEY=AKIAZTEOD3CVDU4TKCBL
+      - AWS_SECRET_KEY=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
     volumes:
       - ./frontend:/app
       - /app/node_modules

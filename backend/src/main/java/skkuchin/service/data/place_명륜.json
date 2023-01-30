@@ -101,7 +101,7 @@
         {
             "name": "오이지",
             "category": "한식",
-            "detailCategory": ":한식",
+            "detailCategory": "한식",
             "campus": "명륜",
             "gate": "대학로",
             "address": "서울 종로구 대학로9길 33",
@@ -115,7 +115,7 @@
         {
             "name": "호호식당",
             "category": "일식",
-            "detailCategory": ":일식당",
+            "detailCategory": "일식당",
             "campus": "명륜",
             "gate": "대학로",
             "address": "서울 종로구 대학로9길 35",
