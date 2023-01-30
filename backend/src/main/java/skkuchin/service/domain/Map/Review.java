@@ -28,16 +28,19 @@ public class Review {
     private String content;
 
     @JoinColumn(name = "place_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Place place;
 
     @JoinColumn(name = "user_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private AppUser user;
-
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReviewTag> reviewTags = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createDate;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewImage> reviewImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewTag> reviewTags = new ArrayList<>();
 }

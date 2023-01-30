@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.*;
@@ -24,12 +25,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class PlaceService {
-
     private final PlaceRepo placeRepo;
     private final ImageRepo imageRepo;
     private final ReviewRepo reviewRepo;
     private final ReviewTagRepo reviewTagRepo;
     private final TagRepo tagRepo;
+    private final S3Service s3Service;
 
     @Transactional
     public List<PlaceDto.Response> getAll() {
@@ -81,7 +82,15 @@ public class PlaceService {
 
     @Transactional
     public void delete(Long placeId) {
-        placeRepo.deleteById(placeId);
+        Place place = placeRepo.findById(placeId).orElseThrow();
+
+        List<Image> existingImages = imageRepo.findByPlace(place);
+
+        placeRepo.delete(place);
+
+        for (Image existingImage : existingImages) {
+            s3Service.deleteObject(existingImage.getUrl());
+        }
     }
 
     @Transactional

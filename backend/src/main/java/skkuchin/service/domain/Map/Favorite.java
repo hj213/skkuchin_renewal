@@ -25,11 +25,11 @@ public class Favorite {
     @Column(name = "favorite_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 
