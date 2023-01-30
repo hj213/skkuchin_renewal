@@ -17,9 +17,21 @@ export default function MapDrawer({openID}){
     const dispatch = useDispatch();
     const router = useRouter();
     let open = false;
- 
+    let campus = true;
+  
+    //api
+    const user = useSelector(state => state.auth.user);
+    const favorites = useSelector(state => state.favorite.favorite);
+    // const review = useSelector(state => state.)
+
     if(openID){
       open = openID;
+    }
+
+    if(user.campus == '명륜'){
+      campus = false;
+    } else{
+      campus = true;
     }
 
     useEffect(()=>{
@@ -29,7 +41,7 @@ export default function MapDrawer({openID}){
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [checked, setChecked] = useState(true);
+    const [checked, setChecked] = useState(campus);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
@@ -50,10 +62,7 @@ export default function MapDrawer({openID}){
 
     }
 
-    //api
-    const user = useSelector(state => state.auth.user);
-    const favorites = useSelector(state => state.favorite.favorite);
-    // const review = useSelector(state => state.)
+
 
     //토글 아이콘
     const IOSSwitch = styled((props) => (
