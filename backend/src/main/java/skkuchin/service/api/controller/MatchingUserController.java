@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.MatchingUserDto;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.MatchingUserService;
 
 import javax.validation.Valid;

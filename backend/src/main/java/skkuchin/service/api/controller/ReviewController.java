@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Role;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.ReviewService;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -42,7 +40,7 @@ public class ReviewController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> write(@Valid @RequestBody ReviewDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> write(@Valid @ModelAttribute ReviewDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         reviewService.write(user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 작성 완료", null), HttpStatus.CREATED);
@@ -50,7 +48,7 @@ public class ReviewController {
 
     @PutMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long reviewId, @Valid @RequestBody ReviewDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> update(@PathVariable Long reviewId, @Valid @ModelAttribute ReviewDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         reviewService.update(reviewId, dto, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 수정 완료", null), HttpStatus.OK);
