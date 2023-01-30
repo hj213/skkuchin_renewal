@@ -60,7 +60,7 @@ export default function MapDrawer({openID}){
       e.preventDefault();
       setChecked(e.target.checked);
 
-    }
+    } 
 
 
 
@@ -163,7 +163,7 @@ export default function MapDrawer({openID}){
 
     return(
         <ThemeProvider theme={theme}>
-            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={20}/>
+            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15}/>
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250}>
               <FormControlLabel
               control={<IOSSwitch />}

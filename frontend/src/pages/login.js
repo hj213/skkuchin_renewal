@@ -54,7 +54,7 @@ const LoginPage = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             
-            <Layout title= '스꾸친 | Login' content='Register page'>
+            {/* <Layout title= '스꾸친 | Login' content='Register page'> */}
                 <Container component="main" maxWidth="xs">
                     <Box
                         sx={{
@@ -120,7 +120,7 @@ const LoginPage = () => {
                     </Box>
                 </Container>
             
-            </Layout>
+            {/* </Layout> */}
         </ThemeProvider>
     )
 };
