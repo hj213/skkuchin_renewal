@@ -21,14 +21,11 @@ import java.util.stream.Collectors;
 
 public class ReviewDto {
 
-    @Getter
     @Setter
     @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
         @NotNull
-        @JsonProperty
-        private Long placeId;
+        private Long place_id;
         @NotNull
         @Min(value = 1)
         @Max(value = 5)
@@ -53,9 +50,30 @@ public class ReviewDto {
                     .tag(tag)
                     .build();
         }
+
+        public @NotNull Long getPlaceId() {
+            return this.place_id;
+        }
+
+        public @NotNull @Min(value = 1) @Max(value = 5) int getRate() {
+            return this.rate;
+        }
+
+        public @NotBlank String getContent() {
+            return this.content;
+        }
+
+        public List<MultipartFile> getImages() {
+            return this.images;
+        }
+
+        public List<String> getTags() {
+            return this.tags;
+        }
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     public static class PutRequest {
         @NotNull
