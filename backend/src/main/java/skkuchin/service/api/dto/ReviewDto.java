@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 public class ReviewDto {
 
-    @Getter
     @Setter
     public static class PostRequest {
         @NotNull
@@ -48,6 +47,26 @@ public class ReviewDto {
                     .review(review)
                     .tag(tag)
                     .build();
+        }
+
+        public @NotNull Long getPlaceId() {
+            return this.place_id;
+        }
+
+        public @NotNull @Min(value = 1) @Max(value = 5) int getRate() {
+            return this.rate;
+        }
+
+        public @NotBlank String getContent() {
+            return this.content;
+        }
+
+        public List<MultipartFile> getImages() {
+            return this.images;
+        }
+
+        public List<String> getTags() {
+            return this.tags;
         }
     }
 

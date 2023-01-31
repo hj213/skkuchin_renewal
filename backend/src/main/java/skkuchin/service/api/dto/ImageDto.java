@@ -6,13 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
-import skkuchin.service.domain.Map.*;
+import skkuchin.service.domain.Map.Image;
+import skkuchin.service.domain.Map.Place;
 
 import javax.validation.constraints.NotNull;
 
 public class ImageDto {
 
-    @Getter
     @Setter
     public static class PostRequest {
         @NotNull
@@ -24,6 +24,14 @@ public class ImageDto {
                     .place(place)
                     .url(url)
                     .build();
+        }
+
+        public @NotNull Long getPlaceId() {
+            return this.place_id;
+        }
+
+        public MultipartFile getImage() {
+            return this.image;
         }
     }
 
