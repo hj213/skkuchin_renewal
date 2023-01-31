@@ -20,6 +20,7 @@ import mapIcon from '../image/map-1.png';
 import closeIcon from '../image/close.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import image from '../image/명륜/호호식당/7.jpeg';
+import SearchBox from "../components/SearchBox";
 
 
 export default function list(){
@@ -31,19 +32,29 @@ export default function list(){
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
-        cardVisibility: 'visible',
-        iconVisibility: 'visible',
+        cardVisibility: 'hidden',
+        iconVisibility: 'hidden',
+        bool: false
     });
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
         bool:false,
         visibility: 'hidden',
     });
+    const [value, setValue] = useState('');
+
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
     const mouseClicked = false;
     const tagClicked = false;
+
+    //api 받아오기
+    useEffect(() => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_favorite());
+        }
+    }, [dispatch]);
 
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
@@ -51,18 +62,7 @@ export default function list(){
 
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
-
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(search_places("일식당"));
-        }
-    }, [dispatch]);
-
-    // api에서 데이터 불러오기
-    useEffect(()=>{
-        dispatch(load_places());
-        dispatch(load_favorite());
-    }, [dispatch]);
+    const { passedValue } = router.query;
 
     // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
@@ -79,7 +79,8 @@ export default function list(){
             }
         };
       }, [cardRef]);
-    // 장소 정보 불러오기
+
+    // api 정보 불러오기
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
 
@@ -203,174 +204,181 @@ export default function list(){
         e.currentTarget.style.display = 'none';
     }
 
+    //다른 페이지로부터 검색값 받아오기
+    const handleSearchValue = (newData) =>{
+        setValue(newData);
+        dispatch(search_places(newData));
+    }
+
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
-            <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
-            <Map latitude={37.58622450673971} longitude={126.99709024757782} />
-            
-            <Slide direction="up" in={open.bool} timeout={1} >
-                <Container fixed style={{padding: '0px 16px 0px 0px',}}>
-                    <Card style={{
-                    position: 'absolute',
-                    top: '0px',
-                    width: '100%',
-                    height: '98px',
-                    zIndex: '2',
-                    boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
-                    visibility: open.visibility,
-                    }}>
-                        <Grid container style={{padding:'50px 15px 0px 15px'}}>
-                            <Grid item style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
-                            </Grid>
-                            <Grid item xs>
-                                <Grid container>
-                                    <Grid item onClick={handleTagClick}>
-                                    <Image src={tag14} width={64} height={40} />
-                                    </Grid>
-                                    <Grid item xs onClick={handleTagClick}>
-                                    <Image src={tag14} width={64} height={40} />
+            <div style={{ position: 'relative', width:'100%', height:'100%'}}>
+                <Container style={{position:'absolute', zIndex:'2'}}>
+                    <SearchBox openID={openID}/>   
+                </Container> 
+                <Map latitude={37.58622450673971} longitude={126.99709024757782} />
+                <Slide direction="up" in={open.bool} timeout={1} >
+                    <Container fixed style={{padding: '0px 16px 0px 0px',}}>
+                        <Card style={{
+                        position: 'absolute',
+                        top: '0px',
+                        width: '100%',
+                        height: '98px',
+                        zIndex: '2',
+                        boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
+                        visibility: open.visibility,
+                        }}>
+                            <Grid container style={{padding:'50px 15px 0px 15px'}}>
+                                <Grid item style={{padding: '0px 10px 0px 0px'}}>
+                                <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
+                                </Grid>
+                                <Grid item xs>
+                                    <Grid container>
+                                        <Grid item onClick={handleTagClick}>
+                                        <Image src={tag14} width={64} height={40} />
+                                        </Grid>
+                                        <Grid item xs onClick={handleTagClick}>
+                                        <Image src={tag14} width={64} height={40} />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
+                                <Grid item >
+                                <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close'/>
+                                </Grid>
                             </Grid>
-                            <Grid item >
-                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close'/>
-                            </Grid>
-                        </Grid>
+                        </Card>
+                    </Container>
+                </Slide>
+                <Container style={{padding: '0px 16px 0px 0px', }} >
+                    <Card style={{
+                    borderRadius: cardStyle.radius,
+                    position: 'absolute',
+                    bottom: '0px',
+                    width: '100%',
+                    height: height,
+                    overflowY:'scroll',
+                    zIndex: '1',
+                    boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
+                    visibility: cardStyle.cardVisibility,
+                    transition: `height ${animationDuration} ${animationTimingFunction}`,
+                    }} 
+                    ref = {cardRef}
+                    >
+                    <div>
+                    <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
+                        <Image width={70} height={4} src={line} /> 
+                    </div>
+                
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+                        {place? place.map((item) => (
+                                <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
+                                    <Link href={`/place?id=${item.id}`} key={item.id}>
+                                    <Grid container style={{margin: '10px 0px 0px 0px'}}>
+                                        <Grid item xs >
+                                            <CardContent style={{padding:'0px'}}>
+                                                <Grid container spacing={2} style={{margin:'0px',}}>
+                                                    <Grid item style={{marginTop:'15px',  padding:'0px'}}>
+                                                        <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
+                                                            {item.name}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item style={{padding:'0px 0px 0px 8px'}}>
+                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
+                                                            {item.detail_category}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
+                                                        {isFavorite(item.id)}
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid item container style={{marginTop: '10px'}}>
+                                                    <Grid >
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
+                                                        스꾸친 평점 :
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid style={{margin:'0px 7px 0px 7px'}}>
+                                                        <Image width={15} height={14} src={star}/>
+                                                    </Grid>
+                                                    <Grid >
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
+                                                        {item.rate}
+                                                        </Typography>
+                                                    </Grid >
+                                                    <Grid style={{margin:'0px 7px 0px 0px'}}>
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#A1A1A1" component="div">
+                                                        /5
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid style={{margin:'0px 7px 0px 0px'}}>
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
+                                                        |
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid style={{margin:'0px 3px 0px 0px'}}>
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
+                                                        스꾸리뷰
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs>
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
+                                                        {item.review_count}
+                                                        </Typography>
+                                                    </Grid>
+                                                    
+                                                </Grid>
+                                                <Grid container style={{marginTop: '6px'}}>
+                                                    <Grid style={{margin:'0px 3px 0px 0px'}}>
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                        위치 : {item.gate}   
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid >
+                                                        <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#a1a1a1" component="div">
+                                                        ({item.address})
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid container style={{margin: '4px 0px 11px 0px'}}>
+                                                    <Stack direction="row" spacing={2}>
+                                                    <Image
+                                                        width= {72}
+                                                        height= {27}
+                                                        alt="tag"
+                                                        src={tag16}
+                                                    />
+                                                    <Image
+                                                        width= {72}
+                                                        height= {27}
+                                                        alt="tag"
+                                                        src={tag17}
+                                                    />
+                                                    <Image
+                                                        width= {72}
+                                                        height= {27}
+                                                        alt="tag"
+                                                        src={tag17}
+                                                    />
+                                                    </Stack>
+                                                </Grid>
+                                            </CardContent>
+                                        </Grid>
+                                        <Grid style={{marginTop:'15px'}}>
+                                            <Image
+                                            width= {98} height= {98}
+                                            alt={item.name} 
+                                            src={food}/>
+                                        </Grid>
+                                    </Grid>
+                                    </Link>
+                                </li>
+                        )): null}
+                        </ul>
+                        </div>
                     </Card>
                 </Container>
-            </Slide>
-            <Container style={{padding: '0px 16px 0px 0px', }} >
-                <Card style={{
-                borderRadius: cardStyle.radius,
-                position: 'absolute',
-                bottom: '0px',
-                width: '100%',
-                height: height,
-                overflowY:'scroll',
-                zIndex: '1',
-                boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
-                visibility: cardStyle.cardVisibility,
-                transition: `height ${animationDuration} ${animationTimingFunction}`,
-                }} 
-                ref = {cardRef}
-                >
-                <div>
-                <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
-                    <Image width={70} height={4} src={line} /> 
-                </div>
-                
-               
-                <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    {place? place.map((item) => (
-                            <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
-                                <Link href={`/place?id=${item.id}`} key={item.id}>
-                                <Grid container style={{margin: '10px 0px 0px 0px'}}>
-                                    <Grid item xs >
-                                        <CardContent style={{padding:'0px'}}>
-                                            <Grid container spacing={2} style={{margin:'0px',}}>
-                                                <Grid item style={{marginTop:'15px',  padding:'0px'}}>
-                                                    <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
-                                                        {item.name}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item style={{padding:'0px 0px 0px 8px'}}>
-                                                    <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
-                                                        {item.detail_category}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
-                                                    {isFavorite(item.id)}
-                                                </Grid>
-                                            </Grid>
-                                            <Grid item container style={{marginTop: '10px'}}>
-                                                <Grid >
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
-                                                    스꾸친 평점 :
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid style={{margin:'0px 7px 0px 7px'}}>
-                                                    <Image width={15} height={14} src={star}/>
-                                                </Grid>
-                                                <Grid >
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                    {item.rate}
-                                                    </Typography>
-                                                </Grid >
-                                                <Grid style={{margin:'0px 7px 0px 0px'}}>
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#A1A1A1" component="div">
-                                                    /5
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid style={{margin:'0px 7px 0px 0px'}}>
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
-                                                    |
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid style={{margin:'0px 3px 0px 0px'}}>
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'400', marginTop:'3px'}} color="#505050" component="div">
-                                                    스꾸리뷰
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item xs>
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                    {item.review_count}
-                                                    </Typography>
-                                                </Grid>
-                                                
-                                            </Grid>
-                                            <Grid container style={{marginTop: '6px'}}>
-                                                <Grid style={{margin:'0px 3px 0px 0px'}}>
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
-                                                    위치 : {item.gate}   
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid >
-                                                    <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#a1a1a1" component="div">
-                                                    ({item.address})
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                            <Grid container style={{margin: '4px 0px 11px 0px'}}>
-                                                <Stack direction="row" spacing={2}>
-                                                <Image
-                                                    width= {72}
-                                                    height= {27}
-                                                    alt="tag"
-                                                    src={tag16}
-                                                />
-                                                <Image
-                                                    width= {72}
-                                                    height= {27}
-                                                    alt="tag"
-                                                    src={tag17}
-                                                />
-                                                <Image
-                                                    width= {72}
-                                                    height= {27}
-                                                    alt="tag"
-                                                    src={tag17}
-                                                />
-                                                </Stack>
-                                            </Grid>
-                                        </CardContent>
-                                    </Grid>
-                                    <Grid style={{marginTop:'15px'}}>
-                                        <Image
-                                        width= {98} height= {98}
-                                        alt={item.name} 
-                                        src={food}/>
-                                    </Grid>
-                                </Grid>
-                                </Link>
-                            </li>
-                    )): null}
-                    </ul>
-                    </div>
-                </Card>
-            </Container>
             </div>
         </Layout>
     </ThemeProvider>
