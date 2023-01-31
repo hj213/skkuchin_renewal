@@ -99,6 +99,14 @@ public class UserDto {
         @NotNull
         private Boolean agreement;
     }
+    @Getter
+    @AllArgsConstructor
+    public static class EmailResendRequest {
+        @NotBlank
+        private String username;
+        @NotBlank
+        private String email;
+    }
 
     @Getter
     @AllArgsConstructor

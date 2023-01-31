@@ -99,15 +99,36 @@ public class UserService {
 
     @Transactional
     public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
+        if (!dto.getAgreement()) throw new CustomRuntimeException("이메일 전송 실패", "개인정보처리방침 및 이용약관에 동의해야 합니다.");
         AppUser user = userRepo.findByUsername(dto.getUsername());
-
         if (user == null) {
             throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
         }
         if (user.getEmailAuth()) {
             throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
         }
+        AppUser existingUser = userRepo.findByEmail(dto.getEmail());
+        if (existingUser != null && existingUser.getEmailAuth()) {
+            throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
+        } else {
+            user.setEmail(dto.getEmail());
+            user.setAgreement(true);
+            emailService.sendEmail(dto.getEmail());
+        }
+    }
 
+    @Transactional
+    public void resendEmail(UserDto.EmailResendRequest dto) throws MessagingException, UnsupportedEncodingException {
+        AppUser user = userRepo.findByUsername(dto.getUsername());
+        if (user == null) {
+            throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
+        }
+        if (user.getEmailAuth()) {
+            throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
+        }
+        if (!user.getAgreement()) {
+            throw new CustomRuntimeException("이메일 전송 실패", "개인정보처리방침 및 이용약관에 동의해야 합니다.");
+        }
         AppUser existingUser = userRepo.findByEmail(dto.getEmail());
         if (existingUser != null && existingUser.getEmailAuth()) {
             throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
@@ -213,5 +234,12 @@ public class UserService {
         AppUser user = userRepo.findById(userId).orElseThrow();
         user.setToggle(campus);
         userRepo.save(user);
+    }
+
+    public void sendEmails(String username, String email) throws MessagingException, UnsupportedEncodingException {
+
+
+
+
     }
 }
