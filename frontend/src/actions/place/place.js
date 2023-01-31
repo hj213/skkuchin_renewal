@@ -71,6 +71,7 @@ export const search_places = (keyword) => async dispatch => {
 
     try {
         const res = await fetch(`/api/place/search/${keyword}`, {
+        // const res = await fetch(`/api/place/search?tags=${selectedTags.join(',')}`, {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'

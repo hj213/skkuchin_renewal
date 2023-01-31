@@ -28,11 +28,15 @@ export default function MapDrawer({openID}){
       open = openID;
     }
 
-    if(user.campus == '명륜'){
-      campus = false;
-    } else{
-      campus = true;
+    
+    if(user != null) {
+      if(user.campus == '명륜'){
+        campus = false;
+      } else{
+        campus = true;
+      }
     }
+
 
     useEffect(()=>{
         dispatch(load_user());
@@ -132,8 +136,8 @@ export default function MapDrawer({openID}){
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
                 <Image src={profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
                 <div >
-                <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user.nickname}</Typography>
-                <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user.major}</Typography>
+                <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
+                <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
                 </div>
             </Box>
             <List style={{marginLeft:'55px', marginTop:'54px'}}>
