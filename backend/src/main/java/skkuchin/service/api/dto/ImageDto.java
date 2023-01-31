@@ -16,7 +16,7 @@ public class ImageDto {
     @Setter
     public static class PostRequest {
         @NotNull
-        private Long placeId;
+        private Long place_id;
         private MultipartFile image;
 
         public Image toEntity(Place place, String url) {

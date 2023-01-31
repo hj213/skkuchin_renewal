@@ -3,7 +3,6 @@ package skkuchin.service.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,10 +20,9 @@ public class ReviewDto {
 
     @Getter
     @Setter
-    @AllArgsConstructor
     public static class PostRequest {
         @NotNull
-        private Long placeId;
+        private Long place_id;
         @NotNull
         private float rate;
         @NotBlank
@@ -50,7 +48,7 @@ public class ReviewDto {
     }
 
     @Getter
-    @AllArgsConstructor
+    @Setter
     public static class PutRequest {
         @NotNull
         private float rate;
