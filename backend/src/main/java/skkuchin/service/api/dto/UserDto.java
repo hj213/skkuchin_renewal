@@ -99,14 +99,6 @@ public class UserDto {
         @NotNull
         private Boolean agreement;
     }
-    @Getter
-    @AllArgsConstructor
-    public static class EmailResendRequest {
-        @NotBlank
-        private String username;
-        @NotBlank
-        private String email;
-    }
 
     @Getter
     @AllArgsConstructor
@@ -115,7 +107,7 @@ public class UserDto {
         private String nickname;
         @NotNull
         private Major major;
-        private String image;
+        //private String image;
     }
 
     @Getter
@@ -143,7 +135,7 @@ public class UserDto {
         private Major major;
         private Campus campus;
         private Campus toggle;
-        private String image;
+        private Profile image;
 
         public Response(AppUser user) {
             this.id = user.getId();

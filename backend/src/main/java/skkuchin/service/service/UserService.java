@@ -117,26 +117,6 @@ public class UserService {
         }
     }
 
-    @Transactional
-    public void resendEmail(UserDto.EmailResendRequest dto) throws MessagingException, UnsupportedEncodingException {
-        AppUser user = userRepo.findByUsername(dto.getUsername());
-        if (user == null) {
-            throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
-        }
-        if (user.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
-        }
-        if (!user.getAgreement()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "개인정보처리방침 및 이용약관에 동의해야 합니다.");
-        }
-        AppUser existingUser = userRepo.findByEmail(dto.getEmail());
-        if (existingUser != null && existingUser.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
-        } else {
-            user.setEmail(dto.getEmail());
-            emailService.sendEmail(dto.getEmail());
-        }
-    }
 
     //이메일 인증 완료한 유저인지 확인
     @Transactional
@@ -201,9 +181,12 @@ public class UserService {
     @Transactional
     public void updateUser(Long userId, UserDto.PutRequest dto) {
         AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser existingUser = userRepo.findByNickname(dto.getNickname());
+        if (!(existingUser == null || user.equals(existingUser)))
+            throw new CustomRuntimeException("사용할 수 없는 닉네임입니다.");
         user.setNickname(dto.getNickname());
         user.setMajor(dto.getMajor());
-        user.setImage(dto.getImage());
+        //user.setImage(dto.getImage());
 
         userRepo.save(user);
     }

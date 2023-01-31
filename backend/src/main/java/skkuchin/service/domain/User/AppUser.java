@@ -47,7 +47,7 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private Campus toggle;
 
-    private String image;
+    private Profile image;
 
     @Enumerated(EnumType.STRING)
     private Mbti mbti;

@@ -219,11 +219,6 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "이메일 전송 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/email/resend")
-    public ResponseEntity<?> resendEmail(@Valid @RequestBody UserDto.EmailResendRequest dto) throws MessagingException, UnsupportedEncodingException {
-        userService.resendEmail(dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 재전송 완료", null), HttpStatus.OK);
-    }
 
     @GetMapping("/email/check")
     public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> usernameMap) {
