@@ -54,11 +54,11 @@ public class UserServiceTest extends MockTest {
         AppUser userReturnedByRepo = AppUser.builder()
                 .id(1L).nickname("user").username("user111").password("encoderPassword").email("dlaudwns789@gmail.com").studentId(16).major(Major.글로벌경영학과).roles(roles)
                 .build();
-        UserDto.SignUpForm signUpForm = new UserDto.SignUpForm("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과);
+        UserDto.SignUpForm signUpForm = new UserDto.SignUpForm("user", "user111", "1234", "1234",  16, Major.글로벌경영학과);
 
         given(passwordEncoder.encode(anyString())).willReturn("encoderPassword");
         given(userRepo.save(any())).willReturn(userReturnedByRepo);
-        doNothing().when(emailService).sendEmail(signUpForm.getEmail());
+        //doNothing().when(emailService).sendEmail(signUpForm.getEmail());
 
         //when
         AppUser savedUser = userService.saveUser(signUpForm);
@@ -68,7 +68,7 @@ public class UserServiceTest extends MockTest {
         assertThat(savedUser.getNickname()).isEqualTo(signUpForm.getNickname());
         assertThat(savedUser.getUsername()).isEqualTo(signUpForm.getUsername());
         assertThat(savedUser.getPassword()).isEqualTo("encoderPassword");
-        verify(emailService, times(1)).sendEmail(signUpForm.getEmail());
+        //verify(emailService, times(1)).sendEmail(signUpForm.getEmail());
     }
 
     @Test

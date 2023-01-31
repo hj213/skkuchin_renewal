@@ -11,6 +11,8 @@ import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -28,7 +30,9 @@ public class ReviewDto {
         @JsonProperty
         private Long placeId;
         @NotNull
-        private float rate;
+        @Min(value = 1)
+        @Max(value = 5)
+        private int rate;
         @NotBlank
         private String content;
         private List<MultipartFile> images;
@@ -55,7 +59,9 @@ public class ReviewDto {
     @AllArgsConstructor
     public static class PutRequest {
         @NotNull
-        private float rate;
+        @Min(value = 1)
+        @Max(value = 5)
+        private int rate;
         @NotBlank
         private String content;
         private List<MultipartFile> images;
@@ -76,7 +82,7 @@ public class ReviewDto {
         private Long id;
         @JsonProperty
         private Long placeId;
-        private float rate;
+        private int rate;
         private String content;
         private List<String> images;
         @JsonProperty
