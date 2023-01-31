@@ -28,6 +28,14 @@ public class MenuController {
         return new ResponseEntity<>(new CMRespDto<>(1, "메뉴 작성 완료", null), HttpStatus.CREATED);
     }
 
+    @PostMapping("/{placeId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> writeManyMenus(@Valid @RequestBody List<MenuDto.PostRequest1> dto,
+                                            @PathVariable Long placeId){
+        menuService.addAll(dto, placeId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "메뉴 작성 완료", null), HttpStatus.CREATED);
+    }
+    //메뉴 가격 수정, 메뉴 삭제
 
 
     @GetMapping("/place/{placeId}")

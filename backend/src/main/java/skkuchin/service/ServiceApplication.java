@@ -47,6 +47,13 @@ public class ServiceApplication {
 			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\";
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; //Mac 공통 경로
 
+			//tagService.insertData(path);
+			//placeService.insertData(path);
+			//imageService.insertData(path);
+			//menuService.insertData(path);
+			//keywordService.insertData(path);
+
+
 			try {
 				tagService.insertData(path);
 				placeService.insertData(path);
@@ -57,6 +64,7 @@ public class ServiceApplication {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
+
 		};
 	}
 }
