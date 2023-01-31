@@ -22,7 +22,7 @@ public class Review {
     private Long id;
 
     @Column(nullable = false)
-    private float rate;
+    private int rate;
 
     @Column(nullable = false)
     private String content;

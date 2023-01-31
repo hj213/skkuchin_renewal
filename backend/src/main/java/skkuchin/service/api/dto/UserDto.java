@@ -33,8 +33,8 @@ public class UserDto {
         private String password;
         @JsonProperty
         private String rePassword;
-        @NotBlank
-        private String email;
+        //@NotBlank
+        //private String email;
         @NotNull
         @JsonProperty
         @Min(value = 10)
@@ -53,13 +53,26 @@ public class UserDto {
                     .nickname(this.nickname)
                     .username(this.username)
                     .password(this.password)
-                    .email(this.email)
+                    //.email(this.email)
                     .studentId(this.studentId)
                     .major(this.major)
+                    .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
                     .roles(new ArrayList<>())
                     .emailAuth(false)
                     .build();
+        }
+
+        public Campus findCampus(Major major) {
+            EnumSet<Major> majors = EnumSet.allOf(Major.class);
+            List<Major> majorList = new ArrayList<>();
+            majorList.addAll(majors);
+
+            if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
+                return Campus.명륜;
+            } else {
+                return Campus.율전;
+            }
         }
     }
 
@@ -78,12 +91,35 @@ public class UserDto {
 
     @Getter
     @AllArgsConstructor
+    public static class EmailRequest {
+        @NotBlank
+        private String username;
+        @NotBlank
+        private String email;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class PutRequest {
         @NotBlank
         private String nickname;
         @NotNull
         private Major major;
         private String image;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class PutPassword {
+        @NotBlank
+        private String password;
+        @JsonProperty
+        @NotBlank
+        private String newPassword;
+        @JsonProperty
+        @NotBlank
+        private String newRePassword;
     }
 
     @Getter
