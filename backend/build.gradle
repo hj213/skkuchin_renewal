@@ -25,6 +25,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	//view
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.webjars.bower:bootstrap:4.3.1'
+	implementation 'org.webjars.bower:vue:2.5.16'
+	implementation 'org.webjars.bower:axios:0.17.1'
+	implementation 'com.google.code.gson:gson:2.8.0'
 	//spring email
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
@@ -37,9 +48,22 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.mockito:mockito-core:4.8.0'
-	//AWS
+
+	//websocket
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.4.6'
+
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.4'
+
+	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
+
+
+
+
+
 	implementation platform('software.amazon.awssdk:bom:2.15.0')
 	implementation 'software.amazon.awssdk:s3'
+
 }
 
 tasks.named('test') {
