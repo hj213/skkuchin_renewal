@@ -58,7 +58,7 @@ public class UserDto {
                     .major(this.major)
                     .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
-                    .roles(new ArrayList<>())
+                    //.roles(new ArrayList<>())
                     .emailAuth(false)
                     .build();
         }
@@ -96,6 +96,8 @@ public class UserDto {
         private String username;
         @NotBlank
         private String email;
+        @NotNull
+        private Boolean agreement;
     }
 
     @Getter
@@ -132,6 +134,7 @@ public class UserDto {
         private int studentId;
         private Major major;
         private Campus campus;
+        private Campus toggle;
         private String image;
 
         public Response(AppUser user) {
@@ -141,6 +144,7 @@ public class UserDto {
             this.studentId = user.getStudentId();
             this.major = user.getMajor();
             this.campus = findCampus(user.getMajor());
+            this.toggle = user.getToggle();
             this.image = user.getImage();
         }
 

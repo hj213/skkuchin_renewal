@@ -19,6 +19,7 @@ import skkuchin.service.api.dto.*;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Role;
+import skkuchin.service.domain.User.UserRole;
 import skkuchin.service.exception.BlankException;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.exception.DuplicateException;
@@ -125,7 +126,7 @@ public class UserController {
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) //10분
                         .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                        .withClaim("roles", user.getUserRoles().stream().map(userRole -> userRole.getRole().getName()).collect(Collectors.toList()))
                         .sign(algorithm);
 
                 UserDto.TokenResponse response = new UserDto.TokenResponse(access, refresh);
