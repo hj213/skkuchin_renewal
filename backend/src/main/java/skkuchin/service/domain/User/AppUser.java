@@ -1,6 +1,7 @@
 package skkuchin.service.domain.User;
 
 import lombok.*;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.Map.Review;
 import skkuchin.service.domain.Matching.Candidate;
@@ -33,7 +34,7 @@ public class AppUser {
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -42,6 +43,9 @@ public class AppUser {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Major major;
+
+    @Enumerated(EnumType.STRING)
+    private Campus toggle;
 
     private String image;
 
