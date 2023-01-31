@@ -3,6 +3,7 @@ package skkuchin.service.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 public class ImageDto {
 
     @Setter
+    @AllArgsConstructor
     public static class PostRequest {
         @NotNull
         private Long place_id;
@@ -37,6 +39,7 @@ public class ImageDto {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class PutRequest {
         private MultipartFile image;
     }
