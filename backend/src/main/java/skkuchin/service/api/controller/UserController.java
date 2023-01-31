@@ -12,13 +12,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.*;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.BlankException;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.UserService;
 
 import javax.mail.MessagingException;
@@ -46,16 +50,21 @@ public class UserController {
     }
 
     @PostMapping("/user/saves")
-    public ResponseEntity<?> saveUser(@Valid @RequestBody UserDto.SignUpForm signUpForm) {
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UserDto.SignUpForm signUpForm, BindingResult bindingResult) {
+        Map<String, String> errorMap = new HashMap<>();
         try {
-            userService.saveUser(signUpForm);
+            if (bindingResult.hasErrors()) {
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+                }
+                throw new CustomValidationApiException("유효성 검사 실패", errorMap);
+            }
+            AppUser user = userService.saveUser(signUpForm);
             return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);
-        } catch (DataIntegrityViolationException exception) {
+        } catch (DataIntegrityViolationException e) {
             //username 또는 nickname 중복 시 에러
-            throw new DuplicateException("duplicate_error");
-        } catch(TransactionSystemException exception) {
-            //null 또는 blank data가 있을 경우 에러
-            throw new BlankException("blank_error");
+            //throw new DuplicateException("duplicate_error");
+            throw new CustomValidationApiException("중복 오류");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         } catch (UnsupportedEncodingException e) {
@@ -181,6 +190,48 @@ public class UserController {
         userService.deleteUser(userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 삭제 완료", null), HttpStatus.OK);
     }
+
+    @GetMapping("/user/check/username")
+    public ResponseEntity<?> checkUsername(@RequestBody Map<String, String> usernameMap) {
+        Boolean canUse = userService.checkUsername(usernameMap.get("username"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "아이디 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/check/nickname")
+    public ResponseEntity<?> checkNickName(@RequestBody Map<String, String> nicknameMap) {
+        Boolean canUse = userService.checkNickname(nicknameMap.get("nickname"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "닉네임 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/user/password")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody UserDto.PutPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long userId = principalDetails.getUser().getId();
+        userService.updatePassword(dto, userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 변경 완료", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/email/send")
+    public ResponseEntity<?> sendEmail(@Valid @RequestBody UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
+        userService.sendEmail(dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 전송 완료", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/email/check")
+    public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> usernameMap) {
+        Boolean isAuth = userService.checkEmail(usernameMap.get("username"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 인증 여부 확인 완료", isAuth), HttpStatus.OK);
+    }
+
+    @PutMapping("/user/toggle")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updateToggleValue(@RequestBody Map<String, Campus> campusMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long userId = principalDetails.getUser().getId();
+        userService.updateToggleValue(campusMap.get("campus"), userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "토글값 변경 완료", null), HttpStatus.OK);
+    }
+
 }
 
 

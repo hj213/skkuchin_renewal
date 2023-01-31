@@ -37,21 +37,21 @@ public class ImageController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> upload(@Valid @RequestBody ImageDto.PostRequest dto) {
+    public ResponseEntity<?> upload(@Valid @ModelAttribute ImageDto.PostRequest dto) {
         imageService.upload(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "이미지 업로드 완료", null), HttpStatus.CREATED);
     }
 
     @PostMapping("/all")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> uploadAll(@Valid @RequestBody List<ImageDto.PostRequest> dto) {
+    public ResponseEntity<?> uploadAll(@Valid @ModelAttribute List<ImageDto.PostRequest> dto) {
         imageService.uploadAll(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "여러 이미지 업로드 완료", null), HttpStatus.CREATED);
     }
 
     @PutMapping("/{imageId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long imageId, @Valid @RequestBody ImageDto.PutRequest dto) {
+    public ResponseEntity<?> update(@PathVariable Long imageId, @Valid @ModelAttribute ImageDto.PutRequest dto) {
         imageService.update(imageId, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "이미지 업데이트 완료", null), HttpStatus.OK);
     }

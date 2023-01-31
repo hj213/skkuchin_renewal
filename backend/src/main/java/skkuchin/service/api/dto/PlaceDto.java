@@ -81,7 +81,7 @@ public class PlaceDto {
         private Boolean discountAvailability;
         @JsonProperty
         private String discountContent;
-        private List<String> image;
+        private List<String> images;
         @JsonProperty
         private Long reviewCount;
         private Double rate;
@@ -101,7 +101,7 @@ public class PlaceDto {
             this.discountContent = place.getDiscountContent();
             this.category = place.getCategory();
             this.campus = place.getCampus();
-            this.image = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
+            this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
             this.reviewCount = reviews.stream().count();
             this.rate = Math.round(
                     reviews

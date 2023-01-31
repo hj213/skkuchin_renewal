@@ -10,9 +10,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.UserRepo;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -63,13 +64,17 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                 } catch (Exception exception) {
                     log.error("Error logging in : {}", exception.getMessage());
+                    /*
                     response.setHeader("error", exception.getMessage());
                     response.setStatus(FORBIDDEN.value());
                     //response.sendError(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", exception.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
+                    //new ObjectMapper().writeValue(response.getOutputStream(), error);*/
+                    response.setStatus(FORBIDDEN.value());
+                    response.setContentType(APPLICATION_JSON_VALUE);
+                    new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, "access token 만료", null));
                 }
 
             } else {

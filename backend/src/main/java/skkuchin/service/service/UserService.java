@@ -6,19 +6,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
-import skkuchin.service.domain.Matching.Keyword;
-import skkuchin.service.domain.Matching.UserKeyword;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.*;
-import skkuchin.service.exception.DiscordException;
-import skkuchin.service.exception.DuplicateException;
-import skkuchin.service.exception.EmailAuthNumNotFoundException;
+import skkuchin.service.exception.*;
 import skkuchin.service.repo.*;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,21 +37,28 @@ public class UserService {
     public boolean checkUsername(String username) {
         AppUser existingUser = userRepo.findByUsername(username);
         if (existingUser == null) {
-            return false;
-        } else return true;
+            return true;
+        } else return false;
+    }
+
+    public boolean checkNickname(String nickname) {
+        AppUser existingUser = userRepo.findByNickname(nickname);
+        if (existingUser == null) {
+            return true;
+        } else return false;
     }
 
     @Transactional
     public AppUser saveUser(UserDto.SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
         log.info("Saving new user {} to the database", signUpForm.getNickname());
+
         if (!signUpForm.getPassword().equals(signUpForm.getRePassword())) {
-            throw new DiscordException("re_password_error");
+            //throw new DiscordException("re_password_error");
+            throw new CustomRuntimeException("회원가입 실패", "일치하지 않는 비밀번호입니다.");
         }
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         AppUser appUser = signUpForm.toEntity();
-        appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
         AppUser newUser = userRepo.save(appUser);
-        emailService.sendEmail(newUser.getEmail());
         return newUser;
     }
 
@@ -83,6 +90,35 @@ public class UserService {
         emailAuth.useToken();
         user.emailVerifiedSuccess();
         return true;
+    }
+
+    public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
+        AppUser user = userRepo.findByUsername(dto.getUsername());
+
+        if (user == null) {
+            throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
+        }
+        if (user.getEmailAuth()) {
+            throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
+        }
+
+        AppUser existingUser = userRepo.findByEmail(dto.getEmail());
+        if (existingUser != null && existingUser.getEmailAuth()) {
+            throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
+        } else {
+            user.setEmail(dto.getEmail());
+            emailService.sendEmail(dto.getEmail());
+        }
+    }
+
+    //이메일 인증 완료한 유저인지 확인
+    public Boolean checkEmail(String username) {
+        AppUser user = userRepo.findByUsername(username);
+        if (user == null) throw new RuntimeException("회원이 아닙니다.");
+        if (user.getEmailAuth()) {
+            user.getRoles().add(roleRepo.findByName("ROLE_USER"));
+            return true;
+        } else return false;
     }
 
     public void saveRole(Role role) {
@@ -143,5 +179,27 @@ public class UserService {
     public void deleteUser(Long userId) {
         AppUser user = userRepo.findById(userId).orElseThrow();
         userRepo.delete(user);
+    }
+
+    @Transactional
+    public void updatePassword(UserDto.PutPassword dto, Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            throw new CustomRuntimeException("비밀번호 변경 실패", "현재 비밀번호가 일치하지 않습니다.");
+        }
+        if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
+            throw new CustomRuntimeException("비밀번호 변경 실패", "신규 비밀번호가 일치하지 않습니다.");
+        }
+        String newPassword = passwordEncoder.encode(dto.getNewPassword());
+        user.setPassword(newPassword);
+
+        userRepo.save(user);
+    }
+
+    @Transactional
+    public void updateToggleValue(Campus campus, Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        user.setToggle(campus);
+        userRepo.save(user);
     }
 }

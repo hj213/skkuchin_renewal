@@ -8,9 +8,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.CandidateDto;
-import skkuchin.service.api.dto.MatchingUserDto;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.security.auth.PrincipalDetails;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.CandidateService;
 
 import javax.validation.Valid;

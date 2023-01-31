@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
+import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepository;
-import skkuchin.service.security.auth.PrincipalDetails;
+
 import skkuchin.service.service.ChatService;
 
 import java.util.List;

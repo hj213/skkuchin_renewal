@@ -6,10 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -18,19 +21,18 @@ import java.util.stream.Collectors;
 
 public class ReviewDto {
 
-    @Getter
     @Setter
     @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
         @NotNull
-        @JsonProperty
-        private Long placeId;
+        private Long place_id;
         @NotNull
-        private float rate;
+        @Min(value = 1)
+        @Max(value = 5)
+        private int rate;
         @NotBlank
         private String content;
-        private List<String> image;
+        private List<MultipartFile> images;
         private List<String> tags;
 
         public Review toEntity(AppUser user, Place place) {
@@ -38,7 +40,6 @@ public class ReviewDto {
                     .place(place)
                     .content(content)
                     .rate(rate)
-                    //.image(image)
                     .user(user)
                     .build();
         }
@@ -49,16 +50,39 @@ public class ReviewDto {
                     .tag(tag)
                     .build();
         }
+
+        public @NotNull Long getPlaceId() {
+            return this.place_id;
+        }
+
+        public @NotNull @Min(value = 1) @Max(value = 5) int getRate() {
+            return this.rate;
+        }
+
+        public @NotBlank String getContent() {
+            return this.content;
+        }
+
+        public List<MultipartFile> getImages() {
+            return this.images;
+        }
+
+        public List<String> getTags() {
+            return this.tags;
+        }
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     public static class PutRequest {
         @NotNull
-        private float rate;
+        @Min(value = 1)
+        @Max(value = 5)
+        private int rate;
         @NotBlank
         private String content;
-        private List<String> image;
+        private List<MultipartFile> images;
         private List<String> tags;
 
         public ReviewTag toReviewTagEntity(Review review, Tag tag) {
@@ -76,15 +100,14 @@ public class ReviewDto {
         private Long id;
         @JsonProperty
         private Long placeId;
-        private float rate;
+        private int rate;
         private String content;
-        private List<String> image;
+        private List<String> images;
         @JsonProperty
         private LocalDateTime createDate;
         private String nickname;
         private Major major;
         @JsonProperty
-        //private String studentId;
         private int studentId;
         @JsonProperty
         private String userImage;
@@ -95,7 +118,7 @@ public class ReviewDto {
             this.placeId = review.getPlace().getId();
             this.rate = review.getRate();
             this.content = review.getContent();
-            this.image = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
+            this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
             this.createDate = review.getCreateDate();
             this.nickname = review.getUser().getNickname();
             this.major = review.getUser().getMajor();

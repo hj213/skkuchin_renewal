@@ -59,27 +59,16 @@ public class FavoriteDto {
         private Boolean discountAvailability;
         @JsonProperty
         private String discountContent;
-        private List<String> image;
+        private List<String> images;
         @JsonProperty
         private Long reviewCount;
         private Double rate;
         private List<String> tags;
 
-
-
-
-
-
-
-
-
-
         public Response(Favorite favorite,List<Image> images,List<Review> reviews,List<Tag> tags) {
-            Place place = favorite.getPlace();
-
-            this.placeId = favorite.getPlace().getId();
             this.id = favorite.getId();
             this.name = favorite.getPlace().getName() ;
+            this.placeId = favorite.getPlace().getId();
             this.category =  favorite.getPlace().getCategory();
             this.detailCategory = favorite.getPlace().getDetailCategory();
             this.campus =  favorite.getPlace().getCampus();
@@ -91,7 +80,7 @@ public class FavoriteDto {
             this.breakTime = favorite.getPlace().getBreakTime();
             this.discountAvailability = favorite.getPlace().getDiscountAvailability();
             this.discountContent = favorite.getPlace().getDiscountContent();
-            this.image = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
+            this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
             this.reviewCount = reviews.stream().count();
             this.rate = Math.round(
                     reviews
@@ -101,10 +90,7 @@ public class FavoriteDto {
                             .orElse(0.0)*10)/10.0;
 
             this.tags = tags.stream().map(tag -> tag.getName()).collect(Collectors.toList());
-
         }
-
-
     }
 
 }

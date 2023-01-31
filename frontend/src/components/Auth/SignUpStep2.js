@@ -1,0 +1,130 @@
+import { useState, useEffect } from "react";
+import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, InputAdornment} from '@mui/material';
+import back from '../../image/arrow_back_ios.png';
+import check from '../../image/check_circle.png';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from "next/router";
+
+const SignUpStep2 = (props) => {
+    const [nickname, setNickname] = useState('');
+    const [major, setMajor] = useState('');
+    const [student_id, setStudentId] = useState('');
+
+    const majorList = [
+      '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공',
+      '글로벌경제학과', '통계학과', '건설환경공학부', '건축학과', '기계공학부',
+      '나노공학과', '시스템경영공학과', '신소재공학부', '화학공학/고분자공학부', '국어국문학과', '독어독문학과',
+      '러시아어문학과', '문헌정보학과', '사학과', '영어영문학과', '중어중문학과',
+      '철학과', '프랑스어문학과', '한문학과', '교육학과', '수학교육과',
+      '컴퓨터교육과', '한문교육과', '글로벌리더학부', '미디어커뮤니케이션학과',
+      '사회복지학과', '사회학과', '사회학과', '심리학과',
+      '아동청소년학과', '정치외교학과', '행정학과', '바이오메카트로닉스학과', '식품생명공학과', '융합생명공학과', '글로벌바이오메디컬공학과', 
+      '글로벌융합학부', '데이터사이언스융합전공', '인공지능융합전공', '컬처앤테크놀로지융합전공', '자기설계융합전공',
+      '유학동양학과', '미술학과', '디자인학과', '무용학과', '영상학과', '연기예술학과', '의상학과', 
+      '소프트웨어학과', '생명과학과', '수학과', '물리학과', '화학과', '전자전기공학부', '반도체시스템공학과', '소재부품융합공학과', '약학과', '스포츠과학과', '의학과'
+    ];
+
+    const handlePrevStep = () => {
+      props.handlePrevStep();
+    }
+
+    const handleNextStep = () => {
+      props.handleNextStep({nickname, major, student_id});
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("major", major);
+      localStorage.setItem("student_id", student_id);
+    }
+
+
+    return (
+      <Box
+        sx={{
+        marginTop: '45px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        }}
+    >
+      <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
+            <Image width={12.02} height={21.55} src={back} onClick={handlePrevStep}/>
+            <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>회원가입</Typography>
+      </header>
+      <form style={{ width: '100%'}}>
+        <div style={{margin: '0 36px'}}>
+          <TextField
+            variant="standard"
+            label="닉네임"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            style={{width: '100%'}}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            required
+            />
+            {/* 중복확인 메소드 추가 */}
+            <Button variant="contained" style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '1px 7px', margin: '6px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+        </div>
+        <div style={{margin: '0 36px 44px'}}>
+          <FormControl variant="standard" style={{width: '100%'}}>
+            <InputLabel shrink required >학부/학과</InputLabel>
+            <Select
+                MenuProps={{
+                  style: {
+                      width: '212px',
+                      height: '241px',
+                  }
+              }}
+              name='major'
+              value={major}
+              onChange={(e) => setMajor(e.target.value)}
+            >
+                {majorList.map((item, index) => (
+                  <MenuItem value={item} key={index}>{item}</MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </div>
+        <div style={{margin: '0 36px'}}>
+          <TextField
+            variant="standard"
+            label="학번"
+            value={student_id}
+            onChange={(e) => setStudentId(e.target.value)}
+            style={{width: '100%'}}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            required
+            InputProps={{
+              endAdornment: <InputAdornment position="end"><span style={{color: "#000", fontSize: '12px', fontWeight: '500'}}>학번</span></InputAdornment>,
+            }}
+          />
+          { (student_id != '') ?
+            (student_id.length != 2) ?
+            <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>숫자 2자리를 입력해주세요.</Typography>
+            : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>&nbsp; </Typography>
+          : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '34px'}}>숫자 2자리 입력</Typography>
+        }
+        </div>
+        <div style={{margin: '0 36px 12px'}}>
+            { (nickname != '' && major != '' && student_id.length == 2 && student_id < 24) ?
+                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+                    :
+                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        다음
+                    </Button>
+            }
+        </div>
+        </form>
+        <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
+                이미 회원이신가요? <Link href={`/login`} > 로그인 </Link> 
+        </div>
+      </Box>
+    );
+  };
+
+  export default SignUpStep2;

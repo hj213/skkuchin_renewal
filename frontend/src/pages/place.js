@@ -385,7 +385,7 @@ const PlacePage = () => {
                                                         메뉴
                                                     </Typography>
                                                     <Typography sx={{fontSize: '17px', fontWeight: '700', color: '#FFCE00'}}>
-                                                        { menus? menus.length : null }
+                                                        { menus ? menus.length : null }
                                                     </Typography>
                                                 </Grid>
                                                 { menus ? menus.map((menu, index) => (

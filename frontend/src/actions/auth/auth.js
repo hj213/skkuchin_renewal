@@ -109,8 +109,6 @@ export const register = (
     email,
     student_id,
     major,
-    mbti,
-    image
 ) => async dispatch => {
     const body = JSON.stringify({
         nickname,
@@ -120,8 +118,6 @@ export const register = (
         email,
         student_id,
         major,
-        mbti,
-        image
     });
 
     dispatch({

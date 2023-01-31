@@ -3,43 +3,45 @@ package skkuchin.service.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import skkuchin.service.domain.Map.*;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+import skkuchin.service.domain.Map.Image;
+import skkuchin.service.domain.Map.Place;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class ImageDto {
 
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Setter
+    @AllArgsConstructor
     public static class PostRequest {
         @NotNull
-        @JsonProperty
-        private Long placeId;
+        private Long place_id;
+        private MultipartFile image;
 
-        @NotBlank
-        private String url;
-
-        public PostRequest(String url) {
-            this.url = url;
-        }
-
-        public Image toEntity(Place place) {
+        public Image toEntity(Place place, String url) {
             return Image.builder()
                     .place(place)
-                    .url(this.url)
+                    .url(url)
                     .build();
+        }
+
+        public @NotNull Long getPlaceId() {
+            return this.place_id;
+        }
+
+        public MultipartFile getImage() {
+            return this.image;
         }
     }
 
     @Getter
+    @Setter
+    @AllArgsConstructor
     public static class PutRequest {
-        @NotBlank
-        private String url;
+        private MultipartFile image;
     }
 
     /* 이미지 전체 조회, 이미지 상세 조회 */
@@ -48,11 +50,14 @@ public class ImageDto {
     public static class Response {
         private Long id;
         @JsonProperty
+        private Long placeId;
+        @JsonProperty
         private String placeName;
         private String url;
 
         public Response(Image image) {
             this.id = image.getId();
+            this.placeId = image.getPlace().getId();
             this.placeName = image.getPlace().getName();
             this.url = image.getUrl();
         }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Matching.Gender;
 import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
@@ -14,6 +15,7 @@ import skkuchin.service.domain.User.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 
@@ -31,8 +33,8 @@ public class UserDto {
         private String password;
         @JsonProperty
         private String rePassword;
-        @NotBlank
-        private String email;
+        //@NotBlank
+        //private String email;
         @NotNull
         @JsonProperty
         @Min(value = 10)
@@ -51,13 +53,26 @@ public class UserDto {
                     .nickname(this.nickname)
                     .username(this.username)
                     .password(this.password)
-                    .email(this.email)
+                    //.email(this.email)
                     .studentId(this.studentId)
                     .major(this.major)
+                    .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
                     .roles(new ArrayList<>())
                     .emailAuth(false)
                     .build();
+        }
+
+        public Campus findCampus(Major major) {
+            EnumSet<Major> majors = EnumSet.allOf(Major.class);
+            List<Major> majorList = new ArrayList<>();
+            majorList.addAll(majors);
+
+            if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
+                return Campus.명륜;
+            } else {
+                return Campus.율전;
+            }
         }
     }
 
@@ -76,6 +91,15 @@ public class UserDto {
 
     @Getter
     @AllArgsConstructor
+    public static class EmailRequest {
+        @NotBlank
+        private String username;
+        @NotBlank
+        private String email;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class PutRequest {
         @NotBlank
         private String nickname;
@@ -85,27 +109,51 @@ public class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class PutPassword {
+        @NotBlank
+        private String password;
+        @JsonProperty
+        @NotBlank
+        private String newPassword;
+        @JsonProperty
+        @NotBlank
+        private String newRePassword;
+    }
+
+    @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private String nickname;
         private String username;
-        //private String email;
         @JsonProperty
         private int studentId;
         private Major major;
+        private Campus campus;
         private String image;
-        //private Mbti mbti;
 
         public Response(AppUser user) {
             this.id = user.getId();
             this.nickname = user.getNickname();
             this.username = user.getUsername();
-            //this.email = user.getEmail();
             this.studentId = user.getStudentId();
             this.major = user.getMajor();
+            this.campus = findCampus(user.getMajor());
             this.image = user.getImage();
-            //this.mbti = user.getMbti();
+        }
+
+        public Campus findCampus(Major major) {
+            EnumSet<Major> majors = EnumSet.allOf(Major.class);
+            List<Major> majorList = new ArrayList<>();
+            majorList.addAll(majors);
+
+            if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
+                return Campus.명륜;
+            } else {
+                return Campus.율전;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package skkuchin.service.security;
+package skkuchin.service.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,6 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**", "/api/user/save", "/api/user/saves", "/api/token/refresh/**", "/api/token/verify/**", "/api/confirmEmail").permitAll();
         http.apply(new MyCustomDsl());
-
         return http.build();
     }
 

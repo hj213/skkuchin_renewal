@@ -1,0 +1,12 @@
+mail:
+  smtp:
+    auth: true
+    port: 587
+    starttls:
+      enable: true
+      required: true
+  transport:
+    protocol: smtp
+AdminMail:
+  id: skkuchin@gmail.com
+  password: eopkbojixcwwuiop

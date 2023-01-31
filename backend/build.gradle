@@ -49,6 +49,7 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.mockito:mockito-core:4.8.0'
 
+	//websocket
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.4.6'
 
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
@@ -57,6 +58,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
 
 
+
+
+
+	implementation platform('software.amazon.awssdk:bom:2.15.0')
+	implementation 'software.amazon.awssdk:s3'
 
 }
 

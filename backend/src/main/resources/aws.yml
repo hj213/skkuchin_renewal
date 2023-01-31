@@ -1,0 +1,12 @@
+aws:
+  credentials:
+    access-key: AKIAZTEOD3CVDU4TKCBL
+    secret-access-key: 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
+  region:
+    static: ap-northeast-2
+  s3:
+    bucket: skkuchin2023-bucket
+    prefix: dev/media/
+    start-url: https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/
+  stack:
+    auto: false

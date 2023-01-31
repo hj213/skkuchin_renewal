@@ -13,7 +13,7 @@ import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepository;
 import skkuchin.service.repo.ChatRoomRepository;
-import skkuchin.service.security.auth.PrincipalDetails;
+
 import skkuchin.service.service.ChatService;
 
 @Controller

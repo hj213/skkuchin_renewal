@@ -49,6 +49,9 @@ public class PlaceServiceTest extends MockTest {
             null,
             false,
             null,
+            null,
+            null,
+            null,
             null
         );
         Place place2 = new Place(
@@ -64,6 +67,9 @@ public class PlaceServiceTest extends MockTest {
             "월,화,수,목,금,일 11:30 ~ 21:00",
             "월,화,수,목,금,일 브레이크타임 15:00 ~ 17:00",
             false,
+            null,
+            null,
+            null,
             null,
             null
         );
@@ -94,6 +100,9 @@ public class PlaceServiceTest extends MockTest {
             "매일 17:00 ~ 01:00",
             null,
             false,
+            null,
+            null,
+            null,
             null,
             null
         );
