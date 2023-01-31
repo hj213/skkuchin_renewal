@@ -20,28 +20,8 @@ import java.util.stream.Collectors;
 public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
-    private Map<String, ChatRoom> chatRooms;
 
-    @PostConstruct
-    //의존관게 주입완료되면 실행되는 코드
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
-    }
-
-    //채팅방 불러오기
-    public List<ChatRoom> findAllRoom() {
-        //채팅방 최근 생성 순으로 반환
-        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-        Collections.reverse(result);
-
-        return result;
-    }
-
-    //채팅방 하나 불러오기
-    public ChatRoom findById(String roomId) {
-        return chatRooms.get(roomId);
-    }
-
+    //전체 채팅방 조회
     public List<ChatRoomDto.Response> getAllRoom(){
         return chatRoomRepository.findAll()
                 .stream()
@@ -51,7 +31,7 @@ public class ChatService {
 
     }
 
-
+    //채팅방의 메시지들 조회
     public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
         return chatRepository.findByRoomId(chatRoom.getRoomId())
                 .stream()
@@ -59,14 +39,8 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    //채팅방 생성
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
-        chatRoomRepository.save(chatRoom);
-        return chatRoom;
-    }
 
+    //채팅방 개설
     public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
 
         ChatRoom chatRoom = dto.toEntity(user);
@@ -74,21 +48,52 @@ public class ChatService {
 
     }
 
+    //상대방 정보
     public void update(ChatRoom chatRoom,AppUser user){
 
         ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         chatRoom1.setUser1(user);
-        chatRoom1.setSenderAccepted(true);
+        chatRoom1.setReceiverAccepted(true);
 
         chatRoomRepository.save(chatRoom1);
 
     }
 
+    // 채팅방 찾기
     public ChatRoom findChatroom(String roomId){
 
         ChatRoom chatroom = chatRoomRepository.findByRoomId(roomId);
         return chatroom;
     }
+
+       /* private Map<String, ChatRoom> chatRooms;
+
+    @PostConstruct
+    private void init() {
+        chatRooms = new LinkedHashMap<>();
+    }
+
+
+    public List<ChatRoom> findAllRoom() {
+        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
+        Collections.reverse(result);
+
+        return result;
+    }
+
+
+    public ChatRoom findById(String roomId) {
+        return chatRooms.get(roomId);
+    }*/
+
+     /*   //채팅방 생성
+    public ChatRoom createRoom(String name) {
+        ChatRoom chatRoom = ChatRoom.create(name);
+        chatRooms.put(chatRoom.getRoomId(), chatRoom);
+        chatRoomRepository.save(chatRoom);
+        return chatRoom;
+    }*/
+
 }
 

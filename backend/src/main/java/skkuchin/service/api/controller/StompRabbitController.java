@@ -6,11 +6,14 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepository;
 import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.security.auth.PrincipalDetails;
 import skkuchin.service.service.ChatService;
 
 @Controller
@@ -40,6 +43,8 @@ public class StompRabbitController {
     @MessageMapping("chat.message.{chatRoomId}")
     public void send(ChatMessage chat, @DestinationVariable String chatRoomId){
         chat.setSender("hi");
+       /* AppUser user = principalDetails.getUser();
+        System.out.println("user = " + user);*/
         chat.setType(ChatMessage.MessageType.TALK);
        ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
         //  System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
@@ -56,6 +61,8 @@ public class StompRabbitController {
         System.out.println("received : " + chat.getMessage());
 
     }
+
+
 }
 
 

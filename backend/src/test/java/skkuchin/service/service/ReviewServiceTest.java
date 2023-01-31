@@ -261,7 +261,7 @@ public class ReviewServiceTest extends MockTest {
         //given
         //AppUser user2 = new AppUser(2L, "test2", "test2", "1234", "test", "0000000001", null, null, null, null, null, null, null, null, null, null);
         AppUser user2 = AppUser.builder()
-                .id(2L).nickname("test2").username("test2").password("1234").email("test").studentId("0000000001")
+                .id(2L).nickname("test2").username("test2").password("1234").email("test").studentId(20)
                 .build();
         Review review1 = new Review(1L, 4.0F, "또 갈래요", "이미지", place, user, null, null);
         Review review2 = new Review(2L, 5.0F, "짱", "img", place, user2, null, null);

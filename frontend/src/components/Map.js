@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 
 const Map = ({latitude, longitude}) => {
     useEffect(() => {
-        console.log(latitude, longitude);
         const mapScript = document.createElement("script");
         
         mapScript.async = true;
@@ -26,7 +25,7 @@ const Map = ({latitude, longitude}) => {
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
     }, [latitude, longitude]);
     return (
-         <MapContainer id="map" style={{width:'100%', height:'65vh'}}/>
+        <MapContainer id="map" style={{width:'100%', height:'65vh'}}/>
 
     );
 }

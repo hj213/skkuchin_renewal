@@ -1,9 +1,12 @@
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_places } from "../actions/place/place";
+import { load_favorite } from "../actions/favorite/favorite";
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
+import Link from 'next/link';
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
@@ -14,10 +17,14 @@ import tag14 from '../image/tag14.png';
 import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png'
 import closeIcon from '../image/close.png'
+import bookmarkOn from '../image/bookmark-1.png'
 
 export default function list(){
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
     const dispatch = useDispatch();
+    const router = useRouter();
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
@@ -33,10 +40,16 @@ export default function list(){
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
     const mouseClicked = false;
+    const tagClicked = false;
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
     // api에서 데이터 불러오기
     useEffect(()=>{
         dispatch(load_places());
+        dispatch(load_favorite());
     }, [dispatch]);
 
     // 사용자 터치에 따라 카드 사이즈 변화
@@ -56,8 +69,9 @@ export default function list(){
       }, [cardRef]);
     // 장소 정보 불러오기
     const place = useSelector(state => state.place.place);
+    const favorites = useSelector(state => state.favorite.favorite);
 
-    // *수정해야할 부분* li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
+    //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
     useEffect(() => {
         setNumOfLi(place.length);
     }, [place]);
@@ -67,12 +81,12 @@ export default function list(){
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
         }
         const MinHeight = window.innerHeight * 0.32;
-        const cardHeight = 140 * numOfLi;
+        const cardHeight = 150 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if( TARGET_HEIGHT >= cardHeight){
             setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
@@ -138,7 +152,7 @@ export default function list(){
     // }
 
     // 아이콘 클릭했을 때 이벤트
-    const handleOnclick = (event) =>{
+    const handleIconOnclick = (event) =>{
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
@@ -155,6 +169,28 @@ export default function list(){
         }
     };
 
+    //북마크 기능
+    const isFavorite = (placeId) => {
+        const favorite = favorites.some(favorite => favorite.place_id === placeId)
+        if(favorite){
+            return <Image width={15} height={15} src={bookmarkOn}/>
+        }
+        return null;
+    };
+
+    //place 페이지로 넘어가는
+    const handleLiClick = (e) => {
+        e.preventDefault();
+        console.log("clicked");
+      };
+
+    //태그 클릭했을 때 사라지도록
+    const handleTagClick = (e) => {
+        e.preventDefault();
+        
+        e.currentTarget.style.display = 'none';
+    }
+
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -163,7 +199,7 @@ export default function list(){
             <Map latitude={37.58622450673971} longitude={126.99709024757782} />
             
             <Slide direction="up" in={open.bool} timeout={1} >
-                <Container fixed style={{padding: '0px 16px 0px 0px', }}>
+                <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{
                     position: 'absolute',
                     top: '0px',
@@ -175,46 +211,50 @@ export default function list(){
                     }}>
                         <Grid container style={{padding:'50px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={mapIcon} width={37} height={36} onClick={handleOnclick} name='map' />
-                            </Grid>
-                            <Grid item >
-                            <Image src={tag14} width={64} height={40} />
+                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
                             </Grid>
                             <Grid item xs>
-                            <Image src={tag14} width={64} height={40} />
+                                <Grid container>
+                                    <Grid item onClick={handleTagClick}>
+                                    <Image src={tag14} width={64} height={40} />
+                                    </Grid>
+                                    <Grid item xs onClick={handleTagClick}>
+                                    <Image src={tag14} width={64} height={40} />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item >
-                            <Image src={closeIcon} width={36} height={36} onClick={handleOnclick} name='close'/>
+                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close'/>
                             </Grid>
                         </Grid>
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '0px 16px 0px 0px',}} >
+            <Container style={{padding: '0px 16px 0px 0px', }} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
                 bottom: '0px',
                 width: '100%',
                 height: height,
+                overflowY:'scroll',
                 zIndex: '1',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
-                
                 }} 
                 ref = {cardRef}
                 >
                 <div>
-                <div style={{textAlign:'center', visibility:cardStyle.iconVisibility}}>
-                    <Image width={60} height={4} src={line} /> 
+                <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
+                    <Image width={70} height={4} src={line} /> 
                 </div>
                 
                
                 <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    {place.map((item) => (
-                        <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}}>
-                            <>
+                    {place? place.map((item) => (
+                            <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
+                                <Link href={`/place?id=${item.id}`} key={item.id}>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>
                                     <Grid item xs >
                                         <CardContent style={{padding:'0px'}}>
@@ -224,10 +264,13 @@ export default function list(){
                                                         {item.name}
                                                     </Typography>
                                                 </Grid>
-                                                <Grid item xs style={{padding:'0px 0px 0px 8px'}}>
+                                                <Grid item style={{padding:'0px 0px 0px 8px'}}>
                                                     <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                         {item.detail_category}
                                                     </Typography>
+                                                </Grid>
+                                                <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
+                                                    {isFavorite(item.id)}
                                                 </Grid>
                                             </Grid>
                                             <Grid item container style={{marginTop: '10px'}}>
@@ -309,9 +352,9 @@ export default function list(){
                                         src={food}/>
                                     </Grid>
                                 </Grid>
-                            </>
-                        </li>
-                    ))}
+                                </Link>
+                            </li>
+                    )): null}
                     </ul>
                     </div>
                 </Card>

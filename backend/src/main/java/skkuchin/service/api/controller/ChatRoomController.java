@@ -25,7 +25,63 @@ public class ChatRoomController {
     private final ChatService chatService;
     private final ChatRoomRepository chatRoomRepository;
 
-    // 채팅 리스트 화면
+
+
+    @GetMapping("/rooms")
+    public ResponseEntity<?> getAllChatroom() {
+
+        List<ChatRoomDto.Response> responses = chatService.getAllRoom();
+        return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
+    }
+
+     @PostMapping("/rooms")
+    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+         AppUser user = principalDetails.getUser();
+         chatService.makeRoom(user,dto);
+         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
+
+
+     }
+
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<?> getCertainMessage(@PathVariable String roomId) {
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
+        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
+        List<ChatMessageDto.Response> responses = chatService.getAllMessage(chatRoom);
+        System.out.println("responses = " + responses.size());
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 채팅방 조회 완료", responses), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/room/{roomId}")
+    public ResponseEntity<?> updateUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        AppUser user = principalDetails.getUser();
+        chatService.update(chatRoom,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 개설 완료", null), HttpStatus.CREATED);
+
+
+    }
+
+
+   /* @GetMapping("/roomsss")
+    public String getRooms(){
+        return "chat/rooms";
+    }*/
+
+    @GetMapping(value = "/room")
+    public String getRoom(String chatRoomId, String sender, Model model){
+
+        model.addAttribute("chatRoomId", chatRoomId);
+        model.addAttribute("sender", sender);
+
+        return "chat/rooms";
+    }
+
+
+    /* // 채팅 리스트 화면
     @GetMapping("/room")
     public String rooms(Model model) {
         return "/chat/room";
@@ -53,57 +109,5 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatService.findById(roomId);
-    }
-
-    @GetMapping("chat/room")
-    public ResponseEntity<?> getMyReview() {
-
-        List<ChatRoomDto.Response> responses = chatService.getAllRoom();
-        return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
-     @PostMapping("/rooms")
-    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
-
-         AppUser user = principalDetails.getUser();
-         chatService.makeRoom(user,dto);
-         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
-
-
-     }
-
-    @GetMapping("chat/room/{roomId}")
-    public ResponseEntity<?> getCertainMessage(@PathVariable String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
-        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
-        List<ChatMessageDto.Response> responses = chatService.getAllMessage(chatRoom);
-        System.out.println("responses = " + responses.size());
-        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
-
-
-    @PostMapping("/rooms/{roomId}")
-    public ResponseEntity<?> updateUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        AppUser user = principalDetails.getUser();
-        chatService.update(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 개설 완료", null), HttpStatus.CREATED);
-
-
-    }
-
-
-    @GetMapping("/roomsss")
-    public String getRooms(){
-        return "chat/rooms";
-    }
-
-    @GetMapping(value = "/roomss")
-    public String getRoom(String chatRoomId, String sender, Model model){
-
-        model.addAttribute("chatRoomId", chatRoomId);
-        model.addAttribute("sender", sender);
-
-        return "chat/rooms";
-    }
+    }*/
 }

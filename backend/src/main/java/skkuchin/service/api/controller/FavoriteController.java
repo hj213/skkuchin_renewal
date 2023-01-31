@@ -61,5 +61,15 @@ public class FavoriteController {
         favoriteService.delete(favoriteId, userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 삭제 완료", null), HttpStatus.OK);
     }
+    //관리자 즐겨찾기 기능 추가
+    //남의 즐겨찾기 강제 삭제 가능
+    @DeleteMapping("/{userId}/{favoriteId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> adminDelete(@PathVariable Long favoriteId,@PathVariable Long userId) {
+
+        //AppUser user = userRepo.findByEmail("test@test");
+        favoriteService.delete(favoriteId, userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "관리자 즐겨찾기 삭제 완료", null), HttpStatus.OK);
+    }
 
 }

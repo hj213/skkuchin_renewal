@@ -28,9 +28,11 @@ services:
       - database
     container_name: skkuchin-backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/service?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
+      - LANGUAGE=ko_KR.UTF-8
+      - LANG=ko_KR.UTF-8
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
     volumes:
       - ./backend:/app
     working_dir: /app

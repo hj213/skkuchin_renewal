@@ -88,6 +88,7 @@
             const html = `<div class="${className}">
                             <div class="sender">${payload.sender}</div>
                             <div class="message">${payload.message}</div>
+                            <div class="message">${payload.type}</div>
                         </div>`
 
             chats.insertAdjacentHTML('beforeend', html);

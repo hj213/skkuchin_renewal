@@ -11,9 +11,7 @@ import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +33,11 @@ public class UserDto {
         private String rePassword;
         @NotBlank
         private String email;
-        @NotBlank
+        @NotNull
         @JsonProperty
-        private String studentId;
+        @Min(value = 10)
+        @Max(value = 23)
+        private int studentId;
         @NotNull
         private Major major;
 
@@ -75,27 +75,37 @@ public class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class PutRequest {
+        @NotBlank
+        private String nickname;
+        @NotNull
+        private Major major;
+        private String image;
+    }
+
+    @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
         private String nickname;
         private String username;
-        private String email;
+        //private String email;
         @JsonProperty
-        private String studentId;
+        private int studentId;
         private Major major;
         private String image;
-        private Mbti mbti;
+        //private Mbti mbti;
 
         public Response(AppUser user) {
             this.id = user.getId();
             this.nickname = user.getNickname();
             this.username = user.getUsername();
-            this.email = user.getEmail();
+            //this.email = user.getEmail();
             this.studentId = user.getStudentId();
             this.major = user.getMajor();
             this.image = user.getImage();
-            this.mbti = user.getMbti();
+            //this.mbti = user.getMbti();
         }
     }
 }

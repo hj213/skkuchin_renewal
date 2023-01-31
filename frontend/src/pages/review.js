@@ -7,6 +7,9 @@ import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
 
 const ReviewPage = () =>{
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
     const router = useRouter();
     const dispatch = useDispatch();
     const loading = useSelector(state => state.auth.loading);
@@ -18,6 +21,10 @@ const ReviewPage = () =>{
     const [tags, setTags] = useState('');
 
     const user = useSelector(state => state.auth.user);
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
     useEffect( () => {
         if(dispatch && dispatch !== null && dispatch !== undefined)

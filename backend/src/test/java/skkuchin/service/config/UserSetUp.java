@@ -17,7 +17,7 @@ public class UserSetUp {
     private UserRepo userRepo;
 
 
-    public Long saveUser(String nickname, String username, String password, String email, String student_id, Major major, String image, Mbti mbti, Collection<Role> roles) {
+    public Long saveUser(String nickname, String username, String password, String email, int student_id, Major major, String image, Mbti mbti, Collection<Role> roles) {
         AppUser user = AppUser.builder()
                 .nickname(nickname)
                 .username(username)

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_places } from "../actions/place/place";
@@ -9,7 +10,6 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
-import food from '../image/food.png';
 import tag16 from '../image/tag16.png';
 import tag17 from '../image/tag17.png';
 import bookmarkAdd from '../image/bookmark_add.png';
@@ -21,10 +21,15 @@ import back from '../image/arrow_back_ios.png'
 import ReviewStar from '../components/ReviewStar'
 
 const PlacePage = () => {
+    
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const router = useRouter();
+    // list.js 에서 전달 받은 id 값 받아오기
+    const { id } = router.query;
 
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
-    const [place_id, setPlaceId] = useState('');
+    const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     const places = useSelector(state => state.place.place);
     
     // Part 2) menu, 가게 정보 (menu API)
@@ -34,7 +39,7 @@ const PlacePage = () => {
     const favorites = useSelector(state => state.favorite.favorite);
 
     // *슬라이드탭 카드 애니메이션 관리
-    const [height, setHeight] = useState('32%');
+    const [height, setHeight] =  useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
@@ -43,31 +48,32 @@ const PlacePage = () => {
 
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
-        bool:false,
-        visibility: 'hidden'
-    });
+            bool:false,
+            visibility: 'hidden'
+        });
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
 
     const [isCardVisible, setIsCardVisible] = useState(false);
 
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
+
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_places());
             dispatch(load_favorite());
+            dispatch(load_menu(id));
         }
     }, [dispatch]);
 
     const handleOpen = (id) => {
-
         setPlaceId(id);
         setIsCardVisible(true);
         setHeight('32%');
 
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_menu(id));
-        }
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
         }
@@ -89,14 +95,14 @@ const PlacePage = () => {
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
         }
         const MinHeight = window.innerHeight * 0.32;
-        const cardHeight = 140 * numOfLi;
+        const cardHeight = 150 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
-
+        
         if( TARGET_HEIGHT >= cardHeight){
             setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
         } else {
@@ -138,12 +144,12 @@ const PlacePage = () => {
 
     // Favorite 관리
     const isFavorite = (placeId) => {
-        return favorites.some(favorite => favorite.place_id === placeId);
+        return favorites.some(favorite => favorite.place_id == placeId);
     }
     
     const handleFavClick = (placeId) => {
         dispatch(load_favorite());
-        const favorite_id = favorites.find(favorite => favorite.place_id === placeId);
+        const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
         if(favorite_id) {
             dispatch(delete_favorite(favorite_id.id));
         } else {
@@ -155,7 +161,6 @@ const PlacePage = () => {
     const addComma = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-
     
     return (
         <ThemeProvider theme={theme}>
@@ -164,15 +169,15 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >
-                <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
-                    { places.map((place) => (
+                {/* <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
+                    {places ? places.map((place) => (
                         <Grid key={place.id}>
                             <div className='p-3' onClick={() => handleOpen(place.id)}>
                                 <h4>{place.name}</h4>
                             </div>
                         </Grid>
-                    ))}
-                </div>
+                    )) : null}
+                </div> */}
                             
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} />                    
@@ -188,13 +193,13 @@ const PlacePage = () => {
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                             visibility: open.visibility,
                         }}>
-                            <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between'}}>
+                            <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px'}}>
                                     <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
                                 </Grid>
                           
                                 <Grid>
-                                    {places.filter(item => item.id === place_id).map(item => (
+                                    { places ? places.filter(item => item.id == place_id).map(item => (
                                         <Grid style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
@@ -203,7 +208,7 @@ const PlacePage = () => {
                                                 {item.detail_category}
                                             </Typography>
                                         </Grid>
-                                    ))}
+                                    )) : null }
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
@@ -245,17 +250,20 @@ const PlacePage = () => {
                     {open.bool && (
                         <Box sx={{paddingTop: '10px'}}></Box>
                     )}
+                    
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
-                    {places.filter(item => item.id === place_id).map(item => (
+                    { places ? places.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
+
                                 <>
-                                    <Grid container style={{padding: '10px 15px'}}>
+                                <Grid container style={{padding: '10px 15px'}}>
                                         <Grid style={{width: '100%'}}>
                                             <CardContent>
                                             {!open.bool && (
                                                 <Grid container sx={{mt: 0, pt: 0}}>
+                                    
                                                     <Grid>
-                                                        <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000">
+                                                    <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000">
                                                             {item.name}
                                                         </Typography>
                                                     </Grid>
@@ -265,9 +273,9 @@ const PlacePage = () => {
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
-                                            )}
-                                            <Grid sx={{width: '100%'}}>
-                                            <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: open.bool? 'center' : 'left'}}>
+                                                )}
+                                                <Grid sx={{width: '100%'}}>
+                                                <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: open.bool? 'center' : 'left'}}>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                         스꾸친 평점 :
@@ -301,7 +309,9 @@ const PlacePage = () => {
                                                         {item.review_count}개
                                                         </Typography>
                                                     </Grid>
+                                                    
                                                 </Grid>
+
                                                 <Grid container style={{margin: '4px 0px 11px 0px',  justifyContent: open.bool? 'center' : 'left'}}>
                                                     <Stack direction="row" spacing={2}>
                                                     <Image
@@ -351,12 +361,12 @@ const PlacePage = () => {
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{marginTop: '7.5px', flexDirection: 'column'}}>
-                                                <Grid style={{margin:'0px 3px 0px 0px', flexDirection: 'row'}}>
-                                                    <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                    영업시간  <Image src={expand} width={10.7} height={6.5} style={{margin: '0px 6.65px'}}></Image>                                          
-                                                    </Typography>          
-                                                </Grid>
-                                                    <Grid >
+                                                    <Grid style={{margin:'0px 3px 0px 0px', flexDirection: 'row'}}>
+                                                        <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
+                                                        영업시간  <Image src={expand} width={10.7} height={6.5} style={{margin: '0px 6.65px'}}></Image>                                          
+                                                        </Typography>          
+                                                    </Grid>
+                                                    <Grid>
                                                         <Typography  sx={{marginTop: '7.5px', fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
                                                         매일 : {item.service_time}
                                                         </Typography>
@@ -375,30 +385,30 @@ const PlacePage = () => {
                                                         메뉴
                                                     </Typography>
                                                     <Typography sx={{fontSize: '17px', fontWeight: '700', color: '#FFCE00'}}>
-                                                        {menus.length}
+                                                        { menus? menus.length : null }
                                                     </Typography>
                                                 </Grid>
-                                               
-                                                { menus.map((menu, index) => (
+                                                { menus ? menus.map((menu, index) => (
                                                     <Grid container style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
                                                         <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
                                                             <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                                {menu.name}  ({addComma(menu.price)}원)
+                                                            {menu.name}  ({addComma(menu.price)}원)
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
-                                                ))}
+                                                )) : null }
                                             </CardContent>
                                         </Grid>
 
                                     </Grid>
                                 </>
                             </li> 
-                        ))}
+                            )) : null }
                         </Container>
+                        
                         </div>
                         <Grid>
-                         <ReviewStar />
+                        <ReviewStar />
                         </Grid>
                     </Card>
                 </Container>

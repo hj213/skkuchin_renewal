@@ -13,22 +13,22 @@ export default async (req, res) => {
         }
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/user`, {
+            const apiRes = await fetch(`${API_URL}/api/user/me`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization' : `Bearer ${access}`
                 }
             });
-            const data = await apiRes.json();
+            const resValue = await apiRes.json();
 
             if(apiRes.status === 200){
                 return res.status(200).json({
-                    user: data
+                    user: resValue.data
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    error: data.error_message
+                    error: resValue.error_message
                 });
             }
             
@@ -38,7 +38,7 @@ export default async (req, res) => {
                 error: 'Something went wrong when retrieving user'
             });
         }
-    }else {
+    } else {
         res.setHeader('Allow', ['GET']);
         return res.status(405).json({
             error: `Method ${req.method} not allowed`
