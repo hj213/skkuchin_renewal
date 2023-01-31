@@ -124,37 +124,6 @@ const ReviewPage = () =>{
                     )
                 }
             </form>
-            {/* <form className='bg-light p-5 mt-5 mb-5'>
-                <h3>*삭제할 Favorite Place의 favorite_id를 입력해주세요</h3>
-                <div className='form-group'>
-                    <label className='form-label mt-3' htmlFor='favorite_id'>
-                        <strong>FAVORITE_ID</strong>
-                    </label>
-                    <input 
-                        className='form-control' type = 'text' name='favorite_id' 
-                        placeholder ='FAVORITE ID' onChange={onChangeFId} value={favorite_id}
-                        required />
-                </div>
-                {
-                    loading ? (
-                        <div className="d-flex justify-content-center align-items-center mt-5">
-                            <Loader type = 'Oval' color = '#00bfff' width={50} height={50}></Loader>
-                        </div>
-                    ) : (
-                        <div>
-                            <button className='btn btn-primary m-5' id="delBtn"  type='submit' style={{backgroundColor: "red", border: 0}} onClick={delBtnClick}>
-                                DELETE
-                            </button>
-                        </div>
-                    )
-                }
-            </form>
-            <div className='bg-light p-5 mt-5 mb-5'>
-                <h3>*Favorite Place 목록</h3>
-                <button className='btn btn-primary m-5' id="getBtn"  type='submit' style={{backgroundColor: "orange", border: 0}} onClick={getBtnClick}>
-                    목록 표시
-                </button>
-            </div> */}
         </Layout>
     );
 }
