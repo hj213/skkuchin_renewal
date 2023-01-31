@@ -54,7 +54,7 @@ public class ServiceApplication {
 			//keywordService.insertData(path);
 
 
-			/*try {
+			try {
 				tagService.insertData(path);
 				placeService.insertData(path);
 				imageService.insertData();
@@ -63,7 +63,7 @@ public class ServiceApplication {
 				reviewService.insertData(path);
 			} catch (Exception e) {
 				System.out.println(e);
-			}*/
+			}
 
 		};
 	}
