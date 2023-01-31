@@ -12,15 +12,35 @@ import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, G
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
-import tag16 from '../image/tag16.png';
-import tag17 from '../image/tag17.png';
-import tag14 from '../image/tag14.png';
+import tag16 from '../image/태그/지도_on/tag_간단.png';
+import tag17 from '../image/태그/지도_on/tag_분위기.png';
+import tag14 from '../image/태그/지도_on/tag_일식.png';
 import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png';
 import closeIcon from '../image/close.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import image from '../image/명륜/호호식당/7.jpeg';
 
+// 지도 아이콘
+import mapTag1 from '../image/태그/지도_off/학생할인.png'
+import mapTag2 from '../image/태그/지도_off/스페셜.png'
+import mapTag3 from '../image/태그/지도_off/한식.png'
+import mapTag4 from '../image/태그/지도_off/중식.png'
+import mapTag5 from '../image/태그/지도_off/일식.png'
+import mapTag6 from '../image/태그/지도_off/양식.png'
+import mapTag7 from '../image/태그/지도_off/기타.png'
+import mapTag8 from '../image/태그/지도_off/간단한 한끼.png'
+import mapTag9 from '../image/태그/지도_off/분위기 좋은.png'
+
+import mapTagOn1 from '../image/태그/지도_on/tag_학생할인.png'
+import mapTagOn2 from '../image/태그/지도_on/tag_스페셜.png'
+import mapTagOn3 from '../image/태그/지도_on/tag_한식.png'
+import mapTagOn4 from '../image/태그/지도_on/tag_중식.png'
+import mapTagOn5 from '../image/태그/지도_on/tag_일식.png'
+import mapTagOn6 from '../image/태그/지도_on/tag_양식.png'
+import mapTagOn7 from '../image/태그/지도_on/tag_기타.png'
+import mapTagOn8 from '../image/태그/지도_on/tag_간단.png'
+import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png'
 
 export default function list(){
 
@@ -28,12 +48,16 @@ export default function list(){
 
     const dispatch = useDispatch();
     const router = useRouter();
+    // 장소 정보 불러오기
+    const place = useSelector(state => state.place.place);
+    const favorites = useSelector(state => state.favorite.favorite);
+
     const [height, setHeight] = useState('32%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
         iconVisibility: 'visible',
-    });
+    }) ;
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
         bool:false,
@@ -52,36 +76,29 @@ export default function list(){
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
 
+    // 태그 검색
+    const [keyword, setKeyword] = useState('');
+
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(search_places("일식당"));
+            dispatch(search_places(keyword));
         }
-    }, [dispatch]);
-
-    // api에서 데이터 불러오기
-    useEffect(()=>{
-        dispatch(load_places());
-        dispatch(load_favorite());
-    }, [dispatch]);
+    }, [keyword]);
 
     // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            // cardRef.current.addEventListener("click", handleClickMove);
             setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
-                // cardRef.current.removeEventListener("click", handleClickMove);
 
             }
         };
       }, [cardRef]);
-    // 장소 정보 불러오기
-    const place = useSelector(state => state.place.place);
-    const favorites = useSelector(state => state.favorite.favorite);
+    
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
     useEffect(() => {
@@ -128,43 +145,6 @@ export default function list(){
         }
     };
 
-    // 웹 페이지에서 카드를 마우스로 클릭했을 때+스크롤
-    // const handleClickMove = (event) => {
-    //     event.preventDefault();
-
-    //     const WINDOW_HEIGHT = window.innerHeight;
-    //     const TARGET_HEIGHT = WINDOW_HEIGHT * 0.55;
-    //     if(WINDOW_HEIGHT > 1000){
-    //         TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
-    //     }
-
-    //     mouseClicked = !mouseClicked;
-    //     if(mouseClicked == false){
-    //         setHeight('32%');
-            
-    //         setOpen({
-    //             bool: false,
-    //             visibility: 'hidden'
-    //         });
-    //         setCardStyle({
-    //             radius:'30px 30px 0px 0px',
-    //             iconVisibility:'visible'
-    //         });
-            
-    //     } else if(mouseClicked == true){
-    //         setHeight(`${TARGET_HEIGHT}px`);
-    //         setOpen({
-    //             bool: true,
-    //             visibility: 'visible'
-    //         });
-    //         setCardStyle({
-    //             radius:'0px',
-    //             iconVisibility:'hidden'
-    //         });
-            
-    //     }
-    // }
-
     // 아이콘 클릭했을 때 이벤트
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'map' ){
@@ -203,12 +183,66 @@ export default function list(){
         e.currentTarget.style.display = 'none';
     }
 
+    const onTagClick = (id) => {
+        setKeyword(id);
+    }
+
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
             <Map latitude={37.58622450673971} longitude={126.99709024757782} />
+
+            {/* 태그 목록 */}
+            <Grid container style={{  position: 'absolute', top: '103px', zIndex: '1', display: 'flex', height: '36px' }}
+                onClick={(e) => {
+                    e.preventDefault();
+                    let target = e.target;
+                    while (target && target.tagName !== 'IMG') {
+                        target = target.parentNode
+                    }
+                    if (target) {
+                        onTagClick(target.id);
+                    }
+                    }}>
+                    <Grid item >
+                        { (keyword == "학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
+                        : <Image id={"학생 할인"} src={mapTag1} width={88} height={36}/> }
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "스페셜") ? <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
+                        : <Image id={"스페셜"} src={mapTag2} width={76} height={36}/>}
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "한식") ? <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
+                        : <Image id={"한식"} src={mapTag3} width={64} height={36}/> }
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "중식") ? <Image id={"중식"} src={mapTagOn4} width={64} height={36}/>
+                        : <Image id={"중식"} src={mapTag4} width={64} height={36}/> }
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "일식") ? <Image id={"일식"} src={mapTagOn5} width={64} height={36}/>
+                        : <Image id={"일식"} src={mapTag5} width={64} height={36}/> }
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "양식") ? <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
+                        : <Image id={"양식"} src={mapTag6} width={64} height={36}/> }
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "기타") ? <Image id={"기타"} src={mapTagOn7} width={64} height={36}/>
+                        : <Image id={"기타"} src={mapTag7} width={64} height={36}/> }
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTag8} width={132} height={36}/>
+                        : <Image id={"간단한 한 끼"} src={mapTag8} width={132} height={36}/> }
+                    </Grid>
+                    <Grid item sx={{pl: '5px'}}>
+                        { (keyword == "분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTag9} width={128} height={36}/>
+                        : <Image id={"분위기 좋은"} src={mapTag9} width={128} height={36} /> }
+                    </Grid>
+            </Grid>
             
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
@@ -370,7 +404,7 @@ export default function list(){
                     </ul>
                     </div>
                 </Card>
-            </Container>
+            </Container> 
             </div>
         </Layout>
     </ThemeProvider>
