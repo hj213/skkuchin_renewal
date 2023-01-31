@@ -70,8 +70,8 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void getAll_성공() {
         //given
-        Review review1 = new Review(1L, 5.0F, "맛있어요", place, user, null, null);
-        Review review2 = new Review(2L, 4.5F, "맛있네용~", place, user, null, null);
+        Review review1 = new Review(1L, 5, "맛있어요", place, user, null, null, null);
+        Review review2 = new Review(2L, 4, "맛있네용~", place, user, null, null, null);
         List<ReviewTag> review1Tags = List.of(new ReviewTag(1L, review1, tag1), new ReviewTag(2L, review1, tag2));
         List<ReviewTag> review2Tags = List.of(new ReviewTag(2L, review2, tag1));
 
@@ -92,7 +92,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void getDetail_성공() {
         //given
-        Review review = new Review(1L, 3.0F, "보통입니다", place, user, null, null);
+        Review review = new Review(1L, 3, "보통입니다", place, user, null, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, review, tag1), new ReviewTag(2L, review, tag2));
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
@@ -118,7 +118,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void write_성공() {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5.0F, "굿!", null, List.of("맛집", "가성비"));
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5, "굿!", null, List.of("맛집", "가성비"));
 
         given(placeRepo.findById(1L)).willReturn(Optional.ofNullable(place));
         given(tagRepo.findByName("맛집")).willReturn(tag1);
@@ -137,7 +137,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void write_존재하지않는_placeId로_등록_시도_오류() {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(2L, 5.0F, "굿!", null, null);
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(2L, 5, "굿!", null, null);
 
         given(placeRepo.findById(2L)).willThrow(new NoSuchElementException());
 
@@ -149,8 +149,8 @@ public class ReviewServiceTest extends MockTest {
     public void update_성공() {
         //given
         Tag tag3 = Tag.builder().name("분위기 좋은").build();
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "맛있어요", null, List.of("분위기 좋은", "맛집"));
-        Review existingReview = new Review(1L, 4.5F, "맛있다", place, user, null, null);
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5, "맛있어요", null, List.of("분위기 좋은", "맛집"));
+        Review existingReview = new Review(1L, 4, "맛있다", place, user, null, null, null);
         List<ReviewTag> existingTags = List.of(new ReviewTag(1L, existingReview, tag1), new ReviewTag(2L, existingReview, tag2));
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(existingReview));
@@ -170,7 +170,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void update_존재하지않는_reviewId로_수정_시도_오류() {
         //given
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "굿!", null, null);
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5, "굿!", null, null);
 
         given(reviewRepo.findById(5L)).willThrow(new NoSuchElementException());
 
@@ -181,8 +181,8 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void update_다른_유저가_리뷰_수정_시도_오류() {
         //given
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5.0F, "굿!", null, null);
-        Review review = new Review(1L, 5.0F, "맛있어요", place, user, null, null);
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(5, "굿!", null, null);
+        Review review = new Review(1L, 5, "맛있어요", place, user, null, null, null);
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
 
@@ -195,7 +195,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void delete_성공() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
+        Review review = new Review(1L, 4, "또 갈래요", place, user, null, null, null);
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
         willDoNothing().given(reviewRepo).delete(review);
@@ -210,7 +210,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void delete_다른_유저가_리뷰_삭제_시도_오류() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
+        Review review = new Review(1L, 4, "또 갈래요", place, user, null, null, null);
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
 
@@ -221,7 +221,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void getPlaceReview_성공() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
+        Review review = new Review(1L, 4, "또 갈래요", place, user, null, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, review, tag1), new ReviewTag(2L, review, tag2));
 
         given(placeRepo.findById(1L)).willReturn(Optional.ofNullable(place));
@@ -240,7 +240,7 @@ public class ReviewServiceTest extends MockTest {
     @Test
     public void getMyReview_성공() {
         //given
-        Review review = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
+        Review review = new Review(1L, 4, "또 갈래요", place, user, null, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, review, tag1), new ReviewTag(2L, review, tag2));
 
         given(reviewRepo.findByUser(user)).willReturn(List.of(review));
@@ -263,8 +263,8 @@ public class ReviewServiceTest extends MockTest {
         AppUser user2 = AppUser.builder()
                 .id(2L).nickname("test2").username("test2").password("1234").email("test").studentId(20)
                 .build();
-        Review review1 = new Review(1L, 4.0F, "또 갈래요", place, user, null, null);
-        Review review2 = new Review(2L, 5.0F, "짱", place, user2, null, null);
+        Review review1 = new Review(1L, 4, "또 갈래요", place, user, null, null, null);
+        Review review2 = new Review(2L, 5, "짱", place, user2, null, null, null);
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, null, tag1), new ReviewTag(2L, null, tag2));
 
         given(reviewRepo.findAll()).willReturn(List.of(review1, review2));
