@@ -22,25 +22,25 @@ import bookmarkOn from '../image/bookmark-1.png';
 import SearchBox from "../components/SearchBox";
 
 // 지도 아이콘
-import mapTag1 from '../image/태그/지도_off/학생할인.png'
-import mapTag2 from '../image/태그/지도_off/스페셜.png'
-import mapTag3 from '../image/태그/지도_off/한식.png'
-import mapTag4 from '../image/태그/지도_off/중식.png'
-import mapTag5 from '../image/태그/지도_off/일식.png'
-import mapTag6 from '../image/태그/지도_off/양식.png'
-import mapTag7 from '../image/태그/지도_off/기타.png'
-import mapTag8 from '../image/태그/지도_off/간단한 한끼.png'
-import mapTag9 from '../image/태그/지도_off/분위기 좋은.png'
+import mapTag1 from '../image/태그/지도_off/학생할인.png';
+import mapTag2 from '../image/태그/지도_off/스페셜.png';
+import mapTag3 from '../image/태그/지도_off/한식.png';
+import mapTag4 from '../image/태그/지도_off/중식.png';
+import mapTag5 from '../image/태그/지도_off/일식.png';
+import mapTag6 from '../image/태그/지도_off/양식.png';
+import mapTag7 from '../image/태그/지도_off/기타.png';
+import mapTag8 from '../image/태그/지도_off/간단한 한끼.png';
+import mapTag9 from '../image/태그/지도_off/분위기 좋은.png';
 
-import mapTagOn1 from '../image/태그/지도_on/tag_학생할인.png'
-import mapTagOn2 from '../image/태그/지도_on/tag_스페셜.png'
-import mapTagOn3 from '../image/태그/지도_on/tag_한식.png'
-import mapTagOn4 from '../image/태그/지도_on/tag_중식.png'
-import mapTagOn5 from '../image/태그/지도_on/tag_일식.png'
-import mapTagOn6 from '../image/태그/지도_on/tag_양식.png'
-import mapTagOn7 from '../image/태그/지도_on/tag_기타.png'
-import mapTagOn8 from '../image/태그/지도_on/tag_간단.png'
-import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png'
+import mapTagOn1 from '../image/태그/지도_on/tag_학생할인.png';
+import mapTagOn2 from '../image/태그/지도_on/tag_스페셜.png';
+import mapTagOn3 from '../image/태그/지도_on/tag_한식.png';
+import mapTagOn4 from '../image/태그/지도_on/tag_중식.png';
+import mapTagOn5 from '../image/태그/지도_on/tag_일식.png';
+import mapTagOn6 from '../image/태그/지도_on/tag_양식.png';
+import mapTagOn7 from '../image/태그/지도_on/tag_기타.png';
+import mapTagOn8 from '../image/태그/지도_on/tag_간단.png';
+import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png';
 
 export default function list(){
 
@@ -79,12 +79,13 @@ export default function list(){
 
     // 태그 검색
     const [keyword, setKeyword] = useState('');
-
+    
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
+       if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(search_places(keyword));
         }
     }, [keyword]);
+    
 
     // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
@@ -221,7 +222,7 @@ export default function list(){
             <Container style={{position:'absolute', zIndex:'2'}}>
                 <SearchBox openID={openID}/>   
             </Container> 
-            <Map latitude={37.58622450673971} longitude={126.99709024757782} />
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={place} />
 
             {/* 태그 목록 */}
             <Grid container style={{  position: 'absolute', top: '103px', zIndex: '1', display: 'flex', height: '36px' }}
