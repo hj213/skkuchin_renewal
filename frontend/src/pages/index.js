@@ -52,7 +52,6 @@ export default function list(){
     //api 받아오기
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
             dispatch(load_favorite());
         }
     }, [dispatch]);

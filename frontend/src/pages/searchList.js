@@ -23,10 +23,8 @@ export default function searchList(){
     const { keyword } = router.query;
 
     const [value, setValue] = useState('');
-    const [passValue, setPassValue] = useState(value);
+    const [passValue, setPassValue] = useState(keyword);
 
-    const place = useSelector(state => state.place.place);
-    const favorites = useSelector(state => state.favorite.favorite);
 
     //api 받아오기
     useEffect(() => {
@@ -35,6 +33,9 @@ export default function searchList(){
         }
     }, [dispatch]);
 
+    const place = useSelector(state => state.place.place);
+    const favorites = useSelector(state => state.favorite.favorite);
+    
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
@@ -56,9 +57,11 @@ export default function searchList(){
                 pathname: '/',
                 query: passValue
               });
+              dispatch(search_places('')); //초기화위해서
             //추가해야할 부분
         } else{
             router.push('/');
+            dispatch(search_places('')); //초기화위해서
         }
     };
 
@@ -69,8 +72,8 @@ export default function searchList(){
 
     const handleKeyDown = (e) => {
         if(e.keyCode === 13){
-            dispatch(search_places(value));
             setPassValue(value);
+            dispatch(search_places(value));
             setValue('');
         }
     }
