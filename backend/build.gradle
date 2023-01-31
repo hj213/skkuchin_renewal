@@ -18,6 +18,10 @@ repositories {
 	mavenCentral()
 }
 
+jar {
+	enabled = false
+}
+
 dependencies {
 	implementation 'com.auth0:java-jwt:4.0.0'
 	implementation 'mysql:mysql-connector-java'
