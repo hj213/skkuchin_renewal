@@ -26,7 +26,6 @@ const Map = ({latitude, longitude}) => {
     }, [latitude, longitude]);
     return (
         <MapContainer id="map" style={{width:'100%', height:'65vh'}}/>
-
     );
 }
 

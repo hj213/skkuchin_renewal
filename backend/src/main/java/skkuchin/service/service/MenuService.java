@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.MenuDto;
+import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.Menu;
 import skkuchin.service.domain.Map.Place;
 import skkuchin.service.repo.MenuRepo;
@@ -32,6 +33,14 @@ public class MenuService {
         Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
         Menu menu = dto.toEntity(place);
         menuRepo.save(menu);
+    }
+
+
+    @Transactional
+    public void addAll(List<MenuDto.PostRequest1> dto, Long placeId) {
+        Place place = placeRepo.findById(placeId).orElseThrow();
+        List<Menu> menus = dto.stream().map(menuDto -> menuDto.toEntity(place)).collect(Collectors.toList());
+        menuRepo.saveAll(menus);
     }
 
 
