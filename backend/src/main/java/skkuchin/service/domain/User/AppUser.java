@@ -47,7 +47,7 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private Campus toggle;
 
-    private String image;
+    private Profile image;
 
     @Enumerated(EnumType.STRING)
     private Mbti mbti;
@@ -61,13 +61,15 @@ public class AppUser {
 
     private LocalDateTime startDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles = new ArrayList<>();
     private Boolean emailAuth;
+    private Boolean agreement;
 
     public void emailVerifiedSuccess() {
         this.emailAuth = true;
     }
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> userRoles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();

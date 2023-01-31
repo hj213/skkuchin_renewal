@@ -49,7 +49,7 @@ public class CandidateDto {
         @JsonProperty
         private Long id;
         private String nickname;
-        private String image;
+        private Profile image;
         private Major major;
         @JsonProperty
         //private String studentId;
