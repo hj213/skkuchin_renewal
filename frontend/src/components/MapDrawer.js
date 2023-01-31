@@ -18,7 +18,7 @@ export default function MapDrawer({openID}){
     const router = useRouter();
     let open = false;
     let campus = true;
-  
+
     //api
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
@@ -28,11 +28,15 @@ export default function MapDrawer({openID}){
       open = openID;
     }
 
-    if(user.campus == '명륜'){
-      campus = false;
-    } else{
-      campus = true;
+    
+    if(user != null) {
+      if(user.campus == '명륜'){
+        campus = false;
+      } else{
+        campus = true;
+      }
     }
+
 
     useEffect(()=>{
         dispatch(load_user());
@@ -60,7 +64,7 @@ export default function MapDrawer({openID}){
       e.preventDefault();
       setChecked(e.target.checked);
 
-    }
+    } 
 
 
 
@@ -132,8 +136,8 @@ export default function MapDrawer({openID}){
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
                 <Image src={profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
                 <div >
-                <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user.nickname}</Typography>
-                <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user.major}</Typography>
+                <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
+                <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
                 </div>
             </Box>
             <List style={{marginLeft:'55px', marginTop:'54px'}}>
@@ -163,7 +167,7 @@ export default function MapDrawer({openID}){
 
     return(
         <ThemeProvider theme={theme}>
-            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={20}/>
+            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15}/>
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250}>
               <FormControlLabel
               control={<IOSSwitch />}
