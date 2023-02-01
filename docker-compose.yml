@@ -44,6 +44,23 @@ services:
     networks:
       - skkuchin-network
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: skkuchin-rabbitmq
+    volumes:
+      - ./rabbitmq/etc/:/etc/rabbitmq/
+      - ./rabbitmq/data/:/var/lib/rabbitmq/
+      - ./rabbitmq/logs/:/var/log/rabbitmq/
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "RabbitMQ-My-Cookies"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    networks:
+      - skkuchin-network
+
   client:
     build:
       context: "./frontend"

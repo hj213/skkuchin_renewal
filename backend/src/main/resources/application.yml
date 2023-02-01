@@ -16,7 +16,7 @@ spring:
       password: guest
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
@@ -24,18 +24,21 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
-#  boot:
-#    admin:
-#      client:
-#        url: http://localhost:8081
-#        username: admin
-#        password: 1234
-#        instance:
-#          metadata:
-#            user.name: admin
-#            user.password: 1234
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   config:
     import:
       - aws.yml
       - email.yml
-#      - admin.yml
+      - admin.yml
+  #  boot:
+  #    admin:
+  #      client:
+  #        url: http://localhost:8081
+  #        username: admin
+  #        password: 1234
+  #        instance:
+  #          metadata:
+  #            user.name: admin
+  #            user.password: 1234

@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.service.*;
 

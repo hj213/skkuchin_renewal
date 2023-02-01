@@ -11,6 +11,7 @@ import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
+import javax.annotation.PreDestroy;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,6 +144,18 @@ public class ImageService {
                     .build();
 
                 imageRepo.save(image);
+            }
+        }
+    }
+
+    // 종료 시 자신이 올린 식당 이미지 S3에서 삭제
+    @PreDestroy
+    public void deleteBeforeExit() {
+        List<Image> images = imageRepo.findAll();
+
+        for (Image image : images) {
+            if (image.getId() > 167) {
+                s3Service.deleteObject(image.getUrl());
             }
         }
     }

@@ -1,0 +1,249 @@
+package skkuchin.service.config.swagger;
+
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
+import org.springframework.boot.actuate.endpoint.web.*;
+import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointsSupplier;
+import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpointsSupplier;
+import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.StringUtils;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.*;
+
+import static springfox.documentation.builders.PathSelectors.regex;
+
+@Configuration
+public class SwaggerConfig {
+
+    @Bean
+    public Docket apiV1(){
+        return new Docket(DocumentationType.OAS_30)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .securityContexts(Arrays.asList(securityContext())) // swagger에서 jwt 토큰값 넣기위한 설정
+                .securitySchemes(Arrays.asList(apiKey())) // swagger에서 jwt 토큰값 넣기위한 설정
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
+                .groupName("user")
+                .select()
+                .apis(RequestHandlerSelectors.
+                        basePackage("skkuchin.service.api.controller"))
+                .paths(regex("/api/(user|users|token|email|confirmEmail)/.*"))
+                .build();
+    }
+
+    @Bean
+    public Docket apiV2(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("review")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/review/**")).build();
+    }
+
+    @Bean
+    public Docket apiV3(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("place")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/place/**")).build();
+    }
+
+    @Bean
+    public Docket apiV4(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("menu")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/menu/**")).build();
+    }
+
+    @Bean
+    public Docket apiV5(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("image")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/image/**")).build();
+    }
+
+    @Bean
+    public Docket apiV6(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("favorite")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/favorite/**")).build();
+    }
+
+    @Bean
+    public Docket apiV7(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("tag")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/tag/**")).build();
+    }
+
+    @Bean
+    public Docket apiV8(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("matching")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/matching/**")).build();
+    }
+
+    @Bean
+    public Docket apiV9(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("candidate")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/api/candidate/**")).build();
+    }
+
+    @Bean
+    public Docket apiV10(){
+        return new Docket(DocumentationType.OAS_30)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("chat")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(PathSelectors.ant("/chat/**")).build();
+    }
+
+    // swagger에서 jwt 토큰값 넣기위한 설정
+    private ApiKey apiKey() {
+        return new ApiKey("Authorization", "Authorization", "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth()).build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
+    }
+
+    private Set<String> getConsumeContentTypes() {
+        Set<String> consumes = new HashSet<>();
+        consumes.add("application/json;charset=UTF-8");
+        consumes.add("multipart/form-data");
+        return consumes;
+    }
+
+    private Set<String> getProduceContentTypes() {
+        Set<String> produces = new HashSet<>();
+        produces.add("application/json;charset=UTF-8");
+        return produces;
+    }
+
+    @Bean
+    public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping
+            (WebEndpointsSupplier webEndpointsSupplier,
+             ServletEndpointsSupplier servletEndpointsSupplier,
+             ControllerEndpointsSupplier controllerEndpointsSupplier,
+             EndpointMediaTypes endpointMediaTypes,
+             CorsEndpointProperties corsProperties,
+             WebEndpointProperties webEndpointProperties,
+             Environment environment)
+    {
+        List<ExposableEndpoint<?>> allEndpoints = new ArrayList();
+        Collection<ExposableWebEndpoint> webEndpoints = webEndpointsSupplier.getEndpoints();
+        allEndpoints.addAll(webEndpoints);
+        allEndpoints.addAll(servletEndpointsSupplier.getEndpoints());
+        allEndpoints.addAll(controllerEndpointsSupplier.getEndpoints());
+        String basePath = webEndpointProperties.getBasePath();
+        EndpointMapping endpointMapping = new EndpointMapping(basePath);
+        boolean shouldRegisterLinksMapping = this.shouldRegisterLinksMapping(
+                webEndpointProperties, environment, basePath);
+        return new WebMvcEndpointHandlerMapping(
+                endpointMapping, webEndpoints, endpointMediaTypes,
+                corsProperties.toCorsConfiguration(),
+                new EndpointLinksResolver(allEndpoints, basePath),
+                shouldRegisterLinksMapping, null);
+    }
+
+    private boolean shouldRegisterLinksMapping(WebEndpointProperties webEndpointProperties,
+                                               Environment environment, String basePath)
+    {
+        return webEndpointProperties.getDiscovery().isEnabled()
+                && (StringUtils.hasText(basePath) ||
+                ManagementPortType.get(environment).equals(ManagementPortType.DIFFERENT));
+    }
+}
