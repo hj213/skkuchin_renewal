@@ -25,7 +25,7 @@ public class SecurityConfig {
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/user/save", "/api/user/saves", "/api/token/refresh/**", "/api/token/verify/**", "/api/confirmEmail").permitAll();
+        http.authorizeRequests().anyRequest().permitAll();
         http.apply(new MyCustomDsl());
         return http.build();
     }

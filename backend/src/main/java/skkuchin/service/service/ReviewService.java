@@ -8,6 +8,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ReviewDto;
@@ -212,6 +214,22 @@ public class ReviewService {
                         })
                         .collect(Collectors.toList());
                 reviewTagRepo.saveAll(reviewTags);
+            }
+        }
+    }
+
+    // 종료 시 자신이 올린 리뷰 S3에서 삭제
+    @EventListener(ContextClosedEvent.class)
+    public void onContextClosedEvent(ContextClosedEvent event) {
+        List<Review> reviews = reviewRepo.findAll();
+
+        for (Review review : reviews) {
+            List<ReviewImage> reviewImages = review.getReviewImages();
+
+            for (ReviewImage reviewImage : reviewImages) {
+                if (reviewImage.getUrl().contains("명륜") || reviewImage.getUrl().contains("율전")) {
+                    s3Service.deleteObject(reviewImage.getUrl());
+                }
             }
         }
     }

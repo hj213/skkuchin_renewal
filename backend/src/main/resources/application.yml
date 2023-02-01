@@ -1,14 +1,14 @@
 spring:
-  datasource:
+#  datasource:
  #   driver-class-name: com.mysql.cj.jdbc.Driver
  #   url: jdbc:mysql://localhost:3306/skkuchin1?characterEncoding=UTF-8&serverTimezone=UTC
  #   username: root
  #   password: 1234
- # datasource:
- #   driver-class-name: com.mysql.cj.jdbc.Driver
- #   url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
- #   username: root
- #   password: Master00!@
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: Master00!@
   rabbitmq:
       host: localhost
       port: 5672
@@ -24,7 +24,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+#  boot:
+#    admin:
+#      client:
+#        url: http://localhost:8081
+#        username: admin
+#        password: 1234
+#        instance:
+#          metadata:
+#            user.name: admin
+#            user.password: 1234
   config:
     import:
       - aws.yml
       - email.yml
+#      - admin.yml

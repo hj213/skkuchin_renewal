@@ -93,12 +93,6 @@ export const reset_register_success = () => dispatch => {
     });
 };
 
-export const send_email = () => dispatch => {
-    dispatch({
-        type: RESET_REGISTER_SUCCESS
-    });
-};
-
 export const login = (username, password) => async dispatch => {
     const body = JSON.stringify({
         username,

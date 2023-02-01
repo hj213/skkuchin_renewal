@@ -15,9 +15,9 @@ services:
       ]
     ports:
       - 3306:3306
-    # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기    
-    volumes:
-      - ./db/data:/var/lib/mysql
+    # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기 
+    # volumes:
+    #   - ./db/data:/var/lib/mysql
     networks:
       - skkuchin-network
 
@@ -29,6 +29,7 @@ services:
     ports:
       - 8080:8080
     depends_on:
+      - admin
       - database
     container_name: skkuchin-backend
     environment:
@@ -38,7 +39,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
     volumes:
-      - ./backend:/app
+      - ./backend/build/libs:/app
     working_dir: /app
     networks:
       - skkuchin-network

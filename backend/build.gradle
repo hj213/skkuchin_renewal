@@ -42,6 +42,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.0'
 	//spring email
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
+
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	implementation 'com.google.code.gson:gson:2.9.0'
 	testImplementation 'junit:junit:4.13.1'
@@ -60,14 +61,12 @@ dependencies {
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.4'
 
 	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
-
-
-
-
-
+	//aws
 	implementation platform('software.amazon.awssdk:bom:2.15.0')
 	implementation 'software.amazon.awssdk:s3'
-
+	//admin
+	compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'de.codecentric:spring-boot-admin-starter-client:2.6.2'
 }
 
 tasks.named('test') {
