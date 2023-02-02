@@ -58,7 +58,7 @@ public class UserDto {
                     .major(this.major)
                     .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
-                    .roles(new ArrayList<>())
+                    //.roles(new ArrayList<>())
                     .emailAuth(false)
                     .build();
         }
@@ -96,6 +96,8 @@ public class UserDto {
         private String username;
         @NotBlank
         private String email;
+        @NotNull
+        private Boolean agreement;
     }
 
     @Getter
@@ -105,7 +107,7 @@ public class UserDto {
         private String nickname;
         @NotNull
         private Major major;
-        private String image;
+        //private String image;
     }
 
     @Getter
@@ -114,6 +116,18 @@ public class UserDto {
     public static class PutPassword {
         @NotBlank
         private String password;
+        @JsonProperty
+        @NotBlank
+        private String newPassword;
+        @JsonProperty
+        @NotBlank
+        private String newRePassword;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class ResetPassword {
         @JsonProperty
         @NotBlank
         private String newPassword;
@@ -132,7 +146,8 @@ public class UserDto {
         private int studentId;
         private Major major;
         private Campus campus;
-        private String image;
+        private Campus toggle;
+        private Profile image;
 
         public Response(AppUser user) {
             this.id = user.getId();
@@ -141,6 +156,7 @@ public class UserDto {
             this.studentId = user.getStudentId();
             this.major = user.getMajor();
             this.campus = findCampus(user.getMajor());
+            this.toggle = user.getToggle();
             this.image = user.getImage();
         }
 

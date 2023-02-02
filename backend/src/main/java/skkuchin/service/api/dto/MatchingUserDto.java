@@ -11,6 +11,7 @@ import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
+import skkuchin.service.domain.User.Profile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,7 +30,7 @@ public class MatchingUserDto {
         private String introduction;
         private Mbti mbti;
         @NotNull
-        private String image;
+        private Profile image;
 
         public UserKeyword toUserKeywordEntity(AppUser user, Keyword keyword) {
             return UserKeyword.builder()
@@ -60,7 +61,7 @@ public class MatchingUserDto {
         @JsonProperty
         private Long id;
         private String nickname;
-        private String image;
+        private Profile image;
         private Major major;
         @JsonProperty
         //private String studentId;
