@@ -12,9 +12,6 @@ import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, G
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
-import tag16 from '../image/태그/지도_on/tag_간단.png';
-import tag17 from '../image/태그/지도_on/tag_분위기.png';
-import tag14 from '../image/태그/지도_on/tag_일식.png';
 import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png';
 import closeIcon from '../image/close.png';
@@ -268,11 +265,11 @@ export default function list(){
                         : <Image id={"기타"} src={mapTag7} width={64} height={36}/> }
                     </Grid>
                     <Grid item sx={{pl: '5px'}}>
-                        { (keyword == "간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTag8} width={132} height={36}/>
+                        { (keyword == "간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
                         : <Image id={"간단한 한 끼"} src={mapTag8} width={132} height={36}/> }
                     </Grid>
                     <Grid item sx={{pl: '5px'}}>
-                        { (keyword == "분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTag9} width={128} height={36}/>
+                        { (keyword == "분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
                         : <Image id={"분위기 좋은"} src={mapTag9} width={128} height={36} /> }
                     </Grid>
             </Grid>
@@ -407,19 +404,19 @@ export default function list(){
                                                     width= {72}
                                                     height= {27}
                                                     alt="tag"
-                                                    src={tag16}
+                                                    src={mapTagOn8}
                                                 />
                                                 <Image
                                                     width= {72}
                                                     height= {27}
                                                     alt="tag"
-                                                    src={tag17}
+                                                    src={mapTagOn9}
                                                 />
                                                 <Image
                                                     width= {72}
                                                     height= {27}
                                                     alt="tag"
-                                                    src={tag17}
+                                                    src={mapTagOn9}
                                                 />
                                                 </Stack>
                                             </Grid>

@@ -10,15 +10,13 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
-import tag16 from '../image/태그/지도_on/tag_간단.png';
-import tag17 from '../image/태그/지도_on/tag_분위기.png';
-import tag14 from '../image/태그/지도_on/tag_일식.png';
 import bookmarkAdd from '../image/bookmark_add.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import expand from '../image/expand_more.png'
 import back from '../image/arrow_back_ios.png'
-
+import mapTagOn8 from '../image/태그/지도_on/tag_간단.png';
+import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png';
 import ReviewStar from '../components/ReviewStar'
 
 const PlacePage = () => {
@@ -300,19 +298,19 @@ const PlacePage = () => {
                                                         width= {90}
                                                         height= {27}
                                                         alt="tag"
-                                                        src={tag16}
+                                                        src={mapTagOn8}
                                                     />
                                                     <Image
                                                         width= {76}
                                                         height= {27}
                                                         alt="tag"
-                                                        src={tag17}
+                                                        src={mapTagOn9}
                                                     />
                                                     <Image
                                                         width= {76}
                                                         height= {27}
                                                         alt="tag"
-                                                        src={tag17}
+                                                        src={mapTagOn9}
                                                     />
                                                     </Stack>
                                                 </Grid>
