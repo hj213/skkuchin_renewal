@@ -14,6 +14,7 @@ import tag17 from '../image/태그/지도_on/tag_분위기.png';
 import mapIcon from '../image/map-1.png';
 import searchBox from '../image/검색창2.png';
 import closeIcon from '../image/close.png';
+import Navbar from "../components/Navbar";
 
 export default function searchList(){
     const router = useRouter();
@@ -23,9 +24,9 @@ export default function searchList(){
     const { keyword } = router.query;
 
     const [value, setValue] = useState('');
+    const [placeholderValue, setPlaceholderValue] = useState(keyword);
     const [passValue, setPassValue] = useState(keyword);
-
-
+    
     //api 받아오기
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -73,6 +74,7 @@ export default function searchList(){
     const handleKeyDown = (e) => {
         if(e.keyCode === 13){
             setPassValue(value);
+            setPlaceholderValue(value);
             dispatch(search_places(value));
             setValue('');
         }
@@ -81,23 +83,38 @@ export default function searchList(){
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <Container style={{padding:'0px',}}>
-            <Grid container style={{position:'relative', marginTop:'10px',}}>
-                <Grid item name='map' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36}/></Grid>
-                <Grid item name='close' style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
-                    <InputBase 
-                    sx={{ ml: 1, width:'150%'}}
-                    value={value}
-                    onChange={handleValue}
-                    onKeyDown={handleKeyDown}
-                    />   
-                </Grid>
-                <Grid item name='close' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image src={closeIcon} width={37} height={36}/></Grid>
-                <Grid item ><Image src={searchBox} /></Grid>
-            </Grid>
+            <div style={{position:'relative', width:'100%', height:'100%', }}>
+            <div style={{position: 'absolute',}}>
+            <Container fixed style={{ position:'fixed', top:'0', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'650px', height: '75px'}}>
+                <Card style={{
+                            position: 'absolute',
+                            top: '0px',
+                            width: '100%',
+                            height: '120%',
+                            zIndex: '4',
+                            border: "1px solid transparent",
+                            boxShadow: 'none',
+                        }}>
+                    <Grid container style={{position:'relative', marginTop:'10px',}}>
+                        <Grid item name='map' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36}/></Grid>
+                        <Grid item name='close' style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
+                            <InputBase 
+                            sx={{ ml: 1, width:'150%'}}
+                            value={value}
+                            placeholder={placeholderValue}
+                            onChange={handleValue}
+                            onKeyDown={handleKeyDown}
+                            />   
+                        </Grid>
+                        <Grid item name='close' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image src={closeIcon} width={37} height={36}/></Grid>
+                        <Grid item  ><Image src={searchBox}/></Grid>
+                    </Grid>
+                </Card>
             </Container>
-            
-            <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+            </div>
+            <Container style={{padding:'0px', marginTop:'75px', overflowY:'scroll', zIndex:'0'}}>
+                <Card style={{overflowY:'auto', }}>
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                         {place? place.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
@@ -201,7 +218,10 @@ export default function searchList(){
                                     </Link>
                                 </li>
                         )): null}
-                        </ul>
+                    </ul>
+                </Card>
+            </Container>
+            </div>
         </ThemeProvider>
     )
 }

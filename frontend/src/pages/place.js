@@ -195,8 +195,8 @@ const PlacePage = () => {
                             visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Grid style={{padding: '0px 10px 0px 0px'}}>
-                                    <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
+                                <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
                                 </Grid>
                           
                                 <Grid>
