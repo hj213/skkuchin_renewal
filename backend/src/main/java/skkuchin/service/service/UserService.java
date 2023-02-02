@@ -27,9 +27,6 @@ public class UserService {
     private final RoleRepo roleRepo;
     private final UserRoleRepo userRoleRepo;
     private final EmailAuthRepo emailAuthRepo;
-    private final KeywordRepo keywordRepo;
-    private final UserKeywordRepo userKeywordRepo;
-    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
     public boolean checkUsername(String username) {
@@ -84,51 +81,6 @@ public class UserService {
             userRepo.save(appUser);
             userRoleRepo.save(userRole);
         }
-    }
-
-    @Transactional
-    public Boolean confirmEmail(EmailAuthRequestDto requestDto) {
-        EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
-                requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
-                .orElseThrow(() -> new EmailAuthNumNotFoundException());
-        AppUser user = userRepo.findByEmail(requestDto.getEmail());
-        emailAuth.useToken();
-        user.emailVerifiedSuccess();
-        return true;
-    }
-
-    @Transactional
-    public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
-        if (!dto.getAgreement()) throw new CustomRuntimeException("이메일 전송 실패", "개인정보처리방침 및 이용약관에 동의해야 합니다.");
-        AppUser user = userRepo.findByUsername(dto.getUsername());
-        if (user == null) {
-            throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
-        }
-        if (user.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
-        }
-        AppUser existingUser = userRepo.findByEmail(dto.getEmail());
-        if (existingUser != null && existingUser.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
-        } else {
-            user.setEmail(dto.getEmail());
-            user.setAgreement(true);
-            emailService.sendEmail(dto.getEmail());
-        }
-    }
-
-
-    //이메일 인증 완료한 유저인지 확인
-    @Transactional
-    public Boolean checkEmail(String username) {
-        AppUser user = userRepo.findByUsername(username);
-        if (user == null) throw new RuntimeException("회원이 아닙니다.");
-        if (user.getEmailAuth()) {
-            UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
-            userRoleRepo.save(userRole);
-            //user.getRoles().add(roleRepo.findByName("ROLE_USER"));
-            return true;
-        } else return false;
     }
 
     @Transactional
@@ -210,6 +162,23 @@ public class UserService {
         user.setPassword(newPassword);
 
         userRepo.save(user);
+    }
+
+    @Transactional
+    public void resetPassword(UserDto.ResetPassword dto, Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(user.getEmail(), true, EmailType.PASSWORD);
+        if (emailAuth.size() == 0) {
+            throw new CustomRuntimeException("비밀번호 초기화 실패", "이메일 인증이 필요합니다.");
+        }
+        if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
+            throw new CustomRuntimeException("비밀번호 초기화 실패", "일치하지 않는 비밀번호입니다.");
+        }
+        String newPassword = passwordEncoder.encode(dto.getNewPassword());
+        user.setPassword(newPassword);
+
+        userRepo.save(user);
+        emailAuthRepo.deleteAll(emailAuth);
     }
 
     @Transactional
