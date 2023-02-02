@@ -231,7 +231,7 @@ public class ReviewService {
     }
 
     private void canHandleReview(AppUser reviewUser, AppUser user) {
-        if (!(reviewUser.getId().equals(user.getId()) || user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN")))
+        if (!(reviewUser.getId().equals(user.getId()) || user.getUserRoles().stream().findFirst().get().getRole().getName().equals("ROLE_ADMIN")))
             throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");
     }
 

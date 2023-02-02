@@ -15,10 +15,7 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +25,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final UserRoleRepo userRoleRepo;
     private final EmailAuthRepo emailAuthRepo;
     private final KeywordRepo keywordRepo;
     private final UserKeywordRepo userKeywordRepo;
@@ -62,26 +60,33 @@ public class UserService {
         return newUser;
     }
 
+    @Transactional
     public void saveAdmin(UserDto.SignUpForm signUpForm) {
         if (userRepo.findByUsername("admin") == null) {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
-            appUser.getRoles().add(roleRepo.findByName("ROLE_ADMIN"));
+            //appUser.getRoles().add(roleRepo.findByName("ROLE_ADMIN"));
             appUser.emailVerifiedSuccess();
+            UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_ADMIN")).build();
             userRepo.save(appUser);
+            userRoleRepo.save(userRole);
         }
     }
 
+    @Transactional
     public void saveTestUser(UserDto.SignUpForm signUpForm) {
         if (userRepo.findByUsername("test") == null) {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
-            appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
+            //appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
             appUser.emailVerifiedSuccess();
+            UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_USER")).build();
             userRepo.save(appUser);
+            userRoleRepo.save(userRole);
         }
     }
 
+    @Transactional
     public Boolean confirmEmail(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                 requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
@@ -92,35 +97,41 @@ public class UserService {
         return true;
     }
 
+    @Transactional
     public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
+        if (!dto.getAgreement()) throw new CustomRuntimeException("이메일 전송 실패", "개인정보처리방침 및 이용약관에 동의해야 합니다.");
         AppUser user = userRepo.findByUsername(dto.getUsername());
-
         if (user == null) {
             throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
         }
         if (user.getEmailAuth()) {
             throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
         }
-
         AppUser existingUser = userRepo.findByEmail(dto.getEmail());
         if (existingUser != null && existingUser.getEmailAuth()) {
             throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
         } else {
             user.setEmail(dto.getEmail());
+            user.setAgreement(true);
             emailService.sendEmail(dto.getEmail());
         }
     }
 
+
     //이메일 인증 완료한 유저인지 확인
+    @Transactional
     public Boolean checkEmail(String username) {
         AppUser user = userRepo.findByUsername(username);
         if (user == null) throw new RuntimeException("회원이 아닙니다.");
         if (user.getEmailAuth()) {
-            user.getRoles().add(roleRepo.findByName("ROLE_USER"));
+            UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
+            userRoleRepo.save(userRole);
+            //user.getRoles().add(roleRepo.findByName("ROLE_USER"));
             return true;
         } else return false;
     }
 
+    @Transactional
     public void saveRole(Role role) {
         String roleName = role.getName();
         if (roleRepo.findByName(roleName) == null) {
@@ -134,15 +145,16 @@ public class UserService {
         return roleRepo.findByName(roleName);
     }
 
+    @Transactional
     public void addRoleToUser(String username, String roleName) {
         log.info("Adding role {} to user {}", roleName, username);
         AppUser user = userRepo.findByUsername(username);
         Role role = roleRepo.findByName(roleName);
-        //user.getRoles().add(role);
-        if (user.getRoles().contains(role)) {
+        if (userRoleRepo.findByRole(role) != null) {
             throw new DuplicateException("role_duplicate_error");
         } else {
-            user.getRoles().add(role);
+            UserRole userRole = UserRole.builder().user(user).role(role).build();
+            userRoleRepo.save(userRole);
         }
     }
 
@@ -152,6 +164,7 @@ public class UserService {
         return new UserDto.Response(user);
     }
 
+    @Transactional
     public AppUser getUserForRefresh(String username) {
         return userRepo.findByUsername(username);
     }
@@ -168,9 +181,12 @@ public class UserService {
     @Transactional
     public void updateUser(Long userId, UserDto.PutRequest dto) {
         AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser existingUser = userRepo.findByNickname(dto.getNickname());
+        if (!(existingUser == null || user.equals(existingUser)))
+            throw new CustomRuntimeException("사용할 수 없는 닉네임입니다.");
         user.setNickname(dto.getNickname());
         user.setMajor(dto.getMajor());
-        user.setImage(dto.getImage());
+        //user.setImage(dto.getImage());
 
         userRepo.save(user);
     }
@@ -201,5 +217,12 @@ public class UserService {
         AppUser user = userRepo.findById(userId).orElseThrow();
         user.setToggle(campus);
         userRepo.save(user);
+    }
+
+    public void sendEmails(String username, String email) throws MessagingException, UnsupportedEncodingException {
+
+
+
+
     }
 }
