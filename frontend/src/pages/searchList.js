@@ -22,7 +22,7 @@ export default function searchList(){
     //user의 input값 받아오기
     const { keyword } = router.query;
 
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(keyword);
     const [passValue, setPassValue] = useState(keyword);
 
 
@@ -53,7 +53,14 @@ export default function searchList(){
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.id == 'map' ){
-            router.push(`/place?id=${place[0].id}`);
+            // 0-2 [검색 결과 목록] -> 2 [식당 선택]으로 이동
+            // router.push(`/place?id=${place[0].id}`);
+            // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
+            router.push(`/?keyword=${passValue}`);
+            // router.push({
+            //     pathname: '/',
+            //     query: passValue
+            // });
         } else{
             alert(event.target.id + ' ' + place[0].name);
             router.push('/');
@@ -70,7 +77,6 @@ export default function searchList(){
         if(e.keyCode === 13){
             setPassValue(value);
             dispatch(search_places(value));
-            setValue('');
         }
     }
 

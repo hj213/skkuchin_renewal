@@ -18,6 +18,8 @@ import back from '../image/arrow_back_ios.png'
 import mapTagOn8 from '../image/태그/지도_on/tag_간단.png';
 import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png';
 import ReviewStar from '../components/ReviewStar'
+import TagList from "../components/TagList";
+import SearchBox from "../components/SearchBox";
 
 const PlacePage = () => {
     
@@ -150,6 +152,16 @@ const PlacePage = () => {
     const addComma = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+
+    const {openID} = router.query;
+
+    // 태그 검색
+    const [keyword, setKeyword] = useState('');
+
+    const onTagClick = (id) => {
+        setKeyword(id);
+        router.push(`/?keyword=${id}`);
+    }
     
     return (
         <ThemeProvider theme={theme}>
@@ -159,8 +171,12 @@ const PlacePage = () => {
                 content='Place page'
             >           
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+                <Container style={{position:'absolute', zIndex:'2'}}>
+                    <SearchBox openID={openID}/>   
+                </Container> 
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} places={places} selectedId={id}/>                  
-
+                {/* 태그 목록 */}
+                <TagList keyword={keyword} onTagClick={onTagClick} />
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
