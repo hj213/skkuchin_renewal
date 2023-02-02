@@ -58,7 +58,6 @@ export default function myFavorite(){
               });
             
         } else{
-
             router.push('/');
         }
     };

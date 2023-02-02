@@ -22,7 +22,7 @@ import bookmarkOn from '../image/bookmark-1.png';
 import SearchBox from "../components/SearchBox";
 
 // 지도 아이콘
-import mapTag1 from '../image/태그/지도_off/학생할인.png';
+import mapTag1 from '../image/태그/지도_off/학생할인_no.png';
 import mapTag2 from '../image/태그/지도_off/스페셜.png';
 import mapTag3 from '../image/태그/지도_off/한식.png';
 import mapTag4 from '../image/태그/지도_off/중식.png';
@@ -52,13 +52,14 @@ export default function list(){
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
 
-    const [height, setHeight] = useState('32%');
+    const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
         iconVisibility: 'visible',
         bool: 'false',
     }) ;
+   
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
         bool:false,
@@ -81,12 +82,14 @@ export default function list(){
     const [keyword, setKeyword] = useState('');
     
     useEffect(() => {
+        
        if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(search_places(keyword));
+            setHeight('32%');
         }
-    }, [keyword]);
+    }, [keyword, router.query]);
     
-
+    
     // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
         if (cardRef.current) {

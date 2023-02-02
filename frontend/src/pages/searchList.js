@@ -52,14 +52,10 @@ export default function searchList(){
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
-        if(event.target.name == 'map' ){
-            router.push({
-                pathname: '/',
-                query: passValue
-              });
-              dispatch(search_places('')); //초기화위해서
-            //추가해야할 부분
+        if(event.target.id == 'map' ){
+            router.push(`/place?id=${place[0].id}`);
         } else{
+            alert(event.target.id + ' ' + place[0].name);
             router.push('/');
             dispatch(search_places('')); //초기화위해서
         }
@@ -83,8 +79,8 @@ export default function searchList(){
             <CssBaseline/>
             <Container style={{padding:'0px',}}>
             <Grid container style={{position:'relative', marginTop:'10px',}}>
-                <Grid item name='map' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36}/></Grid>
-                <Grid item name='close' style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
+                <Grid item  onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image id='map' src={mapIcon} width={37} height={36}/></Grid>
+                <Grid item style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
                     <InputBase 
                     sx={{ ml: 1, width:'150%'}}
                     value={value}
@@ -92,7 +88,7 @@ export default function searchList(){
                     onKeyDown={handleKeyDown}
                     />   
                 </Grid>
-                <Grid item name='close' onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image src={closeIcon} width={37} height={36}/></Grid>
+                <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image id='close' src={closeIcon} width={37} height={36}/></Grid>
                 <Grid item ><Image src={searchBox} /></Grid>
             </Grid>
             </Container>
