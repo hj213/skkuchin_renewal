@@ -82,8 +82,6 @@ export default function list(){
     const [keyword, setKeyword] = useState('');
     
     useEffect(() => {
-        if(router.query != null) console.log(router.query);
-        if(keyword != null) alert(keyword);
         
        if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(search_places(keyword));
