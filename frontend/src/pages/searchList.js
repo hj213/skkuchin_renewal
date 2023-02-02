@@ -58,14 +58,10 @@ export default function searchList(){
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
-        if(event.target.name == 'map' ){
-            router.push({
-                pathname: '/',
-                query: passValue
-              });
-              dispatch(search_places('')); //초기화위해서
-            //추가해야할 부분
+        if(event.target.id == 'map' ){
+            router.push(`/place?id=${place[0].id}`);
         } else{
+            alert(event.target.id + ' ' + place[0].name);
             router.push('/');
             dispatch(search_places('')); //초기화위해서
         }
@@ -88,6 +84,7 @@ export default function searchList(){
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
+<<<<<<< HEAD
             <div style={{position:'relative', width:'100%', height:'100%', marginTop:'120px' }}>
                 <div style={{position: 'absolute',}}>
                     <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '75px'}}>
@@ -140,6 +137,36 @@ export default function searchList(){
                                                         <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
                                                             {isFavorite(item.id)}
                                                         </Grid>
+=======
+            <Container style={{padding:'0px',}}>
+            <Grid container style={{position:'relative', marginTop:'10px',}}>
+                <Grid item  onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image id='map' src={mapIcon} width={37} height={36}/></Grid>
+                <Grid item style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
+                    <InputBase 
+                    sx={{ ml: 1, width:'150%'}}
+                    value={value}
+                    onChange={handleValue}
+                    onKeyDown={handleKeyDown}
+                    />   
+                </Grid>
+                <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image id='close' src={closeIcon} width={37} height={36}/></Grid>
+                <Grid item ><Image src={searchBox} /></Grid>
+            </Grid>
+            </Container>
+            
+            <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+                        {place? place.map((item) => (
+                                <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
+                                    <Link href={`/place?id=${item.id}`} key={item.id}>
+                                    <Grid container style={{margin: '10px 0px 0px 0px'}}>
+                                        <Grid item xs >
+                                            <CardContent style={{padding:'0px'}}>
+                                                <Grid container spacing={2} style={{margin:'0px',}}>
+                                                    <Grid item style={{marginTop:'15px',  padding:'0px'}}>
+                                                        <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
+                                                            {item.name}
+                                                        </Typography>
+>>>>>>> upstream/main
                                                     </Grid>
                                                     <Grid item container style={{marginTop: '10px'}}>
                                                         <Grid >
