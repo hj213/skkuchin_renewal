@@ -73,7 +73,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/confirmEmail")
+    @GetMapping("/confirmEmail/signup")
     public ResponseEntity<Boolean> mailConfirm(@ModelAttribute EmailAuthRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
         log.info("success");
         return ResponseEntity.ok().body(userService.confirmEmail(requestDto));
@@ -213,25 +213,39 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 변경 완료", null), HttpStatus.OK);
     }
 
-    @PutMapping("/user/password/reset/{email}")
+    //@GetMapping("/user/password/reset/{email}")
+    @GetMapping("/email/password/reset")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> sendResetEmail(@PathVariable String email, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> sendResetEmail(@RequestBody Map<String, String> emailMap, @AuthenticationPrincipal PrincipalDetails principalDetails) throws MessagingException, UnsupportedEncodingException {
         Long userId = principalDetails.getUser().getId();
-        userService.sendResetEmail(email, userId);
+        userService.sendResetEmail(emailMap.get("email"), userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 인증 메일 발송 완료", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/confirmEmail/password")
+    public ResponseEntity<Boolean> passwordMailConfirm(@ModelAttribute EmailAuthRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
+        return ResponseEntity.ok().body(userService.confirmEmailPassword(requestDto));
+    }
+
+    @PutMapping("/user/password/reset")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody UserDto.ResetPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long userId = principalDetails.getUser().getId();
+        userService.resetPassword(dto, userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 완료", null), HttpStatus.OK);
     }
 
     @GetMapping("/email/send")
     public ResponseEntity<?> sendEmail(@Valid @RequestBody UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
         userService.sendEmail(dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 전송 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 인증 이메일 전송 완료", null), HttpStatus.OK);
     }
 
 
     @GetMapping("/email/check")
     public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> usernameMap) {
         Boolean isAuth = userService.checkEmail(usernameMap.get("username"));
-        return new ResponseEntity<>(new CMRespDto<>(1, "이메일 인증 여부 확인 완료", isAuth), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 이메일 인증 여부 확인 완료", isAuth), HttpStatus.OK);
     }
 
     @PutMapping("/user/toggle")

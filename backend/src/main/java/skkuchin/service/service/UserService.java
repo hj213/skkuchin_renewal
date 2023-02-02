@@ -92,7 +92,7 @@ public class UserService {
                 requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
         AppUser user = userRepo.findByEmail(requestDto.getEmail());
-        emailAuth.useToken();
+        emailAuth.setIsAuth(true);
         user.emailVerifiedSuccess();
         return true;
     }
@@ -213,16 +213,39 @@ public class UserService {
     }
 
     @Transactional
-    public void sendResetEmail(String email, Long userId) {
+    public void sendResetEmail(String email, Long userId) throws MessagingException, UnsupportedEncodingException {
         AppUser user = userRepo.findById(userId).orElseThrow();
-        if (user.getEmail() != email) {
+        if (!user.getEmail().equals(email)) {
             throw new CustomRuntimeException("비밀번호 초기화 인증 메일 발송 실패", "이메일 주소를 다시 입력하세요");
         }
-
+        emailService.sendEmail(email, EmailType.PASSWORD);
     }
+
     @Transactional
-    public void resetPassword(String email, Long userId) {
+    public Boolean confirmEmailPassword(EmailAuthRequestDto requestDto) {
+        EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
+                        requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
+                .orElseThrow(() -> new EmailAuthNumNotFoundException());
+        AppUser user = userRepo.findByEmail(requestDto.getEmail());
+        emailAuth.setIsAuth(true);
+        return true;
+    }
+
+    @Transactional
+    public void resetPassword(UserDto.ResetPassword dto, Long userId) {
         AppUser user = userRepo.findById(userId).orElseThrow();
+        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(user.getEmail(), true, EmailType.PASSWORD);
+        if (emailAuth.size() == 0) {
+            throw new CustomRuntimeException("비밀번호 초기화 실패", "이메일 인증이 필요합니다.");
+        }
+        if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
+            throw new CustomRuntimeException("비밀번호 초기화 실패", "신규 비밀번호가 일치하지 않습니다.");
+        }
+        String newPassword = passwordEncoder.encode(dto.getNewPassword());
+        user.setPassword(newPassword);
+
+        userRepo.save(user);
+        emailAuthRepo.deleteAll(emailAuth);
     }
 
     @Transactional

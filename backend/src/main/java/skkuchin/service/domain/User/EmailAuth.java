@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor*/
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,10 +24,6 @@ public class EmailAuth {
     private String authNum;
     @Enumerated(EnumType.STRING)
     private EmailType type;
-    private Boolean isExpired;
+    private Boolean isAuth;
     private LocalDateTime expireDate;
-
-    public void useToken() {
-        this.isExpired = true;
-    }
 }

@@ -53,14 +53,17 @@ public class EmailService {
     }
 
     //메일 양식 작성
-    public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
+    public MimeMessage createEmailForm(String email, EmailType type) throws MessagingException, UnsupportedEncodingException {
+        String emailType = getEmailType(type);
         createCode();
         String setFrom = "skkuchin@gmail.com";
         String toEmail = email; //받는 사람
-        String title = "SKKUCHIN 이메일 인증";
-        String mailContent = "<h1>[이메일 인증]</h1><br><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
-                + "<a href='http://localhost:8080/api/confirmEmail?email="
-                + email + "&authNum=" + authNum + "' target='_blenk'>이메일 인증 확인</a>";
+        String title = "SKKUCHIN "+emailType+" 이메일 인증";
+        String mailContent = "<h3>["+emailType+" 이메일 인증]</h3>"
+                + "<br><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
+                + "<a href='http://localhost:8080/api/confirmEmail/"
+                + type.name().toLowerCase()
+                + "?email=" + email + "&authNum=" + authNum + "' target='_blenk'>이메일 인증 확인</a>";
 
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
@@ -75,15 +78,29 @@ public class EmailService {
     @Async
     public void sendEmail(String toEmail, EmailType type) throws MessagingException, UnsupportedEncodingException {
 
-        MimeMessage emailForm = createEmailForm(toEmail);
+        MimeMessage emailForm = createEmailForm(toEmail, type);
         EmailAuth emailAuth = emailAuthRepo.save(
             EmailAuth.builder()
                     .email(toEmail)
                     .authNum(authNum)
                     .type(type)
-                    .isExpired(false)
+                    .isAuth(false)
                     .expireDate(LocalDateTime.now().plusMinutes(MAX_EXPIRE_TIME))
                     .build());
         emailSender.send(emailForm);
+    }
+
+    public String getEmailType(EmailType type) {
+        String emailType = "";
+        switch (type) {
+            case SIGNUP: emailType = "회원가입";
+            break;
+            case PASSWORD: emailType = "비밀번호 초기화";
+            break;
+            case ID: emailType = "아이디 찾기";
+            break;
+            default: emailType = "Invalid type";
+        }
+        return emailType;
     }
 }
