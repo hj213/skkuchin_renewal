@@ -1,7 +1,11 @@
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "@emotion/styled";
-// import Marker from './Marker';
-const Map = ({latitude, longitude, places}) => {
+
+const Map = ({latitude, longitude, places, selectedId}) => {
+
+    const router = useRouter();
     useEffect(() => {
         const mapScript = document.createElement("script");
         
@@ -14,8 +18,17 @@ const Map = ({latitude, longitude, places}) => {
             window.kakao.maps.load(() => {
                 const container = document.getElementById("map");
 
+                let selectedPlace;
+                if (selectedId) {
+                    selectedPlace = places.find(p => p.id == selectedId);
+                }
                 let options;
-                if (places && places.length > 0) {
+                if (selectedPlace) {
+                    options = {
+                        center: new window.kakao.maps.LatLng(selectedPlace.ycoordinate, selectedPlace.xcoordinate),
+                        level: 1
+                    };
+                } else if (places && places.length > 0) {
                     options = {
                         center: new window.kakao.maps.LatLng(places[0].ycoordinate, places[0].xcoordinate),
                         level: 1
@@ -30,13 +43,30 @@ const Map = ({latitude, longitude, places}) => {
                 const map = new window.kakao.maps.Map(container, options);
 
                 const markers = [];
+                
                 { places  &&
                 places.forEach(place => {
-                    const marker = new window.kakao.maps.Marker({
-                        position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                    });
+                    let marker;
+                    if (place.id == selectedId) {
+                        const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+                        imageSize = new window.kakao.maps.Size(24, 35),
+                        markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+                        marker = new window.kakao.maps.Marker({
+                            position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                            image: markerImage
+                        });
+                    } else {
+                        marker = new window.kakao.maps.Marker({
+                            position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                        });
+                    }
                     markers.push(marker);
                     marker.setMap(map);
+
+                    window.kakao.maps.event.addListener(marker, "click", function() {
+                        map.setCenter(new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate));
+                        router.push(`/place?id=${place.id}`);
+                    });
                 });
                 }
             });
@@ -44,18 +74,9 @@ const Map = ({latitude, longitude, places}) => {
         mapScript.addEventListener("load", onLoadKakaoMap);
 
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
-    }, [latitude, longitude, places]);
+    }, [latitude, longitude, places, selectedId]);
     return (
         <MapContainer id="map" style={{width:'100%', height:'65vh'}}>
-            {/* {places && (
-                places.map((place, i) => {
-                const lat = place.ycoordinate;
-                const lng = place.xcoordinate;
-                return (
-                    <Marker key={i} lat={lat} lng={lng} />
-                );
-                })
-            )} */}
         </MapContainer>
     );
 }
@@ -67,10 +88,15 @@ const MapContainer = styled.div`
 
 export default Map;
 
-// import { useEffect } from "react";
+// import { useEffect, useState } from "react";
+// import { useRouter } from "next/router";
 // import styled from "@emotion/styled";
+// import Image from 'next/image';
+// import marker from '../image/지도/marker.png'
 
-// const Map = ({latitude, longitude}) => {
+// const Map = ({latitude, longitude, places, selectedId}) => {
+
+//     const router = useRouter();
 //     useEffect(() => {
 //         const mapScript = document.createElement("script");
         
@@ -82,19 +108,48 @@ export default Map;
 //         const onLoadKakaoMap = () => {
 //             window.kakao.maps.load(() => {
 //                 const container = document.getElementById("map");
-//                 const options = {
-//                     center: new window.kakao.maps.LatLng(latitude, longitude),
-//                     level: 1
-//                 };
+
+//                 let options;
+//                 if (places && places.length > 0) {
+//                     options = {
+//                         center: new window.kakao.maps.LatLng(places[0].ycoordinate, places[0].xcoordinate),
+//                         level: 1
+//                     };
+//                 } else {
+//                     options = {
+//                         center : new window.kakao.maps.LatLng(latitude, longitude),
+//                         level: 1
+//                     };
+//                 }
+
 //                 const map = new window.kakao.maps.Map(container, options);
+
+//                 const markers = [];
+                
+//                 { places  &&
+//                 places.forEach(place => {
+//                     const marker = new window.kakao.maps.Marker({
+//                         position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+//                     });
+//                     markers.push(marker);
+//                     marker.setMap(map);
+
+//                     window.kakao.maps.event.addListener(marker, "click", function() {
+//                         alert(`id: ${place.id} name: ${place.name}`);
+//                         map.setCenter(new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate));
+//                         router.push(`/place?id=${place.id}`);
+//                     });
+//                 });
+//                 }
 //             });
 //         };
 //         mapScript.addEventListener("load", onLoadKakaoMap);
 
 //         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
-//     }, [latitude, longitude]);
+//     }, [latitude, longitude, places]);
 //     return (
-//         <MapContainer id="map" style={{width:'100%', height:'65vh'}}/>
+//         <MapContainer id="map" style={{width:'100%', height:'65vh'}}>
+//         </MapContainer>
 //     );
 // }
 

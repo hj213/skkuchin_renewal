@@ -64,22 +64,12 @@ const PlacePage = () => {
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
+            setPlaceId(id);
             dispatch(load_favorite());
             dispatch(load_menu(id));
         }
-    }, [dispatch]);
+    }, [dispatch, id]);
 
-    const handleOpen = (id) => {
-        setPlaceId(id);
-        setIsCardVisible(true);
-        setHeight('32%');
-
-        if (cardRef.current) {
-            cardRef.current.addEventListener("touchmove", handleTouchMove);
-        }
-    }
-    
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
@@ -169,19 +159,10 @@ const PlacePage = () => {
             <Layout
                 title='스꾸친 | Place'
                 content='Place page'
-            >
-                {/* <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
-                    {places ? places.map((place) => (
-                        <Grid key={place.id}>
-                            <div className='p-3' onClick={() => handleOpen(place.id)}>
-                                <h4>{place.name}</h4>
-                            </div>
-                        </Grid>
-                    )) : null}
-                </div> */}
-                            
+            >           
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
-                <Map latitude={37.58622450673971} longitude={126.99709024757782} />                    
+                <Map latitude={37.58622450673971} longitude={126.99709024757782} places={places} selectedId={id}/>                  
+
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
