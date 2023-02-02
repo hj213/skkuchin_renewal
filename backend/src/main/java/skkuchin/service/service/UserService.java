@@ -27,7 +27,6 @@ public class UserService {
     private final RoleRepo roleRepo;
     private final UserRoleRepo userRoleRepo;
     private final EmailAuthRepo emailAuthRepo;
-    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
     public boolean checkUsername(String username) {
@@ -82,19 +81,6 @@ public class UserService {
             userRepo.save(appUser);
             userRoleRepo.save(userRole);
         }
-    }
-
-    //이메일 인증 완료한 유저인지 확인
-    @Transactional
-    public Boolean checkEmail(String username) {
-        AppUser user = userRepo.findByUsername(username);
-        if (user == null) throw new RuntimeException("회원이 아닙니다.");
-        if (user.getEmailAuth()) {
-            UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
-            userRoleRepo.save(userRole);
-            //user.getRoles().add(roleRepo.findByName("ROLE_USER"));
-            return true;
-        } else return false;
     }
 
     @Transactional
@@ -186,7 +172,7 @@ public class UserService {
             throw new CustomRuntimeException("비밀번호 초기화 실패", "이메일 인증이 필요합니다.");
         }
         if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
-            throw new CustomRuntimeException("비밀번호 초기화 실패", "신규 비밀번호가 일치하지 않습니다.");
+            throw new CustomRuntimeException("비밀번호 초기화 실패", "일치하지 않는 비밀번호입니다.");
         }
         String newPassword = passwordEncoder.encode(dto.getNewPassword());
         user.setPassword(newPassword);

@@ -208,12 +208,6 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/email/check")
-    public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> usernameMap) {
-        Boolean isAuth = userService.checkEmail(usernameMap.get("username"));
-        return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 이메일 인증 여부 확인 완료", isAuth), HttpStatus.OK);
-    }
-
     @PutMapping("/toggle")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> updateToggleValue(@RequestBody Map<String, Campus> campusMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {

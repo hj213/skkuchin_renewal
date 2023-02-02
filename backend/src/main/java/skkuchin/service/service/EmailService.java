@@ -12,16 +12,20 @@ import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.EmailAuth;
 import skkuchin.service.domain.User.EmailType;
+import skkuchin.service.domain.User.UserRole;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.EmailAuthNumNotFoundException;
 import skkuchin.service.repo.EmailAuthRepo;
+import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
+import skkuchin.service.repo.UserRoleRepo;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -34,6 +38,8 @@ public class EmailService {
     JavaMailSenderImpl emailSender;
     private final EmailAuthRepo emailAuthRepo;
     private final UserRepo userRepo;
+    private final RoleRepo roleRepo;
+    private final UserRoleRepo userRoleRepo;
     private String authNum;
 
     @Transactional
@@ -67,6 +73,19 @@ public class EmailService {
         return true;
     }
 
+    //회원가입 - 이메일 인증 완료한 유저인지 확인
+    @Transactional
+    public Boolean checkSignup(String username) {
+        AppUser user = userRepo.findByUsername(username);
+        if (user == null) throw new RuntimeException("회원이 아닙니다.");
+        if (user.getEmailAuth()) {
+            UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
+            userRoleRepo.save(userRole);
+            //user.getRoles().add(roleRepo.findByName("ROLE_USER"));
+            return true;
+        } else return false;
+    }
+
     @Transactional
     public void sendResetEmail(String email, Long userId) throws MessagingException, UnsupportedEncodingException {
         AppUser user = userRepo.findById(userId).orElseThrow();
@@ -83,6 +102,16 @@ public class EmailService {
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
         AppUser user = userRepo.findByEmail(requestDto.getEmail());
         emailAuth.setIsAuth(true);
+        return true;
+    }
+
+    @Transactional
+    public Boolean checkPassword(Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(user.getEmail(), true, EmailType.PASSWORD);
+        if (emailAuth.size() == 0) {
+            return false;
+        }
         return true;
     }
 
