@@ -9,7 +9,6 @@ import star from '../image/Star-1.png';
 import profile from '../image/profile.png';
 import yj from '../image/율전.png';
 import { load_user } from '../actions/auth/auth';
-import { load_review } from '../actions/review/review';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
 
