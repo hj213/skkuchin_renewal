@@ -1,8 +1,6 @@
 package skkuchin.service.config.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
-import org.springframework.boot.actuate.context.ShutdownEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,7 +49,6 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .antMatchers(PERMIT_API_URL_ARRAY).permitAll()
                 .antMatchers(PERMIT_SWAGGER_URL_ARRAY).permitAll()
-                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .anyRequest().authenticated();
         http.apply(new MyCustomDsl());
         return http.build();

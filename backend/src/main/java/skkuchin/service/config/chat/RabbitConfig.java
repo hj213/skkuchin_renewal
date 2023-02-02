@@ -16,9 +16,11 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import software.amazon.awssdk.regions.Region;
 
 @Configuration
 @RequiredArgsConstructor
@@ -29,7 +31,14 @@ public class RabbitConfig {
     private static final String CHAT_EXCHANGE_NAME = "chat.exchange";
     private static final String ROUTING_KEY = "room.*";
 
-
+    @Value("${rabbitmq.host}")
+    private String host;
+    @Value("${rabbitmq.port}")
+    private int port;
+    @Value("${rabbitmq.username}")
+    private String username;
+    @Value("${rabbitmq.password}")
+    private String password;
 
     @Bean
     public Queue queue(){ return new Queue(CHAT_QUEUE_NAME, true); }
@@ -66,9 +75,10 @@ public class RabbitConfig {
     @Bean
     public ConnectionFactory connectionFactory(){
         CachingConnectionFactory factory = new CachingConnectionFactory();
-        factory.setHost("localhost");
-        factory.setUsername("guest");
-        factory.setPassword("guest");
+        factory.setHost(host);
+        factory.setPort(port);
+        factory.setUsername(username);
+        factory.setPassword(password);
         return factory;
     }
 

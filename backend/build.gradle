@@ -67,10 +67,6 @@ dependencies {
 	//swagger
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
-	//	actuator
-	compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
-	// admin
-//	implementation 'de.codecentric:spring-boot-admin-starter-client:2.6.2'
 }
 
 tasks.named('test') {

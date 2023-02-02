@@ -21,6 +21,23 @@ services:
     networks:
       - skkuchin-network
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: skkuchin-rabbitmq
+    ports:
+      - 5672:5672
+      - 15670:15670
+      - 15672:15672
+      - 61613:61613
+    command: sh -c "rabbitmq-plugins enable rabbitmq_web_stomp rabbitmq_web_stomp_examples && rabbitmq-server start"
+    # rabbitmq 데이터 유지하고 싶을 때 밑의 주석 풀기 
+    # volumes:
+    #   - ./rabbitmq/etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    #   - ./rabbitmq/data/:/var/lib/rabbitmq/
+    #   - ./rabbitmq/logs/:/var/log/rabbitmq/
+    networks:
+      - skkuchin-network
+
   server:
     build:
       context: "./backend"
@@ -29,7 +46,7 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - admin
+      - rabbitmq
       - database
     container_name: skkuchin-backend
     environment:
@@ -39,25 +56,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
     volumes:
-      - ./backend/build/libs:/app
+      - ./backend:/app
     working_dir: /app
-    networks:
-      - skkuchin-network
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: skkuchin-rabbitmq
-    volumes:
-      - ./rabbitmq/etc/:/etc/rabbitmq/
-      - ./rabbitmq/data/:/var/lib/rabbitmq/
-      - ./rabbitmq/logs/:/var/log/rabbitmq/
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_ERLANG_COOKIE: "RabbitMQ-My-Cookies"
-      RABBITMQ_DEFAULT_USER: "guest"
-      RABBITMQ_DEFAULT_PASS: "guest"
     networks:
       - skkuchin-network
 

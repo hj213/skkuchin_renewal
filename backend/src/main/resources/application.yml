@@ -9,11 +9,6 @@ spring:
     url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: Master00!@
-  rabbitmq:
-      host: localhost
-      port: 5672
-      username: guest
-      password: guest
   jpa:
     hibernate:
       ddl-auto: create
@@ -31,14 +26,4 @@ spring:
     import:
       - aws.yml
       - email.yml
-      - admin.yml
-  #  boot:
-  #    admin:
-  #      client:
-  #        url: http://localhost:8081
-  #        username: admin
-  #        password: 1234
-  #        instance:
-  #          metadata:
-  #            user.name: admin
-  #            user.password: 1234
+      - chat.yml
