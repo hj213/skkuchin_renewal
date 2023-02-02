@@ -113,7 +113,7 @@ public class UserService {
         } else {
             user.setEmail(dto.getEmail());
             user.setAgreement(true);
-            emailService.sendEmail(dto.getEmail());
+            emailService.sendEmail(dto.getEmail(), EmailType.SIGNUP);
         }
     }
 
@@ -210,6 +210,19 @@ public class UserService {
         user.setPassword(newPassword);
 
         userRepo.save(user);
+    }
+
+    @Transactional
+    public void sendResetEmail(String email, Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
+        if (user.getEmail() != email) {
+            throw new CustomRuntimeException("비밀번호 초기화 인증 메일 발송 실패", "이메일 주소를 다시 입력하세요");
+        }
+
+    }
+    @Transactional
+    public void resetPassword(String email, Long userId) {
+        AppUser user = userRepo.findById(userId).orElseThrow();
     }
 
     @Transactional

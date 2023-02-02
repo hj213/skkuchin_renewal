@@ -213,6 +213,14 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 변경 완료", null), HttpStatus.OK);
     }
 
+    @PutMapping("/user/password/reset/{email}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> sendResetEmail(@PathVariable String email, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long userId = principalDetails.getUser().getId();
+        userService.sendResetEmail(email, userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 인증 메일 발송 완료", null), HttpStatus.OK);
+    }
+
     @GetMapping("/email/send")
     public ResponseEntity<?> sendEmail(@Valid @RequestBody UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
         userService.sendEmail(dto);

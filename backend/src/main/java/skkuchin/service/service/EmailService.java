@@ -8,11 +8,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.User.EmailAuth;
+import skkuchin.service.domain.User.EmailType;
 import skkuchin.service.repo.EmailAuthRepo;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -20,6 +22,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailService {
+    private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
 
     @Autowired
     JavaMailSenderImpl emailSender;
@@ -70,15 +73,16 @@ public class EmailService {
 
     //실제 메일 전송
     @Async
-    public void sendEmail(String toEmail) throws MessagingException, UnsupportedEncodingException {
+    public void sendEmail(String toEmail, EmailType type) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage emailForm = createEmailForm(toEmail);
-        log.info(emailAuthRepo.toString());
         EmailAuth emailAuth = emailAuthRepo.save(
             EmailAuth.builder()
                     .email(toEmail)
                     .authNum(authNum)
+                    .type(type)
                     .isExpired(false)
+                    .expireDate(LocalDateTime.now().plusMinutes(MAX_EXPIRE_TIME))
                     .build());
         emailSender.send(emailForm);
     }
