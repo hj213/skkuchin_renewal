@@ -47,5 +47,15 @@ public class EmailController {
         return ResponseEntity.ok().body(emailService.confirmPassword(requestDto));
     }
 
+    @GetMapping("/username")
+    public ResponseEntity<?> sendUsernameEmail(@RequestBody Map<String, String> emailMap) throws MessagingException, UnsupportedEncodingException {
+        emailService.sendUsernameEmail(emailMap.get("email"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "아이디 찾기 인증 메일 발송 완료", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/confirm/username")
+    public ResponseEntity<String> usernameConfirm(@ModelAttribute EmailAuthRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
+        return ResponseEntity.ok().body(emailService.findUsername(requestDto));
+    }
 
 }

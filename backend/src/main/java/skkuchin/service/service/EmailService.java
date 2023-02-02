@@ -86,6 +86,25 @@ public class EmailService {
         return true;
     }
 
+    @Transactional
+    public void sendUsernameEmail(String email) throws MessagingException, UnsupportedEncodingException {
+        AppUser user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new CustomRuntimeException("아이디 찾기 인증 메일 발송 실패", "등록된 이메일 계정이 아닙니다.");
+        }
+        sendEmail(email, EmailType.USERNAME);
+    }
+
+    @Transactional
+    public String findUsername(EmailAuthRequestDto requestDto) {
+        EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
+                        requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
+                .orElseThrow(() -> new EmailAuthNumNotFoundException());
+        AppUser user = userRepo.findByEmail(requestDto.getEmail());
+        emailAuth.setIsAuth(true);
+        return user.getUsername();
+    }
+
     //랜덤 인증 코드 생성
     public void createCode() {
         Random random = new Random();
@@ -154,7 +173,7 @@ public class EmailService {
             break;
             case PASSWORD: emailType = "비밀번호 초기화";
             break;
-            case ID: emailType = "아이디 찾기";
+            case USERNAME: emailType = "아이디 찾기";
             break;
             default: emailType = "Invalid type";
         }
