@@ -1,4 +1,4 @@
-import { Grid,ThemeProvider, Button, Grow, Box,Card, Paper, MenuList, MenuItem, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
+import { CssBaseline, Grid,ThemeProvider, Button, Grow, Box,Card, Paper, MenuList, MenuItem, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
 import { useDispatch, useSelector, } from "react-redux";
 import { useState, useEffect, useRef, } from 'react';
 import { useRouter } from "next/router";
@@ -97,20 +97,21 @@ export default function myFavorite(){
 
     return(
         <ThemeProvider theme={theme}>
+            <CssBaseline/>
             <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'50px'}}>
                 <div style={{position: 'absolute',}}>
-                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px 5px 0px 5px', overflow: "hidden", height:'50px'}} >
+                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'50px',maxWidth:'650px'}} >
                 <Card style={{
                             // position: 'absolute',
                             top: '0px',
                             width: '100%',
-                            height: '230%',
+                            height: '120%',
                             zIndex: '4',
                             border: "1px solid transparent",
                             boxShadow: 'none',
                             padding:'0px'
                         }}>
-                    <Grid container style={{padding:'0px 15px 0px 0px', justifyContent: 'space-between', alignItems: 'center', }}>
+                    <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
                         <Grid style={{padding: '2px 10px 0px 4px'}} >
                             <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
                         </Grid>
@@ -133,7 +134,7 @@ export default function myFavorite(){
                 </div>
                 <Container name='최신순' style={{background:'white', padding:'0px'}}>
                 <div style={{float:'right',zIndex:'2', margin:'60px 0px 0px 0px'}}>
-                        <Grid container style={{marginRight:'10px'}} onClick={handleToggle}>
+                        <Grid container style={{marginRight:'15px'}} onClick={handleToggle}>
                             <Grid item style={{margin:'0px'}}>
                                 <Button
                                 ref={anchorRef}
@@ -199,7 +200,7 @@ export default function myFavorite(){
                     </div>
                 </Container>
                 <Container name ='리스트' style={{ padding:'0px', overflowY:'scroll', zIndex:'0',border:'none'}}>
-                <Paper style={{overflowY:'auto', padding:'0px 10px 0px 10px', marginTop:'0px', border: "0px solid transparent", boxShadow:'none'}}>
+                <Paper style={{overflowY:'auto', padding:'0px 15px 0px 15px', marginTop:'0px', border: "0px solid transparent", boxShadow:'none'}}>
                     <ul style={{listStyleType: "none", padding: '0px 0px 0px 0px', margin: '0px', }} >
                             {favorites? favorites.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
