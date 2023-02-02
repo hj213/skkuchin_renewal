@@ -37,20 +37,20 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getUsers() {
         List<UserDto.Response> users = userService.getUsers();
         return new ResponseEntity<>(new CMRespDto<>(1, "유저 전체 조회 완료", users), HttpStatus.OK);
     }
 
-    @PostMapping("/user/saves")
+    @PostMapping("/saves")
     public ResponseEntity<?> saveUser(@Valid @RequestBody UserDto.SignUpForm signUpForm, BindingResult bindingResult) {
         Map<String, String> errorMap = new HashMap<>();
         try {
@@ -72,19 +72,6 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
-    @GetMapping("/confirmEmail/signup")
-    public ResponseEntity<Boolean> mailConfirm(@ModelAttribute EmailAuthRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
-        log.info("success");
-        return ResponseEntity.ok().body(userService.confirmEmail(requestDto));
-    }
-
-    /*
-    @PostMapping("/role/save")
-    public ResponseEntity<Role>saveRole(@RequestBody Role role) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
-    }*/
 
     @PostMapping("/role/addtouser")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -147,7 +134,7 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/user/me")
+    @GetMapping("/me")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
@@ -155,14 +142,14 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 상세 정보 조회 완료", userResp), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
         UserDto.Response userResp = userService.getUser(userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 상세 정보 조회 완료", userResp), HttpStatus.OK);
     }
 
-    @PutMapping("/user/me")
+    @PutMapping("/me")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UserDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
@@ -170,14 +157,14 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 수정 완료", null), HttpStatus.OK);
     }
 
-    @PutMapping("/user/{userId}")
+    @PutMapping("/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto.PutRequest dto) {
         userService.updateUser(userId, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 계정 수정 완료", null), HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/me")
+    @DeleteMapping("/me")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> deleteUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
@@ -185,27 +172,27 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 삭제 완료", null), HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{userId}")
+    @DeleteMapping("/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteAnotherUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 삭제 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/user/check/username")
+    @GetMapping("/check/username")
     public ResponseEntity<?> checkUsername(@RequestBody Map<String, String> usernameMap) {
         Boolean canUse = userService.checkUsername(usernameMap.get("username"));
         return new ResponseEntity<>(new CMRespDto<>(1, "아이디 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
     }
 
-    @GetMapping("/user/check/nickname")
+    @GetMapping("/check/nickname")
     public ResponseEntity<?> checkNickName(@RequestBody Map<String, String> nicknameMap) {
         Boolean canUse = userService.checkNickname(nicknameMap.get("nickname"));
         return new ResponseEntity<>(new CMRespDto<>(1, "닉네임 사용 가능 여부 확인 완료", canUse), HttpStatus.OK);
     }
 
 
-    @PutMapping("/user/password")
+    @PutMapping("/password")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> updatePassword(@Valid @RequestBody UserDto.PutPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long userId = principalDetails.getUser().getId();
@@ -213,21 +200,7 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 변경 완료", null), HttpStatus.OK);
     }
 
-    //@GetMapping("/user/password/reset/{email}")
-    @GetMapping("/email/password/reset")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> sendResetEmail(@RequestBody Map<String, String> emailMap, @AuthenticationPrincipal PrincipalDetails principalDetails) throws MessagingException, UnsupportedEncodingException {
-        Long userId = principalDetails.getUser().getId();
-        userService.sendResetEmail(emailMap.get("email"), userId);
-        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 인증 메일 발송 완료", null), HttpStatus.OK);
-    }
-
-    @GetMapping("/confirmEmail/password")
-    public ResponseEntity<Boolean> passwordMailConfirm(@ModelAttribute EmailAuthRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
-        return ResponseEntity.ok().body(userService.confirmEmailPassword(requestDto));
-    }
-
-    @PutMapping("/user/password/reset")
+    @PutMapping("/password/reset")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody UserDto.ResetPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long userId = principalDetails.getUser().getId();
@@ -235,20 +208,13 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/email/send")
-    public ResponseEntity<?> sendEmail(@Valid @RequestBody UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
-        userService.sendEmail(dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 인증 이메일 전송 완료", null), HttpStatus.OK);
-    }
-
-
     @GetMapping("/email/check")
     public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> usernameMap) {
         Boolean isAuth = userService.checkEmail(usernameMap.get("username"));
         return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 이메일 인증 여부 확인 완료", isAuth), HttpStatus.OK);
     }
 
-    @PutMapping("/user/toggle")
+    @PutMapping("/toggle")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> updateToggleValue(@RequestBody Map<String, Campus> campusMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long userId = principalDetails.getUser().getId();

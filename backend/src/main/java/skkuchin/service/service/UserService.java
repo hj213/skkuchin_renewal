@@ -27,8 +27,6 @@ public class UserService {
     private final RoleRepo roleRepo;
     private final UserRoleRepo userRoleRepo;
     private final EmailAuthRepo emailAuthRepo;
-    private final KeywordRepo keywordRepo;
-    private final UserKeywordRepo userKeywordRepo;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
@@ -85,38 +83,6 @@ public class UserService {
             userRoleRepo.save(userRole);
         }
     }
-
-    @Transactional
-    public Boolean confirmEmail(EmailAuthRequestDto requestDto) {
-        EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
-                requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
-                .orElseThrow(() -> new EmailAuthNumNotFoundException());
-        AppUser user = userRepo.findByEmail(requestDto.getEmail());
-        emailAuth.setIsAuth(true);
-        user.emailVerifiedSuccess();
-        return true;
-    }
-
-    @Transactional
-    public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
-        if (!dto.getAgreement()) throw new CustomRuntimeException("이메일 전송 실패", "개인정보처리방침 및 이용약관에 동의해야 합니다.");
-        AppUser user = userRepo.findByUsername(dto.getUsername());
-        if (user == null) {
-            throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
-        }
-        if (user.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
-        }
-        AppUser existingUser = userRepo.findByEmail(dto.getEmail());
-        if (existingUser != null && existingUser.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
-        } else {
-            user.setEmail(dto.getEmail());
-            user.setAgreement(true);
-            emailService.sendEmail(dto.getEmail(), EmailType.SIGNUP);
-        }
-    }
-
 
     //이메일 인증 완료한 유저인지 확인
     @Transactional
@@ -210,25 +176,6 @@ public class UserService {
         user.setPassword(newPassword);
 
         userRepo.save(user);
-    }
-
-    @Transactional
-    public void sendResetEmail(String email, Long userId) throws MessagingException, UnsupportedEncodingException {
-        AppUser user = userRepo.findById(userId).orElseThrow();
-        if (!user.getEmail().equals(email)) {
-            throw new CustomRuntimeException("비밀번호 초기화 인증 메일 발송 실패", "이메일 주소를 다시 입력하세요");
-        }
-        emailService.sendEmail(email, EmailType.PASSWORD);
-    }
-
-    @Transactional
-    public Boolean confirmEmailPassword(EmailAuthRequestDto requestDto) {
-        EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
-                        requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
-                .orElseThrow(() -> new EmailAuthNumNotFoundException());
-        AppUser user = userRepo.findByEmail(requestDto.getEmail());
-        emailAuth.setIsAuth(true);
-        return true;
     }
 
     @Transactional
