@@ -69,9 +69,10 @@ export default function list(){
             router.query.keyword = '';
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(search_places(keyword));
-           
-            if(keyword != '') {
+            if(keyword == '')
+                place == null;
+            else if(keyword != '') {
+                dispatch(search_places(keyword));
                 setHeight('32%');
                 setCardStyle({
                     radius: '30px 30px 0px 0px',
@@ -194,11 +195,12 @@ export default function list(){
             <Container style={{position:'absolute', zIndex:'2'}}>
                 <SearchBox openID={openID}/>   
             </Container> 
+             {/* 태그 목록 */}
+            <TagList keyword={keyword} onTagClick={onTagClick} />
+             
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={place} />
 
-            {/* 태그 목록 */}
-            <TagList keyword={keyword} onTagClick={onTagClick} />
-            
+           
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{

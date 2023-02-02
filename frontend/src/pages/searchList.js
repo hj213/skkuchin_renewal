@@ -62,9 +62,9 @@ export default function searchList(){
             //     query: passValue
             // });
         } else{
-            alert(event.target.id + ' ' + place[0].name);
-            router.push('/');
+            // alert(event.target.id + ' ' + place[0].name);
             dispatch(search_places('')); //초기화위해서
+            router.push('/');
         }
     };
 

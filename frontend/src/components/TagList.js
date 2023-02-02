@@ -54,7 +54,7 @@ const TagList = ({keyword, onTagClick}) => {
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             {/* 태그 목록 */}
-            <Grid container style={{  position: 'absolute', top: '103px', zIndex: '1', height: '36px'}}
+            <Grid container style={{  position: 'absolute', top: '103px', zIndex: '2'}}
                 onClick={(e) => {
                     e.preventDefault();
                     let target = e.target;
@@ -65,7 +65,7 @@ const TagList = ({keyword, onTagClick}) => {
                         onTagClick(target.id);
                     }
                     }}>
-                    <Grid item sx={{filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))" }}>
+                    <Grid item sx={{filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))"  }}>
                         { (keyword == "학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
                         : <Image id={"학생 할인"} src={mapTag1} width={88} height={36}/> }
                     </Grid>
