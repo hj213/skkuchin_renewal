@@ -12,19 +12,19 @@ import { load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
 
-export default function MapDrawer({openID}){
+export default function MapDrawer(openID){
     const dispatch = useDispatch();
     const router = useRouter();
     let open = false;
     let campus = true;
-
+  
     //api
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
     // const review = useSelector(state => state.)
 
-    if(openID){
-      open = openID;
+    if(openID.open.openID){
+      open = true;
     }
 
     

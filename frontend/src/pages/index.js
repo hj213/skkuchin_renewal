@@ -51,6 +51,13 @@ export default function list(){
     // 장소 정보 불러오기
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
+    const user = useSelector(state => state.auth.user);
+
+    //캠퍼스 필터링
+    let filteredPlace = [];
+    if(place){
+        filteredPlace = place.filter((item) => item.campus === user.campus);
+    }
 
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -106,10 +113,10 @@ export default function list(){
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
     useEffect(() => {
-        if (place) {
-            setNumOfLi(place.length);
+        if(filteredPlace) {
+            setNumOfLi(filteredPlace.length);
         }
-    }, [place]);
+    }, [filteredPlace]);
 
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
@@ -225,7 +232,7 @@ export default function list(){
             <Container style={{position:'absolute', zIndex:'2'}}>
                 <SearchBox openID={openID}/>   
             </Container> 
-            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={place} />
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
 
             {/* 태그 목록 */}
             <Grid container style={{  position: 'absolute', top: '103px', zIndex: '1', display: 'flex', height: '36px' }}
@@ -332,7 +339,7 @@ export default function list(){
                 
                
                 <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    {place? place.map((item) => (
+                    {filteredPlace? filteredPlace.map((item) => (
                             <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                 <Link href={`/place?id=${item.id}`} key={item.id}>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>

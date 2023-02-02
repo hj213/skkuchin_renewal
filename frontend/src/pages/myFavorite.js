@@ -62,7 +62,7 @@ export default function myFavorite(){
         }
     };
 
-    //favorite
+    //즐겨찾기 클릭시 즐겨찾기 삭제
     const handleFavClick = (placeId) => (e) => {
         e.preventDefault();
         dispatch(load_favorite());

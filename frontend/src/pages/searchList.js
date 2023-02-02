@@ -25,6 +25,11 @@ export default function searchList(){
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
     
+    let filteredPlace = [];
+    if(place && user){
+        filteredPlace = place.filter((item) => item.campus === user.campus);
+    }
+
     //user의 input값 받아오기
     const { keyword } = router.query;
 
@@ -59,9 +64,9 @@ export default function searchList(){
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.id == 'map' ){
-            router.push(`/place?id=${place[0].id}`);
+            router.push(`/place?id=${filteredPlace[0].id}`);
         } else{
-            alert(event.target.id + ' ' + place[0].name);
+            alert(event.target.id + ' ' + filteredPlace[0].name);
             router.push('/');
             dispatch(search_places('')); //초기화위해서
         }
@@ -116,7 +121,7 @@ export default function searchList(){
                 <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0'}}>
                     <Card style={{overflowY:'auto', marginTop:'60px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                            {place? place.map((item) => (
+                            {filteredPlace? filteredPlace.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                         <Link href={`/place?id=${item.id}`} key={item.id}>
                                         <Grid container style={{margin: '10px 0px 0px 0px'}}>
