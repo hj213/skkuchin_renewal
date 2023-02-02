@@ -186,7 +186,7 @@ const PlacePage = () => {
                           
                                 <Grid>
                                     { places ? places.filter(item => item.id == place_id).map(item => (
-                                        <Grid style={{flexDirection: 'row'}}>
+                                        <Grid key={item.id} style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
                                             </Typography>
