@@ -73,6 +73,7 @@ export default function searchList(){
             //     query: passValue
             // });
         } else{
+            setPassValue('')
             dispatch(search_places('')); //초기화위해서
             router.push('/');
         }
@@ -88,7 +89,6 @@ export default function searchList(){
             setPassValue(value);
             setPlaceholderValue(value);
             dispatch(search_places(value));
-            // 지워야할수도
             setValue('');
         }
     }

@@ -49,7 +49,6 @@ export const displayTagImage = (keyword) => {
 }
 
 const TagList = ({keyword, onTagClick}) => {
-
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>

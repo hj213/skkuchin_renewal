@@ -77,7 +77,7 @@ export default function list(){
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '')
-                place == null;
+                filteredPlace == null;
             else if(keyword != '') {
                 dispatch(search_places(keyword));
                 setHeight('32%');
@@ -187,6 +187,10 @@ export default function list(){
     const handleTagClick = (e) => {
         e.preventDefault();
         e.currentTarget.style.display = 'none';
+        // 태그가 2개인 경우 수정해야함
+        setOpen({ bool:false,
+            visibility:'hidden'});
+        setCardStyle({cardVisibility:'hidden'});
         setKeyword('');
     }
 
