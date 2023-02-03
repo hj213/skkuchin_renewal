@@ -29,14 +29,14 @@ public class ChatRoom {
     @JsonIgnore
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "sender_id", nullable = false)
     private AppUser user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "receiver_id", nullable = false)
+    @JoinColumn(name = "receiver_id")
     private AppUser user1;
     @Column(columnDefinition = "boolean default false")
     private boolean senderAccepted;
