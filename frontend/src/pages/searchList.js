@@ -24,7 +24,7 @@ export default function searchList(){
     const user = useSelector(state => state.auth.user);
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
-    
+
     let filteredPlace = [];
     if(place && user){
         filteredPlace = place.filter((item) => item.campus === user.campus);
@@ -38,7 +38,6 @@ export default function searchList(){
     const [passValue, setPassValue] = useState(keyword);
     const [data, setData] = useState([]);
 
-
     //api 받아오기
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -46,6 +45,7 @@ export default function searchList(){
             dispatch(load_user());
         }
     }, [dispatch]);
+
     
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
@@ -64,11 +64,18 @@ export default function searchList(){
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.id == 'map' ){
-            router.push(`/place?id=${filteredPlace[0].id}`);
+            // 0-2 [검색 결과 목록] -> 2 [식당 선택]으로 이동
+            // router.push(`/place?id=${place[0].id}`);
+            // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
+            router.push(`/?keyword=${passValue}`);
+            // router.push({
+            //     pathname: '/',
+            //     query: passValue
+            // });
         } else{
-            alert(event.target.id + ' ' + filteredPlace[0].name);
-            router.push('/');
+            setPassValue('')
             dispatch(search_places('')); //초기화위해서
+            router.push('/');
         }
     };
 
