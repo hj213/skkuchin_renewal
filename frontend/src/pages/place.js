@@ -10,16 +10,16 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
-import tag16 from '../image/태그/지도_on/tag_간단.png';
-import tag17 from '../image/태그/지도_on/tag_분위기.png';
-import tag14 from '../image/태그/지도_on/tag_일식.png';
 import bookmarkAdd from '../image/bookmark_add.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import expand from '../image/expand_more.png'
 import back from '../image/arrow_back_ios.png'
-
+import mapTagOn8 from '../image/태그/지도_on/tag_간단.png';
+import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png';
 import ReviewStar from '../components/ReviewStar'
+import TagList from "../components/TagList";
+import SearchBox from "../components/SearchBox";
 
 const PlacePage = () => {
     
@@ -64,22 +64,12 @@ const PlacePage = () => {
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
+            setPlaceId(id);
             dispatch(load_favorite());
             dispatch(load_menu(id));
         }
-    }, [dispatch]);
+    }, [dispatch, id]);
 
-    const handleOpen = (id) => {
-        setPlaceId(id);
-        setIsCardVisible(true);
-        setHeight('32%');
-
-        if (cardRef.current) {
-            cardRef.current.addEventListener("touchmove", handleTouchMove);
-        }
-    }
-    
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
@@ -162,6 +152,16 @@ const PlacePage = () => {
     const addComma = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+
+    const {openID} = router.query;
+
+    // 태그 검색
+    const [keyword, setKeyword] = useState('');
+
+    const onTagClick = (id) => {
+        setKeyword(id);
+        router.push(`/?keyword=${id}`);
+    }
     
     return (
         <ThemeProvider theme={theme}>
@@ -169,19 +169,14 @@ const PlacePage = () => {
             <Layout
                 title='스꾸친 | Place'
                 content='Place page'
-            >
-                {/* <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
-                    {places ? places.map((place) => (
-                        <Grid key={place.id}>
-                            <div className='p-3' onClick={() => handleOpen(place.id)}>
-                                <h4>{place.name}</h4>
-                            </div>
-                        </Grid>
-                    )) : null}
-                </div> */}
-                            
+            >           
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
-                <Map latitude={37.58622450673971} longitude={126.99709024757782} />                    
+                <Container style={{position:'absolute', zIndex:'2'}}>
+                    <SearchBox openID={openID}/>   
+                </Container> 
+                <Map latitude={37.58622450673971} longitude={126.99709024757782} places={places} selectedId={id}/>                  
+                {/* 태그 목록 */}
+                <TagList keyword={keyword} onTagClick={onTagClick} />
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -195,13 +190,13 @@ const PlacePage = () => {
                             visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Grid style={{padding: '0px 10px 0px 0px'}}>
-                                    <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
+                                <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
                                 </Grid>
-                          
+
                                 <Grid>
                                     { places ? places.filter(item => item.id == place_id).map(item => (
-                                        <Grid style={{flexDirection: 'row'}}>
+                                        <Grid key={item.id} style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
                                             </Typography>
@@ -319,19 +314,19 @@ const PlacePage = () => {
                                                         width= {90}
                                                         height= {27}
                                                         alt="tag"
-                                                        src={tag16}
+                                                        src={mapTagOn8}
                                                     />
                                                     <Image
                                                         width= {76}
                                                         height= {27}
                                                         alt="tag"
-                                                        src={tag17}
+                                                        src={mapTagOn9}
                                                     />
                                                     <Image
                                                         width= {76}
                                                         height= {27}
                                                         alt="tag"
-                                                        src={tag17}
+                                                        src={mapTagOn9}
                                                     />
                                                     </Stack>
                                                 </Grid>

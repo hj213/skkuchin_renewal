@@ -125,6 +125,18 @@ public class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class ResetPassword {
+        @JsonProperty
+        @NotBlank
+        private String newPassword;
+        @JsonProperty
+        @NotBlank
+        private String newRePassword;
+    }
+
+    @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         private Long id;
