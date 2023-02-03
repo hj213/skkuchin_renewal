@@ -32,6 +32,13 @@ export default function list(){
     // 장소 정보 불러오기
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
+    const user = useSelector(state => state.auth.user);
+
+    //캠퍼스 필터링
+    let filteredPlace = [];
+    if(place){
+        filteredPlace = place.filter((item) => item.campus === user.campus);
+    }
 
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -100,10 +107,10 @@ export default function list(){
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
     useEffect(() => {
-        if (place) {
-            setNumOfLi(place.length);
+        if(filteredPlace) {
+            setNumOfLi(filteredPlace.length);
         }
-    }, [place]);
+    }, [filteredPlace]);
 
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
@@ -198,9 +205,8 @@ export default function list(){
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />
              
-            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={place} />
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
 
-           
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{
@@ -208,7 +214,7 @@ export default function list(){
                     top: '0px',
                     width: '100%',
                     height: '98px',
-                    zIndex: '2',
+                    zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
                     }}>
@@ -242,7 +248,7 @@ export default function list(){
                 width: '100%',
                 height: height,
                 overflowY:'scroll',
-                zIndex: '1',
+                zIndex: '3',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
@@ -256,7 +262,7 @@ export default function list(){
                 
                
                 <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    {place? place.map((item) => (
+                    {filteredPlace? filteredPlace.map((item) => (
                             <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                 <Link href={`/place?id=${item.id}`} key={item.id}>
                                 <Grid container style={{margin: '10px 0px 0px 0px'}}>
