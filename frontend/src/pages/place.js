@@ -20,6 +20,7 @@ import expand from '../image/expand_more.png'
 import back from '../image/arrow_back_ios.png'
 
 import ReviewStar from '../components/ReviewStar'
+import SearchBox from "../components/SearchBox";
 
 const PlacePage = () => {
     
@@ -160,9 +161,12 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >           
-                <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+                <div style={{ position: 'relative', width:'100%', height:'100%'}}> 
+                <Container style={{position:'absolute', zIndex:'2'}}>
+                    <SearchBox/>   
+                </Container>  
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} places={places} selectedId={id}/>                  
-
+                
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -176,13 +180,13 @@ const PlacePage = () => {
                             visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Grid style={{padding: '0px 10px 0px 0px'}}>
-                                    <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
+                                <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
                                 </Grid>
                           
                                 <Grid>
                                     { places ? places.filter(item => item.id == place_id).map(item => (
-                                        <Grid style={{flexDirection: 'row'}}>
+                                        <Grid key={item.id} style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
                                             </Typography>
