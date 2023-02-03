@@ -23,6 +23,8 @@ import skkuchin.service.repo.ChatRoomRepository;
 
 import skkuchin.service.service.ChatService;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequiredArgsConstructor
 @Log4j2
@@ -64,6 +66,7 @@ public class StompRabbitController {
        chat.setChatRoom(chatRoom);
        // chat.setChatRoom(chatRoom);
         chat.setRoomId(chatRoom.getRoomId());
+        chat.setDate(LocalDateTime.now());
         //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
         chatRepository.save(chat);
