@@ -218,18 +218,6 @@ public class ReviewService {
         }
     }
 
-    // 종료 시 자신이 올린 리뷰이미지 S3에서 삭제
-    @PreDestroy
-    public void deleteBeforeExit() {
-        List<ReviewImage> reviewImages = reviewImageRepo.findAll();
-
-        for (ReviewImage reviewImage : reviewImages) {
-            if (reviewImage.getId() > 132) {
-                s3Service.deleteObject(reviewImage.getUrl());
-            }
-        }
-    }
-
     private void canHandleReview(AppUser reviewUser, AppUser user) {
         if (!(reviewUser.getId().equals(user.getId()) || user.getUserRoles().stream().findFirst().get().getRole().getName().equals("ROLE_ADMIN")))
             throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");

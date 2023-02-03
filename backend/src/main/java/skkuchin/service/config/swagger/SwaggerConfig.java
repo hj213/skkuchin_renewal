@@ -22,24 +22,26 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV1(){
         return new Docket(DocumentationType.OAS_30)
-                .ignoredParameterTypes(AuthenticationPrincipal.class)
-                .securityContexts(Arrays.asList(securityContext()))
-                .securitySchemes(Arrays.asList(apiKey()))
-                .securityContexts(Arrays.asList(securityContext())) // swagger에서 jwt 토큰값 넣기위한 설정
-                .securitySchemes(Arrays.asList(apiKey())) // swagger에서 jwt 토큰값 넣기위한 설정
-                .consumes(getConsumeContentTypes())
-                .produces(getProduceContentTypes())
-                .groupName("user")
-                .select()
-                .apis(RequestHandlerSelectors.
-                        basePackage("skkuchin.service.api.controller"))
-                .paths(regex("/api/(user|users|token|email|confirmEmail)/.*"))
-                .build();
+            .useDefaultResponseMessages(false)
+            .ignoredParameterTypes(AuthenticationPrincipal.class)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
+            .securityContexts(Arrays.asList(securityContext())) // swagger에서 jwt 토큰값 넣기위한 설정
+            .securitySchemes(Arrays.asList(apiKey())) // swagger에서 jwt 토큰값 넣기위한 설정
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .groupName("user")
+            .select()
+            .apis(RequestHandlerSelectors.
+                    basePackage("skkuchin.service.api.controller"))
+            .paths(regex("/api/(user|users|token|email|confirmEmail)/.*"))
+            .build();
     }
 
     @Bean
     public Docket apiV2(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -57,6 +59,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV3(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -72,6 +75,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV4(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -87,6 +91,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV5(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -102,6 +107,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV6(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -117,6 +123,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV7(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -132,6 +139,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV8(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -147,6 +155,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV9(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))
@@ -162,6 +171,7 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV10(){
         return new Docket(DocumentationType.OAS_30)
+            .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
             .securitySchemes(Arrays.asList(apiKey()))

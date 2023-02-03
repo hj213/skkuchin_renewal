@@ -27,6 +27,10 @@ public class SecurityConfig {
             "/api/user/check/**",
             "/api/email/**"
     };
+    private static final String[] PERMIT_CHAT_URL_ARRAY = {
+            "/chat/**",
+            "/ws/**"
+    };
     private static final String[] PERMIT_SWAGGER_URL_ARRAY = {
             /* swagger v2 */
             "/v2/api-docs",
@@ -41,6 +45,7 @@ public class SecurityConfig {
             "/swagger-ui/**"
     };
     private final UserRepo userRepo;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -48,6 +53,7 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests()
                 .antMatchers(PERMIT_API_URL_ARRAY).permitAll()
+                .antMatchers(PERMIT_CHAT_URL_ARRAY).permitAll()
                 .antMatchers(PERMIT_SWAGGER_URL_ARRAY).permitAll()
                 .anyRequest().authenticated();
         http.apply(new MyCustomDsl());

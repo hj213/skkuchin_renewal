@@ -148,18 +148,6 @@ public class ImageService {
         }
     }
 
-    // 종료 시 자신이 올린 식당 이미지 S3에서 삭제
-    @PreDestroy
-    public void deleteBeforeExit() {
-        List<Image> images = imageRepo.findAll();
-
-        for (Image image : images) {
-            if (image.getId() > 167) {
-                s3Service.deleteObject(image.getUrl());
-            }
-        }
-    }
-
     private void checkFile(MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("파일이 비어있습니다.");
