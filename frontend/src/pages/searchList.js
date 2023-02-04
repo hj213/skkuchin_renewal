@@ -46,7 +46,6 @@ export default function searchList(){
         }
     }, [dispatch]);
 
-    
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
@@ -223,9 +222,10 @@ export default function searchList(){
                                             </Grid>
                                             <Grid style={{marginTop:'15px'}}>
                                                 <Image
-                                                width= {98} height= {98}
-                                                alt={item.name} 
-                                                src={food}/>
+                                                    width= {98} height= {98}
+                                                    alt={ item.name } 
+                                                    src={ item.images && item.images.length > 0 ? item.images[0] : food }
+                                                />
                                             </Grid>
                                         </Grid>
                                         </Link>

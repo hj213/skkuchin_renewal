@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
+import { KAKAOMAP_APPKEY } from '../config';
 
 const Map = ({latitude, longitude, places, selectedId}) => {
 
@@ -10,7 +11,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
         const mapScript = document.createElement("script");
         
         mapScript.async = true;
-        mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&autoload=false`;
+        mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAOMAP_APPKEY}&autoload=false`;
 
         document.head.appendChild(mapScript);
 

@@ -50,8 +50,8 @@ services:
       - database
     container_name: skkuchin-backend
     environment:
-      - LANGUAGE=ko_KR.UTF-8
-      - LANG=ko_KR.UTF-8
+      # - LANGUAGE=ko_KR.UTF-8
+      # - LANG=ko_KR.UTF-8
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
@@ -75,8 +75,6 @@ services:
       - NODE_ENV=prod
       - NEXT_PUBLIC_API_URL=http://server:8080
       - NEXT_PUBLIC_KAKAOMAP_APPKEY=0d8f0e65047ebb4fce295a83614d7fae
-      - AWS_ACCESS_KEY=AKIAZTEOD3CVDU4TKCBL
-      - AWS_SECRET_KEY=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
     volumes:
       - ./frontend:/app
       - /app/node_modules

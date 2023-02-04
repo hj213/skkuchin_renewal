@@ -108,12 +108,11 @@ public class PlaceService {
             }
         } else {
             for (Place place : places) {
-                if (place.getCategory().name().contains(keyword)
-                        || (place.getDetailCategory() != null && place.getDetailCategory().contains(keyword))
-                        || (place.getGate() != null && place.getGate().name().contains(keyword))
-                        || place.getName().contains(keyword)) {
+                if (place.getCategory().name().toLowerCase().contains(keyword)
+                        || (place.getDetailCategory() != null && place.getDetailCategory().toLowerCase().contains(keyword))
+                        || (place.getGate() != null && place.getGate().name().toLowerCase().contains(keyword))
+                        || place.getName().toLowerCase().contains(keyword)) {
                     matchingPlaces.add(place);
-                    System.out.println(matchingPlaces);
                 }
             }
         }

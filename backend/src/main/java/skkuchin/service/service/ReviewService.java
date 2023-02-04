@@ -8,7 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ReviewDto;
@@ -16,7 +15,6 @@ import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.*;
 
-import javax.annotation.PreDestroy;
 import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;

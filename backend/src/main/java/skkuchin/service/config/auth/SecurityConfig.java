@@ -23,7 +23,7 @@ public class SecurityConfig {
             "/api/login",
             "/api/user/saves",
             "/api/confirmEmail",
-            "/api/token/**",
+            "/api/user/token/**",
             "/api/user/check/**",
             "/api/email/**"
     };
