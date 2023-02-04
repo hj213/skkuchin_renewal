@@ -8,7 +8,7 @@ import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -36,10 +36,11 @@ export default function list(){
 
     //캠퍼스 필터링
     let filteredPlace = [];
-    if(place){
+    if(place && user){
         filteredPlace = place.filter((item) => item.campus === user.campus);
     }
 
+    //상태
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
@@ -47,12 +48,14 @@ export default function list(){
         iconVisibility: 'visible',
         bool: 'false',
     }) ;
-   
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
         bool:false,
         visibility: 'hidden',
     });
+    const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
+    const [keyword, setKeyword] = useState(''); //태그검색
+
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
@@ -66,9 +69,6 @@ export default function list(){
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
 
-    // 태그 검색
-    const [keyword, setKeyword] = useState('');
-    
     useEffect(() => {
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
@@ -138,6 +138,7 @@ export default function list(){
                 radius:'0px',
                 iconVisibility:'hidden'
             });
+            setPreventScroll('scroll');
           } else {
             setOpen({
                 bool: false,
@@ -147,6 +148,7 @@ export default function list(){
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setPreventScroll('');
         }
     };
 
@@ -159,13 +161,16 @@ export default function list(){
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
-            })
+            });
+            setPreventScroll('');
+            cardRef.current.scrollTo({top:0, behavior:'smooth'});
         } else{
             setCardStyle({cardVisibility:'hidden'});
             setOpen({ bool:false,
                 visibility:'hidden'});
             // setHeight('0');
             setKeyword('');
+            setPreventScroll('');
         }
     };
 
@@ -192,6 +197,7 @@ export default function list(){
             visibility:'hidden'});
         setCardStyle({cardVisibility:'hidden'});
         setKeyword('');
+        setPreventScroll('');
     }
 
     const onTagClick = (id) => {
@@ -221,7 +227,7 @@ export default function list(){
                     zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
-                    }}>
+                    }} >
                         <Grid container style={{padding:'50px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
                             <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
@@ -251,14 +257,14 @@ export default function list(){
                 bottom: '0px',
                 width: '100%',
                 height: height,
-                overflowY:'scroll',
+                overflowY: preventScroll,
                 zIndex: '3',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
                 }} 
                 ref = {cardRef}
-                >
+                 >
                 <div>
                 <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
                     <Image width={70} height={4} src={line} /> 

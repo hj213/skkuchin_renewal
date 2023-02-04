@@ -7,7 +7,8 @@ import hamburger from '../image/햄버거바.png';
 import bookmark from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import profile from '../image/profile.png';
-import yj from '../image/율전.png';
+import yj from '../image/율전토글_on.png';
+import mr from '../image/명륜토글_default.png';
 import { load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
@@ -45,12 +46,13 @@ export default function MapDrawer(openID){
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
     const [checked, setChecked] = useState(campus);
+    const [toggleOn, setToggleOn] = useState(campus);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
       e.preventDefault();
       open = bool;
-      setDrawerOpen(open);
+      setDrawerOpen(open);  
     };
 
     //drawer 하위 페이지로 이동
@@ -65,29 +67,37 @@ export default function MapDrawer(openID){
 
     } 
 
-
+    //토글 클릭
+    const handleToggle = (e) =>{
+      e.preventDefault();
+      if(toggleOn){
+        setToggleOn(false);
+      }else{
+        setToggleOn(true);
+      }
+    
+    }
 
     //토글 아이콘
     const IOSSwitch = styled((props) => (
-        <Switch checked={checked} onClick={handleSwitch} focusVisibleClassName=".Mui-focusVisible" sx={{ m: 1 }} {...props}/>
+        <Switch checked={checked} size="" onClick={handleSwitch} focusVisibleClassName=".Mui-focusVisible" sx={{ m: 1 }} {...props}/>
       ))(({theme}) => ({
-        width: 50,
+        width: 57,
         height: 30,
         padding: 0,
         
         '& .MuiSwitch-switchBase': {
           padding: 0,
-          margin: '7px 0px 0px 10px' ,
+          margin: '8px 0px 0px 15px',
           transitionDuration: '300ms',
+          backgroundImage:`url(${mr})`,
           '&.Mui-checked': {
             transform: 'translateX(16px)',
             color: '#fff',
             '& + .MuiSwitch-track': {
-              backgroundColor: theme.palette.primary.main,
-              backgroundImage: `url('data:image/svg+xml;utf8,<svg width="23" height="13" viewBox="0 0 23 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.86096 1.861V3.226H8.92896V1.861H5.86096ZM5.86096 4.266V5.644H8.98096V4.266H5.86096ZM8.38296 0.119V7.165H10.112V0.119H8.38296ZM0.530958 0.989999V6.515H6.22496V0.989999H0.530958ZM4.52196 2.355V5.163H2.23396V2.355H4.52196ZM6.02996 7.477C3.48196 7.477 1.90896 8.348 1.90896 9.817C1.90896 11.299 3.48196 12.157 6.02996 12.157C8.57796 12.157 10.151 11.299 10.151 9.817C10.151 8.348 8.57796 7.477 6.02996 7.477ZM6.02996 8.803C7.60296 8.803 8.43496 9.128 8.43496 9.817C8.43496 10.506 7.60296 10.844 6.02996 10.844C4.46996 10.844 3.63796 10.506 3.63796 9.817C3.63796 9.128 4.46996 8.803 6.02996 8.803ZM15.5489 7.23V9.557H17.2779V7.23H15.5489ZM18.4739 7.23V9.557H20.1899V7.23H18.4739ZM11.8439 6.567V7.932H22.7379V6.567H11.8439ZM13.1049 10.571V11.949H21.7369V10.571H13.1049ZM13.1049 8.738V11.351H14.8209V8.738H13.1049ZM13.1699 0.379V1.692H19.7089V2.485H13.1829V4.968H14.8989V3.707H21.4119V0.379H13.1699ZM13.1829 4.526V5.826H21.6459V4.526H13.1829Z" fill="white"/>
-              </svg>'
-              )`,
+              backgroundImage: `url(${yj})`,
+              backgroundSize: 'cover',
+              height:'100%',
               opacity: 1,
               border: 0,
             },
@@ -111,8 +121,8 @@ export default function MapDrawer(openID){
         },
         '& .MuiSwitch-thumb': {
           boxSizing: 'border-box',
-          width: 15,
-          height: 15,
+          width: 14,
+          height: 14,
           boxShadow: 'none'
         },
         '& .MuiSwitch-track': {
@@ -167,11 +177,20 @@ export default function MapDrawer(openID){
     return(
         <ThemeProvider theme={theme}>
             <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15}/>
-            <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250}>
-              <FormControlLabel
-              control={<IOSSwitch />}
-              style={{marginTop:'45px', marginLeft:'70%'}}
-              />
+            <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
+              <Grid container style={{position:'relative'}}>
+                <Grid item style={{marginTop:'45px', marginLeft:'70%'}}>
+                  {/* <FormControlLabel
+                  control={<IOSSwitch />}
+                  /> */}
+                  <Image src={toggleOn ? yj: mr} width={57} height={30} onClick={handleToggle}/>
+                  {console.log(toggleOn)}
+                </Grid>
+                {/* <Grid item style={{position:'absolute', marginTop:'59px', marginLeft:'71%', zIndex:'2'}}>
+                  <Image src={mr} width={23} height={14}/>
+                </Grid> */}
+              </Grid>
+             
                 {list('left')}
             </Drawer>
         </ ThemeProvider>

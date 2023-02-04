@@ -64,14 +64,8 @@ export default function searchList(){
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.id == 'map' ){
-            // 0-2 [검색 결과 목록] -> 2 [식당 선택]으로 이동
-            // router.push(`/place?id=${place[0].id}`);
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             router.push(`/?keyword=${passValue}`);
-            // router.push({
-            //     pathname: '/',
-            //     query: passValue
-            // });
         } else{
             setPassValue('')
             dispatch(search_places('')); //초기화위해서
@@ -105,7 +99,7 @@ export default function searchList(){
                                     width: '100%',
                                     height: '120%',
                                     zIndex: '4',
-                                    border: "0px solid transparent",
+                                    border: "1px solid transparent",
                                     boxShadow: 'none',
                                 }}>
                             <Grid container style={{position:'relative', marginTop:'10px',}}>
