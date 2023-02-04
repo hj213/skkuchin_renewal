@@ -103,7 +103,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.setStatus(FORBIDDEN.value());
+        //response.setStatus(FORBIDDEN.value());
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, "로그인 실패", "아이디 또는 비밀번호가 일치하지 않습니다."));
         //getFailureHandler().onAuthenticationFailure(request, response, authException);
