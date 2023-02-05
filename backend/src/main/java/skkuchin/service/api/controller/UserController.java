@@ -82,7 +82,6 @@ public class UserController {
 
     @GetMapping("/token/verify")
     public ResponseEntity<?> verifyToken(HttpServletRequest request) {
-        System.out.println("유효성통과");
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
@@ -101,11 +100,9 @@ public class UserController {
 
     @GetMapping("/token/refresh")
     public ResponseEntity<?> refreshToken(HttpServletRequest request) throws IOException {
-        System.out.println("111111111");
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
-                System.out.println("222222222");
                 String refresh = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();

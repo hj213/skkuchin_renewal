@@ -48,7 +48,6 @@ public class MenuServiceTest extends MockTest {
     @Test
     public void getPlaceMenu(){
         //given
-
         Menu menu = new Menu(1L,"음식",place,30000);
         given(menuRepo.findByPlace(place)).willReturn(List.of(menu));
         given(placeRepo.findById(1L)).willReturn(Optional.ofNullable(place));
@@ -56,14 +55,9 @@ public class MenuServiceTest extends MockTest {
         //when
         List<MenuDto.Response> menus = menuService.getPlaceReview(1L);
 
-
         //then
         assertThat(menus.get(0).getPrice()).isEqualTo(30000);
         assertThat(menus.get(0).getName()).isEqualTo("음식");
-        System.out.println("menus.get(0).getPrice() = " + menus.get(0).getPrice());
-
-
-
     }
     @Test
     public void get_없는_장소_메뉴(){

@@ -31,8 +31,6 @@ public class FavoriteController {
     public ResponseEntity<?> write(@Valid @RequestBody FavoriteDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         AppUser user = principalDetails.getUser();
-        //AppUser user = userRepo.findByEmail("test@test");
-        //System.out.println("user = " + user.getUsername());
         favoriteService.write(user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 저장 완료", null), HttpStatus.CREATED);
     }
@@ -43,7 +41,6 @@ public class FavoriteController {
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> getPlaceReview(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        //AppUser user = userRepo.findByEmail("test@test");
         List<FavoriteDto.Response> favoriteMenus = favoriteService.getMyFavorite(user);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 조회 완료", favoriteMenus), HttpStatus.OK);
     }
@@ -53,7 +50,6 @@ public class FavoriteController {
     public ResponseEntity<?> delete(@PathVariable Long favoriteId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         Long userId = user.getId();
-        //AppUser user = userRepo.findByEmail("test@test");
         favoriteService.delete(favoriteId, userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 삭제 완료", null), HttpStatus.OK);
     }
@@ -62,8 +58,6 @@ public class FavoriteController {
     @DeleteMapping("/{userId}/{favoriteId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> adminDelete(@PathVariable Long favoriteId,@PathVariable Long userId) {
-
-        //AppUser user = userRepo.findByEmail("test@test");
         favoriteService.delete(favoriteId, userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "관리자 즐겨찾기 삭제 완료", null), HttpStatus.OK);
     }

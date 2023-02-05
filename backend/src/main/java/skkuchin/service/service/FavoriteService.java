@@ -31,7 +31,6 @@ public class FavoriteService {
     public void write(AppUser user, FavoriteDto.PostRequest dto) {
         Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
 
-       // System.out.println("place.getId() = " + place.getId());
         Favorite favorite = dto.toEntity(user, place);
         isFavoriteDuplicate(user,favorite.getPlace());
         favoriteRepo.save(favorite);
@@ -82,7 +81,6 @@ public class FavoriteService {
 
     private void isFavoriteDuplicate(AppUser user, Place place) {
         List<Favorite> favorites = favoriteRepo.findByUser(user);
-        System.out.println(place.getId());
 
         for (Favorite favorite : favorites) {
                 if(place.getId() == favorite.getPlace().getId()){

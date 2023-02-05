@@ -118,7 +118,6 @@ public class UserService {
 
     @Transactional
     public AppUser getUserForRefresh(String username) {
-        System.out.println("333333333" + username);
         return userRepo.findByUsername(username);
     }
 
