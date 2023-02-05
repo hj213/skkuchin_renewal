@@ -193,6 +193,7 @@ export default function list(){
         e.preventDefault();
         e.currentTarget.style.display = 'none';
         // 태그가 2개인 경우 수정해야함
+        cardRef.current.scrollTo({top:0, behavior:'smooth'});
         setOpen({ bool:false,
             visibility:'hidden'});
         setCardStyle({cardVisibility:'hidden'});
@@ -366,10 +367,10 @@ export default function list(){
                                         </CardContent>
                                     </Grid>
                                     <Grid style={{marginTop:'15px'}}>
-                                        <Image
+                                        { item.images && <Image
                                         width= {98} height= {98}
                                         alt={item.name} 
-                                        src={food}/>
+                                        src={item.images ? food: item.images}/>}
                                     </Grid>
                                 </Grid>
                                 </Link>

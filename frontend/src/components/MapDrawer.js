@@ -184,7 +184,6 @@ export default function MapDrawer(openID){
                   control={<IOSSwitch />}
                   /> */}
                   <Image src={toggleOn ? yj: mr} width={57} height={30} onClick={handleToggle}/>
-                  {console.log(toggleOn)}
                 </Grid>
                 {/* <Grid item style={{position:'absolute', marginTop:'59px', marginLeft:'71%', zIndex:'2'}}>
                   <Image src={mr} width={23} height={14}/>
