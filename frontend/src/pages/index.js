@@ -18,10 +18,7 @@ import closeIcon from '../image/close.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
-import { displayTagImage } from "../components/TagList";
-
-import mapTagOn8 from '../image/태그/지도_on/tag_간단.png';
-import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png';
+import { displayTagImage, displayReviewTag } from "../components/TagList";
 
 export default function list(){
 
@@ -35,10 +32,15 @@ export default function list(){
     const user = useSelector(state => state.auth.user);
 
     //캠퍼스 필터링
-    let filteredPlace = [];
-    if(place){
-        filteredPlace = place.filter((item) => item.campus === user.campus);
-    }
+    const [filteredPlace, setFilteredPlace] =useState([]);
+    
+    useEffect(() => {
+        if (place) {
+          setFilteredPlace(place.filter((item) => item.campus === user.campus));
+        } else {
+          setFilteredPlace([]);
+        }
+    }, [place, user]);
 
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -76,9 +78,10 @@ export default function list(){
             router.query.keyword = '';
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            if(keyword == '')
-                filteredPlace == null;
-            else if(keyword != '') {
+            if(keyword == '') {
+                setFilteredPlace(null);
+            }
+            else {
                 dispatch(search_places(keyword));
                 setHeight('32%');
                 setCardStyle({
@@ -88,7 +91,7 @@ export default function list(){
                 });
             }
         }
-    }, [keyword, router.query.keyword]);
+    }, [keyword, router.query.keyword, dispatch]);
     
     
     // 사용자 터치에 따라 카드 사이즈 변화
@@ -164,7 +167,6 @@ export default function list(){
             setCardStyle({cardVisibility:'hidden'});
             setOpen({ bool:false,
                 visibility:'hidden'});
-            // setHeight('0');
             setKeyword('');
         }
     };
@@ -204,11 +206,10 @@ export default function list(){
        <Layout>
             <div style={{ position: 'relative', height:'100%'}}>  
             <Container style={{position:'absolute', zIndex:'2'}}>
-                <SearchBox openID={openID}/>   
+                <SearchBox openID={openID} />   
             </Container> 
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />
-             
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
 
             <Slide direction="up" in={open.bool} timeout={1} >
@@ -321,7 +322,6 @@ export default function list(){
                                                     {item.review_count}
                                                     </Typography>
                                                 </Grid>
-                                                
                                             </Grid>
                                             <Grid container style={{marginTop: '6px'}}>
                                                 <Grid style={{margin:'0px 3px 0px 0px'}}>
@@ -335,27 +335,14 @@ export default function list(){
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Grid container style={{margin: '4px 0px 11px 0px'}}>
-                                                <Stack direction="row" spacing={2}>
-                                                <Image
-                                                    width= {72}
-                                                    height= {27}
-                                                    alt="tag"
-                                                    src={mapTagOn8}
-                                                />
-                                                <Image
-                                                    width= {72}
-                                                    height= {27}
-                                                    alt="tag"
-                                                    src={mapTagOn9}
-                                                />
-                                                <Image
-                                                    width= {72}
-                                                    height= {27}
-                                                    alt="tag"
-                                                    src={mapTagOn9}
-                                                />
-                                                </Stack>
+                                            
+                                            <Grid container>
+                                                    {/* 태그 받아오기 */}
+                                                {item.tags.map((tag, index) => (
+                                                    <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
+                                                        {displayReviewTag(tag)}
+                                                    </Grid>
+                                                ))}
                                             </Grid>
                                         </CardContent>
                                     </Grid>
