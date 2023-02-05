@@ -50,7 +50,7 @@ export default function searchList(){
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
-      };
+    };
 
     //북마크 기능
     const isFavorite = (placeId) => {
