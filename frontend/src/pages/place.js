@@ -15,11 +15,10 @@ import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import expand from '../image/expand_more.png'
 import back from '../image/arrow_back_ios.png'
-import mapTagOn8 from '../image/태그/지도_on/tag_간단.png';
-import mapTagOn9 from '../image/태그/지도_on/tag_분위기.png';
 import ReviewStar from '../components/ReviewStar'
 import TagList from "../components/TagList";
 import SearchBox from "../components/SearchBox";
+import { displayReviewTag } from "../components/TagList";
 
 const PlacePage = () => {
     
@@ -254,28 +253,26 @@ const PlacePage = () => {
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
                     { places ? places.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
-
                                 <>
                                 <Grid container style={{padding: '10px 15px'}}>
                                         <Grid style={{width: '100%'}}>
                                             <CardContent>
-                                            {!open.bool && (
-                                                <Grid container sx={{mt: 0, pt: 0}}>
-                                    
-                                                    <Grid>
-                                                    <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000">
-                                                            {item.name}
-                                                        </Typography>
+                                                {!open.bool && (
+                                                    <Grid container sx={{mt: 0, pt: 0, justifyContent: 'center'}}>
+                                                        <Grid>
+                                                        <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000">
+                                                                {item.name}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid>
+                                                            <Typography sx={{fontSize: '15px', fontWeight: '500', lineHeight: '129%', paddingLeft: '4px'}} color="#a1a1a1" component="div" >
+                                                                {item.detail_category}
+                                                            </Typography>
+                                                        </Grid>
                                                     </Grid>
-                                                    <Grid>
-                                                        <Typography sx={{fontSize: '15px', fontWeight: '500', lineHeight: '129%', paddingLeft: '4px'}} color="#a1a1a1" component="div" >
-                                                            {item.detail_category}
-                                                        </Typography>
-                                                    </Grid>
-                                                </Grid>
                                                 )}
                                                 <Grid sx={{width: '100%'}}>
-                                                <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: open.bool? 'center' : 'left'}}>
+                                                <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: 'center'}}>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                         스꾸친 평점 :
@@ -311,31 +308,16 @@ const PlacePage = () => {
                                                     </Grid>
                                                     
                                                 </Grid>
-
-                                                <Grid container style={{margin: '4px 0px 11px 0px',  justifyContent: open.bool? 'center' : 'left'}}>
-                                                    <Stack direction="row" spacing={2}>
-                                                    <Image
-                                                        width= {90}
-                                                        height= {27}
-                                                        alt="tag"
-                                                        src={mapTagOn8}
-                                                    />
-                                                    <Image
-                                                        width= {76}
-                                                        height= {27}
-                                                        alt="tag"
-                                                        src={mapTagOn9}
-                                                    />
-                                                    <Image
-                                                        width= {76}
-                                                        height= {27}
-                                                        alt="tag"
-                                                        src={mapTagOn9}
-                                                    />
-                                                    </Stack>
+                                                <Grid container sx={{justifyContent: 'center'}}>
+                                                    {/* 태그 받아오기 */}
+                                                    {item.tags.map((tag, index) => (
+                                                    <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
+                                                        {displayReviewTag(tag)}
+                                                    </Grid>
+                                                    ))}
                                                 </Grid>
                                             </Grid>
-                                            <Grid container style={{width: '100%', paddingTop: '14px', padding: open.bool? '0px 10%' : '0'}}>
+                                            <Grid container style={{width: '100%', paddingTop: '14px', justifyContent: 'center', padding: '22px 2% 0'}}>
                                                 <Grid container>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
@@ -389,7 +371,7 @@ const PlacePage = () => {
                                                     </Typography>
                                                 </Grid>
                                                 { menus ? menus.map((menu, index) => (
-                                                    <Grid container style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
+                                                    <Grid container key={index} style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
                                                         <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
                                                             <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
                                                             {menu.name}  ({addComma(menu.price)}원)
@@ -408,7 +390,7 @@ const PlacePage = () => {
                         
                         </div>
                         <Grid>
-                        <ReviewStar />
+                            <ReviewStar />
                         </Grid>
                     </Card>
                 </Container>

@@ -16,6 +16,7 @@ import searchBox from '../image/검색창2.png';
 import closeIcon from '../image/close.png';
 import Navbar from "../components/Navbar";
 import { load_user } from "../actions/auth/auth";
+import {  displayReviewTag } from "../components/TagList";
 
 export default function searchList(){
     const router = useRouter();
@@ -46,11 +47,10 @@ export default function searchList(){
         }
     }, [dispatch]);
 
-    
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
-      };
+    };
 
     //북마크 기능
     const isFavorite = (placeId) => {
@@ -191,35 +191,22 @@ export default function searchList(){
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
-                                                    <Grid container style={{margin: '4px 0px 11px 0px'}}>
-                                                        <Stack direction="row" spacing={2}>
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag16}
-                                                        />
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag17}
-                                                        />
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag17}
-                                                        />
-                                                        </Stack>
+                                                    <Grid container>
+                                                    {/* 태그 받아오기 */}
+                                                        {item.tags.map((tag, index) => (
+                                                            <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
+                                                                {displayReviewTag(tag)}
+                                                            </Grid>
+                                                        ))}
                                                     </Grid>
                                                 </CardContent>
                                             </Grid>
                                             <Grid style={{marginTop:'15px'}}>
                                                 <Image
-                                                width= {98} height= {98}
-                                                alt={item.name} 
-                                                src={food}/>
+                                                    width= {98} height= {98}
+                                                    alt={ item.name } 
+                                                    src={ item.images && item.images.length > 0 ? item.images[0] : food }
+                                                />
                                             </Grid>
                                         </Grid>
                                         </Link>

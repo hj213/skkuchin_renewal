@@ -40,11 +40,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
+        if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/user/token/refresh")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -76,7 +76,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, "access token 만료", null));
                 }
-
             } else {
                 filterChain.doFilter(request, response);
             }
