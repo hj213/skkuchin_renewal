@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login Example</title>
+</head>
+<body>
+<form id="loginForm" >
+    <input type="text" id="username" name="username" placeholder="username">
+    <input type="password" id="password" name="password" placeholder="password">
+    <button type="submit">Submit</button>
+</form>
+<div id="message"></div>
+
+<script>
+      const API_URL = "http://127.0.0.1:8080";
+
+      const form = document.getElementById("loginForm");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const message = document.getElementById("message");
+
+        try {
+          const response = await fetch(`${API_URL}/api/login`, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password }),
+          });
+          const data = await response.json();
+
+          if (response.status === 200) {
+            document.cookie = `access=${data.data.access}; expires=; path=/`;
+            document.cookie = `refresh=${data.data.refresh}; expires=; path=/`;
+            message.innerHTML = "Logged in successfully";
+            window.location.href = `${API_URL}/chat/room?chatRoomId=34296005-31d8-431e-948f-229b13994df2`
+          } else {
+            message.innerHTML = "Authentication failed";
+          }
+        } catch (err) {
+          message.innerHTML = "Something went wrong when authenticating";
+        }
+      });
+    </script>
+</body>
+</html>

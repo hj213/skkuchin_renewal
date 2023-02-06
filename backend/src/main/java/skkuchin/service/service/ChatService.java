@@ -60,11 +60,33 @@ public class ChatService {
 
     }
 
-    // 채팅방 찾기
+    // 특정 룸 아이디로 채팅방 찾기
     public ChatRoom findChatroom(String roomId){
 
         ChatRoom chatroom = chatRoomRepository.findByRoomId(roomId);
         return chatroom;
+    }
+
+    // 채팅방 개설자 아이디로 채팅방 찾기
+    public List<ChatRoomDto.Response> findSenderChatRoom(AppUser appuser){
+
+
+        return chatRoomRepository.findByUserAndSenderAcceptedAndReceiverAccepted(appuser, true,true)
+                .stream()
+                .map(chatroom -> new ChatRoomDto.Response(
+                        chatroom))
+                .collect(Collectors.toList());
+    }
+
+    // 상대방 아이디로 채팅방 찾기
+    public List<ChatRoomDto.Response> findReceiverChatRoom(AppUser appuser){
+
+
+        return chatRoomRepository.findByUser1AndSenderAcceptedAndReceiverAccepted(appuser, true,true)
+                .stream()
+                .map(chatroom -> new ChatRoomDto.Response(
+                        chatroom))
+                .collect(Collectors.toList());
     }
 
        /* private Map<String, ChatRoom> chatRooms;
