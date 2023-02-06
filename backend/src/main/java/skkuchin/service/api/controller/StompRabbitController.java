@@ -49,44 +49,36 @@ public class StompRabbitController {
     }
 
     @MessageMapping("chat.message.{chatRoomId}")
-    public String send(ChatMessage chat, @DestinationVariable String chatRoomId, @Header("token") String token){
+    public void send(ChatMessage chat, @DestinationVariable String chatRoomId, @Header("token") String token){
 
-        try {
-            /*chat.setSender("hi");*/
-            System.out.println("token = " + token);
-            String username = getUserNameFromJwt(token);
-       /* System.out.println("getUserNameFromJwt(token) = " + getUserNameFromJwt(token));
-        AppUser user = AppUser.builder().id(1L).nickname("user").major(Major.건축학과).build();*/
-       /* AppUser user = principalDetails.getUser();
-        System.out.println("user = " + user);*/
-            /*System.out.println("user.getNickname() = " + user.getNickname());*/
-            chat.setType(ChatMessage.MessageType.TALK);
-            chat.setSender(username);
-            System.out.println("chatRoomId = " + chatRoomId);
-            ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
-            //  System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
-/*
-            chat.setChatRoom(chatRoom);
-*/
-             chat.setChatRoom(chatRoom);
+        /*chat.setSender("hi");*/
+        System.out.println("token = " + token);
+        String username = getUserNameFromJwt(token);
+   /* System.out.println("getUserNameFromJwt(token) = " + getUserNameFromJwt(token));
+    AppUser user = AppUser.builder().id(1L).nickname("user").major(Major.건축학과).build();*/
+   /* AppUser user = principalDetails.getUser();
+    System.out.println("user = " + user);*/
+        /*System.out.println("user.getNickname() = " + user.getNickname());*/
+        chat.setType(ChatMessage.MessageType.TALK);
+        chat.setSender(username);
+        System.out.println("chatRoomId = " + chatRoomId);
+        ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
+        //  System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
 
-            chat.setRoomId(chatRoom.getRoomId());
-            chat.setDate(LocalDateTime.now());
-            //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
-            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
-            chatRepository.save(chat);
-            return null;
-        } catch (Exception e) {
-            System.out.println("안녕"+ e.getMessage());
-            return e.getMessage();
-        }
+//        chat.setChatRoom(chatRoom);
+
+        chat.setRoomId(chatRoom.getRoomId());
+        chat.setDate(LocalDateTime.now());
+        //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+        chatRepository.save(chat);
     };
 
-    @RabbitListener(queues = CHAT_QUEUE_NAME)
-    public void receive(ChatMessage chat){
-        System.out.println("received : " + chat.getMessage());
-
-    }
+//    @RabbitListener(queues = CHAT_QUEUE_NAME)
+//    public void receive(ChatMessage chat){
+//        System.out.println("received : " + chat.getMessage());
+//
+//    }
 
     public String getUserNameFromJwt(String jwt){
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -95,9 +87,6 @@ public class StompRabbitController {
         String username = decodedJWT.getSubject();
         return username;
     }
-
-
-
 }
 
 
