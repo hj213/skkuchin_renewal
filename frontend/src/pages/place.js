@@ -45,17 +45,17 @@ const PlacePage = () => {
         cardVisibility: 'visible',
         iconVisibility: 'visible',
     });
-
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
             bool:false,
             visibility: 'hidden'
         });
+    const [scroll, setScroll] = useState('');
+    const [isCardVisible, setIsCardVisible] = useState(false);
+
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    const [isCardVisible, setIsCardVisible] = useState(false);
 
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
@@ -107,6 +107,7 @@ const PlacePage = () => {
                 radius:'0px',
                 iconVisibility:'hidden'
             });
+            setScroll('scroll');
         } else {
             setOpen({
                 bool: false,
@@ -116,6 +117,7 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setScroll('');
         }
     };
 
@@ -128,7 +130,9 @@ const PlacePage = () => {
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
-            })
+            });
+            setScroll('');
+            cardRef.current.scrollTo({top:0, behavior: 'smooth'});
         } 
     };
 
@@ -221,7 +225,7 @@ const PlacePage = () => {
                         bottom: '0px',
                         width: '100%',
                         height: height,
-                        overflowY: 'auto',
+                        overflowY: scroll,
                         zIndex: '3',
                         boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                         visibility: cardStyle.cardVisibility,
