@@ -13,7 +13,7 @@ export default async(req, res) => {
             });
         }
         try {
-            const apiRes = await fetch(`${API_URL}/api/place/search?q=${keyword}`, {
+            const apiRes = await fetch(`${API_URL}/api/place/search?q=${keyword}&`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

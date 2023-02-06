@@ -94,26 +94,30 @@ public class PlaceService {
     }
 
     @Transactional
-    public List<PlaceDto.Response> searchPlace(String keyword) {
+    public List<PlaceDto.Response> searchPlace(List<String> keywords) {
         List<Place> places = placeRepo.findAll();
         List<Place> matchingPlaces = new ArrayList<>();
 
-        Tag tag = tagRepo.findByName(keyword);
+        Tag tag = tagRepo.findByName(keywords.get(0));
+
+        Set<Tag> searchTags = new HashSet<>(tagRepo.findAllByNameIn(keywords));
 
         if (tag != null) {
             for (Place place : places) {
-                if (getTop3TagsByPlace(place).contains(tag)) {
+                List<Tag> placeTags = getTop3TagsByPlace(place);
+                Set<Tag> placeTagSet = new HashSet<>(placeTags);
+                placeTagSet.retainAll(searchTags);
+                if (placeTagSet.size() == searchTags.size()) {
                     matchingPlaces.add(place);
                 }
             }
         } else {
             for (Place place : places) {
-                if (place.getCategory().name().contains(keyword)
-                        || (place.getDetailCategory() != null && place.getDetailCategory().contains(keyword))
-                        || (place.getGate() != null && place.getGate().name().contains(keyword))
-                        || place.getName().contains(keyword)) {
+                if (place.getCategory().name().toLowerCase().contains(keywords.get(0))
+                        || (place.getDetailCategory() != null && place.getDetailCategory().toLowerCase().contains(keywords.get(0)))
+                        || (place.getGate() != null && place.getGate().name().toLowerCase().contains(keywords.get(0)))
+                        || place.getName().toLowerCase().contains(keywords.get(0))) {
                     matchingPlaces.add(place);
-                    System.out.println(matchingPlaces);
                 }
             }
         }

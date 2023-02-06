@@ -12,6 +12,7 @@ import skkuchin.service.repo.PlaceRepo;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
 import javax.transaction.Transactional;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -123,13 +124,15 @@ public class ImageService {
     }
 
     public void insertData() {
+        List<Place> places = placeRepo.findAll();
         List<S3Object> objects = s3Service.getObjects(CATEGORY);
 
         for (S3Object object : objects) {
             if (isImage(object.key())) {
-                String placeName = object.key().split("/")[4];
+                String normalized = Normalizer.normalize(object.key(), Normalizer.Form.NFC);
+                String placeName = normalized.split("/")[4];
+
                 Place place = placeRepo.findByName(placeName);
-                System.out.println(placeName);
 
                 if (place == null) {
                     continue;

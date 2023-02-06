@@ -1,0 +1,15 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-stream
+    ports:
+      - "5672:5672"
+      - "15670:15670"
+      - "15672:15672"
+      - "61613:61613"
+    volumes:
+      - ./rabbitmq/etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/data/:/var/lib/rabbitmq/
+      - ./rabbitmq/logs/:/var/log/rabbitmq/
+    command: sh -c "rabbitmq-plugins enable rabbitmq_web_stomp rabbitmq_web_stomp_examples && rabbitmq-server start"

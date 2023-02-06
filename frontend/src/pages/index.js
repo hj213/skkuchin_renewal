@@ -350,7 +350,7 @@ export default function list(){
                                         <Image
                                         width= {98} height= {98}
                                         alt={item.name} 
-                                        src={food}/>
+                                        src={ item.images && item.images.length > 0 ? item.images[0] : food }/>
                                     </Grid>
                                 </Grid>
                                 </Link>

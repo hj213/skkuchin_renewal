@@ -15,9 +15,26 @@ services:
       ]
     ports:
       - 3306:3306
-    # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기    
-    volumes:
-      - ./db/data:/var/lib/mysql
+    # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기 
+    # volumes:
+    #   - ./db/data:/var/lib/mysql
+    networks:
+      - skkuchin-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: skkuchin-rabbitmq
+    ports:
+      - 5672:5672
+      - 15670:15670
+      - 15672:15672
+      - 61613:61613
+    command: sh -c "rabbitmq-plugins enable rabbitmq_web_stomp rabbitmq_web_stomp_examples && rabbitmq-server start"
+    # rabbitmq 데이터 유지하고 싶을 때 밑의 주석 풀기 
+    # volumes:
+    #   - ./rabbitmq/etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    #   - ./rabbitmq/data/:/var/lib/rabbitmq/
+    #   - ./rabbitmq/logs/:/var/log/rabbitmq/
     networks:
       - skkuchin-network
 
@@ -29,11 +46,10 @@ services:
     ports:
       - 8080:8080
     depends_on:
+      - rabbitmq
       - database
     container_name: skkuchin-backend
     environment:
-      - LANGUAGE=ko_KR.UTF-8
-      - LANG=ko_KR.UTF-8
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
@@ -57,8 +73,6 @@ services:
       - NODE_ENV=prod
       - NEXT_PUBLIC_API_URL=http://server:8080
       - NEXT_PUBLIC_KAKAOMAP_APPKEY=0d8f0e65047ebb4fce295a83614d7fae
-      - AWS_ACCESS_KEY=AKIAZTEOD3CVDU4TKCBL
-      - AWS_SECRET_KEY=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
     volumes:
       - ./frontend:/app
       - /app/node_modules
