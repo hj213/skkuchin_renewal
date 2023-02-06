@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.service.*;
 
@@ -35,8 +34,10 @@ public class ServiceApplication {
 						  ReviewService reviewService) {
 		return args -> {
 
-			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.saveRole(new Role(null, "ROLE_ADMIN"));
+			//userService.saveRole(new Role(null, "ROLE_USER"));
+			//userService.saveRole(new Role(null, "ROLE_ADMIN"));
+			userService.saveRole(Role.builder().name("ROLE_USER").build());
+			userService.saveRole(Role.builder().name("ROLE_ADMIN").build());
 
 			//admin 계정 생성
 			userService.saveAdmin(new UserDto.SignUpForm("스꾸친관리자", "admin", "12341234", "12341234",  16, Major.건축학과));

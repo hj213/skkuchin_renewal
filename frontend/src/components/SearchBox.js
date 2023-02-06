@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MapDrawer from "./MapDrawer";
 import theme from "../theme/theme";
 import Image from 'next/image';
 import {Grid, CssBaseline, InputBase, ThemeProvider} from '@mui/material';
 import searchBox from '../image/검색창.png';
+import { useDispatch } from "react-redux";
 
 export default function SearchBox(openID){
 
@@ -33,7 +34,7 @@ export default function SearchBox(openID){
             <div style={{marginTop:'5px'}}>
                 <Grid container style={{position:'absolute', zIndex:'2', alignItems: 'center'}}>
                     <Grid item style={{marginTop:'4%', marginLeft: '5%'}}>
-                        <MapDrawer open={openID}/>
+                        <MapDrawer open={openID} />
                     </Grid>
                     <Grid item style={{marginTop:'3.5%', marginLeft: '2%'}}>
                         <InputBase

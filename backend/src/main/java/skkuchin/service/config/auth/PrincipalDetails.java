@@ -1,10 +1,13 @@
 package skkuchin.service.config.auth;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.UserRole;
+import skkuchin.service.repo.UserRoleRepo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +24,7 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.addAll(user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList()));
+        authorities.addAll(user.getUserRoles().stream().map(userRole -> new SimpleGrantedAuthority(userRole.getRole().getName())).collect(Collectors.toList()));
         return authorities;
     }
 

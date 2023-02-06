@@ -51,7 +51,7 @@ public class ChatRoomController {
         return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 채팅방 조회 완료", responses), HttpStatus.OK);
     }
      @PostMapping("/rooms")
-    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
 
          AppUser user = principalDetails.getUser();
          chatService.makeRoom(user,dto);

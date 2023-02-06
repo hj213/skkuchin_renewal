@@ -1,4 +1,5 @@
 spring:
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/skkuchin1?characterEncoding=UTF-8&serverTimezone=UTC
@@ -14,9 +15,20 @@ spring:
       port: 5672
       username: guest
       password: guest
+#  datasource:
+ #   driver-class-name: com.mysql.cj.jdbc.Driver
+ #   url: jdbc:mysql://localhost:3306/skkuchin1?characterEncoding=UTF-8&serverTimezone=UTC
+ #   username: root
+ #   password: 1234
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
+#    username: root
+#    password: Master00!@
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
@@ -24,7 +36,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   config:
     import:
       - aws.yml
       - email.yml
+      - chat.yml

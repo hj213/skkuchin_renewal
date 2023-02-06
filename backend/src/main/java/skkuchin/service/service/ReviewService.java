@@ -77,16 +77,17 @@ public class ReviewService {
                 })
                 .collect(Collectors.toList());
 
-        for (MultipartFile image : dto.getImages()) {
-            checkFile(image);
-
-            String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
-            ReviewImage reviewImage = ReviewImage.builder().review(review).url(url).build();
-            reviewImages.add(reviewImage);
-        }
-
         reviewTagRepo.saveAll(reviewTags);
-        reviewImageRepo.saveAll(reviewImages);
+
+        for (MultipartFile image : dto.getImages()) {
+            if (!image.isEmpty()) {
+                String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
+                ReviewImage reviewImage = ReviewImage.builder().review(review).url(url).build();
+                reviewImages.add(reviewImage);
+
+                reviewImageRepo.saveAll(reviewImages);
+            }
+        }
     }
 
     @Transactional
@@ -119,10 +120,11 @@ public class ReviewService {
         List<ReviewImage> existingImages = reviewImageRepo.findByReview(existingReview);
 
         for (MultipartFile image : dto.getImages()) {
-            checkFile(image);
-            String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
-            ReviewImage newImage = ReviewImage.builder().review(existingReview).url(url).build();
-            newImages.add(newImage);
+            if (!image.isEmpty()) {
+                String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
+                ReviewImage newImage = ReviewImage.builder().review(existingReview).url(url).build();
+                newImages.add(newImage);
+            }
         }
 
         reviewImageRepo.saveAll(newImages);
@@ -217,13 +219,7 @@ public class ReviewService {
     }
 
     private void canHandleReview(AppUser reviewUser, AppUser user) {
-        if (!(reviewUser.getId().equals(user.getId()) || user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN")))
+        if (!(reviewUser.getId().equals(user.getId()) || user.getUserRoles().stream().findFirst().get().getRole().getName().equals("ROLE_ADMIN")))
             throw new IllegalArgumentException("리뷰 작성자 또는 관리자가 아닙니다.");
-    }
-
-    private void checkFile(MultipartFile file) {
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("파일이 비어있습니다.");
-        }
     }
 }

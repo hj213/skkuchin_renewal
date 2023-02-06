@@ -10,15 +10,15 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
-import tag16 from '../image/tag16.png';
-import tag17 from '../image/tag17.png';
 import bookmarkAdd from '../image/bookmark_add.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import expand from '../image/expand_more.png'
 import back from '../image/arrow_back_ios.png'
-
 import ReviewStar from '../components/ReviewStar'
+import TagList from "../components/TagList";
+import SearchBox from "../components/SearchBox";
+import { displayReviewTag } from "../components/TagList";
 
 const PlacePage = () => {
     
@@ -45,17 +45,17 @@ const PlacePage = () => {
         cardVisibility: 'visible',
         iconVisibility: 'visible',
     });
-
     const [numOfLi, setNumOfLi] = useState(0);
     const [open, setOpen] = useState({
             bool:false,
             visibility: 'hidden'
         });
+    const [scroll, setScroll] = useState('');
+    const [isCardVisible, setIsCardVisible] = useState(false);
+
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    const [isCardVisible, setIsCardVisible] = useState(false);
 
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
@@ -63,22 +63,12 @@ const PlacePage = () => {
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
+            setPlaceId(id);
             dispatch(load_favorite());
             dispatch(load_menu(id));
         }
-    }, [dispatch]);
+    }, [dispatch, id]);
 
-    const handleOpen = (id) => {
-        setPlaceId(id);
-        setIsCardVisible(true);
-        setHeight('32%');
-
-        if (cardRef.current) {
-            cardRef.current.addEventListener("touchmove", handleTouchMove);
-        }
-    }
-    
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
@@ -117,6 +107,7 @@ const PlacePage = () => {
                 radius:'0px',
                 iconVisibility:'hidden'
             });
+            setScroll('scroll');
         } else {
             setOpen({
                 bool: false,
@@ -126,6 +117,7 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setScroll('');
         }
     };
 
@@ -138,7 +130,9 @@ const PlacePage = () => {
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
-            })
+            });
+            setScroll('');
+            cardRef.current.scrollTo({top:0, behavior: 'smooth'});
         } 
     };
 
@@ -161,6 +155,16 @@ const PlacePage = () => {
     const addComma = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+
+    const {openID} = router.query;
+
+    // 태그 검색
+    const [keyword, setKeyword] = useState('');
+
+    const onTagClick = (id) => {
+        setKeyword(id);
+        router.push(`/?keyword=${id}`);
+    }
     
     return (
         <ThemeProvider theme={theme}>
@@ -168,19 +172,14 @@ const PlacePage = () => {
             <Layout
                 title='스꾸친 | Place'
                 content='Place page'
-            >
-                {/* <div style={{position: 'absolute', zIndex: 2, backgroundColor: 'white'}}>
-                    {places ? places.map((place) => (
-                        <Grid key={place.id}>
-                            <div className='p-3' onClick={() => handleOpen(place.id)}>
-                                <h4>{place.name}</h4>
-                            </div>
-                        </Grid>
-                    )) : null}
-                </div> */}
-                            
+            >           
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
-                <Map latitude={37.58622450673971} longitude={126.99709024757782} />                    
+                <Container style={{position:'absolute', zIndex:'2'}}>
+                    <SearchBox openID={openID}/>   
+                </Container> 
+                <Map latitude={37.58622450673971} longitude={126.99709024757782} places={places} selectedId={id}/>                  
+                {/* 태그 목록 */}
+                <TagList keyword={keyword} onTagClick={onTagClick} />
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -194,13 +193,13 @@ const PlacePage = () => {
                             visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Grid style={{padding: '0px 10px 0px 0px'}}>
-                                    <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
+                                <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
                                 </Grid>
-                          
+
                                 <Grid>
                                     { places ? places.filter(item => item.id == place_id).map(item => (
-                                        <Grid style={{flexDirection: 'row'}}>
+                                        <Grid key={item.id} style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                                 {item.name}
                                             </Typography>
@@ -226,7 +225,7 @@ const PlacePage = () => {
                         bottom: '0px',
                         width: '100%',
                         height: height,
-                        overflowY: 'auto',
+                        overflowY: scroll,
                         zIndex: '3',
                         boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                         visibility: cardStyle.cardVisibility,
@@ -254,28 +253,26 @@ const PlacePage = () => {
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
                     { places ? places.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
-
                                 <>
                                 <Grid container style={{padding: '10px 15px'}}>
                                         <Grid style={{width: '100%'}}>
                                             <CardContent>
-                                            {!open.bool && (
-                                                <Grid container sx={{mt: 0, pt: 0}}>
-                                    
-                                                    <Grid>
-                                                    <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000">
-                                                            {item.name}
-                                                        </Typography>
+                                                {!open.bool && (
+                                                    <Grid container sx={{mt: 0, pt: 0, justifyContent: 'center'}}>
+                                                        <Grid>
+                                                        <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000">
+                                                                {item.name}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid>
+                                                            <Typography sx={{fontSize: '15px', fontWeight: '500', lineHeight: '129%', paddingLeft: '4px'}} color="#a1a1a1" component="div" >
+                                                                {item.detail_category}
+                                                            </Typography>
+                                                        </Grid>
                                                     </Grid>
-                                                    <Grid>
-                                                        <Typography sx={{fontSize: '15px', fontWeight: '500', lineHeight: '129%', paddingLeft: '4px'}} color="#a1a1a1" component="div" >
-                                                            {item.detail_category}
-                                                        </Typography>
-                                                    </Grid>
-                                                </Grid>
                                                 )}
                                                 <Grid sx={{width: '100%'}}>
-                                                <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: open.bool? 'center' : 'left'}}>
+                                                <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: 'center'}}>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                         스꾸친 평점 :
@@ -311,31 +308,16 @@ const PlacePage = () => {
                                                     </Grid>
                                                     
                                                 </Grid>
-
-                                                <Grid container style={{margin: '4px 0px 11px 0px',  justifyContent: open.bool? 'center' : 'left'}}>
-                                                    <Stack direction="row" spacing={2}>
-                                                    <Image
-                                                        width= {90}
-                                                        height= {27}
-                                                        alt="tag"
-                                                        src={tag16}
-                                                    />
-                                                    <Image
-                                                        width= {76}
-                                                        height= {27}
-                                                        alt="tag"
-                                                        src={tag17}
-                                                    />
-                                                    <Image
-                                                        width= {76}
-                                                        height= {27}
-                                                        alt="tag"
-                                                        src={tag17}
-                                                    />
-                                                    </Stack>
+                                                <Grid container sx={{justifyContent: 'center'}}>
+                                                    {/* 태그 받아오기 */}
+                                                    {item.tags.map((tag, index) => (
+                                                    <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
+                                                        {displayReviewTag(tag)}
+                                                    </Grid>
+                                                    ))}
                                                 </Grid>
                                             </Grid>
-                                            <Grid container style={{width: '100%', paddingTop: '14px', padding: open.bool? '0px 10%' : '0'}}>
+                                            <Grid container style={{width: '100%', paddingTop: '14px', justifyContent: 'center', padding: '22px 2% 0'}}>
                                                 <Grid container>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
@@ -389,7 +371,7 @@ const PlacePage = () => {
                                                     </Typography>
                                                 </Grid>
                                                 { menus ? menus.map((menu, index) => (
-                                                    <Grid container style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
+                                                    <Grid container key={index} style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
                                                         <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
                                                             <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
                                                             {menu.name}  ({addComma(menu.price)}원)
@@ -408,7 +390,7 @@ const PlacePage = () => {
                         
                         </div>
                         <Grid>
-                        <ReviewStar />
+                            <ReviewStar />
                         </Grid>
                     </Card>
                 </Container>

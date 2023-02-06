@@ -2,13 +2,8 @@ package skkuchin.service.domain.User;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 /*
 @Getter
@@ -16,28 +11,19 @@ import java.time.ZoneId;
 @NoArgsConstructor*/
 @Entity
 @Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmailAuth {
-    private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String authNum;
-    private Boolean isExpired;
+    @Enumerated(EnumType.STRING)
+    private EmailType type;
+    private Boolean isAuth;
     private LocalDateTime expireDate;
-
-    @Builder
-    public EmailAuth(String email, String authNum, Boolean isExpired) {
-        this.email = email;
-        this.authNum = authNum;
-        this.isExpired = isExpired;
-        this.expireDate = LocalDateTime.now().plusMinutes(MAX_EXPIRE_TIME);
-        //this.expireDate = now.plusMinutes(MAX_EXPIRE_TIME);
-    }
-
-    public void useToken() {
-        this.isExpired = true;
-    }
 }

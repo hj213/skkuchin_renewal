@@ -21,3 +21,17 @@
 ## 스프링 빌드
 1. backend 폴더로 이동
 2. ./gradlew clean build -x test 입력
+
+
+<br>
+
+## Skkuchin API 사이트
+  http://localhost:8080/swagger-ui/index.html
+1. 우측 상단 원하는 카테고리 선택 (login만 지원 안 함)
+2. 외부에서 획득한 토큰 복사
+3. Authorize 클릭
+4. Bearer 앞에 붙이고 공백과 함께 복사한 토큰 붙여넣기
+    - ex) Bearer access_token
+5. 원하는 api 클릭
+6. try it out 클릭
+7. 필요 조건 채워넣고 Execute 클릭
