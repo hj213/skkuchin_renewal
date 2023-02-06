@@ -40,7 +40,7 @@ public class ServiceApplication {
 			userService.saveRole(Role.builder().name("ROLE_ADMIN").build());
 
 			//admin 계정 생성
-			userService.saveAdmin(new UserDto.SignUpForm("스꾸친관리자", "admin", "12341234", "12341234",  16, Major.건축학과));
+			userService.saveAdmin(new UserDto.SignUpForm("스꾸친관리자", "admin", "12341234", "12341234",  16, Major.경영학과));
 
 			//test 계정 생성
 			userService.saveTestUser(new UserDto.SignUpForm("테스트", "test", "12341234", "12341234", 20, Major.건축학과));

@@ -37,7 +37,6 @@ public class StompRabbitController {
         //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
 
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat); // exchange
-
     }
 
     @MessageMapping("chat.message.{chatRoomId}")
@@ -61,8 +60,6 @@ public class StompRabbitController {
         System.out.println("received : " + chat.getMessage());
 
     }
-
-
 }
 
 

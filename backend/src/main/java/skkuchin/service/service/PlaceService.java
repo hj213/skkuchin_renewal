@@ -113,10 +113,11 @@ public class PlaceService {
             }
         } else {
             for (Place place : places) {
-                if (place.getCategory().name().toLowerCase().contains(keywords.get(0))
-                        || (place.getDetailCategory() != null && place.getDetailCategory().toLowerCase().contains(keywords.get(0)))
-                        || (place.getGate() != null && place.getGate().name().toLowerCase().contains(keywords.get(0)))
-                        || place.getName().toLowerCase().contains(keywords.get(0))) {
+                String keyword = keywords.get(0).toLowerCase();
+                if (place.getCategory().name().toLowerCase().contains(keyword)
+                        || (place.getDetailCategory() != null && place.getDetailCategory().toLowerCase().contains(keyword))
+                        || (place.getGate() != null && place.getGate().name().toLowerCase().contains(keyword))
+                        || place.getName().toLowerCase().contains(keyword)) {
                     matchingPlaces.add(place);
                 }
             }
