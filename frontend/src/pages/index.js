@@ -45,6 +45,7 @@ export default function list(){
     const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
     const [keyword, setKeyword] = useState(''); //태그검색
     const [filteredPlace, setFilteredPlace] =useState([]);
+    const [focus, setFocus] = useState();
 
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
@@ -60,7 +61,7 @@ export default function list(){
     //캠퍼스 필터링
     useEffect(() => {
         if (place) {
-          setFilteredPlace(place.filter((item) => item.campus === user.campus));
+          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
         } else {
           setFilteredPlace([]);
         }
@@ -202,13 +203,19 @@ export default function list(){
         setKeyword(id);
     }
 
+    //드로워가 열리거나 검색창에 포커스 잡혔을 때
+    const handleFocus = (bool) => {
+        setFocus(bool);
+        // console.log(focus); 확인용
+    }
+
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
             <div style={{ position: 'relative', height:'100%'}}>  
             <Container style={{position:'absolute', zIndex:'2'}} >
-                <SearchBox openID={openID} />   
+                <SearchBox openID={openID} handleFocus={handleFocus} />   
             </Container> 
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />

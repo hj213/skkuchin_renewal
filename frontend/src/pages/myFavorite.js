@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import bookmarkOn from '../image/bookmark-1.png';
 import food from '../image/food.png';
-import star from '../image/Star-1.png';
+import star from '../image/Star2.png';
 import back from '../image/arrow_back_ios.png';
 import closeIcon from '../image/close.png';
 import down from '../image/down.png';
@@ -228,8 +228,8 @@ export default function myFavorite(){
                                                             스꾸친 평점 :
                                                             </Typography>
                                                         </Grid>
-                                                        <Grid style={{margin:'2px 7px 0px 7px'}}>
-                                                            <Image width={15} height={14} src={star}/>
+                                                        <Grid style={{margin: '-3px 7px 0px 7px'}}>
+                                                            <Image width={10} height={10} src={star}/>
                                                         </Grid>
                                                         <Grid >
                                                             <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color={theme.palette.fontColor.dark} component="div">
