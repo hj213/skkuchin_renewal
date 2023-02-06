@@ -63,10 +63,14 @@ public class StompRabbitController {
             /*System.out.println("user.getNickname() = " + user.getNickname());*/
             chat.setType(ChatMessage.MessageType.TALK);
             chat.setSender(username);
+            System.out.println("chatRoomId = " + chatRoomId);
             ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
             //  System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
+/*
             chat.setChatRoom(chatRoom);
-            // chat.setChatRoom(chatRoom);
+*/
+             chat.setChatRoom(chatRoom);
+
             chat.setRoomId(chatRoom.getRoomId());
             chat.setDate(LocalDateTime.now());
             //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
