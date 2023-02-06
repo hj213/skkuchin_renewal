@@ -68,11 +68,11 @@
     stomp.heartbeat.incoming = 0;
 
     function onError(e) {
-        console.log("STOMP ERROR", e);
+        <!--console.log("STOMP ERROR", e);-->
     }
 
     function onDebug(m) {
-        console.log("STOMP DEBUG", m);
+      <!--  console.log("STOMP DEBUG", m);-->
     }
 
     stomp.debug = onDebug;
@@ -118,16 +118,22 @@ const header =Cookies.get('access')
     //메세지 전송 버튼 click
     btnSend.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log(header);
+        <!--console.log(header);-->
         const message = messageContent.value;
         messageContent.value = '';
 
-        stomp.send(`/app/chat.message.${chatRoomId}`, {"token" : header}, JSON.stringify({
-            message: message,
-            memberId: 1,
-            sender: sender,
-            token: header
-        }));
+        try {
+                stomp.send(`/app/chat.message.${chatRoomId}`, {"token" : header}, JSON.stringify({
+                    message: message,
+                    memberId: 1,
+                    sender: sender,
+                    token: header
+                }));
+        } catch (error) {
+            console.log(error);
+        }
+
+
     });
 </script>
 
