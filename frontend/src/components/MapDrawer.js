@@ -14,11 +14,18 @@ import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
 
 export default function MapDrawer(openID){
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
     const dispatch = useDispatch();
     const router = useRouter();
     let open = false;
     let campus = true;
   
+    if(typeof window !== 'undefined' && !isAuthenticated){
+      router.push('/login');
+    }
+
     //api
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
@@ -143,7 +150,7 @@ export default function MapDrawer(openID){
           onKeyDown={handleDrawerClick(false)}
         >   
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
-                <Image src={profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
+                <Image src={user && user.image ? user.image: profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
                 <div >
                 <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
                 <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
