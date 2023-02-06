@@ -5,6 +5,7 @@ import theme from "../theme/theme";
 import Image from 'next/image';
 import {Grid, CssBaseline, InputBase, ThemeProvider} from '@mui/material';
 import searchBox from '../image/검색창.png';
+import { useDispatch } from "react-redux";
 
 export default function SearchBox(openID){
 
