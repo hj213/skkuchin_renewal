@@ -11,7 +11,7 @@ import yj from '../image/율전.png';
 import { load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
-
+import { search_places } from '../actions/place/place';
 export default function MapDrawer(openID){
     const dispatch = useDispatch();
     const router = useRouter();
@@ -21,7 +21,6 @@ export default function MapDrawer(openID){
     //api
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
-    // const review = useSelector(state => state.)
 
     if(openID.open.openID){
       open = true;
@@ -51,6 +50,7 @@ export default function MapDrawer(openID){
       e.preventDefault();
       open = bool;
       setDrawerOpen(open);
+      dispatch(search_places(null));
     };
 
     //drawer 하위 페이지로 이동

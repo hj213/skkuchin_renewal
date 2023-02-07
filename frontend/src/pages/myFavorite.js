@@ -51,7 +51,6 @@ export default function myFavorite(){
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'back' ){
-            
             router.push({
                 pathname: '/',
                 query: { openID: true }
