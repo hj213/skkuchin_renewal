@@ -18,6 +18,7 @@ import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.UserSetUp;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Mbti;
+import skkuchin.service.domain.User.Profile;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.exception.DiscordException;
 import skkuchin.service.exception.DuplicateException;
@@ -48,10 +49,8 @@ public class UserIntegrationTest extends BaseIntegrationTest {
     @DisplayName("[GET] /api/users 성공")
     public void 모든_회원_불러오기() throws Exception {
         //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
-        userSetUp.saveUser("user2", "user222", "1234", "dlaudwns780@gmail.com", 16, Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과);
+        userSetUp.saveUser("user2", "user222", "1234", "dlaudwns780@gmail.com", 16, Major.글로벌경영학과);
 
         //when
         ResultActions resultActions = mvc.perform(get("/api/users")
@@ -65,15 +64,15 @@ public class UserIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    @DisplayName("[POST] /api/user/saves 성공")
+    @DisplayName("[POST] /api/user/save 성공")
     void 회원가입_성공() throws Exception {
         //given
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY); //SignUpForm을 읽어들이기 위함.
         String form = objectMapper.writeValueAsString(
-                new SignUpFormTestVer("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", 16, "글로벌경영학과", "이미지", Mbti.ENFP));
+                new SignUpFormTestVer("user", "user111", "1234", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과));
 
         //when
-        ResultActions resultActions = mvc.perform(post("/api/user/saves")
+        ResultActions resultActions = mvc.perform(post("/api/user/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(form)
                 .accept(MediaType.APPLICATION_JSON))
@@ -86,15 +85,15 @@ public class UserIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    @DisplayName("[POST] /api/user/saves 실패")
+    @DisplayName("[POST] /api/user/save 실패")
     void 비밀번호_불일치() throws Exception {
         //given
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(
-                new SignUpFormTestVer("user", "user111", "124", "1234", "dlaudwns789@gmail.com", 16, "글로벌경영학과", "이미지", Mbti.ENFP));
+                new SignUpFormTestVer("user", "user111", "124", "1234", "dlaudwns789@gmail.com", 16, Major.건설환경공학부));
 
         //when
-        ResultActions resultActions = mvc.perform(post("/api/user/saves")
+        ResultActions resultActions = mvc.perform(post("/api/user/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))
@@ -109,21 +108,21 @@ public class UserIntegrationTest extends BaseIntegrationTest {
 
     @Test
     @Disabled
-    @DisplayName("[POST] /api/user/saves 실패")
+    @DisplayName("[POST] /api/user/save 실패")
     void nickname_중복_확인() throws Exception {
         //given
         Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        roles.add(new Role(1L, "ROLE_USER", null));
+        userSetUp.saveUser("user1", "user111", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과);
         //userSetUp.saveUser("user1", "user111", "1234", roles);
         //ConstraintViolationException DataIntegrityViolationException
 
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(
-                new SignUpFormTestVer("user1", "user222", "1234", "1234", "dlaudwns789@gmail.com", 16, "글로벌경영학과", "이미지", Mbti.ENFP));
+                new SignUpFormTestVer("user1", "user222", "1234", "1234", "dlaudwns789@gmail.com", 16, Major.글로벌경영학과));
 
         //when
-        ResultActions resultActions = mvc.perform(post("/api/user/saves")
+        ResultActions resultActions = mvc.perform(post("/api/user/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))
@@ -143,11 +142,11 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", 16, Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", 16, Major.글로벌경영학과);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
-        MvcResult loginResult = mvc.perform(post("/api/login")
+        MvcResult loginResult = mvc.perform(post("/api/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(form)
                 .accept(MediaType.APPLICATION_JSON))
@@ -171,11 +170,11 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         //given
         Collection<Role> roles = new ArrayList<>();
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", 16, Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", 16, Major.글로벌경영학과);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
-        MvcResult loginResult = mvc.perform(post("/api/login")
+        MvcResult loginResult = mvc.perform(post("/api/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))
@@ -200,13 +199,13 @@ public class UserIntegrationTest extends BaseIntegrationTest {
     void user_불러오기() throws Exception{
         //given
         Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
+        roles.add(new Role(1L, "ROLE_USER", null));
         String pw = passwordEncoder.encode("1111");
-        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", 16, Major.글로벌경영학과, "이미지", Mbti.ENFP, roles);
+        userSetUp.saveUser("user1", "user111", pw, "dlaudwns789@gmail.com", 16, Major.글로벌경영학과);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(new LoginFormTestVer("user111", "1111"));
 
-        MvcResult loginResult = mvc.perform(post("/api/login")
+        MvcResult loginResult = mvc.perform(post("/api/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))
@@ -236,11 +235,9 @@ class SignUpFormTestVer {
     private String re_password;
     private String email;
     private int student_id;
-    private String major;
-    private String image;
-    private Mbti mbti;
+    private Major major;
 
-    public SignUpFormTestVer(String nickname, String username, String password, String re_password, String email, int student_id, String major, String image, Mbti mbti) {
+    public SignUpFormTestVer(String nickname, String username, String password, String re_password, String email, int student_id, Major major) {
         this.nickname = nickname;
         this.username = username;
         this.password = password;
@@ -248,8 +245,6 @@ class SignUpFormTestVer {
         this.email = email;
         this.student_id = student_id;
         this.major = major;
-        this.image = image;
-        this.mbti = mbti;
     }
 }
 
