@@ -425,251 +425,256 @@ export default function makeProfile(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-                <Container style={{padding:'0px', marginTop:'41px', alignItems: 'center',}}>
-                    <Grid container>
-                        <Grid item style={{margin:'0px 0px 0px 20px'}}>
-                            <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
-                        </Grid>
-                        <Grid item style={{marginLeft:'27%'}}>
-                            <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
-                        </Grid>
-                    </Grid>
-                </Container>
-                <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'13px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸친 AI 매칭을 이용해보세요 😎</Typography>
-                <Container name='성별' style={{padding:'0px', margin:'41.7px 0px 0px 53px', justifyContent:'center'}}>
-                    <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
-                    <div style={{marginBottom:'9px'}}>
-                        <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleSexClick} name='남성'/>
-                    </div>
-                    <div>
-                        <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleSexClick} name='여성'/>
-                    </div>
-                </Container>
-                <Container name='mbti' style={{padding:'0px', margin:'41.7px 0px 0px 56px'}}>
-                    <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>MBTI*</Typography>
-                    <div>
+                <Container style={{padding:'0px', margin:'41px 0px 53px 0px'}}>
+                    <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
-                            <Grid style={{marginRight:'59px'}}>
-                                <Image src={mbti.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} name='E'/>
+                            <Grid item style={{margin:'0px 0px 0px 20px'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
                             </Grid>
-                            <Grid style={{marginRight:'60px'}}>
-                                <Image src={mbti.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} name='N'/>
+                            <Grid item style={{marginLeft:'29%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
-                            <Grid style={{marginRight:'59px'}}>
-                                <Image src={mbti.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} name='F'/>
-                            </Grid>
-                            <Grid style={{marginRight:'59px'}}>
-                                <Image src={mbti.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} name='P'/>
+                            <Grid item style={{marginLeft:'20%'}}>
+                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
-                        
-                    </div>
-                    <div style={{marginTop:'46px'}}>
-                        <Grid container>
-                            <Grid style={{marginRight:'65px', marginLeft:'5px'}}>
-                                <Image src={mbti.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
-                            </Grid>
-                            <Grid style={{marginRight:'60px'}}>
-                                <Image src={mbti.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
-                            </Grid>
-                            <Grid style={{marginRight:'59px'}}>
-                                <Image src={mbti.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
-                            </Grid>
-                            <Grid style={{marginRight:'61px'}}>
-                                <Image src={mbti.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Container>
-                <Container name='관심사' style={{padding:'0px', margin:'41.7px 0px 0px 25px', justifyContent:'center'}}>
-                    <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>관심사*</Typography>
-                    <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>최소 3개 이상의 태그를 선택해주세요.</Typography>
-                    <Container name='음식' style={{padding:'0px'}}>
-                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🍎 음식</Typography>
+                    </Container>
+                    <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'13px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸친 AI 매칭을 이용해보세요 😎</Typography>
+                    <Container name='성별' style={{padding:'0px', margin:'41.7px 0px 0px 53px', justifyContent:'center'}}>
+                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                         <div style={{marginBottom:'9px'}}>
-                            <Grid container style={{maxWidth:'350px'}}>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.한식 ? foodTag7On : foodTag7} width={36} height={27} onClick={handleFoodClick} name='한식'/>
+                            <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleSexClick} name='남성'/>
+                        </div>
+                        <div>
+                            <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleSexClick} name='여성'/>
+                        </div>
+                    </Container>
+                    <Container name='mbti' style={{padding:'0px', margin:'41.7px 0px 0px 56px'}}>
+                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>MBTI*</Typography>
+                        <div>
+                            <Grid container>
+                                <Grid style={{marginRight:'59px'}}>
+                                    <Image src={mbti.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} name='E'/>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.일식 ? foodTag2On : foodTag2} width={36} height={27} onClick={handleFoodClick} name='일식'/>
+                                <Grid style={{marginRight:'60px'}}>
+                                    <Image src={mbti.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} name='N'/>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.중식 ? foodTag3On : foodTag3} width={36} height={27} onClick={handleFoodClick} name='중식'/>
+                                <Grid style={{marginRight:'59px'}}>
+                                    <Image src={mbti.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} name='F'/>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.양식 ? foodTag1On : foodTag1} width={36} height={27} onClick={handleFoodClick} name='양식'/>
+                                <Grid style={{marginRight:'59px'}}>
+                                    <Image src={mbti.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} name='P'/>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.남미음식 ? foodTag6On : foodTag6} width={58} height={27} onClick={handleFoodClick} name='남미음식'/>
+                            </Grid>
+                            
+                        </div>
+                        <div style={{marginTop:'46px'}}>
+                            <Grid container>
+                                <Grid style={{marginRight:'65px', marginLeft:'5px'}}>
+                                    <Image src={mbti.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.분식 ? foodTag5On : foodTag5} width={36} height={27} onClick={handleFoodClick} name='분식'/>
+                                <Grid style={{marginRight:'60px'}}>
+                                    <Image src={mbti.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.아시아음식 ? foodTag8On : foodTag8} width={72} height={27} onClick={handleFoodClick} name='아시아음식'/>
+                                <Grid style={{marginRight:'59px'}}>
+                                    <Image src={mbti.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={food.카페 ? foodTag4On : foodTag4} width={36} height={27} onClick={handleFoodClick} name='카페'/>
+                                <Grid style={{marginRight:'61px'}}>
+                                    <Image src={mbti.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
                                 </Grid>
                             </Grid>
                         </div>
                     </Container>
-                    <Container name='운동' style={{padding:'0px'}}>
-                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🏀 운동</Typography>
-                        <div style={{marginBottom:'9px'}}>
-                            <Grid container style={{maxWidth:'330px'}}>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.축구 ? exeTag10On : exeTag10} width={36} height={27} onClick={handleSportsClick} name='축구'/>
+                    <Container name='관심사' style={{padding:'0px', margin:'41.7px 0px 0px 25px', justifyContent:'center'}}>
+                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>관심사*</Typography>
+                        <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>최소 3개 이상의 태그를 선택해주세요.</Typography>
+                        <Container name='음식' style={{padding:'0px'}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🍎 음식</Typography>
+                            <div style={{marginBottom:'9px'}}>
+                                <Grid container style={{maxWidth:'350px'}}>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.한식 ? foodTag7On : foodTag7} width={36} height={27} onClick={handleFoodClick} name='한식'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.일식 ? foodTag2On : foodTag2} width={36} height={27} onClick={handleFoodClick} name='일식'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.중식 ? foodTag3On : foodTag3} width={36} height={27} onClick={handleFoodClick} name='중식'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.양식 ? foodTag1On : foodTag1} width={36} height={27} onClick={handleFoodClick} name='양식'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.남미음식 ? foodTag6On : foodTag6} width={58} height={27} onClick={handleFoodClick} name='남미음식'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.분식 ? foodTag5On : foodTag5} width={36} height={27} onClick={handleFoodClick} name='분식'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.아시아음식 ? foodTag8On : foodTag8} width={72} height={27} onClick={handleFoodClick} name='아시아음식'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={food.카페 ? foodTag4On : foodTag4} width={36} height={27} onClick={handleFoodClick} name='카페'/>
+                                    </Grid>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.야구 ? exeTag8On : exeTag8} width={36} height={27} onClick={handleSportsClick} name='야구'/>
+                            </div>
+                        </Container>
+                        <Container name='운동' style={{padding:'0px'}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🏀 운동</Typography>
+                            <div style={{marginBottom:'9px'}}>
+                                <Grid container style={{maxWidth:'330px'}}>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.축구 ? exeTag10On : exeTag10} width={36} height={27} onClick={handleSportsClick} name='축구'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.야구 ? exeTag8On : exeTag8} width={36} height={27} onClick={handleSportsClick} name='야구'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.농구 ? exeTag15On : exeTag15} width={36} height={27} onClick={handleSportsClick} name='농구'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.골프 ? exeTag14On : exeTag14} width={36} height={27} onClick={handleSportsClick} name='골프'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.테니스 ? exeTag11On : exeTag11} width={47} height={27} onClick={handleSportsClick} name='테니스'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.당구 ? exeTag1On : exeTag1} width={36} height={27} onClick={handleSportsClick} name='당구'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.헬스 ? exeTag12On : exeTag12} width={36} height={27} onClick={handleSportsClick} name='헬스'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} name='보드스키'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.주짓수 ? exeTag9On : exeTag9} width={47} height={27} onClick={handleSportsClick} name='주짓수'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.서핑 ? exeTag5On : exeTag5} width={36} height={27} onClick={handleSportsClick} name='서핑'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.등산 ? exeTag2On : exeTag2} width={36} height={27} onClick={handleSportsClick} name='등산'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.러닝 ? exeTag3On : exeTag3} width={36} height={27} onClick={handleSportsClick} name='러닝'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.스포츠관람 ? exeTag7On : exeTag7} width={72} height={27} onClick={handleSportsClick} name='스포츠관람'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.볼링 ? exeTag16On : exeTag16} width={36} height={27} onClick={handleSportsClick} name='볼링'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.배드민턴 ? exeTag4On : exeTag4} width={58} height={27} onClick={handleSportsClick} name='배드민턴'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={sports.댄스 ? exeTag13On : exeTag13} width={36} height={27} onClick={handleSportsClick} name='댄스'/>
+                                    </Grid>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.농구 ? exeTag15On : exeTag15} width={36} height={27} onClick={handleSportsClick} name='농구'/>
+                            </div>
+                        </Container>
+                        <Container name='문화예술' style={{padding:'0px'}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🎵 문화예술</Typography>
+                            <div style={{marginBottom:'9px'}}>
+                                <Grid container style={{maxWidth:'330px'}}>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.영화 ? artTag10ON : artTag10} width={36} height={27} onClick={handleArtClick} name='영화'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.음악 ? artTag11ON : artTag11} width={36} height={27} onClick={handleArtClick} name='음악'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.전시회 ? artTag12ON : artTag12} width={47} height={27} onClick={handleArtClick} name='전시회'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.연극 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} name='연극'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.덕질 ? artTag3ON : artTag3} width={36} height={27} onClick={handleArtClick} name='덕질'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.여행 ? artTag13ON : artTag13} width={36} height={27} onClick={handleArtClick} name='여행'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.게임 ? artTag1ON : artTag1} width={36} height={27} onClick={handleArtClick} name='게임'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.노래방 ? artTag2ON : artTag2} width={47} height={27} onClick={handleArtClick} name='노래방'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.방탈출 ? artTag6ON : artTag6} width={47} height={27} onClick={handleArtClick} name='방탈출'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.보드게임 ? artTag8ON : artTag8} width={58} height={27} onClick={handleArtClick} name='보드게임'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.반려동물 ? artTag7ON : artTag7} width={58} height={27} onClick={handleArtClick} name='반려동물'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.요리 ? artTag9ON : artTag9} width={36} height={27} onClick={handleArtClick} name='요리'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.맛집탐방 ? artTag5ON : artTag5} width={61} height={27} onClick={handleArtClick} name='맛집탐방'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={art.만화 ? artTag4ON : artTag4} width={36} height={27} onClick={handleArtClick} name='만화'/>
+                                    </Grid>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.골프 ? exeTag14On : exeTag14} width={36} height={27} onClick={handleSportsClick} name='골프'/>
+                            </div>
+                        </Container>
+                        <Container name='학술' style={{padding:'0px'}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 학술</Typography>
+                            <div style={{marginBottom:'9px'}}>
+                                <Grid container style={{maxWidth:'330px'}}>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.학회 ? stuTag1On : stuTag1} width={36} height={27} onClick={handleStudyClick} name='학회'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.동아리 ? stuTag2On : stuTag2} width={47} height={27} onClick={handleStudyClick} name='동아리'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.교환학생 ? stuTag3On : stuTag3} width={61} height={27} onClick={handleStudyClick} name='교환학생'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.봉사 ? stuTag4On : stuTag4} width={36} height={27} onClick={handleStudyClick} name='봉사'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.재테크 ? stuTag5On : stuTag5} width={47} height={27} onClick={handleStudyClick} name='재테크'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.빅데이터 ? stuTag6On : stuTag6} width={58} height={27} onClick={handleStudyClick} name='빅데이터'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.금융 ? stuTag7On : stuTag7} width={36} height={27} onClick={handleStudyClick} name='금융'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.문학 ? stuTag8On : stuTag8} width={36} height={27} onClick={handleStudyClick} name='문학'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.토론 ? stuTag9On : stuTag9} width={36} height={27} onClick={handleStudyClick} name='토론'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.시사 ? stuTag10On : stuTag10} width={36} height={27} onClick={handleStudyClick} name='시사'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.어학 ? stuTag11On : stuTag11} width={36} height={27} onClick={handleStudyClick} name='어학'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.cpa ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} name='cpa'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.피트 ? stuTag13On : stuTag13} width={36} height={27} onClick={handleStudyClick} name='피트'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.로스쿨 ? stuTag14On : stuTag14} width={47} height={27} onClick={handleStudyClick} name='로스쿨'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image src={study.행시 ? stuTag15On : stuTag15} width={36} height={27} onClick={handleStudyClick} name='행시'/>
+                                    </Grid>
                                 </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.테니스 ? exeTag11On : exeTag11} width={47} height={27} onClick={handleSportsClick} name='테니스'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.당구 ? exeTag1On : exeTag1} width={36} height={27} onClick={handleSportsClick} name='당구'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.헬스 ? exeTag12On : exeTag12} width={36} height={27} onClick={handleSportsClick} name='헬스'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} name='보드스키'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.주짓수 ? exeTag9On : exeTag9} width={47} height={27} onClick={handleSportsClick} name='주짓수'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.서핑 ? exeTag5On : exeTag5} width={36} height={27} onClick={handleSportsClick} name='서핑'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.등산 ? exeTag2On : exeTag2} width={36} height={27} onClick={handleSportsClick} name='등산'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.러닝 ? exeTag3On : exeTag3} width={36} height={27} onClick={handleSportsClick} name='러닝'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.스포츠관람 ? exeTag7On : exeTag7} width={72} height={27} onClick={handleSportsClick} name='스포츠관람'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.볼링 ? exeTag16On : exeTag16} width={36} height={27} onClick={handleSportsClick} name='볼링'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.배드민턴 ? exeTag4On : exeTag4} width={58} height={27} onClick={handleSportsClick} name='배드민턴'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={sports.댄스 ? exeTag13On : exeTag13} width={36} height={27} onClick={handleSportsClick} name='댄스'/>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </Container>
-                    <Container name='문화예술' style={{padding:'0px'}}>
-                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🎵 문화예술</Typography>
-                        <div style={{marginBottom:'9px'}}>
-                            <Grid container style={{maxWidth:'330px'}}>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.영화 ? artTag10ON : artTag10} width={36} height={27} onClick={handleArtClick} name='영화'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.음악 ? artTag11ON : artTag11} width={36} height={27} onClick={handleArtClick} name='음악'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.전시회 ? artTag12ON : artTag12} width={47} height={27} onClick={handleArtClick} name='전시회'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.연극 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} name='연극'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.덕질 ? artTag3ON : artTag3} width={36} height={27} onClick={handleArtClick} name='덕질'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.여행 ? artTag13ON : artTag13} width={36} height={27} onClick={handleArtClick} name='여행'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.게임 ? artTag1ON : artTag1} width={36} height={27} onClick={handleArtClick} name='게임'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.노래방 ? artTag2ON : artTag2} width={47} height={27} onClick={handleArtClick} name='노래방'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.방탈출 ? artTag6ON : artTag6} width={47} height={27} onClick={handleArtClick} name='방탈출'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.보드게임 ? artTag8ON : artTag8} width={58} height={27} onClick={handleArtClick} name='보드게임'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.반려동물 ? artTag7ON : artTag7} width={58} height={27} onClick={handleArtClick} name='반려동물'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.요리 ? artTag9ON : artTag9} width={36} height={27} onClick={handleArtClick} name='요리'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.맛집탐방 ? artTag5ON : artTag5} width={61} height={27} onClick={handleArtClick} name='맛집탐방'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={art.만화 ? artTag4ON : artTag4} width={36} height={27} onClick={handleArtClick} name='만화'/>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </Container>
-                    <Container name='학술' style={{padding:'0px'}}>
-                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 학술</Typography>
-                        <div style={{marginBottom:'9px'}}>
-                            <Grid container style={{maxWidth:'330px'}}>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.학회 ? stuTag1On : stuTag1} width={36} height={27} onClick={handleStudyClick} name='학회'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.동아리 ? stuTag2On : stuTag2} width={47} height={27} onClick={handleStudyClick} name='동아리'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.교환학생 ? stuTag3On : stuTag3} width={61} height={27} onClick={handleStudyClick} name='교환학생'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.봉사 ? stuTag4On : stuTag4} width={36} height={27} onClick={handleStudyClick} name='봉사'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.재테크 ? stuTag5On : stuTag5} width={47} height={27} onClick={handleStudyClick} name='재테크'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.빅데이터 ? stuTag6On : stuTag6} width={58} height={27} onClick={handleStudyClick} name='빅데이터'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.금융 ? stuTag7On : stuTag7} width={36} height={27} onClick={handleStudyClick} name='금융'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.문학 ? stuTag8On : stuTag8} width={36} height={27} onClick={handleStudyClick} name='문학'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.토론 ? stuTag9On : stuTag9} width={36} height={27} onClick={handleStudyClick} name='토론'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.시사 ? stuTag10On : stuTag10} width={36} height={27} onClick={handleStudyClick} name='시사'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.어학 ? stuTag11On : stuTag11} width={36} height={27} onClick={handleStudyClick} name='어학'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.cpa ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} name='cpa'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.피트 ? stuTag13On : stuTag13} width={36} height={27} onClick={handleStudyClick} name='피트'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.로스쿨 ? stuTag14On : stuTag14} width={47} height={27} onClick={handleStudyClick} name='로스쿨'/>
-                                </Grid>
-                                <Grid style={{marginRight:'8px'}}>
-                                    <Image src={study.행시 ? stuTag15On : stuTag15} width={36} height={27} onClick={handleStudyClick} name='행시'/>
-                                </Grid>
-                            </Grid>
-                        </div>
+                            </div>
+                        </Container>
                     </Container>
                 </Container>
         </ThemeProvider>
