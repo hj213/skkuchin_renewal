@@ -111,24 +111,24 @@ export default function myFavorite(){
                             boxShadow: 'none',
                             padding:'0px'
                         }}>
-                    <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
-                        <Grid style={{padding: '2px 10px 0px 4px'}} >
-                            <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
-                        </Grid>
-                        <Grid>
-                            <Grid container>
-                                <Grid item xs style={{marginTop:'4px'}} >
-                                    <Image src={bookmarkOn} width={20} height={20} />
-                                </Grid>
-                                <Grid item>
-                                    <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>즐겨찾기 장소</Typography>
+                        <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
+                            <Grid style={{padding: '2px 10px 0px 4px'}} >
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
+                            </Grid>
+                            <Grid>
+                                <Grid container>
+                                    <Grid item xs style={{marginTop:'4px'}} >
+                                        <Image src={bookmarkOn} width={20} height={20} />
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>즐겨찾기 장소</Typography>
+                                    </Grid>
                                 </Grid>
                             </Grid>
+                            <Grid >
+                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick}/>
+                            </Grid>
                         </Grid>
-                        <Grid >
-                            <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick}/>
-                        </Grid>
-                    </Grid>
                     </Card>
                 </Container>
                 </div>

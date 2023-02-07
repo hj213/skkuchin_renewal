@@ -1,12 +1,22 @@
+import { useState } from "react";
 import {ThemeProvider, CssBaseline, Dialog, DialogTitle, Typography, styled, DialogContent, DialogContentText, DialogActions, Button} from '@mui/material';
 import theme from "../theme/theme";
 
-export default function BasicDialog(){
+export default function BasicDialog(openID){
+
+    const [open, setOpen] = useState(true);
+    const handleOpen = (e) => {
+        if(open){
+            setOpen(false);
+        } else{
+            setOpen(true);
+        }
+    }
 
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Dialog open='true'>
+            <Dialog open={open} onClose={handleOpen}>
                 <DialogContent style={{width:'270px', height:'100px', paddingTop:'27px',}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
                     AI 매칭 기능을 이용하시려면<br/>

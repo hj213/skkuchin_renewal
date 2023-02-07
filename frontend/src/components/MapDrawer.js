@@ -7,8 +7,8 @@ import hamburger from '../image/햄버거바.png';
 import bookmark from '../image/bookmark-1.png';
 import star from '../image/Star2.png';
 import profile from '../image/profile.png';
-import yj from '../image/율전토글_on.png';
-import mr from '../image/명륜토글_default.png';
+import yj from '../image/율전_on.png';
+import mr from '../image/명륜_off.png';
 import { load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
@@ -119,7 +119,7 @@ export default function MapDrawer(openID){
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}}>
-                  <Image src={toggleOn ? yj: mr} width={57} height={30} onClick={handleToggle}/>
+                  <Image src={toggleOn ? yj: mr} width={60} height={62} onClick={handleToggle}/>
                 </Grid>
               </Grid>
              
