@@ -434,12 +434,12 @@ export default function makeProfile(){
                             <Grid item style={{marginLeft:'29%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
-                            <Grid item style={{marginLeft:'20%'}}>
+                            <Grid item style={{marginLeft:'19%'}}>
                                 <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
                     </Container>
-                    <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'13px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸친 AI 매칭을 이용해보세요 😎</Typography>
+                    <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'21.63px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸친 AI 매칭을 이용해보세요 😎</Typography>
                     <Container name='성별' style={{padding:'0px', margin:'41.7px 0px 0px 53px', justifyContent:'center'}}>
                         <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                         <div style={{marginBottom:'9px'}}>
