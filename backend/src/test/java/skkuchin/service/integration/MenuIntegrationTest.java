@@ -28,8 +28,6 @@ public class MenuIntegrationTest extends BaseIntegrationTest {
         //given
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         MenuDto.PostRequest dto = new MenuDto.PostRequest(1L,"공기밥",1000);
-        System.out.println("dto.getPlaceId() = " + dto.getPlaceId());
-        System.out.println("place.getName() = " + place.getName());
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
         //when

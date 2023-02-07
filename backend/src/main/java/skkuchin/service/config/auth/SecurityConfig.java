@@ -1,4 +1,4 @@
-package skkuchin.service.config;
+package skkuchin.service.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,13 +19,38 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration @EnableWebSecurity @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+    private static final String[] PERMIT_API_URL_ARRAY = {
+            "/api/login",
+            "/api/user/saves",
+            "/api/confirmEmail",
+            "/api/user/token/**",
+            "/api/user/check/**",
+            "/api/email/**"
+    };
+    private static final String[] PERMIT_CHAT_URL_ARRAY = {
+            "/chat/**",
+            "/ws/**"
+    };
+    private static final String[] PERMIT_SWAGGER_URL_ARRAY = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
     private final UserRepo userRepo;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/user/save", "/api/user/saves", "/api/token/refresh/**", "/api/token/verify/**", "/api/confirmEmail").permitAll();
+        http.authorizeRequests()
+                .antMatchers(PERMIT_API_URL_ARRAY).permitAll()
+                .antMatchers(PERMIT_CHAT_URL_ARRAY).permitAll()
+                .antMatchers(PERMIT_SWAGGER_URL_ARRAY).permitAll()
+                .anyRequest().authenticated();
         http.apply(new MyCustomDsl());
         return http.build();
     }

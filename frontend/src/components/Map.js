@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
+import { KAKAOMAP_APPKEY } from '../config';
+import marker from "../image/marker.png"
 
 const Map = ({latitude, longitude, places, selectedId}) => {
 
@@ -10,7 +12,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
         const mapScript = document.createElement("script");
         
         mapScript.async = true;
-        mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&autoload=false`;
+        mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAOMAP_APPKEY}&autoload=false`;
 
         document.head.appendChild(mapScript);
 
@@ -48,16 +50,21 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                 places.forEach(place => {
                     let marker;
                     if (place.id == selectedId) {
-                        const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+                        const selectedImageSrc = "/selectedMarker.png",
+                        imageSize = new window.kakao.maps.Size(34, 47),
+                        markerImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
+                        
+                        marker = new window.kakao.maps.Marker({
+                            position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                            image: markerImage
+                        });
+                    } else if(place.id != selectedId){
+                        const imageSrc = "/marker.png",
                         imageSize = new window.kakao.maps.Size(24, 35),
                         markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
                         marker = new window.kakao.maps.Marker({
                             position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
                             image: markerImage
-                        });
-                    } else {
-                        marker = new window.kakao.maps.Marker({
-                            position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
                         });
                     }
                     markers.push(marker);

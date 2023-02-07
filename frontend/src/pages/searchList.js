@@ -8,14 +8,12 @@ import theme from "../theme/theme";
 import {CssBaseline, Box,InputBase, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack} from '@mui/material';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
-import tag16 from '../image/태그/지도_on/tag_간단.png';
 import food from '../image/food.png';
-import tag17 from '../image/태그/지도_on/tag_분위기.png';
 import mapIcon from '../image/map-1.png';
 import searchBox from '../image/검색창2.png';
 import closeIcon from '../image/close.png';
-import Navbar from "../components/Navbar";
 import { load_user } from "../actions/auth/auth";
+import {  displayReviewTag } from "../components/TagList";
 
 export default function searchList(){
     const router = useRouter();
@@ -25,18 +23,14 @@ export default function searchList(){
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
 
-    let filteredPlace = [];
-    if(place && user){
-        filteredPlace = place.filter((item) => item.campus === user.campus);
-    }
-
     //user의 input값 받아오기
     const { keyword } = router.query;
 
     const [value, setValue] = useState('');
     const [placeholderValue, setPlaceholderValue] = useState(keyword);
     const [passValue, setPassValue] = useState(keyword);
-    const [data, setData] = useState([]);
+    const [filteredPlace, setFilteredPlace] =useState([]);
+
 
     //api 받아오기
     useEffect(() => {
@@ -46,11 +40,19 @@ export default function searchList(){
         }
     }, [dispatch]);
 
-    
+    //캠퍼스 필터링
+    useEffect(() => {
+    if (place) {
+        setFilteredPlace(place.filter((item) => item.campus === user.campus));
+    } else {
+        setFilteredPlace([]);
+    }
+}, [place, user]);
+
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
-      };
+    };
 
     //북마크 기능
     const isFavorite = (placeId) => {
@@ -64,14 +66,8 @@ export default function searchList(){
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.id == 'map' ){
-            // 0-2 [검색 결과 목록] -> 2 [식당 선택]으로 이동
-            // router.push(`/place?id=${place[0].id}`);
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             router.push(`/?keyword=${passValue}`);
-            // router.push({
-            //     pathname: '/',
-            //     query: passValue
-            // });
         } else{
             setPassValue('')
             dispatch(search_places('')); //초기화위해서
@@ -105,7 +101,7 @@ export default function searchList(){
                                     width: '100%',
                                     height: '120%',
                                     zIndex: '4',
-                                    border: "0px solid transparent",
+                                    border: "1px solid transparent",
                                     boxShadow: 'none',
                                 }}>
                             <Grid container style={{position:'relative', marginTop:'10px',}}>
@@ -197,35 +193,23 @@ export default function searchList(){
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
-                                                    <Grid container style={{margin: '4px 0px 11px 0px'}}>
-                                                        <Stack direction="row" spacing={2}>
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag16}
-                                                        />
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag17}
-                                                        />
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag17}
-                                                        />
-                                                        </Stack>
+                                                    <Grid container>
+                                                    {/* 태그 받아오기 */}
+                                                        {item.tags.map((tag, index) => (
+                                                            <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
+                                                                {displayReviewTag(tag)}
+                                                            </Grid>
+                                                        ))}
                                                     </Grid>
                                                 </CardContent>
                                             </Grid>
-                                            <Grid style={{marginTop:'15px'}}>
+                                            <Grid style={{marginTop:'10px', marginBottom:'10px'}}>
                                                 <Image
-                                                width= {98} height= {98}
-                                                alt={item.name} 
-                                                src={food}/>
+                                                    width= {98} height= {98}
+                                                    alt={ item.name } 
+                                                    src={ item.images && item.images.length > 0 ? item.images[0] : food }
+                                                    style={{borderRadius: '10px'}}
+                                                />
                                             </Grid>
                                         </Grid>
                                         </Link>
