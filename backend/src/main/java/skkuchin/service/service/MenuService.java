@@ -53,20 +53,23 @@ public class MenuService {
 
     public void insertData(String path) throws IOException, ParseException {
         if (menuRepo.count() < 1) { //db가 비어있을 때만 실행
+            String[] campusNames = {"명륜", "율전"};
 
-            FileInputStream ins = new FileInputStream(path + "menu.json");
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)parser.parse(
-                    new InputStreamReader(ins, "UTF-8")
-            );
-            JSONArray jsonArray = (JSONArray) jsonObject.get("menu");
-            Gson gson = new Gson();
+            for (String campusName : campusNames) {
+                FileInputStream ins = new FileInputStream(path + "menu_" + campusName + ".json");
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject)parser.parse(
+                        new InputStreamReader(ins, "UTF-8")
+                );
+                JSONArray jsonArray = (JSONArray) jsonObject.get("menu");
+                Gson gson = new Gson();
 
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject temp = (JSONObject) jsonArray.get(i);
-                MenuDto.PostRequest dto = gson.fromJson(temp.toString(), MenuDto.PostRequest.class);
-                Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
-                menuRepo.save(dto.toEntity(place));
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject temp = (JSONObject) jsonArray.get(i);
+                    MenuDto.PostRequest dto = gson.fromJson(temp.toString(), MenuDto.PostRequest.class);
+                    Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
+                    menuRepo.save(dto.toEntity(place));
+                }
             }
         }
     }

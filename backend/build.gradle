@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
+	id("com.google.osdetector") version "1.7.0"
 }
 
 group = 'skkuchin'
@@ -18,16 +19,37 @@ repositories {
 	mavenCentral()
 }
 
+jar {
+	enabled = false
+}
+
 dependencies {
+	//jwt
 	implementation 'com.auth0:java-jwt:4.0.0'
+
+	//db
 	implementation 'mysql:mysql-connector-java'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	//spring-boot
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//websocket & rabbitmq
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.4.6'
+
+	if (osdetector.arch.equals("aarch_64")) {
+		implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64")
+	} else if (osdetector.arch.equals("x86_64")) {
+		implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-x86_64")
+	}
+
 	implementation 'org.webjars:sockjs-client:1.1.2'
 	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+
 	//view
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
@@ -35,35 +57,36 @@ dependencies {
 	implementation 'org.webjars.bower:bootstrap:4.3.1'
 	implementation 'org.webjars.bower:vue:2.5.16'
 	implementation 'org.webjars.bower:axios:0.17.1'
-	implementation 'com.google.code.gson:gson:2.8.0'
+
 	//spring email
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
-	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-	implementation 'com.google.code.gson:gson:2.9.0'
-	testImplementation 'junit:junit:4.13.1'
-    testImplementation 'org.projectlombok:lombok:1.18.22'
+
+	//lombok
+	testImplementation 'org.projectlombok:lombok:1.18.22'
     compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	//devtools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	//test
+	testImplementation 'junit:junit:4.13.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.mockito:mockito-core:4.8.0'
 
-	//websocket
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.4.6'
-
-	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	//json
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	implementation 'com.google.code.gson:gson:2.9.0'
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.4'
 
-	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
-
-
-
-
-
+	//aws
 	implementation platform('software.amazon.awssdk:bom:2.15.0')
 	implementation 'software.amazon.awssdk:s3'
 
+	//swagger ui
+	implementation "io.springfox:springfox-boot-starter:3.0.0"
+	implementation "io.springfox:springfox-swagger-ui:3.0.0"
 }
 
 tasks.named('test') {

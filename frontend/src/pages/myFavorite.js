@@ -7,13 +7,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import bookmarkOn from '../image/bookmark-1.png';
 import food from '../image/food.png';
-import tag16 from '../image/태그/지도_on/tag_간단.png';
-import tag17 from '../image/태그/지도_on/tag_분위기.png';
-import star from '../image/Star-1.png';
+import star from '../image/Star2.png';
 import back from '../image/arrow_back_ios.png';
 import closeIcon from '../image/close.png';
 import down from '../image/down.png';
 import theme from '../theme/theme';
+import { displayReviewTag } from "../components/TagList";
+
 
 export default function myFavorite(){
     const [open, setOpen] = useState(false);
@@ -98,7 +98,7 @@ export default function myFavorite(){
             <CssBaseline/>
             <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'50px'}}>
                 <div style={{position: 'absolute',}}>
-                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'50px',maxWidth:'650px'}} >
+                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'50px', maxWidth:'600px'}} >
                 <Card style={{
                             // position: 'absolute',
                             top: '0px',
@@ -227,8 +227,8 @@ export default function myFavorite(){
                                                             스꾸친 평점 :
                                                             </Typography>
                                                         </Grid>
-                                                        <Grid style={{margin:'2px 7px 0px 7px'}}>
-                                                            <Image width={15} height={14} src={star}/>
+                                                        <Grid style={{margin: '-3px 7px 0px 7px'}}>
+                                                            <Image width={10} height={10} src={star}/>
                                                         </Grid>
                                                         <Grid >
                                                             <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color={theme.palette.fontColor.dark} component="div">
@@ -269,35 +269,21 @@ export default function myFavorite(){
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
-                                                    <Grid container style={{margin: '4px 0px 11px 0px'}}>
-                                                        <Stack direction="row" spacing={2}>
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag16}
-                                                        />
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag17}
-                                                        />
-                                                        <Image
-                                                            width= {72}
-                                                            height= {27}
-                                                            alt="tag"
-                                                            src={tag17}
-                                                        />
-                                                        </Stack>
+                                                    <Grid container>
+                                                        {item.tags.map((tag, index) => (
+                                                            <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
+                                                                {displayReviewTag(tag)}
+                                                            </Grid>
+                                                        ))}
                                                     </Grid>
                                                 </CardContent>
                                             </Grid>
-                                            <Grid style={{marginTop:'15px', }}>
+                                            <Grid style={{marginTop:'10px', marginBottom:'10px'}}>
                                                 <Image
                                                 width= {98} height= {98}
                                                 alt={item.name} 
-                                                src={food}
+                                                src={ item.images && item.images.length > 0 ? item.images[0] : food }
+                                                style={{borderRadius: '10px'}}
                                                 
                                                 />
                                             </Grid>

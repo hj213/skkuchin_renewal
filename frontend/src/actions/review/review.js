@@ -71,36 +71,44 @@ export const load_review = () => async dispatch => {
 }
 
 // enroll review
-export const enroll_review = (place_id, rate, content,image, tags) => async dispatch => {
-    const body = JSON.stringify({
-        place_id,
-        rate,
-        content,
-        image,
-        tags
-    });
+export const enroll_review = (place_id, rate, content, images, tags) => async dispatch => {
+
+    const formData = new FormData();
+    formData.append('place_id', place_id);
+    formData.append('rate', rate);
+    formData.append('content', content);
+    formData.append('tags', tags);
+
+    // 태그 배열로 받은 후에 위에 지우고 주석 풀기
+    // if (tags.length > 0) {
+    //     for (const tag of tags) {
+    //         formData.append('tags', tag);
+    //     }
+    // }
+
+    if (images.length > 0) {
+        for (const image of images) {
+            formData.append('images', image);
+        }
+    }
 
     try {
         const res = await fetch('/api/review', {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: body
+            body: formData
         });
 
         if (res.status === 201) {
             dispatch({
                 type: ENROLL_REVIEW_SUCCESS
             });
-            dispatch(load_favorite());
         } else {
             dispatch({
                 type: ENROLL_REVIEW_FAIL
             });
         }
     } catch(error) {
+        console.log(error)
         dispatch({
             type: ENROLL_REVIEW_FAIL
         });
@@ -108,29 +116,36 @@ export const enroll_review = (place_id, rate, content,image, tags) => async disp
 };
 
 // modify review
-export const modify_review = (review_id) => async dispatch => {
-    const body = JSON.stringify({
-        rate,
-        content,
-        image,
-        tags
-    });
+export const modify_review = (review_id, rate, content, images, tags) => async dispatch => {
+
+    const formData = new FormData();
+    formData.append('rate', rate);
+    formData.append('content', content);
+    formData.append('tags', tags);
+
+    // 태그 배열로 받은 후에 위에 지우고 주석 풀기
+    // if (tags.length > 0) {
+    //     for (const tag of tags) {
+    //         formData.append('tags', tag);
+    //     }
+    // }
+
+    if (images.length > 0) {
+        for (const image of images) {
+            formData.append('images', image);
+        }
+    }
 
     try {
         const res = await fetch(`/api/review/${review_id}`, {
             method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: body
+            body: formData
         });
 
         if (res.status === 201) {
             dispatch({
                 type: MODIFY_REVIEW_SUCCESS
             });
-            dispatch(load_favorite());
         } else {
             dispatch({
                 type: MODIFY_REVIEW_FAIL
@@ -145,10 +160,6 @@ export const modify_review = (review_id) => async dispatch => {
 
 // delete review
 export const delete_review = (review_id) => async dispatch => {
-    // 0113 body 삭제 완료
-    // const body = JSON.stringify({
-    //     review_id
-    // });
 
     try {
         const res = await fetch(`/api/review/${review_id}`, {
@@ -163,7 +174,6 @@ export const delete_review = (review_id) => async dispatch => {
             dispatch({
                 type: DELETE_REVIEW_SUCCESS
             });
-            dispatch(load_favorite());
         } else {
             dispatch({
                 type: DELETE_REVIEW_FAIL

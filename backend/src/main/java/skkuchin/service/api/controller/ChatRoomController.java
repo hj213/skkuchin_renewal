@@ -35,8 +35,23 @@ public class ChatRoomController {
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
     }
 
+    @GetMapping("/senderRooms")
+    public ResponseEntity<?> getAllMyRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+
+        List<ChatRoomDto.Response> responses = chatService.findSenderChatRoom(user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "sender's 채팅방 조회 완료", responses), HttpStatus.OK);
+    }
+
+    @GetMapping("/receiverRooms")
+    public ResponseEntity<?> getAllMyRoom1(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+
+        List<ChatRoomDto.Response> responses = chatService.findReceiverChatRoom(user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 채팅방 조회 완료", responses), HttpStatus.OK);
+    }
      @PostMapping("/rooms")
-    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
 
          AppUser user = principalDetails.getUser();
          chatService.makeRoom(user,dto);
@@ -81,6 +96,13 @@ public class ChatRoomController {
         return "chat/rooms";
     }
 
+    @GetMapping(value = "/roommm")
+    public String getRoom(){
+
+
+
+        return "chat/rrr";
+    }
 
     /* // 채팅 리스트 화면
     @GetMapping("/room")
