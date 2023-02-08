@@ -206,7 +206,7 @@ export default function list(){
     //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-        // console.log(focus); 확인용
+        // console.log(focus); //확인용
     }
 
     return(
