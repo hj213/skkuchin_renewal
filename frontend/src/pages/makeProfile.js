@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
+import { useDispatch } from "react-redux";
+import { add_matching_info } from "../actions/matchingUser/matchingUser";
+import { useRouter } from "next/router";
+import { load_user } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
@@ -189,16 +193,24 @@ import profile18On from '../image/mbti/프로필/MBTI 선택 18.png'
 
 export default function makeProfile(){ 
 
+    const dispatch = useDispatch();
+    const router = useRouter();
+    useEffect(() => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_user());
+        }
+    }, [dispatch]);
+    
     const [womanClick, setWomanClick] = useState(false);
     const [manClick, setManClick] = useState(false);
-    const [mbti, setMbti] = useState({
+    const [mbtiChoose, setMbtiChoose] = useState({
         'E': false,
-        'N': false,
-        'F': false,
-        'P': false,
         'I': false,
+        'N': false,
         'S': false,
+        'F': false,
         'T': false,
+        'P': false,
         'J': false,
     }); 
     const [food, setFood] = useState({
@@ -283,14 +295,17 @@ export default function makeProfile(){
         'ESFP': false,
     })
 
+    const [gender, setGender] = useState('');
+    const [keyword, setKeyword] = useState('');
+    const [introduction, setIntroduction] = useState('');
+    const [image, setImage] = useState('');
+    const [passingMbti, setPassingMbti] = useState('');
+
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'back' ){
             
-            // router.push({
-            //     pathname: '/',
-            //     query: { openID: true }
-            //     });
+            router.back();
             
         } else if(event.target.name == '건너뛰기'){
             //웰컴페이지로 이동
@@ -298,127 +313,130 @@ export default function makeProfile(){
     };
 
     //성별클릭
-    const handleSexClick = (event) => {
+    const handleGenderClick = (event) => {
         if(event.target.name == '여성'){
             if(womanClick){
                 setWomanClick(false);
+                setGender('');
             } else {
                 setWomanClick(true);
                 setManClick(false);
+                setGender('여성');
             }
         } else if(event.target.name='남성'){
             if(manClick){
                 setManClick(false);
+                setGender('');
             } else {
                 setManClick(true);
                 setWomanClick(false);
+                setGender('남성');
             }
         }
-
     }
 
     //mbti클릭
     const handleMbtiClick =(event) => {
         if(event.target.name == 'E'){
-            if(mbti.E){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.E){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'E': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'E': true,
                     'I': false
                 })
             }
         } else if(event.target.name == 'N'){
-            if(mbti.N){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.N){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'N': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'N': true,
                     'S': false
                 })
             }
         } else if(event.target.name == 'F'){
-            if(mbti.F){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.F){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'F': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'F': true,
                     'T': false
                 })
             }
         } else if(event.target.name == 'P'){
-            if(mbti.P){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.P){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'P': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'P': true,
                     'J': false
                 })
             }
         } else if(event.target.name == 'I'){
-            if(mbti.I){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.I){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'I': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'I': true,
                     'E': false
                 })
             }
         } else if(event.target.name == 'S'){
-            if(mbti.S){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.S){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'S': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'S': true,
                     'N': false
                 })
             }
         } else if(event.target.name == 'T'){
-            if(mbti.T){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.T){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'T': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'T': true,
                     'F': false
                 })
             }
         } else if(event.target.name == 'J'){
-            if(mbti.J){
-                setMbti({
-                    ...mbti,
+            if(mbtiChoose.J){
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'J': false,
                 })
             } else {
-                setMbti({
-                    ...mbti,
+                setMbtiChoose({
+                    ...mbtiChoose,
                     'J': true,
                     'P': false
                 })
@@ -504,23 +522,92 @@ export default function makeProfile(){
                     return acc;
                   }, {}),
             })
+            setImage(event.target.src)
+            console.log(event.target.src);
         }
     }
     
+    //확인
+    const handleOnSubmit = (event) => {
+        
+        event.preventDefault();
+
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(add_matching_info(gender, keyword, introduction, passingMbti, image, ([result, message]) => {
+                if (result) {
+                    alert(message);
+                } else {
+                    alert(message);
+                }
+            }));
+        }
+    
+    } 
+
+    //for passingMbti
+    useEffect(() => {
+        const newMbti = Object.entries(mbtiChoose)
+          .filter(([, value]) => value)
+          .map(([key]) => key)
+          .join('');
+        if(newMbti.length==4){
+            setPassingMbti(newMbti);
+        }
+      }, [mbtiChoose]);
+    
+    //for keyword
+    useEffect(() => {
+
+        const newKeywords = [sports, food, art, study];
+
+        const allKeywords = newKeywords.reduce((acc, current) => {
+            return acc.concat(Object.entries(current));
+        }, [])
+            .filter(([, value]) => value)
+            .map(([key]) => key);
+
+        // const newFood = Object.entries(food)
+        //   .filter(([, value]) => value)
+        //   .map(([key]) => key)
+        //   .join(',');     
+        
+        // const newSports = Object.entries(sports)
+        //   .filter(([, value]) => value)
+        //   .map(([key]) => key)
+        //   .join(',');     
+        
+        // const newArt = Object.entries(art)
+        //   .filter(([, value]) => value)
+        //   .map(([key]) => key)
+        //   .join(',');      
+        
+        // const newStudy = Object.entries(study)
+        //   .filter(([, value]) => value)
+        //   .map(([key]) => key)
+        //   .join(',');       
+        
+        // const newKeywords = [...newFood, ...newArt, ...newSports, ...newStudy];
+        if(allKeywords.length >= 3 ){
+            setKeyword(allKeywords);
+        }
+        console.log(keyword);
+      }, [food, study, art, sports]);
+    
+      
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px'}}>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
                             </Grid>
-                            <Grid item style={{marginLeft:'29%'}}>
+                            <Grid item style={{marginLeft:'27%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
-                            <Grid item style={{marginLeft:'19%'}}>
-                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
+                            <Grid item style={{marginLeft:'18%', }}>
+                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility:'hidden'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
                     </Container>
@@ -530,10 +617,10 @@ export default function makeProfile(){
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                             <div style={{marginBottom:'9px'}}>
-                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleSexClick} name='남성'/>
+                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성'/>
                             </div>
                             <div>
-                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleSexClick} name='여성'/>
+                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성'/>
                             </div>
                         </Container>
                         </div>
@@ -545,32 +632,32 @@ export default function makeProfile(){
                             <div>
                                 <Grid container maxWidth={340}>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbti.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} name='E'/>
+                                        <Image src={mbtiChoose.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} name='E'/>
                                     </Grid>
                                     <Grid style={{marginRight:'60px'}}>
-                                        <Image src={mbti.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} name='N'/>
+                                        <Image src={mbtiChoose.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} name='N'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbti.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} name='F'/>
+                                        <Image src={mbtiChoose.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} name='F'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbti.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} name='P'/>
+                                        <Image src={mbtiChoose.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} name='P'/>
                                     </Grid>
                                 </Grid>
                             </div>
                             <div style={{marginTop:'46px'}}>
                                 <Grid container>
                                     <Grid style={{marginRight:'65px', marginLeft:'5px'}}>
-                                        <Image src={mbti.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
+                                        <Image src={mbtiChoose.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
                                     </Grid>
                                     <Grid style={{marginRight:'60px'}}>
-                                        <Image src={mbti.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
+                                        <Image src={mbtiChoose.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbti.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
+                                        <Image src={mbtiChoose.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
                                     </Grid>
                                     <Grid style={{marginRight:'61px'}}>
-                                        <Image src={mbti.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
+                                        <Image src={mbtiChoose.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -852,6 +939,8 @@ export default function makeProfile(){
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>한 줄 자기소개*</Typography>
                             <div style={{margin:'10px 0px 0px 15px', zIndex:'2', textAlign:'center', position:'absolute'}}>
                                 <textarea
+                                value={introduction}
+                                onChange={(e)=>{setIntroduction(e.target.value)}}
                                 maxLength={60}
                                 placeholder='e.g. 성대 NCT 팬이랑 같이 밥먹고 싶어요 :)'
                                 style={{width:'310px', height:'70px', backgroundColor:'transparent', fontSize:'12px', border:'none', outline:'none', resize:'none', fontFamily:'inherit'}}
@@ -865,7 +954,7 @@ export default function makeProfile(){
                     </div>
                     <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
                         <div style={{paddingBottom:'50px', textAlign:'center'}}>
-                            <Image src={submitOk} width={296} height={45} onClick={handleSexClick} name='확인'/>
+                            <Image src={submitOk} width={296} height={45} onClick={handleOnSubmit} name='확인'/>
                         </div>
                     </Container>
                 </Container>

@@ -35,13 +35,15 @@ export default function MapDrawer(openID){
     }
 
     useEffect(()=>{
+      if (dispatch && dispatch !== null && dispatch !== undefined) {
+        dispatch(load_favorite());
         dispatch(load_user());
-        dispatch(load_favorite());    
+      }
     }, [dispatch]);
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleOn, setToggleOn] = useState(user && user.toggle);
+    const [toggleOn, setToggleOn] = useState(user&&user.toggle);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
@@ -65,13 +67,23 @@ export default function MapDrawer(openID){
     //토글 클릭
     const handleToggle = (e) =>{
       e.preventDefault();
+      
+      // if(user.toggle == '명륜'){
+      //   setToggleOn('율전');
+      //   if (dispatch && dispatch !== null && dispatch !== undefined) {
+      //   dispatch(change_toggle('율전'));
+      //   dispatch(load_user());
+      //   console.log(user.toggle)
+      //   }
+      // } else {
+      //   setToggleOn('명륜');
+      //   if (dispatch && dispatch !== null && dispatch !== undefined) {
+      //   dispatch(change_toggle('명륜'));
+      //   dispatch(load_user());
+      //   }
+      //   console.log(user.toggle)
 
-      if(toggleOn){
-        setToggleOn(false);
-      }else{
-        setToggleOn(true);
-      }
-    
+      // }
     } 
 
     const list = (anchor) => (
@@ -119,7 +131,7 @@ export default function MapDrawer(openID){
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}}>
-                  <Image src={toggleOn ? yj: mr} width={60} height={62} onClick={handleToggle}/>
+                  <Image src={toggleOn == '율전' ? yj: mr} width={60} height={60} onClick={handleToggle}/>
                 </Grid>
               </Grid>
              
