@@ -19,17 +19,17 @@
 <br>
 
 ## 백엔드 컨테이너만 빌드 후 재시작
-   docker-compose stop server && docker-compose rm server -f && docker-compose up server --build
+- docker-compose stop server && docker-compose rm server -f && docker-compose up server -d --build
 
 <br>
 
 ## 프론트 컨테이너만 빌드 후 재시작
-docker-compose stop client && docker-compose rm client -f && docker-compose up client --build
+- docker-compose stop client && docker-compose rm client -f && docker-compose up client -d --build
 
 <br>
 
 
-## 스프링 로컬 실행 시 도커 따로 실행
+## 스프링 로컬 실행 시 rabbitmq 따로 실행
 1. docker-compose -f docker-compose.rabbitmq.yml up
 
 <br>
