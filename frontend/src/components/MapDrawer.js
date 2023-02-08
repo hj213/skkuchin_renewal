@@ -9,7 +9,7 @@ import star from '../image/Star2.png';
 import profile from '../image/profile.png';
 import yj from '../image/율전_on.png';
 import mr from '../image/명륜_off.png';
-import { load_user } from '../actions/auth/auth';
+import { change_toggle, load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
 
@@ -20,7 +20,6 @@ export default function MapDrawer(openID){
     const dispatch = useDispatch();
     const router = useRouter();
     let open = false;
-    let campus = true;
   
     if(typeof window !== 'undefined' && !isAuthenticated){
       router.push('/login');
@@ -37,7 +36,7 @@ export default function MapDrawer(openID){
 
     useEffect(()=>{
         dispatch(load_user());
-        dispatch(load_favorite());
+        dispatch(load_favorite());    
     }, [dispatch]);
 
     //state
@@ -66,6 +65,7 @@ export default function MapDrawer(openID){
     //토글 클릭
     const handleToggle = (e) =>{
       e.preventDefault();
+
       if(toggleOn){
         setToggleOn(false);
       }else{

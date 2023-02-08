@@ -1,12 +1,15 @@
 import { useState } from "react";
-import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid} from '@mui/material';
+import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
 import back from '../image/arrow_back_ios.png';
 import womanCheck from '../image/성별/여성_체크.png';
 import woman from '../image/성별/여성.png';
 import man from '../image/성별/남성.png';
-import manCheck from '../image/성별/남성_체크.png';
+import manCheck from '../image/성별/남성_체크.png'; 
+import textForm from '../image/mbti/프로필/한줄소개.png';
+import submitOk from '../image/확인_노랑.png';
+import submit from '../image/확인_회색.png';
 
 //mbti
 import E from '../image/mbti/E-1.png';
@@ -144,6 +147,46 @@ import stuTag13On from '../image/태그/학술_on/tag_피트13.png';
 import stuTag14On from '../image/태그/학술_on/tag_로스쿨14.png';
 import stuTag15On from '../image/태그/학술_on/tag_행시15.png';
 
+//mbti프로필
+import profile1 from '../image/mbti/프로필/기본.png';
+import profile2 from '../image/mbti/프로필/식사.png';
+import profile3 from '../image/mbti/프로필/ENFJ.png';
+import profile4 from '../image/mbti/프로필/ENTP.png';
+import profile5 from '../image/mbti/프로필/INFP.png';
+import profile6 from '../image/mbti/프로필/ENFP.png';
+import profile7 from '../image/mbti/프로필/ISTJ.png';
+import profile8 from '../image/mbti/프로필/ISTP.png';
+import profile9 from '../image/mbti/프로필/ISFP.png';
+import profile10 from '../image/mbti/프로필/INTP.png';
+import profile11 from '../image/mbti/프로필/ESTJ.png';
+import profile12 from '../image/mbti/프로필/INFJ.png';
+import profile13 from '../image/mbti/프로필/ENTJ.png';
+import profile14 from '../image/mbti/프로필/ESTP.png';
+import profile15 from '../image/mbti/프로필/ESFJ.png';
+import profile16 from '../image/mbti/프로필/INTJ.png';
+import profile17 from '../image/mbti/프로필/ISFJ.png';
+import profile18 from '../image/mbti/프로필/ESFP.png';
+
+import profile1On from '../image/mbti/프로필/MBTI 선택 01.png';
+import profile2On from '../image/mbti/프로필/MBTI 선택 02.png';
+import profile3On from '../image/mbti/프로필/MBTI 선택 03.png';
+import profile4On from '../image/mbti/프로필/MBTI 선택 04.png';
+import profile5On from '../image/mbti/프로필/MBTI 선택 05.png';
+import profile6On from '../image/mbti/프로필/MBTI 선택 06.png';
+import profile7On from '../image/mbti/프로필/MBTI 선택 07.png';
+import profile8On from '../image/mbti/프로필/MBTI 선택 08.png';
+import profile9On from '../image/mbti/프로필/MBTI 선택 09.png';
+import profile10On from '../image/mbti/프로필/MBTI 선택 10.png';
+import profile11On from '../image/mbti/프로필/MBTI 선택 11.png';
+import profile12On from '../image/mbti/프로필/MBTI 선택 12.png';
+import profile13On from '../image/mbti/프로필/MBTI 선택 13.png';
+import profile14On from '../image/mbti/프로필/MBTI 선택 14.png';
+import profile15On from '../image/mbti/프로필/MBTI 선택 15.png';
+import profile16On from '../image/mbti/프로필/MBTI 선택 16.png';
+import profile17On from '../image/mbti/프로필/MBTI 선택 17.png';
+import profile18On from '../image/mbti/프로필/MBTI 선택 18.png';
+
+
 export default function makeProfile(){ 
 
     const [womanClick, setWomanClick] = useState(false);
@@ -219,6 +262,26 @@ export default function makeProfile(){
         '로스쿨': false,
         '행시': false,
     })
+    const [profile, setProfile] = useState({
+        '기본': false,
+        '식사': false,
+        'ENFJ': false,
+        'ENTP': false,
+        'INFP': false,
+        'ENFP': false,
+        'ISTJ': false,
+        'ISTP': false,
+        'ISFP': false,
+        'INTP': false,
+        'ESTJ': false,
+        'INFJ': false,
+        'ENTJ': false,
+        'ESTP': false,
+        'ESFJ': false,
+        'INTJ': false,
+        'ISFJ': false,
+        'ESFP': false,
+    })
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -229,6 +292,8 @@ export default function makeProfile(){
             //     query: { openID: true }
             //     });
             
+        } else if(event.target.name == '건너뛰기'){
+            //웰컴페이지로 이동
         }
     };
 
@@ -290,7 +355,7 @@ export default function makeProfile(){
                 setMbti({
                     ...mbti,
                     'F': true,
-                    'P': false
+                    'T': false
                 })
             }
         } else if(event.target.name == 'P'){
@@ -346,7 +411,7 @@ export default function makeProfile(){
                 })
             }
         } else if(event.target.name == 'J'){
-            if(mbti.N){
+            if(mbti.J){
                 setMbti({
                     ...mbti,
                     'J': false,
@@ -421,6 +486,26 @@ export default function makeProfile(){
         }
     }
 
+    //프로필
+    const handleProfileClick = (event) => {
+        if(profile[event.target.name]){
+            setProfile({
+                ...profile,
+                [event.target.name] : false
+            })
+        } else{
+            setProfile({
+                ...profile,
+                [event.target.name] : true,
+                ...Object.keys(profile).reduce((acc, key) => {
+                    if (key !== event.target.name) {
+                      acc[key] = false;
+                    }
+                    return acc;
+                  }, {}),
+            })
+        }
+    }
     
     return(
         <ThemeProvider theme={theme}>
@@ -435,56 +520,63 @@ export default function makeProfile(){
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
                             <Grid item style={{marginLeft:'19%'}}>
-                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main}>건너뛰기</Typography>
+                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
                     </Container>
                     <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'21.63px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸친 AI 매칭을 이용해보세요 😎</Typography>
-                    <Container name='성별' style={{padding:'0px', margin:'41.7px 0px 0px 53px', justifyContent:'center'}}>
-                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
-                        <div style={{marginBottom:'9px'}}>
-                            <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleSexClick} name='남성'/>
-                        </div>
+                    <div name='성별' style={{textAlign:'center',display:'flex', justifyContent:'center'}}>
                         <div>
-                            <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleSexClick} name='여성'/>
+                        <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
+                            <div style={{marginBottom:'9px'}}>
+                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleSexClick} name='남성'/>
+                            </div>
+                            <div>
+                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleSexClick} name='여성'/>
+                            </div>
+                        </Container>
                         </div>
-                    </Container>
-                    <Container name='mbti' style={{padding:'0px', margin:'41.7px 0px 0px 56px'}}>
-                        <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>MBTI*</Typography>
+                    </div>
+                    <div name='mbti' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
-                            <Grid container>
-                                <Grid style={{marginRight:'59px'}}>
-                                    <Image src={mbti.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} name='E'/>
+                        <Container  style={{padding:'0px', margin:'41.7px 0px 0px 56px'}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>MBTI*</Typography>
+                            <div>
+                                <Grid container maxWidth={340}>
+                                    <Grid style={{marginRight:'59px'}}>
+                                        <Image src={mbti.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} name='E'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'60px'}}>
+                                        <Image src={mbti.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} name='N'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'59px'}}>
+                                        <Image src={mbti.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} name='F'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'59px'}}>
+                                        <Image src={mbti.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} name='P'/>
+                                    </Grid>
                                 </Grid>
-                                <Grid style={{marginRight:'60px'}}>
-                                    <Image src={mbti.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} name='N'/>
+                            </div>
+                            <div style={{marginTop:'46px'}}>
+                                <Grid container>
+                                    <Grid style={{marginRight:'65px', marginLeft:'5px'}}>
+                                        <Image src={mbti.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'60px'}}>
+                                        <Image src={mbti.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'59px'}}>
+                                        <Image src={mbti.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
+                                    </Grid>
+                                    <Grid style={{marginRight:'61px'}}>
+                                        <Image src={mbti.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
+                                    </Grid>
                                 </Grid>
-                                <Grid style={{marginRight:'59px'}}>
-                                    <Image src={mbti.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} name='F'/>
-                                </Grid>
-                                <Grid style={{marginRight:'59px'}}>
-                                    <Image src={mbti.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} name='P'/>
-                                </Grid>
-                            </Grid>
-                            
+                            </div>
+                        </Container>
                         </div>
-                        <div style={{marginTop:'46px'}}>
-                            <Grid container>
-                                <Grid style={{marginRight:'65px', marginLeft:'5px'}}>
-                                    <Image src={mbti.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
-                                </Grid>
-                                <Grid style={{marginRight:'60px'}}>
-                                    <Image src={mbti.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
-                                </Grid>
-                                <Grid style={{marginRight:'59px'}}>
-                                    <Image src={mbti.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
-                                </Grid>
-                                <Grid style={{marginRight:'61px'}}>
-                                    <Image src={mbti.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </Container>
+                    </div>
                     <Container name='관심사' style={{padding:'0px', margin:'41.7px 0px 0px 25px', justifyContent:'center'}}>
                         <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>관심사*</Typography>
                         <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>최소 3개 이상의 태그를 선택해주세요.</Typography>
@@ -675,6 +767,106 @@ export default function makeProfile(){
                                 </Grid>
                             </div>
                         </Container>
+                    </Container>
+                    <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
+                        <div>
+                            <Container  style={{padding:'0px', margin:'41.7px 0px 0px 10px', justifyContent:'center'}}>
+                                <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>매칭 프로필 사진*</Typography>
+                                <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>1개의 이미지를 선택해주세요.</Typography>
+                                <div style={{marginTop:'10px'}}>
+                                    <Grid container style={{maxWidth:'340px'}}>
+                                        <Grid container>
+                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
+                                                <Image src={profile.기본 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='기본'/>
+                                            </Grid>
+                                            <Grid style={{marginRight:'15px'}}>
+                                                <Image src={profile.식사 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='식사'/>
+                                            </Grid>
+                                            <Grid style={{}}>
+                                                <Image src={profile.ENFJ ? profile3On : profile3} width={100} height={100} onClick={handleProfileClick} name='ENFJ'/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container>
+                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
+                                                <Image src={profile.ENTP ? profile4On : profile4} width={100} height={100} onClick={handleProfileClick} name='ENTP'/>
+                                            </Grid>
+                                            <Grid style={{marginRight:'15px'}}>
+                                                <Image src={profile.INFP ? profile5On : profile5} width={100} height={100} onClick={handleProfileClick} name='INFP'/>
+                                            </Grid>
+                                            <Grid style={{}}>
+                                                <Image src={profile.ENFP ? profile6On : profile6} width={100} height={100} onClick={handleProfileClick} name='ENFP'/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container>
+                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
+                                                <Image src={profile.ISTJ ? profile7On : profile7} width={100} height={100} onClick={handleProfileClick} name='ISTJ'/>
+                                            </Grid>
+                                            <Grid style={{marginRight:'15px'}}>
+                                                <Image src={profile.ISTP ? profile8On : profile8} width={100} height={100} onClick={handleProfileClick} name='ISTP'/>
+                                            </Grid>
+                                            <Grid style={{}}>
+                                                <Image src={profile.ISFP ? profile9On : profile9} width={100} height={100} onClick={handleProfileClick} name='ISFP'/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container>
+                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
+                                                <Image src={profile.INTP ? profile10On : profile10} width={100} height={100} onClick={handleProfileClick} name='INTP'/>
+                                            </Grid>
+                                            <Grid style={{marginRight:'15px'}}>
+                                                <Image src={profile.ESTJ ? profile11On : profile11} width={100} height={100} onClick={handleProfileClick} name='ESTJ'/>
+                                            </Grid>
+                                            <Grid style={{}}>
+                                                <Image src={profile.INFJ ? profile12On : profile12} width={100} height={100} onClick={handleProfileClick} name='INFJ'/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container>
+                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
+                                                <Image src={profile.ENTJ ? profile13On : profile13} width={100} height={100} onClick={handleProfileClick} name='ENTJ'/>
+                                            </Grid>
+                                            <Grid style={{marginRight:'15px'}}>
+                                                <Image src={profile.ESTP ? profile14On : profile14} width={100} height={100} onClick={handleProfileClick} name='ESTP'/>
+                                            </Grid>
+                                            <Grid style={{}}>
+                                                <Image src={profile.ESFJ ? profile15On : profile15} width={100} height={100} onClick={handleProfileClick} name='ESFJ'/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container>
+                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
+                                                <Image src={profile.INTJ ? profile16On : profile16} width={100} height={100} onClick={handleProfileClick} name='INTJ'/>
+                                            </Grid>
+                                            <Grid style={{marginRight:'15px'}}>
+                                                <Image src={profile.ISFJ ? profile17On : profile17} width={100} height={100} onClick={handleProfileClick} name='ISFJ'/>
+                                            </Grid>
+                                            <Grid style={{}}>
+                                                <Image src={profile.ESFP ? profile18On : profile18} width={100} height={100} onClick={handleProfileClick} name='ESFP'/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </div> 
+                            </Container>
+                        </div>
+                    </div>
+                    <div name='한줄소개' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
+                        <div>
+                        <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px', justifyContent:'center'}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>한 줄 자기소개*</Typography>
+                            <div style={{margin:'10px 0px 0px 15px', zIndex:'2', textAlign:'center', position:'absolute'}}>
+                                <textarea
+                                maxLength={60}
+                                placeholder='e.g. 성대 NCT 팬이랑 같이 밥먹고 싶어요 :)'
+                                style={{width:'310px', height:'70px', backgroundColor:'transparent', fontSize:'12px', border:'none', outline:'none', resize:'none', fontFamily:'inherit'}}
+                                />
+                            </div>
+                            <div style={{position:'relative'}}>
+                                <Image src={textForm} width={330} height={71}/>
+                            </div>
+                        </Container>
+                        </div>
+                    </div>
+                    <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
+                        <div style={{paddingBottom:'50px', textAlign:'center'}}>
+                            <Image src={submitOk} width={296} height={45} onClick={handleSexClick} name='확인'/>
+                        </div>
                     </Container>
                 </Container>
         </ThemeProvider>
