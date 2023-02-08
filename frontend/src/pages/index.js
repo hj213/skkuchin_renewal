@@ -60,10 +60,10 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place) {
+        if (place && keyword != '' && user.toggle != null) {
           setFilteredPlace(place.filter((item) => item.campus === user.toggle));
         } else {
-          setFilteredPlace([]);
+          setFilteredPlace(null);
         }
     }, [place, user]);
 
@@ -168,6 +168,7 @@ export default function list(){
             setOpen({ bool:false,
                 visibility:'hidden'});
             setKeyword('');
+            setHeight('0');
             setPreventScroll('');
         }
     };
@@ -196,6 +197,7 @@ export default function list(){
             visibility:'hidden'});
         setCardStyle({cardVisibility:'hidden'});
         setKeyword('');
+        setHeight('0');
         setPreventScroll('');
     }
 
