@@ -2,18 +2,19 @@ import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
 
 export default async (req, res) => {
-    if(req.method == 'GET'){
+    if (req.method == 'GET') {
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
-
-        if(access == false){
+    
+        if (access == false) {
+            console.log('access 토큰이 존재하지 않습니다')
             return res.status(401).json({
-                error: 'User unauthorized to make this request'
+                error: '다시 로그인해주시기 바랍니다'
             });
         }
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/user/me`, {
+            const apiRes = await fetch(`${API_URL}/api/matching/me`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -22,23 +23,25 @@ export default async (req, res) => {
             });
             const resValue = await apiRes.json();
 
-            if(apiRes.status === 200){
+            if (apiRes.status === 200) {
                 return res.status(200).json({
-                    user: resValue.data
+                    matchingUser: resValue.data,
+                    success: resValue.message
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    error: resValue.error_message
+                    error: resValue.message
                 });
             }
             
         } catch (error) {
             console.log(error)
             return res.status(500).json({
-                error: 'Something went wrong when retrieving user'
+                error: 'Something went wrong when loading matching info'
             });
         }
     } else {
+        console.log(`Method ${req.method} now allowed`);
         res.setHeader('Allow', ['GET']);
         return res.status(405).json({
             error: `Method ${req.method} not allowed`

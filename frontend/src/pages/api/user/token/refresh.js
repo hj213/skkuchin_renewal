@@ -1,4 +1,4 @@
-import { API_URL} from '../../../config/index'
+import { API_URL} from '../../../../config/index'
 import cookie from 'cookie';
 
 export default async (req, res ) => {
@@ -6,9 +6,10 @@ export default async (req, res ) => {
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const refresh = cookies.refresh ?? false;
 
-        if (refresh === false) {
+        if (refresh == false) {
+            console.log('refresh 토큰이 존재하지 않습니다')
             return res.status(401).json({
-                error: "User unauthorized to make this request"
+                error: '다시 로그인해주시기 바랍니다'
             });
         }
 
@@ -44,20 +45,24 @@ export default async (req, res ) => {
                         }
                     )
                 ]);
+
+
                 return res.status(200).json({
-                    success: 'Refresh request successful'
+                    success: resValue.message
                 });
             }else{
                 return res.status(apiRes.status).json({
-                    error: 'Failed to fulfill refresh request'
+                    error: resValue.message
                 });
             }
         } catch (error) {
+            console.log(error);
             return res.status(500).json({
                 error: 'Something went wrong when trying to fulfill refresh request'
             });
         }
     } else{
+        console.log(`Method ${req.method} now allowed`);
         res.setHeader('Allow', ['GET']);
         return res.status(405).json(
             { error: `Method ${req.method} not allowed`}

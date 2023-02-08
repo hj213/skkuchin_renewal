@@ -23,7 +23,7 @@ export default async( req, res )=> {
         });
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/user/saves`, {
+            const apiRes = await fetch(`${API_URL}/api/user/save`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -33,11 +33,15 @@ export default async( req, res )=> {
             });
 
             const resValue = await apiRes.json();
-           
+
             if(apiRes.status === 201){
-                return res.status(201).json({success: 'Sign up successfully!'});
+                return res.status(201).json({
+                    success: resValue.message
+                });
             } else {
-                return res.status(apiRes.status).json({error: resValue.error_message});
+                return res.status(apiRes.status).json({
+                    error: resValue.message
+                });
             }
 
         } catch (error) {
@@ -46,6 +50,7 @@ export default async( req, res )=> {
             })
         }
     }else{
+        console.log(`Method ${req.method} now allowed`);
         res.setHeader('Allow', ['POST']);
         return res.status(405).json({ 'error' : `Method ${req.method} not allowed`});
     }

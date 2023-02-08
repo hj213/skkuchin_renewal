@@ -1,4 +1,4 @@
-import { API_URL } from '../../../config/index';
+import { API_URL } from '../../../../config/index';
 import cookie from 'cookie';
 
 export default async (req, res) => {
@@ -6,9 +6,10 @@ export default async (req, res) => {
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
 
-        if (access === false) {
-            return res.status(403).json({
-                error: 'User forbidden from making the request'
+        if (access == false) {
+            console.log('access 토큰이 존재하지 않습니다')
+            return res.status(401).json({
+                error: '다시 로그인해주시기 바랍니다'
             });
         }
 
@@ -21,11 +22,15 @@ export default async (req, res) => {
                 }
             });
 
+            const resValue = await apiRes.json();
+
             if (apiRes.status === 200) {
-                return res.status(200).json({ success: 'Authenticated successfully' });
+                return res.status(200).json({ 
+                    success: resValue.message
+                });
             } else {
                 return res.status(apiRes.status).json({
-                    error: 'Failed to authenticate'
+                    error: resValue.message
                 });
             }
         } catch(error) {
@@ -34,6 +39,7 @@ export default async (req, res) => {
             });
         }
     } else {
+        console.log(`Method ${req.method} now allowed`);
         res.setHeader('Allow', ['GET']);
         return res.status(405).json({ error: `Method ${req.method} not allowed` });
     }

@@ -1,13 +1,6 @@
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    RESET_REGISTER_SUCCESS,
-    EMAIL_SEND_SUCCESS,
-    EMAIL_SEND_FAIL,
-    RESET_EMAIL_SEND_SUCCESS,
-    EMAIL_AUTH_SUCCESS,
-    EMAIL_AUTH_FAIL,
-    RESET_EMAIL_AUTH_SUCCESS,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
@@ -22,28 +15,26 @@ import {
     REMOVE_AUTH_LOADING,
     CHECK_USERNAME_SUCCESS,
     CHECK_USERNAME_FAIL,
-    RESET_CHECK_USERNAME_SUCCESS,
     CHECK_NICKNAME_SUCCESS,
     CHECK_NICKNAME_FAIL,
-    RESET_CHECK_NICKNAME_SUCCESS,
+    CHANGE_USER_SUCCESS,
+    CHANGE_USER_FAIL,
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_FAIL,
-    RESET_CHANGE_PASSWORD_SUCCESS,
-    CHANGE_CAMPUS_TOGGLE_SUCCESS,
-    CHANGE_CAMPUS_TOGGLE_FAIL
+    CHANGE_TOGGLE_SUCCESS,
+    CHANGE_TOGGLE_FAIL,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAIL,
+    FIND_USERNAME_SUCCESS,
+    FIND_USERNAME_FAIL,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_FAIL
 } from '../actions/auth/types';
 
 const initialState = {
     user: null,
-    email_sent: false,
-    email_auth: false,
     isAuthenticated: false,
-    loading: false,
-    register_success: false,
-    username_check: false,
-    nickname_check: false,
-    password_change: false,
-    campus_toggle: false
+    loading: false
 };
 
 const authReducer = (state = initialState, action) => {
@@ -52,50 +43,15 @@ const authReducer = (state = initialState, action) => {
     switch(type) {
         case REGISTER_SUCCESS:
             return {
-                ...state,
-                register_success: true
+                ...state
             }
         case REGISTER_FAIL:
             return {
-                ...state,
+                ...state
             }
-        case RESET_REGISTER_SUCCESS:
-            return {
-                ...state,
-                register_success: false
-            }
-        case EMAIL_SEND_SUCCESS:
-            return {
-                ...state,
-                isEmailSent: true
-            }
-        case EMAIL_SEND_FAIL:
-            return {
-                ...state,
-            }
-        case RESET_EMAIL_SEND_SUCCESS:
-            return {
-                ...state,
-                isEmailSent: false
-            }  
-        case EMAIL_AUTH_SUCCESS:
-            return {
-                ...state,
-                isEmailAuthenticated: true
-            }
-        case EMAIL_AUTH_FAIL:
-            return {
-                ...state,
-            }
-        case RESET_EMAIL_AUTH_SUCCESS:
-            return {
-                ...state,
-                isEmailAuthenticated: false
-            }  
         case LOGIN_SUCCESS:
             return {
-                ...state,
-                isAuthenticated: true
+                ...state
             }
         case LOGIN_FAIL:
             return {
@@ -115,11 +71,13 @@ const authReducer = (state = initialState, action) => {
         case LOAD_USER_SUCCESS:
             return {
                 ...state,
+                isAuthenticated: true,
                 user: payload.user
             }
         case LOAD_USER_FAIL:
             return {
                 ...state,
+                isAuthenticated: false,
                 user: null
             }
         case AUTHENTICATED_SUCCESS:
@@ -155,55 +113,71 @@ const authReducer = (state = initialState, action) => {
             }
         case CHECK_USERNAME_SUCCESS:
             return {
-                ...state,
-                username_check: true
+                ...state
             }
         case CHECK_USERNAME_FAIL:
             return {
-                ...state,
-            }
-        case RESET_CHECK_USERNAME_SUCCESS:
-            return {
-                ...state,
-                username_check: false
+                ...state
             }
         case CHECK_NICKNAME_SUCCESS:
             return {
-                ...state,
-                nickname_check: true
+                ...state
             }
         case CHECK_NICKNAME_FAIL:
             return {
-                ...state,
+                ...state
             }
-        case RESET_CHECK_NICKNAME_SUCCESS:
+        case CHANGE_USER_SUCCESS:
             return {
-                ...state,
-                nickname_check: false
+                ...state
+            }
+        case CHANGE_USER_FAIL:
+            return {
+                ...state
             }
         case CHANGE_PASSWORD_SUCCESS:
             return {
-                ...state,
-                password_change: true
+                ...state
             }
         case CHANGE_PASSWORD_FAIL:
             return {
-                ...state,
+                ...state
             }
-        case RESET_CHANGE_PASSWORD_SUCCESS:
+        case CHANGE_TOGGLE_SUCCESS:
+            return {
+                ...state
+            }
+        case CHANGE_TOGGLE_FAIL:
+            return {
+                ...state
+            }
+        case DELETE_USER_SUCCESS:
+            return {
+                ...state
+            }
+        case DELETE_USER_FAIL:
+            return {
+                ...state
+            }
+        case FIND_USERNAME_SUCCESS:
             return {
                 ...state,
-                password_change: false
+                user: {
+                    username: payload.username
+                }
             }
-        case CHANGE_CAMPUS_TOGGLE_SUCCESS:
+        case FIND_USERNAME_FAIL:
             return {
-                ...state,
-                campus_toggle: true
+                ...state
             }
-        case CHANGE_CAMPUS_TOGGLE_FAIL:
+        case RESET_PASSWORD_SUCCESS:
             return {
-                ...state,
+                ...state
             }
+        case RESET_PASSWORD_FAIL:
+            return {
+                ...state
+                }
         default:
             return state;
     };
