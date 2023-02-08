@@ -261,9 +261,10 @@ export const check_username = (username, callback) => async dispatch => {
 
     try {
         const res = await fetch('/api/user/check/username', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: body
         });
@@ -299,9 +300,10 @@ export const check_nickname = (nickname, callback) => async dispatch => {
 
     try {
         const res = await fetch('/api/user/check/nickname', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: body
         });
@@ -337,9 +339,10 @@ export const change_user = (nickname, major, callback) => async dispatch => {
 
     try {
         const res = await fetch('/api/user/me', {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: body
         });
@@ -478,7 +481,7 @@ export const find_username = (email, callback) => async dispatch => {
 
     try {
         const res = await fetch('/api/user/find/username', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

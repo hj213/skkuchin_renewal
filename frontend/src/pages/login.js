@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
-import { login, find_username } from "../actions/auth/auth";
+import { login, find_username, check_nickname, check_username } from "../actions/auth/auth";
 import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
 
@@ -36,15 +36,7 @@ const LoginPage = () => {
         e.preventDefault();
 
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            // dispatch(login(username, password, ([result, message]) => {
-            //     if (result) {
-            //         alert(message);
-            //     } else {
-            //         alert(message);
-            //     }
-            // }));
-
-            dispatch(find_username("test", ([result, message]) => {
+            dispatch(login(username, password, ([result, message]) => {
                 if (result) {
                     alert(message);
                 } else {

@@ -171,19 +171,19 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "특정 유저 삭제 완료", null), HttpStatus.OK);
     }
 
-    @GetMapping("/check/username")
+    @PostMapping("/check/username")
     public ResponseEntity<?> checkUsername(@RequestBody Map<String, String> usernameMap) {
         userService.checkUsername(usernameMap.get("username"));
         return new ResponseEntity<>(new CMRespDto<>(1, "사용 가능한 아이디입니다", true), HttpStatus.OK);
     }
 
-    @GetMapping("/check/nickname")
+    @PostMapping("/check/nickname")
     public ResponseEntity<?> checkNickName(@RequestBody Map<String, String> nicknameMap) {
         userService.checkNickname(nicknameMap.get("nickname"));
         return new ResponseEntity<>(new CMRespDto<>(1, "사용 가능한 닉네임입니다", true), HttpStatus.OK);
     }
 
-    @GetMapping("/find/username")
+    @PostMapping("/find/username")
     public ResponseEntity<?> findUsername(@RequestBody Map<String, String> emailMap) {
         String username = userService.findUsername(emailMap.get("email"));
         System.out.println(username);
