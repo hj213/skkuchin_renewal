@@ -12,5 +12,7 @@ public class CustomRuntimeException extends RuntimeException{
         this.content = content;
     }
 
-    public String getContent() { return content; }
+    public String getContent() {
+        return content;
+    }
 }

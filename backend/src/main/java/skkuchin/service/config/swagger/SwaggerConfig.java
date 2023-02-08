@@ -20,6 +20,25 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
 
     @Bean
+    public Docket apiV0(){
+        return new Docket(DocumentationType.OAS_30)
+                .useDefaultResponseMessages(false)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .securityContexts(Arrays.asList(securityContext())) // swagger에서 jwt 토큰값 넣기위한 설정
+                .securitySchemes(Arrays.asList(apiKey())) // swagger에서 jwt 토큰값 넣기위한 설정
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
+                .groupName("user")
+                .select()
+                .apis(RequestHandlerSelectors.
+                        basePackage("skkuchin.service.api.controller"))
+                .paths(PathSelectors.ant("/api/user/**"))
+                .build();
+    }
+
+    @Bean
     public Docket apiV1(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
@@ -30,11 +49,11 @@ public class SwaggerConfig {
             .securitySchemes(Arrays.asList(apiKey())) // swagger에서 jwt 토큰값 넣기위한 설정
             .consumes(getConsumeContentTypes())
             .produces(getProduceContentTypes())
-            .groupName("user")
+            .groupName("email")
             .select()
             .apis(RequestHandlerSelectors.
                     basePackage("skkuchin.service.api.controller"))
-            .paths(regex("/api/(user|users|token|email|confirmEmail)/.*"))
+            .paths(PathSelectors.ant("/api/email/**"))
             .build();
     }
 

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
@@ -65,6 +66,9 @@ public class ReviewService {
     @Transactional
     public void write(AppUser user, ReviewDto.PostRequest dto) {
         List<ReviewImage> reviewImages = new ArrayList<>();
+
+        List<Review> myReview = reviewRepo.findByUserIdAndPlaceId(user.getId(), dto.getPlaceId());
+        if (myReview.size() > 0) throw new CustomRuntimeException("리뷰 작성 실패", "이미 리뷰를 작성했습니다.");
 
         Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
         Review review = dto.toEntity(user, place);
