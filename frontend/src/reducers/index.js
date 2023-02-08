@@ -5,6 +5,7 @@ import menuReducer from './menu';
 import placeReducer from './place';
 import reviewReducer from './review';
 import candidateReducer from './candidate';
+import matchingUserReducer from './matchingUser';
 
 export default combineReducers({
     auth: authReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     place: placeReducer,
     menu: menuReducer,
     review: reviewReducer,
-    candidate: candidateReducer
+    candidate: candidateReducer,
+    matchinUser: matchingUserReducer
 });

@@ -4,7 +4,7 @@ import {
 } 
     from './types';
 
-export const load_candidate = () => async dispatch => {
+export const load_candidate = (callback) => async dispatch => {
     try {
         const res = await fetch('/api/candidate',{
             method: 'GET',
@@ -23,13 +23,13 @@ export const load_candidate = () => async dispatch => {
             if (callback) callback([true, data.success]);
         }else {
             dispatch({
-                type: LOAD_CANDIDATE_FAIL,
-                payload: data
+                type: LOAD_CANDIDATE_FAIL
             });
             if (callback) callback([false, data.error]);
         }
 
     } catch (error) {
+        console.log(error);
         dispatch({
             type: LOAD_CANDIDATE_FAIL
         });

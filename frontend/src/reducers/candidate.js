@@ -14,13 +14,11 @@ const candidateReducer = (state = initialState, action) => {
         case LOAD_CANDIDATE_SUCCESS:
             return {
                 ...state,
-                candidate: payload.candidate,
-                message: payload.success
+                candidate: payload.candidate
             }
         case LOAD_CANDIDATE_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         default:
             return state;
