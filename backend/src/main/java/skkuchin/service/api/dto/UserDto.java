@@ -53,12 +53,10 @@ public class UserDto {
                     .nickname(this.nickname)
                     .username(this.username)
                     .password(this.password)
-                    //.email(this.email)
                     .studentId(this.studentId)
                     .major(this.major)
                     .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
-                    //.roles(new ArrayList<>())
                     .emailAuth(false)
                     .build();
         }
