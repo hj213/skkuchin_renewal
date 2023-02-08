@@ -28,16 +28,19 @@
 
 <br>
 
-
-## 스프링 로컬 실행 시 rabbitmq 따로 실행
-1. docker-compose -f docker-compose.rabbitmq.yml up
-
-<br>
-
 ## 스프링 빌드
 1. backend 폴더로 이동
 2. ./gradlew clean build -x test 입력
 
+<br>
+
+## 스프링 로컬에서 실행 시
+1. chat.yml에서 host: localhost로 교체하기
+2. application.yml에서 본인 datasource로 주석 풀기
+3. skkuchin_renewal에서 docker-compose -f docker-compose.rabbitmq.yml up 입력 (채팅서버만 도커 올림)
+4. 스프링 실행
+5. 빌드 필요한 경우 1-2번 되돌려놓고 빌드하기
+6. pr 보낼 시에는 1-2번 되돌려놓기!!
 
 <br>
 
