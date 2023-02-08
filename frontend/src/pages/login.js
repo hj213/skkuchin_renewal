@@ -35,12 +35,8 @@ const LoginPage = () => {
     const onSubmit = e => {
         e.preventDefault();
 
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            if (dispatch(login(username, password))) {
-                alert("gogo!!!");
-            } else {
-                alert("nono!!!");
-            }
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(login(username, password));
         }
     };
 

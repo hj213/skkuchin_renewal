@@ -65,29 +65,27 @@ export const register = (
             body: body
         });
 
+        const data = await res.json();
+
         dispatch({
             type: REMOVE_AUTH_LOADING
         });
-
+        
         if (res.status === 201) {
             dispatch({
                 type: REGISTER_SUCCESS
             });
-            
-            return true;
         } else {
             dispatch({
                 type: REGISTER_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: REGISTER_FAIL
         });
-        return false;
     }
 };
 
@@ -127,14 +125,12 @@ export const login = (username, password) => async dispatch => {
                 type: LOGIN_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: LOGIN_FAIL
         });
-        return false;
     }
 };
 
@@ -180,13 +176,11 @@ export const load_user = () => async dispatch => {
                 type: LOAD_USER_SUCCESS,
                 payload: data
             });
-            return true;
         } else {
             dispatch({
                 type: LOAD_USER_FAIL,
                 payload: data
             });
-            return false;
         }
 
     } catch (error) {
@@ -194,7 +188,6 @@ export const load_user = () => async dispatch => {
         dispatch({
             type: LOAD_USER_FAIL
         });
-        return false;
     }
 }
 
@@ -278,20 +271,17 @@ export const check_username = (username) => async dispatch => {
                 type: CHECK_USERNAME_SUCCESS,
                 payload: data
             });
-            return true;
         } else{
             dispatch({
                 type: CHECK_USERNAME_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHECK_USERNAME_FAIL
         });
-        return false;
     }
 }
 
@@ -316,20 +306,17 @@ export const check_nickname = (nickname) => async dispatch => {
                 type: CHECK_NICKNAME_SUCCESS,
                 payload: data
             });
-            return true;
         } else{
             dispatch({
                 type: CHECK_NICKNAME_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHECK_NICKNAME_FAIL
         });
-        return false;
     }
 }
 
@@ -353,20 +340,17 @@ export const change_user = (nickname, major) => async dispatch => {
             dispatch({
                 type: CHANGE_USER_SUCCESS
             });
-            return true;
         } else{
             dispatch({
                 type: CHANGE_USER_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHANGE_USER_FAIL
         });
-        return false;
     }
 }
 
@@ -394,20 +378,17 @@ export const change_password = (password, new_password, new_re_password) => asyn
                 type: CHANGE_PASSWORD_SUCCESS,
                 payload: data
             });
-            return true;
         } else{
             dispatch({
                 type: CHANGE_PASSWORD_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHANGE_PASSWORD_FAIL
         });
-        return false;
     }
 }
 
@@ -457,20 +438,17 @@ export const delete_user = () => async dispatch => {
                 type: DELETE_USER_SUCCESS,
                 payload: data
             });
-            return true;
         } else {
             dispatch({
                 type: DELETE_USER_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: DELETE_USER_FAIL
         });
-        return false;
     }
 }
 
@@ -495,20 +473,17 @@ export const find_username = (email) => async dispatch => {
             dispatch({
                 type: FIND_USERNAME_SUCCESS
             });
-            return true;
         } else {
             dispatch({
                 type: FIND_USERNAME_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: FIND_USERNAME_FAIL
         });
-        return false;
     }
 }
 
@@ -535,19 +510,16 @@ export const reset_password = (new_password, new_re_password) => async dispatch 
                 type: RESET_PASSWORD_SUCCESS,
                 payload: data
             });
-            return true;
         } else {
             dispatch({
                 type: RESET_PASSWORD_FAIL,
                 payload: data
             });
-            return false;
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: RESET_PASSWORD_FAIL
         });
-        return false;
     }
 }

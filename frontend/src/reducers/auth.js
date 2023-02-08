@@ -54,8 +54,7 @@ const authReducer = (state = initialState, action) => {
             }
         case LOGIN_SUCCESS:
             return {
-                ...state,
-                isAuthenticated: true
+                ...state
             }
         case LOGIN_FAIL:
             return {
@@ -76,11 +75,13 @@ const authReducer = (state = initialState, action) => {
         case LOAD_USER_SUCCESS:
             return {
                 ...state,
+                isAuthenticated: true,
                 user: payload.user
             }
         case LOAD_USER_FAIL:
             return {
                 ...state,
+                isAuthenticated: false,
                 user: null
             }
         case AUTHENTICATED_SUCCESS:
@@ -175,7 +176,6 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 username: payload.username
-
             }
         case FIND_USERNAME_FAIL:
             return {
@@ -186,7 +186,6 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 message: payload.success
-
             }
         case RESET_PASSWORD_FAIL:
             return {
