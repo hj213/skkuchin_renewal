@@ -117,7 +117,7 @@ public class UserController {
                 UserDto.TokenResponse response = new UserDto.TokenResponse(access, refresh);
                 return new ResponseEntity<>(new CMRespDto<>(1, "access token 재발급 완료", response), HttpStatus.OK);
             } catch (SignatureVerificationException e) {
-                throw new CustomValidationApiException("토큰이 유효하지 않습니다");
+                throw new CustomValidationApiException("자동 로그인 기간이 만료되어 로그인 페이지로 이동합니다");
             } catch (JWTDecodeException e) {
                 throw new CustomValidationApiException("토큰 형식이 올바르지 않습니다");
             }
@@ -129,7 +129,6 @@ public class UserController {
     @GetMapping("/me")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        System.out.println(principalDetails);
         AppUser user = principalDetails.getUser();
         UserDto.Response userResp = userService.getUser(user.getId());
         return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 상세 정보 조회 완료", userResp), HttpStatus.OK);
@@ -162,7 +161,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         userService.deleteUser(user.getId());
-        return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 삭제 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "회원 탈퇴되었습니다", null), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
@@ -196,7 +195,7 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@Valid @RequestBody UserDto.PutPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long userId = principalDetails.getUser().getId();
         userService.updatePassword(dto, userId);
-        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 변경 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호가 변경되었습니다", null), HttpStatus.OK);
     }
 
     @PutMapping("/password/reset")
@@ -204,7 +203,7 @@ public class UserController {
     public ResponseEntity<?> resetPassword(@Valid @RequestBody UserDto.ResetPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long userId = principalDetails.getUser().getId();
         userService.resetPassword(dto, userId);
-        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호가 초기화되었습니다", null), HttpStatus.OK);
     }
 
     @PutMapping("/toggle")

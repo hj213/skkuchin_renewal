@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
-import { login, reset_register_success } from "../actions/auth/auth";
+import { login } from "../actions/auth/auth";
 import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
 
@@ -30,21 +30,18 @@ const LoginPage = () => {
         password,
     } = formData;
 
-
-    useEffect( () => {
-        if(dispatch && dispatch !== null && dispatch !== undefined)
-            dispatch(reset_register_success());
-    }, [dispatch]);
-
     const onChange = e => setFormData({...formData, [e.target.name]: e.target.value});
 
     const onSubmit = e => {
         e.preventDefault();
 
         if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(login(username, password))
+            if (dispatch(login(username, password))) {
+                alert("gogo!!!");
+            } else {
+                alert("nono!!!");
+            }
         }
-       
     };
 
     if (typeof window !== 'undefined' && isAuthenticated){
