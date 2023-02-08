@@ -18,6 +18,22 @@
 
 <br>
 
+## 백엔드 컨테이너만 빌드 후 재시작
+   docker-compose stop server && docker-compose rm server -f && docker-compose up server --build
+
+<br>
+
+## 프론트 컨테이너만 빌드 후 재시작
+docker-compose stop client && docker-compose rm client -f && docker-compose up client --build
+
+<br>
+
+
+## 스프링 로컬 실행 시 도커 따로 실행
+1. docker-compose -f docker-compose.rabbitmq.yml up
+
+<br>
+
 ## 스프링 빌드
 1. backend 폴더로 이동
 2. ./gradlew clean build -x test 입력
