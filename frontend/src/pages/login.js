@@ -42,7 +42,7 @@ const LoginPage = () => {
 
     if (typeof window !== 'undefined' && isAuthenticated){
         router.push('/dashboard');
-    } 
+    }
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
