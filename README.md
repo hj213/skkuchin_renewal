@@ -19,12 +19,12 @@
 <br>
 
 ## 백엔드 컨테이너만 빌드 후 재시작
-- docker-compose stop server && docker-compose rm server -f && docker-compose up server -d --build
+- docker-compose stop server && docker-compose rm server -f && docker-compose up server -d --build && docker volume prune -f && docker image prune -f
 
 <br>
 
 ## 프론트 컨테이너만 빌드 후 재시작
-- docker-compose stop client && docker-compose rm client -f && docker-compose up client -d --build
+- docker-compose stop client && docker-compose rm client -f && docker-compose up client -d --build && docker volume prune -f && docker image prune -f
 
 <br>
 
