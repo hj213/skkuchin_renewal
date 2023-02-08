@@ -207,7 +207,7 @@ public class UserService {
     @Transactional
     public void updateToggleValue(Campus campus, Long userId) {
         if (campus == null) {
-            throw new CustomRuntimeException("아이디를 입력하여주시기 바랍니다", "아이디 중복확인 실패");
+            throw new CustomRuntimeException("캠퍼스를 입력하여주시기 바랍니다", "토글 변경 실패");
         }
 
         AppUser user = userRepo.findById(userId).orElseThrow();

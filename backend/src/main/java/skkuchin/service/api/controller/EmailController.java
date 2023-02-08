@@ -34,7 +34,7 @@ public class EmailController {
         return ResponseEntity.ok().body(emailService.confirmSignup(requestDto));
     }
 
-    @GetMapping("/signup/check")
+    @PostMapping("/signup/check")
     public ResponseEntity<?> checkSignup(@RequestBody Map<String, String> usernameMap) {
         emailService.checkSignup(usernameMap.get("username"));
         return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 이메일 인증 완료", true), HttpStatus.OK);
@@ -51,7 +51,7 @@ public class EmailController {
         return ResponseEntity.ok().body(emailService.confirmPassword(requestDto));
     }
 
-    @GetMapping("/password/check")
+    @PostMapping("/password/check")
     public ResponseEntity<?> checkPassword(@RequestBody Map<String, String> emailMap) {
         emailService.checkPassword(emailMap.get("email"));
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호 초기화 이메일 인증 완료", true), HttpStatus.OK);
