@@ -89,7 +89,7 @@ export const register = (
     }
 };
 
-export const login = (username, password) => async dispatch => {
+export const login = (username, password, callback) => async dispatch => {
     const body = JSON.stringify({
         username,
         password
@@ -117,20 +117,24 @@ export const login = (username, password) => async dispatch => {
 
         if (res.status === 200) {
             dispatch({
-                type: LOGIN_SUCCESS
+                type: LOGIN_SUCCESS,
+                payload: data
             });
             dispatch(load_user());
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: LOGIN_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: LOGIN_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 
@@ -250,16 +254,17 @@ export const request_refresh = () => async dispatch => {
     }
 }
 
-export const check_username = (username) => async dispatch => {
+export const check_username = (username, callback) => async dispatch => {
     const body = JSON.stringify({
         username
     });
 
     try {
         const res = await fetch('/api/user/check/username', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: body
         });
@@ -271,30 +276,34 @@ export const check_username = (username) => async dispatch => {
                 type: CHECK_USERNAME_SUCCESS,
                 payload: data
             });
+            if (callback) callback([true, data.success]);
         } else{
             dispatch({
                 type: CHECK_USERNAME_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHECK_USERNAME_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
-export const check_nickname = (nickname) => async dispatch => {
+export const check_nickname = (nickname, callback) => async dispatch => {
     const body = JSON.stringify({
         nickname
     });
 
     try {
         const res = await fetch('/api/user/check/nickname', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: body
         });
@@ -306,30 +315,34 @@ export const check_nickname = (nickname) => async dispatch => {
                 type: CHECK_NICKNAME_SUCCESS,
                 payload: data
             });
+            if (callback) callback([true, data.success]);
         } else{
             dispatch({
                 type: CHECK_NICKNAME_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHECK_NICKNAME_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
-export const change_user = (nickname, major) => async dispatch => {
+export const change_user = (nickname, major, callback) => async dispatch => {
     const body = JSON.stringify({
         nickname, major
     });
 
     try {
         const res = await fetch('/api/user/me', {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: body
         });
@@ -340,21 +353,24 @@ export const change_user = (nickname, major) => async dispatch => {
             dispatch({
                 type: CHANGE_USER_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else{
             dispatch({
                 type: CHANGE_USER_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHANGE_USER_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
-export const change_password = (password, new_password, new_re_password) => async dispatch => {
+export const change_password = (password, new_password, new_re_password, callback) => async dispatch => {
     const body = JSON.stringify({
         password,
         new_password,
@@ -378,17 +394,20 @@ export const change_password = (password, new_password, new_re_password) => asyn
                 type: CHANGE_PASSWORD_SUCCESS,
                 payload: data
             });
+            if (callback) callback([true, data.success]);
         } else{
             dispatch({
                 type: CHANGE_PASSWORD_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHANGE_PASSWORD_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
@@ -424,7 +443,7 @@ export const change_toggle = (campus) => async dispatch => {
     }
 }
 
-export const delete_user = () => async dispatch => {
+export const delete_user = (callback) => async dispatch => {
 
     try {
         const res = await fetch('/api/user/me', {
@@ -438,28 +457,31 @@ export const delete_user = () => async dispatch => {
                 type: DELETE_USER_SUCCESS,
                 payload: data
             });
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: DELETE_USER_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: DELETE_USER_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
-export const find_username = (email) => async dispatch => {
+export const find_username = (email, callback) => async dispatch => {
     const body = JSON.stringify({
         email
     });
 
     try {
         const res = await fetch('/api/user/find/username', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -473,21 +495,24 @@ export const find_username = (email) => async dispatch => {
             dispatch({
                 type: FIND_USERNAME_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: FIND_USERNAME_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: FIND_USERNAME_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
-export const reset_password = (new_password, new_re_password) => async dispatch => {
+export const reset_password = (new_password, new_re_password, callback) => async dispatch => {
     const body = JSON.stringify({
         new_password,
         new_re_password
@@ -510,16 +535,19 @@ export const reset_password = (new_password, new_re_password) => async dispatch 
                 type: RESET_PASSWORD_SUCCESS,
                 payload: data
             });
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: RESET_PASSWORD_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: RESET_PASSWORD_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }

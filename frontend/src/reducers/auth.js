@@ -33,10 +33,8 @@ import {
 
 const initialState = {
     user: null,
-    username: null,
     isAuthenticated: false,
-    loading: false,
-    message: null
+    loading: false
 };
 
 const authReducer = (state = initialState, action) => {
@@ -49,8 +47,7 @@ const authReducer = (state = initialState, action) => {
             }
         case REGISTER_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         case LOGIN_SUCCESS:
             return {
@@ -59,8 +56,7 @@ const authReducer = (state = initialState, action) => {
         case LOGIN_FAIL:
             return {
                 ...state,
-                isAuthenticated: false,
-                message: payload.error
+                isAuthenticated: false
             }
         case LOGOUT_SUCCESS:
             return {
@@ -103,8 +99,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthenticated: false,
-                user: null,
-                message: payload.error
+                user: null
             }
         case SET_AUTH_LOADING:
             return {
@@ -118,23 +113,19 @@ const authReducer = (state = initialState, action) => {
             }
         case CHECK_USERNAME_SUCCESS:
             return {
-                ...state,
-                message: payload.success
+                ...state
             }
         case CHECK_USERNAME_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         case CHECK_NICKNAME_SUCCESS:
             return {
-                ...state,
-                message: payload.success
+                ...state
             }
         case CHECK_NICKNAME_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         case CHANGE_USER_SUCCESS:
             return {
@@ -142,18 +133,15 @@ const authReducer = (state = initialState, action) => {
             }
         case CHANGE_USER_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         case CHANGE_PASSWORD_SUCCESS:
             return {
-                ...state,
-                message: payload.success
+                ...state
             }
         case CHANGE_PASSWORD_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         case CHANGE_TOGGLE_SUCCESS:
             return {
@@ -169,28 +157,26 @@ const authReducer = (state = initialState, action) => {
             }
         case DELETE_USER_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         case FIND_USERNAME_SUCCESS:
             return {
                 ...state,
-                username: payload.username
+                user: {
+                    username: payload.username
+                }
             }
         case FIND_USERNAME_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
             }
         case RESET_PASSWORD_SUCCESS:
             return {
-                ...state,
-                message: payload.success
+                ...state
             }
         case RESET_PASSWORD_FAIL:
             return {
-                ...state,
-                message: payload.error
+                ...state
                 }
         default:
             return state;

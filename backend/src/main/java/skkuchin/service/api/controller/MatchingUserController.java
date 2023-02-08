@@ -25,14 +25,14 @@ public class MatchingUserController {
     public ResponseEntity<?> addInfo(@Valid @RequestBody MatchingUserDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         matchingUserService.addInfo(user.getId(), dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력 완료", null), HttpStatus.CREATED);
     }
 
     @PostMapping("/user/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> addUserInfo(@PathVariable Long userId, @Valid @RequestBody MatchingUserDto.Request dto) {
         matchingUserService.addInfo(userId, dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "다른 사용자의 추가 정보 입력 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "다른 사용자의 추가 정보 입력 완료", null), HttpStatus.CREATED);
     }
 
     @GetMapping("/user/me")
