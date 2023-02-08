@@ -213,7 +213,6 @@ public class UserController {
         userService.updateToggleValue(campusMap.get("campus"), userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "토글값 변경 완료", null), HttpStatus.OK);
     }
-
 }
 
 
