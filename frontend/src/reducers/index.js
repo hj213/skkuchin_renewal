@@ -4,6 +4,7 @@ import favoriteReducer from './favorite';
 import menuReducer from './menu';
 import placeReducer from './place';
 import reviewReducer from './review';
+import candidateReducer from './candidate';
 
 export default combineReducers({
     auth: authReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
     place: placeReducer,
     menu: menuReducer,
     review: reviewReducer,
+    candidate: candidateReducer
 });
