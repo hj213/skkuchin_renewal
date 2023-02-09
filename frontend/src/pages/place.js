@@ -19,6 +19,7 @@ import ReviewStar from '../components/ReviewStar'
 import TagList from "../components/TagList";
 import SearchBox from "../components/SearchBox";
 import { displayReviewTag } from "../components/TagList";
+import Link from 'next/link';
 
 const PlacePage = () => {
     
@@ -138,7 +139,7 @@ const PlacePage = () => {
 
     // Favorite 관리
     const isFavorite = (placeId) => {
-        return favorites.some(favorite => favorite.place_id == placeId);
+        return favorites ? favorites.some(favorite => favorite.place_id == placeId) : null;
     }
     
     const handleFavClick = (placeId) => {
@@ -165,6 +166,13 @@ const PlacePage = () => {
         setKeyword(id);
         router.push(`/?keyword=${id}`);
     }
+
+    // to enrollReveiw.js Page
+
+    const handleReviewClick = (e) => {
+        e.preventDefault();
+    };
+        
     
     return (
         <ThemeProvider theme={theme}>
@@ -387,11 +395,24 @@ const PlacePage = () => {
                             </li> 
                             )) : null }
                         </Container>
-                        
+                        { places ? places.filter(item => item.id == place_id).map(item => (
+                            <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                <Link href={`enrollReview?id=${item.id}`} key={item.id}>
+                                    <div>
+                                    <ReviewStar />
+                                    </div>
+                                </Link>
+                        </li>)):null}
                         </div>
-                        <Grid>
-                            <ReviewStar />
-                        </Grid>
+
+                        { places ? places.filter(item => item.id == place_id).map(item => (
+                            <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                <Link href={`reviews?id=${item.id}`} key={item.id}>
+                                    <div style={{textAlign:'right'}}>
+                                        후기 더보기 &gt;
+                                    </div>
+                                </Link>
+                        </li>)):null}
                     </Card>
                 </Container>
                 </div>

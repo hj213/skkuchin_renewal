@@ -18,6 +18,9 @@ import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 
+// 상단바
+import UpperBar from "../components/UpperBar"
+
 export default function list(){
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -60,10 +63,10 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place) {
+        if (place && keyword != '' && user.toggle != null) {
           setFilteredPlace(place.filter((item) => item.campus === user.toggle));
         } else {
-          setFilteredPlace([]);
+          setFilteredPlace(null);
         }
     }, [place, user]);
 
@@ -168,6 +171,7 @@ export default function list(){
             setOpen({ bool:false,
                 visibility:'hidden'});
             setKeyword('');
+            setHeight('0');
             setPreventScroll('');
         }
     };
@@ -196,6 +200,7 @@ export default function list(){
             visibility:'hidden'});
         setCardStyle({cardVisibility:'hidden'});
         setKeyword('');
+        setHeight('0');
         setPreventScroll('');
     }
 
@@ -206,13 +211,14 @@ export default function list(){
     //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-        // console.log(focus); 확인용
+        // console.log(focus); //확인용
     }
 
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
+        <UpperBar />
             <div style={{ position: 'relative', height:'100%'}}>  
             <Container style={{position:'absolute', zIndex:'2'}} >
                 <SearchBox openID={openID} handleFocus={handleFocus} />   

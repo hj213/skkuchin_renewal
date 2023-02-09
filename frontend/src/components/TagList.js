@@ -95,39 +95,39 @@ const TagList = ({keyword, onTagClick}) => {
                         onTagClick(target.id);
                     }
                     }}>
-                    <Grid item style={{filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block', flexShrink: 0, paddingRight: '5px' }}>
+                    <Grid item style={{filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block', flexShrink: 0, paddingRight: '5px' }}>
                         { (keyword == "학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
                         : <Image id={"학생 할인"} src={mapTag1} width={88} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px' }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px' }}>
                         { (keyword == "스페셜") ? <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
                         : <Image id={"스페셜"} src={mapTag2} width={76} height={36}/>}
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
                         { (keyword == "한식") ? <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
                         : <Image id={"한식"} src={mapTag3} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { (keyword == "중식") ? <Image id={"중식"} src={mapTagOn4} width={64} height={36}/>
                         : <Image id={"중식"} src={mapTag4} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { (keyword == "일식") ? <Image id={"일식"} src={mapTagOn5} width={64} height={36}/>
                         : <Image id={"일식"} src={mapTag5} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { (keyword == "양식") ? <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
                         : <Image id={"양식"} src={mapTag6} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { (keyword == "기타") ? <Image id={"기타"} src={mapTagOn7} width={64} height={36}/>
                         : <Image id={"기타"} src={mapTag7} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { (keyword == "간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
                         : <Image id={"간단한 한 끼"} src={mapTag8} width={132} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0 }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0 }}>
                         { (keyword == "분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
                         : <Image id={"분위기 좋은"} src={mapTag9} width={128} height={36} /> }
                     </Grid>
