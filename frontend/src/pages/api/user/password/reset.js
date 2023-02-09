@@ -4,11 +4,11 @@ export default async (req, res) => {
     if (req.method === 'PUT') {
 
         const { 
-            new_password, new_re_password
+            email, new_password, new_re_password
         } = req.body;
 
         const body = JSON.stringify({
-            new_password, new_re_password
+            email, new_password, new_re_password
         });
         
         try {
