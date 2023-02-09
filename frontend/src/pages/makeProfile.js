@@ -532,15 +532,14 @@ export default function makeProfile(){
         
         event.preventDefault();
 
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
+        
+        dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
                 if (result) {
                     alert(message);
                 } else {
                     alert(message);
                 }
             }));
-        }
     
     } 
 

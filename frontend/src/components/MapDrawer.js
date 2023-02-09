@@ -24,10 +24,14 @@ export default function MapDrawer(openID){
     if(typeof window !== 'undefined' && !isAuthenticated){
       router.push('/login');
     }
-
+    
     //api
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
+
+    //state
+    const [drawerOpen, setDrawerOpen] = useState(open);
+    const [toggle, setToggle] = useState(user&&user.toggle);
 
     //뒤로가기 시 드로워 열리도록
     if(openID.open){
@@ -41,9 +45,13 @@ export default function MapDrawer(openID){
       }
     }, [dispatch]);
 
-    //state
-    const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleOn, setToggleOn] = useState(user&&user.toggle);
+    useEffect(()=>{
+      if ( user && user.toggle != null) {
+        // dispatch(load_user());
+        // dispatch(change_toggle(toggle));
+      }
+    }, [user]);
+
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
@@ -58,15 +66,11 @@ export default function MapDrawer(openID){
     }
 
     //토글 클릭
-
     const handleToggle = (e) =>{
         if( user && user.toggle == '명륜'){
-          dispatch(load_user());
-          dispatch(change_toggle('율전'));
-          console.log(user.toggle);
+          setToggle('율전');
         } else {
-          dispatch(load_user());
-          dispatch(change_toggle('명륜'));
+          setToggle('명륜');
           }
 
     } 
@@ -116,7 +120,7 @@ export default function MapDrawer(openID){
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
-                  {user && <Image src={ user.toggle == '율전' ? yj: mr} width={60} height={60} />}
+                  {user && <Image src={ toggle == '율전' ? yj: mr} width={60} height={60} />}
                 </Grid>
               </Grid>
              
