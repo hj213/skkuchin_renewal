@@ -35,15 +35,17 @@ import {
     from './types';
 
 export const register = (
+    /*
     nickname,
     username,
     password,
     re_password,
     email,
     student_id,
-    major,
+    major,*/
+    registerData
 ) => async dispatch => {
-    const body = JSON.stringify({
+    const body = JSON.stringify(/*{
         nickname,
         username,
         password,
@@ -51,7 +53,7 @@ export const register = (
         email,
         student_id,
         major,
-    });
+    }*/registerData);
 
     dispatch({
         type: SET_AUTH_LOADING

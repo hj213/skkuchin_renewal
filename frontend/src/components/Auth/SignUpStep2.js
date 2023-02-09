@@ -30,10 +30,11 @@ const SignUpStep2 = (props) => {
     }
 
     const handleNextStep = () => {
-      props.handleNextStep({nickname, major, student_id});
-      localStorage.setItem("nickname", nickname);
-      localStorage.setItem("major", major);
-      localStorage.setItem("student_id", student_id);
+      //props.handleNextStep({nickname, major, student_id});
+      props.handleNextStep();
+      //localStorage.setItem("nickname", nickname);
+      //localStorage.setItem("major", major);
+      //localStorage.setItem("student_id", student_id);
     }
 
 
@@ -55,8 +56,10 @@ const SignUpStep2 = (props) => {
           <TextField
             variant="standard"
             label="닉네임"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
+            //value={nickname}
+            //onChange={(e) => setNickname(e.target.value)}
+            value={props.data.nickname}
+            onChange={(e) => props.setData({...props.data, nickname: e.target.value})}
             style={{width: '100%'}}
             InputLabelProps={{
               shrink: true,
@@ -77,8 +80,10 @@ const SignUpStep2 = (props) => {
                   }
               }}
               name='major'
-              value={major}
-              onChange={(e) => setMajor(e.target.value)}
+              //value={major}
+              //onChange={(e) => setMajor(e.target.value)}
+              value={props.data.major}
+              onChange={(e) => props.setData({...props.data, major: e.target.value})}
             >
                 {majorList.map((item, index) => (
                   <MenuItem value={item} key={index}>{item}</MenuItem>
@@ -90,8 +95,10 @@ const SignUpStep2 = (props) => {
           <TextField
             variant="standard"
             label="학번"
-            value={student_id}
-            onChange={(e) => setStudentId(e.target.value)}
+            //value={student_id}
+            //onChange={(e) => setStudentId(e.target.value)}
+            value={props.data.student_id}
+            onChange={(e) => props.setData({...props.data, student_id: e.target.value})}
             style={{width: '100%'}}
             InputLabelProps={{
               shrink: true,
@@ -101,15 +108,15 @@ const SignUpStep2 = (props) => {
               endAdornment: <InputAdornment position="end"><span style={{color: "#000", fontSize: '12px', fontWeight: '500'}}>학번</span></InputAdornment>,
             }}
           />
-          { (student_id != '') ?
-            (student_id.length != 2) ?
+          { (props.data.student_id != '') ?
+            (props.data.student_id.length != 2) ?
             <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>숫자 2자리를 입력해주세요.</Typography>
             : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>&nbsp; </Typography>
           : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '34px'}}>숫자 2자리 입력</Typography>
         }
         </div>
         <div style={{margin: '0 36px 12px'}}>
-            { (nickname != '' && major != '' && student_id.length == 2 && student_id < 24) ?
+            { (props.data.nickname != '' && props.data.major != '' && props.data.student_id.length == 2 && props.data.student_id < 24) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                         다음
                     </Button>

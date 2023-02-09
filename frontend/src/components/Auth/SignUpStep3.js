@@ -6,7 +6,7 @@ import check from '../../image/check_circle.png';
 import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
-import { register} from "../../actions/auth/auth";
+import { register } from "../../actions/auth/auth";
 
 const SignUpStep3 = (props) => {
     const dispatch = useDispatch();
@@ -31,9 +31,11 @@ const SignUpStep3 = (props) => {
       const email = localStorage.getItem("email");
 
       if (dispatch && dispatch !== null && dispatch !== undefined)
-        dispatch(register(nickname, username, password, re_password, email, student_id, major));
+        //dispatch(register(props.data));
+        //dispatch(register(nickname, username, password, re_password, email, student_id, major));
 
-      console.log(nickname, username, password, re_password, email, student_id, major);
+      //console.log(nickname, username, password, re_password, email, student_id, major);
+      console.log(props.data);
     }
 
     const handleCheck = () => {
