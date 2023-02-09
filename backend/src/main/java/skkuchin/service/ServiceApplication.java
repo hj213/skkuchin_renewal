@@ -23,7 +23,8 @@ public class ServiceApplication {
 	@Bean
 	PasswordEncoder passwordEncoder() {
 
-		return new BCryptPasswordEncoder();}
+		return new BCryptPasswordEncoder();
+	}
 
 	@Bean
 	CommandLineRunner run(UserService userService,

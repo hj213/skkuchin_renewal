@@ -7,7 +7,6 @@ export default async( req, res )=> {
             username,
             password,
             re_password,
-            email,
             student_id,
             major,
         } = req.body;
@@ -17,7 +16,6 @@ export default async( req, res )=> {
             username,
             password,
             re_password,
-            email,
             student_id,
             major,
         });

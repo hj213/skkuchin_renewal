@@ -14,13 +14,13 @@ export const config = {
 export default async (req, res) => {
 
     if (req.method === 'POST') {
-        /// Auth
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
-
+    
         if (access == false) {
+            console.log('access 토큰이 존재하지 않습니다')
             return res.status(401).json({
-                error: 'User unauthorized to make this request'
+                error: '다시 로그인해주시기 바랍니다'
             });
         }
 
@@ -79,10 +79,13 @@ export default async (req, res) => {
 
                 if (apiRes.status === 201) {
                     return res.status(201).json({
-                        review: resValue.data
+                        review: resValue.data,
+                        success: resValue.message
                     });
                 } else {
-                    return res.status(apiRes.status).json({error: resValue.error_message});
+                    return res.status(apiRes.status).json({
+                        error: resValue.message
+                    });
                 }
             })
             .catch((err) => {

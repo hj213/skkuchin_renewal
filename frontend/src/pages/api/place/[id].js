@@ -7,9 +7,10 @@ export default async(req, res) => {
         const access = cookies.access ?? false;
         const place_id = parseInt(req.query.id, 10);
 
-        if(access == false){
+        if (access == false) {
+            console.log('access 토큰이 존재하지 않습니다')
             return res.status(401).json({
-                error: 'User unauthorized to make this request'
+                error: '다시 로그인해주시기 바랍니다'
             });
         }
 
@@ -26,11 +27,12 @@ export default async(req, res) => {
 
             if(apiRes.status == 200){
                 return res.status(200).json({
-                    place:resValue.data
+                    place:resValue.data,
+                    success: resValue.message
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    error: resValue.error_message
+                    error: resValue.message
                 });
             }
         } catch (error) {
