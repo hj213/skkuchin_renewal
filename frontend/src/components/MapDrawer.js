@@ -13,6 +13,26 @@ import { change_toggle, load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
 
+//mbti프로필
+import profile1 from '../image/mbti/프로필/기본.png';
+import profile2 from '../image/mbti/프로필/식사.png';
+import ENFJ from '../image/mbti/프로필/ENFJ.png';
+import ENTP from '../image/mbti/프로필/ENTP.png';
+import INFP from '../image/mbti/프로필/INFP.png';
+import ENFP from '../image/mbti/프로필/ENFP.png';
+import ISTJ from '../image/mbti/프로필/ISTJ.png';
+import ISTP from '../image/mbti/프로필/ISTP.png';
+import ISFP from '../image/mbti/프로필/ISFP.png';
+import INTP from '../image/mbti/프로필/INTP.png';
+import ESTJ from '../image/mbti/프로필/ESTJ.png';
+import INFJ from '../image/mbti/프로필/INFJ.png';
+import ENTJ from '../image/mbti/프로필/ENTJ.png';
+import ESTP from '../image/mbti/프로필/ESTP.png';
+import ESFJ from '../image/mbti/프로필/ESFJ.png';
+import INTJ from '../image/mbti/프로필/INTJ.png';
+import ISFJ from '../image/mbti/프로필/ISFJ.png';
+import ESFP from '../image/mbti/프로필/ESFP.png';
+
 export default function MapDrawer(openID){
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -74,7 +94,7 @@ export default function MapDrawer(openID){
           }
 
     } 
-
+    
     const list = (anchor) => (
         <Box
           sx={{ width: 250 }}
@@ -83,8 +103,8 @@ export default function MapDrawer(openID){
           onKeyDown={handleDrawerClick(false)}
         >   
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
-                <Image src={user && user.image ? user.image: profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
-                <div >
+                <Image src={ profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
+                <div>
                 <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
                 <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
                 </div>

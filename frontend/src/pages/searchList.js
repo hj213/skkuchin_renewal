@@ -14,6 +14,7 @@ import searchBox from '../image/검색창2.png';
 import closeIcon from '../image/close.png';
 import { load_user } from "../actions/auth/auth";
 import {  displayReviewTag } from "../components/TagList";
+import UpperBar from "../components/UpperBar";
 
 export default function searchList(){
     const router = useRouter();
@@ -92,9 +93,12 @@ export default function searchList(){
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <div style={{position:'relative', width:'100%', height:'100%', marginTop:'120px' }}>
+            <div style={{zIndex:'2', position:'absolute'}}>
+                <UpperBar/>
+            </div>
+            <div style={{position:'relative', width:'100%', height:'100%', marginTop:'75px' }}>
                 <div style={{position: 'absolute',}}>
-                    <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '75px'}}>
+                    <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '85px'}}>
                         <Card style={{
                                     position: 'absolute',
                                     top: '0px',
@@ -103,8 +107,9 @@ export default function searchList(){
                                     zIndex: '4',
                                     border: "1px solid transparent",
                                     boxShadow: 'none',
+        
                                 }}>
-                            <Grid container style={{position:'relative', marginTop:'10px',}}>
+                            <Grid container style={{position:'relative', marginTop:'20px',}}>
                                 <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36} id='map'/></Grid>
                                 <Grid item style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
                                     <InputBase 
@@ -122,7 +127,7 @@ export default function searchList(){
                     </Container>
                 </div>
                 <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0'}}>
-                    <Card style={{overflowY:'auto', marginTop:'60px'}}>
+                    <Card style={{overflowY:'auto', marginTop:'80px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                             {filteredPlace? filteredPlace.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>

@@ -97,9 +97,9 @@ export default function myFavorite(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'50px'}}>
+            <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'0px'}}>
                 <div style={{position: 'absolute',}}>
-                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'50px', maxWidth:'600px'}} >
+                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'87px', maxWidth:'600px'}} >
                 <Card style={{
                             // position: 'absolute',
                             top: '0px',
@@ -108,7 +108,7 @@ export default function myFavorite(){
                             zIndex: '4',
                             border: "1px solid transparent",
                             boxShadow: 'none',
-                            padding:'0px'
+                            paddingTop:'41px'
                         }}>
                         <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
                             <Grid style={{padding: '2px 10px 0px 4px'}} >
@@ -132,7 +132,7 @@ export default function myFavorite(){
                 </Container>
                 </div>
                 <Container name='최신순' style={{background:'white', padding:'0px'}}>
-                <div style={{float:'right',zIndex:'2', margin:'60px 0px 0px 0px'}}>
+                <div style={{float:'right',zIndex:'2', margin:'90px 0px 0px 0px'}}>
                         <Grid container style={{marginRight:'15px'}} onClick={handleToggle}>
                             <Grid item style={{margin:'0px'}}>
                                 <Button

@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import { useDispatch } from "react-redux";
-import { add_matching_info } from "../actions/matchingUser/matchingUser";
+import { add_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
 import { load_user } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
@@ -198,7 +198,10 @@ export default function makeProfile(){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
+            dispatch(load_matching_info());
+
         }
+
     }, [dispatch]);
     
     const [womanClick, setWomanClick] = useState(false);
@@ -522,8 +525,8 @@ export default function makeProfile(){
                     return acc;
                   }, {}),
             })
-            setImage(event.target.src)
-            console.log(event.target.src);
+            setImage(event.target.src);
+            console.log(image);
         }
     }
     
@@ -540,7 +543,6 @@ export default function makeProfile(){
                     alert(message);
                 }
             }));
-    
     } 
 
     //for passingMbti
