@@ -62,6 +62,16 @@ const Navbar = () => {
                 </Link>
             </li>
             <li className='nav-item'>
+                <Link href='/match'>
+                    <a className={
+                        router.pathname === '/match' ? 
+                        'nav-link active' : 'nav-link'
+                    }>
+                        Match
+                    </a>
+                </Link>
+            </li>
+            <li className='nav-item'>
                 <a 
                     className='nav-link'
                     href='#!'
