@@ -195,18 +195,10 @@ export default function makeProfile(){
 
     const dispatch = useDispatch();
     const router = useRouter();
-    
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
-            dispatch(load_matching_info(([result, message]) => {
-                if (result) {
-                    alert(message);
-                } else {
-                    alert(message);
-                }
-            }));
-
+            dispatch(load_matching_info());
         }
 
     }, [dispatch]);

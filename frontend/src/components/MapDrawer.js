@@ -67,10 +67,10 @@ export default function MapDrawer(openID){
 
     useEffect(()=>{
       if ( user && user.toggle != null) {
-        // dispatch(load_user());
-        // dispatch(change_toggle(toggle));
+        dispatch(load_user());
+        dispatch(change_toggle(toggle));
       }
-    }, [user]);
+    }, [dispatch, toggle]);
 
 
     //drawer 열리는
@@ -87,10 +87,21 @@ export default function MapDrawer(openID){
 
     //토글 클릭
     const handleToggle = (e) =>{
+      dispatch(load_user());
         if( user && user.toggle == '명륜'){
-          setToggle('율전');
-        } else {
-          setToggle('명륜');
+          const prevUser = '명륜'
+          setToggle((prevUser) => {
+            const newUser = '율전';
+            return newUser;
+          });
+
+        } else if(user && user.toggle == '율전'){
+          const prevUser = '율전'
+          setToggle((prevUser) => {
+            const newUser = '명륜';
+            return newUser;
+          });
+
           }
 
     } 
