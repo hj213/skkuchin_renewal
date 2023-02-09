@@ -6,6 +6,7 @@ import skkuchin.service.api.dto.MatchingUserDto;
 import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.KeywordRepo;
 import skkuchin.service.repo.UserKeywordRepo;
 import skkuchin.service.repo.UserRepo;
@@ -24,7 +25,7 @@ public class MatchingUserService {
 
     @Transactional
     public void addInfo(Long userId, MatchingUserDto.Request dto) {
-        AppUser existingUser = userRepo.findById(userId).orElseThrow();
+        AppUser existingUser = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         existingUser.setGender(dto.getGender());
         existingUser.setIntroduction(dto.getIntroduction());
         existingUser.setMbti(dto.getMbti());
@@ -50,21 +51,21 @@ public class MatchingUserService {
 
     @Transactional
     public MatchingUserDto.Response getUserInfo(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         List<UserKeyword> keywords = userKeywordRepo.findByUser(user);
         return new MatchingUserDto.Response(user, keywords);
     }
 
     @Transactional
     public void updateMatchingStatus(Long userId, Boolean matching) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setMatching(matching);
         userRepo.save(user);
     }
 
     @Transactional
     public void updateInfo(Long userId, MatchingUserDto.Request dto) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setGender(dto.getGender());
         user.setIntroduction(dto.getIntroduction());
         user.setMbti(dto.getMbti());

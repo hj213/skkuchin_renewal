@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.exception.CustomRuntimeException;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
@@ -49,7 +50,7 @@ public class PlaceService {
 
     @Transactional
     public PlaceDto.Response getDetail(Long placeId) {
-        Place place = placeRepo.findById(placeId).orElseThrow();
+        Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
 
         List<Image> images = imageRepo.findByPlace(place)
                 .stream().collect(Collectors.toList());

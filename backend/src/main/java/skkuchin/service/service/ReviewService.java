@@ -14,6 +14,7 @@ import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.CustomRuntimeException;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
@@ -55,7 +56,7 @@ public class ReviewService {
 
     @Transactional
     public ReviewDto.Response getDetail(Long reviewId) {
-        Review review = reviewRepo.findById(reviewId).orElseThrow();
+        Review review = reviewRepo.findById(reviewId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         List<ReviewTag> reviewTags = reviewTagRepo.findByReview(review)
                 .stream().collect(Collectors.toList());
         List<ReviewImage> reviewImages = reviewImageRepo.findByReview(review)
@@ -70,7 +71,7 @@ public class ReviewService {
         List<Review> myReview = reviewRepo.findByUserIdAndPlaceId(user.getId(), dto.getPlaceId());
         if (myReview.size() > 0) throw new CustomRuntimeException("리뷰 작성 실패", "이미 리뷰를 작성했습니다.");
 
-        Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
+        Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
         Review review = dto.toEntity(user, place);
         reviewRepo.save(review);
 
@@ -96,7 +97,7 @@ public class ReviewService {
 
     @Transactional
     public void update(Long reviewId, ReviewDto.PutRequest dto, AppUser user) {
-        Review existingReview = reviewRepo.findById(reviewId).orElseThrow();
+        Review existingReview = reviewRepo.findById(reviewId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         Place place = existingReview.getPlace();
         List<ReviewImage> newImages = new ArrayList<>();
         canHandleReview(existingReview.getUser(), user);
@@ -141,7 +142,7 @@ public class ReviewService {
 
     @Transactional
     public void delete(Long reviewId, AppUser user) {
-        Review review = reviewRepo.findById(reviewId).orElseThrow();
+        Review review = reviewRepo.findById(reviewId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         canHandleReview(review.getUser(), user);
         List<ReviewImage> reviewImages = reviewImageRepo.findByReview(review);
 
@@ -154,7 +155,7 @@ public class ReviewService {
 
     @Transactional
     public List<ReviewDto.Response> getPlaceReview(Long placeId) {
-        Place place = placeRepo.findById(placeId).orElseThrow();
+        Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
         return reviewRepo.findByPlace(place)
                 .stream()
                 .map(review -> new ReviewDto.Response(

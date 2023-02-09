@@ -116,7 +116,7 @@ public class UserService {
 
     @Transactional
     public UserDto.Response getUser(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         return new UserDto.Response(user);
     }
 
@@ -136,7 +136,7 @@ public class UserService {
 
     @Transactional
     public void updateUser(Long userId, UserDto.PutRequest dto) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setNickname(dto.getNickname());
         user.setMajor(dto.getMajor());
 
@@ -145,7 +145,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         userRepo.delete(user);
     }
 
@@ -164,7 +164,7 @@ public class UserService {
 
     @Transactional
     public void updatePassword(UserDto.PutPassword dto, Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new CustomRuntimeException("현재 비밀번호가 올바르지 않습니다", "비밀번호 변경 실패");
         }
@@ -197,10 +197,10 @@ public class UserService {
     @Transactional
     public void updateToggleValue(Campus campus, Long userId) {
         if (campus == null) {
-            throw new CustomRuntimeException("캠퍼스를 입력하여주시기 바랍니다", "토글 변경 실패");
+            throw new CustomRuntimeException("캠퍼스를 입력해주시기 바랍니다", "토글 변경 실패");
         }
 
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setToggle(campus);
         userRepo.save(user);
     }
