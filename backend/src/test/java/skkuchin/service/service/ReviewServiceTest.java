@@ -10,14 +10,10 @@ import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
 import skkuchin.service.repo.*;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

@@ -37,16 +37,15 @@ export const register = (
     username,
     password,
     re_password,
-    email,
     student_id,
     major,
+    callback
 ) => async dispatch => {
     const body = JSON.stringify({
         nickname,
         username,
         password,
         re_password,
-        email,
         student_id,
         major,
     });
@@ -75,17 +74,20 @@ export const register = (
             dispatch({
                 type: REGISTER_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: REGISTER_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: REGISTER_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 
@@ -512,8 +514,9 @@ export const find_username = (email, callback) => async dispatch => {
     }
 }
 
-export const reset_password = (new_password, new_re_password, callback) => async dispatch => {
+export const reset_password = (email, new_password, new_re_password, callback) => async dispatch => {
     const body = JSON.stringify({
+        email,
         new_password,
         new_re_password
     });

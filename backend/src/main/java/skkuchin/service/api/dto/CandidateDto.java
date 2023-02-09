@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import skkuchin.service.domain.Matching.Candidate;
+import skkuchin.service.domain.Matching.Mbti;
+import skkuchin.service.domain.Matching.Profile;
 import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.*;
 

@@ -4,7 +4,7 @@ import {
 } from './types'
 
 //load_menu
-export const load_menu = (place_id) => async dispatch => {
+export const load_menu = (place_id, callback) => async dispatch => {
     try {
         const res = await fetch(`/api/menu/place/${place_id}`, {
             method: 'GET',
@@ -20,14 +20,17 @@ export const load_menu = (place_id) => async dispatch => {
                 type: LOAD_MENU_SUCCESS,
                 payload: data
             })
+            if (callback) callback([true, data.success]);
         }else{
             dispatch({
                 type: LOAD_MENU_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         dispatch({
             type: LOAD_MENU_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
