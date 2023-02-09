@@ -299,7 +299,7 @@ export default function makeProfile(){
     const [keyword, setKeyword] = useState('');
     const [introduction, setIntroduction] = useState('');
     const [image, setImage] = useState('');
-    const [passingMbti, setPassingMbti] = useState('');
+    const [mbti, setMbti] = useState('');
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -533,7 +533,7 @@ export default function makeProfile(){
         event.preventDefault();
 
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(add_matching_info(gender, keyword, introduction, passingMbti, image, ([result, message]) => {
+            dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
                 if (result) {
                     alert(message);
                 } else {
@@ -551,7 +551,7 @@ export default function makeProfile(){
           .map(([key]) => key)
           .join('');
         if(newMbti.length==4){
-            setPassingMbti(newMbti);
+            setMbti(newMbti);
         }
       }, [mbtiChoose]);
     

@@ -57,33 +57,18 @@ export default function MapDrawer(openID){
       router.push('/myFavorite');
     }
 
-    //스위처
-    const handleSwitch = (e) =>{
-      e.preventDefault();
-      setChecked(e.target.checked);
-
-    } 
-
     //토글 클릭
-    const handleToggle = (e) =>{
-      e.preventDefault();
-      
-      // if(user.toggle == '명륜'){
-      //   setToggleOn('율전');
-      //   if (dispatch && dispatch !== null && dispatch !== undefined) {
-      //   dispatch(change_toggle('율전'));
-      //   dispatch(load_user());
-      //   console.log(user.toggle)
-      //   }
-      // } else {
-      //   setToggleOn('명륜');
-      //   if (dispatch && dispatch !== null && dispatch !== undefined) {
-      //   dispatch(change_toggle('명륜'));
-      //   dispatch(load_user());
-      //   }
-      //   console.log(user.toggle)
 
-      // }
+    const handleToggle = (e) =>{
+        if( user && user.toggle == '명륜'){
+          dispatch(load_user());
+          dispatch(change_toggle('율전'));
+          console.log(user.toggle);
+        } else {
+          dispatch(load_user());
+          dispatch(change_toggle('명륜'));
+          }
+
     } 
 
     const list = (anchor) => (
@@ -130,8 +115,8 @@ export default function MapDrawer(openID){
             <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15}/>
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
-                <Grid item style={{marginTop:'45px', marginLeft:'70%'}}>
-                  <Image src={toggleOn == '율전' ? yj: mr} width={60} height={60} onClick={handleToggle}/>
+                <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
+                  {user && <Image src={ user.toggle == '율전' ? yj: mr} width={60} height={60} />}
                 </Grid>
               </Grid>
              
