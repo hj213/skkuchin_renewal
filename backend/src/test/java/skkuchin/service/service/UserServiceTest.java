@@ -10,24 +10,18 @@ import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
-import skkuchin.service.domain.User.Role;
-import skkuchin.service.exception.DuplicateException;
 import skkuchin.service.repo.RoleRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.mail.MessagingException;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
 
 public class UserServiceTest extends MockTest {
     @InjectMocks

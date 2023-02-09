@@ -63,9 +63,12 @@ public class MatchingUserService {
     }
 
     @Transactional
-    public void updateKeywords(Long userId, MatchingUserDto.KeywordUpdate dto) {
+    public void updateInfo(Long userId, MatchingUserDto.Request dto) {
         AppUser user = userRepo.findById(userId).orElseThrow();
+        user.setGender(dto.getGender());
         user.setIntroduction(dto.getIntroduction());
+        user.setMbti(dto.getMbti());
+        user.setImage(dto.getImage());
         userRepo.save(user);
 
         List<UserKeyword> existingKeywords = userKeywordRepo.findByUser(user);
