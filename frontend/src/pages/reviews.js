@@ -17,9 +17,9 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
 import close from '../image/close.png'
-import tag16 from '../image/tag16.png'
-import tag17 from '../image/tag17.png'
-import tag14 from '../image/tag14.png'
+import tag16 from '../image/태그/리뷰등록_off/tag_가성비.png'
+import tag17 from '../image/태그/리뷰등록_off/tag_간단한한끼.png'
+import tag14 from '../image/태그/리뷰등록_off/tag_둘이가요.png'
 import profile from '../image/profile.png'
 import image from '../image/사진 더보기-1.png'
 

@@ -18,6 +18,9 @@ import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 
+// 상단바
+import UpperBar from "../components/UpperBar"
+
 export default function list(){
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -213,6 +216,7 @@ export default function list(){
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
+        <UpperBar />
             <div style={{ position: 'relative', height:'100%'}}>  
             <Container style={{position:'absolute', zIndex:'2'}} >
                 <SearchBox openID={openID} handleFocus={handleFocus} />   
