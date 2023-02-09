@@ -52,7 +52,7 @@ export default function MapDrawer(openID){
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
     const [toggle, setToggle] = useState(user&&user.toggle);
-
+    
     //뒤로가기 시 드로워 열리도록
     if(openID.open){
       open = true;
@@ -94,7 +94,7 @@ export default function MapDrawer(openID){
           }
 
     } 
-    
+
     const list = (anchor) => (
         <Box
           sx={{ width: 250 }}
@@ -103,7 +103,7 @@ export default function MapDrawer(openID){
           onKeyDown={handleDrawerClick(false)}
         >   
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
-                <Image src={ profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
+                <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
                 <div>
                 <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
                 <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
@@ -133,6 +133,25 @@ export default function MapDrawer(openID){
             </List>
         </Box>
     );
+
+    const src ={
+      INFP:INFP,
+      ENFJ:ENFJ,
+      ENTP:ENTP,
+      ENFP:ENFP,
+      ISTJ:ISTJ,
+      ISTP:ISTP,
+      ISFP:ISFP,
+      INTP:INTP,
+      ESTJ:ESTJ,
+      INFJ:INFJ,
+      ENTJ:ENTJ,
+      ESTP:ESTP,
+      ESFJ:ESFJ,
+      INTJ:INTJ,
+      ISFJ:ISFJ,
+      ESFP:ESFP,
+    }
 
     return(
         <ThemeProvider theme={theme}>

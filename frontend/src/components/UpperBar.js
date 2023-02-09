@@ -74,7 +74,7 @@ const UpperBar = () => {
                 </span>
                 </a>
             </Link>
-            <Link href="/aiMatching">
+            <Link href="/match">
                 <a
                     style={{
                         fontSize: "11px",

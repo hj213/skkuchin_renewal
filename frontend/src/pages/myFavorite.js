@@ -133,7 +133,7 @@ export default function myFavorite(){
                 </div>
                 <Container name='최신순' style={{background:'white', padding:'0px'}}>
                 <div style={{float:'right',zIndex:'2', margin:'90px 0px 0px 0px'}}>
-                        <Grid container style={{marginRight:'15px'}} onClick={handleToggle}>
+                        <Grid container style={{marginRight:'20px'}} onClick={handleToggle}>
                             <Grid item style={{margin:'0px'}}>
                                 <Button
                                 ref={anchorRef}
@@ -199,7 +199,7 @@ export default function myFavorite(){
                     </div>
                 </Container>
                 <Container name ='리스트' style={{ padding:'0px', overflowY:'scroll', zIndex:'0',border:'none'}}>
-                <Paper style={{overflowY:'auto', padding:'0px 15px 0px 15px', marginTop:'0px', border: "0px solid transparent", boxShadow:'none'}}>
+                <Paper style={{overflowY:'auto', padding:'0px 20px 0px 20px', marginTop:'0px', border: "0px solid transparent", boxShadow:'none'}}>
                     <ul style={{listStyleType: "none", padding: '0px 0px 0px 0px', margin: '0px', }} >
                             {favorites? favorites.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
