@@ -8,18 +8,17 @@ import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
 import { register } from "../../actions/auth/auth";
 import { signup_email_check, signup_email_send } from '../../actions/email/email';
+import { useRouter } from 'next/router';
 
 const SignUpStep5 = (props) => {
-    const dispatch = useDispatch();
-    const [emailId, setEmailId] = useState('');
-    const [domain, setDomain] = useState('@g.skku.edu');
+    const router = useRouter();
     
     const handlePrevStep = () => {
       props.handlePrevStep();
     }
 
-    const handleSubmit = () => {
-        
+    const handleButtonClick = () => {
+        router.push('/makeProfile');
     }
       
     return (
@@ -40,7 +39,7 @@ const SignUpStep5 = (props) => {
             <Typography sx={{fontSize: '25px', fontWeight: '400', mb: '37px'}}>인증 완료!</Typography>
         </div>
 
-        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none', margin: '0 49px'}}>
+        <Button variant="contained" onClick={handleButtonClick} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none', margin: '0 49px'}}>
             스꾸친 시작하기
         </Button>
 

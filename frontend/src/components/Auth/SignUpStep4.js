@@ -36,7 +36,7 @@ const SignUpStep4 = (props) => {
       if (dispatch && dispatch !== null && dispatch !== undefined) {
         dispatch(signup_email_check(props.data.username, ([result, message]) => {
           if (result) {
-            alert(message);
+            props.handleNextStep();
           } else {
             alert(message);
           }

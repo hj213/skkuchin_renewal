@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import Layout from "../hocs/Layout";
-import SignUpStep1 from '../components/Auth/SignUpStep1';
-import SignUpStep2 from '../components/Auth/SignUpStep2';
-import SignUpStep3 from '../components/Auth/SignUpStep3';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
-import SignUpStep4 from '../components/Auth/SignUpStep4';
-import SignUpStep5 from '../components/Auth/SignUpStep5';
+import ResetStep1 from '../components/Auth/Password/ResetStep1';
+import ResetStep2 from '../components/Auth/Password/ResetStep2';
 
-const RegisterPage = () => {
+export default function resetPassword() {
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -18,15 +15,7 @@ const RegisterPage = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const [step, setStep] = useState(1);
-    const [data, setData] = useState({
-        username: "",
-        password: "",
-        re_password: "",
-        nickname: "",
-        major: "",
-        student_id: "",
-        email: ""
-    })
+    const [email, setEmail] = useState("");
 
     const handleNextStep = (stepData) => {
         setStep(step + 1);
@@ -48,24 +37,13 @@ const RegisterPage = () => {
             <Layout title= '스꾸친 | Register' content='Register page'>
             <Container component="main" maxWidth="xs">
             {
-                step === 1 && <SignUpStep1 handleNextStep={handleNextStep} data={data} setData={setData} />
+                step === 1 && <ResetStep1 handleNextStep={handleNextStep} setEmail={setEmail} />
             }
             {
-                step === 2 && <SignUpStep2 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
-            }
-            {
-                step === 3 && <SignUpStep3 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
-            }
-            {
-                step === 4 && <SignUpStep4 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
-            }
-            {
-                step === 5 && <SignUpStep5 handlePrevStep={handlePrevStep} />
+                step === 2 && <ResetStep2 handleNextStep={handleNextStep} email={email} />
             }
             </Container>
         </Layout>
         </ThemeProvider>
     )
 };
-
-export default RegisterPage;

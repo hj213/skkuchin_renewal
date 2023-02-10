@@ -28,7 +28,6 @@ export const signup_email_send = (username, email, agreement, callback) => async
         });
 
         const data = await res.json();
-        console.log("ttttttttt", data);
         
         if (res.status === 201) {
             console.log("suc");
@@ -49,7 +48,7 @@ export const signup_email_send = (username, email, agreement, callback) => async
         dispatch({
             type: SIGNUP_EMAIL_SEND_FAIL
         });
-        if (callback) callback([false, data.error]);
+        if (callback) callback([false, error]);
     }
 };
 
@@ -91,6 +90,88 @@ export const signup_email_check = (username, callback) => async dispatch => {
         dispatch({
             type: SIGNUP_EMAIL_CHECK_FAIL
         });
-        if (callback) callback([false, data.error]);
+        if (callback) callback([false, error]);
+    }
+};
+
+export const password_email_send = (email, callback) => async dispatch => {
+    const body = JSON.stringify({
+        email
+    });
+
+    try {
+        const res = await fetch('/api/email/password', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: body
+        });
+
+        const data = await res.json();
+        
+        if (res.status === 201) {
+            console.log("suc");
+            dispatch({
+                type: PASSWORD_EMAIL_SEND_SUCCESS
+            });
+            if (callback) callback([true, data.success]);
+        } else {
+            console.log("fail");
+            dispatch({
+                type: PASSWORD_EMAIL_SEND_FAIL,
+                payload: data
+            });
+            if (callback) callback([false, data.error]);
+        }
+    } catch(error) {
+        console.log(error);
+        dispatch({
+            type: PASSWORD_EMAIL_SEND_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+};
+
+export const password_email_check = (email, callback) => async dispatch => {
+    const body = JSON.stringify({
+        email
+    });
+
+    try {
+        const res = await fetch('/api/email/password/check', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: body
+        });
+
+        const data = await res.json();
+        
+        if (res.status === 200) {
+            console.log("suc");
+            dispatch({
+                type: PASSWORD_EMAIL_CHECK_SUCCESS,
+                payload: data
+            });
+            if (callback) callback([true, data.success]);
+        } else {
+            console.log("fail");
+            console.log(data);
+            dispatch({
+                type: PASSWORD_EMAIL_CHECK_FAIL,
+                payload: data
+            });
+            if (callback) callback([false, data.error]);
+        }
+    } catch(error) {
+        console.log(error);
+        dispatch({
+            type: SIGNUP_EMAIL_CHECK_FAIL
+        });
+        if (callback) callback([false, error]);
     }
 };

@@ -7,7 +7,7 @@ export default async( req, res )=> {
         const body = JSON.stringify(data);
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/email/signup/check`, {
+            const apiRes = await fetch(`${API_URL}/api/email/password`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -18,8 +18,8 @@ export default async( req, res )=> {
 
             const resValue = await apiRes.json();
 
-            if(apiRes.status === 200){
-                return res.status(200).json({
+            if(apiRes.status === 201){
+                return res.status(201).json({
                     success: resValue.message
                 });
             } else {

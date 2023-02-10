@@ -50,7 +50,6 @@ export const register = (registerData, callback) => async dispatch => {
         });
 
         const data = await res.json();
-        console.log("save user", data);
 
         dispatch({
             type: REMOVE_AUTH_LOADING

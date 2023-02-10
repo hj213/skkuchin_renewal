@@ -34,6 +34,22 @@ const emailReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+        case PASSWORD_EMAIL_SEND_SUCCESS:
+            return {
+                ...state
+            }
+        case PASSWORD_EMAIL_SEND_FAIL:
+            return {
+                ...state
+            }
+        case PASSWORD_EMAIL_CHECK_SUCCESS:
+            return {
+                ...state
+            }
+        case PASSWORD_EMAIL_CHECK_FAIL:
+            return {
+                ...state
+            }
         default:
             return state;
     };

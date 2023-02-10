@@ -7,7 +7,7 @@ export default async( req, res )=> {
         const body = JSON.stringify(data);
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/email/signup/check`, {
+            const apiRes = await fetch(`${API_URL}/api/email/password/check`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
