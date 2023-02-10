@@ -317,23 +317,23 @@ export default function makeProfile(){
 
     //성별클릭
     const handleGenderClick = (event) => {
-        if(event.target.name == '여'){
+        if(event.target.name == '여성'){
             if(womanClick){
                 setWomanClick(false);
                 setGender('');
             } else {
                 setWomanClick(true);
                 setManClick(false);
-                setGender('여');
+                setGender('여성');
             }
-        } else if(event.target.name='남'){
+        } else if(event.target.name='남성'){
             if(manClick){
                 setManClick(false);
                 setGender('');
             } else {
                 setManClick(true);
                 setWomanClick(false);
-                setGender('남');
+                setGender('남성');
             }
         }
     }
@@ -534,7 +534,6 @@ export default function makeProfile(){
         
         event.preventDefault();
 
-        
         dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
                 if (result) {
                     alert(message);
@@ -566,27 +565,6 @@ export default function makeProfile(){
             .filter(([, value]) => value)
             .map(([key]) => key);
 
-        // const newFood = Object.entries(food)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');     
-        
-        // const newSports = Object.entries(sports)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');     
-        
-        // const newArt = Object.entries(art)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');      
-        
-        // const newStudy = Object.entries(study)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');       
-        
-        // const newKeywords = [...newFood, ...newArt, ...newSports, ...newStudy];
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
         }
@@ -617,10 +595,10 @@ export default function makeProfile(){
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                             <div style={{marginBottom:'9px'}}>
-                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남'/>
+                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성'/>
                             </div>
                             <div>
-                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여'/>
+                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성'/>
                             </div>
                         </Container>
                         </div>

@@ -25,7 +25,7 @@ export default function BasicDialog(openID){
                 </DialogContent>
                 <DialogActions style={{justifyContent:'center', paddingBottom:'13px'}}>
                     <Button 
-                    href={`./changeProfile`}
+                    href={`./makeProfile`}
                     style={{fontSize:"12px", fontWeight: `${theme.typography.h1}`, color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>매칭 프로필 설정하기</Button>
                 </DialogActions>
             </Dialog>

@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { add_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
+import { change_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
 import { load_user } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
@@ -212,11 +212,16 @@ export default function makeProfile(){
 
     }, [dispatch]);
 
-    //for mbti
+    //for 초기값 받아오기
     useEffect(()=>{
         if(matchingUser && user){
             //성별
-            const gender = user.gender;
+            const gender = matchingUser.gender;
+            if(gender == '남성'){
+                setManClick(true);
+            } else if(gender == '여성'){
+                setWomanClick(true);
+            }
 
             //mbti
             const mbti = matchingUser.mbti;
@@ -238,6 +243,10 @@ export default function makeProfile(){
             //프로필
             const image = matchingUser.image;
             profile[image] = true;
+
+            //한줄소개
+            const introduction = matchingUser.introduction;
+            setIntroduction(introduction);
         }
     }, [matchingUser, user]);
 
@@ -354,23 +363,23 @@ export default function makeProfile(){
 
     //성별클릭
     const handleGenderClick = (event) => {
-        if(event.target.name == '여'){
+        if(event.target.name == '여성'){
             if(womanClick){
                 setWomanClick(false);
                 setGender('');
             } else {
                 setWomanClick(true);
                 setManClick(false);
-                setGender('여');
+                setGender('여성');
             }
-        } else if(event.target.name='남'){
+        } else if(event.target.name='남성'){
             if(manClick){
                 setManClick(false);
                 setGender('');
             } else {
                 setManClick(true);
                 setWomanClick(false);
-                setGender('남');
+                setGender('남성');
             }
         }
     }
@@ -562,8 +571,7 @@ export default function makeProfile(){
                     return acc;
                   }, {}),
             })
-            setImage(event.target.src);
-            console.log(image);
+            setImage(event.target.name);
         }
     }
     
@@ -572,14 +580,16 @@ export default function makeProfile(){
         
         event.preventDefault();
 
+        console.log(gender);
         
-        dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
+        dispatch(change_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
                 if (result) {
                     alert(message);
                 } else {
                     alert(message);
                 }
             }));
+            
     } 
 
     //for passingMbti
@@ -620,7 +630,7 @@ export default function makeProfile(){
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
                             </Grid>
-                            <Grid item style={{marginLeft:'27%'}}>
+                            <Grid item style={{marginLeft:'29%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>프로필 수정하기</Typography>
                             </Grid>
                         </Grid>
@@ -630,10 +640,10 @@ export default function makeProfile(){
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                             <div style={{marginBottom:'9px'}}>
-                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남'/>
+                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성'/>
                             </div>
                             <div>
-                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여'/>
+                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성'/>
                             </div>
                         </Container>
                         </div>
