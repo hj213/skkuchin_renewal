@@ -55,6 +55,7 @@ public class MatchingUserDto {
         private int studentId;
         private Mbti mbti;
         private Boolean matching;
+        private Gender gender;
         private List<String> keywords;
         private String introduction;
 
@@ -66,6 +67,7 @@ public class MatchingUserDto {
             this.studentId = user.getStudentId();
             this.mbti = user.getMbti();
             this.matching = user.getMatching();
+            this.gender = user.getGender();
             this.keywords = keywords.stream().map(keyword -> keyword.getKeyword().getName()).collect(Collectors.toList());
             this.introduction = user.getIntroduction();
         }
