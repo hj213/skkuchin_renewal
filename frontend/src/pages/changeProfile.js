@@ -588,7 +588,12 @@ export default function makeProfile(){
         
         dispatch(change_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
                 if (result) {
-                    alert(message);
+                    // alert(message);
+                    router.push({
+                        pathname: '/completeProfile',
+                        query: { viewportHeight: window.innerHeight,
+                        src : '매칭프로필설정', }
+                      })
                 } else {
                     alert(message);
                 }
