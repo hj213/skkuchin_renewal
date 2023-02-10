@@ -14,7 +14,7 @@ export default async (req, res) => {
         }
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/matching/me`, {
+            const apiRes = await fetch(`${API_URL}/api/matching/user/me`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
