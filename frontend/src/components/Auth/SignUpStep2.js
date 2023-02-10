@@ -5,11 +5,13 @@ import check from '../../image/check_circle.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from "next/router";
+import { check_nickname, register } from "../../actions/auth/auth";
+import { useDispatch } from 'react-redux';
 
 const SignUpStep2 = (props) => {
-    const [nickname, setNickname] = useState('');
-    const [major, setMajor] = useState('');
-    const [student_id, setStudentId] = useState('');
+    const dispatch = useDispatch();
+    const [validNickname, setValidNickname] = useState(null);
+    const [nicknameMsg, setNicknameMsg] = useState("");
 
     const majorList = [
       '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공',
@@ -31,11 +33,27 @@ const SignUpStep2 = (props) => {
 
     const handleNextStep = () => {
       //props.handleNextStep({nickname, major, student_id});
+      //dispatch(register(props.data));
+      dispatch(register(props.data))
       props.handleNextStep();
       //localStorage.setItem("nickname", nickname);
       //localStorage.setItem("major", major);
       //localStorage.setItem("student_id", student_id);
     }
+
+    const handleNicknameChange = (e) => {
+      if (validNickname != null) {
+        setValidNickname(null);
+      }
+      props.setData({...props.data, nickname: e.target.value})
+    }
+
+    const checkNickname = () => {
+      dispatch(check_nickname(props.data.nickname, ([result, message]) => {
+          setValidNickname(result);
+          setNicknameMsg(message);
+      }))
+  }
 
 
     return (
@@ -56,10 +74,8 @@ const SignUpStep2 = (props) => {
           <TextField
             variant="standard"
             label="닉네임"
-            //value={nickname}
-            //onChange={(e) => setNickname(e.target.value)}
             value={props.data.nickname}
-            onChange={(e) => props.setData({...props.data, nickname: e.target.value})}
+            onChange={handleNicknameChange}
             style={{width: '100%'}}
             InputLabelProps={{
               shrink: true,
@@ -67,7 +83,11 @@ const SignUpStep2 = (props) => {
             required
             />
             {/* 중복확인 메소드 추가 */}
-            <Button variant="contained" style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '1px 7px', margin: '6px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+            <div style={{display:'flex'}}>
+              <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+              {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
+              {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
+            </div>
         </div>
         <div style={{margin: '0 36px 44px'}}>
           <FormControl variant="standard" style={{width: '100%'}}>
@@ -116,7 +136,7 @@ const SignUpStep2 = (props) => {
         }
         </div>
         <div style={{margin: '0 36px 12px'}}>
-            { (props.data.nickname != '' && props.data.major != '' && props.data.student_id.length == 2 && props.data.student_id < 24) ?
+            {validNickname && (props.data.nickname != '' && props.data.major != '' && props.data.student_id.length == 2 && props.data.student_id < 24) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                         다음
                     </Button>

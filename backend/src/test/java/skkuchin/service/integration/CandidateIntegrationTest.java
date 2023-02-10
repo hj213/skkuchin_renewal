@@ -43,9 +43,7 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 후보_3명_모두_1순위_같은학과_우선() throws Exception {
         //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
+        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).build();
         List<String> keywords = List.of("한식", "일식", "동아리");
 
         //이미 후보에 올랐던 유저
@@ -95,9 +93,7 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 후보_1명은_1순위_2명은_2순위_같은학과_우선() throws Exception {
         //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
+        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).build();
         List<String> keywords = List.of("한식", "일식", "동아리");
 
         //이미 후보에 올랐던 유저
@@ -146,9 +142,7 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 후보_1명_2순위_2명_3순위_같은학과_우선() throws Exception {
         //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
+        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).build();
         List<String> keywords = List.of("한식", "일식", "동아리");
 
         //이미 후보에 올랐던 유저
@@ -197,9 +191,7 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
     @Test
     public void _3순위_후보_3명_미만() throws Exception {
         //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
+        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).build();
         List<String> keywords = List.of("한식", "일식", "동아리");
 
         //이미 후보에 올랐던 유저
@@ -244,10 +236,8 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void 일반_유저가_candidate추가_시도_에러() throws Exception {
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
-        AppUser user2 = AppUser.builder().nickname("user2").username("user2").major(Major.건축학과).matching(true).email("test2").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
+        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).build();
+        AppUser user2 = AppUser.builder().nickname("user2").username("user2").major(Major.건축학과).matching(true).email("test2").password(passwordEncoder.encode("1234")).studentId(20).build();
         userRepo.saveAll(List.of(user, user2));
 
         CandidateDto.PostRequest dto = new CandidateDto.PostRequest(user.getId(), user2.getId(), null, null);
@@ -270,9 +260,7 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 만료기간_지난_candidate_삭제_성공() throws Exception {
         //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_ADMIN"));
-        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
+        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).build();
         List<String> keywords = List.of("한식", "일식", "동아리");
 
         AppUser existing1 = AppUser.builder().nickname("existing1").username("user2").major(Major.건축학과).email("test2").password("1234").studentId(20).build();
@@ -301,9 +289,7 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 일반유저가_candidate_삭제_시도_에러() throws Exception {
         //given
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_USER"));
-        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).roles(roles).build();
+        AppUser user = AppUser.builder().nickname("user").username("user").major(Major.건축학과).matching(true).email("test").password(passwordEncoder.encode("1234")).studentId(20).build();
         userRepo.save(user);
 
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -322,7 +308,7 @@ public class CandidateIntegrationTest extends BaseIntegrationTest {
 
     public String getToken(String username, String password) throws Exception {
         String form = objectMapper.writeValueAsString(new LoginFormTestVer(username, password));
-        MvcResult loginResult = mvc.perform(post("/api/login")
+        MvcResult loginResult = mvc.perform(post("/api/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))

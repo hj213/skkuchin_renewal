@@ -26,9 +26,10 @@ export default async (req, res) => {
         ]);
 
         return res.status(200).json({
-            success: 'Successfully logged out'
+            success: '로그아웃 되었습니다'
         });
     }else {
+        console.log(`Method ${req.method} now allowed`);
         res.setHeader('Allow', ['POST']);
         return res.status(450).json({
             error: `Method ${req.method} not allowed`

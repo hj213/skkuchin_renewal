@@ -7,6 +7,7 @@ import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
 import { register } from "../../actions/auth/auth";
+import { signup_email_send } from '../../actions/email/email';
 
 const SignUpStep3 = (props) => {
     const dispatch = useDispatch();
@@ -20,19 +21,11 @@ const SignUpStep3 = (props) => {
     }
     const handleSubmit= (e) => {
       e.preventDefault();
-      localStorage.setItem("email",emailId+domain);
 
-      const username = localStorage.getItem("username");
-      const password = localStorage.getItem("password");
-      const re_password = localStorage.getItem("re_password");
-      const nickname = localStorage.getItem("nickname");
-      const student_id = localStorage.getItem("student_id");
-      const major = localStorage.getItem("major");
-      const email = localStorage.getItem("email");
-
-      if (dispatch && dispatch !== null && dispatch !== undefined)
-        //dispatch(register(props.data));
-        //dispatch(register(nickname, username, password, re_password, email, student_id, major));
+      if (dispatch && dispatch !== null && dispatch !== undefined) {
+        dispatch(signup_email_send(props.data.username, emailId+domain, true));
+        props.handleNextStep();
+      }
 
       //console.log(nickname, username, password, re_password, email, student_id, major);
       console.log(props.data);

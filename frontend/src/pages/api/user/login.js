@@ -12,7 +12,7 @@ export default async (req, res) => {
         });
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/login`, {
+            const apiRes = await fetch(`${API_URL}/api/user/login`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -46,19 +46,20 @@ export default async (req, res) => {
                 ]);
 
                 return res.status(200).json({
-                    success: 'Logged in successfully'
+                    success: resValue.message
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    error: 'Authentication failed'
+                    error: resValue.message
                 });
             }
         } catch(err) {
             return res.status(500).json({
-                error: 'Something went wrong when authenticating'
+                error: 'Something went wrong when attempting login'
             });
         }
     } else {
+        console.log(`Method ${req.method} now allowed`);
         res.setHeader('Allow', ['POST']);
         return res.status(405).json({ error: `Method ${req.method} now allowed` });
     } 

@@ -43,7 +43,7 @@ export default function searchList(){
     //캠퍼스 필터링
     useEffect(() => {
     if (place) {
-        setFilteredPlace(place.filter((item) => item.campus === user.campus));
+        setFilteredPlace(place.filter((item) => item.campus === user.toggle));
     } else {
         setFilteredPlace([]);
     }

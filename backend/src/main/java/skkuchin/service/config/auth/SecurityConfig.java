@@ -20,12 +20,13 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private static final String[] PERMIT_API_URL_ARRAY = {
-            "/api/login",
-            "/api/user/saves",
+            "/api/user/login",
+            "/api/user/save",
             "/api/confirmEmail",
             "/api/user/token/**",
             "/api/user/check/**",
-            "/api/email/**"
+            "/api/user/find/**",
+            "/api/email/**",
     };
     private static final String[] PERMIT_CHAT_URL_ARRAY = {
             "/chat/**",
@@ -60,7 +61,7 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter(authenticationManager);
-            authenticationFilter.setFilterProcessesUrl("/api/login");
+            authenticationFilter.setFilterProcessesUrl("/api/user/login");
             builder
                     .addFilter(authenticationFilter)
                     .addFilterBefore(new CustomAuthorizationFilter(userRepo), UsernamePasswordAuthenticationFilter.class);

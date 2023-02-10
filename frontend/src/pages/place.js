@@ -138,7 +138,7 @@ const PlacePage = () => {
 
     // Favorite 관리
     const isFavorite = (placeId) => {
-        return favorites.some(favorite => favorite.place_id == placeId);
+        return favorites ? favorites.some(favorite => favorite.place_id == placeId) : null;
     }
     
     const handleFavClick = (placeId) => {

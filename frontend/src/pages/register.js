@@ -7,6 +7,7 @@ import SignUpStep2 from '../components/Auth/SignUpStep2';
 import SignUpStep3 from '../components/Auth/SignUpStep3';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
+import SignUpStep4 from '../components/Auth/SignUpStep4';
 
 const RegisterPage = () => {
 
@@ -52,7 +53,10 @@ const RegisterPage = () => {
                 step === 2 && <SignUpStep2 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 3 && <SignUpStep3 handlePrevStep={handlePrevStep} data={data} />
+                step === 3 && <SignUpStep3 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
+            }
+            {
+                step === 4 && <SignUpStep4 handlePrevStep={handlePrevStep} data={data} />
             }
             </Container>
         </Layout>

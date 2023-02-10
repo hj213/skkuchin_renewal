@@ -5,16 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/*
-@Getter
-@Setter
-@NoArgsConstructor*/
 @Entity
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "emailauth")
 public class EmailAuth {
 
     @Id

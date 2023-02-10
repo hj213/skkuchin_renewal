@@ -6,31 +6,37 @@ import check from '../../image/check_circle.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { check_username } from '../../actions/auth/auth';
 
 const SignUpStep1 = (props) => {
     const router = useRouter();
-
-    //const [username, setUsername] = useState('');
-    //const [password, setPassword] = useState('');
-    //const [re_password, setRePassword] = useState('');
+    const dispatch = useDispatch();
 
     const [validPW, setValidPW] = useState(false);
+    const [validUsername, setValidUsername] = useState(null);
+    const [usernameMsg, setUsernameMsg] = useState("");
 
     const handleNextStep = () => {
-        //props.handleNextStep({username, password, re_password});
         props.handleNextStep();
-        //localStorage.setItem("username", username);
-        //localStorage.setItem("password", password);
-        //localStorage.setItem("re_password", re_password);
+    }
+
+    const handleUsernameChange = (e) => {
+        if (validUsername != null) {
+            setValidUsername(null);
+        }
+        props.setData({...props.data, username: e.target.value});
     }
 
     const checkUsername = () => {
-        console.log("hehe");
+        dispatch(check_username(props.data.username, ([result, message]) => {
+            setValidUsername(result);
+            setUsernameMsg(message);
+        }))
     }
     
     const handlePasswordChange = (e) => {
         const password = e.target.value;
-        //setPassword(password);
         props.setData({...props.data, password})
 
         if (password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,16}$/)) {
@@ -66,7 +72,7 @@ const SignUpStep1 = (props) => {
                 //value={username}
                 value={props.data.username}
                 //onChange={(e) => setUsername(e.target.value)}
-                onChange={(e) => props.setData({...props.data, username: e.target.value})}
+                onChange={handleUsernameChange}
                 style={{width: '100%'}}
                 InputLabelProps={{
                     shrink: true,
@@ -74,7 +80,11 @@ const SignUpStep1 = (props) => {
                 required
                 />
                 {/* 중복확인 메소드 추가 */}
-                <Button variant="contained" onClick={checkUsername} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '1px 7px', margin: '6px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+                <div style={{display:'flex'}}>
+                    <Button variant="contained" onClick={checkUsername} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+                    {validUsername && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{usernameMsg}</Typography>}
+                    {validUsername == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{usernameMsg}</Typography>}
+                </div>
             </div>
 
             <div style={{margin: '0 36px'}}>
@@ -96,8 +106,8 @@ const SignUpStep1 = (props) => {
                 />
                 {(props.data.password != '') ? 
                     validPW ? 
-                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '25px'}}>안전한 비밀번호입니다.</Typography>
-                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '25px'}}>안전하지 않은 비밀번호입니다.</Typography>
+                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>안전한 비밀번호입니다.</Typography>
+                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '25px'}}>안전하지 않은 비밀번호입니다.</Typography>
                 : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '25px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
             </div>
             <div style={{margin: '0 36px'}}>
@@ -125,7 +135,7 @@ const SignUpStep1 = (props) => {
             </div>
             <div style={{margin: '53px 36px 12px'}}>
             {/* 아이디 중복확인 처리 필요 */}
-            { validPW && (props.data.password == props.data.re_password) && props.data.username != null ?
+            {validUsername && validPW && (props.data.password == props.data.re_password) && props.data.username != null ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                         다음
                     </Button>

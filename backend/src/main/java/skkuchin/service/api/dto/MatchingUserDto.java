@@ -64,7 +64,6 @@ public class MatchingUserDto {
         private Profile image;
         private Major major;
         @JsonProperty
-        //private String studentId;
         private int studentId;
         private Mbti mbti;
         private Boolean matching;
