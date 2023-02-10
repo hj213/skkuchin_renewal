@@ -195,7 +195,7 @@ export default function makeProfile(){
 
     const dispatch = useDispatch();
     const router = useRouter();
-    
+
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
@@ -532,8 +532,7 @@ export default function makeProfile(){
                     return acc;
                   }, {}),
             })
-            setImage(event.target.src);
-            console.log(image);
+            setImage(event.target.name);
         }
     }
     
