@@ -78,8 +78,6 @@ export default function MapDrawer(openID){
       e.preventDefault();
       open = bool;
       setDrawerOpen(open);  
-      // 마커 지우기
-      // dispatch(search_places(null));
     };
 
     //drawer 하위 페이지로 이동
@@ -89,13 +87,23 @@ export default function MapDrawer(openID){
 
     //토글 클릭
     const handleToggle = (e) =>{
-      e.preventDefault();
-      if(toggleOn){
-        setToggleOn(false);
-      }else{
-        setToggleOn(true);
-      }
-    
+      dispatch(load_user());
+        if( user && user.toggle == '명륜'){
+          const prevUser = '명륜'
+          setToggle((prevUser) => {
+            const newUser = '율전';
+            return newUser;
+          });
+
+        } else if(user && user.toggle == '율전'){
+          const prevUser = '율전'
+          setToggle((prevUser) => {
+            const newUser = '명륜';
+            return newUser;
+          });
+
+          }
+
     } 
 
     const list = (anchor) => (
