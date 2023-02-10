@@ -166,6 +166,23 @@ const PlacePage = () => {
         router.push(`/?keyword=${id}`);
     }
     
+    
+    // 검색창에 포커스 잡혔을 때
+    const [focus, setFocus] = useState();
+    const handleFocus = (bool) => {
+        setFocus(bool);
+    }
+    //드로워가 열리거나
+    const [click, setClick] = useState(true);
+    const handleClick= (bool) => {
+        setClick(bool);
+        if(click) {
+            setKeyword('');
+            setHeight('0');
+            setClick(!bool);
+        }
+    }
+
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -175,7 +192,7 @@ const PlacePage = () => {
             >           
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
                 <Container style={{position:'absolute', zIndex:'2'}}>
-                    <SearchBox openID={openID}/>   
+                    <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
                 </Container> 
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} places={places} selectedId={id}/>                  
                 {/* 태그 목록 */}

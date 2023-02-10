@@ -205,10 +205,22 @@ export default function list(){
         setKeyword(id);
     }
 
-    //드로워가 열리거나 검색창에 포커스 잡혔을 때
+    // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-        // console.log(focus); //확인용
+        console.log(focus); //확인용
+    }
+
+    const [click, setClick] = useState(true);
+    const handleClick= (bool) => {
+        setClick(bool);
+        // alert(click); //확인용
+        if(click) {
+            setKeyword('');
+            setFilteredPlace(null);
+            setHeight('0');
+            setClick(!bool);
+        }
     }
 
     return(
@@ -217,7 +229,7 @@ export default function list(){
        <Layout>
             <div style={{ position: 'relative', height:'100%'}}>  
             <Container style={{position:'absolute', zIndex:'2'}} >
-                <SearchBox openID={openID} handleFocus={handleFocus} />   
+                <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
             </Container> 
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />

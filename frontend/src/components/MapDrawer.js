@@ -12,6 +12,7 @@ import mr from '../image/명륜토글_default.png';
 import { load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
+import { search_places } from '../actions/place/place';
 
 export default function MapDrawer(openID){
 
@@ -49,6 +50,8 @@ export default function MapDrawer(openID){
       e.preventDefault();
       open = bool;
       setDrawerOpen(open);  
+      // 마커 지우기
+      // dispatch(search_places(null));
     };
 
     //drawer 하위 페이지로 이동
@@ -71,7 +74,6 @@ export default function MapDrawer(openID){
       }else{
         setToggleOn(true);
       }
-    
     } 
 
     const list = (anchor) => (
