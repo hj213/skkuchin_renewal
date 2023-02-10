@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import skkuchin.service.filter.CustomAuthenticationFilter;
 import skkuchin.service.filter.CustomAuthorizationFilter;
 import skkuchin.service.repo.UserRepo;
-
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor

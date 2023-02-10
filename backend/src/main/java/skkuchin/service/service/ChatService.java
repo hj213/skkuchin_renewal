@@ -60,6 +60,61 @@ public class ChatService {
 
     }
 
+    public void deleteSession(ChatRoom chatRoom, String sessionId){
+        if(chatRoom.getSenderSessionId().equals(sessionId)){
+            chatRoom.setSenderSessionId("");
+        }
+        else if(chatRoom.getReceiverSessionId().equals(sessionId)){
+            chatRoom.setReceiverSessionId("");
+        }
+
+
+
+
+
+    }
+
+    public void setSessionId(ChatRoom chatRoom,String sessionId){
+
+            chatRoom.setSenderSessionId(sessionId);
+            chatRoomRepository.save(chatRoom);
+
+
+
+
+    }
+
+    public ChatRoom findSession(String senderSessionId){
+        ChatRoom chatRoom = chatRoomRepository.findBySenderSessionId(senderSessionId);
+        return chatRoom;
+
+    }
+
+   public ChatRoom findSession1(String receiverSessionId){
+        ChatRoom chatRoom = chatRoomRepository.findByReceiverSessionId(receiverSessionId);
+        return chatRoom;
+
+
+    }
+    //채팅방 인원 조정
+    public void updateCount(ChatRoom chatRoom){
+
+        chatRoom.setUserCount(chatRoom.getUserCount()+1);
+
+        chatRoomRepository.save(chatRoom);
+
+
+    }
+
+    public void minusCount(ChatRoom chatRoom){
+
+        chatRoom.setUserCount(chatRoom.getUserCount()-1);
+
+        chatRoomRepository.save(chatRoom);
+
+    }
+
+
     // 특정 룸 아이디로 채팅방 찾기
     public ChatRoom findChatroom(String roomId){
 

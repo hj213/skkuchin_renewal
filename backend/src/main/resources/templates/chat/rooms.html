@@ -68,7 +68,8 @@
     stomp.heartbeat.incoming = 0;
 
     function onError(e) {
-        <!--console.log("STOMP ERROR", e);-->
+        console.log("STOMP ERROR", e);
+           stomp.connect('guest', 'guest');
     }
 
     function onDebug(m) {
@@ -77,10 +78,11 @@
 
     stomp.debug = onDebug;
 
+
     stomp.connect('guest', 'guest', function (frame) {
 
-        console.log('STOMP Connected');
-    const headers = 'Bearer ' + sessionStorage.getItem('accessToken');
+      console.log('STOMP Connected');
+    <!--const headers = 'Bearer ' + sessionStorage.getItem('accessToken');-->
 
 
       stomp.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, function (content) {
@@ -94,6 +96,7 @@
                             <div class="message">${payload.message}</div>
                             <div class="message">${payload.type}</div>
                             <div class="message">${payload.date}</div>
+                            <div class="message">${payload.userCount}</div>
 
 
                         </div>`
@@ -104,15 +107,30 @@
             //auto-delete : Consumer가 없으면 스스로 삭제되는 Queue
             //durable : 서버와 연결이 끊겨도 메세지를 저장하고 있음
             //exclusive : 동일한 이름의 Queue 생길 수 있음
-        },{'auto-delete':true, 'durable':false, 'exclusive':false}, headers);
+        },{'auto-delete':true, 'durable':false, 'exclusive':false});
 
         //입장 메세지 전송
-        stomp.send(`/app/chat.enter.${chatRoomId}`, {}, JSON.stringify({
+        stomp.send(`/app/chat.enter.${chatRoomId}`, {"token" : header}, JSON.stringify({
             memberId: 1,
             sender: sender
         }));
 
+
     }, onError, '/');
+
+   
+
+sockJS.addEventListener('close', () => {
+    console.log("WebSocket disconnected, attempting to reconnect...");
+    stomp.connect('guest', 'guest', function (frame) {
+        // Connected successfully, subscribe to the chat room
+        stomp.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`);
+    });
+});
+
+
+
+
 
 const header =Cookies.get('access')
     //메세지 전송 버튼 click
@@ -137,202 +155,3 @@ const header =Cookies.get('access')
     });
 </script>
 
-<!--<script th:inline="javascript">
-    const chats = document.querySelector('.chats');
-    const messageContent = document.querySelector('#message');
-    const btnSend = document.querySelector('.btn-send');
-
-    const chatRoomId = [[${chatRoomId}]];
-    const sender = [[${sender}]];
-    const token = [[${token}]];
-
-    const sockJS = new SockJS("/ws/chat");
-    const stomp = Stomp.over(sockJS);
-
-    stomp.heartbeat.outgoing = 0;
-    stomp.heartbeat.incoming = 0;
-
-    function onError(e) {
-        console.log("STOMP ERROR", e);
-    }
-
-    function onDebug(m) {
-        console.log("STOMP DEBUG", m);
-    }
-
-    stomp.debug = onDebug;
-
-    stomp.connect('guest', 'guest', function (frame) {
-
-        console.log('STOMP Connected');
-
-        stomp.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, function (content) {
-
-            const payload = JSON.parse(content.body);
-
-            let className = payload.sender == sender? 'mine' : 'yours';
-
-            const html = `<div class="${className}">
-                            <div class="sender">${payload.sender}</div>
-                            <div class="message">${payload.message}</div>
-                            <div class="message">${payload.type}</div>
-                        </div>`
-
-            chats.insertAdjacentHTML('beforeend', html);
-
-        },{'auto-delete':true, 'durable':false, 'exclusive':false});
-
-        stomp.send(`/app/chat.enter.${chatRoomId}`, {Authorization: `Bearer ${token}`}, JSON.stringify({
-            memberId: 1,
-            sender: sender
-        }));
-
-    }, onError, '/');
-
-    btnSend.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        const message = messageContent.value;
-        messageContent.value = '';
-
-        stomp.send(`/app/chat.message.${chatRoomId}`, {Authorization: `Bearer ${token}`}, JSON.stringify({
-            message: message,
-            memberId: 1,
-            sender: sender
-        }));
-    });
-</script>-->
-
-<!--
-<script th:inline="javascript">
-    const chats = document.querySelector('.chats');
-    const messageContent = document.querySelector('#message');
-    const btnSend = document.querySelector('.btn-send');
-
-    const chatRoomId = [[${chatRoomId}]];
-    const sender = [[${sender}]];
-
-    // Get the access token from the cookie
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-    const accessToken = getCookie('accessToken');
-
-    const sockJS = new SockJS("/ws/chat");
-    const stomp = Stomp.over(sockJS);
-
-    stomp.heartbeat.outgoing = 0;
-    stomp.heartbeat.incoming = 0;
-
-    function onError(e) {
-        console.log("STOMP ERROR", e);
-    }
-
-    function onDebug(m) {
-        console.log("STOMP DEBUG", m);
-    }
-
-    stomp.debug = onDebug;
-
-    stomp.connect(accessToken, '', function (frame) {
-
-        console.log('STOMP Connected');
-        console.log(accessToken)
-
-        stomp.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, function (content) {
-
-            const payload = JSON.parse(content.body);
-
-            let className = payload.sender == sender? 'mine' : 'yours';
-
-            const html = `<div class="${className}">
-                            <div class="sender">${payload.sender}</div>
-                            <div class="message">${payload.message}</div>
-                            <div class="message">${payload.type}</div>
-                        </div>`
-
-            chats.insertAdjacentHTML('beforeend', html);
-        },{'auto-delete':true, 'durable':false, 'exclusive':false});
-
-        stomp.send(`/app/chat.enter.${chatRoomId}`, {}, JSON.stringify({
-            memberId: 1,
-            sender: sender
-        }));
-
-    }, onError, '/');
-
-    btnSend.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        const message = messageContent.value;
-        messageContent.value = '';
-
-        stomp.send(`/app/chat.message.${chatRoomId}`, {Authorization: `Bearer ${accessToken}`}, JSON.stringify({
-            message: message,
-            memberId: 1,
-            sender: sender
-        }));
-    });
-</script>
-
-<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
-<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
-<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
-<script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
-<script>
-        // websocket & stomp initialize
-        var sock = new SockJS("/ws/chat");
-        var ws = Stomp.over(sock);
-        var reconnect = 0;
-        const chatRoomId = [[${chatRoomId}]];
-        ws.heartbeat.outgoing = 0;
-        ws.heartbeat.incoming = 0;
-        // vue.js
-        var vm = new Vue({
-            el: '#app',
-            data: {
-                roomId: '',
-                roomName: '',
-                message: '',
-                messages: [],
-                token: ''
-            },
-            created() {
-
-                var _this = this;
-                axios.get('/chat/room').then(response => {
-                    _this.token = response.data.token;
-                    ws.connect({"token":_this.token}, function(frame) {
-                        ws.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, function(message) {
-                            var recv = JSON.parse(message.body);
-                            _this.recvMessage(recv);
-                        });
-                        _this.sendMessage('ENTER');
-                    }, function(error) {
-                        alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
-                        location.href="/chat/room";
-                    });
-                });
-            },
-            methods: {
-                sendMessage: function(type) {
-                    ws.send(`/app/chat.message.${chatRoomId}`, {"token":this.token}, JSON.stringify({type:type, roomId:this.roomId, message:this.message}));
-                    this.message = '';
-                },
-
-            }
-        });
-    </script>
--->
