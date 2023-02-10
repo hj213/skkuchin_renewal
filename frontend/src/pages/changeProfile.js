@@ -199,10 +199,10 @@ export default function makeProfile(){
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_user());
+
             dispatch(load_matching_info(([result, message]) => {
                 if (result) {
-                    // alert(message);
+                    alert(message);
                 } else {
                     alert(message);
                 }
@@ -214,13 +214,15 @@ export default function makeProfile(){
 
     //for 초기값 받아오기
     useEffect(()=>{
-        if(matchingUser && user){
+        if(matchingUser){
             //성별
             const gender = matchingUser.gender;
             if(gender == '남성'){
                 setManClick(true);
+                setGender('남성');
             } else if(gender == '여성'){
                 setWomanClick(true);
+                setGender('여성');
             }
 
             //mbti
@@ -239,16 +241,20 @@ export default function makeProfile(){
                 art[element] = true;
                 study[element] = true;
             });
+            setKeyword(keyword);
             
             //프로필
             const image = matchingUser.image;
-            profile[image] = true;
+            setProfile({
+                [image] : true
+            });
+            setImage(image);
 
             //한줄소개
             const introduction = matchingUser.introduction;
             setIntroduction(introduction);
         }
-    }, [matchingUser, user]);
+    }, [matchingUser]);
 
     const [womanClick, setWomanClick] = useState(false);
     const [manClick, setManClick] = useState(false);
@@ -324,8 +330,8 @@ export default function makeProfile(){
         '행시': false,
     })
     const [profile, setProfile] = useState({
-        '기본': false,
-        '식사': false,
+        'DEFAULT1': false,
+        'DEFAULT2': false,
         'ENFJ': false,
         'ENTP': false,
         'INFP': false,
@@ -579,8 +585,6 @@ export default function makeProfile(){
     const handleOnSubmit = (event) => {
         
         event.preventDefault();
-
-        console.log(gender);
         
         dispatch(change_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
                 if (result) {
@@ -617,10 +621,8 @@ export default function makeProfile(){
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
         }
-        console.log(keyword);
       }, [food, study, art, sports]);
     
-      
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -887,10 +889,10 @@ export default function makeProfile(){
                                     <Grid container style={{maxWidth:'340px'}}>
                                         <Grid container>
                                             <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.기본 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='기본'/>
+                                                <Image src={profile.DEFAULT1 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='DEFAULT1'/>
                                             </Grid>
                                             <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.식사 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='식사'/>
+                                                <Image src={profile.DEFAULT2 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='DEFAULT2'/>
                                             </Grid>
                                             <Grid style={{}}>
                                                 <Image src={profile.ENFJ ? profile3On : profile3} width={100} height={100} onClick={handleProfileClick} name='ENFJ'/>

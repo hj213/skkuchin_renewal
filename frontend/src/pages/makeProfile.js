@@ -278,8 +278,8 @@ export default function makeProfile(){
         '행시': false,
     })
     const [profile, setProfile] = useState({
-        '기본': false,
-        '식사': false,
+        'DEFAULT1': false,
+        'DEFAULT2': false,
         'ENFJ': false,
         'ENTP': false,
         'INFP': false,
@@ -571,7 +571,8 @@ export default function makeProfile(){
         console.log(keyword);
       }, [food, study, art, sports]);
     
-      
+      console.log(gender, keyword, introduction, mbti, image);
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -842,10 +843,10 @@ export default function makeProfile(){
                                     <Grid container style={{maxWidth:'340px'}}>
                                         <Grid container>
                                             <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.기본 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='기본'/>
+                                                <Image src={profile.DEFAULT1 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='DEFAULT1'/>
                                             </Grid>
                                             <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.식사 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='식사'/>
+                                                <Image src={profile.DEFAULT2 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='DEFAULT2'/>
                                             </Grid>
                                             <Grid style={{}}>
                                                 <Image src={profile.ENFJ ? profile3On : profile3} width={100} height={100} onClick={handleProfileClick} name='ENFJ'/>
