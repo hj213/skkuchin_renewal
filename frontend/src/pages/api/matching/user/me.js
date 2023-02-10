@@ -1,9 +1,5 @@
 import cookie from 'cookie';
-<<<<<<< HEAD
 import { API_URL } from '../../../../config';
-=======
-import { API_URL } from '../../../../config/index';
->>>>>>> upstream/main
 
 export default async (req, res) => {
     if (req.method == 'GET') {
