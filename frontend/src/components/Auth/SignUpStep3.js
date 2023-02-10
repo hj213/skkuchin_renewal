@@ -23,11 +23,16 @@ const SignUpStep3 = (props) => {
       e.preventDefault();
 
       if (dispatch && dispatch !== null && dispatch !== undefined) {
-        dispatch(signup_email_send(props.data.username, emailId+domain, true));
-        props.handleNextStep();
+        dispatch(signup_email_send(props.data.username, emailId+domain, true, ([result, message]) => {
+          if (result) {
+            props.setData({...props.data, email: emailId+domain});
+            props.handleNextStep();
+          } else {
+            alert(message);
+          }
+        }));
       }
 
-      //console.log(nickname, username, password, re_password, email, student_id, major);
       console.log(props.data);
     }
 

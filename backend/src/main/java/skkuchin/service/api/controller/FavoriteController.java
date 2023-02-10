@@ -6,17 +6,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.FavoriteDto;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.FavoriteRepo;
 import skkuchin.service.repo.UserRepo;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.FavoriteService;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +34,6 @@ public class FavoriteController {
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> write(@Valid @RequestBody FavoriteDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-
         AppUser user = principalDetails.getUser();
         favoriteService.write(user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 저장 완료", null), HttpStatus.CREATED);

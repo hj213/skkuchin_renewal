@@ -1,5 +1,3 @@
-// 리뷰 수정, 삭제
-
 import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
 import { formidable } from 'formidable';
@@ -12,19 +10,19 @@ export const config = {
 };
 
 export default async (req, res) => {
+    const cookies = cookie.parse(req.headers.cookie ?? '');
+    const access = cookies.access ?? false;
+
+    if (access == false) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return res.status(401).json({
+            error: '다시 로그인해주시기 바랍니다'
+        });
+    }
 
     const review_id = parseInt(req.query.id, 10);
 
     if (req.method === 'PUT') {
-        /// Auth
-        const cookies = cookie.parse(req.headers.cookie ?? '');
-        const access = cookies.access ?? false;
-
-        if(access == false){
-            return res.status(401).json({
-                error: 'User unauthorized to make this request'
-            });
-        }
 
         const options = {
             keepExtensions: true,
@@ -80,10 +78,13 @@ export default async (req, res) => {
 
                 if (apiRes.status === 201) {
                     return res.status(201).json({
-                        review: resValue.data
+                        review: resValue.data,
+                        success: resValue.message
                     });
                 } else {
-                    return res.status(apiRes.status).json({error: resValue.error_message});
+                    return res.status(apiRes.status).json({
+                        error: resValue.message
+                    });
                 }
             })
             .catch((err) => {
@@ -95,17 +96,7 @@ export default async (req, res) => {
 
         });
 
-    } else if(req.method === 'DELETE') {
-        /// Auth
-        const cookies = cookie.parse(req.headers.cookie ?? '');
-        const access = cookies.access ?? false;
-
-        if(access == false){
-            return res.status(401).json({
-                error: 'User unauthorized to make this request'
-            });
-        }
-
+    } else if (req.method === 'DELETE') {
         try {
             const apiRes = await fetch(`${API_URL}/api/review/${review_id}`, {
                 method: 'DELETE',
@@ -116,12 +107,15 @@ export default async (req, res) => {
 
             const resValue = await apiRes.json();
 
-            if(apiRes.status === 200){
+            if (apiRes.status === 200) {
                 return res.status(200).json({
-                    review: resValue.data
+                    review: resValue.data,
+                    success: resValue.message
                 });
             } else {
-                return res.status(apiRes.status).json({error: resValue.error_message});
+                return res.status(apiRes.status).json({
+                    error: resValue.message
+                });
             }
         } catch(err) {
             return res.status(500).json({

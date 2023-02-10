@@ -45,12 +45,12 @@ public class EmailService {
     @Transactional
     public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
         if (!dto.getAgreement()) {
-            throw new CustomRuntimeException("개인정보처리방침 및 이용약관에 동의해야 합니다", "이메일 전송 실패");
+            throw new CustomRuntimeException("개인정보처리방침 및 이용약관에 동의해야합니다", "이메일 전송 실패");
         }
 
         AppUser user = userRepo.findByUsername(dto.getUsername());
         if (user == null) {
-            throw new CustomRuntimeException("먼저 회원가입을 진행하여주시기 바랍니다", "이메일 전송 실패");
+            throw new CustomRuntimeException("먼저 회원가입을 진행해주시기 바랍니다", "이메일 전송 실패");
         }
 
         if (!dto.getEmail().endsWith("@skku.edu") && !dto.getEmail().endsWith("@g.skku.edu")) {

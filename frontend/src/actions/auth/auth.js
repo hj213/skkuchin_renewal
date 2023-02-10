@@ -32,9 +32,7 @@ import {
 } 
     from './types';
 
-export const register = (
-    registerData
-) => async dispatch => {
+export const register = (registerData, callback) => async dispatch => {
     const body = JSON.stringify(registerData);
 
     dispatch({
@@ -52,6 +50,7 @@ export const register = (
         });
 
         const data = await res.json();
+        console.log("save user", data);
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -62,18 +61,21 @@ export const register = (
             dispatch({
                 type: REGISTER_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else {
             console.log("fail");
             dispatch({
                 type: REGISTER_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: REGISTER_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 
@@ -500,8 +502,9 @@ export const find_username = (email, callback) => async dispatch => {
     }
 }
 
-export const reset_password = (new_password, new_re_password, callback) => async dispatch => {
+export const reset_password = (email, new_password, new_re_password, callback) => async dispatch => {
     const body = JSON.stringify({
+        email,
         new_password,
         new_re_password
     });

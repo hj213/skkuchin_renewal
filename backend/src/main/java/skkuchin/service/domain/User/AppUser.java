@@ -4,14 +4,11 @@ import lombok.*;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.Map.Review;
-import skkuchin.service.domain.Matching.Candidate;
-import skkuchin.service.domain.Matching.Gender;
-import skkuchin.service.domain.Matching.UserKeyword;
+import skkuchin.service.domain.Matching.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity

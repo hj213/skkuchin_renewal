@@ -10,7 +10,7 @@ import {
 }
     from './types';
 
-export const signup_email_send = (username, email, agreement) => async dispatch => {
+export const signup_email_send = (username, email, agreement, callback) => async dispatch => {
     const body = JSON.stringify({
         username, 
         email,
@@ -28,24 +28,28 @@ export const signup_email_send = (username, email, agreement) => async dispatch 
         });
 
         const data = await res.json();
+        console.log("ttttttttt", data);
         
         if (res.status === 201) {
             console.log("suc");
             dispatch({
                 type: SIGNUP_EMAIL_SEND_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else {
             console.log("fail");
             dispatch({
                 type: SIGNUP_EMAIL_SEND_FAIL,
                 payload: data
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: SIGNUP_EMAIL_SEND_FAIL
         });
+        if (callback) callback([false, data.error]);
     }
 };
 

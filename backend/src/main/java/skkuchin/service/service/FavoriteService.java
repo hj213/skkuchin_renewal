@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.FavoriteDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
@@ -29,7 +30,7 @@ public class FavoriteService {
 
     @Transactional
     public void write(AppUser user, FavoriteDto.PostRequest dto) {
-        Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
+        Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
 
         Favorite favorite = dto.toEntity(user, place);
         isFavoriteDuplicate(user,favorite.getPlace());
@@ -53,11 +54,9 @@ public class FavoriteService {
 
     @Transactional
     public void delete(Long favoriteId, Long userId) {
-        Favorite favorite = favoriteRepo.findById(favoriteId).orElseThrow();
+        Favorite favorite = favoriteRepo.findById(favoriteId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 즐겨찾기입니다"));
         isMyFavorite(favorite.getUser().getId(),userId);
         favoriteRepo.delete(favorite);
-
-
     }
 
     private List<Tag> getTop3TagsByPlace(Place place) {
@@ -85,7 +84,6 @@ public class FavoriteService {
         for (Favorite favorite : favorites) {
                 if(place.getId() == favorite.getPlace().getId()){
                     throw new IllegalArgumentException("해당 장소는 이미 즐겨찾기가 되어 있습니다.");
-
                 }
         }
     }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  TextField, Button,  Typography,  Box, Select, MenuItem} from '@mui/material';
+import {  TextField, Button,  Typography,  Box, Link} from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
@@ -7,7 +7,7 @@ import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
 import { register } from "../../actions/auth/auth";
-import { signup_email_check } from '../../actions/email/email';
+import { signup_email_check, signup_email_send } from '../../actions/email/email';
 
 const SignUpStep4 = (props) => {
     const dispatch = useDispatch();
@@ -17,6 +17,19 @@ const SignUpStep4 = (props) => {
     const handlePrevStep = () => {
       props.handlePrevStep();
     }
+    
+    const handleResend = () => {
+      if (dispatch && dispatch !== null && dispatch !== undefined) {
+        dispatch(signup_email_send(props.data.username, props.data.email, true, ([result, message]) => {
+          if (result) {
+            alert("이메일을 재전송했습니다.");
+          } else {
+            alert(message);
+          }
+        }));
+      }
+    }
+
     const handleSubmit= (e) => {
       e.preventDefault();
 
@@ -28,7 +41,6 @@ const SignUpStep4 = (props) => {
             alert(message);
           }
         }));
-        //useSelector로 불러온 이메일 인증 완료 여부가 true라면? nextStep 호출.
       }
     }
       
@@ -57,9 +69,10 @@ const SignUpStep4 = (props) => {
                         모바일인 경우 <br/>
                         [킹고M 어플&gt;메뉴&gt;킹고포털&gt;메일]에서 확인 가능합니다
             </Typography>
+            <Link component="button" variant="body2" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
 
-        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none', margin: '0 49px'}}>
             확인
         </Button>
 

@@ -1,4 +1,4 @@
-package skkuchin.service.domain.User;
+package skkuchin.service.domain.Matching;
 
 public enum Profile {
     DEFAULT1,

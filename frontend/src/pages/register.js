@@ -24,7 +24,7 @@ const RegisterPage = () => {
         nickname: "",
         major: "",
         student_id: "",
-
+        email: ""
     })
 
     const handleNextStep = (stepData) => {

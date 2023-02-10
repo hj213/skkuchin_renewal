@@ -113,13 +113,13 @@ export const change_status_info = (matching, callback) => async dispatch => {
     }
 }
 
-export const change_matching_info = (keywords, introduction, callback) => async dispatch => {
+export const change_matching_info = (gender, keywords, introduction, mbti, image, callback) => async dispatch => {
     const body = JSON.stringify({
-        keywords, introduction
+        gender, keywords, introduction, mbti, image
     });
 
     try {
-        const res = await fetch(`/api/matching/user/keyword`,{
+        const res = await fetch(`/api/matching/user`,{
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
