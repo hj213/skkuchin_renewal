@@ -14,5 +14,5 @@ export default combineReducers({
     menu: menuReducer,
     review: reviewReducer,
     candidate: candidateReducer,
-    matchinUser: matchingUserReducer
+    matchingUser: matchingUserReducer
 });

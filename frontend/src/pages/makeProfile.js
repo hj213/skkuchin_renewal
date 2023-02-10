@@ -199,13 +199,6 @@ export default function makeProfile(){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
-            dispatch(load_matching_info(([result, message]) => {
-                if (result) {
-                    alert(message);
-                } else {
-                    alert(message);
-                }
-            }));
 
         }
 
@@ -324,23 +317,23 @@ export default function makeProfile(){
 
     //성별클릭
     const handleGenderClick = (event) => {
-        if(event.target.name == '여성'){
+        if(event.target.name == '여'){
             if(womanClick){
                 setWomanClick(false);
                 setGender('');
             } else {
                 setWomanClick(true);
                 setManClick(false);
-                setGender('여성');
+                setGender('여');
             }
-        } else if(event.target.name='남성'){
+        } else if(event.target.name='남'){
             if(manClick){
                 setManClick(false);
                 setGender('');
             } else {
                 setManClick(true);
                 setWomanClick(false);
-                setGender('남성');
+                setGender('남');
             }
         }
     }
@@ -604,7 +597,7 @@ export default function makeProfile(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-                <Container style={{padding:'0px', margin:'41px 0px 53px 0px'}}>
+                <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
@@ -624,10 +617,10 @@ export default function makeProfile(){
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                             <div style={{marginBottom:'9px'}}>
-                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성'/>
+                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남'/>
                             </div>
                             <div>
-                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성'/>
+                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여'/>
                             </div>
                         </Container>
                         </div>

@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { add_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
 import { load_user } from "../actions/auth/auth";
@@ -190,19 +190,57 @@ import profile16On from '../image/mbti/프로필/MBTI 선택 16.png'
 import profile17On from '../image/mbti/프로필/MBTI 선택 17.png';
 import profile18On from '../image/mbti/프로필/MBTI 선택 18.png';
 
-
 export default function makeProfile(){ 
 
     const dispatch = useDispatch();
     const router = useRouter();
+    const matchingUser = useSelector(state => state.matchingUser.matchingUser);
+    const user = useSelector(state => state.auth.user);
+
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
-            dispatch(load_matching_info());
+            dispatch(load_matching_info(([result, message]) => {
+                if (result) {
+                    // alert(message);
+                } else {
+                    alert(message);
+                }
+            }));
+
         }
 
     }, [dispatch]);
-    
+
+    //for mbti
+    useEffect(()=>{
+        if(matchingUser && user){
+            //성별
+            const gender = user.gender;
+
+            //mbti
+            const mbti = matchingUser.mbti;
+            const newMbtiChoose = { ...mbtiChoose };
+            for (let i = 0; i < mbti.length; i++) {
+              newMbtiChoose[mbti[i]] = true;
+            }
+            setMbtiChoose(newMbtiChoose);
+
+            //관심사
+            const keyword = matchingUser.keywords;
+            keyword.forEach(element => {
+                food[element] = true;
+                sports[element] = true;
+                art[element] = true;
+                study[element] = true;
+            });
+            
+            //프로필
+            const image = matchingUser.image;
+            profile[image] = true;
+        }
+    }, [matchingUser, user]);
+
     const [womanClick, setWomanClick] = useState(false);
     const [manClick, setManClick] = useState(false);
     const [mbtiChoose, setMbtiChoose] = useState({
@@ -316,23 +354,23 @@ export default function makeProfile(){
 
     //성별클릭
     const handleGenderClick = (event) => {
-        if(event.target.name == '여성'){
+        if(event.target.name == '여'){
             if(womanClick){
                 setWomanClick(false);
                 setGender('');
             } else {
                 setWomanClick(true);
                 setManClick(false);
-                setGender('여성');
+                setGender('여');
             }
-        } else if(event.target.name='남성'){
+        } else if(event.target.name='남'){
             if(manClick){
                 setManClick(false);
                 setGender('');
             } else {
                 setManClick(true);
                 setWomanClick(false);
-                setGender('남성');
+                setGender('남');
             }
         }
     }
@@ -566,27 +604,6 @@ export default function makeProfile(){
             .filter(([, value]) => value)
             .map(([key]) => key);
 
-        // const newFood = Object.entries(food)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');     
-        
-        // const newSports = Object.entries(sports)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');     
-        
-        // const newArt = Object.entries(art)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');      
-        
-        // const newStudy = Object.entries(study)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');       
-        
-        // const newKeywords = [...newFood, ...newArt, ...newSports, ...newStudy];
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
         }
@@ -597,30 +614,26 @@ export default function makeProfile(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-                <Container style={{padding:'0px', margin:'41px 0px 53px 0px'}}>
+                <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
                             </Grid>
                             <Grid item style={{marginLeft:'27%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
-                            </Grid>
-                            <Grid item style={{marginLeft:'18%', }}>
-                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility:'hidden'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>프로필 수정하기</Typography>
                             </Grid>
                         </Grid>
                     </Container>
-                    <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'21.63px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸친 AI 매칭을 이용해보세요 😎</Typography>
                     <div name='성별' style={{textAlign:'center',display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                             <div style={{marginBottom:'9px'}}>
-                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성'/>
+                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남'/>
                             </div>
                             <div>
-                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성'/>
+                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여'/>
                             </div>
                         </Container>
                         </div>
