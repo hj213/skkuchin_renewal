@@ -96,7 +96,7 @@ export default function SearchBox({openID, handleFocus}){
             <CssBaseline/>
             <div style={{marginTop:'5px'}} >
                 <Grid container style={{position:'absolute', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
-                    <Grid item style={{marginTop:'3.5%', marginLeft: '5%'}} >
+                    <Grid item style={{marginTop:'4%', marginLeft: '5%'}} >
                         <MapDrawer open={openID} />
                     </Grid>
                     <Grid item style={{marginTop:'3.3%', marginLeft: '2%'}}>

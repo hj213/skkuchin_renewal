@@ -10,7 +10,7 @@ import {
 
 
 // load FAV
-export const load_favorite = () => async dispatch => {
+export const load_favorite = (callback) => async dispatch => {
     try {
         const res = await fetch('/api/favorite',{
             method: 'GET',

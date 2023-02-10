@@ -119,9 +119,9 @@ export default function list(){
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.6;
         if(WINDOW_HEIGHT > 1000){
-            TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
+            TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
         const MinHeight = window.innerHeight * 0.32;
         const cardHeight = 150 * numOfLi;
@@ -218,7 +218,7 @@ export default function list(){
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
-        <UpperBar />
+            <UpperBar />
             <div style={{ position: 'relative', height:'100%'}}>  
             <Container style={{position:'absolute', zIndex:'2'}} >
                 <SearchBox openID={openID} handleFocus={handleFocus} />   
@@ -233,14 +233,15 @@ export default function list(){
                     position: 'absolute',
                     top: '0px',
                     width: '100%',
-                    height: '98px',
+                    height: '56.43px',
                     zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
+                    overflowY:'hidden'
                     }} 
                     
                     >
-                        <Grid container style={{padding:'50px 15px 0px 15px'}}>
+                        <Grid container style={{padding:'10px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
                             <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
                             </Grid>
