@@ -22,7 +22,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
+            // dispatch(load_places());
             dispatch(load_user());
         }
     }, [dispatch]);
