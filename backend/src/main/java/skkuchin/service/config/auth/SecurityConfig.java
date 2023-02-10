@@ -26,6 +26,7 @@ public class SecurityConfig {
             "/api/user/token/**",
             "/api/user/check/**",
             "/api/user/find/**",
+            "/api/user/password/reset",
             "/api/email/**",
     };
     private static final String[] PERMIT_CHAT_URL_ARRAY = {

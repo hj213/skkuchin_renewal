@@ -1,5 +1,5 @@
 rabbitmq:
- # host: localhost
+#  host: localhost
   host: rabbitmq
   port: 5672
   username: guest

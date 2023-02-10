@@ -26,7 +26,6 @@ import skkuchin.service.service.UserService;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -55,12 +54,12 @@ public class UserController {
                 for (FieldError error : bindingResult.getFieldErrors()) {
                     errorMap.put(error.getField(), error.getDefaultMessage());
                 }
-                throw new CustomValidationApiException("유효성 검사 실패", errorMap);
+                throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
             }
-            AppUser user = userService.saveUser(signUpForm);
-            return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 완료", null), HttpStatus.CREATED);
+            userService.saveUser(signUpForm);
+            return new ResponseEntity<>(new CMRespDto<>(1, "회원가입이 완료되었습니다", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
-            throw new CustomValidationApiException("중복 오류");
+            throw new CustomValidationApiException("아이디 혹은 닉네임이 중복됩니다");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         } catch (UnsupportedEncodingException e) {
@@ -92,12 +91,12 @@ public class UserController {
                 throw new CustomValidationApiException("토큰 형식이 올바르지 않습니다");
             }
         } else {
-            throw new RuntimeException("Access token is missing");
+            throw new RuntimeException("엑세스 토큰이 사라졌습니다");
         }
     }
 
     @GetMapping("/token/refresh")
-    public ResponseEntity<?> refreshToken(HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
@@ -113,7 +112,6 @@ public class UserController {
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getUserRoles().stream().map(userRole -> userRole.getRole().getName()).collect(Collectors.toList()))
                         .sign(algorithm);
-
                 UserDto.TokenResponse response = new UserDto.TokenResponse(access, refresh);
                 return new ResponseEntity<>(new CMRespDto<>(1, "access token 재발급 완료", response), HttpStatus.OK);
             } catch (SignatureVerificationException e) {
@@ -122,7 +120,7 @@ public class UserController {
                 throw new CustomValidationApiException("토큰 형식이 올바르지 않습니다");
             }
         } else {
-            throw new RuntimeException("Refresh token is missing");
+            throw new RuntimeException("리프레시 토큰이 사라졌습니다");
         }
     }
 
@@ -143,10 +141,21 @@ public class UserController {
 
     @PutMapping("/me")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UserDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser user = principalDetails.getUser();
-        userService.updateUser(user.getId(), dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "본인 계정 수정 완료", null), HttpStatus.OK);
+    public ResponseEntity<?> updateMyInfo(@Valid @RequestBody UserDto.PutRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Map<String, String> errorMap = new HashMap<>();
+        try {
+            if (bindingResult.hasErrors()) {
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+                }
+                throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+            }
+            AppUser user = principalDetails.getUser();
+            userService.updateUser(user.getId(), dto);
+            return new ResponseEntity<>(new CMRespDto<>(1, "정보가 변경되었습니다", null), HttpStatus.OK);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomValidationApiException("닉네임이 중복됩니다");
+        }
     }
 
     @PutMapping("/{userId}")
@@ -174,35 +183,50 @@ public class UserController {
     @PostMapping("/check/username")
     public ResponseEntity<?> checkUsername(@RequestBody Map<String, String> usernameMap) {
         userService.checkUsername(usernameMap.get("username"));
-        return new ResponseEntity<>(new CMRespDto<>(1, "사용 가능한 아이디입니다", true), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "사용 가능한 아이디입니다", null), HttpStatus.OK);
     }
 
     @PostMapping("/check/nickname")
     public ResponseEntity<?> checkNickName(@RequestBody Map<String, String> nicknameMap) {
         userService.checkNickname(nicknameMap.get("nickname"));
-        return new ResponseEntity<>(new CMRespDto<>(1, "사용 가능한 닉네임입니다", true), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "사용 가능한 닉네임입니다", null), HttpStatus.OK);
     }
 
     @PostMapping("/find/username")
     public ResponseEntity<?> findUsername(@RequestBody Map<String, String> emailMap) {
         String username = userService.findUsername(emailMap.get("email"));
-        System.out.println(username);
         return new ResponseEntity<>(new CMRespDto<>(1, "아이디 조회 완료", username), HttpStatus.OK);
     }
 
     @PutMapping("/password")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody UserDto.PutPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody UserDto.PutPassword dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Map<String, String> errorMap = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+        }
+
         Long userId = principalDetails.getUser().getId();
         userService.updatePassword(dto, userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호가 변경되었습니다", null), HttpStatus.OK);
     }
 
     @PutMapping("/password/reset")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> resetPassword(@Valid @RequestBody UserDto.ResetPassword dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Long userId = principalDetails.getUser().getId();
-        userService.resetPassword(dto, userId);
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody UserDto.ResetPassword dto, BindingResult bindingResult) {
+        Map<String, String> errorMap = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+        }
+
+        userService.resetPassword(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "비밀번호가 초기화되었습니다", null), HttpStatus.OK);
     }
 

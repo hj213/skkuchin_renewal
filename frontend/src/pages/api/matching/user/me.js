@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { API_URL } from '../../../config/index';
+import { API_URL } from '../../../../config/index';
 
 export default async (req, res) => {
     if (req.method == 'GET') {
@@ -14,7 +14,7 @@ export default async (req, res) => {
         }
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/matching/me`, {
+            const apiRes = await fetch(`${API_URL}/api/matching/user/me`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

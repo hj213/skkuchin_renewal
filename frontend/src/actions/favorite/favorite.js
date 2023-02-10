@@ -10,7 +10,7 @@ import {
 
 
 // load FAV
-export const load_favorite = () => async dispatch => {
+export const load_favorite = (callback) => async dispatch => {
     try {
         const res = await fetch('/api/favorite',{
             method: 'GET',
@@ -26,22 +26,25 @@ export const load_favorite = () => async dispatch => {
                 type: LOAD_FAV_SUCCESS,
                 payload: data
             });
+            if (callback) callback([true, data.success]);
         }else {
             dispatch({
                 type: LOAD_FAV_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
 
     } catch (error) {
         dispatch({
             type: LOAD_FAV_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
 
 // enroll fav
-export const enroll_favorite = (place_id) => async dispatch => {
+export const enroll_favorite = (place_id, callback) => async dispatch => {
     const body = JSON.stringify({
         place_id
     });
@@ -61,20 +64,23 @@ export const enroll_favorite = (place_id) => async dispatch => {
                 type: ENROLL_FAV_SUCCESS
             });
             dispatch(load_favorite());
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: ENROLL_FAV_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         dispatch({
             type: ENROLL_FAV_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 
 // del fav
-export const delete_favorite = (favorite_id) => async dispatch => {
+export const delete_favorite = (favorite_id, callback) => async dispatch => {
 
     const body = JSON.stringify({
         favorite_id
@@ -95,15 +101,18 @@ export const delete_favorite = (favorite_id) => async dispatch => {
                 type: DELETE_FAV_SUCCESS
             });
             dispatch(load_favorite());
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: DELETE_FAV_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         dispatch({
             type: DELETE_FAV_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 

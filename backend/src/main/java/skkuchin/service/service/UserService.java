@@ -31,7 +31,7 @@ public class UserService {
 
     public void checkUsername(String username) {
         if (username == null || username.isBlank()) {
-            throw new CustomRuntimeException("아이디를 입력하여주시기 바랍니다", "아이디 중복확인 실패");
+            throw new CustomRuntimeException("아이디를 입력해주시기 바랍니다", "아이디 중복확인 실패");
         }
 
         AppUser existingUser = userRepo.findByUsername(username);
@@ -42,7 +42,7 @@ public class UserService {
 
     public void checkNickname(String nickname) {
         if (nickname == null || nickname.isBlank()) {
-            throw new CustomRuntimeException("닉네임을 입력하여주시기 바랍니다", "닉네임 중복확인 실패");
+            throw new CustomRuntimeException("닉네임을 입력해주시기 바랍니다", "닉네임 중복확인 실패");
         }
 
         AppUser existingUser = userRepo.findByNickname(nickname);
@@ -116,7 +116,7 @@ public class UserService {
 
     @Transactional
     public UserDto.Response getUser(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         return new UserDto.Response(user);
     }
 
@@ -136,16 +136,7 @@ public class UserService {
 
     @Transactional
     public void updateUser(Long userId, UserDto.PutRequest dto) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
-        AppUser existingUser = userRepo.findByNickname(dto.getNickname());
-
-        if (existingUser != null) {
-            throw new CustomRuntimeException("현재 사용 중인 닉네임입니다", "유저 정보 변경 실패");
-        }
-        if (user.equals(existingUser)) {
-            throw new CustomRuntimeException("닉네임이 변경되지 않았습니다", "유저 정보 변경 실패");
-        }
-
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setNickname(dto.getNickname());
         user.setMajor(dto.getMajor());
 
@@ -154,7 +145,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         userRepo.delete(user);
     }
 
@@ -168,13 +159,12 @@ public class UserService {
         if (user == null) {
             throw new CustomRuntimeException("등록되지 않은 이메일 주소입니다", "아이디 찾기 실패");
         }
-
         return user.getUsername();
     }
 
     @Transactional
     public void updatePassword(UserDto.PutPassword dto, Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new CustomRuntimeException("현재 비밀번호가 올바르지 않습니다", "비밀번호 변경 실패");
         }
@@ -188,15 +178,15 @@ public class UserService {
     }
 
     @Transactional
-    public void resetPassword(UserDto.ResetPassword dto, Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
-        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(user.getEmail(), true, EmailType.PASSWORD);
+    public void resetPassword(UserDto.ResetPassword dto) {
+        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(dto.getEmail(), true, EmailType.PASSWORD);
         if (emailAuth.size() == 0) {
             throw new CustomRuntimeException("이메일 인증이 필요합니다", "비밀번호 초기화 실패");
         }
         if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
             throw new CustomRuntimeException("비밀번호가 일치하지 않습니다", "비밀번호 초기화 실패");
         }
+        AppUser user = userRepo.findByEmail(dto.getEmail());
         String newPassword = passwordEncoder.encode(dto.getNewPassword());
         user.setPassword(newPassword);
 
@@ -207,10 +197,10 @@ public class UserService {
     @Transactional
     public void updateToggleValue(Campus campus, Long userId) {
         if (campus == null) {
-            throw new CustomRuntimeException("캠퍼스를 입력하여주시기 바랍니다", "토글 변경 실패");
+            throw new CustomRuntimeException("캠퍼스를 입력해주시기 바랍니다", "토글 변경 실패");
         }
 
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setToggle(campus);
         userRepo.save(user);
     }

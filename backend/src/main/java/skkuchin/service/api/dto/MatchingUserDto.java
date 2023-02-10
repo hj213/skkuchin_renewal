@@ -10,9 +10,10 @@ import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
-import skkuchin.service.domain.User.Profile;
+import skkuchin.service.domain.Matching.Mbti;
+import skkuchin.service.domain.Matching.Profile;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -22,12 +23,14 @@ public class MatchingUserDto {
 
     @Getter
     public static class Request {
-
         @NotNull
         private Gender gender;
         @Size(min = 3)
+        @NotNull
         private List<String> keywords;
+        @NotBlank
         private String introduction;
+        @NotNull
         private Mbti mbti;
         @NotNull
         private Profile image;
@@ -41,24 +44,9 @@ public class MatchingUserDto {
     }
 
     @Getter
-    public static class KeywordUpdate {
-        @Size(min = 3)
-        private List<String> keywords;
-        private String introduction;
-
-        public UserKeyword toUserKeywordEntity(AppUser user, Keyword keyword) {
-            return UserKeyword.builder()
-                    .user(user)
-                    .keyword(keyword)
-                    .build();
-        }
-    }
-
-    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
-        @JsonProperty
         private Long id;
         private String nickname;
         private Profile image;
