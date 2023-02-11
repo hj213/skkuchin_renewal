@@ -49,9 +49,7 @@ export default function list(){
     const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
-    // const [tagsId, setTagsId] = useState([
-    //     '학생 할인', '스페셜', '한식', '양식', '중식', '일식', '기타', '간단한 한 끼', '분위기 좋은'
-    // ])
+
     const [tagsId, setTagsId] = useState([
         {id: '학생 할인', exclusiveGroup: null},
         {id: '스페셜', exclusiveGroup: null},
@@ -91,6 +89,7 @@ export default function list(){
     }, [place, user]);
 
     useEffect(() => {
+        
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
@@ -220,34 +219,23 @@ export default function list(){
     const handleLiClick = (e) => {
         e.preventDefault();
       };
-
-    //태그 클릭했을 때 사라지도록
+    // 헤더영역 태그 해제
     const handleTagClick = (e) => {
-        // 태그 1개 버전
         e.preventDefault();
-        e.currentTarget.style.display = 'none';
-        cardRef.current.scrollTo({top:0, behavior:'smooth'});
-        setKeyword('');
-        handleReset();
-        
-        // 태그 2개 버전
-        //  // alert(e.target.id);
-        //  e.preventDefault();
-        //  e.target.style.display = 'none';
-        //  // 태그가 2개인 경우 수정해야함
-        //  // cardRef.current.scrollTo({top:0, behavior:'smooth'});
-        //  // setOpen({ bool:false,
-        //      // visibility:'hidden'});
-        //  // setCardStyle({cardVisibility:'hidden'});
-        //  setKeyword('');
-        //  tags = tags.filter((tag) => tag != e.target.id);
- 
-        //  // setHeight('0');
-        //  setPreventScroll('');
-         
-        //  // alert(tags[0]+ ' '+tags[1]);
-        //  console.log(tags);
-    }
+        const clickedTag = e.target.id;
+        const remainingTags = tags.filter(tag => tag !== clickedTag);
+      
+        if (remainingTags.length === 0) {
+            setKeyword('');
+            setTags([]);
+            handleReset();
+        } else {
+          setTags(remainingTags);
+          setKeyword(remainingTags.join(', '));
+          setOpen({ bool:false,
+            visibility:'hidden'});
+        }
+      }
     
     const onTagClick = (id) => {
         const selectedTag = tagsId.find(tag => tag.id === id);
@@ -281,6 +269,7 @@ export default function list(){
       
         setTags(newTags);
         setKeyword(newTags.join(', '));
+        if(newTags.length == 0) handleReset();
       }
       
     
