@@ -13,7 +13,11 @@ export default function matchingComplete (){
     const src= router.query.src;
 
     const handleButtonClick = (e) => {
-        router.push('/')
+        if(src == '로그인'){
+            router.push('/login');
+        } else if(src == '매칭프로필설정'){
+            router.push('/match');
+        }
     }
 
     return (

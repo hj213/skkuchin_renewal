@@ -540,7 +540,7 @@ export default function makeProfile(){
                     router.push({
                         pathname: '/completeProfile',
                         query: { viewportHeight: window.innerHeight,
-                        src:'매칭프로필설정' }
+                        src : '매칭프로필설정', }
                       })
                 } else {
                     alert(message);
