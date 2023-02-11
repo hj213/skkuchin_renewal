@@ -5,6 +5,7 @@ import cookie from 'cookie';
 export default async(req, res) => {
     if(req.method == 'GET'){
         const place_id = parseInt(req.query.id, 10);
+
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
 
@@ -14,18 +15,19 @@ export default async(req, res) => {
                 error: '다시 로그인해주시기 바랍니다'
             });
         }
-
+        
         try {
-            const apiRes = await fetch(`${API_URL}/api/reivew/place/${place_id}`, {
+            const apiRes = await fetch(`${API_URL}/api/review/place/${place_id}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
+                    'Authorization' : `Bearer ${access}`
                 }
             });
 
             const resValue = await apiRes.json();
 
-            if(apiRes.status == 200){
+            if (apiRes.status == 200) {
                 return res.status(200).json({
                     review: resValue.data,
                     success: resValue.message
