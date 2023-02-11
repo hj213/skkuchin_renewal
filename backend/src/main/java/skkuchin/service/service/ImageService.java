@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ImageDto;
 import skkuchin.service.domain.Map.*;
+import skkuchin.service.exception.CustomRuntimeException;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
 import software.amazon.awssdk.services.s3.model.S3Object;
@@ -152,7 +154,7 @@ public class ImageService {
 
     private void checkFile(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new IllegalArgumentException("파일이 비어있습니다.");
+            throw new CustomRuntimeException("파일이 비어있습니다.");
         }
     }
 

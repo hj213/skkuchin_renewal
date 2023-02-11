@@ -14,7 +14,7 @@ import javax.persistence.*;
         name="user_block",
         uniqueConstraints={
                 @UniqueConstraint(
-                        columnNames={"user_id", "blocked_id"}
+                        columnNames={"user_id", "blocked_user_id"}
                 )
         }
 )
@@ -28,6 +28,6 @@ public class Block {
     private AppUser user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "blocked_id", nullable = false)
+    @JoinColumn(name = "blocked_user_id", nullable = false)
     private AppUser blockedUser;
 }

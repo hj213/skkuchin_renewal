@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.*;
@@ -14,7 +13,6 @@ import skkuchin.service.repo.*;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final BlockRepo blockRepo;
     private final UserRoleRepo userRoleRepo;
     private final EmailAuthRepo emailAuthRepo;
     private final PasswordEncoder passwordEncoder;

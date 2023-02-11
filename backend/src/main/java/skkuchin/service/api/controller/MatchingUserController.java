@@ -1,6 +1,7 @@
 package skkuchin.service.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,20 +30,22 @@ public class MatchingUserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> addInfo(@Valid @RequestBody MatchingUserDto.Request dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> errorMap = new HashMap<>();
-
-        if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
+        try {
+            if (bindingResult.hasErrors()) {
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+                }
+                if (errorMap.containsKey("keywords")) {
+                    throw new CustomValidationApiException("키워드를 3개 이상 입력해야 합니다", errorMap);
+                }
+                throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
             }
-            if (errorMap.containsKey("keywords")) {
-                throw new CustomValidationApiException("키워드를 3개 이상 입력해야 합니다", errorMap);
-            }
-            throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+            AppUser user = principalDetails.getUser();
+            matchingUserService.addInfo(user.getId(), dto);
+            return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력이 완료되었습니다", null), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomValidationApiException("키워드가 중복 등록되었습니다");
         }
-
-        AppUser user = principalDetails.getUser();
-        matchingUserService.addInfo(user.getId(), dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력이 완료되었습니다", null), HttpStatus.CREATED);
     }
 
     @PostMapping("/user/{userId}")
@@ -86,20 +89,22 @@ public class MatchingUserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> updateInfo(@Valid @RequestBody MatchingUserDto.Request dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> errorMap = new HashMap<>();
-
-        if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
+        try {
+            if (bindingResult.hasErrors()) {
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+                }
+                if (errorMap.containsKey("keywords")) {
+                    throw new CustomValidationApiException("키워드를 3개 이상 입력해야 합니다", errorMap);
+                }
+                throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
             }
-            if (errorMap.containsKey("keywords")) {
-                throw new CustomValidationApiException("키워드를 3개 이상 입력해야 합니다", errorMap);
-            }
-            throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+            AppUser user = principalDetails.getUser();
+            matchingUserService.updateInfo(user.getId(), dto);
+            return new ResponseEntity<>(new CMRespDto<>(1, "수정이 완료되었습니다", null), HttpStatus.OK);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomValidationApiException("키워드가 중복 등록되었습니다");
         }
-
-        AppUser user = principalDetails.getUser();
-        matchingUserService.updateInfo(user.getId(), dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "수정이 완료되었습니다", null), HttpStatus.OK);
     }
 
     @PutMapping("/user/{userId}")

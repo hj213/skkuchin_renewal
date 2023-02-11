@@ -2,6 +2,7 @@ package skkuchin.service.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,10 +34,21 @@ public class FavoriteController {
     private final FavoriteRepo favoriteRepo;
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> write(@Valid @RequestBody FavoriteDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser user = principalDetails.getUser();
-        favoriteService.write(user, dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 저장 완료", null), HttpStatus.CREATED);
+    public ResponseEntity<?> write(@Valid @RequestBody FavoriteDto.PostRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Map<String, String> errorMap = new HashMap<>();
+        try {
+            if (bindingResult.hasErrors()) {
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+                }
+                throw new CustomValidationApiException("장소 ID를 입력해주시기 바랍니다");
+            }
+            AppUser user = principalDetails.getUser();
+            favoriteService.write(user, dto);
+            return new ResponseEntity<>(new CMRespDto<>(1, "즐겨찾기 저장 완료", null), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomValidationApiException("이미 즐겨찾기 설정된 장소입니다");
+        }
     }
 
 
