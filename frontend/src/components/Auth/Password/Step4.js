@@ -4,7 +4,7 @@ import check from '../../../image/check_circle.png';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-export default function ResetStep4() {
+export default function Step4() {
   const router = useRouter();
 
   const handleSubmit = () => {

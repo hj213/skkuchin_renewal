@@ -51,6 +51,7 @@ const SignUpStep4 = (props) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            width: '100%'
             }}
         >
         <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '61px'}}>
@@ -71,8 +72,8 @@ const SignUpStep4 = (props) => {
             </Typography>
             <Link component="button" variant="body2" color="#BABABA" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
-        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', padding: '0 20px'}}>
-            <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center'}}>
+            <Button variant="contained" onClick={handleSubmit} style={{width: '96%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                 확인
             </Button>
         <Typography sx={{fontSize: '6px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>

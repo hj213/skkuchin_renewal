@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from 'react-redux';
 import { password_email_send } from '../../../actions/email/email';
 
-const ResetStep1 = (props) => {
+const Step1 = (props) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const [emailId, setEmailId] = useState('');
@@ -81,7 +81,7 @@ const ResetStep1 = (props) => {
                 확인
             </Button>
             :
-            <Button variant="contained"  disabled style={{width: '90%', backgroundColor: "#BABABA", color: '#fff', fontSize: '14px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+            <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '14px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                 확인
             </Button>
         }
@@ -94,4 +94,4 @@ const ResetStep1 = (props) => {
     );
   };
 
-  export default ResetStep1;
+  export default Step1;

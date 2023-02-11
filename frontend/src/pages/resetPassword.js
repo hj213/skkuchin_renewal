@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import Layout from "../hocs/Layout";
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
-import ResetStep1 from '../components/Auth/Password/ResetStep1';
-import ResetStep2 from '../components/Auth/Password/ResetStep2';
-import ResetStep3 from '../components/Auth/Password/ResetStep3';
-import ResetStep4 from '../components/Auth/Password/ResetStep4';
+import Step2 from '../components/Auth/Password/Step2';
+import Step1 from '../components/Auth/Password/Step1';
+import Step3 from '../components/Auth/Password/Step3';
+import Step4 from '../components/Auth/Password/Step4';
 
 export default function resetPassword() {
 
@@ -31,16 +31,16 @@ export default function resetPassword() {
             <Layout title= '스꾸친 | 비밀번호 초기화' content='Register page'>
             <Container component="main" maxWidth="xs">
             {
-                step === 1 && <ResetStep1 handleNextStep={handleNextStep} setEmail={setEmail} />
+                step === 1 && <Step1 handleNextStep={handleNextStep} setEmail={setEmail} />
             }
             {
-                step === 2 && <ResetStep2 handleNextStep={handleNextStep} email={email} />
+                step === 2 && <Step2 handleNextStep={handleNextStep} email={email} />
             }
             {
-                step === 3 && <ResetStep3 handleNextStep={handleNextStep} email={email} />
+                step === 3 && <Step3 handleNextStep={handleNextStep} email={email} />
             }
             {
-                step === 4 && <ResetStep4 />
+                step === 4 && <Step4 />
             }
             </Container>
         </Layout>

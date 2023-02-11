@@ -44,7 +44,7 @@ export default function Step1(props) {
                 <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>아이디 찾기</Typography>
         </header>
         <form onSubmit={handleSubmit}>
-        <Typography style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px'}}>이메일 입력</Typography>
+        <Typography style={{fontSize: '14px', fontWeight: '400', marginBottom: '13px'}}>이메일 입력</Typography>
             <div style={{textAlign: 'center', display: 'flex'}}>
             <TextField
                 variant="standard"
@@ -86,7 +86,7 @@ export default function Step1(props) {
     
             </form>
             <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
-                    <Link component="button" onClick={handleLinkClick} sx={{fontSize: '12px', mb: '18px'}}>로그인 홈 가기</Link>
+                    <Link component="button" onClick={handleLinkClick} color="#BABABA" sx={{fontSize: '12px', mb: '18px'}}>로그인 홈 가기</Link>
             </div>
         </Box>
     );

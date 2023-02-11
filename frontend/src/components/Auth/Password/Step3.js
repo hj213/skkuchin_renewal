@@ -6,7 +6,7 @@ import check from '../../../image/check_circle.png';
 import uncheck from '../../../image/uncheck.png';
 import Image from 'next/image';
 
-export default function ResetStep3(props) {
+export default function Step3(props) {
     const dispatch = useDispatch();
 
     const [password, setPassword] = useState("");

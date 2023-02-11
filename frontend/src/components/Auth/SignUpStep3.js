@@ -63,8 +63,8 @@ const SignUpStep3 = (props) => {
                         이메일 인증을 완료해주세요</Typography>
         </div>
 
-        <form onSubmit={handleSubmit} style={{display: 'grid', alignItems: 'center', justifyItems: 'center'}}>
-        <div style={{textAlign: 'center', display: 'flex', marginBottom: '10.75px'}}>
+        <form onSubmit={handleSubmit} style={{display: 'grid', width: '100%', alignItems: 'center', justifyItems: 'center', margin: '0 24px'}}>
+        <div style={{textAlign: 'center', display: 'flex', margin: '0 55px', marginBottom: '10.75px'}}>
           <TextField
             variant="standard"
             placeholder="킹고 이메일 주소"
@@ -111,7 +111,7 @@ const SignUpStep3 = (props) => {
                         다음
                     </Button>
             } */}
-          <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', padding: '0 20px'}}>
+          <div style={{display: 'grid', width: '90%', alignItems: 'center', justifyItems: 'center'}}>
           {emailId != '' && checkState ?
               <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                   이메일 인증하기
@@ -121,10 +121,10 @@ const SignUpStep3 = (props) => {
                   이메일 인증하기
               </Button>
           }
-          <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
-          <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
           </div>
         </form>
+        <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
+        <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
       </Box>
     );
   };

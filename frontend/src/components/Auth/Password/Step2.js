@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from 'react-redux';
 import { password_email_check, password_email_send } from '../../../actions/email/email';
 
-const ResetStep2 = (props) => {
+const Step2 = (props) => {
     const dispatch = useDispatch();
 
     const handleResend = () => {
@@ -75,4 +75,4 @@ const ResetStep2 = (props) => {
     );
 };
 
-export default ResetStep2;
+export default Step2;
