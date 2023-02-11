@@ -12,6 +12,7 @@ import {
 } from './types'
 
 export const load_reviews = (place_id, callback) => async dispatch => {
+
     try {
         const res = await fetch(`/api/review/place/${place_id}`, {
             method: 'GET',

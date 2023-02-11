@@ -1,5 +1,5 @@
 // 장소 관련 리뷰 가져오기
-import { API_URL } from "../../../../../config";
+import { API_URL } from "../../../../config";
 import cookie from 'cookie';
 
 export default async(req, res) => {
@@ -15,7 +15,7 @@ export default async(req, res) => {
         }
         
         try {
-            const apiRes = await fetch(`${API_URL}/api/reivew/user/me`, {
+            const apiRes = await fetch(`${API_URL}/api/review/user/me`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
