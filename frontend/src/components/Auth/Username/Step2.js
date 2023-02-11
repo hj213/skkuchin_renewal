@@ -27,21 +27,22 @@ export default function Step2() {
                 <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>아이디 찾기</Typography>
         </header>
 
-        <div style={{margin: '0'}}>
+        <div style={{margin: '0', width: '100%'}}>
                 <TextField
                 variant="standard"
-                label="아이디"
+                label="아이디:"
                 value={user.username}
                 style={{width: '100%'}}
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                required
+                inputProps={
+					{ readOnly: true }
+				}
                 />
             </div>
-            <Button variant="contained" onClick={handleButtonClick} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                로그인 홈 가기
-            </Button>
+        <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '40px'}}>
+        <Button variant="contained" onClick={handleButtonClick} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+            로그인 홈 가기
+        </Button>
+        </div>
         </Box>
     );
 }

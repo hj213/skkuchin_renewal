@@ -46,7 +46,7 @@ const ResetStep1 = (props) => {
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>비밀번호 초기화</Typography>
     </header>
     <form onSubmit={handleSubmit}>
-        <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '400'}}>이메일 입력</Typography>
+        <Typography style={{fontSize: '14px', fontWeight: '400', marginBottom: '13px'}}>이메일 입력</Typography>
         <div style={{textAlign: 'center', display: 'flex'}}>
         <TextField
             variant="standard"
@@ -77,11 +77,11 @@ const ResetStep1 = (props) => {
         </div>
         <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', marginBottom: '200px'}}>회원가입시 입력하신 이메일을 입력해주세요.</Typography>
         {emailId != '' ?
-            <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+            <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '14px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                 확인
             </Button>
             :
-            <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+            <Button variant="contained"  disabled style={{width: '90%', backgroundColor: "#BABABA", color: '#fff', fontSize: '14px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                 확인
             </Button>
         }

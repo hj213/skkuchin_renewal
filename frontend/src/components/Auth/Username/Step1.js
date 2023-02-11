@@ -44,7 +44,8 @@ export default function Step1(props) {
                 <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>아이디 찾기</Typography>
         </header>
         <form onSubmit={handleSubmit}>
-            <div style={{textAlign: 'center', display: 'flex', marginBottom: '200px'}}>
+        <Typography style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px'}}>이메일 입력</Typography>
+            <div style={{textAlign: 'center', display: 'flex'}}>
             <TextField
                 variant="standard"
                 placeholder="킹고 이메일 주소"
@@ -72,6 +73,7 @@ export default function Step1(props) {
                 <MenuItem value="@skku.edu">@skku.edu</MenuItem>
             </Select>
             </div>
+            <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', marginBottom: '200px'}}>회원가입시 입력하신 이메일을 입력해주세요.</Typography>
             {emailId != '' ?
                 <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                     확인

@@ -71,7 +71,7 @@ export default function ResetStep3(props) {
                     validPW ? 
                     <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>안전한 비밀번호입니다.</Typography>
                     : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '25px'}}>안전하지 않은 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '25px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
+                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
             </div>
             <div style={{margin: '0 36px'}}>
                 <TextField
@@ -90,8 +90,8 @@ export default function ResetStep3(props) {
                 }}
                 />
                 { (rePassword != '') ? ((password == rePassword) ? 
-                <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050'}}>동일한 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
+                <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#505050'}}>동일한 비밀번호입니다.</Typography>
+                : <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
                 : null}
             </div>
             <div style={{margin: '150px 36px 12px'}}>

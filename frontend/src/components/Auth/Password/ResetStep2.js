@@ -63,11 +63,11 @@ const ResetStep2 = (props) => {
                         모바일인 경우 <br/>
                         [킹고M 어플&gt;메뉴&gt;킹고포털&gt;메일]에서 확인 가능합니다
             </Typography>
-            <Link component="button" variant="body2" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
+            <Link component="button" variant="body2" color="#BABABA" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
 
-        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', margin: '0 20px'}}>
-        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', width: '100%', margin: '0 20px'}}>
+        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', margin: '0 20px', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
             확인
         </Button>
         </div>
