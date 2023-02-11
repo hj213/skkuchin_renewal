@@ -32,23 +32,8 @@ import {
 } 
     from './types';
 
-export const register = (
-    nickname,
-    username,
-    password,
-    re_password,
-    student_id,
-    major,
-    callback
-) => async dispatch => {
-    const body = JSON.stringify({
-        nickname,
-        username,
-        password,
-        re_password,
-        student_id,
-        major,
-    });
+export const register = (registerData, callback) => async dispatch => {
+    const body = JSON.stringify(registerData);
 
     dispatch({
         type: SET_AUTH_LOADING
@@ -71,11 +56,13 @@ export const register = (
         });
         
         if (res.status === 201) {
+            console.log("suc");
             dispatch({
                 type: REGISTER_SUCCESS
             });
             if (callback) callback([true, data.success]);
         } else {
+            console.log("fail");
             dispatch({
                 type: REGISTER_FAIL,
                 payload: data
@@ -494,11 +481,14 @@ export const find_username = (email, callback) => async dispatch => {
         const data = await res.json();
 
         if (res.status === 200) {
+            console.log("test1");
             dispatch({
-                type: FIND_USERNAME_SUCCESS
+                type: FIND_USERNAME_SUCCESS,
+                payload: data
             });
             if (callback) callback([true, data.success]);
         } else {
+            console.log("test2");
             dispatch({
                 type: FIND_USERNAME_FAIL,
                 payload: data
@@ -506,6 +496,7 @@ export const find_username = (email, callback) => async dispatch => {
             if (callback) callback([false, data.error]);
         }
     } catch (error) {
+        console.log("test3");
         console.log(error);
         dispatch({
             type: FIND_USERNAME_FAIL

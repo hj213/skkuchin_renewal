@@ -1,4 +1,4 @@
-import { API_URL } from "../../../config/index";
+import { API_URL } from "../../../../config/index";
 
 export default async( req, res )=> {
     if(req.method === 'POST'){
@@ -7,7 +7,7 @@ export default async( req, res )=> {
         const body = JSON.stringify(data);
 
         try {
-            const apiRes = await fetch(`${API_URL}/api/user/save`, {
+            const apiRes = await fetch(`${API_URL}/api/email/signup`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

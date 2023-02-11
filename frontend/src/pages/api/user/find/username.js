@@ -7,6 +7,7 @@ export default async (req, res) => {
         const body = JSON.stringify({
             email
         });
+        console.log(body);
 
         try {
             const apiRes = await fetch(`${API_URL}/api/user/find/username`, {
@@ -21,16 +22,19 @@ export default async (req, res) => {
             const resValue = await apiRes.json();
 
             if (apiRes.status === 200) {
+                console.log("test4", resValue.data);
                 return res.status(200).json({
                     username: resValue.data,
                     success: resValue.message
                 });
             } else {
+                console.log("test5");
                 return res.status(apiRes.status).json({
                     error: resValue.message
                 });
             }
         } catch(err) {
+            console.log("test6");
             console.log(err);
             return res.status(500).json({
                 error: 'Something went wrong when finding username'

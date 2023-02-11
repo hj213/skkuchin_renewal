@@ -110,7 +110,9 @@ const LoginPage = () => {
                         |
                     </Grid>
                     <Grid item>
+                    <Link href={`/resetPassword`}> 
                         <span>비밀번호 초기화</span>
+                    </Link>
                     </Grid>
                 </Grid>
                 <div style={{fontSize: '9px', fontWeight: '500', color: '#BABABA', position: 'absolute', bottom: '36px'}}>
