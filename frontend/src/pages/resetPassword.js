@@ -6,6 +6,8 @@ import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } f
 import theme from '../theme/theme';
 import ResetStep1 from '../components/Auth/Password/ResetStep1';
 import ResetStep2 from '../components/Auth/Password/ResetStep2';
+import ResetStep3 from '../components/Auth/Password/ResetStep3';
+import ResetStep4 from '../components/Auth/Password/ResetStep4';
 
 export default function resetPassword() {
 
@@ -41,6 +43,12 @@ export default function resetPassword() {
             }
             {
                 step === 2 && <ResetStep2 handleNextStep={handleNextStep} email={email} />
+            }
+            {
+                step === 3 && <ResetStep3 handleNextStep={handleNextStep} email={email} />
+            }
+            {
+                step === 4 && <ResetStep4 />
             }
             </Container>
         </Layout>

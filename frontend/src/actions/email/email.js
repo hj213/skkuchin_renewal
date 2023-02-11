@@ -70,15 +70,12 @@ export const signup_email_check = (username, callback) => async dispatch => {
         const data = await res.json();
         
         if (res.status === 200) {
-            console.log("suc");
             dispatch({
                 type: SIGNUP_EMAIL_CHECK_SUCCESS,
                 payload: data
             });
             if (callback) callback([true, data.success]);
         } else {
-            console.log("fail");
-            console.log(data);
             dispatch({
                 type: SIGNUP_EMAIL_CHECK_FAIL,
                 payload: data
@@ -112,13 +109,11 @@ export const password_email_send = (email, callback) => async dispatch => {
         const data = await res.json();
         
         if (res.status === 201) {
-            console.log("suc");
             dispatch({
                 type: PASSWORD_EMAIL_SEND_SUCCESS
             });
             if (callback) callback([true, data.success]);
         } else {
-            console.log("fail");
             dispatch({
                 type: PASSWORD_EMAIL_SEND_FAIL,
                 payload: data

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, InputAdornment} from '@mui/material';
+import {  TextField, Button, Typography, Box, Select, MenuItem, Link} from '@mui/material';
 import back from '../../../image/arrow_back_ios.png';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useDispatch } from 'react-redux';
 import { password_email_send } from '../../../actions/email/email';
@@ -37,12 +36,12 @@ const ResetStep1 = (props) => {
         alignItems: 'center',
         }}
     >
-    <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
+    <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '55px'}}>
             <Image width={12.02} height={21.55} src={back} />
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>비밀번호 초기화</Typography>
     </header>
     <form onSubmit={handleSubmit}>
-        <div style={{textAlign: 'center', display: 'flex', marginBottom: '10.75px'}}>
+        <div style={{textAlign: 'center', display: 'flex', marginBottom: '200px'}}>
         <TextField
             variant="standard"
             placeholder="킹고 이메일 주소"
@@ -71,18 +70,18 @@ const ResetStep1 = (props) => {
         </Select>
         </div>
         {emailId != '' ?
-            <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+            <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                 확인
             </Button>
             :
-            <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+            <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                 확인
             </Button>
         }
 
         </form>
         <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
-                <Link href={`/login`} >아이디 찾기</Link> 
+                <Link component="button" variant="body2" sx={{fontSize: '12px', mb: '18px'}}>아이디 찾기</Link>
         </div>
       </Box>
     );

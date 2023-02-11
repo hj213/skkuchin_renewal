@@ -69,9 +69,7 @@ const SignUpStep1 = (props) => {
                 <TextField
                 variant="standard"
                 label="아이디"
-                //value={username}
                 value={props.data.username}
-                //onChange={(e) => setUsername(e.target.value)}
                 onChange={handleUsernameChange}
                 style={{width: '100%'}}
                 InputLabelProps={{

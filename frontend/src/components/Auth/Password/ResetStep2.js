@@ -1,14 +1,26 @@
 import { useState, useEffect } from "react";
-import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, InputAdornment} from '@mui/material';
+import {  TextField, Button, InputLabel, Typography, Box, Link} from '@mui/material';
 import back from '../../../image/arrow_back_ios.png';
+import logo from '../../../image/email_enhang.png'
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useDispatch } from 'react-redux';
-import { password_email_check } from '../../../actions/email/email';
+import { password_email_check, password_email_send } from '../../../actions/email/email';
 
 const ResetStep2 = (props) => {
     const dispatch = useDispatch();
+
+    const handleResend = () => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(password_email_send(props.email, ([result, message]) => {
+                if (result) {
+                    alert("이메일을 재전송했습니다.");
+                } else {
+                    alert(message);
+                }
+            }));
+        }
+    }
 
     const handleSubmit= (e) => {
         e.preventDefault();

@@ -18,7 +18,7 @@ const SignUpStep5 = (props) => {
     }
 
     const handleButtonClick = () => {
-        router.push('/makeProfile');
+        //router.push('/makeProfile');
     }
       
     return (
