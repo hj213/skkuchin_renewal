@@ -32,7 +32,8 @@ const matchingUserReducer = (state = initialState, action) => {
             }
         case LOAD_MATCHING_INFO_FAIL:
             return {
-                ...state
+                ...state,
+                matchingUser: null
             }
         case CHANGE_MATCHING_STATUS_SUCCESS:
             return {

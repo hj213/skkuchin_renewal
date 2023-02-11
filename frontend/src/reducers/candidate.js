@@ -18,7 +18,8 @@ const candidateReducer = (state = initialState, action) => {
             }
         case LOAD_CANDIDATE_FAIL:
             return {
-                ...state
+                ...state,
+                candidate: null
             }
         default:
             return state;
