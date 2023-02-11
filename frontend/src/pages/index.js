@@ -49,6 +49,23 @@ export default function list(){
     const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
+    // const [tagsId, setTagsId] = useState([
+    //     '학생 할인', '스페셜', '한식', '양식', '중식', '일식', '기타', '간단한 한 끼', '분위기 좋은'
+    // ])
+    const [tagsId, setTagsId] = useState([
+        {id: '학생 할인', exclusiveGroup: null},
+        {id: '스페셜', exclusiveGroup: null},
+        {id: '한식', exclusiveGroup: 'cuisine'},
+        {id: '양식', exclusiveGroup: 'cuisine'},
+        {id: '중식', exclusiveGroup: 'cuisine'},
+        {id: '일식', exclusiveGroup: 'cuisine'},
+        {id: '기타', exclusiveGroup: 'cuisine'},
+        {id: '간단한 한 끼', exclusiveGroup: null},
+        {id: '분위기 좋은', exclusiveGroup: null},
+    ]);
+
+    const tagName = tagsId.map(tag => tag.id);
+
 
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [focus, setFocus] = useState();
@@ -77,6 +94,9 @@ export default function list(){
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
+            // if(tagsId.includes(router.query.keyword))
+            if(tagName.includes(router.query.keyword))
+                tags.push(router.query.keyword);
             router.query.keyword = '';
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -118,6 +138,15 @@ export default function list(){
             setNumOfLi(filteredPlace.length);
         }
     }, [filteredPlace]);
+
+    // 카드 리셋 
+    const handleReset = () => {
+        setCardStyle({cardVisibility:'hidden'});
+        setOpen({ bool:false,
+            visibility:'hidden'});
+        setHeight('0');
+        setPreventScroll('');
+    }
 
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
@@ -172,13 +201,9 @@ export default function list(){
             setPreventScroll('');
             cardRef.current.scrollTo({top:0, behavior:'smooth'});
         } else{
-            setCardStyle({cardVisibility:'hidden'});
-            setOpen({ bool:false,
-                visibility:'hidden'});
             setKeyword('');
-            setHeight('0');
-            setPreventScroll('');
-            setTags(null);
+            setTags([]);
+            handleReset();
         }
     };
 
@@ -202,12 +227,8 @@ export default function list(){
         e.preventDefault();
         e.currentTarget.style.display = 'none';
         cardRef.current.scrollTo({top:0, behavior:'smooth'});
-        setOpen({ bool:false,
-            visibility:'hidden'});
-        setCardStyle({cardVisibility:'hidden'});
         setKeyword('');
-        setHeight('0');
-        setPreventScroll('');
+        handleReset();
         
         // 태그 2개 버전
         //  // alert(e.target.id);
@@ -227,21 +248,42 @@ export default function list(){
         //  // alert(tags[0]+ ' '+tags[1]);
         //  console.log(tags);
     }
-
+    
     const onTagClick = (id) => {
-        setKeyword(id);
-        if(tags!=null) {
-            if(tags.length<2) {
-                tags.push(id);
-                setKeyword(tags.join(', '));
+        const selectedTag = tagsId.find(tag => tag.id === id);
+        if (!selectedTag) return;
+      
+        const exclusiveGroup = selectedTag.exclusiveGroup;
+        let newTags;
+      
+        if (tags.includes(id)) {
+          newTags = tags.filter(tag => tag !== id);
+        } else {
+          // exclusiveGroup 내의 태그 중 하나가 이미 선택된 경우 첫 번째 태그를 선택해제
+          if (exclusiveGroup && tags.some(tag => tagsId.find(t => t.id === tag)?.exclusiveGroup === exclusiveGroup)) {
+            const firstTagInExclusiveGroup = tags.find(tag => tagsId.find(t => t.id === tag)?.exclusiveGroup === exclusiveGroup);
+            newTags = tags.filter(tag => tag !== firstTagInExclusiveGroup).concat(id);
+          } else {
+            // 2개 이상 선택되지 않도록 조건 추가
+            if (tags.length >= 2) {
+              const firstSelected = tags[0];
+              if (tagsId.find(tag => tag.id === firstSelected)?.exclusiveGroup === exclusiveGroup
+                && exclusiveGroup === selectedTag.exclusiveGroup) {
+                newTags = tags.filter(tag => tag !== firstSelected).concat(id);
+              } else {
+                newTags = tags.filter(tag => tag !== firstSelected).concat(id);
+              }
             } else {
-                tags.shift();
-                tags.push(id);
-                setKeyword(tags.join(', '));
+              newTags = tags.concat(id);
             }
+          }
         }
-    }
-
+      
+        setTags(newTags);
+        setKeyword(newTags.join(', '));
+      }
+      
+    
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
@@ -253,7 +295,7 @@ export default function list(){
         setClick(bool);
         if(click) {
             setKeyword('');
-            setTags(null);
+            setTags([]);
             setFilteredPlace(null);
             setHeight('0');
             setClick(!bool);
@@ -265,7 +307,7 @@ export default function list(){
       <CssBaseline />
        <Layout>
             <UpperBar />
-            <div style={{ position: 'relative', height:'100%'}}>  
+            <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}>  
             <Container style={{position:'absolute', zIndex:'2'}} >
                 <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
             </Container> 
