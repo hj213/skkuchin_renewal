@@ -28,6 +28,6 @@ public class Block {
     private AppUser user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "blocked_user_id", nullable = false)
+    @JoinColumn(name = "block_user_id", nullable = false)
     private AppUser blockedUser;
 }

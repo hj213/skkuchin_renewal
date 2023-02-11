@@ -40,9 +40,9 @@ export const load_block_users = (callback) => async dispatch => {
     }
 }
 
-export const enroll_block_user = (blocked_user_id, callback) => async dispatch => {
+export const enroll_block_user = (block_user_id, callback) => async dispatch => {
     const body = JSON.stringify({
-        blocked_user_id
+        block_user_id
     });
 
     try {
