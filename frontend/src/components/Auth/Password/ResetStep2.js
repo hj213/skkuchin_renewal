@@ -56,7 +56,8 @@ const ResetStep2 = (props) => {
             <Typography sx={{fontSize: '25px', fontWeight: '400', mb: '37px'}}>메일을 확인해주세요!</Typography>
             <Typography sx={{fontSize: '12px', fontWeight: '500', mb: '55px', lineHeight: '25px', color: '#505050'}}>
                 비밀번호 초기화 인증 메일이 발송되었습니다. <br/>
-                발송된 메일을 통해 비밀번호를 재설정해주세요
+                발송된 메일을 통해 인증 완료 후 <br/>
+                아래 확인 버튼을 눌러주세요
             </Typography>
             <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '97px', lineHeight: '25px', color: '#505050'}}>
                         모바일인 경우 <br/>
@@ -65,10 +66,11 @@ const ResetStep2 = (props) => {
             <Link component="button" variant="body2" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
 
-        
-        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none', margin: '0 49px'}}>
+        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', margin: '0 20px'}}>
+        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
             확인
         </Button>
+        </div>
     </Box>
     );
 };

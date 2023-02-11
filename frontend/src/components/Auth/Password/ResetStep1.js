@@ -46,7 +46,8 @@ const ResetStep1 = (props) => {
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>비밀번호 초기화</Typography>
     </header>
     <form onSubmit={handleSubmit}>
-        <div style={{textAlign: 'center', display: 'flex', marginBottom: '200px'}}>
+        <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '400'}}>이메일 입력</Typography>
+        <div style={{textAlign: 'center', display: 'flex'}}>
         <TextField
             variant="standard"
             placeholder="킹고 이메일 주소"
@@ -74,6 +75,7 @@ const ResetStep1 = (props) => {
             <MenuItem value="@skku.edu">@skku.edu</MenuItem>
         </Select>
         </div>
+        <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', marginBottom: '200px'}}>회원가입시 입력하신 이메일을 입력해주세요.</Typography>
         {emailId != '' ?
             <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                 확인
@@ -86,7 +88,7 @@ const ResetStep1 = (props) => {
 
         </form>
         <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
-                <Link component="button" onClick={handleLinkClick} sx={{fontSize: '12px', mb: '18px'}}>아이디 찾기</Link>
+                <Link component="button" onClick={handleLinkClick} color="#BABABA" sx={{fontSize: '12px', mb: '18px'}}>아이디 찾기</Link>
         </div>
       </Box>
     );

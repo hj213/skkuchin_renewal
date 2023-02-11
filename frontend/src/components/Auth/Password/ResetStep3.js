@@ -94,7 +94,7 @@ export default function ResetStep3(props) {
                 : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
                 : null}
             </div>
-            <div style={{margin: '53px 36px 12px'}}>
+            <div style={{margin: '150px 36px 12px'}}>
             {validPW && (password == rePassword) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                         다음

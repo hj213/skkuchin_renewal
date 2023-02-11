@@ -127,8 +127,8 @@ const SignUpStep1 = (props) => {
                 }}
                 />
                 { (props.data.re_password != '') ? ((props.data.password == props.data.re_password) ? 
-                <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050'}}>동일한 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
+                <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px'}}>동일한 비밀번호입니다.</Typography>
+                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px'}}>일치하지 않는 비밀번호입니다.</Typography>)
                 : null}
             </div>
             <div style={{margin: '53px 36px 12px'}}>
