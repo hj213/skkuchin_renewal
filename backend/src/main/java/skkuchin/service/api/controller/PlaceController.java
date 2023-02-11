@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.PlaceDto;
+import skkuchin.service.config.auth.PrincipalDetails;
+import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.service.PlaceService;
 
 import javax.validation.Valid;
@@ -66,7 +69,7 @@ public class PlaceController {
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> search(@RequestParam("q") List<String> keywords) {
-        List<PlaceDto.Response> places = placeService.searchPlace(keywords);
+        List<PlaceDto.Response> places = placeService.search(keywords);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 검색 완료", places), HttpStatus.OK);
     }
 }

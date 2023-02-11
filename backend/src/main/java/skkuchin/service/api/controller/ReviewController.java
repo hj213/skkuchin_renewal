@@ -98,8 +98,9 @@ public class ReviewController {
 
     @GetMapping("/place/{placeId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> getPlaceReview(@PathVariable Long placeId) {
-        List<ReviewDto.Response> placeReviews = reviewService.getPlaceReview(placeId);
+    public ResponseEntity<?> getPlaceReview(@PathVariable Long placeId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        List<ReviewDto.Response> placeReviews = reviewService.getPlaceReview(placeId, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소별 리뷰 가져오기 완료", placeReviews), HttpStatus.OK);
     }
 

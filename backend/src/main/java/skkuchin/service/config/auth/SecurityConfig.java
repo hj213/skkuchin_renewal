@@ -22,7 +22,6 @@ public class SecurityConfig {
     private static final String[] PERMIT_API_URL_ARRAY = {
             "/api/user/login",
             "/api/user/save",
-            "/api/confirmEmail",
             "/api/user/token/**",
             "/api/user/check/**",
             "/api/user/find/**",
@@ -34,7 +33,6 @@ public class SecurityConfig {
             "/ws/**"
     };
     private static final String[] PERMIT_SWAGGER_URL_ARRAY = {
-            /* swagger v2 */
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",

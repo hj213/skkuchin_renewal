@@ -81,19 +81,12 @@ export const enroll_favorite = (place_id, callback) => async dispatch => {
 
 // del fav
 export const delete_favorite = (favorite_id, callback) => async dispatch => {
-
-    const body = JSON.stringify({
-        favorite_id
-    });
-
     try {
         const res = await fetch(`/api/favorite/${favorite_id}`, {
             method: 'DELETE',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: body
+                'Accept': 'application/json'
+            }
         });
 
         if (res.status === 200) {

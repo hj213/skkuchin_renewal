@@ -9,7 +9,7 @@ import searchBox from '../image/검색창.png';
 import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";
 
-export default function SearchBox({openID, handleFocus}){
+export default function SearchBox({openID, handleFocus, handleClick}){
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -22,7 +22,7 @@ export default function SearchBox({openID, handleFocus}){
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
+            // dispatch(load_places());
             dispatch(load_user());
         }
     }, [dispatch]);
@@ -71,6 +71,10 @@ export default function SearchBox({openID, handleFocus}){
         handleFocus(true);
     }
 
+    const handleOnClick = () => {
+        handleClick(true);
+    }
+
     const CssTextField = styled(TextField)({
         '& label.Mui-focused': {
           color: 'transparent',
@@ -95,11 +99,11 @@ export default function SearchBox({openID, handleFocus}){
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <div style={{marginTop:'5px'}} >
-                <Grid container style={{position:'absolute', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
-                    <Grid item style={{marginTop:'4%', marginLeft: '5%'}} >
+                <Grid container style={{position:'absolute', zIndex:'3', alignItems: 'center'}}>
+                    <Grid item style={{marginTop:'3.5%', marginLeft: '5%'}} onClick={handleOnClick}>
                         <MapDrawer open={openID} />
                     </Grid>
-                    <Grid item style={{marginTop:'3.3%', marginLeft: '2%'}}>
+                    <Grid item style={{marginTop:'3.3%', marginLeft: '2%'}} onFocus={handleOnFocus}>
                 
                         <InputBase
                             sx={{ ml: 1, width:'420%'}}
