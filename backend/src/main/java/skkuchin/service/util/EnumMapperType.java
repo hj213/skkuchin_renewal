@@ -1,4 +1,4 @@
-package skkuchin.service.domain.Map;
+package skkuchin.service.util;
 
 public interface EnumMapperType {
     String getCode();

@@ -2,6 +2,7 @@ package skkuchin.service.domain.Map;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import skkuchin.service.util.EnumMapperType;
 
 @RequiredArgsConstructor
 public enum Category implements EnumMapperType {
