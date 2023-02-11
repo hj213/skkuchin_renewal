@@ -106,13 +106,13 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                     System.out.println("sessionId = " + sessionId);
                     String roomId = accessor.getDestination().substring(29);
                     System.out.println("accessor = " + accessor);
-                /*    String token = accessor.getFirstNativeHeader("token");
+                  String token = accessor.getFirstNativeHeader("token");
                     System.out.println("token = " + token);
                     String k = getUserNameFromJwt(token);
                     ChatRoom chatRoom = chatService.findChatroom(roomId);
-                    *//*chatService.setSessionId(chatRoom,sessionId);*//*
+
                     chatSessionService.setSessionId(chatRoom,sessionId);
-                    chatService.getAllMessage1(chatRoom,k);*/
+                    chatService.getAllMessage1(chatRoom,k);
                     /*chatService.updateCount(chatRoom);*/
                     System.out.println("Subscribe");
 
