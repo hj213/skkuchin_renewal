@@ -46,9 +46,10 @@ export default async (req, res) => {
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
 
-        if(access == false){
+        if (access == false) {
+            console.log('access 토큰이 존재하지 않습니다')
             return res.status(401).json({
-                error: 'User unauthorized to make this request'
+                error: '다시 로그인해주시기 바랍니다'
             });
         }
 

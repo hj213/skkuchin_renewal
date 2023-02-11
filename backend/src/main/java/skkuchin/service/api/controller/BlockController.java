@@ -50,7 +50,7 @@ public class BlockController {
             }
             AppUser user = principalDetails.getUser();
             blockService.blockUser(user, dto);
-            return new ResponseEntity<>(new CMRespDto<>(1, "해당 유저가 차단되었습니다", null), HttpStatus.OK);
+            return new ResponseEntity<>(new CMRespDto<>(1, "해당 유저가 차단되었습니다", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             throw new CustomValidationApiException("해당 계정은 이미 차단된 계정입니다");
         }
