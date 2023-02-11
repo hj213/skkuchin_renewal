@@ -78,7 +78,7 @@ const ReviewsPage = () => {
         }
     };
 
-    const user = useSelector(state => state.auth.user);
+    // const user = useSelector(state => state.auth.user);
 
     // 이미지
     const itemData = [
