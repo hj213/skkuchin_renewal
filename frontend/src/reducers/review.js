@@ -47,8 +47,7 @@ const reviewReducer = (state = initialState, action) => {
             }
         case MODIFY_REVIEW_SUCCESS:
             return{
-                ...state,
-                review: payload.review
+                ...state
             }
         case MODIFY_REVIEW_FAIL:
             return{

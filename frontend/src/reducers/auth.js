@@ -168,7 +168,8 @@ const authReducer = (state = initialState, action) => {
             }
         case FIND_USERNAME_FAIL:
             return {
-                ...state
+                ...state,
+                user: null
             }
         case RESET_PASSWORD_SUCCESS:
             return {
