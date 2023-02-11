@@ -34,7 +34,9 @@ export default async (req, res) => {
         form.parse(req, (err, fields, files) => {
             if (err) {
                 console.log(err)
-                return res.status(500).json({ result: err });
+                return res.status(500).json({
+                    'error': 'Something went wrong when parsing data'
+                });
             }
 
             const formData = new FormData();

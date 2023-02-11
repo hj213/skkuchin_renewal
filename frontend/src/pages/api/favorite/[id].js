@@ -14,7 +14,7 @@ export default async (req, res) => {
             });
         }
 
-        const { favorite_id } = req.body;
+        const favorite_id = parseInt(req.query.id, 10);
 
         try {
             const apiRes = await fetch(`${API_URL}/api/favorite/${favorite_id}`, {
