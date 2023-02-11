@@ -1,7 +1,8 @@
+
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
-import { search_places } from "../actions/place/place";
+import { load_places, search_places } from "../actions/place/place";
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
@@ -47,6 +48,8 @@ export default function list(){
     });
     const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
     const [keyword, setKeyword] = useState(''); //태그검색
+    const [tags, setTags] = useState([]); // 태그 2개까지
+
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [focus, setFocus] = useState();
 
@@ -66,7 +69,7 @@ export default function list(){
         if (place && keyword != '' && user.toggle != null) {
           setFilteredPlace(place.filter((item) => item.campus === user.toggle));
         } else {
-          setFilteredPlace(null);
+            if(tags != null) setFilteredPlace(null);
         }
     }, [place, user]);
 
@@ -81,6 +84,8 @@ export default function list(){
                 setFilteredPlace(null);
             }
             else {
+                // 키워드 확인
+                // alert("현재 키워드: "+ keyword);
                 dispatch(search_places(keyword));
                 setHeight('32%');
                 setCardStyle({
@@ -90,7 +95,7 @@ export default function list(){
                 });
             }
         }
-    }, [keyword, router.query.keyword, dispatch]);
+    }, [keyword, router.query.keyword, dispatch, tags]);
     
     
     // 사용자 터치에 따라 카드 사이즈 변화
@@ -173,6 +178,7 @@ export default function list(){
             setKeyword('');
             setHeight('0');
             setPreventScroll('');
+            setTags(null);
         }
     };
 
@@ -192,9 +198,9 @@ export default function list(){
 
     //태그 클릭했을 때 사라지도록
     const handleTagClick = (e) => {
+        // 태그 1개 버전
         e.preventDefault();
         e.currentTarget.style.display = 'none';
-        // 태그가 2개인 경우 수정해야함
         cardRef.current.scrollTo({top:0, behavior:'smooth'});
         setOpen({ bool:false,
             visibility:'hidden'});
@@ -202,16 +208,56 @@ export default function list(){
         setKeyword('');
         setHeight('0');
         setPreventScroll('');
+        
+        // 태그 2개 버전
+        //  // alert(e.target.id);
+        //  e.preventDefault();
+        //  e.target.style.display = 'none';
+        //  // 태그가 2개인 경우 수정해야함
+        //  // cardRef.current.scrollTo({top:0, behavior:'smooth'});
+        //  // setOpen({ bool:false,
+        //      // visibility:'hidden'});
+        //  // setCardStyle({cardVisibility:'hidden'});
+        //  setKeyword('');
+        //  tags = tags.filter((tag) => tag != e.target.id);
+ 
+        //  // setHeight('0');
+        //  setPreventScroll('');
+         
+        //  // alert(tags[0]+ ' '+tags[1]);
+        //  console.log(tags);
     }
 
     const onTagClick = (id) => {
         setKeyword(id);
+        if(tags!=null) {
+            if(tags.length<2) {
+                tags.push(id);
+                setKeyword(tags.join(', '));
+            } else {
+                tags.shift();
+                tags.push(id);
+                setKeyword(tags.join(', '));
+            }
+        }
     }
 
-    //드로워가 열리거나 검색창에 포커스 잡혔을 때
+    // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-        // console.log(focus); //확인용
+        console.log(focus); //확인용
+    }
+
+    const [click, setClick] = useState(true);
+    const handleClick= (bool) => {
+        setClick(bool);
+        if(click) {
+            setKeyword('');
+            setTags(null);
+            setFilteredPlace(null);
+            setHeight('0');
+            setClick(!bool);
+        }
     }
 
     return(
@@ -221,7 +267,7 @@ export default function list(){
             <UpperBar />
             <div style={{ position: 'relative', height:'100%'}}>  
             <Container style={{position:'absolute', zIndex:'2'}} >
-                <SearchBox openID={openID} handleFocus={handleFocus} />   
+                <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
             </Container> 
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />
@@ -248,9 +294,9 @@ export default function list(){
                             <Grid item xs>
                                 <Grid container>
                                     {
-                                        keyword != '' ?
+                                        tags != null ?
                                         <Grid item onClick={handleTagClick}>
-                                            {displayTagImage(keyword)}
+                                            {displayTagImage(tags)}
                                         </Grid>
                                         : null
                                     }
@@ -282,8 +328,9 @@ export default function list(){
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
                         <Image width={70} height={4} src={line} /> 
                     </div>
-                
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+                        {/* 키워드별 필터링된 장소 개수 확인 */}
+                        <p style={{margin: 0, fontSize: '10px'}}>{filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개)' : null}</p> 
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
@@ -373,7 +420,7 @@ export default function list(){
                                     </Grid>
                                     </Link>
                                 </li>
-                        )): null}
+                        )) : null }
                         </ul>
                     </div>
                 </Card>

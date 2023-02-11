@@ -12,6 +12,7 @@ import {
 } from './types'
 
 export const load_reviews = (place_id, callback) => async dispatch => {
+
     try {
         const res = await fetch(`/api/review/place/${place_id}`, {
             method: 'GET',
@@ -22,7 +23,7 @@ export const load_reviews = (place_id, callback) => async dispatch => {
 
         const data = await res.json();
 
-        if(res.status === 200){
+        if (res.status === 200) {
             dispatch({
                 type: LOAD_REVIEWS_SUCCESS,
                 payload: data
@@ -53,7 +54,7 @@ export const load_review = (callback) => async dispatch => {
 
         const data = await res.json();
 
-        if(res.status === 200){
+        if (res.status === 200) {
             dispatch({
                 type: LOAD_REVIEW_SUCCESS,
                 payload: data
