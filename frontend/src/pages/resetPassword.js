@@ -13,8 +13,6 @@ export default function resetPassword() {
 
     const dispatch = useDispatch();
     const router = useRouter();
-    const register_success = useSelector(state => state.auth.register_success);
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState("");
@@ -26,17 +24,11 @@ export default function resetPassword() {
     const handlePrevStep = () => {
         setStep(step - 1);
     }
-
-    if(typeof window !== 'undefined' && isAuthenticated)
-        router.push('/dashboard');
-    if(register_success)
-        router.push('/login');
-    
     
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout title= '스꾸친 | Register' content='Register page'>
+            <Layout title= '스꾸친 | 비밀번호 초기화' content='Register page'>
             <Container component="main" maxWidth="xs">
             {
                 step === 1 && <ResetStep1 handleNextStep={handleNextStep} setEmail={setEmail} />

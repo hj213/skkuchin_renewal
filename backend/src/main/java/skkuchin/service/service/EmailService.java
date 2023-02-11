@@ -167,8 +167,7 @@ public class EmailService {
         String title = "SKKUCHIN "+emailType+" 이메일 인증";
         String mailContent = "<h3>["+emailType+" 이메일 인증]</h3>"
                 + "<br><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
-                //+ "<a href='http://localhost:8080/api/email/confirm/"
-                + "<a href='http://127.0.0.1:8080/api/email/confirm/"
+                + "<a href='http://localhost:8080/api/email/confirm/"
                 + type.name().toLowerCase()
                 + "?email=" + email + "&authNum=" + authNum + "' target='_blenk'>이메일 인증 확인</a>";
 

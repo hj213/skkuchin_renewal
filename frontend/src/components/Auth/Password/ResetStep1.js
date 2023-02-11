@@ -8,8 +8,13 @@ import { password_email_send } from '../../../actions/email/email';
 
 const ResetStep1 = (props) => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const [emailId, setEmailId] = useState('');
     const [domain, setDomain] = useState('@g.skku.edu');
+
+    const handleLinkClick = () => {
+        router.push('/findUsername');
+    }
 
     const handleSubmit= (e) => {
         e.preventDefault();
@@ -81,7 +86,7 @@ const ResetStep1 = (props) => {
 
         </form>
         <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
-                <Link component="button" variant="body2" sx={{fontSize: '12px', mb: '18px'}}>아이디 찾기</Link>
+                <Link component="button" onClick={handleLinkClick} sx={{fontSize: '12px', mb: '18px'}}>아이디 찾기</Link>
         </div>
       </Box>
     );
