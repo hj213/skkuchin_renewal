@@ -52,10 +52,10 @@ export default async (req, res) => {
             });
         }
 
-        const { blocked_user_id } = req.body;
+        const { block_user_id } = req.body;
 
         const body = JSON.stringify({
-            blocked_user_id
+            block_user_id
         });
 
         try {
