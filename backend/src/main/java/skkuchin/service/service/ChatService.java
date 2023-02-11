@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
+import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepository;
@@ -37,6 +38,16 @@ public class ChatService {
                 .stream()
                 .map(message -> new ChatMessageDto.Response(message))
                 .collect(Collectors.toList());
+    }
+
+    public void getAllMessage1(ChatRoom chatRoom, String sender){
+        List<ChatMessage> chatMessages = chatRepository.findByRoomId(chatRoom.getRoomId());
+        for (int i = 0; i<chatMessages.size(); i++) {
+            if(chatMessages.get(i).getUserCount() >0 && sender != chatMessages.get(i).getSender())
+                 chatMessages.get(i).setUserCount(0);
+
+        }
+        chatRepository.saveAll(chatMessages);
     }
 
 
