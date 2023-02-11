@@ -65,6 +65,7 @@ public class PlaceDto {
     public static class Response {
         private Long id;
         private String name;
+        private String marker;
         private Category category;
         @JsonProperty
         private String detailCategory;
@@ -90,7 +91,10 @@ public class PlaceDto {
         public Response(Place place, List<Image> images, List<Review> reviews, List<Tag> tags) {
             this.id = place.getId();
             this.name = place.getName();
+            this.marker = place.getCategory().getTitle();
+            this.category = place.getCategory();
             this.detailCategory = place.getDetailCategory();
+            this.campus = place.getCampus();
             this.gate = place.getGate();
             this.address = place.getAddress();
             this.xcoordinate = place.getXcoordinate();
@@ -99,8 +103,6 @@ public class PlaceDto {
             this.breakTime = place.getBreakTime();
             this.discountAvailability = place.getDiscountAvailability();
             this.discountContent = place.getDiscountContent();
-            this.category = place.getCategory();
-            this.campus = place.getCampus();
             this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
             this.reviewCount = reviews.stream().count();
             this.rate = Math.round(

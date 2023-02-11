@@ -96,7 +96,7 @@ public class PlaceService {
     }
 
     @Transactional
-    public List<PlaceDto.Response> searchPlace(List<String> keywords) {
+    public List<PlaceDto.Response> search(List<String> keywords) {
         if (keywords.stream().anyMatch(String::isBlank)) {
             throw new CustomRuntimeException("검색어를 입력해주시기 바랍니다", "장소 검색 실패");
         }
