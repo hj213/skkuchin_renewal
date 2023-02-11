@@ -23,8 +23,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
-      #ddl-auto: create
+      #ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
