@@ -136,38 +136,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                     chatService.minusCount(chatSession.getChatRoom());
                     chatSessionService.deleteSession(sessionId);
 
-                 /*   ChatRoom chatRoom = chatService.findSession(sessionId);
-
-                    chatService.minusCount(chatRoom);
-                    chatService.deleteSession(chatRoom,sessionId);*/
-
-                  /*  System.out.println("accessor.getDestination() = " + accessor.getDestination().substring(29));
-                    String roomId = accessor.getDestination().substring(29);*/
-                    /*ChatRoom chatRoom = chatService.findChatroom(roomId);
-                    chatService.minusCount(chatRoom);*/
-                 /*   System.out.println("ERRRROROROROR");*/
-                  /* throw new MessageDeliveryException("메시지 예외");*/
                 }
-
-
-
-
-
-/*
-
-                if(accessor!= null &&accessor.getCommand().equals("CONNECT")){
-
-
-             }
-
-                else {
-
-                    throw new UnauthorizedException("no jwt");
-                }
-
-*/
-
-
                 System.out.println("message = " + message);
                 System.out.println("accessor = " + accessor.getCommand());
 
@@ -198,18 +167,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     }
 
 
-    public class UnauthorizedException  extends RuntimeException {
 
-
-
-        public UnauthorizedException(String message) {
-            super(message);
-            StompHeaderAccessor accessor = StompHeaderAccessor.create(StompCommand.CONNECTED);
-            System.out.println("accessor = " + accessor.getCommand());
-
-
-        }
-
-    }
 }
 

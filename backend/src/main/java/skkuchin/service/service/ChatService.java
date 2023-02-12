@@ -43,10 +43,8 @@ public class ChatService {
     public void getAllMessage1(ChatRoom chatRoom, String sender){
         List<ChatMessage> chatMessages = chatRepository.findByRoomId(chatRoom.getRoomId());
         for (int i = 0; i<chatMessages.size(); i++) {
-          /*  System.out.println("i = " + i);
-            System.out.println("sender = " + sender);
-            System.out.println("chatMessages.get(i).getSender() = " + chatMessages.get(i).getSender());
-            System.out.println("chatMessages.get(i).getSender() = " + chatMessages.get(i).getMessage());*/
+
+            //내 메시지를 상대방이 들어와서 읽었을 때만 0으로 바꿈
             if(chatMessages.get(i).getUserCount() >0 && !chatMessages.get(i).getSender().equals(sender)){
                 chatMessages.get(i).setUserCount(0);
             }
