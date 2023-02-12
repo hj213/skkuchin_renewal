@@ -45,9 +45,9 @@ public class ChatRoomController {
 
     @GetMapping("/receiverRooms")
     public ResponseEntity<?> getAllMyRoom1(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser user = principalDetails.getUser();
+        AppUser appUser = principalDetails.getUser();
 
-        List<ChatRoomDto.Response> responses = chatService.findReceiverChatRoom(user);
+        List<ChatRoomDto.Response> responses = chatService.findReceiverChatRoom(appUser);
         return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 채팅방 조회 완료", responses), HttpStatus.OK);
     }
      @PostMapping("/rooms")
@@ -71,12 +71,32 @@ public class ChatRoomController {
     }
 
 
-    @PostMapping("/room/{roomId}")
-    public ResponseEntity<?> updateUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    @PostMapping("/room/accept/{roomId}")
+    public ResponseEntity<?> receiverAccept(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.update(chatRoom,user);
+        chatService.receiverAccept(chatRoom,user);
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 개설 완료", null), HttpStatus.CREATED);
+
+
+    }
+
+    @PostMapping("/room/refuse/{roomId}")
+    public ResponseEntity<?> receiverRefuse(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        AppUser user = principalDetails.getUser();
+        chatService.receiverRefuse(chatRoom,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 거절", null), HttpStatus.CREATED);
+
+
+    }
+
+    @PostMapping("/room/hold/{roomId}")
+    public ResponseEntity<?> receiverHold(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        AppUser user = principalDetails.getUser();
+        chatService.receiverHold(chatRoom,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 보류", null), HttpStatus.CREATED);
 
 
     }

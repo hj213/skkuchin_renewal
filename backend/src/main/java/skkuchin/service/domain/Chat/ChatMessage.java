@@ -22,6 +22,7 @@ public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated
     private MessageType type;
     //채팅방 ID
     private String roomId;

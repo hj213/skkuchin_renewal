@@ -49,6 +49,13 @@ public class ChatRoom {
     @Column(columnDefinition = "boolean default false")
     private boolean receiverAccepted;
 
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus senderRequestStatus;
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus receiverRequestStatus;
+
     private int userCount;
 
 
