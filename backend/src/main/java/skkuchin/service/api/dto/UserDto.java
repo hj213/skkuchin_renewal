@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import skkuchin.service.domain.Map.Campus;
+import skkuchin.service.domain.Matching.Gender;
+import skkuchin.service.domain.Matching.Mbti;
 import skkuchin.service.domain.Matching.Profile;
 import skkuchin.service.domain.User.*;
 

@@ -12,9 +12,5 @@ import java.util.List;
 public interface CandidateRepo extends JpaRepository<Candidate, Long> {
     @Query("SELECT c FROM Candidate c WHERE c.user.id = :userId")
     List<Candidate> findByUserId(@Param("userId") Long userId);
-
-    @Query("SELECT c.candidate1, c.candidate2, c.candidate3 FROM Candidate c WHERE c.user.id = :userId")
-    List<AppUser> findCandidatesByUserId(@Param("userId") Long userId);
-
     List<Candidate> findByExpireDateBefore(LocalDateTime now);
 }

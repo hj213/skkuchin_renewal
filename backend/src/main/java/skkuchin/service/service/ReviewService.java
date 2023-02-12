@@ -156,14 +156,10 @@ public class ReviewService {
     }
 
     @Transactional
-    public List<ReviewDto.Response> getPlaceReview(Long placeId, AppUser user) {
+    public List<ReviewDto.Response> getPlaceReview(Long placeId) {
         Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
 
-        List<AppUser> blockedUsers = blockRepo.findByUser(user).stream()
-                .map(Block::getBlockedUser)
-                .collect(Collectors.toList());
-
-        return reviewRepo.findByPlaceAndAuthorNotIn(place, blockedUsers)
+        return reviewRepo.findByPlace(place)
                 .stream()
                 .map(review -> new ReviewDto.Response(
                         review,

@@ -1,4 +1,3 @@
-/*
 package skkuchin.service.config.swagger;
 
 import org.springframework.context.annotation.Bean;
@@ -14,8 +13,6 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.*;
-
-import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 public class SwaggerConfig {
@@ -251,4 +248,3 @@ public class SwaggerConfig {
         return produces;
     }
 }
-*/

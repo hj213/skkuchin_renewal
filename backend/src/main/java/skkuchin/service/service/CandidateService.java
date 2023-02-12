@@ -14,7 +14,9 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,11 +53,17 @@ public class CandidateService {
         }
 
         if (differenceTime < 24) {
-            List<AppUser> threeCandidates = candidateRepo.findCandidatesByUserId(recentCandidate.getUser().getId());
+            List<AppUser> threeCandidates = Arrays.asList(
+                    recentCandidate.getCandidate1(),
+                    recentCandidate.getCandidate2(),
+                    recentCandidate.getCandidate3()
+            );
+
             return threeCandidates.stream()
+                    .filter(Objects::nonNull)
                     .map(candidate -> new CandidateDto.Response(
-                        candidate,
-                        userKeywordRepo.findByUser(candidate).stream().collect(Collectors.toList())
+                            candidate,
+                            userKeywordRepo.findByUser(candidate).stream().collect(Collectors.toList())
                     ))
                     .collect(Collectors.toList());
 
