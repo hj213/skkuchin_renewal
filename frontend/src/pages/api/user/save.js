@@ -2,23 +2,9 @@ import { API_URL } from "../../../config/index";
 
 export default async( req, res )=> {
     if(req.method === 'POST'){
-        const { 
-            nickname,
-            username,
-            password,
-            re_password,
-            student_id,
-            major,
-        } = req.body;
+        const data = req.body;
 
-        const body = JSON.stringify({
-            nickname,
-            username,
-            password,
-            re_password,
-            student_id,
-            major,
-        });
+        const body = JSON.stringify(data);
 
         try {
             const apiRes = await fetch(`${API_URL}/api/user/save`, {
