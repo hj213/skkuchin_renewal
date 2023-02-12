@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 const Map = ({latitude, longitude, places, selectedId}) => {
 
     const router = useRouter();
-    // const [limit, setLimit] = useState(30); 더보기 기능
+    // const [limit, setLimit] = useState(30); // 더보기 기능
 
     useEffect(() => {
         const mapScript = document.createElement("script");
@@ -116,12 +116,14 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     
                     // 중첩 마커 제거 및 가장 id가 작은 장소만 마커로 표시
                     var placesAtSameLocation = places.filter(p => p.xcoordinate === place.xcoordinate && p.ycoordinate === place.ycoordinate);
+                    
                     if (placesAtSameLocation.length > 0) {
-                    var smallestIdPlace = placesAtSameLocation.reduce((acc, cur) => acc.id < cur.id ? acc : cur);
-                    if (place.id !== smallestIdPlace.id) {
-                        // 현재 마커와 가장 id가 작은 장소의 id가 다르면 중복 마커를 생성하지 않습니다.
-                        return;
-                    }
+                    
+                        var smallestIdPlace = placesAtSameLocation.reduce((acc, cur) => acc.id < cur.id ? acc : cur);
+                        if (place.id !== smallestIdPlace.id && place.id != selectedId) {
+                            // 현재 마커와 가장 id가 작은 장소의 id가 다르면 중복 마커를 생성하지 않습니다.
+                            return;
+                        }
                     }
 
                     markers.push(marker);
@@ -129,6 +131,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
                     window.kakao.maps.event.addListener(marker, "click", function() {
                         router.push(`/place?id=${place.id}`);
+
                     });
                     count++;
                 });

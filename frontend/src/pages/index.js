@@ -62,8 +62,8 @@ export default function list(){
         {id: '분위기 좋은', exclusiveGroup: null},
     ]);
 
+    // key props warning 해러 필요
     const tagName = tagsId.map(tag => tag.id);
-
 
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [focus, setFocus] = useState();
@@ -89,7 +89,6 @@ export default function list(){
     }, [place, user]);
 
     useEffect(() => {
-        
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
@@ -104,9 +103,8 @@ export default function list(){
             }
             else {
                 // 키워드 확인
-                // alert("현재 키워드: "+ keyword);
                 dispatch(search_places(keyword));
-                setHeight('32%');
+                if((open.bool) == false) setHeight('32%');
                 setCardStyle({
                     radius: '30px 30px 0px 0px',
                     cardVisibility: 'visible',
@@ -222,6 +220,8 @@ export default function list(){
     // 헤더영역 태그 해제
     const handleTagClick = (e) => {
         e.preventDefault();
+        // alert(height);
+
         const clickedTag = e.target.id;
         const remainingTags = tags.filter(tag => tag !== clickedTag);
       
@@ -230,10 +230,10 @@ export default function list(){
             setTags([]);
             handleReset();
         } else {
-          setTags(remainingTags);
-          setKeyword(remainingTags.join(', '));
-          setOpen({ bool:false,
-            visibility:'hidden'});
+            setTags(remainingTags);
+            setKeyword(remainingTags.join(', '));
+        //   setOpen({ bool:false,
+        //     visibility:'hidden'});
         }
       }
     
