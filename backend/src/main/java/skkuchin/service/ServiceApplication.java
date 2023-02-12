@@ -56,6 +56,7 @@ public class ServiceApplication {
 				System.out.println(e);
 			}
 
+			userService.saveTestMatchingUsers(100);
 		};
 	}
 }

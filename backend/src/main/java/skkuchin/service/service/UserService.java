@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.Map.Campus;
+import skkuchin.service.domain.Matching.*;
 import skkuchin.service.domain.User.*;
 import skkuchin.service.exception.*;
 import skkuchin.service.repo.*;
@@ -13,7 +14,7 @@ import skkuchin.service.repo.*;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,10 +24,13 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
-    private final BlockRepo blockRepo;
     private final UserRoleRepo userRoleRepo;
+    private final UserKeywordRepo userKeywordRepo;
+    private final KeywordRepo keywordRepo;
     private final EmailAuthRepo emailAuthRepo;
     private final PasswordEncoder passwordEncoder;
+
+    private final Random random = new Random();
 
     public void checkUsername(String username) {
         if (username == null || username.isBlank()) {
@@ -202,5 +206,58 @@ public class UserService {
         AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setToggle(campus);
         userRepo.save(user);
+    }
+
+    @Transactional
+    public void saveTestMatchingUsers(int count) {
+        for (int i = 1; i <= count; i++) {
+            UserDto.SignUpForm signUpForm = new UserDto.SignUpForm(
+                    "테스트" + i,
+                    "test" + i,
+                    "12341234",
+                    "12341234",
+                    random.nextInt(23 - 10 + 1) + 10,
+                    Major.values()[random.nextInt(Major.values().length)]
+            );
+            signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+            AppUser appUser = signUpForm.toEntity();
+            appUser.emailVerifiedSuccess();
+            UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_USER")).build();
+            userRepo.save(appUser);
+            userRoleRepo.save(userRole);
+
+            AppUser existingUser = userRepo.findByUsername(appUser.getUsername());
+            existingUser.setGender(Gender.values()[random.nextInt(Gender.values().length)]);
+            existingUser.setIntroduction("잘 부탁드려요" + i);
+            existingUser.setMbti(Mbti.values()[random.nextInt(Mbti.values().length)]);
+            existingUser.setImage(Profile.values()[random.nextInt(Profile.values().length)]);
+            existingUser.setMatching(true);
+            userRepo.save(existingUser);
+
+            AppUser matchingUser = userRepo.findById(existingUser.getId()).orElseThrow();
+
+            List<String> keywords = new ArrayList<>();
+            String[] keywordPool = {"한식", "일식", "중식", "양식", "남미음식", "분식", "아시아음식", "카페",
+                    "축구", "야구", "농구", "골프", "테니스", "당구", "헬스", "주짓수", "보드 & 스키", "서핑", "등산", "스포츠 관람", "러닝", "볼링", "댄스", "배드민턴",
+                    "영화", "음악", "전시회", "연극/뮤지컬", "덕질", "여행", "게임", "노래방", "방탈출", "보드게임", "반려동물", "요리", "맛집탐방", "만화",
+                    "학회", "동아리", "교환학생", "봉사", "재테크", "빅데이터", "금융", "문학", "토론", "시사", "어학", "CPA", "로스쿨", "행시", "피트"};
+
+            int keywordsCount = random.nextInt(keywordPool.length - 2) + 3;
+            Set<String> keywordSet = new HashSet<>();
+            while (keywordSet.size() < keywordsCount) {
+                int keywordIndex = random.nextInt(keywordPool.length);
+                keywordSet.add(keywordPool[keywordIndex]);
+            }
+            keywords.addAll(keywordSet);
+
+            List<UserKeyword> userKeywords = keywords
+                    .stream()
+                    .map(k -> {
+                        Keyword keyword = keywordRepo.findByName(k);
+                        return UserKeyword.builder().user(matchingUser).keyword(keyword).build();
+                    })
+                    .collect(Collectors.toList());
+            userKeywordRepo.saveAll(userKeywords);
+        }
     }
 }
