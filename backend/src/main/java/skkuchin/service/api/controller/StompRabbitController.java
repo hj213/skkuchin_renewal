@@ -39,7 +39,7 @@ public class StompRabbitController {
     private final static String CHAT_QUEUE_NAME = "chat.queue";
 
     @MessageMapping("chat.enter.{chatRoomId}")
-    public void enter(ChatMessage chat, @DestinationVariable String chatRoomId){
+    public void enter(ChatMessage chat, @DestinationVariable String chatRoomId, @Header("token") String token){
         chat.setSender("hi");
         chat.setType(ChatMessage.MessageType.ENTER);
         chat.setMessage("입장하셨습니다.");
@@ -65,13 +65,15 @@ public class StompRabbitController {
         ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
         //  System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
 
-//        chat.setChatRoom(chatRoom);
 
-        chat.setRoomId(chatRoom.getRoomId());
-        chat.setDate(LocalDateTime.now());
-        //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
-        chatRepository.save(chat);
+            chat.setRoomId(chatRoom.getRoomId());
+            chat.setChatRoom(chatRoom);
+            chat.setDate(LocalDateTime.now());
+            chat.setUserCount(2-chatRoom.getUserCount());
+            //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+            chatRepository.save(chat);
+
     };
 
 //    @RabbitListener(queues = CHAT_QUEUE_NAME)

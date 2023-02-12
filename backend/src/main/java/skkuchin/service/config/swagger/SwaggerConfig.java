@@ -1,3 +1,4 @@
+/*
 package skkuchin.service.config.swagger;
 
 import org.springframework.context.annotation.Bean;
@@ -250,3 +251,4 @@ public class SwaggerConfig {
         return produces;
     }
 }
+*/
