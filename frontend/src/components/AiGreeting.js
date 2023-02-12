@@ -1,10 +1,11 @@
 import { ThemeProvider } from '@emotion/react';
-import { CssBaseline, Typography, Button, Popover, Modal, IconButton } from '@mui/material';
+import { CssBaseline, Typography, Button, Popover, Modal, IconButton, Dialog,DialogContent,DialogActions,  } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {Container} from '@mui/material';
+import { load_matching_info } from '../actions/matchingUser/matchingUser';
 
 // 스위치
 import { styled } from '@mui/material/styles';
@@ -20,6 +21,39 @@ import closeIcon from '../image/close-1.png';
 import profile from '../image/profile.png';
 
 const AiGreeting = () => {
+
+    const router = useRouter();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+    
+            dispatch(load_matching_info(([result, message]) => {
+                if (result) {
+                    alert(message);
+                    setLoad(true);
+                } else {
+                    alert(message);
+                    setLoad(false);
+                }
+            }));
+    
+        }
+    
+    }, [dispatch]);
+    
+    //매칭프로필 정보 받아오기
+    const [load, setLoad] = useState('');
+
+    //프로필 설정하라는 다이얼로그
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const handleDialogOpen = (e) => {
+        if(dialogOpen){
+            setDialogOpen(false);
+        } else{
+            setDialogOpen(true);
+        }
+    }
 
     const IOSSwitch = styled((props) => (
         <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -76,7 +110,13 @@ const AiGreeting = () => {
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
-        setOpen(true);
+        if(load){
+            setOpen(true);
+            setDialogOpen(false);
+        }else{
+        setOpen(false);
+        setDialogOpen(true);
+        }
     };
 
     const handleClose = () => {
@@ -245,7 +285,7 @@ const AiGreeting = () => {
 
                 {/* Link to 프로필 수정 */}
                 <div style={{padding:"none", margin:"0 auto 30px auto", width:"80px", borderBottom:"1px solid black"}}>
-                    <Link href="/">
+                    <Link href="/changeProfile">
                         <Typography style={{textAlign:"center", fontSize:"12px", fontWeight:700}}>
                             프로필 수정하기
                         </Typography>
@@ -255,6 +295,19 @@ const AiGreeting = () => {
             </div>
             </Modal>
             </Container>
+            <Dialog open={dialogOpen} onClose={handleDialogOpen}>
+                <DialogContent style={{width:'270px', height:'100px', paddingTop:'27px',}}>
+                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
+                    AI 매칭 기능을 이용하시려면<br/>
+                    매칭 프로필이 필요해요 🥹
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center', paddingBottom:'13px'}}>
+                    <Button 
+                    href={`./makeProfile`}
+                    style={{fontSize:"12px", fontWeight: `${theme.typography.h1}`, color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>매칭 프로필 설정하기</Button>
+                </DialogActions>
+            </Dialog>
         </ThemeProvider>
 )};
 

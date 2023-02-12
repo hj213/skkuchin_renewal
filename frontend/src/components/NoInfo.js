@@ -2,7 +2,7 @@ import { useState } from "react";
 import {ThemeProvider, CssBaseline, Dialog, DialogTitle, Typography, styled, DialogContent, DialogContentText, DialogActions, Button} from '@mui/material';
 import theme from "../theme/theme";
 
-export default function BasicDialog(openID){
+export default function NoInfo(){
 
     const [open, setOpen] = useState(true);
     const handleOpen = (e) => {
@@ -12,7 +12,7 @@ export default function BasicDialog(openID){
             setOpen(true);
         }
     }
-
+    console.log(open);
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>

@@ -222,7 +222,7 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >           
-                <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+                <div style={{ position: 'relative', width:'100%', height:'100%', overflowX:'hidden'}}>  
                 <Container style={{position:'absolute', zIndex:'2'}}>
                     <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
                 </Container> 
