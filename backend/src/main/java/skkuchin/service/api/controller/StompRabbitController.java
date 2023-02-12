@@ -9,19 +9,25 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.repo.ChatRepository;
 import skkuchin.service.repo.ChatRoomRepository;
 
 import skkuchin.service.service.ChatService;
+import skkuchin.service.service.ChatSessionService;
 
 import java.time.LocalDateTime;
 
@@ -34,9 +40,11 @@ public class StompRabbitController {
     private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatService chatService;
+    private final ChatSessionService chatSessionService;
 
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";
+
 
     @MessageMapping("chat.enter.{chatRoomId}")
     public void enter(ChatMessage chat, @DestinationVariable String chatRoomId, @Header("token") String token){
@@ -49,11 +57,18 @@ public class StompRabbitController {
     }
 
     @MessageMapping("chat.message.{chatRoomId}")
-    public void send(ChatMessage chat, @DestinationVariable String chatRoomId, @Header("token") String token){
-
+    public void send(ChatMessage chat, @DestinationVariable String chatRoomId
+   , Message<?> message){
+        StompHeaderAccessor accessor =
+                MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         /*chat.setSender("hi");*/
-        System.out.println("token = " + token);
-        String username = getUserNameFromJwt(token);
+        String sessionId = accessor.getSessionId();
+        System.out.println("header = " + sessionId);
+        ChatSession chatSession = chatSessionService.findSession(sessionId);
+        /*System.out.println("token = " + token);*/
+        /*String username = getUserNameFromJwt(token);*/
+        String username = chatSession.getSender();
+       
    /* System.out.println("getUserNameFromJwt(token) = " + getUserNameFromJwt(token));
     AppUser user = AppUser.builder().id(1L).nickname("user").major(Major.건축학과).build();*/
    /* AppUser user = principalDetails.getUser();

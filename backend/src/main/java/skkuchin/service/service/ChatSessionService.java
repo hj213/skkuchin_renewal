@@ -20,11 +20,12 @@ public class ChatSessionService {
     }
 
 
-    public void setSessionId(ChatRoom chatRoom,String sessionId){
+    public void setSessionId(ChatRoom chatRoom,String sessionId, String sender){
 
         ChatSession chatSession = new ChatSession() ;
         chatSession.setSessionId(sessionId);
         chatSession.setChatRoom(chatRoom);
+        chatSession.setSender(sender);
         chatSessionRepo.save(chatSession);
 
 
