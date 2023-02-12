@@ -7,6 +7,8 @@ import SignUpStep2 from '../components/Auth/SignUpStep2';
 import SignUpStep3 from '../components/Auth/SignUpStep3';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
+import SignUpStep4 from '../components/Auth/SignUpStep4';
+import SignUpStep5 from '../components/Auth/SignUpStep5';
 
 const RegisterPage = () => {
 
@@ -16,6 +18,15 @@ const RegisterPage = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const [step, setStep] = useState(1);
+    const [data, setData] = useState({
+        username: "",
+        password: "",
+        re_password: "",
+        nickname: "",
+        major: "",
+        student_id: "",
+        email: ""
+    })
 
     const handleNextStep = (stepData) => {
         setStep(step + 1);
@@ -37,13 +48,19 @@ const RegisterPage = () => {
             <Layout title= '스꾸친 | Register' content='Register page'>
             <Container component="main" maxWidth="xs">
             {
-                step === 1 && <SignUpStep1 handleNextStep={handleNextStep} />
+                step === 1 && <SignUpStep1 handleNextStep={handleNextStep} data={data} setData={setData} />
             }
             {
-                step === 2 && <SignUpStep2 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />
+                step === 2 && <SignUpStep2 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 3 && <SignUpStep3 handlePrevStep={handlePrevStep} />
+                step === 3 && <SignUpStep3 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
+            }
+            {
+                step === 4 && <SignUpStep4 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
+            }
+            {
+                step === 5 && <SignUpStep5 handlePrevStep={handlePrevStep} />
             }
             </Container>
         </Layout>

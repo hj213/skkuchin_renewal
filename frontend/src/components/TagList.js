@@ -120,7 +120,7 @@ const TagList = ({keyword, onTagClick}) => {
                         : <Image id={"일식"} src={mapTag5} width={64} height={36}/> }
                     </Grid>
                     <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
-                        { keyword.includes( "양식") ? <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
+                        { keyword.includes("양식") ? <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
                         : <Image id={"양식"} src={mapTag6} width={64} height={36}/> }
                     </Grid>
                     <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
