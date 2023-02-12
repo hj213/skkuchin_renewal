@@ -32,30 +32,34 @@ import reviewTag05 from '../image/태그/리뷰/리뷰태그_청결도.png';
 import reviewTag06 from '../image/태그/리뷰/리뷰태그_간단.png';
 import reviewTag07 from '../image/태그/리뷰/리뷰태그_분위기.png';
 
-export const displayTagImage = (keyword) => {
-    switch(keyword) {
-        case "학생 할인":
-            return <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
-        case "스페셜":
-            return <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
-        case "한식":
-            return <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
-        case "중식":
-            return <Image id={"중식"} src={mapTagOn4} width={64} height={36}/>
-        case "일식":
-            return <Image id={"일식"} src={mapTagOn5} width={64} height={36}/>
-        case "양식":
-            return <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
-        case "기타":
-            return <Image id={"기타"} src={mapTagOn7} width={64} height={36}/>
-        case "간단한 한 끼":
-            return <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
-        case "분위기 좋은":
-            return <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
-        default:
-            return null;
-    }
+export const displayTagImage = (tags) => {
+    const displayTags = tags.slice(0,2);
+    return displayTags.map ((tag) => {
+        switch(tag) {
+            case "학생 할인":
+                return <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
+            case "스페셜":
+                return <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
+            case "한식":
+                return <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
+            case "중식":
+                return <Image id={"중식"} src={mapTagOn4} width={64} height={36}/>
+            case "일식":
+                return <Image id={"일식"} src={mapTagOn5} width={64} height={36}/>
+            case "양식":
+                return <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
+            case "기타":
+                return <Image id={"기타"} src={mapTagOn7} width={64} height={36}/>
+            case "간단한 한 끼":
+                return <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
+            case "분위기 좋은":
+                return <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
+            default:
+                return null;
+        }
+    })
 }
+
 export const displayReviewTag = (keyword) => {
     switch(keyword) {
         case "맛집":
@@ -95,40 +99,40 @@ const TagList = ({keyword, onTagClick}) => {
                         onTagClick(target.id);
                     }
                     }}>
-                    <Grid item style={{filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block', flexShrink: 0, paddingRight: '5px' }}>
-                        { (keyword == "학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
+                    <Grid item style={{filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block', flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes("학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
                         : <Image id={"학생 할인"} src={mapTag1} width={88} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px' }}>
-                        { (keyword == "스페셜") ? <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes("스페셜") ? <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
                         : <Image id={"스페셜"} src={mapTag2} width={76} height={36}/>}
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
-                        { (keyword == "한식") ? <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
+                        { keyword.includes("한식") ? <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
                         : <Image id={"한식"} src={mapTag3} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
-                        { (keyword == "중식") ? <Image id={"중식"} src={mapTagOn4} width={64} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes("중식") ? <Image id={"중식"} src={mapTagOn4} width={64} height={36}/>
                         : <Image id={"중식"} src={mapTag4} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
-                        { (keyword == "일식") ? <Image id={"일식"} src={mapTagOn5} width={64} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes("일식") ? <Image id={"일식"} src={mapTagOn5} width={64} height={36}/>
                         : <Image id={"일식"} src={mapTag5} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
-                        { (keyword == "양식") ? <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes( "양식") ? <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
                         : <Image id={"양식"} src={mapTag6} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
-                        { (keyword == "기타") ? <Image id={"기타"} src={mapTagOn7} width={64} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes("기타") ? <Image id={"기타"} src={mapTagOn7} width={64} height={36}/>
                         : <Image id={"기타"} src={mapTag7} width={64} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
-                        { (keyword == "간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes("간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
                         : <Image id={"간단한 한 끼"} src={mapTag8} width={132} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(3px 3px 8px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0 }}>
-                        { (keyword == "분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0 }}>
+                        { keyword.includes("분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
                         : <Image id={"분위기 좋은"} src={mapTag9} width={128} height={36} /> }
                     </Grid>
             </Grid>

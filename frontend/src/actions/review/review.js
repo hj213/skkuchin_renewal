@@ -11,8 +11,8 @@ import {
     ENROLL_REVIEW_SUCCESS
 } from './types'
 
-//load_reviews (장소 관련 리뷰)
-export const load_reviews = (place_id) => async dispatch => {
+export const load_reviews = (place_id, callback) => async dispatch => {
+
     try {
         const res = await fetch(`/api/review/place/${place_id}`, {
             method: 'GET',
@@ -23,26 +23,27 @@ export const load_reviews = (place_id) => async dispatch => {
 
         const data = await res.json();
 
-        if(res.status === 200){
+        if (res.status === 200) {
             dispatch({
                 type: LOAD_REVIEWS_SUCCESS,
                 payload: data
             })
-        }else{
+            if (callback) callback([true, data.success]);
+        } else {
             dispatch({
                 type: LOAD_REVIEWS_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         dispatch({
             type: LOAD_REVIEWS_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
-//load_review (유저 리뷰)
-//0113 매개변수 삭제 완료
-export const load_review = () => async dispatch => {
+export const load_review = (callback) => async dispatch => {
     try {
         const res = await fetch('/api/review/user/me', {
             method: 'GET',
@@ -53,25 +54,28 @@ export const load_review = () => async dispatch => {
 
         const data = await res.json();
 
-        if(res.status === 200){
+        if (res.status === 200) {
             dispatch({
                 type: LOAD_REVIEW_SUCCESS,
                 payload: data
             })
+            if (callback) callback([true, data.success]);
         }else{
             dispatch({
                 type: LOAD_REVIEW_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         dispatch({
             type: LOAD_REVIEW_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
 // enroll review
-export const enroll_review = (place_id, rate, content, images, tags) => async dispatch => {
+export const enroll_review = (place_id, rate, content, images, tags, callback) => async dispatch => {
 
     const formData = new FormData();
     formData.append('place_id', place_id);
@@ -102,21 +106,24 @@ export const enroll_review = (place_id, rate, content, images, tags) => async di
             dispatch({
                 type: ENROLL_REVIEW_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: ENROLL_REVIEW_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         console.log(error)
         dispatch({
             type: ENROLL_REVIEW_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 
 // modify review
-export const modify_review = (review_id, rate, content, images, tags) => async dispatch => {
+export const modify_review = (review_id, rate, content, images, tags, callback) => async dispatch => {
 
     const formData = new FormData();
     formData.append('rate', rate);
@@ -146,20 +153,23 @@ export const modify_review = (review_id, rate, content, images, tags) => async d
             dispatch({
                 type: MODIFY_REVIEW_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: MODIFY_REVIEW_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         dispatch({
             type: MODIFY_REVIEW_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 
 // delete review
-export const delete_review = (review_id) => async dispatch => {
+export const delete_review = (review_id, callback) => async dispatch => {
 
     try {
         const res = await fetch(`/api/review/${review_id}`, {
@@ -174,15 +184,18 @@ export const delete_review = (review_id) => async dispatch => {
             dispatch({
                 type: DELETE_REVIEW_SUCCESS
             });
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: DELETE_REVIEW_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         dispatch({
             type: DELETE_REVIEW_FAIL
         });
+        if (callback) callback([false, error]);
     }
 };
 

@@ -4,17 +4,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
-import skkuchin.service.repo.PlaceRepo;
-import skkuchin.service.repo.ReviewRepo;
-import skkuchin.service.repo.ReviewTagRepo;
-import skkuchin.service.repo.TagRepo;
+import skkuchin.service.repo.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -36,12 +35,16 @@ public class ReviewServiceTest extends MockTest {
     @Mock
     private TagRepo tagRepo;
     @Mock
+    private ReviewImageRepo reviewImageRepo;
+    @Mock
     private ReviewTagRepo reviewTagRepo;
     @Mock
     private PlaceRepo placeRepo;
 
     private Place place;
     private AppUser user;
+    private Image image1;
+    private Image image2;
     private Tag tag1;
     private Tag tag2;
 
@@ -72,10 +75,14 @@ public class ReviewServiceTest extends MockTest {
         //given
         Review review1 = new Review(1L, 5, "맛있어요", place, user, null, null, null);
         Review review2 = new Review(2L, 4, "맛있네용~", place, user, null, null, null);
+        List<ReviewImage> review1Images = List.of(new ReviewImage(1L, review1, "image1"), new ReviewImage(2L, review1, "image2"));
+        List<ReviewImage> review2Images = List.of(new ReviewImage(2L, review2, "image1"));
         List<ReviewTag> review1Tags = List.of(new ReviewTag(1L, review1, tag1), new ReviewTag(2L, review1, tag2));
         List<ReviewTag> review2Tags = List.of(new ReviewTag(2L, review2, tag1));
 
         given(reviewRepo.findAll()).willReturn(List.of(review1, review2));
+        given(reviewImageRepo.findByReview(review1)).willReturn(review1Images);
+        given(reviewImageRepo.findByReview(review2)).willReturn(review2Images);
         given(reviewTagRepo.findByReview(review1)).willReturn(review1Tags);
         given(reviewTagRepo.findByReview(review2)).willReturn(review2Tags);
 
@@ -93,9 +100,11 @@ public class ReviewServiceTest extends MockTest {
     public void getDetail_성공() {
         //given
         Review review = new Review(1L, 3, "보통입니다", place, user, null, null, null);
+        List<ReviewImage> reviewImages = List.of(new ReviewImage(1L, review, "image1"), new ReviewImage(2L, review, "image2"));
         List<ReviewTag> reviewTags = List.of(new ReviewTag(1L, review, tag1), new ReviewTag(2L, review, tag2));
 
         given(reviewRepo.findById(1L)).willReturn(Optional.of(review));
+        given(reviewImageRepo.findByReview(review)).willReturn(reviewImages);
         given(reviewTagRepo.findByReview(review)).willReturn(reviewTags);
 
         //when
@@ -116,9 +125,19 @@ public class ReviewServiceTest extends MockTest {
     }
 
     @Test
-    public void write_성공() {
+    public void write_성공() throws IOException {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5, "굿!", null, List.of("맛집", "가성비"));
+        MultipartFile image1 = new MockMultipartFile("image1",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image2",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5, "굿!", List.of(image1, image2), List.of("맛집", "가성비"));
 
         given(placeRepo.findById(1L)).willReturn(Optional.ofNullable(place));
         given(tagRepo.findByName("맛집")).willReturn(tag1);
@@ -131,6 +150,7 @@ public class ReviewServiceTest extends MockTest {
         verify(placeRepo, times(1)).findById(1L);
         verify(reviewRepo, times(1)).save(any());
         verify(tagRepo, times(2)).findByName(any());
+        verify(reviewImageRepo, times(1)).saveAll(any());
         verify(reviewTagRepo, times(1)).saveAll(any());
     }
 
@@ -229,7 +249,7 @@ public class ReviewServiceTest extends MockTest {
         given(reviewTagRepo.findByReview(review)).willReturn(reviewTags);
 
         //when
-        List<ReviewDto.Response> reviews = reviewService.getPlaceReview(1L);
+        List<ReviewDto.Response> reviews = reviewService.getPlaceReview(1L, user);
 
         //then
         assertThat(reviews.size()).isEqualTo(1);

@@ -19,19 +19,19 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private static final String[] PERMIT_API_URL_ARRAY = {
-            "/api/login",
-            "/api/user/saves",
-            "/api/confirmEmail",
+            "/api/user/login",
+            "/api/user/save",
             "/api/user/token/**",
             "/api/user/check/**",
-            "/api/email/**"
+            "/api/user/find/**",
+            "/api/user/password/reset",
+            "/api/email/**",
     };
     private static final String[] PERMIT_CHAT_URL_ARRAY = {
             "/chat/**",
             "/ws/**"
     };
     private static final String[] PERMIT_SWAGGER_URL_ARRAY = {
-            /* swagger v2 */
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -59,7 +59,7 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter(authenticationManager);
-            authenticationFilter.setFilterProcessesUrl("/api/login");
+            authenticationFilter.setFilterProcessesUrl("/api/user/login");
             builder
                     .addFilter(authenticationFilter)
                     .addFilterBefore(new CustomAuthorizationFilter(userRepo), UsernamePasswordAuthenticationFilter.class);

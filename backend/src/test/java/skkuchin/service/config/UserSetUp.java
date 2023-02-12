@@ -2,10 +2,7 @@ package skkuchin.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Mbti;
-import skkuchin.service.domain.User.Role;
+import skkuchin.service.domain.User.*;
 import skkuchin.service.repo.UserRepo;
 
 import java.time.LocalDateTime;
@@ -17,7 +14,7 @@ public class UserSetUp {
     private UserRepo userRepo;
 
 
-    public Long saveUser(String nickname, String username, String password, String email, int student_id, Major major, String image, Mbti mbti, Collection<Role> roles) {
+    public Long saveUser(String nickname, String username, String password, String email, int student_id, Major major) {
         AppUser user = AppUser.builder()
                 .nickname(nickname)
                 .username(username)
@@ -25,10 +22,7 @@ public class UserSetUp {
                 .email(email)
                 .studentId(student_id)
                 .major(major)
-                .image(image)
-                .mbti(mbti)
                 .startDate(LocalDateTime.now())
-                .roles(roles)
                 .build();
         return userRepo.save(user).getId();
     }

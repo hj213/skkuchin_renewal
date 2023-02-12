@@ -44,22 +44,31 @@ public class EmailService {
 
     @Transactional
     public void sendEmail(UserDto.EmailRequest dto) throws MessagingException, UnsupportedEncodingException {
-        if (!dto.getAgreement()) throw new CustomRuntimeException("이메일 전송 실패", "개인정보처리방침 및 이용약관에 동의해야 합니다.");
+        if (!dto.getAgreement()) {
+            throw new CustomRuntimeException("개인정보처리방침 및 이용약관에 동의해야합니다", "이메일 전송 실패");
+        }
+
         AppUser user = userRepo.findByUsername(dto.getUsername());
         if (user == null) {
-            throw new CustomRuntimeException("이메일 전송 실패", "회원가입한 유저에게만 이메일 전송이 가능합니다.");
+            throw new CustomRuntimeException("먼저 회원가입을 진행해주시기 바랍니다", "이메일 전송 실패");
         }
+
+        if (!dto.getEmail().endsWith("@skku.edu") && !dto.getEmail().endsWith("@g.skku.edu")) {
+            throw new CustomRuntimeException("성균관대학교 메일 주소가 아닙니다", "이메일 전송 실패");
+        }
+
         if (user.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "이미 인증 완료하였습니다.");
+            throw new CustomRuntimeException("이미 인증을 완료하였습니다", "이메일 전송 실패");
         }
+
         AppUser existingUser = userRepo.findByEmail(dto.getEmail());
         if (existingUser != null && existingUser.getEmailAuth()) {
-            throw new CustomRuntimeException("이메일 전송 실패", "사용 중인 이메일입니다.");
-        } else {
-            user.setEmail(dto.getEmail());
-            user.setAgreement(true);
-            sendEmail(dto.getEmail(), EmailType.SIGNUP);
+            throw new CustomRuntimeException("사용 중인 이메일입니다", "이메일 전송 실패");
         }
+
+        user.setEmail(dto.getEmail());
+        user.setAgreement(true);
+        sendEmail(dto.getEmail(), EmailType.SIGNUP);
     }
 
     @Transactional
@@ -75,22 +84,32 @@ public class EmailService {
 
     //회원가입 - 이메일 인증 완료한 유저인지 확인
     @Transactional
-    public Boolean checkSignup(String username) {
+    public void checkSignup(String username) {
+        if (username == null || username.isBlank()) {
+            throw new CustomRuntimeException("이메일을 입력하여주시기 바랍니다");
+        }
+
         AppUser user = userRepo.findByUsername(username);
-        if (user == null) throw new RuntimeException("회원이 아닙니다.");
+        if (user == null) {
+            throw new CustomRuntimeException("회원이 아닙니다");
+        }
         if (user.getEmailAuth()) {
             UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
             userRoleRepo.save(userRole);
-            //user.getRoles().add(roleRepo.findByName("ROLE_USER"));
-            return true;
-        } else return false;
+        } else {
+            throw new CustomRuntimeException("인증을 완료하지 않았습니다");
+        }
     }
 
     @Transactional
-    public void sendResetEmail(String email, Long userId) throws MessagingException, UnsupportedEncodingException {
-        AppUser user = userRepo.findById(userId).orElseThrow();
-        if (!user.getEmail().equals(email)) {
-            throw new CustomRuntimeException("비밀번호 초기화 인증 메일 발송 실패", "이메일 주소를 다시 입력하세요");
+    public void sendResetEmail(String email) throws MessagingException, UnsupportedEncodingException {
+        if (email == null || email.isBlank()) {
+            throw new CustomRuntimeException("이메일을 입력하여주시기 바랍니다");
+        }
+
+        AppUser user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new CustomRuntimeException("등록되지 않은 이메일 주소입니다", "비밀번호 초기화 인증 메일 발송 실패");
         }
         sendEmail(email, EmailType.PASSWORD);
     }
@@ -100,38 +119,20 @@ public class EmailService {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
-        AppUser user = userRepo.findByEmail(requestDto.getEmail());
         emailAuth.setIsAuth(true);
         return true;
     }
 
     @Transactional
-    public Boolean checkPassword(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
-        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(user.getEmail(), true, EmailType.PASSWORD);
+    public void checkPassword(String email) {
+        if (email == null || email.isBlank()) {
+            throw new CustomRuntimeException("이메일을 입력하여주시기 바랍니다");
+        }
+
+        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(email, true, EmailType.PASSWORD);
         if (emailAuth.size() == 0) {
-            return false;
+            throw new CustomRuntimeException("인증을 완료하지 않았습니다");
         }
-        return true;
-    }
-
-    @Transactional
-    public void sendUsernameEmail(String email) throws MessagingException, UnsupportedEncodingException {
-        AppUser user = userRepo.findByEmail(email);
-        if (user == null) {
-            throw new CustomRuntimeException("아이디 찾기 인증 메일 발송 실패", "등록된 이메일 계정이 아닙니다.");
-        }
-        sendEmail(email, EmailType.USERNAME);
-    }
-
-    @Transactional
-    public String findUsername(EmailAuthRequestDto requestDto) {
-        EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
-                        requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
-                .orElseThrow(() -> new EmailAuthNumNotFoundException());
-        AppUser user = userRepo.findByEmail(requestDto.getEmail());
-        emailAuth.setIsAuth(true);
-        return user.getUsername();
     }
 
     //랜덤 인증 코드 생성
@@ -184,7 +185,7 @@ public class EmailService {
     public void sendEmail(String toEmail, EmailType type) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage emailForm = createEmailForm(toEmail, type);
-        EmailAuth emailAuth = emailAuthRepo.save(
+        emailAuthRepo.save(
             EmailAuth.builder()
                     .email(toEmail)
                     .authNum(authNum)
@@ -201,8 +202,6 @@ public class EmailService {
             case SIGNUP: emailType = "회원가입";
             break;
             case PASSWORD: emailType = "비밀번호 초기화";
-            break;
-            case USERNAME: emailType = "아이디 찾기";
             break;
             default: emailType = "Invalid type";
         }

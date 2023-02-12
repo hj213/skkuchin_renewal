@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import skkuchin.service.domain.Map.Campus;
-import skkuchin.service.domain.Matching.Gender;
-import skkuchin.service.domain.Matching.Keyword;
-import skkuchin.service.domain.Matching.UserKeyword;
+import skkuchin.service.domain.Matching.Profile;
 import skkuchin.service.domain.User.*;
 
 import javax.validation.constraints.*;
@@ -33,8 +31,6 @@ public class UserDto {
         private String password;
         @JsonProperty
         private String rePassword;
-        //@NotBlank
-        //private String email;
         @NotNull
         @JsonProperty
         @Min(value = 10)
@@ -43,22 +39,15 @@ public class UserDto {
         @NotNull
         private Major major;
 
-        public boolean checkPassword() {
-            if (this.password.equals(this.rePassword)) return true;
-            else return false;
-        }
-
         public AppUser toEntity() {
             return AppUser.builder()
                     .nickname(this.nickname)
                     .username(this.username)
                     .password(this.password)
-                    //.email(this.email)
                     .studentId(this.studentId)
                     .major(this.major)
                     .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
-                    //.roles(new ArrayList<>())
                     .emailAuth(false)
                     .build();
         }
@@ -107,7 +96,6 @@ public class UserDto {
         private String nickname;
         @NotNull
         private Major major;
-        //private String image;
     }
 
     @Getter
@@ -128,6 +116,8 @@ public class UserDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class ResetPassword {
+        @NotBlank
+        private String email;
         @JsonProperty
         @NotBlank
         private String newPassword;

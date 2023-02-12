@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class FavoriteDto {
 
     @Getter
-    @RequiredArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PostRequest {
@@ -33,7 +32,6 @@ public class FavoriteDto {
                     .build();
         }
     }
-
 
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)

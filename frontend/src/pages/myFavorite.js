@@ -7,12 +7,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import bookmarkOn from '../image/bookmark-1.png';
 import food from '../image/food.png';
-import star from '../image/Star-1.png';
+import star from '../image/Star2.png';
 import back from '../image/arrow_back_ios.png';
 import closeIcon from '../image/close.png';
 import down from '../image/down.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
+import BasicDialog from '../components/BasicDialog';
 
 
 export default function myFavorite(){
@@ -51,7 +52,6 @@ export default function myFavorite(){
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'back' ){
-            
             router.push({
                 pathname: '/',
                 query: { openID: true }
@@ -97,9 +97,9 @@ export default function myFavorite(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'50px'}}>
+            <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'0px'}}>
                 <div style={{position: 'absolute',}}>
-                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'50px', maxWidth:'600px'}} >
+                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'87px', maxWidth:'600px'}} >
                 <Card style={{
                             // position: 'absolute',
                             top: '0px',
@@ -108,32 +108,32 @@ export default function myFavorite(){
                             zIndex: '4',
                             border: "1px solid transparent",
                             boxShadow: 'none',
-                            padding:'0px'
+                            paddingTop:'41px'
                         }}>
-                    <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
-                        <Grid style={{padding: '2px 10px 0px 4px'}} >
-                            <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
-                        </Grid>
-                        <Grid>
-                            <Grid container>
-                                <Grid item xs style={{marginTop:'4px'}} >
-                                    <Image src={bookmarkOn} width={20} height={20} />
-                                </Grid>
-                                <Grid item>
-                                    <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>즐겨찾기 장소</Typography>
+                        <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
+                            <Grid style={{padding: '2px 10px 0px 4px'}} >
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
+                            </Grid>
+                            <Grid>
+                                <Grid container>
+                                    <Grid item xs style={{marginTop:'4px'}} >
+                                        <Image src={bookmarkOn} width={20} height={20} />
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>즐겨찾기 장소</Typography>
+                                    </Grid>
                                 </Grid>
                             </Grid>
+                            <Grid >
+                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick}/>
+                            </Grid>
                         </Grid>
-                        <Grid >
-                            <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick}/>
-                        </Grid>
-                    </Grid>
                     </Card>
                 </Container>
                 </div>
                 <Container name='최신순' style={{background:'white', padding:'0px'}}>
-                <div style={{float:'right',zIndex:'2', margin:'60px 0px 0px 0px'}}>
-                        <Grid container style={{marginRight:'15px'}} onClick={handleToggle}>
+                <div style={{float:'right',zIndex:'2', margin:'90px 0px 0px 0px'}}>
+                        <Grid container style={{marginRight:'20px'}} onClick={handleToggle}>
                             <Grid item style={{margin:'0px'}}>
                                 <Button
                                 ref={anchorRef}
@@ -199,7 +199,7 @@ export default function myFavorite(){
                     </div>
                 </Container>
                 <Container name ='리스트' style={{ padding:'0px', overflowY:'scroll', zIndex:'0',border:'none'}}>
-                <Paper style={{overflowY:'auto', padding:'0px 15px 0px 15px', marginTop:'0px', border: "0px solid transparent", boxShadow:'none'}}>
+                <Paper style={{overflowY:'auto', padding:'0px 20px 0px 20px', marginTop:'0px', border: "0px solid transparent", boxShadow:'none'}}>
                     <ul style={{listStyleType: "none", padding: '0px 0px 0px 0px', margin: '0px', }} >
                             {favorites? favorites.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
@@ -228,8 +228,8 @@ export default function myFavorite(){
                                                             스꾸친 평점 :
                                                             </Typography>
                                                         </Grid>
-                                                        <Grid style={{margin:'2px 7px 0px 7px'}}>
-                                                            <Image width={15} height={14} src={star}/>
+                                                        <Grid style={{margin: '-3px 7px 0px 7px'}}>
+                                                            <Image width={10} height={10} src={star}/>
                                                         </Grid>
                                                         <Grid >
                                                             <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color={theme.palette.fontColor.dark} component="div">
@@ -296,6 +296,7 @@ export default function myFavorite(){
                     </Paper>
                 </Container>
                 </div>
+                <BasicDialog/>
         </ThemeProvider>
     )
 };

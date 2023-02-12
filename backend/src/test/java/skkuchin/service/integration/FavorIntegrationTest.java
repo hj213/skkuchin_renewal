@@ -129,7 +129,7 @@ public class FavorIntegrationTest extends BaseIntegrationTest {
 
     public String getToken(String username, String password) throws Exception {
         String form = objectMapper.writeValueAsString(new LoginFormTestVer(username, password));
-        MvcResult loginResult = mvc.perform(post("/api/login")
+        MvcResult loginResult = mvc.perform(post("/api/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))

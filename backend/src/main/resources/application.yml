@@ -1,5 +1,6 @@
 spring:
 
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/skkuchin3?characterEncoding=UTF-8&serverTimezone=UTC
@@ -10,21 +11,12 @@ spring:
  #   url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
  #   username: root
  #   password: Master00!@
-#  datasource:
- #   driver-class-name: com.mysql.cj.jdbc.Driver
- #   url: jdbc:mysql://localhost:3306/skkuchin1?characterEncoding=UTF-8&serverTimezone=UTC
- #   username: root
- #   password: 1234
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
-#    username: root
-#    password: Master00!@
+
 
   jpa:
     hibernate:
-      #ddl-auto: update
-      ddl-auto: create
+      #ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
@@ -32,6 +24,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

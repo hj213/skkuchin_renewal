@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.*;
+import skkuchin.service.exception.CustomRuntimeException;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
@@ -48,7 +50,7 @@ public class PlaceService {
 
     @Transactional
     public PlaceDto.Response getDetail(Long placeId) {
-        Place place = placeRepo.findById(placeId).orElseThrow();
+        Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
 
         List<Image> images = imageRepo.findByPlace(place)
                 .stream().collect(Collectors.toList());
@@ -94,29 +96,94 @@ public class PlaceService {
     }
 
     @Transactional
-    public List<PlaceDto.Response> searchPlace(List<String> keywords) {
+    public List<PlaceDto.Response> search(List<String> keywords) {
+        if (keywords.stream().anyMatch(String::isBlank)) {
+            throw new CustomRuntimeException("검색어를 입력해주시기 바랍니다", "장소 검색 실패");
+        }
+        if (keywords.size() > 2) {
+            throw new CustomRuntimeException("검색어는 최대 두 개까지 검색 가능합니다", "장소 검색 실패");
+        }
         List<Place> places = placeRepo.findAll();
         List<Place> matchingPlaces = new ArrayList<>();
+        List<String> keywordsList = new ArrayList<>();
 
-        Tag tag = tagRepo.findByName(keywords.get(0));
+        String keyword1 = keywords.get(0).toLowerCase();
+        keywordsList.add(keyword1);
 
-        Set<Tag> searchTags = new HashSet<>(tagRepo.findAllByNameIn(keywords));
+        String keyword2 = "";
+        if (keywords.size() > 1) {
+            keyword2 = keywords.get(1).toLowerCase();
+            keywordsList.add(keyword2);
+        }
 
-        if (tag != null) {
+        List<Tag> tags = new ArrayList<>();
+        Tag tag1 = tagRepo.findByName(keyword1);
+        if (tag1 != null) {
+            tags.add(tag1);
+            keywordsList.remove(keyword1);
+        }
+
+        Tag tag2 = null;
+        if (!keyword2.isBlank()) {
+            tag2 = tagRepo.findByName(keyword2);
+            if (tag2 != null) {
+                tags.add(tag2);
+                keywordsList.remove(keyword2);
+            }
+        }
+
+        if (tags.size() == 2) {
             for (Place place : places) {
                 List<Tag> placeTags = getTop3TagsByPlace(place);
                 Set<Tag> placeTagSet = new HashSet<>(placeTags);
-                placeTagSet.retainAll(searchTags);
-                if (placeTagSet.size() == searchTags.size()) {
+                if (placeTagSet.contains(tag1) && placeTagSet.contains(tag2)) {
                     matchingPlaces.add(place);
                 }
             }
-        } else {
+        } else if (tags.size() == 1 && keywordsList.size() == 0) {
             for (Place place : places) {
-                if (place.getCategory().name().toLowerCase().contains(keywords.get(0))
-                        || (place.getDetailCategory() != null && place.getDetailCategory().toLowerCase().contains(keywords.get(0)))
-                        || (place.getGate() != null && place.getGate().name().toLowerCase().contains(keywords.get(0)))
-                        || place.getName().toLowerCase().contains(keywords.get(0))) {
+                List<Tag> placeTags = getTop3TagsByPlace(place);
+                Set<Tag> placeTagSet = new HashSet<>(placeTags);
+                if (placeTagSet.contains(tags.get(0))) {
+                    matchingPlaces.add(place);
+                }
+            }
+        } else if (tags.size() == 0 && keywordsList.size() == 2 && keywordsList.contains("학생 할인")) {
+            keywordsList.remove("학생 할인");
+            for (Place place : places) {
+                if (place.getCategory().name().equals(keywordsList.get(0)) && place.getDiscountAvailability()) {
+                    matchingPlaces.add(place);
+                }
+            }
+        } else if (tags.size() == 1 && keywordsList.size() == 1 && keywordsList.contains("학생 할인")) {
+            for (Place place : places) {
+                List<Tag> placeTags = getTop3TagsByPlace(place);
+                Set<Tag> placeTagSet = new HashSet<>(placeTags);
+                if (placeTagSet.contains(tags.get(0)) && place.getDiscountAvailability()) {
+                    matchingPlaces.add(place);
+                }
+            }
+        } else if (tags.size() == 1 && keywordsList.size() == 1 && !keywordsList.contains("학생 할인")) {
+            for (Place place : places) {
+                List<Tag> placeTags = getTop3TagsByPlace(place);
+                Set<Tag> placeTagSet = new HashSet<>(placeTags);
+                if (placeTagSet.contains(tags.get(0)) && place.getCategory().name().equals(keywordsList.get(0))) {
+                    matchingPlaces.add(place);
+                }
+            }
+        } else if (tags.size() == 0 && keywordsList.size() == 1 && keywordsList.contains("학생 할인")) {
+            for (Place place : places) {
+                if (place.getDiscountAvailability()) {
+                    matchingPlaces.add(place);
+                }
+            }
+        } else if (tags.size() == 0 && keywordsList.size() == 1 && !keywordsList.contains("학생 할인")) {
+            for (Place place : places) {
+                if (
+                        place.getCategory().name().toLowerCase().contains(keyword1)
+                                || (place.getDetailCategory() != null && place.getDetailCategory().toLowerCase().contains(keyword1)
+                                || (place.getGate() != null && place.getGate().name().toLowerCase().contains(keyword1))
+                                || place.getName().toLowerCase().contains(keyword1))) {
                     matchingPlaces.add(place);
                 }
             }

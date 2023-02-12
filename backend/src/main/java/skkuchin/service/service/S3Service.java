@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import skkuchin.service.exception.CustomRuntimeException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
@@ -68,11 +69,9 @@ public class S3Service {
             return getUrl(objectKey);
 
         } catch (S3Exception e) {
-            log.error(e.awsErrorDetails().errorMessage());
-            return null;
+            throw new RuntimeException(e);
         } catch (IOException e) {
-            log.error(e.getMessage());
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

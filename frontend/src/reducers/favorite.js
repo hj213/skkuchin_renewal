@@ -9,7 +9,7 @@ import {
 } from '../actions/favorite/types';
 
 const initialState = {
-    favorite: [],
+    favorite: null,
 };
 
 const favoriteReducer = (state = initialState, action) => {

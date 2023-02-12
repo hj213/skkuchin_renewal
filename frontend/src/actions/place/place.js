@@ -8,7 +8,7 @@ import {
 } from './types'
 
 //load_places
-export const load_places = () => async dispatch => {
+export const load_places = (callback) => async dispatch => {
     try {
         const res = await fetch('/api/place', {
             method: 'GET',
@@ -24,20 +24,23 @@ export const load_places = () => async dispatch => {
                 type: LOAD_PLACES_SUCCESS,
                 payload: data
             })
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: LOAD_PLACES_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         dispatch({
             type: LOAD_PLACES_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
 //load_place
-export const load_place = (id) => async dispatch => {
+export const load_place = (id, callback) => async dispatch => {
 
     try {
         const res = await fetch(`/api/place/${id}`, {
@@ -54,24 +57,26 @@ export const load_place = (id) => async dispatch => {
                 type: LOAD_PLACE_SUCCESS,
                 payload: data
             })
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: LOAD_PLACE_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         dispatch({
             type: LOAD_PLACE_FAIL
         });
+        if (callback) callback([false, error]);
     };
 }
 
 //search_place
-export const search_places = (keyword) => async dispatch => {
+export const search_places = (keyword, callback) => async dispatch => {
 
     try {
         const res = await fetch(`/api/place/search/${keyword}`, {
-        // const res = await fetch(`/api/place/search?tags=${selectedTags.join(',')}`, {
             method: 'GET',
             headers: {
                 'Accept' : 'application/json'
@@ -85,14 +90,17 @@ export const search_places = (keyword) => async dispatch => {
                 type: SEARCH_PLACES_SUCCESS,
                 payload: data
             })
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: SEARCH_PLACES_FAIL
             });
+            if (callback) callback([false, data.error]);
         }
     } catch (error) {
         dispatch({
             type: SEARCH_PLACES_FAIL
         });
+        if (callback) callback([false, error]);
     };
 }

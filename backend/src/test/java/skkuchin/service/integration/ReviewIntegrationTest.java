@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.ReviewSetUp;
@@ -24,6 +26,8 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.DuplicateException;
 
 import javax.transaction.Transactional;
+import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -42,8 +46,25 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @WithMockUser
     public void 모든_리뷰_불러오기() throws Exception {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("가성비", "맛집"));
-        ReviewDto.PostRequest dto2 = new ReviewDto.PostRequest(1L, 4.0F, "맛있네요!", "img", List.of("맛집"));
+        List<MultipartFile> images1 = new ArrayList<>();
+        List<MultipartFile> images2 = new ArrayList<>();
+
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+
+        images1.add(image1);
+        images2.add(image1);
+        images2.add(image2);
+
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5, "맛있어요", images1, List.of("가성비", "맛집"));
+        ReviewDto.PostRequest dto2 = new ReviewDto.PostRequest(1L, 4, "맛있네요!", images2, List.of("맛집"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         reviewSetUp.saveReview(dto, user, place);
@@ -68,7 +89,20 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @WithMockUser
     public void 리뷰_상세_정보_가져오기() throws Exception {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images.add(image1);
+        images.add(image2);
+
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5, "맛있어요", images, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         Long reviewId = reviewSetUp.saveReview(dto, user, place);
@@ -90,7 +124,20 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 리뷰_작성() throws Exception {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images.add(image1);
+        images.add(image2);
+
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5, "맛있어요", images, List.of("맛집", "가성비"));
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(dto);
         String token = getToken("test", "12341234"); //자동 주입이 되어 있는 ROLE_USER 계정
@@ -98,7 +145,6 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
         //when
         ResultActions resultActions = mvc.perform(post("/api/review")
                         .header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .content(form))
                         .andDo(print());
 
@@ -110,12 +156,27 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 리뷰_수정() throws Exception {
         //given
-        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images1 = new ArrayList<>();
+        List<MultipartFile> images2 = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images1.add(image1);
+        images1.add(image2);
+        images2.add(image1);
+
+        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5, "맛있어요", images1, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         Long reviewId = reviewSetUp.saveReview(existingReview, user, place);
 
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(3.0F, "전엔 맛있었는데ㅜ", "이미지", List.of("분위기 좋은", "가성비"));
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(3, "전엔 맛있었는데ㅜ", images2, List.of("분위기 좋은", "가성비"));
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(dto);
         String token = getToken("test", "12341234");
@@ -123,7 +184,6 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
         //when
         ResultActions resultActions = mvc.perform(put("/api/review/{reviewId}", reviewId)
                         .header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .content(form))
                         .andDo(print());
 
@@ -136,12 +196,27 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 남의_리뷰_수정_시도_에러() throws Exception {
         //given
-        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images1 = new ArrayList<>();
+        List<MultipartFile> images2 = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images1.add(image1);
+        images1.add(image2);
+        images2.add(image1);
+
+        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5, "맛있어요", images1, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(1L).nickname("스꾸친관리자").username("admin").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         reviewSetUp.saveReview(existingReview, user, place);
 
-        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(3.0F, "전엔 맛있었는데ㅜ", "이미지", List.of("분위기 좋은", "가성비"));
+        ReviewDto.PutRequest dto = new ReviewDto.PutRequest(3, "전엔 맛있었는데ㅜ", images2, List.of("분위기 좋은", "가성비"));
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String form = objectMapper.writeValueAsString(dto);
         String token = getToken("test", "12341234");
@@ -149,7 +224,6 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
         //when
         ResultActions resultActions = mvc.perform(put("/api/review/1")
                         .header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .content(form))
                         .andDo(print());
 
@@ -161,7 +235,20 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 리뷰_삭제() throws Exception {
         //given
-        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images.add(image1);
+        images.add(image2);
+
+        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5, "맛있어요", images, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         Long reviewId = reviewSetUp.saveReview(existingReview, user, place);
@@ -171,8 +258,7 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
 
         //when
         ResultActions resultActions = mvc.perform(delete("/api/review/{reviewId}", reviewId)
-                        .header("Authorization", token)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .header("Authorization", token))
                         .andDo(print());
 
         //then
@@ -183,7 +269,20 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 남의_리뷰_삭제_시도_에러() throws Exception {
         //given
-        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images.add(image1);
+        images.add(image2);
+
+        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5, "맛있어요", images, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(1L).nickname("스꾸친관리자").username("admin").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         reviewSetUp.saveReview(existingReview, user, place);
@@ -205,8 +304,23 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 장소별_리뷰_조회() throws Exception {
         //given
-        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("가성비", "맛집"));
-        ReviewDto.PostRequest dto2 = new ReviewDto.PostRequest(2L, 4.0F, "맛있네요!", "img", List.of("맛집"));
+        List<MultipartFile> images1 = new ArrayList<>();
+        List<MultipartFile> images2 = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images1.add(image1);
+        images1.add(image2);
+        images2.add(image1);
+
+        ReviewDto.PostRequest dto = new ReviewDto.PostRequest(1L, 5, "맛있어요", images1, List.of("가성비", "맛집"));
+        ReviewDto.PostRequest dto2 = new ReviewDto.PostRequest(2L, 4, "맛있네요!", images2, List.of("맛집"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         Place place2 = Place.builder().id(2L).name("칸다소바").build();
@@ -231,7 +345,20 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 내가_쓴_리뷰_조회() throws Exception {
         //given
-        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images.add(image1);
+        images.add(image2);
+
+        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5, "맛있어요", images, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         reviewSetUp.saveReview(existingReview, user, place);
@@ -257,7 +384,20 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 사용자_id별_리뷰_조회() throws Exception {
         //given
-        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images.add(image1);
+        images.add(image2);
+
+        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5, "맛있어요", images, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         reviewSetUp.saveReview(existingReview, user, place);
@@ -283,7 +423,20 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
     @Test
     public void 관리자가_아닌_사용자가_userId별_리뷰_조회_시도_에러() throws Exception {
         //given
-        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5.0F, "맛있어요", "img", List.of("맛집", "가성비"));
+        List<MultipartFile> images = new ArrayList<>();
+        MultipartFile image1 = new MockMultipartFile("image",
+                "test1.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test1.png"));
+
+        MultipartFile image2 = new MockMultipartFile("image",
+                "test2.png",
+                "image/png",
+                new FileInputStream("src/test/java/skkuchin/service/data/image/test2.png"));
+        images.add(image1);
+        images.add(image2);
+
+        ReviewDto.PostRequest existingReview = new ReviewDto.PostRequest(1L, 5, "맛있어요", images, List.of("맛집", "가성비"));
         AppUser user = AppUser.builder().id(2L).nickname("테스트").username("test").build();
         Place place = Place.builder().id(1L).name("기꾸스시").build();
         reviewSetUp.saveReview(existingReview, user, place);
@@ -304,7 +457,7 @@ public class ReviewIntegrationTest extends BaseIntegrationTest {
 
     public String getToken(String username, String password) throws Exception {
         String form = objectMapper.writeValueAsString(new LoginFormTestVer(username, password));
-        MvcResult loginResult = mvc.perform(post("/api/login")
+        MvcResult loginResult = mvc.perform(post("/api/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form)
                         .accept(MediaType.APPLICATION_JSON))

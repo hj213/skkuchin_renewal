@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.EmailAuthRequestDto;
 import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.*;
@@ -14,7 +13,6 @@ import skkuchin.service.repo.*;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,32 +23,39 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final BlockRepo blockRepo;
     private final UserRoleRepo userRoleRepo;
     private final EmailAuthRepo emailAuthRepo;
     private final PasswordEncoder passwordEncoder;
 
-    public boolean checkUsername(String username) {
+    public void checkUsername(String username) {
+        if (username == null || username.isBlank()) {
+            throw new CustomRuntimeException("아이디를 입력해주시기 바랍니다", "아이디 중복확인 실패");
+        }
+
         AppUser existingUser = userRepo.findByUsername(username);
-        if (existingUser == null) {
-            return true;
-        } else return false;
+        if (existingUser != null) {
+            throw new CustomRuntimeException("사용 중인 아이디입니다", "아이디 중복확인 실패");
+        }
     }
 
-    public boolean checkNickname(String nickname) {
+    public void checkNickname(String nickname) {
+        if (nickname == null || nickname.isBlank()) {
+            throw new CustomRuntimeException("닉네임을 입력해주시기 바랍니다", "닉네임 중복확인 실패");
+        }
+
         AppUser existingUser = userRepo.findByNickname(nickname);
-        if (existingUser == null) {
-            return true;
-        } else return false;
+        if (existingUser != null) {
+            throw new CustomRuntimeException("사용 중인 닉네임입니다", "닉네임 중복확인 실패");
+        }
     }
 
     @Transactional
     public AppUser saveUser(UserDto.SignUpForm signUpForm) throws MessagingException, UnsupportedEncodingException {
-        log.info("Saving new user {} to the database", signUpForm.getNickname());
-
         if (!signUpForm.getPassword().equals(signUpForm.getRePassword())) {
-            //throw new DiscordException("re_password_error");
-            throw new CustomRuntimeException("회원가입 실패", "일치하지 않는 비밀번호입니다.");
+            throw new CustomRuntimeException("비밀번호가 일치하지 않습니다", "회원가입 실패");
         }
+        log.info("Saving new user {} to the database", signUpForm.getNickname());
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         AppUser appUser = signUpForm.toEntity();
         AppUser newUser = userRepo.save(appUser);
@@ -62,7 +67,6 @@ public class UserService {
         if (userRepo.findByUsername("admin") == null) {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
-            //appUser.getRoles().add(roleRepo.findByName("ROLE_ADMIN"));
             appUser.emailVerifiedSuccess();
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_ADMIN")).build();
             userRepo.save(appUser);
@@ -75,7 +79,6 @@ public class UserService {
         if (userRepo.findByUsername("test") == null) {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
-            //appUser.getRoles().add(roleRepo.findByName("ROLE_USER"));
             appUser.emailVerifiedSuccess();
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_USER")).build();
             userRepo.save(appUser);
@@ -112,7 +115,7 @@ public class UserService {
 
     @Transactional
     public UserDto.Response getUser(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         return new UserDto.Response(user);
     }
 
@@ -132,31 +135,40 @@ public class UserService {
 
     @Transactional
     public void updateUser(Long userId, UserDto.PutRequest dto) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
-        AppUser existingUser = userRepo.findByNickname(dto.getNickname());
-        if (!(existingUser == null || user.equals(existingUser)))
-            throw new CustomRuntimeException("사용할 수 없는 닉네임입니다.");
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setNickname(dto.getNickname());
         user.setMajor(dto.getMajor());
-        //user.setImage(dto.getImage());
 
         userRepo.save(user);
     }
 
     @Transactional
     public void deleteUser(Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         userRepo.delete(user);
     }
 
     @Transactional
+    public String findUsername(String email) {
+        if (email == null || email.isBlank()) {
+            throw new CustomRuntimeException("이메일을 입력하여주시기 바랍니다", "아이디 찾기 실패");
+        }
+
+        AppUser user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new CustomRuntimeException("등록되지 않은 이메일 주소입니다", "아이디 찾기 실패");
+        }
+        return user.getUsername();
+    }
+
+    @Transactional
     public void updatePassword(UserDto.PutPassword dto, Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new CustomRuntimeException("비밀번호 변경 실패", "현재 비밀번호가 일치하지 않습니다.");
+            throw new CustomRuntimeException("현재 비밀번호가 올바르지 않습니다", "비밀번호 변경 실패");
         }
         if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
-            throw new CustomRuntimeException("비밀번호 변경 실패", "신규 비밀번호가 일치하지 않습니다.");
+            throw new CustomRuntimeException("신규 비밀번호가 일치하지 않습니다", "비밀번호 변경 실패");
         }
         String newPassword = passwordEncoder.encode(dto.getNewPassword());
         user.setPassword(newPassword);
@@ -165,15 +177,15 @@ public class UserService {
     }
 
     @Transactional
-    public void resetPassword(UserDto.ResetPassword dto, Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
-        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(user.getEmail(), true, EmailType.PASSWORD);
+    public void resetPassword(UserDto.ResetPassword dto) {
+        List<EmailAuth> emailAuth = emailAuthRepo.findByEmailAndIsAuthAndType(dto.getEmail(), true, EmailType.PASSWORD);
         if (emailAuth.size() == 0) {
-            throw new CustomRuntimeException("비밀번호 초기화 실패", "이메일 인증이 필요합니다.");
+            throw new CustomRuntimeException("이메일 인증이 필요합니다", "비밀번호 초기화 실패");
         }
         if (!dto.getNewPassword().equals(dto.getNewRePassword())) {
-            throw new CustomRuntimeException("비밀번호 초기화 실패", "일치하지 않는 비밀번호입니다.");
+            throw new CustomRuntimeException("비밀번호가 일치하지 않습니다", "비밀번호 초기화 실패");
         }
+        AppUser user = userRepo.findByEmail(dto.getEmail());
         String newPassword = passwordEncoder.encode(dto.getNewPassword());
         user.setPassword(newPassword);
 
@@ -183,15 +195,12 @@ public class UserService {
 
     @Transactional
     public void updateToggleValue(Campus campus, Long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow();
+        if (campus == null) {
+            throw new CustomRuntimeException("캠퍼스를 입력해주시기 바랍니다", "토글 변경 실패");
+        }
+
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setToggle(campus);
         userRepo.save(user);
-    }
-
-    public void sendEmails(String username, String email) throws MessagingException, UnsupportedEncodingException {
-
-
-
-
     }
 }

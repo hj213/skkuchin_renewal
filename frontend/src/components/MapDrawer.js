@@ -5,13 +5,33 @@ import { useRouter } from "next/router";
 import {Grid,ThemeProvider, Drawer, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Switch, styled, FormControlLabel} from '@mui/material';
 import hamburger from '../image/햄버거바.png';
 import bookmark from '../image/bookmark-1.png';
-import star from '../image/Star-1.png';
+import star from '../image/Star2.png';
 import profile from '../image/profile.png';
-import yj from '../image/율전토글_on.png';
-import mr from '../image/명륜토글_default.png';
-import { load_user } from '../actions/auth/auth';
+import yj from '../image/율전_on.png';
+import mr from '../image/명륜_off.png';
+import { change_toggle, load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
+
+//mbti프로필
+import profile1 from '../image/mbti/프로필/기본.png';
+import profile2 from '../image/mbti/프로필/식사.png';
+import ENFJ from '../image/mbti/프로필/ENFJ.png';
+import ENTP from '../image/mbti/프로필/ENTP.png';
+import INFP from '../image/mbti/프로필/INFP.png';
+import ENFP from '../image/mbti/프로필/ENFP.png';
+import ISTJ from '../image/mbti/프로필/ISTJ.png';
+import ISTP from '../image/mbti/프로필/ISTP.png';
+import ISFP from '../image/mbti/프로필/ISFP.png';
+import INTP from '../image/mbti/프로필/INTP.png';
+import ESTJ from '../image/mbti/프로필/ESTJ.png';
+import INFJ from '../image/mbti/프로필/INFJ.png';
+import ENTJ from '../image/mbti/프로필/ENTJ.png';
+import ESTP from '../image/mbti/프로필/ESTP.png';
+import ESFJ from '../image/mbti/프로필/ESFJ.png';
+import INTJ from '../image/mbti/프로필/INTJ.png';
+import ISFJ from '../image/mbti/프로필/ISFJ.png';
+import ESFP from '../image/mbti/프로필/ESFP.png';
 
 export default function MapDrawer(openID){
 
@@ -20,40 +40,38 @@ export default function MapDrawer(openID){
     const dispatch = useDispatch();
     const router = useRouter();
     let open = false;
-    let campus = true;
   
     if(typeof window !== 'undefined' && !isAuthenticated){
       router.push('/login');
     }
-
+    
     //api
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
-    // const review = useSelector(state => state.)
-
-    if(openID.open.openID){
-      open = true;
-    }
-
-    
-    if(user != null) {
-      if(user.campus == '명륜'){
-        campus = false;
-      } else{
-        campus = true;
-      }
-    }
-
-
-    useEffect(()=>{
-        dispatch(load_user());
-        dispatch(load_favorite());
-    }, [dispatch]);
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [checked, setChecked] = useState(campus);
-    const [toggleOn, setToggleOn] = useState(campus);
+    const [toggle, setToggle] = useState(user&&user.toggle);
+    
+    //뒤로가기 시 드로워 열리도록
+    if(openID.open){
+      open = true;
+    }
+
+    useEffect(()=>{
+      if (dispatch && dispatch !== null && dispatch !== undefined) {
+        dispatch(load_favorite());
+        dispatch(load_user());
+      }
+    }, [dispatch]);
+
+    useEffect(()=>{
+      if ( user && user.toggle != null) {
+        dispatch(load_user());
+        dispatch(change_toggle(toggle));
+      }
+    }, [dispatch, toggle]);
+
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
@@ -67,80 +85,26 @@ export default function MapDrawer(openID){
       router.push('/myFavorite');
     }
 
-    //스위처
-    const handleSwitch = (e) =>{
-      e.preventDefault();
-      setChecked(e.target.checked);
-
-    } 
-
     //토글 클릭
     const handleToggle = (e) =>{
-      e.preventDefault();
-      if(toggleOn){
-        setToggleOn(false);
-      }else{
-        setToggleOn(true);
-      }
-    
-    }
+      dispatch(load_user());
+        if( user && user.toggle == '명륜'){
+          const prevUser = '명륜'
+          setToggle((prevUser) => {
+            const newUser = '율전';
+            return newUser;
+          });
 
-    //토글 아이콘
-    const IOSSwitch = styled((props) => (
-        <Switch checked={checked} size="" onClick={handleSwitch} focusVisibleClassName=".Mui-focusVisible" sx={{ m: 1 }} {...props}/>
-      ))(({theme}) => ({
-        width: 57,
-        height: 30,
-        padding: 0,
-        
-        '& .MuiSwitch-switchBase': {
-          padding: 0,
-          margin: '8px 0px 0px 15px',
-          transitionDuration: '300ms',
-          backgroundImage:`url(${mr})`,
-          '&.Mui-checked': {
-            transform: 'translateX(16px)',
-            color: '#fff',
-            '& + .MuiSwitch-track': {
-              backgroundImage: `url(${yj})`,
-              backgroundSize: 'cover',
-              height:'100%',
-              opacity: 1,
-              border: 0,
-            },
-            '&.Mui-disabled + .MuiSwitch-track': {
-              opacity: 0.5,
-            },
-          },
-          '&.Mui-focusVisible .MuiSwitch-thumb': {
-            color: '#33cf4d',
-            border: '6px solid #fff',
-          },
-          '&.Mui-disabled .MuiSwitch-thumb': {
-            color:
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[600],
-          },
-          '&.Mui-disabled + .MuiSwitch-track': {
-            opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-          },
-        },
-        '& .MuiSwitch-thumb': {
-          boxSizing: 'border-box',
-          width: 14,
-          height: 14,
-          boxShadow: 'none'
-        },
-        '& .MuiSwitch-track': {
-          borderRadius: 50,
-          backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
-          opacity: 1,
-          transition: theme.transitions.create(['background-color'], {
-            duration: 500,
-          }),
-        },
-      }));
+        } else if(user && user.toggle == '율전'){
+          const prevUser = '율전'
+          setToggle((prevUser) => {
+            const newUser = '명륜';
+            return newUser;
+          });
+
+          }
+
+    } 
 
     const list = (anchor) => (
         <Box
@@ -150,8 +114,8 @@ export default function MapDrawer(openID){
           onKeyDown={handleDrawerClick(false)}
         >   
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
-                <Image src={user && user.image ? user.image: profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
-                <div >
+                <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
+                <div>
                 <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
                 <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
                 </div>
@@ -163,17 +127,17 @@ export default function MapDrawer(openID){
                             <Image src={bookmark} alt='즐겨찾기' width={16} height={16}/>
                         </Grid>
                         <Grid item>
-                            <ListItemText primary="즐겨찾기 장소" style={{marginTop:'0px'}} onClick={handleMove} />  
+                            <ListItemText primary="즐겨찾기 장소" style={{marginTop:'1px'}} onClick={handleMove} />  
                         </Grid>
                     </Grid>
                 </ListItem>
                 <ListItem disablePadding>
                     <Grid container style={{marginTop:'37px', fontSize: '20px', fontWeight:'400', lineHeight: '28px'}}>
                         <Grid item style={{marginRight:'9px',}}>
-                            <Image src={star} alt='나의 리뷰' width={20} height={20} style={{marginTop:'3px'}}/>
+                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}}/>
                         </Grid>
                         <Grid item>
-                            <ListItemText primary="나의 리뷰" style={{marginTop:'0px'}} onClick={handleMove}/>
+                            <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMove}/>
                         </Grid>
                     </Grid>
                 </ListItem>
@@ -181,20 +145,33 @@ export default function MapDrawer(openID){
         </Box>
     );
 
+    const src ={
+      INFP:INFP,
+      ENFJ:ENFJ,
+      ENTP:ENTP,
+      ENFP:ENFP,
+      ISTJ:ISTJ,
+      ISTP:ISTP,
+      ISFP:ISFP,
+      INTP:INTP,
+      ESTJ:ESTJ,
+      INFJ:INFJ,
+      ENTJ:ENTJ,
+      ESTP:ESTP,
+      ESFJ:ESFJ,
+      INTJ:INTJ,
+      ISFJ:ISFJ,
+      ESFP:ESFP,
+    }
+
     return(
         <ThemeProvider theme={theme}>
             <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15}/>
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
-                <Grid item style={{marginTop:'45px', marginLeft:'70%'}}>
-                  {/* <FormControlLabel
-                  control={<IOSSwitch />}
-                  /> */}
-                  <Image src={toggleOn ? yj: mr} width={57} height={30} onClick={handleToggle}/>
+                <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
+                  {user && <Image src={ toggle == '율전' ? yj: mr} width={60} height={60} />}
                 </Grid>
-                {/* <Grid item style={{position:'absolute', marginTop:'59px', marginLeft:'71%', zIndex:'2'}}>
-                  <Image src={mr} width={23} height={14}/>
-                </Grid> */}
               </Grid>
              
                 {list('left')}

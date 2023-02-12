@@ -6,15 +6,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.config.auth.PrincipalDetails;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.service.ReviewService;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,7 +45,19 @@ public class ReviewController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> write(@Valid @ModelAttribute ReviewDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> write(@Valid @ModelAttribute ReviewDto.PostRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Map<String, String> errorMap = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            if (errorMap.containsKey("rate")) {
+                throw new CustomValidationApiException("평점을 선택해주시기 바랍니다", errorMap);
+            }
+            throw new CustomValidationApiException("리뷰를 작성해주시기 바랍니다", errorMap);
+        }
+
         AppUser user = principalDetails.getUser();
         reviewService.write(user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 작성 완료", null), HttpStatus.CREATED);
@@ -48,7 +65,24 @@ public class ReviewController {
 
     @PutMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long reviewId, @Valid @ModelAttribute ReviewDto.PutRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> update(
+            @PathVariable Long reviewId,
+            @Valid @ModelAttribute ReviewDto.PutRequest dto,
+            BindingResult bindingResult, @AuthenticationPrincipal
+            PrincipalDetails principalDetails
+    ) {
+        Map<String, String> errorMap = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            if (errorMap.containsKey("rate")) {
+                throw new CustomValidationApiException("평점을 선택해주시기 바랍니다", errorMap);
+            }
+            throw new CustomValidationApiException("리뷰를 작성해주시기 바랍니다", errorMap);
+        }
+
         AppUser user = principalDetails.getUser();
         reviewService.update(reviewId, dto, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 수정 완료", null), HttpStatus.OK);
@@ -64,8 +98,9 @@ public class ReviewController {
 
     @GetMapping("/place/{placeId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> getPlaceReview(@PathVariable Long placeId) {
-        List<ReviewDto.Response> placeReviews = reviewService.getPlaceReview(placeId);
+    public ResponseEntity<?> getPlaceReview(@PathVariable Long placeId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        List<ReviewDto.Response> placeReviews = reviewService.getPlaceReview(placeId, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소별 리뷰 가져오기 완료", placeReviews), HttpStatus.OK);
     }
 
