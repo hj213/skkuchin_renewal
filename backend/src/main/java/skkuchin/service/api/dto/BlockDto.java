@@ -18,7 +18,7 @@ public class BlockDto {
     public static class Request {
         @JsonProperty
         @NotNull
-        private Long blockedUserId;
+        private Long blockUserId;
 
         public Block toEntity(AppUser user, AppUser blockedUser) {
             return Block.builder()

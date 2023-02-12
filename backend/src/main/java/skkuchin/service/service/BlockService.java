@@ -33,9 +33,9 @@ public class BlockService {
 
     @Transactional
     public void blockUser(AppUser user, BlockDto.Request dto) {
-        AppUser blockedUser = userRepo.findById(dto.getBlockedUserId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
+        AppUser blockedUser = userRepo.findById(dto.getBlockUserId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
 
-        if (user.getId() == dto.getBlockedUserId()) {
+        if (user.getId() == dto.getBlockUserId()) {
             throw new CustomRuntimeException("본인 계정은 차단할 수 없습니다");
         }
 
