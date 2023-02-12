@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -57,6 +58,14 @@ public class ChatRoom {
     private RequestStatus receiverRequestStatus;
 
     private int userCount;
+
+    private LocalDateTime expireDate;
+
+    @PrePersist
+    public void setDate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.expireDate = now.plusDays(2);
+    }
 
 
 

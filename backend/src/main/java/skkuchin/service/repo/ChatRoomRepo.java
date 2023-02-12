@@ -3,8 +3,10 @@ package skkuchin.service.repo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
+import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
@@ -22,4 +24,6 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
 
     List<ChatRoom> findByUser1AndSenderRequestStatusAndReceiverRequestStatus
             (AppUser user, RequestStatus senderRequestStatus, RequestStatus receiverRequestStatus);
+
+    List<ChatRoom> findByExpireDateBefore(LocalDateTime now);
 }

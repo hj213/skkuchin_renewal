@@ -2,16 +2,19 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
+import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -164,6 +167,12 @@ public class ChatService {
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
                 .collect(Collectors.toList());
+    }
+
+    @Scheduled(cron = "* * 9 * * ?") //매일 오전 9시에 만료된 데이터가 삭제됨
+    public void deleteExpiredData() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());
+        chatRoomRepository.deleteAll(chatRooms);
     }
 
 
