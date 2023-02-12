@@ -14,7 +14,7 @@ import javax.persistence.*;
         name="user_block",
         uniqueConstraints={
                 @UniqueConstraint(
-                        columnNames={"user_id", "blocked_user_id"}
+                        columnNames={"user_id", "block_user_id"}
                 )
         }
 )

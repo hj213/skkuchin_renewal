@@ -19,9 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CandidateService {
-
     private final CandidateRepo candidateRepo;
-
     private final UserKeywordRepo userKeywordRepo;
     private final UserRepo userRepo;
 
@@ -38,6 +36,11 @@ public class CandidateService {
 
     @Transactional
     public List<CandidateDto.Response> getCandidate(AppUser user) {
+        List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
+
+//        if (candidates.get(0).getExpireDate().minusDays(14)) {
+//
+//        }
 
         List<AppUser> returnUsers = findReturnUsers(user);
 
