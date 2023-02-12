@@ -121,11 +121,13 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            setHeight(cardRef.current.getBoundingClientRect().height);
+            // cardRef.current.addEventListener("touchend", handleTouchMove);
         }
         return () => {
             if (cardRef.current) {
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
+                // cardRef.current.removeEventListener("touchend", handleTouchMove);
+
             }
         };
       }, [cardRef]);
@@ -147,6 +149,7 @@ export default function list(){
         setPreventScroll('');
     }
 
+    let preNewHeight = 0;
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
         event.preventDefault();
@@ -159,40 +162,36 @@ export default function list(){
         const MinHeight = window.innerHeight * 0.32;
         const cardHeight = 150 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        setPreventScroll('');
-
-        if(height < TARGET_HEIGHT){
-            window.addEventListener('touchend', (e)=> {
-                setHeight(TARGET_HEIGHT);
-                
-                setOpen({
-                    bool: true,
-                    visibility: 'visible',
-                });
-                setCardStyle({
-                    radius:'0px',
-                    iconVisibility:'hidden'
-                });
-                setPreventScroll('scroll');
-                
-            }) 
-            
-        } else if( cardRef.current.getBoundingClientRect().height == TARGET_HEIGHT){ //t수정해야하는부분
-            
-            window.addEventListener('touchstart', (e) => {
-                setHeight(MinHeight);
-                setOpen({
-                    bool:false,
-                    visibility:'hidden'
-                });
-                setCardStyle({
-                    radius:'30px 30px 0px 0px',
-                    iconVisibility:'visible'
-                });
-                setPreventScroll('');
-            } )
+        if (newHeight >= TARGET_HEIGHT) {
+            // console.log(newHeight);
+            // console.log(TARGET_HEIGHT);
+            setHeight(TARGET_HEIGHT);
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
+            setPreventScroll('scroll');
+        } else {
+            console.log('hi');
+            console.log(newHeight);
+            console.log(TARGET_HEIGHT);
+            setHeight('32%');
+            setOpen({
+                bool: false,
+                visibility: 'hidden'
+            });
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility:'visible'
+            });
+            setPreventScroll('');
         }
-            
+        
+        preNewHeight = newHeight;
     };
 
     // 아이콘 클릭했을 때 이벤트

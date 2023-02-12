@@ -137,7 +137,7 @@ const AiGreeting = () => {
                     </span>
                     님
                     <br />
-                    오늘의 AI 매칭 추천을 확인해보세요
+                    오늘의 AI 매칭 추천을 확인해보세요 👀
                 </Typography>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px", margin:"0 0 30px 0"}}>

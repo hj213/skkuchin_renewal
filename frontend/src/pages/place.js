@@ -20,6 +20,7 @@ import TagList from "../components/TagList";
 import SearchBox from "../components/SearchBox";
 import { displayReviewTag } from "../components/TagList";
 import Link from 'next/link';
+import UpperBar from "../components/UpperBar";
 
 const PlacePage = () => {
     
@@ -221,7 +222,8 @@ const PlacePage = () => {
             <Layout
                 title='스꾸친 | Place'
                 content='Place page'
-            >           
+            >   
+            <UpperBar/>        
                 <div style={{ position: 'relative', width:'100%', height:'100%', overflowX:'hidden'}}>  
                 <Container style={{position:'absolute', zIndex:'2'}}>
                     <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
