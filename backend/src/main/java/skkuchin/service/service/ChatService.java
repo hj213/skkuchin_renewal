@@ -8,10 +8,9 @@ import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.ChatRepository;
-import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.repo.ChatRoomRepo;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,8 +18,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ChatService {
-    private final ChatRoomRepository chatRoomRepository;
-    private final ChatRepository chatRepository;
+    private final ChatRoomRepo chatRoomRepository;
+    private final ChatRepo chatRepository;
 
     //전체 채팅방 조회
     public List<ChatRoomDto.Response> getAllRoom(){

@@ -6,7 +6,7 @@ import skkuchin.service.domain.User.AppUser;
 
 import java.util.List;
 
-public interface ChatRoomRepository extends JpaRepository<ChatRoom,Long> {
+public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
     ChatRoom findByRoomName(String roomName);
     ChatRoom findByRoomId(String roomId);
     ChatRoom findBySenderSessionId(String senderSessionId);

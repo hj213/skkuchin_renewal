@@ -13,7 +13,7 @@ import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.repo.ChatRoomRepo;
 
 import skkuchin.service.service.ChatService;
 
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatRoomController {
     private final ChatService chatService;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepo chatRoomRepository;
 
 
 

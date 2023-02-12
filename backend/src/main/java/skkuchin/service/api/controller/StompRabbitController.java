@@ -6,25 +6,19 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
-import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Major;
-import skkuchin.service.repo.ChatRepository;
-import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.repo.ChatRoomRepo;
 
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
@@ -37,8 +31,8 @@ import java.time.LocalDateTime;
 public class StompRabbitController {
 
     private final RabbitTemplate template;
-    private final ChatRepository chatRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepo chatRepository;
+    private final ChatRoomRepo chatRoomRepository;
     private final ChatService chatService;
     private final ChatSessionService chatSessionService;
 
