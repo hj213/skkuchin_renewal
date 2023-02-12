@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
+import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepository;
@@ -39,6 +40,20 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    public void getAllMessage1(ChatRoom chatRoom, String sender){
+        List<ChatMessage> chatMessages = chatRepository.findByRoomId(chatRoom.getRoomId());
+        for (int i = 0; i<chatMessages.size(); i++) {
+
+            //내 메시지를 상대방이 들어와서 읽었을 때만 0으로 바꿈
+            if(chatMessages.get(i).getUserCount() >0 && !chatMessages.get(i).getSender().equals(sender)){
+                chatMessages.get(i).setUserCount(0);
+            }
+
+
+        }
+        chatRepository.saveAll(chatMessages);
+    }
+
 
     //채팅방 개설
     public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
@@ -59,6 +74,61 @@ public class ChatService {
         chatRoomRepository.save(chatRoom1);
 
     }
+
+    public void deleteSession(ChatRoom chatRoom, String sessionId){
+        if(chatRoom.getSenderSessionId().equals(sessionId)){
+            chatRoom.setSenderSessionId("");
+        }
+        else if(chatRoom.getReceiverSessionId().equals(sessionId)){
+            chatRoom.setReceiverSessionId("");
+        }
+
+
+
+
+
+    }
+
+    public void setSessionId(ChatRoom chatRoom,String sessionId){
+
+            chatRoom.setSenderSessionId(sessionId);
+            chatRoomRepository.save(chatRoom);
+
+
+
+
+    }
+
+    public ChatRoom findSession(String senderSessionId){
+        ChatRoom chatRoom = chatRoomRepository.findBySenderSessionId(senderSessionId);
+        return chatRoom;
+
+    }
+
+   public ChatRoom findSession1(String receiverSessionId){
+        ChatRoom chatRoom = chatRoomRepository.findByReceiverSessionId(receiverSessionId);
+        return chatRoom;
+
+
+    }
+    //채팅방 인원 조정
+    public void updateCount(ChatRoom chatRoom){
+
+        chatRoom.setUserCount(chatRoom.getUserCount()+1);
+
+        chatRoomRepository.save(chatRoom);
+
+
+    }
+
+    public void minusCount(ChatRoom chatRoom){
+
+        chatRoom.setUserCount(chatRoom.getUserCount()-1);
+
+        chatRoomRepository.save(chatRoom);
+
+    }
+
 
     // 특정 룸 아이디로 채팅방 찾기
     public ChatRoom findChatroom(String roomId){

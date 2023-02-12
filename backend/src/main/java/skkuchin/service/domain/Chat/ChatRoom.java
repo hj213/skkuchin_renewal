@@ -29,9 +29,13 @@ public class ChatRoom {
     @JsonIgnore
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "chatRoom")
+    @JsonIgnore
+    private List<ChatSession> chatSessions = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "sender_id", nullable = false)
+    @JoinColumn(name = "sender_id")
     private AppUser user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,6 +48,12 @@ public class ChatRoom {
 
     @Column(columnDefinition = "boolean default false")
     private boolean receiverAccepted;
+
+    private int userCount;
+
+    private String senderSessionId;
+
+    private String receiverSessionId;
 
 
     public static ChatRoom create(String name) {
