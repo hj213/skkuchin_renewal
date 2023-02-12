@@ -51,15 +51,8 @@ public class ChatRoom {
 
     private int userCount;
 
-    private String senderSessionId;
-
-    private String receiverSessionId;
 
 
-    public static ChatRoom create(String name) {
-        ChatRoom room = new ChatRoom();
-        room.roomId = UUID.randomUUID().toString();
-        room.roomName = name;
-        return room;
-    }
+
+
 }
