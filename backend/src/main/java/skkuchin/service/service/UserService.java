@@ -242,7 +242,7 @@ public class UserService {
                     "영화", "음악", "전시회", "연극/뮤지컬", "덕질", "여행", "게임", "노래방", "방탈출", "보드게임", "반려동물", "요리", "맛집탐방", "만화",
                     "학회", "동아리", "교환학생", "봉사", "재테크", "빅데이터", "금융", "문학", "토론", "시사", "어학", "CPA", "로스쿨", "행시", "피트"};
 
-            int keywordsCount = random.nextInt(keywordPool.length - 2) + 3;
+            int keywordsCount = random.nextInt(6) + 3;
             Set<String> keywordSet = new HashSet<>();
             while (keywordSet.size() < keywordsCount) {
                 int keywordIndex = random.nextInt(keywordPool.length);

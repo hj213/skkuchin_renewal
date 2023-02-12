@@ -41,18 +41,18 @@ public class CandidateService {
     public List<CandidateDto.Response> getCandidate(AppUser user) {
         List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
         Candidate recentCandidate = null;
-        Long differenceTime = null;
+        Long differenceTime;
 
         if (candidates.size() > 0) {
             recentCandidate = candidates.get(candidates.size() - 1);
             LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(14);
             Duration duration = Duration.between(createDate, LocalDateTime.now());
-            differenceTime = duration.toHours();
+            differenceTime = duration.toMinutes();
         } else {
-            differenceTime = 24L;
+            differenceTime = 1L;
         }
 
-        if (differenceTime < 24) {
+        if (differenceTime < 1) {
             List<AppUser> threeCandidates = Arrays.asList(
                     recentCandidate.getCandidate1(),
                     recentCandidate.getCandidate2(),

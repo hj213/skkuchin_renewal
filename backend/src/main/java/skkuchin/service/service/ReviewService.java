@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Block;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.*;
@@ -33,7 +32,6 @@ public class ReviewService {
     private static final String CATEGORY = "review";
     private final ReviewRepo reviewRepo;
     private final PlaceRepo placeRepo;
-    private final BlockRepo blockRepo;
     private final TagRepo tagRepo;
     private final ReviewTagRepo reviewTagRepo;
     private final ReviewImageRepo reviewImageRepo;
