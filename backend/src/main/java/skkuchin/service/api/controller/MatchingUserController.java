@@ -36,7 +36,7 @@ public class MatchingUserController {
                     errorMap.put(error.getField(), error.getDefaultMessage());
                 }
                 if (errorMap.containsKey("keywords")) {
-                    throw new CustomValidationApiException("키워드를 3개 이상 입력해야 합니다", errorMap);
+                    throw new CustomValidationApiException("키워드는 3개부터 8개까지 입력 가능합니다", errorMap);
                 }
                 throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
             }
@@ -95,7 +95,7 @@ public class MatchingUserController {
                     errorMap.put(error.getField(), error.getDefaultMessage());
                 }
                 if (errorMap.containsKey("keywords")) {
-                    throw new CustomValidationApiException("키워드를 3개 이상 입력해야 합니다", errorMap);
+                    throw new CustomValidationApiException("키워드는 3개부터 8개까지 입력 가능합니다", errorMap);
                 }
                 throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
             }

@@ -65,7 +65,6 @@ public class ChatService {
         ChatRoom chatRoom = dto.toEntity(user);
         chatRoom.setSenderRequestStatus(RequestStatus.ACCEPT);
         chatRoom.setRoomId(UUID.randomUUID().toString());
-        chatRoom.setSenderAccepted(true);
         chatRoomRepository.save(chatRoom);
 
     }
@@ -76,7 +75,6 @@ public class ChatService {
         ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         chatRoom1.setUser1(user);
-        chatRoom1.setReceiverAccepted(true);
         chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
 
         chatRoomRepository.save(chatRoom1);
@@ -127,59 +125,18 @@ public class ChatService {
         return chatroom;
     }
 
-    // 채팅방 개설자 아이디로 채팅방 찾기
-/*    public List<ChatRoomDto.Response> findSenderChatRoom(AppUser appuser){
+
+    public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
 
 
-        return chatRoomRepository.findByUserAndSenderAcceptedAndReceiverAccepted(appuser, true,true)
-                .stream()
-                .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
-                .collect(Collectors.toList());
-    }*/
-
-    // 상대방 아이디로 채팅방 찾기
-   /* public List<ChatRoomDto.Response> findReceiverChatRoom(AppUser appuser){
-
-
-        return chatRoomRepository.findByUser1AndSenderAcceptedAndReceiverAccepted(appuser, true,true)
-                .stream()
-                .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
-                .collect(Collectors.toList());
-    }*/
-
-    public List<ChatRoomDto.Response> findSenderChatRoom(AppUser appuser){
-
-
-        return chatRoomRepository.findByUserAndSenderRequestStatusAndReceiverRequestStatus(appuser, RequestStatus.ACCEPT,RequestStatus.ACCEPT)
+        return chatRoomRepository.findBySenderId(appuser.getId())
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
                 .collect(Collectors.toList());
     }
 
-    public List<ChatRoomDto.Response> findReceiverChatRoom(AppUser appuser){
-
-
-        return chatRoomRepository.findByUser1AndSenderRequestStatusAndReceiverRequestStatus(appuser, RequestStatus.ACCEPT,RequestStatus.ACCEPT)
-                .stream()
-                .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
-                .collect(Collectors.toList());
-    }
-
-    public List<ChatRoomDto.Response> test(AppUser appuser){
-
-
-        return chatRoomRepository.findByUserId(appuser.getId())
-                .stream()
-                .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
-                .collect(Collectors.toList());
-    }
-
-    public List<ChatRoomDto.Response> test1(AppUser appuser){
+    public List<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser){
 
 
         return chatRoomRepository.findByReceiverId(appuser.getId())
@@ -189,7 +146,7 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    @Scheduled(cron = "10 * * * * ?") //매일 오전 9시에 만료된 데이터가 삭제됨
+    @Scheduled(cron = "* 0 * * * ?") //정각에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {
         List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());
         for (int i = 0; i < chatRooms.size(); i++) {
@@ -200,14 +157,15 @@ public class ChatService {
         }
     }
 
-    public List<ChatMessageDto.Response> getLatestMessage(ChatRoom chatRoom){
+    //방
+    public List<ChatMessageDto.Response> getLatestMessages(ChatRoom chatRoom){
         return chatRepository.findByLatestMessageTime(chatRoom.getRoomId())
                 .stream()
                 .map(message -> new ChatMessageDto.Response(message))
                 .collect(Collectors.toList());
     }
 
-    public ChatMessageDto.Response getLatestMessage1(ChatRoom chatRoom){
+    public ChatMessageDto.Response getLatestMessage(ChatRoom chatRoom){
         ChatMessage chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
         return new ChatMessageDto.Response(chatMessage);
     }

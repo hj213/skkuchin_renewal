@@ -42,11 +42,9 @@ public class StompRabbitController {
 
     @MessageMapping("chat.enter.{chatRoomId}")
     public void enter(ChatMessage chat, @DestinationVariable String chatRoomId, @Header("token") String token){
-        chat.setSender("hi");
-        chat.setType(ChatMessage.MessageType.ENTER);
+        String username = getUserNameFromJwt(token);
+        chat.setSender(username);
         chat.setMessage("입장하셨습니다.");
-        //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
-
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat); // exchange
     }
 
@@ -55,44 +53,31 @@ public class StompRabbitController {
    , Message<?> message){
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        /*chat.setSender("hi");*/
+
+        //세션, 채팅방 정보, 유저 정보 설정, 받아오기
         String sessionId = accessor.getSessionId();
-        System.out.println("header = " + sessionId);
-        ChatSession chatSession = chatSessionService.findSession(sessionId);
-        /*System.out.println("token = " + token);*/
-        /*String username = getUserNameFromJwt(token);*/
-        String username = chatSession.getSender();
-       
-   /* System.out.println("getUserNameFromJwt(token) = " + getUserNameFromJwt(token));
-    AppUser user = AppUser.builder().id(1L).nickname("user").major(Major.건축학과).build();*/
-   /* AppUser user = principalDetails.getUser();
-    System.out.println("user = " + user);*/
-        /*System.out.println("user.getNickname() = " + user.getNickname());*/
-        chat.setType(ChatMessage.MessageType.TALK);
-        chat.setSender(username);
-        System.out.println("chatRoomId = " + chatRoomId);
         ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
-        //  System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
+        ChatSession chatSession = chatSessionService.findSession(sessionId);
+        String username = chatSession.getSender();
 
+        //chat 메시지 + 채팅방 정보 설정
 
-            chat.setRoomId(chatRoom.getRoomId());
-            chat.setChatRoom(chatRoom);
-            chat.setDate(LocalDateTime.now());
-            chatRoom.setLatestMessageTime(LocalDateTime.now());
+        chat.setSender(username);
+        chat.setRoomId(chatRoom.getRoomId());
+        chat.setChatRoom(chatRoom);
+        chat.setDate(LocalDateTime.now());
+        chatRoom.setLatestMessageTime(LocalDateTime.now());
+        chat.setUserCount(2-chatRoom.getUserCount());
 
-            chat.setUserCount(2-chatRoom.getUserCount());
-            //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
-            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
-            chatRoomRepository.save(chatRoom);
-            chatRepository.save(chat);
+        //메시지 매핑
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+
+        //DB 저장
+        chatRoomRepository.save(chatRoom);
+        chatRepository.save(chat);
 
     };
 
-//    @RabbitListener(queues = CHAT_QUEUE_NAME)
-//    public void receive(ChatMessage chat){
-//        System.out.println("received : " + chat.getMessage());
-//
-//    }
 
     public String getUserNameFromJwt(String jwt){
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());

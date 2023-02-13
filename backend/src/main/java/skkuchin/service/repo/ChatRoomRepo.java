@@ -15,29 +15,15 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
     ChatRoom findByRoomName(String roomName);
     ChatRoom findByRoomId(String roomId);
 
-    List<ChatRoom> findByUserAndSenderAcceptedAndReceiverAccepted
-            (AppUser user, boolean senderAccepted,boolean receiverAccepted);
-    List<ChatRoom> findByUser1AndSenderAcceptedAndReceiverAccepted
-            (AppUser user, boolean senderAccepted, boolean receiverAccepted);
-
-
-    List<ChatRoom> findByUserAndSenderRequestStatusAndReceiverRequestStatus
-            (AppUser user, RequestStatus senderRequestStatus, RequestStatus receiverRequestStatus);
-
-    List<ChatRoom> findByUser1AndSenderRequestStatusAndReceiverRequestStatus
-            (AppUser user, RequestStatus senderRequestStatus, RequestStatus receiverRequestStatus);
-
     @Query("SELECT a FROM ChatRoom a where a.user.id = :senderId " +
             "AND a.senderRequestStatus = 'ACCEPT' AND a.receiverRequestStatus = 'ACCEPT' ORDER BY a.latestMessageTime DESC")
-    List<ChatRoom> findByUserId
-            (@Param("senderId") Long senderId)
-      ;
+    List<ChatRoom> findBySenderId
+            (@Param("senderId") Long senderId);
 
     @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
             "AND a.senderRequestStatus = 'ACCEPT' AND a.receiverRequestStatus = 'ACCEPT' ORDER BY a.latestMessageTime DESC")
     List<ChatRoom> findByReceiverId
-            (@Param("senderId") Long senderId)
-            ;
+            (@Param("senderId") Long senderId);
 
     List<ChatRoom> findByExpireDateBefore(LocalDateTime now);
 }

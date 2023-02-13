@@ -43,13 +43,7 @@ public class ChatRoom {
     @JsonIgnore
     @JoinColumn(name = "receiver_id")
     private AppUser user1;
-
-    @Column(columnDefinition = "boolean default false")
-    private boolean senderAccepted;
-
-    @Column(columnDefinition = "boolean default false")
-    private boolean receiverAccepted;
-
+    
 
     @Enumerated(EnumType.STRING)
     private RequestStatus senderRequestStatus;

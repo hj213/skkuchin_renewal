@@ -36,11 +36,6 @@ public class ChatSessionService {
     public void deleteSession(String sessionId){
 
         ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId) ;
-
         chatSessionRepo.delete(chatSession);
-
-
-
-
     }
 }

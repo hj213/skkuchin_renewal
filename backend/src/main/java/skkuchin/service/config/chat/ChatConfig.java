@@ -3,29 +3,22 @@ package skkuchin.service.config.chat;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
-
 import org.springframework.messaging.support.MessageHeaderAccessor;
-
-
 import org.springframework.util.AntPathMatcher;
-
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.service.ChatService;
@@ -59,6 +52,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 /*.setHeartbeatTime(1000)*/;
         ;
 
+        //에러 핸들링
         registry.setErrorHandler(chatErrorHandler);
     }
 
@@ -73,15 +67,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 .setRelayPort(port)
                 .setClientLogin(username)
                 .setClientPasscode(password);
-
-
-
-/*        registry.enableStompBrokerRelay("/topic")
-                .setRelayHost("localhost")
-                .setVirtualHost("/")
-                .setRelayPort(61613)
-                .setClientLogin("guest")
-                .setClientPasscode("guest");*/
 
     }
 
