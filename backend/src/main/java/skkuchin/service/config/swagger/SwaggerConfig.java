@@ -219,6 +219,22 @@ public class SwaggerConfig {
             .paths(PathSelectors.ant("/chat/**")).build();
     }
 
+    @Bean
+    public Docket apiV12(){
+        return new Docket(DocumentationType.OAS_30)
+                .useDefaultResponseMessages(false)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
+                .groupName("report")
+                .select()
+                .apis(RequestHandlerSelectors.
+                        basePackage("skkuchin.service.api.controller"))
+                .paths(PathSelectors.ant("/api/report/**")).build();
+    }
+
     // swagger에서 jwt 토큰값 넣기위한 설정
     private ApiKey apiKey() {
         return new ApiKey("Authorization", "Authorization", "header");
