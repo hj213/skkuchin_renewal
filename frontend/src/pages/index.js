@@ -148,8 +148,8 @@ export default function list(){
         setHeight('0');
         setPreventScroll('');
     }
-    let preNewHeight = 0;
     // 카드 터치 했을 때 변화
+    let preNewHeight = 0;
     const handleTouchMove = (event) => {
         event.preventDefault();
 
@@ -158,8 +158,6 @@ export default function list(){
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
-        const MinHeight = window.innerHeight * 0.32;
-        const cardHeight = 150 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
             // console.log(newHeight);
