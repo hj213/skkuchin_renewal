@@ -169,10 +169,27 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    @Scheduled(cron = "* * 9 * * ?") //매일 오전 9시에 만료된 데이터가 삭제됨
+    @Scheduled(cron = "10 * * * * ?") //매일 오전 9시에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {
         List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());
-        chatRoomRepository.deleteAll(chatRooms);
+        for (int i = 0; i < chatRooms.size(); i++) {
+            if(!chatRooms.get(i).getReceiverRequestStatus().equals(RequestStatus.ACCEPT)){
+                chatRoomRepository.delete(chatRooms.get(i));
+            }
+
+        }
+    }
+
+    public List<ChatMessageDto.Response> getLatestMessage(ChatRoom chatRoom){
+        return chatRepository.findByLatestMessageTime(chatRoom.getRoomId())
+                .stream()
+                .map(message -> new ChatMessageDto.Response(message))
+                .collect(Collectors.toList());
+    }
+
+    public ChatMessageDto.Response getLatestMessage1(ChatRoom chatRoom){
+        ChatMessage chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
+        return new ChatMessageDto.Response(chatMessage);
     }
 
 

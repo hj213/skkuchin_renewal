@@ -61,10 +61,13 @@ public class ChatRoom {
 
     private LocalDateTime expireDate;
 
+    private LocalDateTime latestMessageTime;
+
     @PrePersist
     public void setDate() {
         LocalDateTime now = LocalDateTime.now();
         this.expireDate = now.plusDays(2);
+        /*this.expireDate = now.plusMinutes(1);*/
     }
 
 

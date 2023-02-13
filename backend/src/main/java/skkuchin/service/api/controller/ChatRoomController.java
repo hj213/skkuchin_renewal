@@ -61,13 +61,33 @@ public class ChatRoomController {
 
      }
 
-    @GetMapping("/room/{roomId}")
+  /*  @GetMapping("/room/{roomId}")
     public ResponseEntity<?> getCertainMessage(@PathVariable String roomId) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         List<ChatMessageDto.Response> responses = chatService.getAllMessage(chatRoom);
         System.out.println("responses = " + responses.size());
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 채팅방 조회 완료", responses), HttpStatus.OK);
+    }*/
+
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
+        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
+        List<ChatMessageDto.Response> responses = chatService.getLatestMessage(chatRoom);
+        System.out.println("responses = " + responses.size());
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 채팅방 조회 완료", responses), HttpStatus.OK);
+    }
+
+    @GetMapping("/room/latest/{roomId}")
+    public ResponseEntity<?> getLatestOneMessage(@PathVariable String roomId) {
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
+        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
+        ChatMessageDto.Response responses = chatService.getLatestMessage1(chatRoom);
+
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 채팅방 조회 완료", responses), HttpStatus.OK);
     }
 
