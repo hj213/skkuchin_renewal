@@ -10,7 +10,6 @@ spring:
 #    username: root
 #    password: Master00!@
 
-
   jpa:
     hibernate:
       ddl-auto: create
