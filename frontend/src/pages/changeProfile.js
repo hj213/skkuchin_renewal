@@ -236,10 +236,30 @@ export default function makeProfile(){
             //관심사
             const keyword = matchingUser.keywords;
             keyword.forEach(element => {
-                food[element] = true;
-                sports[element] = true;
-                art[element] = true;
-                study[element] = true;
+                if(food.hasOwnProperty(element)){
+                    setFood({
+                        ...food,
+                        [element]: true
+                    })
+                }
+                if(sports.hasOwnProperty(element)){
+                    setSports({
+                        ...sports,
+                        [element]: true
+                    })
+                }
+                if(art.hasOwnProperty(element)){
+                    setArt({
+                        ...art,
+                        [element]: true
+                    })
+                }
+                if(study.hasOwnProperty(element)){
+                    setStudy({
+                        ...study,
+                        [element]: true
+                    })
+                }
             });
             setKeyword(keyword);
             
@@ -502,7 +522,18 @@ export default function makeProfile(){
 
     //음식클릭
     const handleFoodClick = (event) => {
-        if(food[event.target.name]){
+        if(keyword.length == 8){
+            setFood({
+                ...food
+            })
+            if(food[event.target.name]){
+                setFood({
+                    ...food,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(food[event.target.name]){
             setFood({
                 ...food,
                 [event.target.name] : false
@@ -517,7 +548,18 @@ export default function makeProfile(){
 
     //운동클릭
     const handleSportsClick = (event) => {
-        if(sports[event.target.name]){
+        if(keyword.length == 8){
+            setSports({
+                ...sports
+            })
+            if(sports[event.target.name]){
+                setSports({
+                    ...sports,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(sports[event.target.name]){
             setSports({
                 ...sports,
                 [event.target.name] : false
@@ -532,7 +574,18 @@ export default function makeProfile(){
     
     //문화예술
     const handleArtClick = (event) => {
-        if(art[event.target.name]){
+        if(keyword.length == 8){
+            setArt({
+                ...art
+            })
+            if(art[event.target.name]){
+                setArt({
+                    ...art,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(art[event.target.name]){
             setArt({
                 ...art,
                 [event.target.name] : false
@@ -547,7 +600,18 @@ export default function makeProfile(){
 
     //학술
     const handleStudyClick = (event) => {
-        if(study[event.target.name]){
+        if(keyword.length == 8){
+            setStudy({
+                ...study
+            })
+            if(study[event.target.name]){
+                setStudy({
+                    ...study,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(study[event.target.name]){
             setStudy({
                 ...study,
                 [event.target.name] : false
@@ -611,20 +675,26 @@ export default function makeProfile(){
         } else{
             setMbti('');
         }
-
+        
         const newKeywords = [sports, food, art, study];
 
-        const allKeywords = newKeywords.reduce((acc, current) => {
-            return acc.concat(Object.entries(current));
-        }, [])
+        const allKeywords = Array.from(new Set(
+            newKeywords.reduce((acc, current) => {
+              return acc.concat(Object.entries(current));
+            }, [])
             .filter(([, value]) => value)
-            .map(([key]) => key);
-
-        if(allKeywords.length >= 3 ){
-            setKeyword(allKeywords);
-        }
+            .map(([key]) => key)
+          ));
+    
+            if(allKeywords.length >= 3 ){
+                
+                setKeyword(allKeywords);
+            } else {
+                setKeyword('');
+            }
       }, [mbtiChoose, food, study, art, sports]);
 
+    //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
         if(gender && keyword && introduction != '' && mbti && image){
     

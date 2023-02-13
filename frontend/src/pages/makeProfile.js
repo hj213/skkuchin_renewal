@@ -450,7 +450,18 @@ export default function makeProfile(){
 
     //음식클릭
     const handleFoodClick = (event) => {
-        if(food[event.target.name]){
+        if(keyword.length == 8){
+            setFood({
+                ...food
+            })
+            if(food[event.target.name]){
+                setFood({
+                    ...food,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(food[event.target.name]){
             setFood({
                 ...food,
                 [event.target.name] : false
@@ -465,7 +476,18 @@ export default function makeProfile(){
 
     //운동클릭
     const handleSportsClick = (event) => {
-        if(sports[event.target.name]){
+        if(keyword.length == 8){
+            setSports({
+                ...sports
+            })
+            if(sports[event.target.name]){
+                setSports({
+                    ...sports,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(sports[event.target.name]){
             setSports({
                 ...sports,
                 [event.target.name] : false
@@ -480,7 +502,18 @@ export default function makeProfile(){
     
     //문화예술
     const handleArtClick = (event) => {
-        if(art[event.target.name]){
+        if(keyword.length == 8){
+            setArt({
+                ...art
+            })
+            if(art[event.target.name]){
+                setArt({
+                    ...art,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(art[event.target.name]){
             setArt({
                 ...art,
                 [event.target.name] : false
@@ -495,7 +528,18 @@ export default function makeProfile(){
 
     //학술
     const handleStudyClick = (event) => {
-        if(study[event.target.name]){
+        if(keyword.length == 8){
+            setStudy({
+                ...study
+            })
+            if(study[event.target.name]){
+                setStudy({
+                    ...study,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(study[event.target.name]){
             setStudy({
                 ...study,
                 [event.target.name] : false
@@ -551,7 +595,7 @@ export default function makeProfile(){
             }));
     } 
 
-    //데이터 전달하기 위하여
+    //데이터 전달하기 위해
     useEffect(() => {
 
         const newMbti = Object.entries(mbtiChoose)
@@ -577,6 +621,7 @@ export default function makeProfile(){
         }
       }, [mbtiChoose, food, study, art, sports]);
 
+    //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
         if(gender && keyword && introduction != '' && mbti && image){
     
