@@ -1,19 +1,30 @@
 package skkuchin.service.service;
 
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
+import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
+import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
+import skkuchin.service.repo.UserRepo;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,6 +35,7 @@ import java.util.stream.Collectors;
 public class ChatService {
     private final ChatRoomRepo chatRoomRepository;
     private final ChatRepo chatRepository;
+    private final UserRepo userRepo;
 
     //전체 채팅방 조회
     public List<ChatRoomDto.Response> getAllRoom(){
@@ -168,6 +180,31 @@ public class ChatService {
     public ChatMessageDto.Response getLatestMessage(ChatRoom chatRoom){
         ChatMessage chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
         return new ChatMessageDto.Response(chatMessage);
+    }
+
+    public void insertData(String path) throws IOException, ParseException {
+        if (chatRoomRepository.count() < 0) { //db가 비어있을 때만 실행
+
+            FileInputStream ins = new FileInputStream(path + "chatroom.json");
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject)parser.parse(
+                    new InputStreamReader(ins, "UTF-8")
+            );
+            JSONArray jsonArray = (JSONArray) jsonObject.get("chatroom");
+            Gson gson = new Gson();
+
+
+            List<AppUser> users = userRepo.findAll();
+
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject temp = (JSONObject) jsonArray.get(i);
+                ChatRoomDto.TestPostRequest dto = gson.fromJson(temp.toString(), ChatRoomDto.TestPostRequest.class);
+               chatRoomRepository.save(dto.toEntity(users.get(i%2)));
+
+
+            }
+        }
     }
 
 
