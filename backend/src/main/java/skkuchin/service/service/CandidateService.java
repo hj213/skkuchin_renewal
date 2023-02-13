@@ -14,7 +14,9 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,23 +41,29 @@ public class CandidateService {
     public List<CandidateDto.Response> getCandidate(AppUser user) {
         List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
         Candidate recentCandidate = null;
-        Long differenceTime = null;
+        Long differenceTime;
 
         if (candidates.size() > 0) {
             recentCandidate = candidates.get(candidates.size() - 1);
             LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(14);
             Duration duration = Duration.between(createDate, LocalDateTime.now());
-            differenceTime = duration.toHours();
+            differenceTime = duration.toMinutes();
         } else {
-            differenceTime = 24L;
+            differenceTime = 1L;
         }
 
-        if (differenceTime < 24) {
-            List<AppUser> threeCandidates = candidateRepo.findCandidatesByUserId(recentCandidate.getUser().getId());
+        if (differenceTime < 1) {
+            List<AppUser> threeCandidates = Arrays.asList(
+                    recentCandidate.getCandidate1(),
+                    recentCandidate.getCandidate2(),
+                    recentCandidate.getCandidate3()
+            );
+
             return threeCandidates.stream()
+                    .filter(Objects::nonNull)
                     .map(candidate -> new CandidateDto.Response(
-                        candidate,
-                        userKeywordRepo.findByUser(candidate).stream().collect(Collectors.toList())
+                            candidate,
+                            userKeywordRepo.findByUser(candidate).stream().collect(Collectors.toList())
                     ))
                     .collect(Collectors.toList());
 
