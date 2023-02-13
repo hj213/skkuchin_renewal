@@ -43,7 +43,7 @@ public class ReportController {
             reportService.reportUser(user, dto);
             return new ResponseEntity<>(new CMRespDto<>(1, "해당 유저가 신고되었습니다", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
-            throw new CustomValidationApiException("한 명당 한 번만 신고 가능합니다");
+            throw new CustomValidationApiException("한 번만 신고 가능합니다");
         }
     }
 }

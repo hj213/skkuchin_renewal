@@ -31,7 +31,7 @@ public class ReportService {
         if (dto.getChatRoomId() == null && dto.getReviewId() == null) {
             throw new CustomRuntimeException("리뷰나 채팅방이 특정되지 않았습니다");
         }
-        if (dto.getContent() == null && dto.getReportType().getCode().equals("기타")) {
+        if ((dto.getContent() == null || dto.getContent().isBlank()) && dto.getReportType().getCode().equals("기타")) {
             throw new CustomRuntimeException("내용을 작성해주시기 바랍니다");
         }
         if (dto.getContent() != null && !dto.getReportType().getCode().equals("기타")) {

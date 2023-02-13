@@ -12,7 +12,13 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name="user_report")
+@Table(
+        name="user_report",
+        uniqueConstraints={
+                @UniqueConstraint(columnNames={"user_id", "chat_room_id"}),
+                @UniqueConstraint(columnNames={"user_id", "review_id"})
+        }
+)
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
