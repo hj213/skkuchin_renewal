@@ -88,6 +88,7 @@ export default function list(){
         }
     }, [place, user]);
 
+
     useEffect(() => {
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
@@ -112,7 +113,7 @@ export default function list(){
                 });
             }
         }
-    }, [keyword, router.query.keyword, dispatch, tags]);
+    }, [keyword, router.query.keyword, dispatch, tags,user]);
     
     
     // 사용자 터치에 따라 카드 사이즈 변화
@@ -303,7 +304,7 @@ export default function list(){
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
-
+             
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{
@@ -356,9 +357,13 @@ export default function list(){
                 ref = {cardRef}
                  >
                 <div>
+                    {
+                        !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
                         <Image width={70} height={4} src={line} /> 
                     </div>
+                    : null
+                    }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                         {/* 키워드별 필터링된 장소 개수 확인 */}
                         <p style={{margin: 0, fontSize: '10px'}}>{filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개)' : null}</p> 

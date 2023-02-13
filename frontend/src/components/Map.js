@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react"; 
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import { KAKAOMAP_APPKEY } from '../config';
@@ -8,6 +9,11 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
     const router = useRouter();
     // const [limit, setLimit] = useState(30); // 더보기 기능
+    const user = useSelector(state => state.auth.user); 
+
+
+    useEffect(()=> {
+    }, [user])
 
     useEffect(() => {
         const mapScript = document.createElement("script");
@@ -36,10 +42,16 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         center: new window.kakao.maps.LatLng(places[0].ycoordinate, places[0].xcoordinate),
                         level: 1
                     };
-                } else {
+                } else if(user && user.toggle == '율전') {
+                    options = {
+                        center : new window.kakao.maps.LatLng(37.2965, 126.9717),
+                        level: 4
+                    };
+                }
+                else{
                     options = {
                         center : new window.kakao.maps.LatLng(latitude, longitude),
-                        level: 1
+                        level: 4
                     };
                 }
 
@@ -47,7 +59,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                 
                 const markers = [];
                 let count = 0;
-                let limit = 30;
+                let limit = 20;
 
                 { places  &&
                 places.forEach(place => {
@@ -63,7 +75,8 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                image: selectedImage
+                                image: selectedImage,
+                                zIndex: 10
                             });
                         }
                         // 기본
@@ -74,7 +87,8 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                image: markerImage
+                                image: markerImage,
+                                zIndex: 10
                             });
                         }
                     } else if(place.id != selectedId){
@@ -142,7 +156,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
         mapScript.addEventListener("load", onLoadKakaoMap);
 
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
-    }, [latitude, longitude, places, selectedId]);
+    }, [latitude, longitude, places, selectedId, user]);
 
      // '더보기' 버튼을 누르면 limit 값을 증가시킴
     // const handleLoadMore = () => {
