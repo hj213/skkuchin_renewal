@@ -61,6 +61,7 @@ public class ChatRoomController {
         return new ResponseEntity<>(new CMRespDto<>(1, "sender's 채팅방 조회 완료", responses), HttpStatus.OK);
     }
 
+    //상대방 기준으로 정렬
     @GetMapping("/test1")
     public ResponseEntity<?> test1(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser appUser = principalDetails.getUser();
