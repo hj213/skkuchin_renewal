@@ -228,7 +228,7 @@ export default function makeProfile(){
             //mbti
             const mbti = matchingUser.mbti;
             const newMbtiChoose = { ...mbtiChoose };
-            for (let i = 0; i < mbti.length; i++) {
+            for (let i = 0; mbti && i < mbti.length; i++) {
               newMbtiChoose[mbti[i]] = true;
             }
             setMbtiChoose(newMbtiChoose);
@@ -355,6 +355,7 @@ export default function makeProfile(){
     const [introduction, setIntroduction] = useState('');
     const [image, setImage] = useState('');
     const [mbti, setMbti] = useState('');
+    const [condition, setCondition] = useState(false);
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -566,6 +567,7 @@ export default function makeProfile(){
                 ...profile,
                 [event.target.name] : false
             })
+            setImage('');
         } else{
             setProfile({
                 ...profile,
@@ -597,19 +599,18 @@ export default function makeProfile(){
             
     } 
 
-    //for passingMbti
+    //데이터 전달하기 위하여
     useEffect(() => {
+
         const newMbti = Object.entries(mbtiChoose)
           .filter(([, value]) => value)
           .map(([key]) => key)
           .join('');
         if(newMbti.length==4){
             setMbti(newMbti);
+        } else{
+            setMbti('');
         }
-      }, [mbtiChoose]);
-    
-    //for keyword
-    useEffect(() => {
 
         const newKeywords = [sports, food, art, study];
 
@@ -622,7 +623,18 @@ export default function makeProfile(){
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
         }
-      }, [food, study, art, sports]);
+      }, [mbtiChoose, food, study, art, sports]);
+
+    useEffect(()=>{
+        if(gender && keyword && introduction != '' && mbti && image){
+    
+            setCondition(true);
+        } else {
+            setCondition(false);
+        }
+    }, [gender, keyword, introduction, mbti, image]);
+
+    console.log(gender, keyword, introduction, mbti, image);
     
     return(
         <ThemeProvider theme={theme}>
@@ -980,7 +992,7 @@ export default function makeProfile(){
                     </div>
                     <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
                         <div style={{paddingBottom:'50px', textAlign:'center'}}>
-                            <Image src={submitOk} width={296} height={45} onClick={handleOnSubmit} name='확인'/>
+                            <Image src={condition ? submitOk: submit} width={296} height={45} onClick={handleOnSubmit} name='확인'/>
                         </div>
                     </Container>
                 </Container>
