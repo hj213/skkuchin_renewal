@@ -33,8 +33,8 @@ public class BlockController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getBlockedUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        List<BlockDto.Response> blocekdUsers = blockService.getBlockedUser(user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "차단 유저 조회 완료", blocekdUsers), HttpStatus.OK);
+        List<BlockDto.Response> blockedUsers = blockService.getBlockedUser(user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "차단 유저 조회 완료", blockedUsers), HttpStatus.OK);
     }
 
     @PostMapping("")

@@ -138,7 +138,7 @@ const UpperBar = () => {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container disableGutter maxWidth="xs" style={{height:"90px", margin:"0", padding:"0"}} overflow="hidden">
+            <Container disableGutters={true} maxWidth="xs" style={{height:"90px", margin:"0", padding:"0"}} overflow="hidden">
                     {
                         isAuthenticated ? authLinks: guestLinks
                     }

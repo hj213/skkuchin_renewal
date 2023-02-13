@@ -59,6 +59,7 @@ public class AppUser {
     private LocalDateTime startDate;
 
     private Boolean emailAuth;
+
     private Boolean agreement;
 
     public void emailVerifiedSuccess() {

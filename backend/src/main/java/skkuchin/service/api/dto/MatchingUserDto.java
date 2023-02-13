@@ -26,6 +26,7 @@ public class MatchingUserDto {
         @NotNull
         private Gender gender;
         @Size(min = 3)
+        @Size(max = 8)
         @NotNull
         private List<String> keywords;
         @NotBlank

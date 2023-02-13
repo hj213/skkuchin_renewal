@@ -3,9 +3,11 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.MatchingUserDto;
+import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.UserRole;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.KeywordRepo;
 import skkuchin.service.repo.UserKeywordRepo;
@@ -45,6 +47,10 @@ public class MatchingUserService {
 
     @Transactional
     public MatchingUserDto.Response getMyInfo(AppUser user) {
+        if (user.getMatching() == null) {
+            throw new CustomValidationApiException("AI 매칭 기능을 이용하시려면\n" +
+                    "매칭 프로필이 필요해요️ \uD83E\uDD7A");
+        }
         List<UserKeyword> keywords = userKeywordRepo.findByUser(user);
         return new MatchingUserDto.Response(user, keywords);
     }

@@ -11,17 +11,18 @@ import skkuchin.service.repo.UserKeywordRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CandidateService {
-
     private final CandidateRepo candidateRepo;
-
     private final UserKeywordRepo userKeywordRepo;
     private final UserRepo userRepo;
 
@@ -38,25 +39,54 @@ public class CandidateService {
 
     @Transactional
     public List<CandidateDto.Response> getCandidate(AppUser user) {
+        List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
+        Candidate recentCandidate = null;
+        Long differenceTime;
 
-        List<AppUser> returnUsers = findReturnUsers(user);
-
-        if (returnUsers.size() > 0) {
-            Candidate candidate = Candidate.builder()
-                    .user(user)
-                    .candidate1(returnUsers.get(0))
-                    .candidate2(returnUsers.size() > 1 ? returnUsers.get(1) : null)
-                    .candidate3(returnUsers.size() > 2 ? returnUsers.get(2) : null)
-                    .build();
-            candidateRepo.save(candidate);
+        if (candidates.size() > 0) {
+            recentCandidate = candidates.get(candidates.size() - 1);
+            LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(14);
+            Duration duration = Duration.between(createDate, LocalDateTime.now());
+            differenceTime = duration.toMinutes();
+        } else {
+            differenceTime = 1L;
         }
 
-        return returnUsers.stream()
-                .map(returnUser -> new CandidateDto.Response(
-                        returnUser,
-                        userKeywordRepo.findByUser(returnUser).stream().collect(Collectors.toList())
-                ))
-                .collect(Collectors.toList());
+        if (differenceTime < 1) {
+            List<AppUser> threeCandidates = Arrays.asList(
+                    recentCandidate.getCandidate1(),
+                    recentCandidate.getCandidate2(),
+                    recentCandidate.getCandidate3()
+            );
+
+            return threeCandidates.stream()
+                    .filter(Objects::nonNull)
+                    .map(candidate -> new CandidateDto.Response(
+                            candidate,
+                            userKeywordRepo.findByUser(candidate).stream().collect(Collectors.toList())
+                    ))
+                    .collect(Collectors.toList());
+
+        } else {
+            List<AppUser> returnUsers = findReturnUsers(user);
+
+            if (returnUsers.size() > 0) {
+                Candidate candidate = Candidate.builder()
+                        .user(user)
+                        .candidate1(returnUsers.get(0))
+                        .candidate2(returnUsers.size() > 1 ? returnUsers.get(1) : null)
+                        .candidate3(returnUsers.size() > 2 ? returnUsers.get(2) : null)
+                        .build();
+                candidateRepo.save(candidate);
+            }
+
+            return returnUsers.stream()
+                    .map(returnUser -> new CandidateDto.Response(
+                            returnUser,
+                            userKeywordRepo.findByUser(returnUser).stream().collect(Collectors.toList())
+                    ))
+                    .collect(Collectors.toList());
+        }
     }
 
     public List<AppUser> findReturnUsers(AppUser user) {

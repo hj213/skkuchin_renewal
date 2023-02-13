@@ -30,8 +30,7 @@ import java.util.Map;
 @Slf4j
 public class FavoriteController {
     private final FavoriteService favoriteService;
-    private final UserRepo userRepo;
-    private final FavoriteRepo favoriteRepo;
+
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> write(@Valid @RequestBody FavoriteDto.PostRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {

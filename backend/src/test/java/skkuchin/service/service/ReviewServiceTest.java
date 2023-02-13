@@ -249,7 +249,7 @@ public class ReviewServiceTest extends MockTest {
         given(reviewTagRepo.findByReview(review)).willReturn(reviewTags);
 
         //when
-        List<ReviewDto.Response> reviews = reviewService.getPlaceReview(1L, user);
+        List<ReviewDto.Response> reviews = reviewService.getPlaceReview(1L);
 
         //then
         assertThat(reviews.size()).isEqualTo(1);
