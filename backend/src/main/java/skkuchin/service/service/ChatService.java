@@ -169,6 +169,26 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    public List<ChatRoomDto.Response> test(AppUser appuser){
+
+
+        return chatRoomRepository.findByUserId(appuser.getId())
+                .stream()
+                .map(chatroom -> new ChatRoomDto.Response(
+                        chatroom))
+                .collect(Collectors.toList());
+    }
+
+    public List<ChatRoomDto.Response> test1(AppUser appuser){
+
+
+        return chatRoomRepository.findByReceiverId(appuser.getId())
+                .stream()
+                .map(chatroom -> new ChatRoomDto.Response(
+                        chatroom))
+                .collect(Collectors.toList());
+    }
+
     @Scheduled(cron = "10 * * * * ?") //매일 오전 9시에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {
         List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());

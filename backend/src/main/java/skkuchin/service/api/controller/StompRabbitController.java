@@ -79,9 +79,11 @@ public class StompRabbitController {
             chat.setChatRoom(chatRoom);
             chat.setDate(LocalDateTime.now());
             chatRoom.setLatestMessageTime(LocalDateTime.now());
+
             chat.setUserCount(2-chatRoom.getUserCount());
             //chat.setRoomId("87dff490-bed9-4153-a7aa-da0b7d1fb71a");
             template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+            chatRoomRepository.save(chatRoom);
             chatRepository.save(chat);
 
     };
