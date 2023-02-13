@@ -27,7 +27,6 @@ const AiGreeting = () => {
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-    
             dispatch(load_matching_info(([result, message]) => {
                 if (result) {
                     alert(message);

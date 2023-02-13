@@ -148,7 +148,6 @@ export default function list(){
         setHeight('0');
         setPreventScroll('');
     }
-
     let preNewHeight = 0;
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
@@ -162,7 +161,7 @@ export default function list(){
         const MinHeight = window.innerHeight * 0.32;
         const cardHeight = 150 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        if (newHeight >= TARGET_HEIGHT) {
+        if (newHeight >= preNewHeight) {
             // console.log(newHeight);
             // console.log(TARGET_HEIGHT);
             setHeight(TARGET_HEIGHT);
@@ -176,9 +175,7 @@ export default function list(){
             });
             setPreventScroll('scroll');
         } else {
-            console.log('hi');
-            console.log(newHeight);
-            console.log(TARGET_HEIGHT);
+            
             setHeight('32%');
             setOpen({
                 bool: false,
@@ -190,8 +187,7 @@ export default function list(){
             });
             setPreventScroll('');
         }
-        
-        preNewHeight = newHeight;
+        preNewHeight=newHeight;
     };
 
     // 아이콘 클릭했을 때 이벤트
