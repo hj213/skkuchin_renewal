@@ -321,7 +321,9 @@ export default function list(){
                     zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
-                    overflowY:'hidden'
+                    overflowY:'hidden',
+                    border: '1px solid transparent',
+                    borderRadius: '0px'
                     }} 
                     
                     >
