@@ -1,0 +1,37 @@
+{
+  "chatroom": [
+    {
+      "roomName": "채팅방1"
+    },
+    {
+      "roomName": "채팅방2"
+    },
+    {
+      "roomName": "채팅방3"
+    },
+    {
+      "roomName": "채팅방4"
+    },
+    {
+      "roomName": "채팅방5"
+    },
+    {
+      "roomName": "채팅방6"
+    },
+    {
+      "roomName": "채팅방7"
+    },
+    {
+      "roomName": "채팅방8"
+    },
+    {
+      "roomName": "채팅방9"
+    },
+    {
+      "roomName": "채팅방10"
+    },
+    {
+      "roomName": "채팅방11"
+    }
+  ]
+}
