@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import skkuchin.service.domain.Matching.Candidate;
-import skkuchin.service.domain.Matching.Mbti;
-import skkuchin.service.domain.Matching.Profile;
-import skkuchin.service.domain.Matching.UserKeyword;
+import skkuchin.service.domain.Map.Campus;
+import skkuchin.service.domain.Matching.*;
 import skkuchin.service.domain.User.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,8 +56,10 @@ public class CandidateDto {
         @JsonProperty
         private int studentId;
         private Mbti mbti;
+        private Gender gender;
         private List<String> keywords;
         private String introduction;
+        private Campus campus;
 
         public Response(AppUser user, List<UserKeyword> keywords) {
             this.id = user.getId();
@@ -66,8 +68,22 @@ public class CandidateDto {
             this.major = user.getMajor();
             this.studentId = user.getStudentId();
             this.mbti = user.getMbti();
+            this.gender = user.getGender();
             this.keywords = keywords.stream().map(keyword -> keyword.getKeyword().getName()).collect(Collectors.toList());
             this.introduction = user.getIntroduction();
+            this.campus = findCampus(user.getMajor());
+        }
+
+        public Campus findCampus(Major major) {
+            EnumSet<Major> majors = EnumSet.allOf(Major.class);
+            List<Major> majorList = new ArrayList<>();
+            majorList.addAll(majors);
+
+            if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
+                return Campus.명륜;
+            } else {
+                return Campus.율전;
+            }
         }
     }
 }
