@@ -237,28 +237,29 @@ export default function makeProfile(){
             const keyword = matchingUser.keywords;
             keyword.forEach(element => {
                 if(food.hasOwnProperty(element)){
-                    setFood({
-                        ...food,
+                    setFood(prevState => ({
+                        ...prevState,
                         [element]: true
-                    })
+                      }))
+
                 }
                 if(sports.hasOwnProperty(element)){
-                    setSports({
-                        ...sports,
+                    setSports(prevState => ({
+                        ...prevState,
                         [element]: true
-                    })
+                      }))
                 }
                 if(art.hasOwnProperty(element)){
-                    setArt({
-                        ...art,
+                    setArt(prevState => ({
+                        ...prevState,
                         [element]: true
-                    })
+                      }))
                 }
                 if(study.hasOwnProperty(element)){
-                    setStudy({
-                        ...study,
+                    setStudy(prevState => ({
+                        ...prevState,
                         [element]: true
-                    })
+                      }))
                 }
             });
             setKeyword(keyword);
