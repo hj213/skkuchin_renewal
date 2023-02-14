@@ -92,6 +92,7 @@ public class ChatService {
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         chatRoom1.setUser1(user);
         chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
+        chatRoom1.setLatestMessageTime(LocalDateTime.now());
 
         chatRoomRepository.save(chatRoom1);
 
@@ -174,7 +175,8 @@ public class ChatService {
     }
 
 
-    @Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경
+    /*@Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경*/
+    @Scheduled(cron = "10 * * * * ?") //자정에 display 시간 변경
     public void setDisplayDateTime() {
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         LocalDateTime dateTimeNow = LocalDateTime.now();
@@ -183,14 +185,13 @@ public class ChatService {
             LocalDateTime recordedDateTime = chatRooms.get(i).getLatestMessageTime();
             LocalDate recordedDate = recordedDateTime.toLocalDate();
             Period diff = Period.between(recordedDate, dateNow);
-            System.out.println("diff.getDays() = " + diff.getDays());
             if(diff.getDays() == 1) {
                 chatRooms.get(i).setDisplayMessageTime("어제");
                 chatRoomRepository.save(chatRooms.get(i));
             }
             else if(diff.getDays() == 0){
                 chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
-                        "HH:mm")));
+                        "a h:mm")));
                 chatRoomRepository.save(chatRooms.get(i));
             }
             else if(diff.getDays() > 1){
