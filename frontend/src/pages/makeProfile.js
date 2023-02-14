@@ -303,7 +303,9 @@ export default function makeProfile(){
     const [introduction, setIntroduction] = useState('');
     const [image, setImage] = useState('');
     const [mbti, setMbti] = useState('');
-    const [condition, setCondition] = useState(false);
+    const [condition, setCondition] = useState(false); //확인버튼 조건 
+
+    const [visibility, setVisibility] = useState(''); //어느 페이지에서 접근하는지에 따라 상단 바뀌도록
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{

@@ -832,7 +832,7 @@ export default function makeProfile(){
                                         <Image src={sports.헬스 ? exeTag12On : exeTag12} width={36} height={27} onClick={handleSportsClick} name='헬스'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} name='보드 &amp; 스키'/>
+                                        <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} name='보드스키'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image src={sports.주짓수 ? exeTag9On : exeTag9} width={47} height={27} onClick={handleSportsClick} name='주짓수'/>
