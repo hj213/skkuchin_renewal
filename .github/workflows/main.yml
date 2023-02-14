@@ -31,12 +31,8 @@ jobs:
           REPOSITORY: skkuchin-repo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker-compose build
-          docker tag skkuchin_renewal-client:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
-          docker tag skkuchin_renewal-server:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
-          docker tag mysql:latest $REGISTRY/$REPOSITORY:database-$IMAGE_TAG
-          docker tag rabbitmq:latest $REGISTRY/$REPOSITORY:rabbitmq-$IMAGE_TAG
+          docker-compose build server client
+          docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
+          docker tag client:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:database-$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:rabbitmq-$IMAGE_TAG
