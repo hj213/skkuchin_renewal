@@ -2,6 +2,7 @@ package skkuchin.service.domain.Chat;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
 
@@ -21,4 +22,7 @@ public class ChatSession {
     private ChatRoom chatRoom;
 
     private String sessionId;
+
+
+    private String sender;
 }

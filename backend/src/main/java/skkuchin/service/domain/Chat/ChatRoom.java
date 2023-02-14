@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,24 +43,29 @@ public class ChatRoom {
     @JsonIgnore
     @JoinColumn(name = "receiver_id")
     private AppUser user1;
+    
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean senderAccepted;
+    @Enumerated(EnumType.STRING)
+    private RequestStatus senderRequestStatus;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean receiverAccepted;
+    @Enumerated(EnumType.STRING)
+    private RequestStatus receiverRequestStatus;
 
     private int userCount;
 
-    private String senderSessionId;
+    private LocalDateTime expireDate;
 
-    private String receiverSessionId;
+    private LocalDateTime latestMessageTime;
 
-
-    public static ChatRoom create(String name) {
-        ChatRoom room = new ChatRoom();
-        room.roomId = UUID.randomUUID().toString();
-        room.roomName = name;
-        return room;
+    @PrePersist
+    public void setDate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.expireDate = now.plusDays(2);
+        /*this.expireDate = now.plusMinutes(1);*/
     }
+
+
+
+
+
 }

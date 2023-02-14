@@ -13,7 +13,7 @@ import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.repo.ChatRoomRepo;
 
 import skkuchin.service.service.ChatService;
 
@@ -22,9 +22,10 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/chat")
+/*@RequestMapping("/api/chat")*/
 public class ChatRoomController {
     private final ChatService chatService;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepo chatRoomRepository;
 
 
 
@@ -35,21 +36,26 @@ public class ChatRoomController {
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
     }
 
+
+
+    //sender 기준 최신 채팅방 정렬
     @GetMapping("/senderRooms")
-    public ResponseEntity<?> getAllMyRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser user = principalDetails.getUser();
+    public ResponseEntity<?> sortSenderChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser appUser = principalDetails.getUser();
 
-        List<ChatRoomDto.Response> responses = chatService.findSenderChatRoom(user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "sender's 채팅방 조회 완료", responses), HttpStatus.OK);
+        List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser);
+        return new ResponseEntity<>(new CMRespDto<>(1, "sender's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
 
+    //receiver 기준 최신 채탕방 정렬
     @GetMapping("/receiverRooms")
-    public ResponseEntity<?> getAllMyRoom1(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser user = principalDetails.getUser();
+    public ResponseEntity<?> sortReceiverChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser appUser = principalDetails.getUser();
 
-        List<ChatRoomDto.Response> responses = chatService.findReceiverChatRoom(user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 채팅방 조회 완료", responses), HttpStatus.OK);
+        List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
+        return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
+
      @PostMapping("/rooms")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
 
@@ -60,32 +66,72 @@ public class ChatRoomController {
 
      }
 
+
+    //채팅방의 메시지 시간 순으로 정렬
     @GetMapping("/room/{roomId}")
-    public ResponseEntity<?> getCertainMessage(@PathVariable String roomId) {
+    public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
-        List<ChatMessageDto.Response> responses = chatService.getAllMessage(chatRoom);
+        List<ChatMessageDto.Response> responses = chatService.getLatestMessages(chatRoom);
         System.out.println("responses = " + responses.size());
-        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 채팅방 조회 완료", responses), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
+    }
+
+    //채팅방의 가장 최근 메시지 1개만 받아옴
+    @GetMapping("/room/latest/{roomId}")
+    public ResponseEntity<?> getLatestOneMessage(@PathVariable String roomId) {
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
+        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
+        ChatMessageDto.Response responses = chatService.getLatestMessage(chatRoom);
+
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
     }
 
 
-    @PostMapping("/room/{roomId}")
-    public ResponseEntity<?> updateUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    //상대방의 동의
+    @PostMapping("/room/accept/{roomId}")
+    public ResponseEntity<?> receiverAccept(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.update(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 개설 완료", null), HttpStatus.CREATED);
+        chatService.receiverAccept(chatRoom,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭 완료", null), HttpStatus.CREATED);
 
 
     }
 
+    //상대방의 거절
+    @PostMapping("/room/refuse/{roomId}")
+    public ResponseEntity<?> receiverRefuse(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        AppUser user = principalDetails.getUser();
+        chatService.receiverRefuse(chatRoom,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 거절", null), HttpStatus.CREATED);
 
-   /* @GetMapping("/roomsss")
-    public String getRooms(){
-        return "chat/rooms";
-    }*/
+
+    }
+
+    //상대방의 보류
+    @PostMapping("/room/hold/{roomId}")
+    public ResponseEntity<?> receiverHold(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        AppUser user = principalDetails.getUser();
+        chatService.receiverHold(chatRoom,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 보류", null), HttpStatus.CREATED);
+
+
+    }
+
+    //데이터 삭제
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteExpiredData() {
+        chatService.deleteExpiredData();
+        return new ResponseEntity<>(new CMRespDto<>(1, "만료 기간 지난 데이터 삭제 완료", null), HttpStatus.OK);
+    }
+
+
+
 
     @GetMapping(value = "/room")
     public String getRoom(String chatRoomId, String sender, Model model){
@@ -98,39 +144,8 @@ public class ChatRoomController {
 
     @GetMapping(value = "/roommm")
     public String getRoom(){
-
-
-
         return "chat/rrr";
     }
 
-    /* // 채팅 리스트 화면
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
-    }
-    // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> room() {
-        return chatService.findAllRoom();
-    }
-    // 채팅방 생성
-    @PostMapping("/room")
-    @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatService.createRoom(name);
-    }
-    // 채팅방 입장 화면
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
-        return "/chat/roomdetail";
-    }
-    // 특정 채팅방 조회
-    @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatService.findById(roomId);
-    }*/
+
 }
