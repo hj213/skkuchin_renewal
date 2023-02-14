@@ -3,6 +3,7 @@ package skkuchin.service.api.dto;
 import lombok.*;
 import org.springframework.web.socket.WebSocketSession;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.User.AppUser;
 
@@ -37,8 +38,26 @@ public class ChatRoomDto {
             return ChatRoom.builder()
                     .user(user)
                     .roomName(this.roomName)
-                    .senderAccepted(true)
+                    .build();
+
+
+        }
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static  class TestPostRequest{
+
+        private String roomName;
+
+
+        public ChatRoom toEntity(AppUser user){
+            return ChatRoom.builder()
+                    .user(user)
                     .roomId(UUID.randomUUID().toString())
+                    .senderRequestStatus(RequestStatus.ACCEPT)
+                    .roomName(this.roomName)
                     .build();
 
 
