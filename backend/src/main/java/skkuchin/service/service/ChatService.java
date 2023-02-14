@@ -11,12 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
-import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
-import skkuchin.service.domain.Map.*;
-import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
@@ -25,7 +22,10 @@ import skkuchin.service.repo.UserRepo;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -88,6 +88,7 @@ public class ChatService {
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         chatRoom1.setUser1(user);
         chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
+        chatRoom1.setLatestMessageTime(LocalDateTime.now());
 
         chatRoomRepository.save(chatRoom1);
 
@@ -165,6 +166,36 @@ public class ChatService {
             if(!chatRooms.get(i).getReceiverRequestStatus().equals(RequestStatus.ACCEPT)){
                 chatRoomRepository.delete(chatRooms.get(i));
             }
+
+        }
+    }
+
+
+    @Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경*/
+    /*@Scheduled(cron = "10 * * * * ?")*/
+    public void setDisplayDateTime() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        LocalDate dateNow = dateTimeNow.toLocalDate();
+        for (int i = 0; i < chatRooms.size(); i++) {
+            LocalDateTime recordedDateTime = chatRooms.get(i).getLatestMessageTime();
+            LocalDate recordedDate = recordedDateTime.toLocalDate();
+            Period diff = Period.between(recordedDate, dateNow);
+            if(diff.getDays() == 1  && diff.getMonths() ==0 && diff.getYears() ==0) {
+                chatRooms.get(i).setDisplayMessageTime("어제");
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+            else if(diff.getDays() == 0  && diff.getMonths() ==0 && diff.getYears() ==0){
+                chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "a h:mm")));
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+            else{
+                chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "yyyy-MM-dd")));
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+
 
         }
     }
