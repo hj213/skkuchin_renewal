@@ -11,12 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
-import skkuchin.service.api.dto.ReviewDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
-import skkuchin.service.domain.Map.*;
-import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
@@ -29,7 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -175,8 +171,8 @@ public class ChatService {
     }
 
 
-    /*@Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경*/
-    @Scheduled(cron = "10 * * * * ?") //자정에 display 시간 변경
+    @Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경*/
+    /*@Scheduled(cron = "10 * * * * ?")*/
     public void setDisplayDateTime() {
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         LocalDateTime dateTimeNow = LocalDateTime.now();
@@ -185,16 +181,16 @@ public class ChatService {
             LocalDateTime recordedDateTime = chatRooms.get(i).getLatestMessageTime();
             LocalDate recordedDate = recordedDateTime.toLocalDate();
             Period diff = Period.between(recordedDate, dateNow);
-            if(diff.getDays() == 1) {
+            if(diff.getDays() == 1  && diff.getMonths() ==0 && diff.getYears() ==0) {
                 chatRooms.get(i).setDisplayMessageTime("어제");
                 chatRoomRepository.save(chatRooms.get(i));
             }
-            else if(diff.getDays() == 0){
+            else if(diff.getDays() == 0  && diff.getMonths() ==0 && diff.getYears() ==0){
                 chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
                         "a h:mm")));
                 chatRoomRepository.save(chatRooms.get(i));
             }
-            else if(diff.getDays() > 1){
+            else{
                 chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
                         "yyyy-MM-dd")));
                 chatRoomRepository.save(chatRooms.get(i));
