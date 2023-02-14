@@ -146,6 +146,8 @@ export default function MapDrawer(openID){
     );
 
     const src ={
+      DEFAULT1: profile1,
+      DEFAULT2: profile2,
       INFP:INFP,
       ENFJ:ENFJ,
       ENTP:ENTP,
