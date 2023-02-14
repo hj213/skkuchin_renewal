@@ -9,12 +9,14 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import skkuchin.service.api.controller.BlockController;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Block;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -36,6 +38,7 @@ public class ChatService {
     private final ChatRoomRepo chatRoomRepository;
     private final ChatRepo chatRepository;
     private final UserRepo userRepo;
+    private final BlockService blockService;
 
     //전체 채팅방 조회
     public List<ChatRoomDto.Response> getAllRoom(){
@@ -141,18 +144,56 @@ public class ChatService {
 
     public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
 
+        List<Block> block = blockService.getBlockedUserList(appuser);
+        List<ChatRoom> chatRooms;
 
-        return chatRoomRepository.findBySenderId(appuser.getId())
+        Long[] name = new Long[block.size()];
+
+        for (int i = 0; i < block.size(); i++) {
+            name[i] = block.get(i).getBlockedUser().getId();
+            System.out.println("name[i] = " + name[i]);
+
+        }
+
+        if(block.size() == 0){
+            chatRooms = chatRoomRepository.findByNormalSenderId(appuser.getId());
+        }
+        else{
+            chatRooms = chatRoomRepository.findBySenderId(appuser.getId(),name);
+        }
+
+
+
+        return chatRooms
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
                 .collect(Collectors.toList());
     }
 
+
     public List<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser){
+        List<Block> block = blockService.getBlockedUserList(appuser);
+
+        Long[] name = new Long[block.size()];
+        List<ChatRoom> chatRooms;
+
+        for (int i = 0; i < block.size(); i++) {
+            name[i] = block.get(i).getBlockedUser().getId();
+            System.out.println("name[i] = " + name[i]);
+
+        }
+        if(block.size() == 0){
+            chatRooms =chatRoomRepository.findByNormalReceiverId(appuser.getId());
+        }
+
+        else{
+            chatRooms = chatRoomRepository.findByReceiverId(appuser.getId(),name);
+        }
 
 
-        return chatRoomRepository.findByReceiverId(appuser.getId())
+
+        return chatRooms
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
@@ -171,7 +212,7 @@ public class ChatService {
     }
 
 
-    @Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경*/
+    @Scheduled(cron = "* 0 0 * * ?") //자정에 display 시간 변경*/
     /*@Scheduled(cron = "10 * * * * ?")*/
     public void setDisplayDateTime() {
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
