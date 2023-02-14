@@ -44,7 +44,7 @@ public class MatchingUserController {
             matchingUserService.addInfo(user.getId(), dto);
             return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력이 완료되었습니다", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
-            throw new CustomValidationApiException("키워드가 중복 등록되었습니다");
+            throw new CustomValidationApiException("적합하지 않은 정보가 포함되었습니다");
         }
     }
 
@@ -103,7 +103,7 @@ public class MatchingUserController {
             matchingUserService.updateInfo(user.getId(), dto);
             return new ResponseEntity<>(new CMRespDto<>(1, "수정이 완료되었습니다", null), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
-            throw new CustomValidationApiException("키워드가 중복 등록되었습니다");
+            throw new CustomValidationApiException("적합하지 않은 정보가 포함되었습니다");
         }
     }
 
