@@ -25,7 +25,11 @@ import skkuchin.service.repo.UserRepo;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -165,6 +169,36 @@ public class ChatService {
             if(!chatRooms.get(i).getReceiverRequestStatus().equals(RequestStatus.ACCEPT)){
                 chatRoomRepository.delete(chatRooms.get(i));
             }
+
+        }
+    }
+
+
+    @Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경
+    public void setDisplayDateTime() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        LocalDate dateNow = dateTimeNow.toLocalDate();
+        for (int i = 0; i < chatRooms.size(); i++) {
+            LocalDateTime recordedDateTime = chatRooms.get(i).getLatestMessageTime();
+            LocalDate recordedDate = recordedDateTime.toLocalDate();
+            Period diff = Period.between(recordedDate, dateNow);
+            System.out.println("diff.getDays() = " + diff.getDays());
+            if(diff.getDays() == 1) {
+                chatRooms.get(i).setDisplayMessageTime("어제");
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+            else if(diff.getDays() == 0){
+                chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "HH:mm")));
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+            else if(diff.getDays() > 1){
+                chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "yyyy-MM-dd")));
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+
 
         }
     }

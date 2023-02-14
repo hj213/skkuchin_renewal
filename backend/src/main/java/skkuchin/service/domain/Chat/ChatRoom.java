@@ -57,6 +57,9 @@ public class ChatRoom {
 
     private LocalDateTime latestMessageTime;
 
+    private String displayMessageTime;
+
+
     @PrePersist
     public void setDate() {
         LocalDateTime now = LocalDateTime.now();
