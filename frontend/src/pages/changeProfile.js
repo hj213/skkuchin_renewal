@@ -320,7 +320,7 @@ export default function makeProfile(){
         '영화': false,
         '음악': false,
         '전시회': false,
-        '연극': false,
+        '연극뮤지컬': false,
         '덕질': false,
         '여행': false,
         '게임': false,
@@ -344,7 +344,7 @@ export default function makeProfile(){
         '토론': false,
         '시사': false,
         '어학': false,
-        'cpa': false,
+        'CPA': false,
         '피트': false,
         '로스쿨': false,
         '행시': false,
@@ -832,7 +832,7 @@ export default function makeProfile(){
                                         <Image src={sports.헬스 ? exeTag12On : exeTag12} width={36} height={27} onClick={handleSportsClick} name='헬스'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} name='보드스키'/>
+                                        <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} name='보드 &amp; 스키'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image src={sports.주짓수 ? exeTag9On : exeTag9} width={47} height={27} onClick={handleSportsClick} name='주짓수'/>
@@ -875,7 +875,7 @@ export default function makeProfile(){
                                         <Image src={art.전시회 ? artTag12ON : artTag12} width={47} height={27} onClick={handleArtClick} name='전시회'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.연극 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} name='연극'/>
+                                        <Image src={art.연극뮤지컬 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} name='연극뮤지컬'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image src={art.덕질 ? artTag3ON : artTag3} width={36} height={27} onClick={handleArtClick} name='덕질'/>
@@ -948,7 +948,7 @@ export default function makeProfile(){
                                         <Image src={study.어학 ? stuTag11On : stuTag11} width={36} height={27} onClick={handleStudyClick} name='어학'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.cpa ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} name='cpa'/>
+                                        <Image src={study.CPA ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} name='CPA'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image src={study.피트 ? stuTag13On : stuTag13} width={36} height={27} onClick={handleStudyClick} name='피트'/>
