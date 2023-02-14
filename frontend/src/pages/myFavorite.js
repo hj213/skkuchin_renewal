@@ -13,7 +13,6 @@ import closeIcon from '../image/close.png';
 import down from '../image/down.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
-import BasicDialog from '../components/BasicDialog';
 
 
 export default function myFavorite(){
@@ -296,7 +295,6 @@ export default function myFavorite(){
                     </Paper>
                 </Container>
                 </div>
-                <BasicDialog/>
         </ThemeProvider>
     )
 };

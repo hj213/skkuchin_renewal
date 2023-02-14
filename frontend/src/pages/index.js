@@ -32,7 +32,7 @@ export default function list(){
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user); 
-
+   
     //상태
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -87,7 +87,7 @@ export default function list(){
             if(tags != null) setFilteredPlace(null);
         }
     }, [place, user]);
-
+    
     useEffect(() => {
         
         // 0-2 검색 결과 목록 -> 1 목록보기
@@ -121,11 +121,13 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            setHeight(cardRef.current.getBoundingClientRect().height);
+            // cardRef.current.addEventListener("touchend", handleTouchMove);
         }
         return () => {
             if (cardRef.current) {
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
+                // cardRef.current.removeEventListener("touchend", handleTouchMove);
+
             }
         };
       }, [cardRef]);
@@ -146,8 +148,8 @@ export default function list(){
         setHeight('0');
         setPreventScroll('');
     }
-
     // 카드 터치 했을 때 변화
+    let preNewHeight = 0;
     const handleTouchMove = (event) => {
         event.preventDefault();
 
@@ -156,28 +158,26 @@ export default function list(){
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
-        const MinHeight = window.innerHeight * 0.32;
-        const cardHeight = 150 * numOfLi;
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        if( TARGET_HEIGHT >= cardHeight){
-            setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
-        } else {
-            setHeight(Math.max(newHeight, MinHeight));
-        }
-        if (newHeight >= TARGET_HEIGHT) {
+        if (newHeight >= preNewHeight) {
+            // console.log(newHeight);
+            // console.log(TARGET_HEIGHT);
+            setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
-                visibility: 'visible',
+                visibility: 'visible'
             });
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
             });
             setPreventScroll('scroll');
-          } else {
+        } else {
+            
+            setHeight('32%');
             setOpen({
                 bool: false,
-                visibility: 'hidden',
+                visibility: 'hidden'
             });
             setCardStyle({
                 radius:'30px 30px 0px 0px',
@@ -185,6 +185,7 @@ export default function list(){
             });
             setPreventScroll('');
         }
+        preNewHeight=newHeight;
     };
 
     // 아이콘 클릭했을 때 이벤트
@@ -314,7 +315,9 @@ export default function list(){
                     zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
-                    overflowY:'hidden'
+                    overflowY:'hidden',
+                    border: '1px solid transparent',
+                    borderRadius: '0px'
                     }} 
                     
                     >
