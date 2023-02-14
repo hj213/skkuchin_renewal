@@ -39,6 +39,7 @@ services:
       - skkuchin-network
 
   server:
+    image: server
     build:
       context: "./backend"
       dockerfile: Dockerfile
@@ -60,6 +61,7 @@ services:
       - skkuchin-network
 
   client:
+    image: client
     build:
       context: "./frontend"
       dockerfile: Dockerfile
