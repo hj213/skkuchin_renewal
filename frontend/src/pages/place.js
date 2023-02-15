@@ -225,7 +225,7 @@ const PlacePage = () => {
                 content='Place page'
             >   
             <UpperBar/>
-                <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+                <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}> 
                 <Container style={{position:'absolute', zIndex:'2'}}>
                     <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
                 </Container> 
