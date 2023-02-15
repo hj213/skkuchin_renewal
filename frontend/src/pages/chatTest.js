@@ -3,33 +3,34 @@ import { useEffect, useState } from "react";
 import { CssBaseline, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Layout from "../hocs/Layout";
-
-import Friends from '../components/Matching/Friends';
-
-import UpperBar from '../components/UpperBar';
-import AiGreeting from '../components/AiGreeting'
-
+import NewPromise from "../components/Chat/NewPromise";
 const MatchPage = () => {
     const user = useSelector(state => state.auth.user); 
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
 
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-        {/* 0211 상단바, 내 프로필 보기 병합 완료 (재현) */}
-        <UpperBar />
-        <AiGreeting />
         <Layout
                 title='스꾸친 | Match'
                 content='Match page'
             > 
             
-            <Container sx={{p: '0 15px', mt: '0'}}>
-                {/* 상대 프로필 */}
-                <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
-                    <Grid item>
-                        <Friends />
-                    </Grid>
-                </Grid>
+            <Container style={{textAlign: 'center', margin: '30px 0'}}>
+                <Box onClick={handleOpen}>
+                    새로운 밥약 신청
+                </Box>
+                {/* <NewPromise onClose={()=> setOpen(false)}/> */} 
+                {
+                    open?  <NewPromise open={open} onClose={()=> setOpen(false)}/> : null
+                }
+               
+
             </Container>
         </Layout>
        </ThemeProvider>

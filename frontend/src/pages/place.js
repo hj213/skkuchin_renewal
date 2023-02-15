@@ -40,6 +40,7 @@ const PlacePage = () => {
     const user = useSelector(state => state.auth.user);
     const [filteredPlace, setFilteredPlace] = useState([]);
 
+    const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
     useEffect(() => {
         if (place && user.toggle != null) {
           setFilteredPlace(place.filter(item => item.campus === user.toggle));
@@ -102,12 +103,11 @@ const PlacePage = () => {
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.6;
         if(WINDOW_HEIGHT > 1000){
-            TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
+            TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        
         if (newHeight >= preNewHeight) {
             // console.log(newHeight);
             // console.log(TARGET_HEIGHT);
@@ -120,10 +120,10 @@ const PlacePage = () => {
                 radius:'0px',
                 iconVisibility:'hidden'
             });
-            setScroll('scroll');
+            setPreventScroll('scroll');
         } else {
             
-            setHeight('32%');
+            // setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -132,10 +132,11 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
-            setScroll('');
+            setPreventScroll('');
         }
         preNewHeight=newHeight;
     };
+
 
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
      const handleOnclick = (event) =>{
@@ -223,8 +224,8 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >   
-            <UpperBar/>        
-                <div style={{ position: 'relative', width:'100%', height:'100%', overflowX:'hidden'}}>  
+            <UpperBar/>
+                <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}> 
                 <Container style={{position:'absolute', zIndex:'2'}}>
                     <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
                 </Container> 

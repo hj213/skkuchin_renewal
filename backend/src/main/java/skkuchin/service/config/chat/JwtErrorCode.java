@@ -3,8 +3,8 @@ package skkuchin.service.config.chat;
 public enum
 JwtErrorCode implements ResponseCode{
     ACCESS_TOKEN_EXPIRATION(1, "엑세스 토큰이 만료되었습니다."),
-    /*TOKEN_ERROR2(2, "토큰 에러2."),
-    TOKEN_ERROR3(3, "토큰 에러 3."),*/
+    BLOCKED_USER(2, "차단된 유저입니다."),
+    /*TOKEN_ERROR3(3, "토큰 에러 3."),*/
 
             ;
 
