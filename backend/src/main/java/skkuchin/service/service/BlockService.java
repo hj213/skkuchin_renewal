@@ -50,6 +50,11 @@ public class BlockService {
         blockRepo.delete(block);
     }
 
+    public List<Block> getBlockedUserList(AppUser user) {
+        List<Block> block = blockRepo.findByUser(user);
+        return block;
+    }
+
     public void isMyBlockList(Long blockUserId, Long userId) {
         if (blockUserId != userId) throw new CustomRuntimeException("내 차단 목록이 아닙니다.");
     }
