@@ -39,22 +39,22 @@ public class ChatRoomController {
 
 
     //sender 기준 최신 채팅방 정렬
-    @GetMapping("/senderRooms")
-    public ResponseEntity<?> sortSenderChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser appUser = principalDetails.getUser();
-
-        List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser);
-        return new ResponseEntity<>(new CMRespDto<>(1, "sender's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
+//    @GetMapping("/senderRooms")
+//    public ResponseEntity<?> sortSenderChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+//        AppUser appUser = principalDetails.getUser();
+//
+//        List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser);
+//        return new ResponseEntity<>(new CMRespDto<>(1, "sender's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
+//    }
 
     //receiver 기준 최신 채탕방 정렬
-    @GetMapping("/receiverRooms")
-    public ResponseEntity<?> sortReceiverChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser appUser = principalDetails.getUser();
-
-        List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
-        return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
+//    @GetMapping("/receiverRooms")
+//    public ResponseEntity<?> sortReceiverChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+//        AppUser appUser = principalDetails.getUser();
+//
+//        List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
+//        return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
+//    }
 
      @PostMapping("/rooms")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){

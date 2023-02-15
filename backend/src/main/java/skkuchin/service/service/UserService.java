@@ -142,6 +142,7 @@ public class UserService {
         AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setNickname(dto.getNickname());
         user.setMajor(dto.getMajor());
+        user.setImage(dto.getImage());
 
         userRepo.save(user);
     }
@@ -217,7 +218,8 @@ public class UserService {
                     "12341234",
                     "12341234",
                     random.nextInt(23 - 10 + 1) + 10,
-                    Major.values()[random.nextInt(Major.values().length)]
+                    Major.values()[random.nextInt(Major.values().length)],
+                    Profile.values()[random.nextInt(Profile.values().length)]
             );
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
@@ -230,7 +232,6 @@ public class UserService {
             existingUser.setGender(Gender.values()[random.nextInt(Gender.values().length)]);
             existingUser.setIntroduction("잘 부탁드려요" + i);
             existingUser.setMbti(Mbti.values()[random.nextInt(Mbti.values().length)]);
-            existingUser.setImage(Profile.values()[random.nextInt(Profile.values().length)]);
             existingUser.setMatching(true);
             userRepo.save(existingUser);
 
