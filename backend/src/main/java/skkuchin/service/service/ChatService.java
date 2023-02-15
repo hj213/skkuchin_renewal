@@ -266,6 +266,35 @@ public class ChatService {
         }
     }
 
+    /*@Scheduled(cron = "* 0 0 * * ?")*/ //자정에 display 시간 변경*/
+    /*@Scheduled(cron = "10 * * * * ?")*/
+    public void setDisplayDateTime1(ChatRoom chatRoom) {
+
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        LocalDate dateNow = dateTimeNow.toLocalDate();
+
+        LocalDateTime recordedDateTime = chatRoom.getLatestMessageTime();
+        LocalDate recordedDate = recordedDateTime.toLocalDate();
+        Period diff = Period.between(recordedDate, dateNow);
+        if(diff.getDays() == 1  && diff.getMonths() ==0 && diff.getYears() ==0) {
+                chatRoom.setDisplayMessageTime("어제");
+
+        }
+        else if(diff.getDays() == 0  && diff.getMonths() ==0 && diff.getYears() ==0){
+            chatRoom.setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "a h:mm")));
+
+            }
+        else{
+            chatRoom.setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "yyyy-MM-dd")));
+
+            }
+
+
+
+    }
+
     //방
     public List<ChatMessageDto.Response> getLatestMessages(ChatRoom chatRoom){
         return chatRepository.findByLatestMessageTime(chatRoom.getRoomId())

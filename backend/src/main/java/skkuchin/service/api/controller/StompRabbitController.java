@@ -72,6 +72,7 @@ public class StompRabbitController {
         chat.setChatRoom(chatRoom);
         chat.setDate(LocalDateTime.now());
         chatRoom.setLatestMessageTime(LocalDateTime.now());
+        chatService.setDisplayDateTime1(chatRoom);
         chat.setUserCount(2-chatRoom.getUserCount());
 
         System.out.println("chatRoom.isReceiverBlocked() = " + chatRoom.isReceiverBlocked());
@@ -103,17 +104,6 @@ public class StompRabbitController {
         return username;
     }
 
-    private Message<byte[]> prepareErrorMessage(ResponseCode responseCode)
-    {
-        String code = String.valueOf(responseCode.getMessage());
-        //에러 생성
-        StompHeaderAccessor accessor = StompHeaderAccessor.create(StompCommand.ERROR);
-        //해당 메시지 출력
-        accessor.setMessage(String.valueOf(responseCode.getCode()));
-        accessor.setLeaveMutable(true);
-        return MessageBuilder.createMessage(code.getBytes(StandardCharsets.UTF_8), accessor.getMessageHeaders());
-
-    }
 }
 
 
