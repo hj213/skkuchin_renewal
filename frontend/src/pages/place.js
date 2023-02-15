@@ -20,6 +20,8 @@ import TagList from "../components/TagList";
 import SearchBox from "../components/SearchBox";
 import { displayReviewTag } from "../components/TagList";
 import Link from 'next/link';
+import UpperBar from "../components/UpperBar";
+
 
 const PlacePage = () => {
     
@@ -94,46 +96,41 @@ const PlacePage = () => {
             }
         };
     }, [cardRef]);
-        
+    
     // 카드 터치 했을 때 변화
+    let preNewHeight = 0;
     const handleTouchMove = (event) => {
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.6;
         if(WINDOW_HEIGHT > 1000){
-            TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
+            TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
-        const MinHeight = window.innerHeight * 0.32;
-        const cardHeight = 150 * numOfLi;
-        const newHeight = window.innerHeight - event.touches[0].clientY;
         
-        if( TARGET_HEIGHT >= cardHeight){
-            setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
-        } else {
-            setHeight(Math.max(newHeight, MinHeight));
-        }
-        if (newHeight >= TARGET_HEIGHT) {
+        const newHeight = window.innerHeight - event.touches[0].clientY;
+        if (newHeight >= preNewHeight) {
             setOpen({
                 bool: true,
-                visibility: 'visible'
+                visibility: 'visible',
             });
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
             });
-            setScroll('scroll');
-        } else {
+            setPreventScroll('scroll');
+          } else {
             setOpen({
                 bool: false,
-                visibility: 'hidden'
+                visibility: 'hidden',
             });
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
-            setScroll('');
+            setPreventScroll('');
         }
+        preNewHeight=newHeight;
     };
 
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
@@ -222,6 +219,7 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >           
+            <UpperBar/>     
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
                 <Container style={{position:'absolute', zIndex:'2'}}>
                     <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   

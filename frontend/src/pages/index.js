@@ -120,11 +120,12 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            setHeight(cardRef.current.getBoundingClientRect().height);
+            // cardRef.current.addEventListener("touchend", handleTouchMove);
         }
         return () => {
             if (cardRef.current) {
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
+                // cardRef.current.addEventListener("touchend", handleTouchMove);
             }
         };
       }, [cardRef]);
@@ -146,6 +147,7 @@ export default function list(){
         setPreventScroll('');
     }
 
+    let preNewHeight = 0;
     // 카드 터치 했을 때 변화
     const handleTouchMove = (event) => {
         event.preventDefault();
@@ -155,15 +157,9 @@ export default function list(){
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
-        const MinHeight = window.innerHeight * 0.32;
-        const cardHeight = 150 * numOfLi;
+        
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        if( TARGET_HEIGHT >= cardHeight){
-            setHeight(Math.min(Math.max(newHeight, MinHeight), TARGET_HEIGHT));
-        } else {
-            setHeight(Math.max(newHeight, MinHeight));
-        }
-        if (newHeight >= TARGET_HEIGHT) {
+        if (newHeight >= preNewHeight) {
             setOpen({
                 bool: true,
                 visibility: 'visible',
@@ -184,6 +180,7 @@ export default function list(){
             });
             setPreventScroll('');
         }
+        preNewHeight=newHeight;
     };
 
     // 아이콘 클릭했을 때 이벤트
