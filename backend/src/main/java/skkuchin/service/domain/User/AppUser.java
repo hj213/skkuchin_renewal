@@ -45,7 +45,6 @@ public class AppUser {
     private Campus toggle;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private Profile image;
 
     @Enumerated(EnumType.STRING)
