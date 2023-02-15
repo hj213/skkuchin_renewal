@@ -756,11 +756,11 @@ export default function makeProfile(){
                             </div>
                             <div style={{marginTop:'46px'}}>
                                 <Grid container>
-                                    <Grid style={{marginRight:'63px', marginLeft:'4px'}}>
+                                <Grid style={{marginRight:'63px', marginLeft:'4px', marginTop:'-1px'}}>
                                         <Image src={mbtiChoose.I ? ICheck : I} width={13} height={30} onClick={handleMbtiClick} name='I'/>
                                     </Grid>
-                                    <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.S ? SCheck : S} width={22} height={30} onClick={handleMbtiClick} name='S'/>
+                                    <Grid style={{marginRight:'58px', marginTop:'-1px'}}>
+                                        <Image src={mbtiChoose.S ? SCheck : S} width={23} height={30} onClick={handleMbtiClick} name='S'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
                                         <Image src={mbtiChoose.T ? TCheck : T} width={21} height={28} onClick={handleMbtiClick} name='T'/>
@@ -1050,7 +1050,7 @@ export default function makeProfile(){
                                 <textarea
                                 value={introduction}
                                 onChange={(e)=>{setIntroduction(e.target.value)}}
-                                maxLength={60}
+                                maxLength={30}
                                 placeholder='e.g. 성대 NCT 팬이랑 같이 밥먹고 싶어요 :)'
                                 style={{width:'310px', height:'70px', backgroundColor:'transparent', fontSize:'12px', border:'none', outline:'none', resize:'none', fontFamily:'inherit'}}
                                 />

@@ -17,31 +17,36 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     
-    const place = useSelector(state => state.place.place);
+    const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            // dispatch(load_places());
+            dispatch(load_places());
             dispatch(load_user());
         }
     }, [dispatch]);
     
     //캠퍼스 필터링
     useEffect(() => {
-        if (place) {
-            setFilteredPlace(place.filter((item) => item.campus === user.toggle));
+        if (allPlaces) {
+            setFilteredPlace(allPlaces.filter((item) => item.campus === user.toggle));
         } else {
             setFilteredPlace([]);
         }
-    }, [place, user]);
+    }, [allPlaces, user]);
 
     const handleValue = (e) => {
         setValue(e.target.value);
 
-        if(e.target.value == ''){setAuto([]);}
-        const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
-        setAuto(newAuto);
+        if(e.target.value == ''){
+            setAuto([]);
+        } else{
+            const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
+            setAuto(newAuto);
+            
+        }
+        
     }
 
     const handleKeyDown = (e) => {
@@ -100,10 +105,10 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             <CssBaseline/>
             <div style={{marginTop:'5px'}} >
                 <Grid container style={{position:'absolute', zIndex:'3', alignItems: 'center'}}>
-                    <Grid item style={{marginTop:'3.5%', marginLeft: '5%'}} onClick={handleOnClick}>
+                    <Grid item style={{marginTop:'4.2%', marginLeft: '5%'}} onClick={handleOnClick}>
                         <MapDrawer open={openID} />
                     </Grid>
-                    <Grid item style={{marginTop:'3.3%', marginLeft: '2%'}} onFocus={handleOnFocus}>
+                    <Grid item style={{marginTop:'3.6%', marginLeft: '2%'}} onFocus={handleOnFocus}>
                 
                         <InputBase
                             sx={{ ml: 1, width:'420%'}}

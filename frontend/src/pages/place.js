@@ -123,7 +123,7 @@ const PlacePage = () => {
             setPreventScroll('scroll');
         } else {
             
-            // setHeight('32%');
+            setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -246,6 +246,8 @@ const PlacePage = () => {
                             zIndex: '4',
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                             visibility: open.visibility,
+                            border: '1px solid transparent',
+                            borderRadius: '0px'
                         }}>
                             <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>

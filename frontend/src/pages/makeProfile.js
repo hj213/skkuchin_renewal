@@ -28,9 +28,9 @@ import I from '../image/mbti/I-1.png';
 import S from '../image/mbti/S-1.png';
 import T from '../image/mbti/T-1.png';
 import J from '../image/mbti/J-1.png';
-import ICheck from '../image/mbti/I.png';
-import SCheck from '../image/mbti/S.png';
-import TCheck from '../image/mbti/T.png';
+import ICheck from '../image/mbti/I_yellow.png';
+import SCheck from '../image/mbti/S_yellow.png';
+import TCheck from '../image/mbti/T_yellow.png';
 import JCheck from '../image/mbti/J.png';
 
 //문화예술
@@ -691,16 +691,16 @@ export default function makeProfile(){
                             </div>
                             <div style={{marginTop:'46px'}}>
                                 <Grid container>
-                                    <Grid style={{marginRight:'65px', marginLeft:'5px'}}>
-                                        <Image src={mbtiChoose.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
+                                    <Grid style={{marginRight:'63px', marginLeft:'4px', marginTop:'-1px'}}>
+                                        <Image src={mbtiChoose.I ? ICheck : I} width={13} height={30} onClick={handleMbtiClick} name='I'/>
                                     </Grid>
-                                    <Grid style={{marginRight:'60px'}}>
-                                        <Image src={mbtiChoose.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
+                                    <Grid style={{marginRight:'58px', marginTop:'-1px'}}>
+                                        <Image src={mbtiChoose.S ? SCheck : S} width={23} height={30} onClick={handleMbtiClick} name='S'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
+                                        <Image src={mbtiChoose.T ? TCheck : T} width={21} height={28} onClick={handleMbtiClick} name='T'/>
                                     </Grid>
-                                    <Grid style={{marginRight:'61px'}}>
+                                    <Grid style={{marginRight:'59px'}}>
                                         <Image src={mbtiChoose.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
                                     </Grid>
                                 </Grid>
@@ -985,7 +985,7 @@ export default function makeProfile(){
                                 <textarea
                                 value={introduction}
                                 onChange={(e)=>{setIntroduction(e.target.value)}}
-                                maxLength={60}
+                                maxLength={30}
                                 placeholder='e.g. 성대 NCT 팬이랑 같이 밥먹고 싶어요 :)'
                                 style={{width:'310px', height:'70px', backgroundColor:'transparent', fontSize:'12px', border:'none', outline:'none', resize:'none', fontFamily:'inherit'}}
                                 />

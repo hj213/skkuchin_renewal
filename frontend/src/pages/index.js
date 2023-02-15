@@ -154,7 +154,7 @@ export default function list(){
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.6;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.61;
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
@@ -174,7 +174,7 @@ export default function list(){
             setPreventScroll('scroll');
         } else {
             
-            // setHeight('32%');
+            setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -310,7 +310,9 @@ export default function list(){
                     zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
-                    overflowY:'hidden'
+                    overflowY:'hidden',
+                    border: '1px solid transparent',
+                    borderRadius: '0px'
                     }} 
                     
                     >
