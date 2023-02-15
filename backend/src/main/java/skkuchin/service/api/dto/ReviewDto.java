@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.Matching.Profile;
+import skkuchin.service.domain.User.Profile;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

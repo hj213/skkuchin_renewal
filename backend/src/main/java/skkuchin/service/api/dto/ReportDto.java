@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Map.Review;
-import skkuchin.service.domain.Matching.Profile;
+import skkuchin.service.domain.User.Profile;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Report;
