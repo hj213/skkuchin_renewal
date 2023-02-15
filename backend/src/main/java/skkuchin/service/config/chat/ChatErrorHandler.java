@@ -19,8 +19,14 @@ public class ChatErrorHandler extends StompSubProtocolErrorHandler {
         System.out.println("ex.getCause().getMessage() = " + ex.getCause().getMessage());
 */
         if(!ex.getCause().getMessage().isEmpty()){
-            System.out.println("ex.getCause().getMessage() = " + ex.getCause().getMessage());
-            return handleJwtException();
+            if(ex.getCause().getMessage() == "차단된 유저입니다."){
+                return blockException();
+            }
+            else{
+                System.out.println("ex.getCause().getMessage() = " + ex.getCause().getMessage());
+                return handleJwtException();
+            }
+
         }
 
         return super.handleClientMessageProcessingError(clientMessage, ex);
@@ -31,6 +37,11 @@ public class ChatErrorHandler extends StompSubProtocolErrorHandler {
 
         return prepareErrorMessage(JwtErrorCode.ACCESS_TOKEN_EXPIRATION);
     }
+    private Message<byte[]> blockException(){
+
+        return prepareErrorMessage(JwtErrorCode.BLOCKED_USER);
+    }
+
 
 
     private Message<byte[]> prepareErrorMessage(ResponseCode responseCode)

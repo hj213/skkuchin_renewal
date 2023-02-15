@@ -11,9 +11,13 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import skkuchin.service.config.chat.JwtErrorCode;
+import skkuchin.service.config.chat.ResponseCode;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
@@ -23,6 +27,7 @@ import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 @Controller
@@ -69,8 +74,19 @@ public class StompRabbitController {
         chatRoom.setLatestMessageTime(LocalDateTime.now());
         chat.setUserCount(2-chatRoom.getUserCount());
 
+        System.out.println("chatRoom.isReceiverBlocked() = " + chatRoom.isReceiverBlocked());
+        System.out.println("chatRoom.isSenderBlocked() = " + chatRoom.isSenderBlocked());
         //메시지 매핑
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+
+       /*if (chatRoom.isSenderBlocked() == false && chatRoom.isReceiverBlocked() == false) {
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+        }
+        else{
+            prepareErrorMessage(JwtErrorCode.ACCESS_TOKEN_EXPIRATION);
+
+        }*/
+
 
         //DB 저장
         chatRoomRepository.save(chatRoom);
@@ -85,6 +101,18 @@ public class StompRabbitController {
         DecodedJWT decodedJWT = verifier.verify(jwt);
         String username = decodedJWT.getSubject();
         return username;
+    }
+
+    private Message<byte[]> prepareErrorMessage(ResponseCode responseCode)
+    {
+        String code = String.valueOf(responseCode.getMessage());
+        //에러 생성
+        StompHeaderAccessor accessor = StompHeaderAccessor.create(StompCommand.ERROR);
+        //해당 메시지 출력
+        accessor.setMessage(String.valueOf(responseCode.getCode()));
+        accessor.setLeaveMutable(true);
+        return MessageBuilder.createMessage(code.getBytes(StandardCharsets.UTF_8), accessor.getMessageHeaders());
+
     }
 }
 
