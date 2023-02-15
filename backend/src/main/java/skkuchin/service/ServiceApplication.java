@@ -46,7 +46,7 @@ public class ServiceApplication {
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; // Mac 공통 경로
 			//String path = "C:\\Users\\sunny\\skkuchin_renewal2\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
 
-			/*try {
+			try {
 				tagService.insertData(path);
 				placeService.insertData(path);
 				imageService.insertData();
@@ -58,7 +58,7 @@ public class ServiceApplication {
 				System.out.println(e);
 			}
 
-			userService.saveTestMatchingUsers(100);*/
+			userService.saveTestMatchingUsers(100);
 		};
 	}
 }
