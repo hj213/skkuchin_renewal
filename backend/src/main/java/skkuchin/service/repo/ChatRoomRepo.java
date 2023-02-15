@@ -7,7 +7,6 @@ import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Block;
 
 import java.time.LocalDateTime;
 import java.util.List;

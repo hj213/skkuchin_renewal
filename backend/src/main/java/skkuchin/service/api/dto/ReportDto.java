@@ -50,13 +50,13 @@ public class ReportDto {
         private Major major;
         private Profile image;
 
-        public Response(Report report, AppUser blockedUser) {
+        public Response(Report report, AppUser reportedUser) {
             this.reportId = report.getId();
-            this.nickname = blockedUser.getNickname() ;
-            this.username = blockedUser.getUsername();
-            this.studentId =  blockedUser.getStudentId();
-            this.major = blockedUser.getMajor();
-            this.image =  blockedUser.getImage();
+            this.nickname = reportedUser.getNickname() ;
+            this.username = reportedUser.getUsername();
+            this.studentId =  reportedUser.getStudentId();
+            this.major = reportedUser.getMajor();
+            this.image =  reportedUser.getImage();
         }
     }
 }
