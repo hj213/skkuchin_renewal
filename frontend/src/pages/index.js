@@ -174,7 +174,7 @@ export default function list(){
             setPreventScroll('scroll');
         } else {
             
-            // setHeight('32%');
+            setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -310,7 +310,9 @@ export default function list(){
                     zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
-                    overflowY:'hidden'
+                    overflowY:'hidden',
+                    border: '1px solid transparent',
+                    borderRadius: '0px',
                     }} 
                     
                     >
@@ -336,7 +338,7 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '0px 16px 0px 0px', }} >
+            <Container style={{padding: '13px 16px 0px 0px'}} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
@@ -360,8 +362,6 @@ export default function list(){
                     : null
                     }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                        {/* 키워드별 필터링된 장소 개수 확인 */}
-                        <p style={{margin: 0, fontSize: '10px'}}>{filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개)' : null}</p> 
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
@@ -374,7 +374,7 @@ export default function list(){
                                                             {item.name}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item style={{padding:'0px 0px 0px 8px'}}>
+                                                    <Grid item style={{padding:'0px 0px 0px 8px', whiteSpace: "normal"}}>
                                                         <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                             {item.detail_category}
                                                         </Typography>
@@ -441,7 +441,7 @@ export default function list(){
                                                 </Grid>
                                             </CardContent>
                                         </Grid>
-                                        <Grid style={{marginTop:'10px', marginBottom:'10px'}}>
+                                        <Grid style={{margin: '10px 0px 10px 16px'}}>
                                             <Image
                                             width= {98} height= {98}
                                             alt={item.name} 

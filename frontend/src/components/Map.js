@@ -8,9 +8,7 @@ import { Button } from "@mui/material";
 const Map = ({latitude, longitude, places, selectedId}) => {
 
     const router = useRouter();
-    // const [limit, setLimit] = useState(30); // 더보기 기능
     const user = useSelector(state => state.auth.user); 
-
 
     useEffect(()=> {
     }, [user])
@@ -58,14 +56,9 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                 const map = new window.kakao.maps.Map(container, options);
                 
                 const markers = [];
-                let count = 0;
-                let limit = 20;
 
                 { places  &&
                 places.forEach(place => {
-                    if (count >= limit) {
-                        return;
-                    }
                     let marker;
                     if (place.id == selectedId) {
                         // 음식점
@@ -147,7 +140,6 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         router.push(`/place?id=${place.id}`);
 
                     });
-                    count++;
                 });
                 }
 
@@ -158,19 +150,10 @@ const Map = ({latitude, longitude, places, selectedId}) => {
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
     }, [latitude, longitude, places, selectedId, user]);
 
-     // '더보기' 버튼을 누르면 limit 값을 증가시킴
-    // const handleLoadMore = () => {
-    //     setLimit(limit + 30);
-    // };
 
     return (
-        <>
         <MapContainer id="map" style={{width:'100%', height:'65vh'}}>
-            {/* {places && places.length > limit &&
-                <Button onClick={handleLoadMore} sx={{position: 'absolute', zIndex: '6', top: '50px', backgroundColor: 'yellow'}}>더보기</Button>
-            } */}
         </MapContainer>
-        </>
     );
 }
 

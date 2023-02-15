@@ -34,30 +34,34 @@ import reviewTag07 from '../image/태그/리뷰/리뷰태그_분위기.png';
 
 export const displayTagImage = (tags) => {
     const displayTags = tags.slice(0,2);
-    return displayTags.map ((tag) => {
-        switch(tag) {
-            case "학생 할인":
-                return <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
-            case "스페셜":
-                return <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
-            case "한식":
-                return <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
-            case "중식":
-                return <Image id={"중식"} src={mapTagOn4} width={64} height={36}/>
-            case "일식":
-                return <Image id={"일식"} src={mapTagOn5} width={64} height={36}/>
-            case "양식":
-                return <Image id={"양식"} src={mapTagOn6} width={64} height={36}/>
-            case "기타":
-                return <Image id={"기타"} src={mapTagOn7} width={64} height={36}/>
-            case "간단한 한 끼":
-                return <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
-            case "분위기 좋은":
-                return <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
-            default:
-                return null;
+    return (
+        <Grid container spacing={1}>
+            {displayTags.map ((tag) => {
+            switch(tag) {
+                case "학생 할인":
+                    return <Grid item key={tag}><Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/></Grid>
+                case "스페셜":
+                    return <Grid item key={tag}><Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/></Grid>
+                case "한식":
+                    return <Grid item key={tag}><Image id={"한식"} src={mapTagOn3} width={64} height={36}/></Grid>
+                case "중식":
+                    return <Grid item key={tag}><Image id={"중식"} src={mapTagOn4} width={64} height={36}/></Grid>
+                case "일식":
+                    return <Grid item key={tag}><Image id={"일식"} src={mapTagOn5} width={64} height={36}/></Grid>
+                case "양식":
+                    return <Grid item key={tag}><Image id={"양식"} src={mapTagOn6} width={64} height={36}/></Grid>
+                case "기타":
+                    return <Grid item key={tag}><Image id={"기타"} src={mapTagOn7} width={64} height={36} /></Grid>
+                case "간단한 한 끼":
+                    return <Grid item key={tag}><Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/></Grid>
+                case "분위기 좋은":
+                    return <Grid item key={tag}><Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36} /></Grid>
+                default:
+                    return null;
         }
-    })
+    })}
+    </Grid>
+    );
 }
 
 export const displayReviewTag = (keyword) => {
@@ -87,8 +91,8 @@ const TagList = ({keyword, onTagClick}) => {
             <CssBaseline/>
             {/* 태그 목록 */}
             <Grid container 
-            style={{  position: 'absolute', top: '103px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
-            scrollbarWidth: 'none', msOverflowStyle: 'none', "&::WebkitScrollbar": { display: "none"}, padding: "0 15px"}}
+            style={{  position: 'absolute', top: '63.5px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
+            scrollbarWidth: 'none', msOverflowStyle: 'none', "&::WebkitScrollbar": { display: "none"}, padding: "0 20px"}}
                 onClick={(e) => {
                     e.preventDefault();
                     let target = e.target;

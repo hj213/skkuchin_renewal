@@ -40,7 +40,6 @@ const PlacePage = () => {
     const user = useSelector(state => state.auth.user);
     const [filteredPlace, setFilteredPlace] = useState([]);
 
-    const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
     useEffect(() => {
         if (place && user.toggle != null) {
           setFilteredPlace(place.filter(item => item.campus === user.toggle));
@@ -103,9 +102,9 @@ const PlacePage = () => {
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.6;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
         if(WINDOW_HEIGHT > 1000){
-            TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
+            TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
         }
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
@@ -120,10 +119,10 @@ const PlacePage = () => {
                 radius:'0px',
                 iconVisibility:'hidden'
             });
-            setPreventScroll('scroll');
+            setScroll('scroll');
         } else {
             
-            // setHeight('32%');
+            setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -132,7 +131,7 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
-            setPreventScroll('');
+            setScroll('');
         }
         preNewHeight=newHeight;
     };
@@ -306,9 +305,6 @@ const PlacePage = () => {
                     )}
                     
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
-                    {/* 키워드별 필터링된 장소 개수 확인 */}
-                    <p style={{margin: 0, fontSize: '10px'}}>{filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개)' : null}</p> 
-
                     { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
                                 <>
