@@ -166,6 +166,7 @@ const AiGreeting = () => {
                     {
                         isAuthenticated ? authLinks: guestLinks
                     }
+            {user !== null ?
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -293,6 +294,7 @@ const AiGreeting = () => {
                 
             </div>
             </Modal>
+            : null }
             </Container>
             <Dialog open={dialogOpen} onClose={handleDialogOpen}>
                 <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
