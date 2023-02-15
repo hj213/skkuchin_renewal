@@ -199,6 +199,31 @@ public class ChatService {
                         chatroom))
                 .collect(Collectors.toList());
     }
+    public void blockUser(ChatRoom chatRoom, AppUser appUser){
+        if(appUser.getId() == chatRoom.getUser().getId()){
+            chatRoom.setReceiverBlocked(true);
+            chatRoomRepository.save(chatRoom);
+        }
+        else if(appUser.getId() == chatRoom.getUser1().getId()){
+            chatRoom.setSenderBlocked(true);
+            chatRoomRepository.save(chatRoom);
+        }
+    }
+
+    public void removeBlockedUser(ChatRoom chatRoom, AppUser appUser){
+        if(appUser.getId() == chatRoom.getUser().getId()){
+            chatRoom.setReceiverBlocked(false);
+            chatRoomRepository.save(chatRoom);
+        }
+        else if(appUser.getId() == chatRoom.getUser1().getId()){
+            chatRoom.setSenderBlocked(false);
+            chatRoomRepository.save(chatRoom);
+        }
+    }
+
+
+
+
 
     @Scheduled(cron = "* 0 * * * ?") //정각에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {

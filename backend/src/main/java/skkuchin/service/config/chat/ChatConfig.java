@@ -82,11 +82,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 System.out.println("accessor = " + accessor);
                 //stomp.connect으로도 생각해 볼 수 있을것
                 if(accessor.getCommand().equals(StompCommand.SEND)){
-                    String token = accessor.getFirstNativeHeader("token");
-                    System.out.println("token = " + token);
-                    String k = getUserNameFromJwt(token);
-                    System.out.println("kdfadfa = " + k);
-                    tokenVerifier(token);
 
                 }
 

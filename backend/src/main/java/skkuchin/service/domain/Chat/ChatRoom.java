@@ -60,6 +60,14 @@ public class ChatRoom {
     private String displayMessageTime;
 
 
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean isSenderBlocked;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean isReceiverBlocked;
+
+
     @PrePersist
     public void setDate() {
         LocalDateTime now = LocalDateTime.now();

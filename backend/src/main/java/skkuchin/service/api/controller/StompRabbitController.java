@@ -11,6 +11,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
@@ -69,8 +70,19 @@ public class StompRabbitController {
         chatRoom.setLatestMessageTime(LocalDateTime.now());
         chat.setUserCount(2-chatRoom.getUserCount());
 
+        System.out.println("chatRoom.isReceiverBlocked() = " + chatRoom.isReceiverBlocked());
+        System.out.println("chatRoom.isSenderBlocked() = " + chatRoom.isSenderBlocked());
         //메시지 매핑
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+
+
+       if (chatRoom.isSenderBlocked() == false && chatRoom.isReceiverBlocked() == false) {
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+        }
+        else{
+          StompHeaderAccessor.create(StompCommand.ERROR);
+            throw new RuntimeException();
+        }
+
 
         //DB 저장
         chatRoomRepository.save(chatRoom);

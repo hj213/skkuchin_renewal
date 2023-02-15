@@ -141,7 +141,7 @@ const header =Cookies.get('access')
         messageContent.value = '';
 
         try {
-                stomp.send(`/app/chat.message.${chatRoomId}`, {"token" : header}, JSON.stringify({
+                stomp.send(`/app/chat.message.${chatRoomId}`, {}, JSON.stringify({
                     message: message,
                     memberId: 1,
                     sender: sender,
