@@ -32,7 +32,7 @@ export default function list(){
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user); 
-   
+
     //상태
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -62,8 +62,8 @@ export default function list(){
         {id: '분위기 좋은', exclusiveGroup: null},
     ]);
 
+    // key props warning 해러 필요
     const tagName = tagsId.map(tag => tag.id);
-
 
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [focus, setFocus] = useState();
@@ -87,13 +87,13 @@ export default function list(){
             if(tags != null) setFilteredPlace(null);
         }
     }, [place, user]);
-    
+
+
     useEffect(() => {
-        
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
-            // if(tagsId.includes(router.query.keyword))
+
             if(tagName.includes(router.query.keyword))
                 tags.push(router.query.keyword);
             router.query.keyword = '';
@@ -104,30 +104,29 @@ export default function list(){
             }
             else {
                 // 키워드 확인
-                // alert("현재 키워드: "+ keyword);
                 dispatch(search_places(keyword));
-                setHeight('32%');
-                setCardStyle({
-                    radius: '30px 30px 0px 0px',
-                    cardVisibility: 'visible',
-                    iconVisibility: 'visible'
-                });
+                if((open.bool) == false) {
+                    setHeight('32%');
+                    setCardStyle({
+                        radius: '30px 30px 0px 0px',
+                        cardVisibility: 'visible',
+                        iconVisibility: 'visible'
+                    });
+                }
             }
         }
-    }, [keyword, router.query.keyword, dispatch, tags]);
+    }, [keyword, router.query.keyword, dispatch, tags,user]);
     
     
     // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            // cardRef.current.addEventListener("touchend", handleTouchMove);
+            // setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
-                // cardRef.current.removeEventListener("touchend", handleTouchMove);
-
             }
         };
       }, [cardRef]);
@@ -148,6 +147,7 @@ export default function list(){
         setHeight('0');
         setPreventScroll('');
     }
+
     // 카드 터치 했을 때 변화
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
@@ -174,7 +174,7 @@ export default function list(){
             setPreventScroll('scroll');
         } else {
             
-            setHeight('32%');
+            // setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -223,6 +223,7 @@ export default function list(){
     // 헤더영역 태그 해제
     const handleTagClick = (e) => {
         e.preventDefault();
+
         const clickedTag = e.target.id;
         const remainingTags = tags.filter(tag => tag !== clickedTag);
       
@@ -231,10 +232,8 @@ export default function list(){
             setTags([]);
             handleReset();
         } else {
-          setTags(remainingTags);
-          setKeyword(remainingTags.join(', '));
-          setOpen({ bool:false,
-            visibility:'hidden'});
+            setTags(remainingTags);
+            setKeyword(remainingTags.join(', '));
         }
       }
     
@@ -277,18 +276,14 @@ export default function list(){
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-        console.log(focus); //확인용
     }
 
-    const [click, setClick] = useState(true);
     const handleClick= (bool) => {
-        setClick(bool);
-        if(click) {
+        if(bool) {
             setKeyword('');
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            setClick(!bool);
         }
     }
 
@@ -304,7 +299,7 @@ export default function list(){
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
-
+             
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{
@@ -315,9 +310,7 @@ export default function list(){
                     zIndex: '4',
                     boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                     visibility: open.visibility,
-                    overflowY:'hidden',
-                    border: '1px solid transparent',
-                    borderRadius: '0px'
+                    overflowY:'hidden'
                     }} 
                     
                     >
@@ -359,9 +352,13 @@ export default function list(){
                 ref = {cardRef}
                  >
                 <div>
+                    {
+                        !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
                         <Image width={70} height={4} src={line} /> 
                     </div>
+                    : null
+                    }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                         {/* 키워드별 필터링된 장소 개수 확인 */}
                         <p style={{margin: 0, fontSize: '10px'}}>{filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개)' : null}</p> 
