@@ -93,7 +93,7 @@ export default function list(){
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
-            // if(tagsId.includes(router.query.keyword))
+
             if(tagName.includes(router.query.keyword))
                 tags.push(router.query.keyword);
             router.query.keyword = '';
@@ -174,7 +174,7 @@ export default function list(){
             setPreventScroll('scroll');
         } else {
             
-            setHeight('32%');
+            // setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -223,7 +223,6 @@ export default function list(){
     // 헤더영역 태그 해제
     const handleTagClick = (e) => {
         e.preventDefault();
-        // alert(height);
 
         const clickedTag = e.target.id;
         const remainingTags = tags.filter(tag => tag !== clickedTag);
@@ -277,18 +276,14 @@ export default function list(){
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-        console.log(focus); //확인용
     }
 
-    const [click, setClick] = useState(true);
     const handleClick= (bool) => {
-        setClick(bool);
-        if(click) {
+        if(bool) {
             setKeyword('');
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            setClick(!bool);
         }
     }
 

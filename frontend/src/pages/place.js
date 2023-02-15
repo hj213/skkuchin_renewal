@@ -123,7 +123,7 @@ const PlacePage = () => {
             setPreventScroll('scroll');
         } else {
             
-            setHeight('32%');
+            // setHeight('32%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
