@@ -21,6 +21,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
+import skkuchin.service.repo.ChatSessionRepo;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
 
@@ -34,6 +35,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     private final ChatErrorHandler chatErrorHandler;
     private final ChatService chatService;
     private final ChatSessionService chatSessionService;
+    private final ChatSessionRepo chatSessionRepo;
 
 
     @Value("${rabbitmq.host}")
@@ -82,7 +84,11 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 System.out.println("accessor = " + accessor);
                 //stomp.connect으로도 생각해 볼 수 있을것
                 if(accessor.getCommand().equals(StompCommand.SEND)){
-
+                    String sessionId = accessor.getSessionId();
+                    ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId);
+                    if(chatSession.getChatRoom().isSenderBlocked() == true || chatSession.getChatRoom().isReceiverBlocked() == true){
+                        throw new RuntimeException("차단된 유저입니다.");
+                    }
                 }
 
                 else if(accessor.getCommand().equals(StompCommand.SUBSCRIBE)){
