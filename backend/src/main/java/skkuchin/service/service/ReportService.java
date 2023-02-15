@@ -10,7 +10,7 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Report;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;
-import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.ReportRepo;
 import skkuchin.service.repo.ReviewRepo;
 
@@ -23,7 +23,7 @@ import javax.transaction.Transactional;
 public class ReportService {
 
     private final ReportRepo reportRepo;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepo chatRoomRepo;
     private final ReviewRepo reviewRepo;
 
     @Transactional
@@ -45,7 +45,7 @@ public class ReportService {
             review = reviewRepo.findById(dto.getReviewId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         }
         if (dto.getChatRoomId() != null) {
-            chatRoom = chatRoomRepository.findByRoomId(dto.getChatRoomId());
+            chatRoom = chatRoomRepo.findByRoomId(dto.getChatRoomId());
         }
 
         Report report = dto.toEntity(user, chatRoom, review);

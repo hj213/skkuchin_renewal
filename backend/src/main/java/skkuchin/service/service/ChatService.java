@@ -1,17 +1,31 @@
 package skkuchin.service.service;
 
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.ChatRepository;
-import skkuchin.service.repo.ChatRoomRepository;
+import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.repo.ChatRoomRepo;
+import skkuchin.service.repo.UserRepo;
 
-import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,8 +33,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ChatService {
-    private final ChatRoomRepository chatRoomRepository;
-    private final ChatRepository chatRepository;
+    private final ChatRoomRepo chatRoomRepository;
+    private final ChatRepo chatRepository;
+    private final UserRepo userRepo;
 
     //전체 채팅방 조회
     public List<ChatRoomDto.Response> getAllRoom(){
@@ -40,6 +55,7 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    //상대가 읽은 메시지 카운트 0으로 바꿈
     public void getAllMessage1(ChatRoom chatRoom, String sender){
         List<ChatMessage> chatMessages = chatRepository.findByRoomId(chatRoom.getRoomId());
         for (int i = 0; i<chatMessages.size(); i++) {
@@ -59,58 +75,43 @@ public class ChatService {
     public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
 
         ChatRoom chatRoom = dto.toEntity(user);
+        chatRoom.setSenderRequestStatus(RequestStatus.ACCEPT);
+        chatRoom.setRoomId(UUID.randomUUID().toString());
         chatRoomRepository.save(chatRoom);
 
     }
 
     //상대방 정보
-    public void update(ChatRoom chatRoom,AppUser user){
+    public void receiverAccept(ChatRoom chatRoom,AppUser user){
 
         ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         chatRoom1.setUser1(user);
-        chatRoom1.setReceiverAccepted(true);
+        chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
+        chatRoom1.setLatestMessageTime(LocalDateTime.now());
 
         chatRoomRepository.save(chatRoom1);
 
     }
 
-    public void deleteSession(ChatRoom chatRoom, String sessionId){
-        if(chatRoom.getSenderSessionId().equals(sessionId)){
-            chatRoom.setSenderSessionId("");
-        }
-        else if(chatRoom.getReceiverSessionId().equals(sessionId)){
-            chatRoom.setReceiverSessionId("");
-        }
+    public void receiverHold(ChatRoom chatRoom,AppUser user){
 
+        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
+        chatRoom1.setUser1(user);
+        chatRoom1.setReceiverRequestStatus(RequestStatus.HOLD);
+        chatRoomRepository.save(chatRoom1);
 
+    }
+    public void receiverRefuse(ChatRoom chatRoom,AppUser user){
 
-
+        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
+        chatRoom1.setUser1(user);
+        chatRoom1.setReceiverRequestStatus(RequestStatus.REFUSE);
+        chatRoomRepository.save(chatRoom1);
 
     }
 
-    public void setSessionId(ChatRoom chatRoom,String sessionId){
 
-            chatRoom.setSenderSessionId(sessionId);
-            chatRoomRepository.save(chatRoom);
-
-
-
-
-    }
-
-    public ChatRoom findSession(String senderSessionId){
-        ChatRoom chatRoom = chatRoomRepository.findBySenderSessionId(senderSessionId);
-        return chatRoom;
-
-    }
-
-   public ChatRoom findSession1(String receiverSessionId){
-        ChatRoom chatRoom = chatRoomRepository.findByReceiverSessionId(receiverSessionId);
-        return chatRoom;
-
-
-    }
     //채팅방 인원 조정
     public void updateCount(ChatRoom chatRoom){
 
@@ -137,55 +138,107 @@ public class ChatService {
         return chatroom;
     }
 
-    // 채팅방 개설자 아이디로 채팅방 찾기
-    public List<ChatRoomDto.Response> findSenderChatRoom(AppUser appuser){
+
+    public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
 
 
-        return chatRoomRepository.findByUserAndSenderAcceptedAndReceiverAccepted(appuser, true,true)
+        return chatRoomRepository.findBySenderId(appuser.getId())
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
                 .collect(Collectors.toList());
     }
 
-    // 상대방 아이디로 채팅방 찾기
-    public List<ChatRoomDto.Response> findReceiverChatRoom(AppUser appuser){
+    public List<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser){
 
 
-        return chatRoomRepository.findByUser1AndSenderAcceptedAndReceiverAccepted(appuser, true,true)
+        return chatRoomRepository.findByReceiverId(appuser.getId())
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
                 .collect(Collectors.toList());
     }
 
-       /* private Map<String, ChatRoom> chatRooms;
+    @Scheduled(cron = "* 0 * * * ?") //정각에 만료된 데이터가 삭제됨
+    public void deleteExpiredData() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());
+        for (int i = 0; i < chatRooms.size(); i++) {
+            if(!chatRooms.get(i).getReceiverRequestStatus().equals(RequestStatus.ACCEPT)){
+                chatRoomRepository.delete(chatRooms.get(i));
+            }
 
-    @PostConstruct
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
+        }
     }
 
 
-    public List<ChatRoom> findAllRoom() {
-        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-        Collections.reverse(result);
+    @Scheduled(cron = "* * 0 * * ?") //자정에 display 시간 변경*/
+    /*@Scheduled(cron = "10 * * * * ?")*/
+    public void setDisplayDateTime() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        LocalDate dateNow = dateTimeNow.toLocalDate();
+        for (int i = 0; i < chatRooms.size(); i++) {
+            LocalDateTime recordedDateTime = chatRooms.get(i).getLatestMessageTime();
+            LocalDate recordedDate = recordedDateTime.toLocalDate();
+            Period diff = Period.between(recordedDate, dateNow);
+            if(diff.getDays() == 1  && diff.getMonths() ==0 && diff.getYears() ==0) {
+                chatRooms.get(i).setDisplayMessageTime("어제");
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+            else if(diff.getDays() == 0  && diff.getMonths() ==0 && diff.getYears() ==0){
+                chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "a h:mm")));
+                chatRoomRepository.save(chatRooms.get(i));
+            }
+            else{
+                chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "yyyy-MM-dd")));
+                chatRoomRepository.save(chatRooms.get(i));
+            }
 
-        return result;
+
+        }
+    }
+
+    //방
+    public List<ChatMessageDto.Response> getLatestMessages(ChatRoom chatRoom){
+        return chatRepository.findByLatestMessageTime(chatRoom.getRoomId())
+                .stream()
+                .map(message -> new ChatMessageDto.Response(message))
+                .collect(Collectors.toList());
+    }
+
+    public ChatMessageDto.Response getLatestMessage(ChatRoom chatRoom){
+        ChatMessage chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
+        return new ChatMessageDto.Response(chatMessage);
+    }
+
+    public void insertData(String path) throws IOException, ParseException {
+        if (chatRoomRepository.count() < 0) { //db가 비어있을 때만 실행
+
+            FileInputStream ins = new FileInputStream(path + "chatroom.json");
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject)parser.parse(
+                    new InputStreamReader(ins, "UTF-8")
+            );
+            JSONArray jsonArray = (JSONArray) jsonObject.get("chatroom");
+            Gson gson = new Gson();
+
+
+            List<AppUser> users = userRepo.findAll();
+
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject temp = (JSONObject) jsonArray.get(i);
+                ChatRoomDto.TestPostRequest dto = gson.fromJson(temp.toString(), ChatRoomDto.TestPostRequest.class);
+               chatRoomRepository.save(dto.toEntity(users.get(i%2)));
+
+
+            }
+        }
     }
 
 
-    public ChatRoom findById(String roomId) {
-        return chatRooms.get(roomId);
-    }*/
-
-     /*   //채팅방 생성
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
-        chatRoomRepository.save(chatRoom);
-        return chatRoom;
-    }*/
 
 }
 

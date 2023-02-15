@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Matching.Gender;
 import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
@@ -16,6 +17,8 @@ import skkuchin.service.domain.Matching.Profile;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +62,7 @@ public class MatchingUserDto {
         private Gender gender;
         private List<String> keywords;
         private String introduction;
+        private Campus campus;
 
         public Response(AppUser user, List<UserKeyword> keywords) {
             this.id = user.getId();
@@ -71,6 +75,19 @@ public class MatchingUserDto {
             this.gender = user.getGender();
             this.keywords = keywords.stream().map(keyword -> keyword.getKeyword().getName()).collect(Collectors.toList());
             this.introduction = user.getIntroduction();
+            this.campus = findCampus(user.getMajor());
+        }
+
+        public Campus findCampus(Major major) {
+            EnumSet<Major> majors = EnumSet.allOf(Major.class);
+            List<Major> majorList = new ArrayList<>();
+            majorList.addAll(majors);
+
+            if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
+                return Campus.명륜;
+            } else {
+                return Campus.율전;
+            }
         }
     }
 }

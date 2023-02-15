@@ -199,13 +199,6 @@ export default function makeProfile(){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
-            dispatch(load_matching_info(([result, message]) => {
-                if (result) {
-                    alert(message);
-                } else {
-                    alert(message);
-                }
-            }));
 
         }
 
@@ -255,7 +248,7 @@ export default function makeProfile(){
         '영화': false,
         '음악': false,
         '전시회': false,
-        '연극': false,
+        '연극뮤지컬': false,
         '덕질': false,
         '여행': false,
         '게임': false,
@@ -279,14 +272,14 @@ export default function makeProfile(){
         '토론': false,
         '시사': false,
         '어학': false,
-        'cpa': false,
+        'CPA': false,
         '피트': false,
         '로스쿨': false,
         '행시': false,
     })
     const [profile, setProfile] = useState({
-        '기본': false,
-        '식사': false,
+        'DEFAULT1': false,
+        'DEFAULT2': false,
         'ENFJ': false,
         'ENTP': false,
         'INFP': false,
@@ -310,6 +303,9 @@ export default function makeProfile(){
     const [introduction, setIntroduction] = useState('');
     const [image, setImage] = useState('');
     const [mbti, setMbti] = useState('');
+    const [condition, setCondition] = useState(false); //확인버튼 조건 
+
+    const [visibility, setVisibility] = useState(''); //어느 페이지에서 접근하는지에 따라 상단 바뀌도록
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -456,7 +452,18 @@ export default function makeProfile(){
 
     //음식클릭
     const handleFoodClick = (event) => {
-        if(food[event.target.name]){
+        if(keyword.length == 8){
+            setFood({
+                ...food
+            })
+            if(food[event.target.name]){
+                setFood({
+                    ...food,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(food[event.target.name]){
             setFood({
                 ...food,
                 [event.target.name] : false
@@ -471,7 +478,18 @@ export default function makeProfile(){
 
     //운동클릭
     const handleSportsClick = (event) => {
-        if(sports[event.target.name]){
+        if(keyword.length == 8){
+            setSports({
+                ...sports
+            })
+            if(sports[event.target.name]){
+                setSports({
+                    ...sports,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(sports[event.target.name]){
             setSports({
                 ...sports,
                 [event.target.name] : false
@@ -486,7 +504,18 @@ export default function makeProfile(){
     
     //문화예술
     const handleArtClick = (event) => {
-        if(art[event.target.name]){
+        if(keyword.length == 8){
+            setArt({
+                ...art
+            })
+            if(art[event.target.name]){
+                setArt({
+                    ...art,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(art[event.target.name]){
             setArt({
                 ...art,
                 [event.target.name] : false
@@ -501,7 +530,18 @@ export default function makeProfile(){
 
     //학술
     const handleStudyClick = (event) => {
-        if(study[event.target.name]){
+        if(keyword.length == 8){
+            setStudy({
+                ...study
+            })
+            if(study[event.target.name]){
+                setStudy({
+                    ...study,
+                    [event.target.name] : false
+                })
+            }
+        }
+         else if(study[event.target.name]){
             setStudy({
                 ...study,
                 [event.target.name] : false
@@ -520,7 +560,9 @@ export default function makeProfile(){
             setProfile({
                 ...profile,
                 [event.target.name] : false
+                
             })
+            setImage('');
         } else{
             setProfile({
                 ...profile,
@@ -541,29 +583,32 @@ export default function makeProfile(){
         
         event.preventDefault();
 
-        
         dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
                 if (result) {
-                    alert(message);
+                    // alert(message);
+                    router.push({
+                        pathname: '/completeProfile',
+                        query: { viewportHeight: window.innerHeight,
+                        src : '매칭프로필설정', }
+                      })
                 } else {
                     alert(message);
                 }
             }));
     } 
 
-    //for passingMbti
+    //데이터 전달하기 위해
     useEffect(() => {
+
         const newMbti = Object.entries(mbtiChoose)
           .filter(([, value]) => value)
           .map(([key]) => key)
           .join('');
         if(newMbti.length==4){
             setMbti(newMbti);
+        } else{
+            setMbti('');
         }
-      }, [mbtiChoose]);
-    
-    //for keyword
-    useEffect(() => {
 
         const newKeywords = [sports, food, art, study];
 
@@ -573,38 +618,27 @@ export default function makeProfile(){
             .filter(([, value]) => value)
             .map(([key]) => key);
 
-        // const newFood = Object.entries(food)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');     
-        
-        // const newSports = Object.entries(sports)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');     
-        
-        // const newArt = Object.entries(art)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');      
-        
-        // const newStudy = Object.entries(study)
-        //   .filter(([, value]) => value)
-        //   .map(([key]) => key)
-        //   .join(',');       
-        
-        // const newKeywords = [...newFood, ...newArt, ...newSports, ...newStudy];
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
         }
-        console.log(keyword);
-      }, [food, study, art, sports]);
+      }, [mbtiChoose, food, study, art, sports]);
+
+    //확인버튼 이미지 조건 반영 위해
+    useEffect(()=>{
+        if(gender && keyword && introduction != '' && mbti && image){
     
-      
+            setCondition(true);
+        } else {
+            setCondition(false);
+        }
+    }, [gender, keyword, introduction, mbti, image]);
+    
+      console.log(gender, keyword, introduction, mbti, image);
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-                <Container style={{padding:'0px', margin:'41px 0px 53px 0px'}}>
+                <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
@@ -774,7 +808,7 @@ export default function makeProfile(){
                                         <Image src={art.전시회 ? artTag12ON : artTag12} width={47} height={27} onClick={handleArtClick} name='전시회'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.연극 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} name='연극'/>
+                                        <Image src={art.연극뮤지컬 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} name='연극뮤지컬'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image src={art.덕질 ? artTag3ON : artTag3} width={36} height={27} onClick={handleArtClick} name='덕질'/>
@@ -847,7 +881,7 @@ export default function makeProfile(){
                                         <Image src={study.어학 ? stuTag11On : stuTag11} width={36} height={27} onClick={handleStudyClick} name='어학'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.cpa ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} name='cpa'/>
+                                        <Image src={study.CPA ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} name='CPA'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image src={study.피트 ? stuTag13On : stuTag13} width={36} height={27} onClick={handleStudyClick} name='피트'/>
@@ -871,10 +905,10 @@ export default function makeProfile(){
                                     <Grid container style={{maxWidth:'340px'}}>
                                         <Grid container>
                                             <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.기본 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='기본'/>
+                                                <Image src={profile.DEFAULT1 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='DEFAULT1'/>
                                             </Grid>
                                             <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.식사 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='식사'/>
+                                                <Image src={profile.DEFAULT2 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='DEFAULT2'/>
                                             </Grid>
                                             <Grid style={{}}>
                                                 <Image src={profile.ENFJ ? profile3On : profile3} width={100} height={100} onClick={handleProfileClick} name='ENFJ'/>
@@ -961,7 +995,7 @@ export default function makeProfile(){
                     </div>
                     <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
                         <div style={{paddingBottom:'50px', textAlign:'center'}}>
-                            <Image src={submitOk} width={296} height={45} onClick={handleOnSubmit} name='확인'/>
+                            <Image src={condition? submitOk: submit} width={296} height={45} onClick={handleOnSubmit} name='확인'/>
                         </div>
                     </Container>
                 </Container>
