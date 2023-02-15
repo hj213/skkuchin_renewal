@@ -106,6 +106,8 @@ public class ReviewDto {
         private List<String> images;
         @JsonProperty
         private LocalDateTime createDate;
+        @JsonProperty
+        private Long userId;
         private String nickname;
         private Major major;
         @JsonProperty
@@ -121,6 +123,7 @@ public class ReviewDto {
             this.content = review.getContent();
             this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
             this.createDate = review.getCreateDate();
+            this.userId = review.getUser().getId();
             this.nickname = review.getUser().getNickname();
             this.major = review.getUser().getMajor();
             this.studentId = review.getUser().getStudentId();
