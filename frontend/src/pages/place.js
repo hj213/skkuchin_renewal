@@ -22,7 +22,6 @@ import { displayReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import UpperBar from "../components/UpperBar";
 
-
 const PlacePage = () => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -41,6 +40,7 @@ const PlacePage = () => {
     const user = useSelector(state => state.auth.user);
     const [filteredPlace, setFilteredPlace] = useState([]);
 
+    const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
     useEffect(() => {
         if (place && user.toggle != null) {
           setFilteredPlace(place.filter(item => item.campus === user.toggle));
@@ -96,7 +96,7 @@ const PlacePage = () => {
             }
         };
     }, [cardRef]);
-    
+        
     // 카드 터치 했을 때 변화
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
@@ -107,22 +107,26 @@ const PlacePage = () => {
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
-        
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
+            // console.log(newHeight);
+            // console.log(TARGET_HEIGHT);
+            setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
-                visibility: 'visible',
+                visibility: 'visible'
             });
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
             });
             setPreventScroll('scroll');
-          } else {
+        } else {
+            
+            setHeight('32%');
             setOpen({
                 bool: false,
-                visibility: 'hidden',
+                visibility: 'hidden'
             });
             setCardStyle({
                 radius:'30px 30px 0px 0px',
@@ -132,6 +136,7 @@ const PlacePage = () => {
         }
         preNewHeight=newHeight;
     };
+
 
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
      const handleOnclick = (event) =>{
@@ -218,8 +223,8 @@ const PlacePage = () => {
             <Layout
                 title='스꾸친 | Place'
                 content='Place page'
-            >           
-            <UpperBar/>     
+            >   
+            <UpperBar/>
                 <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
                 <Container style={{position:'absolute', zIndex:'2'}}>
                     <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   

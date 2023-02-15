@@ -49,9 +49,11 @@ const Friends = () => {
                 </Grid>
                 
                 <Grid item sx={{display: 'flex'}}>
+                    <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
+                        {person.mbti}
+                    </Grid>
                     {(person.keywords) != null ?
-                        ((person.keywords).slice(0, 3).map((interest, index)=> (
-                            // <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '17px 2.5px 28px'}}>
+                        ((person.keywords).slice(0, 2).map((interest, index)=> (
                             <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
                                 {interest}
                             </Grid>
@@ -64,7 +66,7 @@ const Friends = () => {
                         <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                         : <Typography sx={{overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                     }
-                    { person.introduction.length > 17 ?
+                    { person.introduction.length > 17 ? 
                     <Button sx={{fontSize: '12px', color: '#BABABA'}} onClick={handleExpand}>
                         <u>{isExpanded ? '닫기' : '더보기'}</u>
                     </Button>

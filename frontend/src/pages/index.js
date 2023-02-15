@@ -105,12 +105,14 @@ export default function list(){
             else {
                 // 키워드 확인
                 dispatch(search_places(keyword));
-                if((open.bool) == false) setHeight('32%');
-                setCardStyle({
-                    radius: '30px 30px 0px 0px',
-                    cardVisibility: 'visible',
-                    iconVisibility: 'visible'
-                });
+                if((open.bool) == false) {
+                    setHeight('32%');
+                    setCardStyle({
+                        radius: '30px 30px 0px 0px',
+                        cardVisibility: 'visible',
+                        iconVisibility: 'visible'
+                    });
+                }
             }
         }
     }, [keyword, router.query.keyword, dispatch, tags,user]);
@@ -120,12 +122,11 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            // cardRef.current.addEventListener("touchend", handleTouchMove);
+            // setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
-                // cardRef.current.addEventListener("touchend", handleTouchMove);
             }
         };
       }, [cardRef]);
@@ -147,8 +148,8 @@ export default function list(){
         setPreventScroll('');
     }
 
-    let preNewHeight = 0;
     // 카드 터치 했을 때 변화
+    let preNewHeight = 0;
     const handleTouchMove = (event) => {
         event.preventDefault();
 
@@ -157,22 +158,26 @@ export default function list(){
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
-        
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
+            // console.log(newHeight);
+            // console.log(TARGET_HEIGHT);
+            setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
-                visibility: 'visible',
+                visibility: 'visible'
             });
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
             });
             setPreventScroll('scroll');
-          } else {
+        } else {
+            
+            setHeight('32%');
             setOpen({
                 bool: false,
-                visibility: 'hidden',
+                visibility: 'hidden'
             });
             setCardStyle({
                 radius:'30px 30px 0px 0px',
@@ -230,8 +235,6 @@ export default function list(){
         } else {
             setTags(remainingTags);
             setKeyword(remainingTags.join(', '));
-        //   setOpen({ bool:false,
-        //     visibility:'hidden'});
         }
       }
     
