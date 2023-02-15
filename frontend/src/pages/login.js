@@ -48,7 +48,7 @@ const LoginPage = () => {
     };
 
     if (typeof window !== 'undefined' && isAuthenticated){
-        router.push('/dashboard');
+        router.push('/');
     } 
     return(
         <ThemeProvider theme={theme}>
