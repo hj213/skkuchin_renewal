@@ -44,13 +44,14 @@ public class StompRabbitController {
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";
 
-
+    //로직하나 더 만들어서 전체 채팅방 구독하는 거 하나 만들기
     @MessageMapping("chat.enter.{chatRoomId}")
     public void enter(ChatMessage chat, @DestinationVariable String chatRoomId, @Header("token") String token){
         String username = getUserNameFromJwt(token);
         chat.setSender(username);
         chat.setMessage("입장하셨습니다.");
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat); // exchange
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+       /* template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + "05de58dd-f22f-4ba8-bbff-b7341a65bf9f",chat);*/// exchange
     }
 
     @MessageMapping("chat.message.{chatRoomId}")
@@ -79,6 +80,7 @@ public class StompRabbitController {
         System.out.println("chatRoom.isSenderBlocked() = " + chatRoom.isSenderBlocked());
         //메시지 매핑
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);
+       /* template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + "05de58dd-f22f-4ba8-bbff-b7341a65bf9f",chat);*/
 
        /*if (chatRoom.isSenderBlocked() == false && chatRoom.isReceiverBlocked() == false) {
             template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chat);

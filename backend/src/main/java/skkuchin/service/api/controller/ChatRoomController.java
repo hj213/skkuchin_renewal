@@ -17,6 +17,8 @@ import skkuchin.service.repo.ChatRoomRepo;
 
 import skkuchin.service.service.ChatService;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -29,12 +31,12 @@ public class ChatRoomController {
 
 
 
-    @GetMapping("/rooms")
+  /*  @GetMapping("/rooms")
     public ResponseEntity<?> getAllChatroom() {
 
         List<ChatRoomDto.Response> responses = chatService.getAllRoom();
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
+    }*/
 
 
 
@@ -44,6 +46,7 @@ public class ChatRoomController {
         AppUser appUser = principalDetails.getUser();
 
         List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser);
+         Collections.sort(responses,new DateComparator().reversed());
         return new ResponseEntity<>(new CMRespDto<>(1, "sender's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
 
@@ -53,7 +56,19 @@ public class ChatRoomController {
         AppUser appUser = principalDetails.getUser();
 
         List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
+       /* Collections.sort(responses,new DateComparator());*/
         return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
+    }
+    class DateComparator implements Comparator<ChatRoomDto.Response> {
+        @Override
+        public int compare(ChatRoomDto.Response f1, ChatRoomDto.Response f2) {
+            if (f1.getLocalDateTime().isAfter(f2.getLocalDateTime()) ) {
+                return 1;
+            } else  {
+                return -1;
+            }
+
+        }
     }
 
      @PostMapping("/rooms")
@@ -163,6 +178,11 @@ public class ChatRoomController {
     @GetMapping(value = "/roommm")
     public String getRoom(){
         return "chat/rrr";
+    }
+
+    @GetMapping(value = "/roomm")
+    public String getRoom1(){
+        return "chat/rrrr";
     }
 
 

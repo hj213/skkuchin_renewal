@@ -26,7 +26,7 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
     List<ChatRoom> findByNormalReceiverId
             (@Param("senderId") Long senderId);
 
-    @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
+   /* @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
             "AND a.senderRequestStatus = 'ACCEPT' AND a.receiverRequestStatus = 'ACCEPT' AND a.user.id NOT IN (:blockedUsers)" +
             " ORDER BY a.latestMessageTime DESC")
     List<ChatRoom> findByReceiverId
@@ -36,7 +36,7 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
             "AND a.senderRequestStatus = 'ACCEPT' AND a.receiverRequestStatus = 'ACCEPT' AND a.user1.id NOT IN (:blockedUsers) " +
             "ORDER BY a.latestMessageTime DESC")
     List<ChatRoom> findBySenderId
-            (@Param("senderId") Long senderId ,@Param("blockedUsers") Long[] blockedUsers);
+            (@Param("senderId") Long senderId ,@Param("blockedUsers") Long[] blockedUsers);*/
 
 
 

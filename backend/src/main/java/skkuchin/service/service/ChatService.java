@@ -41,14 +41,14 @@ public class ChatService {
     private final BlockService blockService;
 
     //전체 채팅방 조회
-    public List<ChatRoomDto.Response> getAllRoom(){
+   /* public List<ChatRoomDto.Response> getAllRoom(){
         return chatRoomRepository.findAll()
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
                 .collect(Collectors.toList());
 
-    }
+    }*/
 
     //채팅방의 메시지들 조회
     public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
@@ -144,59 +144,53 @@ public class ChatService {
 
     public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
 
-        List<Block> block = blockService.getBlockedUserList(appuser);
         List<ChatRoom> chatRooms;
 
-        Long[] name = new Long[block.size()];
 
-        for (int i = 0; i < block.size(); i++) {
-            name[i] = block.get(i).getBlockedUser().getId();
-            System.out.println("name[i] = " + name[i]);
+        chatRooms = chatRoomRepository.findByNormalSenderId(appuser.getId());
 
+        LocalDateTime[] localDateTimes = new LocalDateTime[chatRooms.size()];
+        for (int i = 0; i < chatRooms.size(); i++) {
+            localDateTimes[i] = getLatestMessage1(chatRooms.get(i)).getDate();
         }
-
-        if(block.size() == 0){
-            chatRooms = chatRoomRepository.findByNormalSenderId(appuser.getId());
+        for (int i = 0; i < chatRooms.size(); i++) {
+            System.out.println("localDateTimes = " + localDateTimes[i]);
         }
-        else{
-            chatRooms = chatRoomRepository.findBySenderId(appuser.getId(),name);
+        Arrays.sort(localDateTimes);
+
+        System.out.println("===================");
+        for (int i = 0; i < chatRooms.size(); i++) {
+            System.out.println("localDateTimes = " + localDateTimes[i]);
         }
-
-
-
         return chatRooms
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
+                        chatroom,getLatestMessage1(chatroom)))
                 .collect(Collectors.toList());
     }
 
 
     public List<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser){
-        List<Block> block = blockService.getBlockedUserList(appuser);
 
-        Long[] name = new Long[block.size()];
         List<ChatRoom> chatRooms;
 
-        for (int i = 0; i < block.size(); i++) {
-            name[i] = block.get(i).getBlockedUser().getId();
-            System.out.println("name[i] = " + name[i]);
 
-        }
-        if(block.size() == 0){
+
             chatRooms =chatRoomRepository.findByNormalReceiverId(appuser.getId());
+        ChatMessage[] chatMessages = new ChatMessage[chatRooms.size()];
+        for (int i = 0; i < chatRooms.size(); i++) {
+           chatMessages[i] = getLatestMessage1(chatRooms.get(i));
         }
-
-        else{
-            chatRooms = chatRoomRepository.findByReceiverId(appuser.getId(),name);
+            Arrays.sort(chatMessages);
+        System.out.println("===================");
+        for (int i = 0; i < chatRooms.size(); i++) {
+            System.out.println("chatMessages = " + chatMessages[i]);
         }
-
-
 
         return chatRooms
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
+                        chatroom, getLatestMessage1(chatroom)))
                 .collect(Collectors.toList());
     }
     public void blockUser(ChatRoom chatRoom, AppUser appUser){
@@ -220,6 +214,9 @@ public class ChatService {
             chatRoomRepository.save(chatRoom);
         }
     }
+
+
+
 
 
 
@@ -306,6 +303,19 @@ public class ChatService {
     public ChatMessageDto.Response getLatestMessage(ChatRoom chatRoom){
         ChatMessage chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
         return new ChatMessageDto.Response(chatMessage);
+    }
+
+    public ChatMessage getLatestMessage1(ChatRoom chatRoom){
+
+        ChatMessage chatMessage = new ChatMessage() ;
+        if(chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).size() == 0){
+            chatMessage.setDate(LocalDateTime.now());
+        }
+        else{
+            chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
+
+        }
+        return chatMessage;
     }
 
     public void insertData(String path) throws IOException, ParseException {
