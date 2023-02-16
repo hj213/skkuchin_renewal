@@ -71,9 +71,9 @@ export const displayTagImage = (tags) => {
                 case "기타":
                     return <Grid item key={tag}><Image id={"기타"} src={mapTagOn7} width={64} height={36} /></Grid>
                 case "간단한 한 끼":
-                    return <Grid item key={tag}><Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/></Grid>
+                    return <Grid item key={tag}><Image id={"간단한 한 끼"} src={mapTagOn8} width={107} height={36}/></Grid>
                 case "분위기 좋은":
-                    return <Grid item key={tag}><Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36} /></Grid>
+                    return <Grid item key={tag}><Image id={"분위기 좋은"} src={mapTagOn9} width={104} height={36} /></Grid>
                 case "맛집":
                     return <Grid item key={tag}><Image id={"맛집"} src={mapTagOn10} width={65} height={36}/></Grid>
                 case "친절":
