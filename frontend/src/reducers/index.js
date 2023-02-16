@@ -6,7 +6,6 @@ import placeReducer from './place';
 import reviewReducer from './review';
 import candidateReducer from './candidate';
 import matchingUserReducer from './matchingUser';
-import blockReducer from './block';
 
 export default combineReducers({
     auth: authReducer,
@@ -16,5 +15,4 @@ export default combineReducers({
     review: reviewReducer,
     candidate: candidateReducer,
     matchingUser: matchingUserReducer,
-    block: blockReducer
 });
