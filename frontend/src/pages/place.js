@@ -219,10 +219,7 @@ const PlacePage = () => {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout
-                title='스꾸친 | Place'
-                content='Place page'
-            >   
+            <Layout>   
             <UpperBar/>
                 <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}> 
                 <Container style={{position:'absolute', zIndex:'2'}}>
