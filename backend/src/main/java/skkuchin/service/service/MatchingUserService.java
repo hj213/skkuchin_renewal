@@ -31,7 +31,6 @@ public class MatchingUserService {
         existingUser.setGender(dto.getGender());
         existingUser.setIntroduction(dto.getIntroduction());
         existingUser.setMbti(dto.getMbti());
-        existingUser.setImage(dto.getImage());
         existingUser.setMatching(true);
         userRepo.save(existingUser);
 
@@ -75,7 +74,6 @@ public class MatchingUserService {
         user.setGender(dto.getGender());
         user.setIntroduction(dto.getIntroduction());
         user.setMbti(dto.getMbti());
-        user.setImage(dto.getImage());
         userRepo.save(user);
 
         List<UserKeyword> existingKeywords = userKeywordRepo.findByUser(user);

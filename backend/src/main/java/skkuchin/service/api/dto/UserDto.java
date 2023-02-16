@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import skkuchin.service.domain.Map.Campus;
-import skkuchin.service.domain.Matching.Gender;
-import skkuchin.service.domain.Matching.Mbti;
-import skkuchin.service.domain.Matching.Profile;
+import skkuchin.service.domain.User.Profile;
 import skkuchin.service.domain.User.*;
 
 import javax.validation.constraints.*;
@@ -40,6 +38,8 @@ public class UserDto {
         private int studentId;
         @NotNull
         private Major major;
+        @NotNull
+        private Profile image;
 
         public AppUser toEntity() {
             return AppUser.builder()
@@ -48,6 +48,7 @@ public class UserDto {
                     .password(this.password)
                     .studentId(this.studentId)
                     .major(this.major)
+                    .image(this.image)
                     .toggle(findCampus(this.major))
                     .startDate(LocalDateTime.now())
                     .emailAuth(false)
@@ -98,6 +99,8 @@ public class UserDto {
         private String nickname;
         @NotNull
         private Major major;
+        @NotNull
+        private Profile image;
     }
 
     @Getter
@@ -137,9 +140,9 @@ public class UserDto {
         @JsonProperty
         private int studentId;
         private Major major;
+        private Profile image;
         private Campus campus;
         private Campus toggle;
-        private Profile image;
 
         public Response(AppUser user) {
             this.id = user.getId();
@@ -147,9 +150,9 @@ public class UserDto {
             this.username = user.getUsername();
             this.studentId = user.getStudentId();
             this.major = user.getMajor();
+            this.image = user.getImage();
             this.campus = findCampus(user.getMajor());
             this.toggle = user.getToggle();
-            this.image = user.getImage();
         }
 
         public Campus findCampus(Major major) {
