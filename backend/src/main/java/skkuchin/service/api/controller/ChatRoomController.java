@@ -105,6 +105,7 @@ public class ChatRoomController {
     }
 
 
+    //reaction = accept, refuse, hold
     @PostMapping("/room/{reaction}/{roomId}")
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
             String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -125,26 +126,27 @@ public class ChatRoomController {
 
 
     }
-    //상대방의 동의
+
 
 
     //상대 유저 블럭
-    @PostMapping("/room/block/{roomId}")
-    public ResponseEntity<?> blockUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    //block or remove
+    @PostMapping("/room/{reaction}/{roomId}")
+    public ResponseEntity<?> blockUser(@PathVariable String roomId,
+            @PathVariable String reaction, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.blockUser(chatRoom,user);
+        if(reaction == "block"){
+            chatService.blockUser(chatRoom,user);
+        }
+        else if(reaction == "remove"){
+            chatService.removeBlockedUser(chatRoom,user);
+        }
+
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.CREATED);
     }
 
-    //상대 유저 차단 해제
-    @PutMapping("/room/remove/{roomId}")
-    public ResponseEntity<?> removeBlockUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        AppUser user = principalDetails.getUser();
-        chatService.removeBlockedUser(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단 해제", null), HttpStatus.CREATED);
-    }
+
 
     //데이터 삭제
     @DeleteMapping("")
