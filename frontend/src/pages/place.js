@@ -219,10 +219,7 @@ const PlacePage = () => {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout
-                title='스꾸친 | Place'
-                content='Place page'
-            >   
+            <Layout>   
             <UpperBar/>
                 <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}> 
                 <Container style={{position:'absolute', zIndex:'2'}}>
@@ -241,12 +238,12 @@ const PlacePage = () => {
                             position: 'absolute',
                             top: '0px',
                             width: '100%',
-                            height: '98px',
+                            height: '80px',
                             zIndex: '4',
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                             visibility: open.visibility,
                         }}>
-                            <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
                                     <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
                                 </Grid>
@@ -300,15 +297,12 @@ const PlacePage = () => {
                         </Box> 
                     </Box>
                     )}
-                    {open.bool && (
-                        <Box sx={{paddingTop: '10px'}}></Box>
-                    )}
                     
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
                     { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
                                 <>
-                                <Grid container style={{padding: '10px 15px'}}>
+                                <Grid container style={{padding: '0px 15px'}}>
                                         <Grid style={{width: '100%'}}>
                                             <CardContent>
                                                 {!open.bool && (
