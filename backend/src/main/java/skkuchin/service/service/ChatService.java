@@ -141,25 +141,8 @@ public class ChatService {
 
 
     public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
-
         List<ChatRoom> chatRooms;
-
-
         chatRooms = chatRoomRepository.findByNormalSenderId(appuser.getId());
-
-        LocalDateTime[] localDateTimes = new LocalDateTime[chatRooms.size()];
-        for (int i = 0; i < chatRooms.size(); i++) {
-            localDateTimes[i] = getLatestMessage1(chatRooms.get(i)).getDate();
-        }
-        for (int i = 0; i < chatRooms.size(); i++) {
-            System.out.println("localDateTimes = " + localDateTimes[i]);
-        }
-        Arrays.sort(localDateTimes);
-
-        System.out.println("===================");
-        for (int i = 0; i < chatRooms.size(); i++) {
-            System.out.println("localDateTimes = " + localDateTimes[i]);
-        }
         return chatRooms
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
@@ -171,19 +154,7 @@ public class ChatService {
     public List<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser){
 
         List<ChatRoom> chatRooms;
-
-
-
-            chatRooms =chatRoomRepository.findByNormalReceiverId(appuser.getId());
-        ChatMessage[] chatMessages = new ChatMessage[chatRooms.size()];
-        for (int i = 0; i < chatRooms.size(); i++) {
-           chatMessages[i] = getLatestMessage1(chatRooms.get(i));
-        }
-            Arrays.sort(chatMessages);
-        System.out.println("===================");
-        for (int i = 0; i < chatRooms.size(); i++) {
-            System.out.println("chatMessages = " + chatMessages[i]);
-        }
+        chatRooms =chatRoomRepository.findByNormalReceiverId(appuser.getId());
 
         return chatRooms
                 .stream()

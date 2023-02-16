@@ -43,6 +43,7 @@ public class ChatRoomController {
         AppUser appUser = principalDetails.getUser();
 
         List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
+        Collections.sort(responses,new DateComparator().reversed());
         return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
     class DateComparator implements Comparator<ChatRoomDto.Response> {
