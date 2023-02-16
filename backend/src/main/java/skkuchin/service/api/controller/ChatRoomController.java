@@ -105,38 +105,28 @@ public class ChatRoomController {
     }
 
 
-    //상대방의 동의
-    @PostMapping("/room/accept/{roomId}")
-    public ResponseEntity<?> receiverAccept(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    @PostMapping("/room/{reaction}/{roomId}")
+    public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
+            String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.receiverAccept(chatRoom,user);
+        if(reaction == "accept"){
+            chatService.receiverAccept(chatRoom,user);
+        }
+        else if(reaction == "refuse"){
+            chatService.receiverRefuse(chatRoom,user);
+        }
+
+        else if (reaction == "hold"){
+            chatService.receiverHold(chatRoom,user);
+        }
+
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭 완료", null), HttpStatus.CREATED);
 
 
     }
+    //상대방의 동의
 
-    //상대방의 거절
-    @PostMapping("/room/refuse/{roomId}")
-    public ResponseEntity<?> receiverRefuse(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        AppUser user = principalDetails.getUser();
-        chatService.receiverRefuse(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 거절", null), HttpStatus.CREATED);
-
-
-    }
-
-    //상대방의 보류
-    @PostMapping("/room/hold/{roomId}")
-    public ResponseEntity<?> receiverHold(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        AppUser user = principalDetails.getUser();
-        chatService.receiverHold(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 보류", null), HttpStatus.CREATED);
-
-
-    }
 
     //상대 유저 블럭
     @PostMapping("/room/block/{roomId}")
