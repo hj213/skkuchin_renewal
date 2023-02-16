@@ -9,14 +9,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.controller.BlockController;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Block;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -38,7 +36,7 @@ public class ChatService {
     private final ChatRoomRepo chatRoomRepository;
     private final ChatRepo chatRepository;
     private final UserRepo userRepo;
-    private final BlockService blockService;
+
 
     //전체 채팅방 조회
    /* public List<ChatRoomDto.Response> getAllRoom(){
