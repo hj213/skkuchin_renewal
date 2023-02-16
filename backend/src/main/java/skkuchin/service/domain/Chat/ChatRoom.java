@@ -44,10 +44,7 @@ public class ChatRoom {
     @JsonIgnore
     @JoinColumn(name = "receiver_id")
     private AppUser user1;
-    
 
-    @Enumerated(EnumType.STRING)
-    private RequestStatus senderRequestStatus;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus receiverRequestStatus;
@@ -56,9 +53,7 @@ public class ChatRoom {
 
     private LocalDateTime expireDate;
 
-    private LocalDateTime latestMessageTime;
 
-    private String displayMessageTime;
 
 
 
@@ -77,6 +72,7 @@ public class ChatRoom {
     }
 
     // 신고 관련 매핑입니다 지우지 마세요
+    @JsonIgnore
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();
 }
