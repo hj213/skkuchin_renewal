@@ -61,7 +61,6 @@ public class ChatRoomDto {
             return ChatRoom.builder()
                     .user(user)
                     .roomId(UUID.randomUUID().toString())
-                    .senderRequestStatus(RequestStatus.ACCEPT)
                     .roomName(this.roomName)
                     .build();
 

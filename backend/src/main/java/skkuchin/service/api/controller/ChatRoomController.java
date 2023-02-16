@@ -1,5 +1,4 @@
 package skkuchin.service.api.controller;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,7 @@ import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
-
 import skkuchin.service.service.ChatService;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -28,16 +25,6 @@ import java.util.List;
 public class ChatRoomController {
     private final ChatService chatService;
     private final ChatRoomRepo chatRoomRepository;
-
-
-
-  /*  @GetMapping("/rooms")
-    public ResponseEntity<?> getAllChatroom() {
-
-        List<ChatRoomDto.Response> responses = chatService.getAllRoom();
-        return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
-    }*/
-
 
 
     //sender 기준 최신 채팅방 정렬
@@ -56,7 +43,6 @@ public class ChatRoomController {
         AppUser appUser = principalDetails.getUser();
 
         List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
-       /* Collections.sort(responses,new DateComparator());*/
         return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
     class DateComparator implements Comparator<ChatRoomDto.Response> {
@@ -110,15 +96,18 @@ public class ChatRoomController {
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
             String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        System.out.println("reaction = " + reaction);
+        System.out.println("chatRoom = " + chatRoom.getRoomName());
         AppUser user = principalDetails.getUser();
-        if(reaction == "accept"){
+        if(reaction.equals("accept")){
+            System.out.println("his = ");
             chatService.receiverAccept(chatRoom,user);
         }
-        else if(reaction == "refuse"){
+        else if(reaction.equals("refuse")){
             chatService.receiverRefuse(chatRoom,user);
         }
 
-        else if (reaction == "hold"){
+        else if (reaction.equals("hold")){
             chatService.receiverHold(chatRoom,user);
         }
 
@@ -131,15 +120,15 @@ public class ChatRoomController {
 
     //상대 유저 블럭
     //block or remove
-    @PostMapping("/room/{reaction}/{roomId}")
+    @PostMapping("/room/response/{response}/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
-            @PathVariable String reaction, @AuthenticationPrincipal PrincipalDetails principalDetails){
+            @PathVariable String response, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        if(reaction == "block"){
+        if(response.equals("block") ){
             chatService.blockUser(chatRoom,user);
         }
-        else if(reaction == "remove"){
+        else if(response.equals("remove")){
             chatService.removeBlockedUser(chatRoom,user);
         }
 

@@ -72,8 +72,7 @@ public class StompRabbitController {
         chat.setRoomId(chatRoom.getRoomId());
         chat.setChatRoom(chatRoom);
         chat.setDate(LocalDateTime.now());
-        chatRoom.setLatestMessageTime(LocalDateTime.now());
-        chatService.setDisplayDateTime1(chatRoom);
+
         chat.setUserCount(2-chatRoom.getUserCount());
 
         System.out.println("chatRoom.isReceiverBlocked() = " + chatRoom.isReceiverBlocked());

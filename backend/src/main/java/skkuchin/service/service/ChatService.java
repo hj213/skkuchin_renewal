@@ -78,7 +78,6 @@ public class ChatService {
     public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
 
         ChatRoom chatRoom = dto.toEntity(user);
-        chatRoom.setSenderRequestStatus(RequestStatus.ACCEPT);
         chatRoom.setRoomId(UUID.randomUUID().toString());
         chatRoomRepository.save(chatRoom);
 
@@ -91,7 +90,7 @@ public class ChatService {
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         chatRoom1.setUser1(user);
         chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
-        chatRoom1.setLatestMessageTime(LocalDateTime.now());
+
 
         chatRoomRepository.save(chatRoom1);
 
@@ -234,9 +233,9 @@ public class ChatService {
     }
 
 
-    @Scheduled(cron = "* 0 0 * * ?") //자정에 display 시간 변경*/
+   /* @Scheduled(cron = "* 0 0 * * ?")*/ //자정에 display 시간 변경*/
     /*@Scheduled(cron = "10 * * * * ?")*/
-    public void setDisplayDateTime() {
+   /* public void setDisplayDateTime() {
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         LocalDateTime dateTimeNow = LocalDateTime.now();
         LocalDate dateNow = dateTimeNow.toLocalDate();
@@ -261,11 +260,11 @@ public class ChatService {
 
 
         }
-    }
+    }*/
 
     /*@Scheduled(cron = "* 0 0 * * ?")*/ //자정에 display 시간 변경*/
     /*@Scheduled(cron = "10 * * * * ?")*/
-    public void setDisplayDateTime1(ChatRoom chatRoom) {
+   /* public void setDisplayDateTime1(ChatRoom chatRoom) {
 
         LocalDateTime dateTimeNow = LocalDateTime.now();
         LocalDate dateNow = dateTimeNow.toLocalDate();
@@ -290,7 +289,7 @@ public class ChatService {
 
 
 
-    }
+    }*/
 
     //방
     public List<ChatMessageDto.Response> getLatestMessages(ChatRoom chatRoom){
@@ -319,7 +318,9 @@ public class ChatService {
     }
 
     public void insertData(String path) throws IOException, ParseException {
-        if (chatRoomRepository.count() < 0) { //db가 비어있을 때만 실행
+
+        if (chatRoomRepository.count() < 1) { //db가 비어있을 때만 실행
+
 
             FileInputStream ins = new FileInputStream(path + "chatroom.json");
             JSONParser parser = new JSONParser();

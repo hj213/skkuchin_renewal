@@ -43,10 +43,7 @@ public class ChatRoom {
     @JsonIgnore
     @JoinColumn(name = "receiver_id")
     private AppUser user1;
-    
 
-    @Enumerated(EnumType.STRING)
-    private RequestStatus senderRequestStatus;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus receiverRequestStatus;
@@ -55,9 +52,7 @@ public class ChatRoom {
 
     private LocalDateTime expireDate;
 
-    private LocalDateTime latestMessageTime;
 
-    private String displayMessageTime;
 
 
 

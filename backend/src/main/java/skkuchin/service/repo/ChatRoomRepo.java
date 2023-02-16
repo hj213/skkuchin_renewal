@@ -17,12 +17,12 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
     ChatRoom findByRoomId(String roomId);
 
     @Query("SELECT a FROM ChatRoom a where a.user.id = :senderId " +
-            "AND a.senderRequestStatus = 'ACCEPT' AND a.receiverRequestStatus = 'ACCEPT' ORDER BY a.latestMessageTime DESC")
+            "AND a.receiverRequestStatus = 'ACCEPT'")
     List<ChatRoom> findByNormalSenderId
             (@Param("senderId") Long senderId);
 
     @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
-            "AND a.senderRequestStatus = 'ACCEPT' AND a.receiverRequestStatus = 'ACCEPT' ORDER BY a.latestMessageTime DESC")
+            "AND a.receiverRequestStatus = 'ACCEPT'")
     List<ChatRoom> findByNormalReceiverId
             (@Param("senderId") Long senderId);
 
