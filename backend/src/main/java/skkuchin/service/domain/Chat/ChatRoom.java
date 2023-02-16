@@ -72,6 +72,7 @@ public class ChatRoom {
     }
 
     // 신고 관련 매핑입니다 지우지 마세요
+    @JsonIgnore
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();
 }

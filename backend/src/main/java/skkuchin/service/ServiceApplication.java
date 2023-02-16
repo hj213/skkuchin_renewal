@@ -44,8 +44,8 @@ public class ServiceApplication {
 			userService.saveTestUser(new UserDto.SignUpForm("테스트", "test", "12341234", "12341234", 20, Major.건축학과, Profile.DEFAULT2));
 
 			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; // Window 공통 경로
-			//String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; // Mac 공통 경로
-			String path = "C:\\Users\\sunny\\skkuchin_renewal2\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
+			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; // Mac 공통 경로
+			//String path = "C:\\Users\\sunny\\skkuchin_renewal2\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
 
 			try {
 				tagService.insertData(path);
