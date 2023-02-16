@@ -152,18 +152,18 @@ const TagList = ({keyword, onTagClick}) => {
                         : <Image id={"기타"} src={mapTag7} width={64} height={36}/> }
                     </Grid>
                     <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
-                        { keyword.includes("간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTagOn8} width={132} height={36}/>
-                        : <Image id={"간단한 한 끼"} src={mapTag8} width={132} height={36}/> }
+                        { keyword.includes("간단한 한 끼") ? <Image id={"간단한 한 끼"} src={mapTagOn8} width={107} height={36}/>
+                        : <Image id={"간단한 한 끼"} src={mapTag8} width={107} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0 }}>
-                        { keyword.includes("분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTagOn9} width={128} height={36}/>
-                        : <Image id={"분위기 좋은"} src={mapTag9} width={128} height={36} /> }
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
+                        { keyword.includes("분위기 좋은") ? <Image id={"분위기 좋은"} src={mapTagOn9} width={104} height={36}/>
+                        : <Image id={"분위기 좋은"} src={mapTag9} width={104} height={36} /> }
                     </Grid>
                     <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { keyword.includes("맛집") ? <Image id={"맛집"} src={mapTagOn10} width={65} height={36}/>
                         : <Image id={"맛집"} src={mapTag10} width={65} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0 }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px'  }}>
                         { keyword.includes("친절") ? <Image id={"친절"} src={mapTagOn11} width={65} height={36}/>
                         : <Image id={"친절"} src={mapTag11} width={65} height={36} /> }
                     </Grid>
@@ -171,7 +171,7 @@ const TagList = ({keyword, onTagClick}) => {
                         { keyword.includes("가성비") ? <Image id={"가성비"} src={mapTagOn12} width={75} height={36}/>
                         : <Image id={"가성비"} src={mapTag12} width={75} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0 }}>
+                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { keyword.includes("청결도") ? <Image id={"청결도"} src={mapTagOn13} width={78} height={36}/>
                         : <Image id={"청결도"} src={mapTag13} width={78} height={36} /> }
                     </Grid>

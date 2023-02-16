@@ -70,6 +70,24 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                                 image: selectedImage,
                                 zIndex: 10
                             });
+                        } else if(place.marker == '술집') {
+                            const selectedImageSrc = "/markers/술집_red.png",
+                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
+                            marker = new window.kakao.maps.Marker({
+                                position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                                image: selectedImage,
+                                zIndex: 10
+                            });
+                        } else if(place.marker == '카페') {
+                            const selectedImageSrc = "/markers/카페_red.png",
+                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
+                            marker = new window.kakao.maps.Marker({
+                                position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                                image: selectedImage,
+                                zIndex: 10
+                            });
                         }
                         // 기본
                         else {

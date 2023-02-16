@@ -60,6 +60,11 @@ export default function list(){
         {id: '기타', exclusiveGroup: 'cuisine'},
         {id: '간단한 한 끼', exclusiveGroup: null},
         {id: '분위기 좋은', exclusiveGroup: null},
+        {id: '맛집', exclusiveGroup: null},
+        {id: '친절', exclusiveGroup: null},
+        {id: '가성비', exclusiveGroup: null},
+        {id: '청결도', exclusiveGroup: null},
+        {id: '둘이 가요', exclusiveGroup: null},
     ]);
 
     // key props warning 해러 필요

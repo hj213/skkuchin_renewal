@@ -22,20 +22,20 @@ import Navbar from "../components/Navbar";
 // Icons
 import back from '../image/arrow_back_ios.png';
 import close from '../image/close.png';
-import tag1 from '../image/태그/리뷰등록_off/tag_맛집.png';
-import tag1on from '../image/태그/리뷰등록_on/tag_맛집.png'
-import tag2 from '../image/태그/리뷰등록_off/tag_간단한한끼.png';
-import tag2on from '../image/태그/리뷰등록_on/tag_간단한한끼.png';
-import tag3 from '../image/태그/리뷰등록_off/tag_분위기좋은.png';
-import tag3on from '../image/태그/리뷰등록_on/tag_분위기좋은.png';
-import tag4 from '../image/태그/리뷰등록_off/tag_가성비.png';
-import tag4on from '../image/태그/리뷰등록_on/tag_가성비.png';
-import tag5 from '../image/태그/리뷰등록_off/tag_친절.png';
-import tag5on from '../image/태그/리뷰등록_on/tag_친절.png';
-import tag6 from '../image/태그/리뷰등록_off/tag_청결도.png';
-import tag6on from '../image/태그/리뷰등록_on/tag_청결도.png';
-import tag7 from '../image/태그/리뷰등록_off/tag_둘이가요.png';
-import tag7on from '../image/태그/리뷰등록_on/tag_둘이가요.png';
+import tag1 from '../image/태그/리뷰등록_off/review_맛집.png';
+import tag1on from '../image/태그/리뷰등록_on/review_맛집Y.png'
+import tag2 from '../image/태그/리뷰등록_off/review_간단한한끼.png';
+import tag2on from '../image/태그/리뷰등록_on/review_간단한한끼Y.png';
+import tag3 from '../image/태그/리뷰등록_off/review_분위기좋은.png';
+import tag3on from '../image/태그/리뷰등록_on/review_분위기좋은Y.png';
+import tag4 from '../image/태그/리뷰등록_off/review_가성비.png';
+import tag4on from '../image/태그/리뷰등록_on/review_가성비Y.png';
+import tag5 from '../image/태그/리뷰등록_off/review_친절.png';
+import tag5on from '../image/태그/리뷰등록_on/review_친절Y.png';
+import tag6 from '../image/태그/리뷰등록_off/review_청결도.png';
+import tag6on from '../image/태그/리뷰등록_on/review_청결도Y.png';
+import tag7 from '../image/태그/리뷰등록_off/review_둘이가요.png';
+import tag7on from '../image/태그/리뷰등록_on/review_둘이가요Y.png';
 import image from '../image/사진 더보기-1.png';
 
 
