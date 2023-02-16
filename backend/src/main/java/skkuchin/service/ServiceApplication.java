@@ -58,7 +58,6 @@ public class ServiceApplication {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-
 			userService.saveTestMatchingUsers(100);
 		};
 	}
