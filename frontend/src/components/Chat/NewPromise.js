@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 // 스위치
 import Image from 'next/image';
-import closeIcon from '../../image/close-1.png';
+import closeIcon from '../../image/close.png';
 
 const NewPromise = ({ onClose, open }) => {
 
@@ -45,7 +45,7 @@ const NewPromise = ({ onClose, open }) => {
                     padding: '0',
                     borderRadius: "30px",
                 }}>
-                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"22px 15px 0px 15px"}}>
                     <div style={{flex: 1}} />
                     <div style={{ display: "flex", justifyContent: "flex-end", padding:"none" }}>
                     <Image
