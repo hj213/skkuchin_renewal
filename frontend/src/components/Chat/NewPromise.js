@@ -30,35 +30,9 @@ const NewPromise = ({ onClose, open }) => {
     }
 
     return (
-        <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: '100%',
-            height: '100%'
-          }}>
-            <div style={{
-              position: "absolute",
-              top: "172px",
-              right: "29px",
-            }}>
-              <Image
-                src={closeIcon}
-                width="35px"
-                height="35px"
-                onClick={onClose}
-              />
-            </div>
-          
-
             <Modal
                 open={open}
                 onClose={onClose}
-                // style={{background: "rgba(50, 50, 50, 0.25)"}}
             >
                 <div style={{
                     position: 'absolute',
@@ -71,8 +45,20 @@ const NewPromise = ({ onClose, open }) => {
                     padding: '0',
                     borderRadius: "30px",
                 }}>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
+                    <div style={{flex: 1}} />
+                    <div style={{ display: "flex", justifyContent: "flex-end", padding:"none" }}>
+                    <Image
+                        src={closeIcon}
+                        width="35px"
+                        height="35px"
+                        onClick={onClose}
+                        style={{position: 'absolute', top: '-15px', right: '-15px', cursor: 'pointer'}}
+                    />
+                    </div>
+                </div>
                 <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Grid sx={{pt: '39px'}}>{displayMBTI("ENTP")}</Grid>
+                    {displayMBTI("ENTP")}
                     <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{user !== null && user.nickname}</Typography>
                     <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
                         <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>{user !== null && user.campus}</Typography>&nbsp;
@@ -135,7 +121,6 @@ const NewPromise = ({ onClose, open }) => {
                 </Grid>
                 </div>
             </Modal>
-        </div>
 )};
 
 

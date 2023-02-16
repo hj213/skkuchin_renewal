@@ -41,11 +41,12 @@ const Friends = () => {
         <Card key={index} variant="outlined" sx={{height: height, width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 40px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
              <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
                 {displayMBTI(person.mbti)}
-                <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{user !== null && user.nickname}</Typography>
+                <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{person !== null && person.nickname}</Typography>
                 <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
-                    <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>{user !== null && user.campus}</Typography>&nbsp;
+                    <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>{person !== null && person.campus}</Typography>&nbsp;
                     {person.major} &nbsp;/&nbsp; 
-                    {person.student_id} 학번
+                    {person.student_id} 학번 &nbsp;/&nbsp; 
+                    {(person.gender).charAt(0)}
                 </Grid>
                 
                 <Grid item sx={{display: 'flex'}}>

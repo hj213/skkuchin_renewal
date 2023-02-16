@@ -98,7 +98,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div style={{marginTop:'5px'}} >
+            <div style={{marginTop:'4px'}} >
                 <Grid container style={{position:'absolute', zIndex:'3', alignItems: 'center'}}>
                     <Grid item style={{marginTop:'3.5%', marginLeft: '5%'}} onClick={handleOnClick}>
                         <MapDrawer open={openID} />
