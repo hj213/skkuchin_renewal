@@ -26,13 +26,7 @@ const MatchPage = () => {
             <Container sx={{p: '0 15px', mt: '0'}}>
                 {/* 상대 프로필 */}
                 <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
-                    <Grid item sx={{flexShrink: 0, pr: '13px'}}>
-                        <Friends />
-                    </Grid>
-                    <Grid item sx={{flexShrink: 0, pr: '13px'}}>
-                        <Friends />
-                    </Grid>
-                    <Grid item sx={{flexShrink: 0}}>
+                    <Grid item>
                         <Friends />
                     </Grid>
                 </Grid>

@@ -3,6 +3,7 @@ package skkuchin.service.domain.Map;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Report;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,4 +44,7 @@ public class Review {
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewTag> reviewTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Report> reports = new ArrayList<>();
 }

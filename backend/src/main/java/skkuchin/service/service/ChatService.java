@@ -139,6 +139,7 @@ public class ChatService {
     }
 
 
+
     public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
 
         List<ChatRoom> chatRooms;
@@ -190,6 +191,7 @@ public class ChatService {
                         chatroom, getLatestMessage1(chatroom)))
                 .collect(Collectors.toList());
     }
+
     public void blockUser(ChatRoom chatRoom, AppUser appUser){
         if(appUser.getId() == chatRoom.getUser().getId()){
             chatRoom.setReceiverBlocked(true);

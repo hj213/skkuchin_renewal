@@ -58,24 +58,6 @@ public class SwaggerConfig {
     @Bean
     public Docket apiV2(){
         return new Docket(DocumentationType.OAS_30)
-                .useDefaultResponseMessages(false)
-                .ignoredParameterTypes(AuthenticationPrincipal.class)
-                .securityContexts(Arrays.asList(securityContext()))
-                .securitySchemes(Arrays.asList(apiKey()))
-                .securityContexts(Arrays.asList(securityContext()))
-                .securitySchemes(Arrays.asList(apiKey()))
-                .consumes(getConsumeContentTypes())
-                .produces(getProduceContentTypes())
-                .groupName("block")
-                .select()
-                .apis(RequestHandlerSelectors.
-                        basePackage("skkuchin.service.api.controller"))
-                .paths(PathSelectors.ant("/api/block/**")).build();
-    }
-
-    @Bean
-    public Docket apiV3(){
-        return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
             .securityContexts(Arrays.asList(securityContext()))
@@ -92,7 +74,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV4(){
+    public Docket apiV3(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -108,7 +90,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV5(){
+    public Docket apiV4(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -124,7 +106,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV6(){
+    public Docket apiV5(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -140,7 +122,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV7(){
+    public Docket apiV6(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -156,7 +138,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV8(){
+    public Docket apiV7(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -172,7 +154,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV9(){
+    public Docket apiV8(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -188,7 +170,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV10(){
+    public Docket apiV9(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -204,7 +186,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV11(){
+    public Docket apiV10(){
         return new Docket(DocumentationType.OAS_30)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(AuthenticationPrincipal.class)
@@ -220,7 +202,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket apiV12(){
+    public Docket apiV11(){
         return new Docket(DocumentationType.OAS_30)
                 .useDefaultResponseMessages(false)
                 .ignoredParameterTypes(AuthenticationPrincipal.class)

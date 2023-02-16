@@ -12,8 +12,8 @@ export default async (req, res) => {
         });
     }
 
-    const { gender, keywords, introduction, mbti, image } = req.body;
-    const body = JSON.stringify({ gender, keywords, introduction, mbti, image });
+    const { gender, keywords, introduction, mbti } = req.body;
+    const body = JSON.stringify({ gender, keywords, introduction, mbti });
 
     if (req.method == 'POST') {
         try {

@@ -27,7 +27,7 @@ public class ChatRoomController {
     private final ChatRoomRepo chatRoomRepository;
 
 
-    //sender 기준 최신 채팅방 정렬
+
     @GetMapping("/senderRooms")
     public ResponseEntity<?> sortSenderChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser appUser = principalDetails.getUser();
@@ -56,6 +56,7 @@ public class ChatRoomController {
 
         }
     }
+
 
      @PostMapping("/rooms")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){

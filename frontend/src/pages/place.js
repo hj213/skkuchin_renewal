@@ -107,7 +107,6 @@ const PlacePage = () => {
             TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
         }
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        
         if (newHeight >= preNewHeight) {
             // console.log(newHeight);
             // console.log(TARGET_HEIGHT);
@@ -136,6 +135,7 @@ const PlacePage = () => {
         }
         preNewHeight=newHeight;
     };
+
 
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
      const handleOnclick = (event) =>{
@@ -223,8 +223,8 @@ const PlacePage = () => {
                 title='스꾸친 | Place'
                 content='Place page'
             >   
-            <UpperBar/>        
-                <div style={{ position: 'relative', width:'100%', height:'100%', overflowX:'hidden'}}>  
+            <UpperBar/>
+                <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}> 
                 <Container style={{position:'absolute', zIndex:'2'}}>
                     <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
                 </Container> 
@@ -305,9 +305,6 @@ const PlacePage = () => {
                     )}
                     
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
-                    {/* 키워드별 필터링된 장소 개수 확인 */}
-                    <p style={{margin: 0, fontSize: '10px'}}>{filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개)' : null}</p> 
-
                     { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item}>
                                 <>
