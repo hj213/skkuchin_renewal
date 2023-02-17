@@ -18,7 +18,7 @@ const placeReducer = (state= initialState, action) => {
         case LOAD_PLACES_SUCCESS:
             return {
                 ...state,
-                place: payload.place
+                allplaces: payload.place,
             }
         case LOAD_PLACES_FAIL:
             return {

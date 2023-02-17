@@ -40,7 +40,7 @@ export default function searchList(){
             dispatch(search_places(keyword));
             dispatch(load_user());
         }
-    }, [dispatch]);
+    }, [dispatch, value]);
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -71,7 +71,10 @@ export default function searchList(){
     const handleIconOnclick = (event) =>{
         if(event.target.id == 'map' ){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
+            
+            dispatch(search_places(''));
             router.push(`/?keyword=${passValue}`);
+            
         } else{
             setPassValue('')
             dispatch(search_places('')); //초기화위해서
@@ -97,8 +100,11 @@ export default function searchList(){
         <ThemeProvider theme={theme} >
             <CssBaseline/>
             <Layout>
-            <UpperBar/>
-            <div style={{position:'relative', width:'100%', height:'100%' }}>
+            <div style={{position:'absolute', zIndex:'2'}}>
+                <UpperBar/>
+            </div>
+           
+            <div style={{position:'relative', width:'100%', height:'100%', marginTop:'80px', }}>
                 <div style={{position: 'absolute',}}>
                     <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '85px'}}>
                         <Card style={{
@@ -109,7 +115,7 @@ export default function searchList(){
                                     zIndex: '4',
                                     border: "1px solid transparent",
                                     boxShadow: 'none',
-        
+                                    
                                 }}>
                             <Grid container style={{position:'relative', marginTop:'20px',}}>
                                 <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36} id='map'/></Grid>
@@ -128,8 +134,8 @@ export default function searchList(){
                         </Card>
                     </Container>
                 </div>
-                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0'}}>
-                    <Card style={{overflowY:'auto', marginTop:'80px'}}>
+                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }}>
+                    <Card style={{overflowY:'auto', marginTop:'80px', border: "0px solid transparent", boxShadow:'none', borderRadius: '0px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                             {filteredPlace? filteredPlace.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>

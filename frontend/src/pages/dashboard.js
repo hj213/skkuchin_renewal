@@ -1,6 +1,7 @@
 
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import Navbar from "../components/Navbar";
 import Layout from "../hocs/Layout";
 
 const Dashboard = () => {
@@ -25,6 +26,7 @@ const Dashboard = () => {
                 </div>
 
             </div>
+            <Navbar/>
         </Layout>
     )
 };
