@@ -18,7 +18,7 @@ import back from '../image/arrow_back_ios.png'
 import ReviewStar from '../components/ReviewStar'
 import TagList from "../components/TagList";
 import SearchBox from "../components/SearchBox";
-import { displayReviewTag } from "../components/TagList";
+import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import UpperBar from "../components/UpperBar";
 
@@ -360,7 +360,7 @@ const PlacePage = () => {
                                                     {/* 태그 받아오기 */}
                                                     {item.tags.map((tag, index) => (
                                                     <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
-                                                        {displayReviewTag(tag)}
+                                                        {displayBigReviewTag(tag)}
                                                     </Grid>
                                                     ))}
                                                 </Grid>

@@ -63,7 +63,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         // 음식점
                         if(place.marker == '음식점') {
                             const selectedImageSrc = "/markers/식당_red.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
@@ -72,7 +72,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             });
                         } else if(place.marker == '술집') {
                             const selectedImageSrc = "/markers/술집_red.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
@@ -81,7 +81,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             });
                         } else if(place.marker == '카페') {
                             const selectedImageSrc = "/markers/카페_red.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
@@ -92,7 +92,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         // 기본
                         else {
                             const selectedImageSrc = "/markers/기본_red.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             markerImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
                             
                             marker = new window.kakao.maps.Marker({
@@ -104,7 +104,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     } else if(place.id != selectedId){
                         if(place.marker == '음식점') {
                             const imageSrc = "/markers/식당_yellow.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
@@ -113,7 +113,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         }
                         else if(place.marker == '술집') {
                             const imageSrc = "/markers/술집_yellow.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
@@ -121,7 +121,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             });
                         } else if(place.marker == '카페') {
                             const imageSrc = "/markers/카페_yellow.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
@@ -129,7 +129,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             });
                         } else {
                             const imageSrc = "/markers/기본_yellow.png",
-                            imageSize = new window.kakao.maps.Size(38.45, 47.45),
+                            imageSize = new window.kakao.maps.Size(27,33),
                             markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
                             marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
