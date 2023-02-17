@@ -1,13 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import MapDrawer from "./MapDrawer";
 import theme from "../theme/theme";
 import Image from 'next/image';
-import {Grid, CssBaseline, InputBase,TextField, Paper, styled, ThemeProvider, Container} from '@mui/material';
+import {Grid, CssBaseline, InputBase,TextField, Paper, styled, ThemeProvider, Container, Typography} from '@mui/material';
 import searchBox from '../image/검색창.png';
 import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";
+import marker from '../image/marker.png';
+import noAuto from '../image/noinfo_enheng.png';
 
 export default function SearchBox({openID, handleFocus, handleClick}){
 
@@ -17,12 +19,10 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     const [notChanged, setNotchanged] = useState(false);
-    const [imageHeight, setImageHeight] = useState('');
+    const [autoBox, setAutoBox] = useState(false);
     
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
-
-    const imgRef = useRef(null);
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -56,7 +56,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             setAuto(newAuto);
             
         }
-        
     }
 
     const handleKeyDown = (e) => {
@@ -86,6 +85,14 @@ export default function SearchBox({openID, handleFocus, handleClick}){
         handleFocus(true);
     }
 
+    const handleInputOnFocus = () => {
+        setAutoBox(true);
+    }
+
+    const handleInputOnBlur = () => {
+        setAutoBox(false);
+    }
+    
     // const handleOnClick = () => {
     //     handleClick(true);
     // }    
@@ -116,10 +123,10 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             <div>
                 <div style={{marginTop:'5px'}} >
                     <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
-                        <Grid item >
+                        <Grid item name="mapdrawer">
                             <MapDrawer open={openID} />
                         </Grid>
-                        <Grid item  style={{marginTop:'-2px'}}>
+                        <Grid item name='input' style={{marginTop:'-2px'}}>
                     
                             <InputBase
                                 sx={{ ml: 1, width:'155%'}}
@@ -127,32 +134,56 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                 value={value}
                                 onChange={handleValue}
                                 onKeyDown={handleKeyDown}
+                                onFocus={handleInputOnFocus}
+                               
                             />
                         
                         </Grid>
                     </Grid>
-                    <div style={{position: 'relative', padding:'0px 16px'}}>
+                    <div style={{position: 'relative', padding:'0px 16px', zIndex:'2'}}>
                         <Image src={searchBox} layout="responsive"/>
                     </div>
                 </div>
-                {auto.length > 0 && (
-                <div style={{margin:'-10px 0px 0px 7px',position:'absolute', top:'100%'}}>
-                    <Paper style={{height:'150px', width:'220%', overflowY:'scroll'}}> {/* 이미지 크기에 따라 수정해야합니다 */}
-                        <Container style={{padding:'0px'}}>
-                            <ul style={{paddingTop:'3px', listStyleType: "none",}}>
+                {autoBox && (
+                // <div style={{margin:'0px 0px 0px 7px',position:'absolute', top:'100%'}}>
+                    <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
+                    borderRadius: '0px'}}> 
+                        <Container style={{padding:'0px', marginTop:'110px'}}>
+                            {auto.length > 0 ?
+                            <ul style={{padding:'0px 25px 0px 25px', listStyleType: "none",}}>
                                 {auto.map((autoList) => (
                                     <li
                                         key={autoList.id}
                                         onClick={()=>handleAutoOnClick(autoList.name)}
-                                        style={{padding:'5px'}}
-                                    >
-                                        {autoList.name}
+                                        style={{ padding:'15px 10px 7px 10px',borderBottom: '1px solid #D9D9D9'}}
+                                    >   
+                                        <Grid container>
+                                            <Grid item style={{margin:'10px 0px 0px 0px'}}>
+                                                <Image src={marker} width={17} height={23}/>
+                                            </Grid>
+                                            <Grid item style={{margin:'0px 0px 0px 12px'}}>
+                                                <div style={{fontSize:'16px'}}>
+                                                {autoList.name}
+                                                </div>
+                                                <div style={{fontSize:'12px', color:'#a1a1a1'}}>
+                                                    {autoList.address.substr(2)}
+                                                </div>
+                                            </Grid>
+                                            
+                                        </Grid>
+                                        
                                     </li>
                                 ))}
                             </ul>
+                            : (
+                                <div style={{textAlign:'center', paddingTop:'110px'}}>
+                                    <Image src={noAuto} width={129} height={108}/>
+                                    <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
+                                </div>
+                            )}
                         </Container>
                     </Paper>
-                </div>
+                // </div>
                 )}
             </div>
         </ThemeProvider>

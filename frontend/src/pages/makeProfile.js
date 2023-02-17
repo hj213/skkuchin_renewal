@@ -277,26 +277,26 @@ export default function makeProfile(){
         '로스쿨': false,
         '행시': false,
     })
-    const [profile, setProfile] = useState({
-        'DEFAULT1': false,
-        'DEFAULT2': false,
-        'ENFJ': false,
-        'ENTP': false,
-        'INFP': false,
-        'ENFP': false,
-        'ISTJ': false,
-        'ISTP': false,
-        'ISFP': false,
-        'INTP': false,
-        'ESTJ': false,
-        'INFJ': false,
-        'ENTJ': false,
-        'ESTP': false,
-        'ESFJ': false,
-        'INTJ': false,
-        'ISFJ': false,
-        'ESFP': false,
-    })
+    // const [profile, setProfile] = useState({
+    //     'DEFAULT1': false,
+    //     'DEFAULT2': false,
+    //     'ENFJ': false,
+    //     'ENTP': false,
+    //     'INFP': false,
+    //     'ENFP': false,
+    //     'ISTJ': false,
+    //     'ISTP': false,
+    //     'ISFP': false,
+    //     'INTP': false,
+    //     'ESTJ': false,
+    //     'INFJ': false,
+    //     'ENTJ': false,
+    //     'ESTP': false,
+    //     'ESFJ': false,
+    //     'INTJ': false,
+    //     'ISFJ': false,
+    //     'ESFP': false,
+    // })
 
     const [gender, setGender] = useState('');
     const [keyword, setKeyword] = useState('');
@@ -558,35 +558,35 @@ export default function makeProfile(){
     }
 
     //프로필
-    const handleProfileClick = (event) => {
-        if(profile[event.target.name]){
-            setProfile({
-                ...profile,
-                [event.target.name] : false
+    // const handleProfileClick = (event) => {
+    //     if(profile[event.target.name]){
+    //         setProfile({
+    //             ...profile,
+    //             [event.target.name] : false
                 
-            })
-            setImage('');
-        } else{
-            setProfile({
-                ...profile,
-                [event.target.name] : true,
-                ...Object.keys(profile).reduce((acc, key) => {
-                    if (key !== event.target.name) {
-                      acc[key] = false;
-                    }
-                    return acc;
-                  }, {}),
-            })
-            setImage(event.target.name);
-        }
-    }
+    //         })
+    //         setImage('');
+    //     } else{
+    //         setProfile({
+    //             ...profile,
+    //             [event.target.name] : true,
+    //             ...Object.keys(profile).reduce((acc, key) => {
+    //                 if (key !== event.target.name) {
+    //                   acc[key] = false;
+    //                 }
+    //                 return acc;
+    //               }, {}),
+    //         })
+    //         setImage(event.target.name);
+    //     }
+    // }
     
     //확인
     const handleOnSubmit = (event) => {
         
         event.preventDefault();
 
-        dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
+        dispatch(add_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
                     // alert(message);
                     router.push({
@@ -628,15 +628,15 @@ export default function makeProfile(){
 
     //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
-        if(gender && keyword && introduction != '' && mbti && image){
+        if(gender && keyword && introduction != '' && mbti){
     
             setCondition(true);
         } else {
             setCondition(false);
         }
-    }, [gender, keyword, introduction, mbti, image]);
+    }, [gender, keyword, introduction, mbti]);
     
-      console.log(gender, keyword, introduction, mbti, image);
+      console.log(gender, keyword, introduction, mbti);
 
     return(
         <ThemeProvider theme={theme}>
@@ -899,7 +899,7 @@ export default function makeProfile(){
                             </div>
                         </Container>
                     </Container>
-                    <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
+                    {/* <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                             <Container  style={{padding:'0px', margin:'41.7px 0px 0px 10px', justifyContent:'center'}}>
                                 <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>매칭 프로필 사진*</Typography>
@@ -976,7 +976,7 @@ export default function makeProfile(){
                                 </div> 
                             </Container>
                         </div>
-                    </div>
+                    </div> */}
                     <div name='한줄소개' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px', justifyContent:'center'}}>
