@@ -21,7 +21,7 @@ export default function chatPlace(){
     const [date, setDate] = useState(new Date());
     const [calendarOpen, setCalendarOpen] = useState('hidden');
     const [DialogOpen, setDialogOpen] = useState(false);
-    
+
     const handleBack = (e) => {
         router.back();
     }

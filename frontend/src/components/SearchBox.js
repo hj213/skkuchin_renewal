@@ -27,15 +27,17 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
+            dispatch(load_places());
+
         }
     }, [dispatch]);
 
-    useEffect(()=>{
-        if(!notChanged){
-            dispatch(load_places());
-            setNotchanged(true);
-        }
-    }, [notChanged]);
+    // useEffect(()=>{
+    //     if(!notChanged){
+    //         dispatch(load_places());
+    //         setNotchanged(true);
+    //     }
+    // }, [notChanged]);
     
     //캠퍼스 필터링
     useEffect(() => {
@@ -135,7 +137,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                 onChange={handleValue}
                                 onKeyDown={handleKeyDown}
                                 onFocus={handleInputOnFocus}
-                               
+                                onBlur={handleInputOnBlur}
                             />
                         
                         </Grid>

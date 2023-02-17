@@ -105,8 +105,8 @@ export default function list(){
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
-                setFilteredPlace(null);            }
-            else {
+                setFilteredPlace(null);
+            } else {
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
@@ -149,6 +149,7 @@ export default function list(){
             visibility:'hidden'});
         setHeight('0');
         setPreventScroll('');
+        
     }
 
     // 카드 터치 했을 때 변화
@@ -286,8 +287,9 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            dispatch(search_places(''));
+            dispatch(search_places('!'))
         }
+        
     }
 
     //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
