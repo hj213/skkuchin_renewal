@@ -40,7 +40,7 @@ export default function searchList(){
             dispatch(search_places(keyword));
             dispatch(load_user());
         }
-    }, [dispatch]);
+    }, [dispatch, value]);
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -71,9 +71,9 @@ export default function searchList(){
     const handleIconOnclick = (event) =>{
         if(event.target.id == 'map' ){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
-            router.push(`/?keyword=${passValue}`);
+            
             dispatch(search_places(''));
-            // console.log(place);
+            router.push(`/?keyword=${passValue}`);
             
         } else{
             setPassValue('')

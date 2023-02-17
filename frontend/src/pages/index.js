@@ -105,8 +105,7 @@ export default function list(){
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
-                setFilteredPlace(null);
-            }
+                setFilteredPlace(null);            }
             else {
                 // 키워드 확인
                 dispatch(search_places(keyword));
@@ -287,6 +286,7 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
+            dispatch(search_places(''));
         }
     }
 
