@@ -26,10 +26,8 @@ public class SecurityConfig {
             "/api/user/find/**",
             "/api/user/password/reset",
             "/api/email/**",
-    };
-    private static final String[] PERMIT_CHAT_URL_ARRAY = {
-            "/chat/**",
-            "/ws/**"
+            /*"/chat/**",
+            "/ws/chat/**"*/
     };
     private static final String[] PERMIT_SWAGGER_URL_ARRAY = {
             "/v2/api-docs",
@@ -47,7 +45,6 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests()
                 .antMatchers(PERMIT_API_URL_ARRAY).permitAll()
-                .antMatchers(PERMIT_CHAT_URL_ARRAY).permitAll()
                 .antMatchers(PERMIT_SWAGGER_URL_ARRAY).permitAll()
                 .anyRequest().authenticated();
         http.apply(new MyCustomDsl());

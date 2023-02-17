@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Report;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,10 +44,7 @@ public class ChatRoom {
     @JsonIgnore
     @JoinColumn(name = "receiver_id")
     private AppUser user1;
-    
 
-    @Enumerated(EnumType.STRING)
-    private RequestStatus senderRequestStatus;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus receiverRequestStatus;
@@ -55,9 +53,7 @@ public class ChatRoom {
 
     private LocalDateTime expireDate;
 
-    private LocalDateTime latestMessageTime;
 
-    private String displayMessageTime;
 
 
 
@@ -75,8 +71,8 @@ public class ChatRoom {
         /*this.expireDate = now.plusMinutes(1);*/
     }
 
-
-
-
-
+    // 신고 관련 매핑입니다 지우지 마세요
+    @JsonIgnore
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Report> reports = new ArrayList<>();
 }

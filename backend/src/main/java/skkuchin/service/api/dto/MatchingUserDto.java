@@ -12,7 +12,7 @@ import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.Matching.Mbti;
-import skkuchin.service.domain.Matching.Profile;
+import skkuchin.service.domain.User.Profile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -36,8 +36,6 @@ public class MatchingUserDto {
         private String introduction;
         @NotNull
         private Mbti mbti;
-        @NotNull
-        private Profile image;
 
         public UserKeyword toUserKeywordEntity(AppUser user, Keyword keyword) {
             return UserKeyword.builder()

@@ -9,14 +9,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.controller.BlockController;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Block;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -38,17 +36,17 @@ public class ChatService {
     private final ChatRoomRepo chatRoomRepository;
     private final ChatRepo chatRepository;
     private final UserRepo userRepo;
-    private final BlockService blockService;
+
 
     //전체 채팅방 조회
-    public List<ChatRoomDto.Response> getAllRoom(){
+   /* public List<ChatRoomDto.Response> getAllRoom(){
         return chatRoomRepository.findAll()
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
                 .collect(Collectors.toList());
 
-    }
+    }*/
 
     //채팅방의 메시지들 조회
     public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
@@ -78,7 +76,6 @@ public class ChatService {
     public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
 
         ChatRoom chatRoom = dto.toEntity(user);
-        chatRoom.setSenderRequestStatus(RequestStatus.ACCEPT);
         chatRoom.setRoomId(UUID.randomUUID().toString());
         chatRoomRepository.save(chatRoom);
 
@@ -91,7 +88,7 @@ public class ChatService {
         System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         chatRoom1.setUser1(user);
         chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
-        chatRoom1.setLatestMessageTime(LocalDateTime.now());
+
 
         chatRoomRepository.save(chatRoom1);
 
@@ -142,63 +139,30 @@ public class ChatService {
     }
 
 
+
     public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
-
-        List<Block> block = blockService.getBlockedUserList(appuser);
         List<ChatRoom> chatRooms;
-
-        Long[] name = new Long[block.size()];
-
-        for (int i = 0; i < block.size(); i++) {
-            name[i] = block.get(i).getBlockedUser().getId();
-            System.out.println("name[i] = " + name[i]);
-
-        }
-
-        if(block.size() == 0){
-            chatRooms = chatRoomRepository.findByNormalSenderId(appuser.getId());
-        }
-        else{
-            chatRooms = chatRoomRepository.findBySenderId(appuser.getId(),name);
-        }
-
-
-
+        chatRooms = chatRoomRepository.findByNormalSenderId(appuser.getId());
         return chatRooms
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
+                        chatroom,getLatestMessage1(chatroom)))
                 .collect(Collectors.toList());
     }
 
 
     public List<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser){
-        List<Block> block = blockService.getBlockedUserList(appuser);
 
-        Long[] name = new Long[block.size()];
         List<ChatRoom> chatRooms;
-
-        for (int i = 0; i < block.size(); i++) {
-            name[i] = block.get(i).getBlockedUser().getId();
-            System.out.println("name[i] = " + name[i]);
-
-        }
-        if(block.size() == 0){
-            chatRooms =chatRoomRepository.findByNormalReceiverId(appuser.getId());
-        }
-
-        else{
-            chatRooms = chatRoomRepository.findByReceiverId(appuser.getId(),name);
-        }
-
-
+        chatRooms =chatRoomRepository.findByNormalReceiverId(appuser.getId());
 
         return chatRooms
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
-                        chatroom))
+                        chatroom, getLatestMessage1(chatroom)))
                 .collect(Collectors.toList());
     }
+
     public void blockUser(ChatRoom chatRoom, AppUser appUser){
         if(appUser.getId() == chatRoom.getUser().getId()){
             chatRoom.setReceiverBlocked(true);
@@ -225,6 +189,9 @@ public class ChatService {
 
 
 
+
+
+
     @Scheduled(cron = "* 0 * * * ?") //정각에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {
         List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());
@@ -237,9 +204,9 @@ public class ChatService {
     }
 
 
-    @Scheduled(cron = "* 0 0 * * ?") //자정에 display 시간 변경*/
+   /* @Scheduled(cron = "* 0 0 * * ?")*/ //자정에 display 시간 변경*/
     /*@Scheduled(cron = "10 * * * * ?")*/
-    public void setDisplayDateTime() {
+   /* public void setDisplayDateTime() {
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         LocalDateTime dateTimeNow = LocalDateTime.now();
         LocalDate dateNow = dateTimeNow.toLocalDate();
@@ -264,7 +231,36 @@ public class ChatService {
 
 
         }
-    }
+    }*/
+
+    /*@Scheduled(cron = "* 0 0 * * ?")*/ //자정에 display 시간 변경*/
+    /*@Scheduled(cron = "10 * * * * ?")*/
+   /* public void setDisplayDateTime1(ChatRoom chatRoom) {
+
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        LocalDate dateNow = dateTimeNow.toLocalDate();
+
+        LocalDateTime recordedDateTime = chatRoom.getLatestMessageTime();
+        LocalDate recordedDate = recordedDateTime.toLocalDate();
+        Period diff = Period.between(recordedDate, dateNow);
+        if(diff.getDays() == 1  && diff.getMonths() ==0 && diff.getYears() ==0) {
+                chatRoom.setDisplayMessageTime("어제");
+
+        }
+        else if(diff.getDays() == 0  && diff.getMonths() ==0 && diff.getYears() ==0){
+            chatRoom.setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "a h:mm")));
+
+            }
+        else{
+            chatRoom.setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
+                        "yyyy-MM-dd")));
+
+            }
+
+
+
+    }*/
 
     //방
     public List<ChatMessageDto.Response> getLatestMessages(ChatRoom chatRoom){
@@ -279,8 +275,23 @@ public class ChatService {
         return new ChatMessageDto.Response(chatMessage);
     }
 
+    public ChatMessage getLatestMessage1(ChatRoom chatRoom){
+
+        ChatMessage chatMessage = new ChatMessage() ;
+        if(chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).size() == 0){
+            chatMessage.setDate(LocalDateTime.now());
+        }
+        else{
+            chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
+
+        }
+        return chatMessage;
+    }
+
     public void insertData(String path) throws IOException, ParseException {
-        if (chatRoomRepository.count() < 0) { //db가 비어있을 때만 실행
+
+        if (chatRoomRepository.count() < 1) { //db가 비어있을 때만 실행
+
 
             FileInputStream ins = new FileInputStream(path + "chatroom.json");
             JSONParser parser = new JSONParser();

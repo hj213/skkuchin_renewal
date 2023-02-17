@@ -15,6 +15,7 @@ import closeIcon from '../image/close.png';
 import { load_user } from "../actions/auth/auth";
 import {  displayReviewTag } from "../components/TagList";
 import UpperBar from "../components/UpperBar";
+import Layout from "../hocs/Layout";
 
 export default function searchList(){
     const router = useRouter();
@@ -55,13 +56,21 @@ export default function searchList(){
         e.preventDefault();
     };
 
-    //북마크 기능
+        // 북마크 기능
     const isFavorite = (placeId) => {
+<<<<<<< HEAD
         if(favorites){
             const favorite = favorites.some(favorite => favorite.place_id === placeId)
             if(favorite){
                 return <Image width={15} height={15} src={bookmarkOn}/>
             }
+=======
+        const favorite = favorites || []; // favorites가 null 또는 undefined인 경우 빈 배열([])로 초기화
+        const isFavorited = favorite.some(favorite => favorite.place_id === placeId);
+        if (isFavorited) {
+        return <Image width={15} height={15} src={bookmarkOn} />;
+        } else {
+>>>>>>> upstream/main
             return null;
         }
     };
@@ -230,6 +239,7 @@ export default function searchList(){
                     </Card>
                 </Container>
             </div>
+            </Layout>
         </ThemeProvider>
     )
 }

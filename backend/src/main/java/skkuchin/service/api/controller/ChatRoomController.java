@@ -1,5 +1,4 @@
 package skkuchin.service.api.controller;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,9 @@ import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
-
 import skkuchin.service.service.ChatService;
-
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -29,21 +28,12 @@ public class ChatRoomController {
 
 
 
-    @GetMapping("/rooms")
-    public ResponseEntity<?> getAllChatroom() {
-
-        List<ChatRoomDto.Response> responses = chatService.getAllRoom();
-        return new ResponseEntity<>(new CMRespDto<>(1, "전체 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
-
-
-
-    //sender 기준 최신 채팅방 정렬
     @GetMapping("/senderRooms")
     public ResponseEntity<?> sortSenderChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser appUser = principalDetails.getUser();
 
         List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser);
+         Collections.sort(responses,new DateComparator().reversed());
         return new ResponseEntity<>(new CMRespDto<>(1, "sender's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
 
@@ -53,8 +43,21 @@ public class ChatRoomController {
         AppUser appUser = principalDetails.getUser();
 
         List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
+        Collections.sort(responses,new DateComparator().reversed());
         return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
+    class DateComparator implements Comparator<ChatRoomDto.Response> {
+        @Override
+        public int compare(ChatRoomDto.Response f1, ChatRoomDto.Response f2) {
+            if (f1.getLocalDateTime().isAfter(f2.getLocalDateTime()) ) {
+                return 1;
+            } else  {
+                return -1;
+            }
+
+        }
+    }
+
 
      @PostMapping("/rooms")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -90,56 +93,51 @@ public class ChatRoomController {
     }
 
 
-    //상대방의 동의
-    @PostMapping("/room/accept/{roomId}")
-    public ResponseEntity<?> receiverAccept(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    //reaction = accept, refuse, hold
+    @PostMapping("/room/{reaction}/{roomId}")
+    public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
+            String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        System.out.println("reaction = " + reaction);
+        System.out.println("chatRoom = " + chatRoom.getRoomName());
         AppUser user = principalDetails.getUser();
-        chatService.receiverAccept(chatRoom,user);
+        if(reaction.equals("accept")){
+            System.out.println("his = ");
+            chatService.receiverAccept(chatRoom,user);
+        }
+        else if(reaction.equals("refuse")){
+            chatService.receiverRefuse(chatRoom,user);
+        }
+
+        else if (reaction.equals("hold")){
+            chatService.receiverHold(chatRoom,user);
+        }
+
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭 완료", null), HttpStatus.CREATED);
 
 
     }
 
-    //상대방의 거절
-    @PostMapping("/room/refuse/{roomId}")
-    public ResponseEntity<?> receiverRefuse(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        AppUser user = principalDetails.getUser();
-        chatService.receiverRefuse(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 거절", null), HttpStatus.CREATED);
 
-
-    }
-
-    //상대방의 보류
-    @PostMapping("/room/hold/{roomId}")
-    public ResponseEntity<?> receiverHold(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        AppUser user = principalDetails.getUser();
-        chatService.receiverHold(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 보류", null), HttpStatus.CREATED);
-
-
-    }
 
     //상대 유저 블럭
-    @PostMapping("/room/block/{roomId}")
-    public ResponseEntity<?> blockUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    //block or remove
+    @PostMapping("/room/response/{response}/{roomId}")
+    public ResponseEntity<?> blockUser(@PathVariable String roomId,
+            @PathVariable String response, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.blockUser(chatRoom,user);
+        if(response.equals("block") ){
+            chatService.blockUser(chatRoom,user);
+        }
+        else if(response.equals("remove")){
+            chatService.removeBlockedUser(chatRoom,user);
+        }
+
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.CREATED);
     }
 
-    //상대 유저 차단 해제
-    @PutMapping("/room/remove/{roomId}")
-    public ResponseEntity<?> removeBlockUser(@PathVariable String roomId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        AppUser user = principalDetails.getUser();
-        chatService.removeBlockedUser(chatRoom,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단 해제", null), HttpStatus.CREATED);
-    }
+
 
     //데이터 삭제
     @DeleteMapping("")
@@ -163,6 +161,11 @@ public class ChatRoomController {
     @GetMapping(value = "/roommm")
     public String getRoom(){
         return "chat/rrr";
+    }
+
+    @GetMapping(value = "/roomm")
+    public String getRoom1(){
+        return "chat/rrrr";
     }
 
 
