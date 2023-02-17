@@ -57,11 +57,13 @@ export default function searchList(){
 
     //북마크 기능
     const isFavorite = (placeId) => {
-        const favorite = favorites.some(favorite => favorite.place_id === placeId)
-        if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn}/>
+        if(favorites){
+            const favorite = favorites.some(favorite => favorite.place_id === placeId)
+            if(favorite){
+                return <Image width={15} height={15} src={bookmarkOn}/>
+            }
+            return null;
         }
-        return null;
     };
 
     //아이콘 클릭시
@@ -69,6 +71,9 @@ export default function searchList(){
         if(event.target.id == 'map' ){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             router.push(`/?keyword=${passValue}`);
+            dispatch(search_places(''));
+            // console.log(place);
+            
         } else{
             setPassValue('')
             dispatch(search_places('')); //초기화위해서
@@ -93,10 +98,11 @@ export default function searchList(){
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <div style={{zIndex:'2', position:'absolute'}}>
+            <div style={{position:'absolute', zIndex:'2'}}>
                 <UpperBar/>
             </div>
-            <div style={{position:'relative', width:'100%', height:'100%', marginTop:'75px' }}>
+           
+            <div style={{position:'relative', width:'100%', height:'100%', marginTop:'80px', }}>
                 <div style={{position: 'absolute',}}>
                     <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '85px'}}>
                         <Card style={{
@@ -107,7 +113,7 @@ export default function searchList(){
                                     zIndex: '4',
                                     border: "1px solid transparent",
                                     boxShadow: 'none',
-        
+                                    
                                 }}>
                             <Grid container style={{position:'relative', marginTop:'20px',}}>
                                 <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36} id='map'/></Grid>
@@ -126,8 +132,8 @@ export default function searchList(){
                         </Card>
                     </Container>
                 </div>
-                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0'}}>
-                    <Card style={{overflowY:'auto', marginTop:'80px'}}>
+                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }}>
+                    <Card style={{overflowY:'auto', marginTop:'80px', border: "0px solid transparent", boxShadow:'none', borderRadius: '0px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                             {filteredPlace? filteredPlace.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>

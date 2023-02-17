@@ -16,16 +16,23 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [value, setValue] = useState('');
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
+    const [notChanged, setNotchanged] = useState(false);
     
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
             dispatch(load_user());
         }
     }, [dispatch]);
+
+    useEffect(()=>{
+        if(!notChanged){
+            dispatch(load_places());
+            setNotchanged(true);
+        }
+    }, [notChanged]);
     
     //캠퍼스 필터링
     useEffect(() => {
@@ -35,7 +42,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             setFilteredPlace([]);
         }
     }, [allPlaces, user]);
-
+   
     const handleValue = (e) => {
         setValue(e.target.value);
 
@@ -65,9 +72,9 @@ export default function SearchBox({openID, handleFocus, handleClick}){
         setAuto(autoValue);
         router.push({
             pathname:'/searchList',
-            query: {keyword: auto}
+            query: {keyword: autoValue}
         });
-        setValue('');
+        setValue('')
         setAuto([]);
     }
 
@@ -76,9 +83,9 @@ export default function SearchBox({openID, handleFocus, handleClick}){
         handleFocus(true);
     }
 
-    const handleOnClick = () => {
-        handleClick(true);
-    }
+    // const handleOnClick = () => {
+    //     handleClick(true);
+    // }
 
     const CssTextField = styled(TextField)({
         '& label.Mui-focused': {
@@ -103,35 +110,37 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div style={{marginTop:'5px'}} >
-                <Grid container style={{position:'absolute', zIndex:'3', alignItems: 'center'}}>
-                    <Grid item style={{marginTop:'4.2%', marginLeft: '5%'}} onClick={handleOnClick}>
-                        <MapDrawer open={openID} />
+            <div>
+                <div style={{marginTop:'5px'}} >
+                    <Grid container style={{position:'absolute', top:'33%', left:'10%', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
+                        <Grid item >
+                            <MapDrawer open={openID} />
+                        </Grid>
+                        <Grid item  style={{marginTop:'-2px'}}>
+                    
+                            <InputBase
+                                sx={{ ml: 1, width:'155%'}}
+                                placeholder="오늘은 라멘 어때요?"
+                                value={value}
+                                onChange={handleValue}
+                                onKeyDown={handleKeyDown}
+                            />
+                        
+                        </Grid>
                     </Grid>
-                    <Grid item style={{marginTop:'3.6%', marginLeft: '2%'}} onFocus={handleOnFocus}>
-                
-                        <InputBase
-                            sx={{ ml: 1, width:'420%'}}
-                            placeholder="오늘은 라멘 어때요?"
-                            value={value}
-                            onChange={handleValue}
-                            onKeyDown={handleKeyDown}
-                        />
-                      
-                    </Grid>
-                </Grid>
-                <div style={{position: 'relative'}}>
-                    <Image src={searchBox} />
+                    <div style={{position: 'relative'}}>
+                        <Image src={searchBox} layout="responsive" />
+                    </div>
                 </div>
                 {auto.length > 0 && (
-                <div style={{margin:'-10px 0px 0px 7px', position:'relative'}}>
-                    <Paper style={{height:'150px', width:'97%', overflowY:'scroll', position:'absolute', zIndex:'5'}}>
+                <div style={{margin:'-10px 0px 0px 7px',position:'absolute', top:'100%'}}>
+                    <Paper style={{height:'150px', width:'220%', overflowY:'scroll'}}> {/* 이미지 크기에 따라 수정해야합니다 */}
                         <Container style={{padding:'0px'}}>
                             <ul style={{paddingTop:'3px', listStyleType: "none",}}>
                                 {auto.map((autoList) => (
                                     <li
                                         key={autoList.id}
-                                        // onClick={handleAutoOnClick(autoList.name)}
+                                        onClick={()=>handleAutoOnClick(autoList.name)}
                                         style={{padding:'5px'}}
                                     >
                                         {autoList.name}

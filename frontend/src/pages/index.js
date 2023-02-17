@@ -2,7 +2,7 @@
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
-import { load_places, search_places } from "../actions/place/place";
+import { search_places } from "../actions/place/place";
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
@@ -32,7 +32,7 @@ export default function list(){
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user); 
-
+    
     //상태
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -75,7 +75,7 @@ export default function list(){
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
     }
-
+    
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
 
@@ -209,11 +209,13 @@ export default function list(){
 
     //북마크 기능
     const isFavorite = (placeId) => {
+        if(favorites){
         const favorite = favorites.some(favorite => favorite.place_id === placeId)
         if(favorite){
             return <Image width={15} height={15} src={bookmarkOn}/>
         }
         return null;
+    }
     };
 
     //place 페이지로 넘어가는
@@ -276,9 +278,6 @@ export default function list(){
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-    }
-
-    const handleClick= (bool) => {
         if(bool) {
             setKeyword('');
             setTags([]);
@@ -287,14 +286,24 @@ export default function list(){
         }
     }
 
+    //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
+    // const handleClick= (bool) => {
+    //     if(bool) {
+    //         setKeyword('');
+    //         setTags([]);
+    //         setFilteredPlace(null);
+    //         setHeight('0');
+    //     }
+    // }
+
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
             <UpperBar />
             <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}>  
-            <Container style={{position:'absolute', zIndex:'2'}} >
-                <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
+            <Container style={{position:'absolute', zIndex:'3'}} >
+                <SearchBox openID={openID} handleFocus={handleFocus}/>   
             </Container> 
              {/* 태그 목록 */}
             <TagList keyword={keyword} onTagClick={onTagClick} />
@@ -350,6 +359,8 @@ export default function list(){
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
+                border: '1px solid transparent',
+                
                 }} 
                 ref = {cardRef}
                  >
