@@ -55,11 +55,10 @@ public class ServiceApplication {
 				keywordService.insertData(path);
 				reviewService.insertData(path);
 				chatService.insertData(path);
+				userService.saveTestMatchingUsers(100);
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-
-			userService.saveTestMatchingUsers(100);
 		};
 	}
 }
