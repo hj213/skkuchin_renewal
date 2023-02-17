@@ -127,7 +127,6 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            // setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
@@ -306,12 +305,15 @@ export default function list(){
       <CssBaseline />
        <Layout>
             <UpperBar />
-            <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}>  
-            <Container style={{position:'absolute', zIndex:'3'}} >
-                <SearchBox openID={openID} handleFocus={handleFocus}/>   
+            <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
+            <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
+                <SearchBox openID={openID} handleFocus={handleFocus}/> 
+                <div style={{position:'relative', width:'100%'}}>
+                    <TagList keyword={keyword} onTagClick={onTagClick} />  
+                </div>
             </Container> 
              {/* 태그 목록 */}
-            <TagList keyword={keyword} onTagClick={onTagClick} />
+            
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
              
             <Slide direction="up" in={open.bool} timeout={1} >

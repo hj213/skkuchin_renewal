@@ -58,19 +58,11 @@ export default function searchList(){
 
         // 북마크 기능
     const isFavorite = (placeId) => {
-<<<<<<< HEAD
-        if(favorites){
-            const favorite = favorites.some(favorite => favorite.place_id === placeId)
-            if(favorite){
-                return <Image width={15} height={15} src={bookmarkOn}/>
-            }
-=======
         const favorite = favorites || []; // favorites가 null 또는 undefined인 경우 빈 배열([])로 초기화
         const isFavorited = favorite.some(favorite => favorite.place_id === placeId);
         if (isFavorited) {
         return <Image width={15} height={15} src={bookmarkOn} />;
         } else {
->>>>>>> upstream/main
             return null;
         }
     };
@@ -107,6 +99,7 @@ export default function searchList(){
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
+            <Layout>
             <div style={{position:'absolute', zIndex:'2'}}>
                 <UpperBar/>
             </div>

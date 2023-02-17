@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import MapDrawer from "./MapDrawer";
@@ -17,9 +17,12 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     const [notChanged, setNotchanged] = useState(false);
+    const [imageHeight, setImageHeight] = useState('');
     
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
+
+    const imgRef = useRef(null);
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -36,7 +39,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     
     //캠퍼스 필터링
     useEffect(() => {
-        if (allPlaces) {
+        if (allPlaces && user) {
             setFilteredPlace(allPlaces.filter((item) => item.campus === user.toggle));
         } else {
             setFilteredPlace([]);
@@ -85,7 +88,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
     // const handleOnClick = () => {
     //     handleClick(true);
-    // }
+    // }    
 
     const CssTextField = styled(TextField)({
         '& label.Mui-focused': {
@@ -112,7 +115,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             <CssBaseline/>
             <div>
                 <div style={{marginTop:'5px'}} >
-                    <Grid container style={{position:'absolute', top:'33%', left:'10%', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
+                    <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
                         <Grid item >
                             <MapDrawer open={openID} />
                         </Grid>
@@ -128,8 +131,8 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                         
                         </Grid>
                     </Grid>
-                    <div style={{position: 'relative'}}>
-                        <Image src={searchBox} layout="responsive" />
+                    <div style={{position: 'relative', padding:'0px 16px'}}>
+                        <Image src={searchBox} layout="responsive"/>
                     </div>
                 </div>
                 {auto.length > 0 && (

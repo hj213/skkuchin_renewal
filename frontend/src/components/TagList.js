@@ -140,13 +140,8 @@ const TagList = ({keyword, onTagClick}) => {
             <CssBaseline/>
             {/* 태그 목록 */}
             <Grid container 
-<<<<<<< HEAD
-            style={{  position: 'absolute', top: '13%', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
-            scrollbarWidth: 'none', msOverflowStyle: 'none', "&::WebkitScrollbar": { display: "none"}, padding: "0 15px"}}
-=======
-            style={{  position: 'absolute', top: '63.5px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
+            style={{  position: 'absolute', top: '0px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
             scrollbarWidth: 'none', msOverflowStyle: 'none', "&::WebkitScrollbar": { display: "none"}, padding: "0 20px"}}
->>>>>>> upstream/main
                 onClick={(e) => {
                     e.preventDefault();
                     let target = e.target;
