@@ -28,9 +28,9 @@ import I from '../image/mbti/I-1.png';
 import S from '../image/mbti/S-1.png';
 import T from '../image/mbti/T-1.png';
 import J from '../image/mbti/J-1.png';
-import ICheck from '../image/mbti/I.png';
-import SCheck from '../image/mbti/S.png';
-import TCheck from '../image/mbti/T.png';
+import ICheck from '../image/mbti/I_yellow.png';
+import SCheck from '../image/mbti/S_yellow.png';
+import TCheck from '../image/mbti/T_yellow.png';
 import JCheck from '../image/mbti/J.png';
 
 //문화예술
@@ -277,26 +277,26 @@ export default function makeProfile(){
         '로스쿨': false,
         '행시': false,
     })
-    const [profile, setProfile] = useState({
-        'DEFAULT1': false,
-        'DEFAULT2': false,
-        'ENFJ': false,
-        'ENTP': false,
-        'INFP': false,
-        'ENFP': false,
-        'ISTJ': false,
-        'ISTP': false,
-        'ISFP': false,
-        'INTP': false,
-        'ESTJ': false,
-        'INFJ': false,
-        'ENTJ': false,
-        'ESTP': false,
-        'ESFJ': false,
-        'INTJ': false,
-        'ISFJ': false,
-        'ESFP': false,
-    })
+    // const [profile, setProfile] = useState({
+    //     'DEFAULT1': false,
+    //     'DEFAULT2': false,
+    //     'ENFJ': false,
+    //     'ENTP': false,
+    //     'INFP': false,
+    //     'ENFP': false,
+    //     'ISTJ': false,
+    //     'ISTP': false,
+    //     'ISFP': false,
+    //     'INTP': false,
+    //     'ESTJ': false,
+    //     'INFJ': false,
+    //     'ENTJ': false,
+    //     'ESTP': false,
+    //     'ESFJ': false,
+    //     'INTJ': false,
+    //     'ISFJ': false,
+    //     'ESFP': false,
+    // })
 
     const [gender, setGender] = useState('');
     const [keyword, setKeyword] = useState('');
@@ -305,7 +305,10 @@ export default function makeProfile(){
     const [mbti, setMbti] = useState('');
     const [condition, setCondition] = useState(false); //확인버튼 조건 
 
-    const [visibility, setVisibility] = useState(''); //어느 페이지에서 접근하는지에 따라 상단 바뀌도록
+    const [visibility, setVisibility] = useState({
+        '뒤로가기': 'hidden',
+        '건너뛰기': 'hidden',
+    }); //어느 페이지에서 접근하는지에 따라 상단 바뀌도록
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -555,35 +558,35 @@ export default function makeProfile(){
     }
 
     //프로필
-    const handleProfileClick = (event) => {
-        if(profile[event.target.name]){
-            setProfile({
-                ...profile,
-                [event.target.name] : false
+    // const handleProfileClick = (event) => {
+    //     if(profile[event.target.name]){
+    //         setProfile({
+    //             ...profile,
+    //             [event.target.name] : false
                 
-            })
-            setImage('');
-        } else{
-            setProfile({
-                ...profile,
-                [event.target.name] : true,
-                ...Object.keys(profile).reduce((acc, key) => {
-                    if (key !== event.target.name) {
-                      acc[key] = false;
-                    }
-                    return acc;
-                  }, {}),
-            })
-            setImage(event.target.name);
-        }
-    }
+    //         })
+    //         setImage('');
+    //     } else{
+    //         setProfile({
+    //             ...profile,
+    //             [event.target.name] : true,
+    //             ...Object.keys(profile).reduce((acc, key) => {
+    //                 if (key !== event.target.name) {
+    //                   acc[key] = false;
+    //                 }
+    //                 return acc;
+    //               }, {}),
+    //         })
+    //         setImage(event.target.name);
+    //     }
+    // }
     
     //확인
     const handleOnSubmit = (event) => {
         
         event.preventDefault();
 
-        dispatch(add_matching_info(gender, keyword, introduction, mbti, image, ([result, message]) => {
+        dispatch(add_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
                     // alert(message);
                     router.push({
@@ -625,15 +628,15 @@ export default function makeProfile(){
 
     //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
-        if(gender && keyword && introduction != '' && mbti && image){
+        if(gender && keyword && introduction != '' && mbti){
     
             setCondition(true);
         } else {
             setCondition(false);
         }
-    }, [gender, keyword, introduction, mbti, image]);
+    }, [gender, keyword, introduction, mbti]);
     
-      console.log(gender, keyword, introduction, mbti, image);
+      console.log(gender, keyword, introduction, mbti);
 
     return(
         <ThemeProvider theme={theme}>
@@ -688,16 +691,16 @@ export default function makeProfile(){
                             </div>
                             <div style={{marginTop:'46px'}}>
                                 <Grid container>
-                                    <Grid style={{marginRight:'65px', marginLeft:'5px'}}>
-                                        <Image src={mbtiChoose.I ? ICheck : I} width={11} height={28} onClick={handleMbtiClick} name='I'/>
+                                    <Grid style={{marginRight:'63px', marginLeft:'4px', marginTop:'-1px'}}>
+                                        <Image src={mbtiChoose.I ? ICheck : I} width={13} height={30} onClick={handleMbtiClick} name='I'/>
                                     </Grid>
-                                    <Grid style={{marginRight:'60px'}}>
-                                        <Image src={mbtiChoose.S ? SCheck : S} width={20} height={28} onClick={handleMbtiClick} name='S'/>
+                                    <Grid style={{marginRight:'58px', marginTop:'-1px'}}>
+                                        <Image src={mbtiChoose.S ? SCheck : S} width={23} height={30} onClick={handleMbtiClick} name='S'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.T ? TCheck : T} width={20} height={28} onClick={handleMbtiClick} name='T'/>
+                                        <Image src={mbtiChoose.T ? TCheck : T} width={21} height={28} onClick={handleMbtiClick} name='T'/>
                                     </Grid>
-                                    <Grid style={{marginRight:'61px'}}>
+                                    <Grid style={{marginRight:'59px'}}>
                                         <Image src={mbtiChoose.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
                                     </Grid>
                                 </Grid>
@@ -896,7 +899,7 @@ export default function makeProfile(){
                             </div>
                         </Container>
                     </Container>
-                    <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
+                    {/* <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                             <Container  style={{padding:'0px', margin:'41.7px 0px 0px 10px', justifyContent:'center'}}>
                                 <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>매칭 프로필 사진*</Typography>
@@ -973,7 +976,7 @@ export default function makeProfile(){
                                 </div> 
                             </Container>
                         </div>
-                    </div>
+                    </div> */}
                     <div name='한줄소개' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px', justifyContent:'center'}}>
@@ -982,7 +985,7 @@ export default function makeProfile(){
                                 <textarea
                                 value={introduction}
                                 onChange={(e)=>{setIntroduction(e.target.value)}}
-                                maxLength={60}
+                                maxLength={30}
                                 placeholder='e.g. 성대 NCT 팬이랑 같이 밥먹고 싶어요 :)'
                                 style={{width:'310px', height:'70px', backgroundColor:'transparent', fontSize:'12px', border:'none', outline:'none', resize:'none', fontFamily:'inherit'}}
                                 />

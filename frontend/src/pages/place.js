@@ -221,16 +221,18 @@ const PlacePage = () => {
         <CssBaseline />
             <Layout>   
             <UpperBar/>
-                <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}> 
-                <Container style={{position:'absolute', zIndex:'2'}}>
-                    <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
+                <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
+                <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
+                    <SearchBox openID={openID} handleFocus={handleFocus}/> 
+                    <div style={{position:'relative', width:'100%'}}>
+                        <TagList keyword={keyword} onTagClick={onTagClick} />  
+                    </div>
                 </Container> 
                 {filteredPlace != null ?
                     <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} selectedId={id}/>                  
                     : <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace}/>                  
                 }
-                {/* 태그 목록 */}
-                <TagList keyword={keyword} onTagClick={onTagClick} />
+    
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -242,6 +244,8 @@ const PlacePage = () => {
                             zIndex: '4',
                             boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
                             visibility: open.visibility,
+                            border: '1px solid transparent',
+                            borderRadius: '0px'
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>

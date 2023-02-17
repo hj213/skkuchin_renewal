@@ -29,7 +29,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: skkuchin-repo
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
         run: |
           docker-compose build server client
           docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG

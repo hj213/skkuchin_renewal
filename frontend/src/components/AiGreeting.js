@@ -166,6 +166,7 @@ const AiGreeting = () => {
                     {
                         isAuthenticated ? authLinks: guestLinks
                     }
+            {user !== null ?
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -293,18 +294,25 @@ const AiGreeting = () => {
                 
             </div>
             </Modal>
+            : null }
             </Container>
             <Dialog open={dialogOpen} onClose={handleDialogOpen}>
-                <DialogContent style={{width:'270px', height:'100px', paddingTop:'27px',}}>
+                <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
                     AI 매칭 기능을 이용하시려면<br/>
                     매칭 프로필이 필요해요 🥹
                     </Typography>
                 </DialogContent>
-                <DialogActions style={{justifyContent:'center', paddingBottom:'13px'}}>
-                    <Button 
-                    href={`./makeProfile`}
-                    style={{fontSize:"12px", fontWeight: `${theme.typography.h1}`, color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>매칭 프로필 설정하기</Button>
+                <DialogActions style={{justifyContent:'center'}}>
+                    
+                    <Link href={'/makeProfile'}>
+                        <Button style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>
+                            <Typography style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
+                                매칭 프로필 설정하기
+                            </Typography>
+                        </Button>
+                    </Link>
+
                 </DialogActions>
             </Dialog>
         </ThemeProvider>

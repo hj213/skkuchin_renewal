@@ -115,7 +115,7 @@ export const change_status_info = (matching, callback) => async dispatch => {
 
 export const change_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
     const body = JSON.stringify({
-        gender, keywords, introduction, mbti, image
+        gender, keywords, introduction, mbti
     });
 
     try {
