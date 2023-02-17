@@ -32,13 +32,8 @@ const SignUpStep2 = (props) => {
     }
 
     const handleNextStep = () => {
-      //props.handleNextStep({nickname, major, student_id});
-      //dispatch(register(props.data));
-      dispatch(register(props.data))
+      //dispatch(register(props.data))
       props.handleNextStep();
-      //localStorage.setItem("nickname", nickname);
-      //localStorage.setItem("major", major);
-      //localStorage.setItem("student_id", student_id);
     }
 
     const handleNicknameChange = (e) => {
