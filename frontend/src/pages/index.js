@@ -87,7 +87,7 @@ export default function list(){
     //캠퍼스 필터링
     useEffect(() => {
         if (place && keyword != '' && user.toggle != null) {
-          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
+          setFilteredPlace(place.filter((item) => item.campus == user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
@@ -291,14 +291,14 @@ export default function list(){
     }
 
     //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
-    // const handleClick= (bool) => {
-    //     if(bool) {
-    //         setKeyword('');
-    //         setTags([]);
-    //         setFilteredPlace(null);
-    //         setHeight('0');
-    //     }
-    // }
+    const handleClick= (bool) => {
+        if(bool) {
+            setKeyword('');
+            setTags([]);
+            setFilteredPlace(null);
+            setHeight('0');
+        }
+    }
 
     return(
     <ThemeProvider theme={theme}>
@@ -380,6 +380,7 @@ export default function list(){
                     : null
                     }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+                    <p style={{margin: 0, fontSize: '10px'}}>{user!=null &&filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개) 현재 토글 : ' + user.toggle  : null }</p> 
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
