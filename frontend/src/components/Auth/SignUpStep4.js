@@ -36,8 +36,6 @@ const SignUpStep4 = (props) => {
           }
         }));
       }
-
-      console.log(props.data);
     }
 
     const handleCheck = () => {
