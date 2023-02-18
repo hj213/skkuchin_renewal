@@ -86,7 +86,7 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place && keyword != '' && user.toggle != null) {
+        if (place && keyword != '' && user != null && user.toggle != null) {
           setFilteredPlace(place.filter((item) => item.campus == user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
