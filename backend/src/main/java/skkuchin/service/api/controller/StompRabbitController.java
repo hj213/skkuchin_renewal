@@ -11,23 +11,18 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import skkuchin.service.config.chat.JwtErrorCode;
-import skkuchin.service.config.chat.ResponseCode;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
-import skkuchin.service.repo.ChatRepo;
-import skkuchin.service.repo.ChatRoomRepo;
+import skkuchin.service.r2dbcRepo.ChatRepo;
+import skkuchin.service.r2dbcRepo.ChatRoomRepo;
 
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 @Controller
@@ -36,8 +31,8 @@ import java.time.LocalDateTime;
 public class StompRabbitController {
 
     private final RabbitTemplate template;
-    private final ChatRepo chatRepository;
-    private final ChatRoomRepo chatRoomRepository;
+    private final ChatRepo chatRepo;
+    private final ChatRoomRepo chatRoomRepo;
     private final ChatService chatService;
     private final ChatSessionService chatSessionService;
 
@@ -62,7 +57,7 @@ public class StompRabbitController {
 
         //세션, 채팅방 정보, 유저 정보 설정, 받아오기
         String sessionId = accessor.getSessionId();
-        ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
+        ChatRoom chatRoom = chatService.findChatroom(chatRoomId).block();
         ChatSession chatSession = chatSessionService.findSession(sessionId);
         String username = chatSession.getSender();
 
@@ -70,7 +65,7 @@ public class StompRabbitController {
 
         chat.setSender(username);
         chat.setRoomId(chatRoom.getRoomId());
-        chat.setChatRoom(chatRoom);
+        chat.setChatRoomId(chatRoom.getId());
         chat.setDate(LocalDateTime.now());
 
         chat.setUserCount(2-chatRoom.getUserCount());
@@ -89,11 +84,9 @@ public class StompRabbitController {
 
         }*/
 
-
         //DB 저장
-        chatRoomRepository.save(chatRoom);
-        chatRepository.save(chat);
-
+        chatRoomRepo.save(chatRoom);
+        chatRepo.save(chat);
     };
 
 

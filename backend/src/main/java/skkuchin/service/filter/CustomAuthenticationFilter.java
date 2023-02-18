@@ -45,6 +45,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         log.info("request: "+ String.valueOf(request));
         if (!request.getMethod().equals("POST") || !request.getContentType().equals("application/json")) {
             log.error("POST 요청이 아니거나 JSON이 아닙니다!");
+            log.info(request.getContentType());
+            log.info(request.getMethod());
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
 

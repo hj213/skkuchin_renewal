@@ -18,11 +18,9 @@ public class ChatSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private ChatRoom chatRoom;
+    private String roomId;
 
     private String sessionId;
-
 
     private String sender;
 }
