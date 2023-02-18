@@ -76,6 +76,9 @@ const SignUpStep1 = (props) => {
                     shrink: true,
                 }}
                 required
+                InputProps={{
+                    endAdornment: (validUsername) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
+                }}
                 />
                 {/* 중복확인 메소드 추가 */}
                 <div style={{display:'flex'}}>

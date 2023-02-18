@@ -19,10 +19,12 @@ export default async( req, res )=> {
             const resValue = await apiRes.json();
 
             if(apiRes.status === 201){
+                console.log("test1")
                 return res.status(201).json({
                     success: resValue.message
                 });
             } else {
+                console.log("test2")
                 return res.status(apiRes.status).json({
                     error: resValue.message
                 });
