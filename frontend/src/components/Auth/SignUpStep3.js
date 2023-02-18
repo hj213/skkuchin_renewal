@@ -84,6 +84,7 @@ export default function SignUpStep3(props) {
                 
             })
             setImage('');
+            props.setData({...props.data, image: ''})
         } else{
             setProfile({
                 ...profile,
@@ -96,11 +97,11 @@ export default function SignUpStep3(props) {
                 }, {}),
             })
             setImage(event.target.name);
+            props.setData({...props.data, image: event.target.name});
         }
     }
 
     const handleNextStep = () => {
-        props.setData({...props.data, image: image});
         console.log(props.data);
         dispatch(register(props.data));
         props.handleNextStep();
@@ -212,7 +213,7 @@ export default function SignUpStep3(props) {
             </div>
             </div>
         
-            <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
+            <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050', marginBottom: '39px'}}>
                     이미 회원이신가요? <Link href={`/login`} > 로그인 </Link> 
             </div>
         </Box>

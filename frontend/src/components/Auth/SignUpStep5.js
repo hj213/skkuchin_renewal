@@ -1,18 +1,19 @@
 import { useState } from "react";
-import {  TextField, Button,  Typography,  Box, Link} from '@mui/material';
+import {  TextField, Button,  Typography,  Box, Link, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline } from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
+import theme from '../../theme/theme';
 import back from '../../image/arrow_back_ios.png';
-import check from '../../image/check_circle.png';
-import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
-import { register } from "../../actions/auth/auth";
 import { signup_email_check, signup_email_send } from '../../actions/email/email';
 
 const SignUpStep5 = (props) => {
     const dispatch = useDispatch();
     const [emailId, setEmailId] = useState('');
     const [domain, setDomain] = useState('@g.skku.edu');
+
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogMsg, setDialogMsg] = useState("");
     
     const handlePrevStep = () => {
       props.handlePrevStep();
@@ -22,10 +23,11 @@ const SignUpStep5 = (props) => {
       if (dispatch && dispatch !== null && dispatch !== undefined) {
         dispatch(signup_email_send(props.data.username, props.data.email, true, ([result, message]) => {
           if (result) {
-            alert("이메일을 재전송했습니다.");
+            setDialogMsg("이메일을 재전송했습니다.");
           } else {
-            alert(message);
+            setDialogMsg(message);
           }
+          setDialogOpen(true);
         }));
       }
     }
@@ -38,13 +40,24 @@ const SignUpStep5 = (props) => {
           if (result) {
             props.handleNextStep();
           } else {
-            alert(message);
+            setDialogMsg(message);
+            setDialogOpen(true);
           }
         }));
       }
     }
+
+    const handleDialogOpen = (e) => {
+      if(dialogOpen){
+          setDialogOpen(false);
+      } else{
+          setDialogOpen(true);
+      }
+    }
       
     return (
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Box
             sx={{
             marginTop: '45px',
@@ -79,7 +92,32 @@ const SignUpStep5 = (props) => {
         <Typography sx={{fontSize: '6px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
         <Typography sx={{fontSize: '6px', fontWeight: '400', ml: '5.58px', color: '#BABABA'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
         </div>
+
+        <Dialog open={dialogOpen} onClose={handleDialogOpen}>
+                <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
+                      {/* {dialogMsg.includes('\n') == true ? 
+                      <>
+                      {dialogMsg.split('\n')[0]}<br/>
+                      {dialogMsg.split('\n')[1]}
+                      </>
+                      :
+                      {dialogMsg}} */}
+                      {dialogMsg}
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center'}}>
+                    
+                        <Button onClick={e => setDialogOpen(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
+                                확인
+                            </Typography>
+                        </Button>
+
+                </DialogActions>
+        </Dialog>
       </Box>
+      </ThemeProvider>
     );
   };
 

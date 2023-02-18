@@ -1,6 +1,7 @@
 import { useState } from "react";
-import {  TextField, Button,  Typography,  Box, Select, MenuItem} from '@mui/material';
+import {  TextField, Button,  Typography,  Box, Select, MenuItem, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline } from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
+import theme from '../../theme/theme';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import uncheck from '../../image/uncheck.png';
@@ -15,6 +16,8 @@ const SignUpStep4 = (props) => {
     const [domain, setDomain] = useState('@g.skku.edu');
 
     const [checkState, setCheckState] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogMsg, setDialogMsg] = useState('');
     
     const handlePrevStep = () => {
       props.handlePrevStep();
@@ -28,7 +31,8 @@ const SignUpStep4 = (props) => {
             props.setData({...props.data, email: emailId+domain});
             props.handleNextStep();
           } else {
-            alert(message);
+            setDialogMsg(message);
+            setDialogOpen(true);
           }
         }));
       }
@@ -39,8 +43,18 @@ const SignUpStep4 = (props) => {
     const handleCheck = () => {
       setCheckState(!checkState);
     }
+
+    const handleDialogOpen = (e) => {
+      if(dialogOpen){
+          setDialogOpen(false);
+      } else{
+          setDialogOpen(true);
+      }
+    }
       
     return (
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Box
             sx={{
             marginTop: '45px',
@@ -102,16 +116,7 @@ const SignUpStep4 = (props) => {
             }
           <Typography sx={{fontSize: '10px', fontWeight: '500', ml: '5.58px'}}>개인정보처리방침 및 이용약관에 동의합니다</Typography>
         </div>
-        {/* { validPW && (password == re_password) && username != null ?
-                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                        다음
-                    </Button>
-                :
-                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                        다음
-                    </Button>
-            } */}
-          <div style={{display: 'grid', width: '90%', alignItems: 'center', justifyItems: 'center'}}>
+        <div style={{display: 'grid', width: '90%', alignItems: 'center', justifyItems: 'center'}}>
           {emailId != '' && checkState ?
               <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                   이메일 인증하기
@@ -121,11 +126,29 @@ const SignUpStep4 = (props) => {
                   이메일 인증하기
               </Button>
           }
-          </div>
+        </div>
         </form>
         <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
         <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
+      
+        <Dialog open={dialogOpen} onClose={handleDialogOpen}>
+                <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
+                      {dialogMsg}
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center'}}>
+                    
+                        <Button onClick={e => setDialogOpen(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
+                                확인
+                            </Typography>
+                        </Button>
+
+                </DialogActions>
+          </Dialog>
       </Box>
+      </ThemeProvider>
     );
   };
 
