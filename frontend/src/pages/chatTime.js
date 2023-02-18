@@ -12,8 +12,7 @@ import calendar from '../image/calendar.png';
 import down from '../image/down-1.png';
 import check from '../image/확인_3.png';
 import styled from 'styled-components';
-import { TimePicker } from 'react-ios-time-picker';
-
+import {Timeit} from "react-timeit";
 
 export default function chatTime(){
 
@@ -22,7 +21,18 @@ export default function chatTime(){
     const [date, setDate] = useState(new Date());
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
+    const [time, setTime] = useState('');
+    const [timeOpen, setTimeOpen] = useState('hidden');
     
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
+        return `${year}.${month}.${day}(${dayOfWeek})`;
+      };
+    
+
     const handleBack = (e) => {
         router.back();
     }
@@ -50,6 +60,14 @@ export default function chatTime(){
     };
     const handleSubmit = (e) => {
         // router.back();
+    }
+    const handleOpenTime = () => {
+        if(timeOpen=='hidden'){
+            setTimeOpen('visible')
+
+        } else {
+            setTimeOpen('hidden')
+        }
     }
     const CalendarContainer = styled.div`
     .react-calendar { 
@@ -98,7 +116,7 @@ export default function chatTime(){
        }
        .react-calendar__tile--now {
         background: #ffe885;
-        border-radius: 50%;
+        border-radius: 30px;
         font-weight: bold;
         color: white;
         heigth:100%;
@@ -110,6 +128,7 @@ export default function chatTime(){
         height:45px
        }
     `
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -138,7 +157,7 @@ export default function chatTime(){
                         <Grid container justify="space-around">
                             <Grid item style={{width:'90%'}}> 
                                 <div style={{ width:'100%', paddingBottom:'8px', borderBottom:"1px solid #BABABA"}}>
-                                    <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{moment(date).format("YYYY.MM.DD(dd)")}</Typography>
+                                    <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{formatDate(date)}</Typography>
                                 </div>
                             </Grid>
                             <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'20px'}}>
@@ -151,9 +170,9 @@ export default function chatTime(){
                         
                     </Container>
                     <div style={{ position:'absolute',width:'100%', margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
-                        <Slide direction="up" in={true} timeout={1} >
-                            <Container style={{padding:'0px'}}>
-                                <Card style={{ borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
+                        <Slide direction="up" in={calendarOpen} timeout={1} >
+                            <Container style={{padding:'0px',}}>
+                                <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
                                     <CalendarContainer>
                                         <Calendar onChange={setDate} value={date} formatDay={(locale, date) =>
                                             date.toLocaleString('en', { day: 'numeric' })
@@ -165,10 +184,18 @@ export default function chatTime(){
                                         selectRange={false}
                                         />
                                     </CalendarContainer>
+            
+                                    <Button onClick={handleOpenTime}>{time}</Button>
+                                    <div style={{visibility: timeOpen, positon:'relative'}}>
+                                        <Card style={{position:'absolute', zIndex:'4', bottom:0, right:0, height:'200px'}}>
+                                            <Timeit onChange={(value) => setTime(value)} value={time}/>
+                                        </Card>
+                                    </div>
                                 </Card>
+                                
                             </Container>
                         </Slide>
-                            
+                        
                         </div>
                     <Container style={{justifyContent:'center', position: "absolute", bottom: 0}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>

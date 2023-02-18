@@ -23,6 +23,7 @@
     "react-calendar": "^4.0.0",
     "react-loader-spinner": "^4.0.0",
     "react-redux": "^8.0.4",
+    "react-timeit": "^1.2.12",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
