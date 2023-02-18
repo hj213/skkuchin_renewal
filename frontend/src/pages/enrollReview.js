@@ -7,6 +7,7 @@ import { load_favorite } from "../actions/favorite/favorite";
 import { load_menu }  from "../actions/menu/menu";
 import { load_review } from "../actions/review/review";
 import { load_reviews } from "../actions/review/review";
+import { enroll_review } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import Layout from '../hocs/Layout';
@@ -15,9 +16,6 @@ import Image from 'next/image';
 
 import ReviewTag from "../components/ReviewTag";
 import { reviewTagImage } from "../components/ReviewTag";
-
-import UpperBar from "../components/UpperBar";
-import Navbar from "../components/Navbar";
 
 // Icons
 import back from '../image/arrow_back_ios.png';
@@ -51,9 +49,10 @@ import ReviewStar from "../components/ReviewStar";
 
 const enrollReview = () => {
 
-    // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
     const handleOnclick = (event) =>{
         if(event.target.name == 'close' ){
+            // 뒤로가기 오류 수정
+            router.back();
         } 
     };  
 
@@ -89,15 +88,87 @@ const enrollReview = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            dispatch(load_favorite());
-            dispatch(load_menu(id));
-            dispatch(load_review(id));
-            dispatch(load_reviews(id));
+            // callback 오류 수정
+            dispatch(load_review());
+            dispatch(load_reviews(place_id));
         }
     }, [dispatch, id]);
 
-    const user = useSelector(state => state.auth.user);
+    //리뷰 정보 전달
+    const [rate, setRate] = useState(false);
+    const [tagChoose, setTagChoose] = useState({
+        '맛집':false,
+        '간단한한끼':false,
+        '분위기좋은':false,
+        '가성비':false,
+        '친절':false,
+        '청결도':false,
+        '둘이가요':false
+    })
 
+    // 태그 클릭 시
+    const handleTagClick =(event)=>{
+        if(tagLimit.length == 8){
+            setTagChoose({
+                ...tagChoose
+            })
+            if(tagChoose[event.target.name]){
+                setTagChoose({
+                    ...tagChoose,
+                    [event.target.name]:false
+                })
+            }
+        }
+        else if(tagChoose[event.target.name]){
+            setTagChoose({
+                ...tagChoose,
+                [event.target.name]:false
+            })
+        } else{
+            setTagChoose({
+                ...tagChoose,
+                [event.target.name]:true
+            })
+        }
+    }
+
+    // 등록 클릭 시
+    const handleEnrollClick = (event) =>{
+        event.preventDefault();
+
+        dispatch(enroll_review(rate, tagChoose,([result, message])=>{
+            if(result){
+                router.push({
+                    pathname: '/enrollReview',
+                    query: {viewportHeight: window.innerHeight},
+                    src: '리뷰등록'
+                })
+            } else {
+                alert(message);
+            }
+        }))
+    }
+
+    const [tagLimit, setTagLimit] = useState('');
+
+    // 이미지 미리보기
+    const onChangeImages = (e) => {
+        setImages(Array.from(e.target.files));
+    };
+    const [images, setImages] = useState([]);
+
+    const addBtnClick = e => {
+        e.preventDefault();
+        alert('add button clicked! ' + place_id + "\n" + rate + "\n" + content + "\n" + images + "\n" + tags);
+
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(enroll_review(place_id, rate, content, images, tags));
+
+        }
+
+    };
+
+    const user = useSelector(state => state.auth.user);
 
     return(
         <ThemeProvider theme={theme}>
@@ -116,14 +187,13 @@ const enrollReview = () => {
                             height: '98px',
                             zIndex: '4',
                             border: 'none',
-                            
                             }}>
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
                         </Grid>
                     
-                        <Grid onClick={()=> handleFavClick()}>
+                        <Grid onClick={()=> handleEnrollClick()}>
                             <Typography sx={{fontSize:'18px', fontWeight:'700'}} color="#FFCE00">
                                 등록
                             </Typography>
@@ -154,7 +224,7 @@ const enrollReview = () => {
 
                             <Grid sx={{width: '100%'}}>
                                 <Grid>
-                                <div style={{ textAlign: "center", margin: '-5px -40px', padding: '13px 0px 5px 0px', borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
+                                <div style={{ textAlign: "center", margin: '-20px -20px 0', padding: '13px 0px 5px 0px', borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
                                     {[1, 2, 3, 4, 5].map((item, index) => {
                                         let starImage = emptyStar;
                                         if (index + 1 <= rating) {
@@ -185,56 +255,90 @@ const enrollReview = () => {
 
                             <Grid sx={{width: '100%'}}>
                                 <div style={{margin: '-20px -20px 0', padding: '13px 0px 10px 0px',borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
-                                <Grid container style={{margin: '13px 0px 11px 0px',  justifyContent: 'center'}}>
-                                    <Stack direction="row" spacing={{ xs: 1, sm: 2, md: 4 }}>
-                                    <Image
-                                        width= {77}
-                                        height= {34}
-                                        alt="tag"
-                                        src={tag1}
-                                    />
-                                    <Image
-                                        width= {131}
-                                        height= {34}
-                                        alt="tag"
-                                        src={tag2}
-                                    />
-                                    </Stack>
-                                    <Stack direction="row" spacing={5}>
-                                    <Image
-                                        width= {124}
-                                        height= {34}
-                                        alt="tag"
-                                        src={tag3}
-                                    />
-                                    <Image
-                                        width= {88}
-                                        height= {34}
-                                        alt="tag"
-                                        src={tag4}
-                                    />
-                                    <Image
-                                        width= {77}
-                                        height= {34}
-                                        alt="tag"
-                                        src={tag5}
-                                    />
-                                    </Stack>
-                                    <Stack direction="row" spacing={5}>
-                                    <Image
-                                        width= {92}
-                                        height= {34}
-                                        alt="tag"
-                                        src={tag6}
-                                    />
-                                    <Image
-                                        width= {109}
-                                        height= {34}
-                                        alt="tag"
-                                        src={tag7}
-                                    />
-                                    </Stack>
+                                <Grid container style={{margin: '13px 0px 11px 0px',  justifyContent: 'center', maxWidth:'350px'}}>
+                                    <Grid style={{marginRight:'8px'}}>
+                                        <Image
+                                            src={tagChoose.맛집 ? tag1on : tag1}
+                                            width= {77}
+                                            height= {34}
+                                            alt="tag1"
+                                            onClick={handleTagClick}
+                                            name='맛집'
+                                        />
+                                    </Grid>
+                                    <Grid style={{marginRight:'5px'}}>
+                                        <Image
+                                            src={tagChoose.간단한한끼 ? tag2on : tag2}
+                                            width= {131}
+                                            height= {34}
+                                            alt="tag2"
+                                            onClick={handleTagClick}
+                                            name='간단한한끼'
+                                        />
+                                    </Grid>
+                                    <Grid style={{marginRight:'5px'}}>
+                                        <Image
+                                            src={tagChoose.분위기좋은 ? tag3on : tag3}
+                                            width= {124}
+                                            height= {34}
+                                            alt="tag3"
+                                            onClick={handleTagClick}
+                                            name='분위기좋은'
+                                        />
+                                    </Grid>
+                                    <Grid style={{marginRight:'5px'}}>
+                                        <Image
+                                            src={tagChoose.가성비 ? tag4on : tag4}
+                                            width= {88}
+                                            height= {34}
+                                            alt="tag4"
+                                            onClick={handleTagClick}
+                                            name='가성비'
+                                        />
+                                    </Grid>
+                                    <Grid style={{marginRight:'5px'}}>
+                                        <Image
+                                            src={tagChoose.친절 ? tag5on : tag5}
+                                            width= {77}
+                                            height= {34}
+                                            alt="tag5"
+                                            onClick={handleTagClick}
+                                            name='친절'
+                                        />
+                                    </Grid>
+                                    <Grid style={{marginRight:'5px'}}>
+                                        <Image
+                                            src={tagChoose.청결도 ? tag6on : tag6}
+                                            width= {92}
+                                            height= {34}
+                                            alt="tag6"
+                                            onClick={handleTagClick}
+                                            name='청결도'
+                                        />
+                                    </Grid>
+                                    <Grid style={{marginRight:'5px'}}>
+                                        <Image
+                                            src={tagChoose.둘이가요 ? tag7on : tag7}
+                                            width= {109}
+                                            height= {34}
+                                            alt="tag7"
+                                            onClick={handleTagClick}
+                                            name='둘이가요'
+                                        />
+                                    </Grid>
                                 </Grid>
+                                </div>
+                            </Grid>
+
+                            <Grid>
+                                <div className='form-group'>
+                                    <label className='form-label mt-3' htmlFor='image'>
+                                        <strong>Image</strong>
+                                    </label>
+                                    <input 
+                                        className='form-control' type = 'file' name='images' accept='image/*' multiple
+                                        placeholder ='Image' onChange={e => onChangeImages(e)}
+                                        />
                                 </div>
                             </Grid>
 

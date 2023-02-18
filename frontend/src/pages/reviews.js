@@ -15,33 +15,16 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
 import close from '../image/close.png'
-import tag16 from '../image/태그/리뷰등록_off/tag_가성비.png'
-import tag17 from '../image/태그/리뷰등록_off/tag_간단한한끼.png'
-import tag14 from '../image/태그/리뷰등록_off/tag_둘이가요.png'
+import tag14 from '../image/태그/mini태그/mini_가성비.png'
 import profile from '../image/profile.png'
-import image from '../image/사진 더보기-1.png'
-
-
-
-import emptyStar from '../image/Star border-1.png';
-import filledStar from '../image/Star-1.png';
-import character from '../image/character.png';
-
-import TextField from '@mui/material/TextField';
-import ReviewStar from "../components/ReviewStar";
-
 
 
 const ReviewsPage = () => {
 
-    // 전체화면 시, 헤더영역 아이콘 클릭 이벤트, 수정 필요
+    // 뒤로가기, 수정필요
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
-            setHeight('32%');
-            setCardStyle({
-                radius:'30px 30px 0px 0px',
-                iconVisibility: 'visible'
-            })
+            router.back();
         } 
     };  
 
@@ -51,10 +34,8 @@ const ReviewsPage = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            // dispatch(load_favorite());
-            // dispatch(load_menu(id));
             dispatch(load_reviews(place_id));
-            // dispatch(load_review());
+            dispatch(load_review());
         }
     }, [dispatch, id]);
 
@@ -66,41 +47,8 @@ const ReviewsPage = () => {
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
 
-    // rating
-    const [rating, setRating] = useState(0);
-
-    const handleTouch = (index) => {
-        // setRating(index);
-        if (index + 1 === rating) {
-            setRating(0);
-        } else {
-            setRating(index + 1);
-        }
-    };
-
-    // const user = useSelector(state => state.auth.user);
-
-    // 이미지
-    const itemData = [
-        {
-            img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-            title: 'Breakfast',
-          },
-          {
-            img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-            title: 'Burger',
-          },
-          {
-            img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-            title: 'Camera',
-          },
-          {
-            img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-            title: 'Coffee',
-          },
-    ]
-
-
+    // 유저정보
+    const user = useSelector(state => state.auth.user);
 
     return(
         <ThemeProvider theme={theme}>
@@ -110,14 +58,14 @@ const ReviewsPage = () => {
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
 
             {/* 상단 헤더 */}
-
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
-                <Card style={{
+                <Card elevation={0} style={{
                     position: 'absolute',
                     top: '0px',
                     width: '100%',
                     height: '98px',
                     zIndex: '4',
+                    border: 'none',
                 }}>
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 10px 0px 0px'}}>
@@ -177,6 +125,7 @@ const ReviewsPage = () => {
                                 </Grid>
                                 <Grid>
                                     <Typography xs={2} sx={{fontSize: '13px', fontWeight: '500', lineHeight: '150%'}} color="#a1a1a1" component="div" align="center">
+                                        {/* 필터 버튼 */}
                                         최신순
                                     </Typography>
                                 </Grid>
@@ -192,33 +141,25 @@ const ReviewsPage = () => {
                                             <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
                                                 <Grid xs={2}>
                                                     <Badge badgeContent={"나"} color="secondary">
-                                                        <Avatar alt="" src={profile} />
+                                                        <Avatar alt="" src={review.user_image} />
                                                     </Badge>
                                                 </Grid>
                                                 <Grid xs={6}>
                                                     <Stack direction="column" spacing={1}>
                                                         <Typography sx={{fontSize: '12px', fontWeight:'700', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                                                            양세형
+                                                            {review.nickname}
                                                         </Typography>
                                                         <Typography sx={{fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                                                            컬쳐앤테크놀로지융합전공 14학번
+                                                            {review.major} {review.student_id}학번
                                                         </Typography>
                                                         <Grid style={{margin:'10px 0 0 -3px'}}>
-                                                            {/* {[1, 2, 3, 4, 5].map((item, index) => {
-                                                                let starImage = emptyStar;
-                                                                if (index + 1 <= rating) {
-                                                                starImage = filledStar;
-                                                                }
-                                                                return (
-                                                                    <Image key={index} width={20} height={20} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' />
-                                                                );
-                                                            })} */}
+
                                                         </Grid>
                                                     </Stack>
                                                 </Grid>
                                                 <Grid xs={4} >
                                                     <Typography sx={{fontSize: '12px', fontWeight: '500', lineHeight: '550%', paddingLeft:'5px'}} color="#a1a1a1" component="div" align="center">
-                                                        | 2022.10.22
+                                                        | {review.create_date.slice(0,10)}
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
