@@ -6,18 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Entity
+@Table("chat_message")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatMessage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //채팅방 ID
@@ -25,15 +26,12 @@ public class ChatMessage {
     //보내는 사람
     private String sender;
     //내용
-    @Column
     private String message;
 
-    @ManyToOne
-    private ChatRoom chatRoom;
+    private Long chatRoomId;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime Date;
-
+    private LocalDateTime date;
 
     private int userCount;
 }

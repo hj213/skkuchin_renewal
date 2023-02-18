@@ -6,13 +6,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.config.auth.PrincipalDetails;
-import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.ChatService;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,26 +24,37 @@ import java.util.List;
 /*@RequestMapping("/api/chat")*/
 public class ChatRoomController {
     private final ChatService chatService;
-    private final ChatRoomRepo chatRoomRepository;
-
-
 
     @GetMapping("/senderRooms")
     public ResponseEntity<?> sortSenderChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser appUser = principalDetails.getUser();
 
-        List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser);
-         Collections.sort(responses,new DateComparator().reversed());
+        List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser)
+                .collectList()
+                .doOnError(error -> {
+                    // This block will be executed if there is an error during the database operation
+                    System.err.println("Error saving room: " + error.getMessage());
+                })
+                .block();
+        Collections.sort(responses, new DateComparator().reversed());
+
         return new ResponseEntity<>(new CMRespDto<>(1, "sender's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
+
 
     //receiver 기준 최신 채탕방 정렬
     @GetMapping("/receiverRooms")
     public ResponseEntity<?> sortReceiverChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser appUser = principalDetails.getUser();
 
-        List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
-        Collections.sort(responses,new DateComparator().reversed());
+        List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser)
+                .collectList()
+                .doOnError(error -> {
+                    // This block will be executed if there is an error during the database operation
+                    System.err.println("Error saving room: " + error.getMessage());
+                })
+                .block();
+        Collections.sort(responses, new DateComparator().reversed());
         return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
     }
     class DateComparator implements Comparator<ChatRoomDto.Response> {
@@ -63,7 +74,12 @@ public class ChatRoomController {
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
 
          AppUser user = principalDetails.getUser();
-         chatService.makeRoom(user,dto);
+         chatService.makeRoom(user,dto)
+                 .doOnError(error -> {
+                     // This block will be executed if there is an error during the database operation
+                     System.err.println("Error saving room: " + error.getMessage());
+                 })
+                 .block();
          return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
 
 
@@ -73,23 +89,27 @@ public class ChatRoomController {
     //채팅방의 메시지 시간 순으로 정렬
     @GetMapping("/room/{roomId}")
     public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
-        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
-        List<ChatMessageDto.Response> responses = chatService.getLatestMessages(chatRoom);
-        System.out.println("responses = " + responses.size());
+        List<ChatMessageDto.Response> responses = chatService.getLatestMessages(roomId)
+                .collectList()
+                .doOnError(error -> {
+                    // This block will be executed if there is an error during the database operation
+                    System.err.println("Error saving room: " + error.getMessage());
+                })
+                .block();
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
     }
 
     //채팅방의 가장 최근 메시지 1개만 받아옴
     @GetMapping("/room/latest/{roomId}")
     public ResponseEntity<?> getLatestOneMessage(@PathVariable String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
-        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
-        ChatMessageDto.Response responses = chatService.getLatestMessage(chatRoom);
+        ChatMessageDto.Response response = chatService.getLatestMessage(roomId)
+                .doOnError(error -> {
+                    // This block will be executed if there is an error during the database operation
+                    System.err.println("Error saving room: " + error.getMessage());
+                })
+                .block();
 
-        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", response), HttpStatus.OK);
     }
 
 
@@ -97,20 +117,32 @@ public class ChatRoomController {
     @PostMapping("/room/{reaction}/{roomId}")
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
             String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("reaction = " + reaction);
-        System.out.println("chatRoom = " + chatRoom.getRoomName());
         AppUser user = principalDetails.getUser();
         if(reaction.equals("accept")){
             System.out.println("his = ");
-            chatService.receiverAccept(chatRoom,user);
+            chatService.receiverAccept(roomId,user)
+                    .doOnError(error -> {
+                        // This block will be executed if there is an error during the database operation
+                        System.err.println("Error saving room: " + error.getMessage());
+                    })
+                    .block();
         }
         else if(reaction.equals("refuse")){
-            chatService.receiverRefuse(chatRoom,user);
+            chatService.receiverRefuse(roomId,user)
+                    .doOnError(error -> {
+                        // This block will be executed if there is an error during the database operation
+                        System.err.println("Error saving room: " + error.getMessage());
+                    })
+                    .block();
         }
 
         else if (reaction.equals("hold")){
-            chatService.receiverHold(chatRoom,user);
+            chatService.receiverHold(roomId,user)
+                    .doOnError(error -> {
+                        // This block will be executed if there is an error during the database operation
+                        System.err.println("Error saving room: " + error.getMessage());
+                    })
+                    .block();
         }
 
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭 완료", null), HttpStatus.CREATED);
@@ -125,13 +157,22 @@ public class ChatRoomController {
     @PostMapping("/room/response/{response}/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
             @PathVariable String response, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
         if(response.equals("block") ){
-            chatService.blockUser(chatRoom,user);
+            chatService.blockUser(roomId,user)
+                    .doOnError(error -> {
+                        // This block will be executed if there is an error during the database operation
+                        System.err.println("Error saving room: " + error.getMessage());
+                    })
+                    .block();
         }
         else if(response.equals("remove")){
-            chatService.removeBlockedUser(chatRoom,user);
+            chatService.removeBlockedUser(roomId,user)
+                    .doOnError(error -> {
+                        // This block will be executed if there is an error during the database operation
+                        System.err.println("Error saving room: " + error.getMessage());
+                    })
+                    .block();
         }
 
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.CREATED);
