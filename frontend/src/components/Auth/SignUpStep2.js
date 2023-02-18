@@ -12,6 +12,7 @@ const SignUpStep2 = (props) => {
     const dispatch = useDispatch();
     const [validNickname, setValidNickname] = useState(null);
     const [nicknameMsg, setNicknameMsg] = useState("");
+    const [studentId, setStudentId] = useState("");
 
     const majorList = [
       '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공',
@@ -26,6 +27,9 @@ const SignUpStep2 = (props) => {
       '유학동양학과', '미술학과', '디자인학과', '무용학과', '영상학과', '연기예술학과', '의상학과', 
       '소프트웨어학과', '생명과학과', '수학과', '물리학과', '화학과', '전자전기공학부', '반도체시스템공학과', '소재부품융합공학과', '약학과', '스포츠과학과', '의학과'
     ];
+    const studentIdList = [
+      '23학번', '22학번', '21학번', '20학번', '19학번', '18학번', '17학번', '16학번', '15학번', '14학번', '13학번', '12학번', '11학번', '10학번'
+    ]
 
     const handlePrevStep = () => {
       props.handlePrevStep();
@@ -106,8 +110,8 @@ const SignUpStep2 = (props) => {
             </Select>
           </FormControl>
         </div>
-        <div style={{margin: '0 36px'}}>
-          <TextField
+        <div style={{margin: '0 36px 44px'}}>
+          {/* <TextField
             variant="standard"
             label="학번"
             //value={student_id}
@@ -128,7 +132,26 @@ const SignUpStep2 = (props) => {
             <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>숫자 2자리를 입력해주세요.</Typography>
             : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>&nbsp; </Typography>
           : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '34px'}}>숫자 2자리 입력</Typography>
-        }
+        } */}
+          <FormControl variant="standard" style={{width: '100%'}}>
+              <InputLabel shrink required >학번</InputLabel>
+              <Select
+                  MenuProps={{
+                    style: {
+                        width: '212px',
+                        height: '241px',
+                        fontWeight: '700'
+                    }
+                }}
+                name='student_id'
+                value={studentId}
+                onChange={(e) => {props.setData({...props.data, student_id: e.target.value.slice(0, 2)}); setStudentId(e.target.value)}}
+              >
+                  {studentIdList.map((item, index) => (
+                    <MenuItem value={item} key={index}>{item}</MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
         </div>
         <div style={{margin: '0 36px 12px'}}>
             {validNickname && (props.data.nickname != '' && props.data.major != '' && props.data.student_id.length == 2 && props.data.student_id < 24) ?
