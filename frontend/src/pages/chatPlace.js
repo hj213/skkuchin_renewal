@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment'; 
 import 'moment/locale/ko';
-import { CssBaseline, Box, Input, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import { CssBaseline, Paper, Input, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
@@ -12,15 +13,56 @@ import marker from '../image/marker.png';
 import down from '../image/down-1.png';
 import check from '../image/확인_3.png';
 import search from '../image/search.png';
-
+import { load_places } from "../actions/place/place";
+import { load_user } from "../actions/auth/auth";
 
 export default function chatPlace(){
 
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const [date, setDate] = useState(new Date());
     const [calendarOpen, setCalendarOpen] = useState('hidden');
     const [DialogOpen, setDialogOpen] = useState(false);
+    const [auto, setAuto] = useState([]);
+    const [autoBox, setAutoBox] = useState(false);
+    const [value, setValue] = useState('');
+    const [filteredPlace, setFilteredPlace] =useState([]);
+
+    const allPlaces = useSelector(state => state.place.allplaces);
+    const user = useSelector(state => state.auth.user);
+
+    useEffect(() => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_places());
+            dispatch(load_user());
+        }
+    }, [dispatch]);
+
+    //캠퍼스 필터링
+    useEffect(() => {
+        if (allPlaces && user) {
+            setFilteredPlace(allPlaces.filter((item) => item.campus === user.toggle));
+        } else {
+            setFilteredPlace([]);
+        }
+    }, [allPlaces, user]);
+
+    const handleValue = (e) => {
+        setValue(e.target.value);
+        if(e.target.value == ''){
+            setAuto([]);
+        } else{
+            const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
+            setAuto(newAuto);
+            
+        }
+    }
+
+    const handleAutoOnClick = (autoValue) => {
+        setValue(autoValue);
+        setAuto([]);
+    }
 
     const handleBack = (e) => {
         router.back();
@@ -43,12 +85,13 @@ export default function chatPlace(){
         router.back();
     };
     const handleSubmit = (e) => {
-
+        // router.back();
     }
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden', overflowY:'hidden'}}>
+            <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflow:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
@@ -70,24 +113,55 @@ export default function chatPlace(){
                         </Grid>
                     </Container>
                     <Container style={{padding:'0px', margin:'30px 0px 0px 20px'}}>
-                        <Grid container justify="space-around">
+                        <Grid container justify="space-around" >
                             
-                            <Grid item style={{ margin:'8px 10px 0px 5px'}}>
+                            <Grid item style={{ margin:'6px 10px 0px 5px', position:'absolute', zIndex:'2'}}>
                                 <Image src={search} width={20} height={20} onClick={handleDownClick}/>
                             </Grid>
-                            <Grid item > 
-                                {/* <div style={{ width:'355%', paddingBottom:'8px', borderBottom:"1px solid #BABABA"}}> */}
-                                    <Input style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{moment(date).format("YYYY.MM.DD(dd)")}</Input>
-                                {/* </div> */}
+                            <Grid item style={{width:'100%'}}> 
+                                
+                                <Input 
+                                style={{fontSize:'16px', padding:'0px 0px 5px 40px',width:'90%', fontWeight:'500'}} 
+                                placeholder='식당 이름을 검색해주세요.'
+                                value={value}
+                                onChange={handleValue}
+                                />
                             </Grid>
                         </Grid>
+                        {auto.length > 0 &&
+                        <div style={{position:'absolute', zIndex:'2', width:'90%'}}>
+                            <Paper style={{width:'90%', border: '0px solid transparent', borderRadius: '0px', boxShadow:'none'}}>
+                            <ul style={{padding:'0px 0px 0px 0px', listStyleType: "none",}}>
+                                {auto.map((autoList) => (
+                                    <li
+                                        key={autoList.id}
+                                        onClick={()=>handleAutoOnClick(autoList.name)}
+                                        style={{ padding:'15px 10px 7px 0px'}}
+                                    >   
+                                        <Grid container>
+                                            {/* <Grid item style={{margin:'10px 0px 0px 0px'}}>
+                                                <Image src={marker} width={17} height={23}/>
+                                            </Grid> */}
+                                            <Grid item style={{margin:'0px 0px 0px 0px'}}>
+                                                <div style={{fontSize:'16px', fontWeight:'500'}}>
+                                                {autoList.name}
+                                                </div>
+                                                <div style={{fontSize:'12px', color:'#a1a1a1'}}>
+                                                    {autoList.address.substr(2)}
+                                                </div>
+                                            </Grid>
+                                            
+                                        </Grid>
+                                        
+                                    </li>
+                                ))}
+                            </ul>
+                            </Paper>
+                        </div>
+                        }
                         <div>
-                            <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 장소 삭제하기</Button>
+                            <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 시간 삭제하기</Button>
                         </div>
-                        <div style={{visibility: calendarOpen, position:'absolute', zIndex:'2',bottom:0}}>
-                            <Calendar onChange={setDate} value={date}></Calendar>
-                        </div>
-
                     </Container>
                     <Container style={{justifyContent:'center', position: "absolute", bottom: 0}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>

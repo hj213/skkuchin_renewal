@@ -18,7 +18,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [value, setValue] = useState('');
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
-    const [notChanged, setNotchanged] = useState(false);
     const [autoBox, setAutoBox] = useState(false);
     
     const allPlaces = useSelector(state => state.place.allplaces);
@@ -31,13 +30,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
         }
     }, [dispatch]);
-
-    // useEffect(()=>{
-    //     if(!notChanged){
-    //         dispatch(load_places());
-    //         setNotchanged(true);
-    //     }
-    // }, [notChanged]);
     
     //캠퍼스 필터링
     useEffect(() => {
@@ -98,26 +90,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     // const handleOnClick = () => {
     //     handleClick(true);
     // }    
-
-    const CssTextField = styled(TextField)({
-        '& label.Mui-focused': {
-          color: 'transparent',
-        },
-        '& .MuiInput-underline:after': {
-          borderBottomColor: 'transparent',
-        },
-        '& .MuiOutlinedInput-root': {
-          '& fieldset': {
-            borderColor: 'transparent',
-          },
-          '&:hover fieldset': {
-            borderColor: 'transparent',
-          },
-          '&.Mui-focused fieldset': {
-            borderColor: 'transparent',
-          },
-        },
-      });
 
     return(
         <ThemeProvider theme={theme}>
