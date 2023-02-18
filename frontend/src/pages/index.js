@@ -380,7 +380,6 @@ export default function list(){
                     : null
                     }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                    <p style={{margin: 0, fontSize: '10px'}}>{user!=null &&filteredPlace ? "현재 키워드 : " + keyword + " (" + "검색결과 " + filteredPlace.length + ' 개) 현재 토글 : ' + user.toggle  : null }</p> 
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
