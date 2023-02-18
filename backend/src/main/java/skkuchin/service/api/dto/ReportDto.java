@@ -32,7 +32,7 @@ public class ReportDto {
                     .reportType(this.reportType)
                     .content(this.content)
                     .user(user)
-                    .chatRoom(chatRoom)
+                    .chatRoomId(chatRoom.getRoomId())
                     .review(review)
                     .build();
         }

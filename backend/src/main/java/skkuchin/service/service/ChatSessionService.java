@@ -24,7 +24,7 @@ public class ChatSessionService {
 
         ChatSession chatSession = new ChatSession() ;
         chatSession.setSessionId(sessionId);
-        chatSession.setChatRoom(chatRoom);
+        chatSession.setRoomId(chatRoom.getRoomId());
         chatSession.setSender(sender);
         chatSessionRepo.save(chatSession);
 
