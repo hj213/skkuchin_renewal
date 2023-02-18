@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface ChatRoomRepo extends R2dbcRepository<ChatRoom, Long> {
+    @Query("SELECT * FROM chat_room WHERE room_name = :roomName")
     Mono<ChatRoom> findByRoomName(String roomName);
+    @Query("SELECT * FROM chat_room WHERE room_id = :roomId")
     Mono<ChatRoom> findByRoomId(String roomId);
 
     @Query("SELECT * FROM chat_room WHERE user_id = :senderId AND receiver_request_status = 'ACCEPT'")
@@ -27,5 +29,6 @@ public interface ChatRoomRepo extends R2dbcRepository<ChatRoom, Long> {
     @Query("SELECT * FROM chat_room WHERE user_id = :senderId AND sender_request_status = 'ACCEPT' AND receiver_request_status = 'ACCEPT' AND user1_id NOT IN (:blockedUsers) ORDER BY latest_message_time DESC")
     Flux<ChatRoom> findBySenderId(@Param("senderId") Long senderId, @Param("blockedUsers") Long[] blockedUsers);*/
 
-    Flux<ChatRoom> findByExpireDateBefore(LocalDateTime now);
+    @Query("SELECT * FROM chat_room WHERE expire_date < NOW()")
+    Flux<ChatRoom> findByExpireDateBefore();
 }

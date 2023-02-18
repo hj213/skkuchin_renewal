@@ -89,14 +89,10 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 if (accessor.getCommand().equals(StompCommand.SEND)) {
                     String sessionId = accessor.getSessionId();
                     ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId);
-                    Mono<ChatRoom> chatRoomMono = chatRoomRepo.findByRoomId(chatSession.getRoomId());
-
-                    chatRoomMono.flatMap(chatRoom -> {
-                        if (chatRoom.isSenderBlocked() || chatRoom.isReceiverBlocked()) {
-                            return Mono.error(new RuntimeException("차단된 유저입니다."));
-                        }
-                        return Mono.empty();
-                    }).block();
+                    ChatRoom chatRoom = chatRoomRepo.findByRoomId(chatSession.getRoomId()).block();
+                    if (chatRoom.isSenderBlocked() || chatRoom.isReceiverBlocked()) {
+                        throw new RuntimeException("차단된 유저입니다.");
+                    }
                 }
 
                 else if(accessor.getCommand().equals(StompCommand.SUBSCRIBE)){

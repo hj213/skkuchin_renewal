@@ -175,7 +175,7 @@ public class ChatService {
     @Transactional("r2dbcTransactionManager")
     @Scheduled(cron = "* 0 * * * ?")
     public void deleteExpiredData() {
-        chatRoomRepo.findByExpireDateBefore(LocalDateTime.now())
+        chatRoomRepo.findByExpireDateBefore()
                 .filter(chatRoom -> !chatRoom.getReceiverRequestStatus().equals(RequestStatus.ACCEPT))
                 .flatMap(chatRoomRepo::delete)
                 .doOnError(error -> {

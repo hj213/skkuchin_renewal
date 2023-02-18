@@ -12,12 +12,15 @@ import skkuchin.service.domain.Chat.ChatRoom;
 @Repository
 public interface ChatRepo extends R2dbcRepository<ChatMessage, Long> {
 
+    @Query("SELECT * FROM chat_message WHERE id = :chatRoomId")
     Flux<ChatMessage> findByChatRoomId(Long chatRoomId);
 
+    @Query("SELECT * FROM chat_message WHERE room_id = :roomId")
     Flux<ChatMessage> findByRoomId(String roomId);
 
     @Query("SELECT * FROM chat_message WHERE room_id = :roomId ORDER BY date DESC")
     Flux<ChatMessage> findByLatestMessageTime(String roomId);
 
+    @Query("SELECT * FROM chat_message WHERE room_id = :roomId ORDER BY date DESC LIMIT 1")
     Mono<ChatMessage> findFirstByRoomIdOrderByDateDesc(String roomId);
 }

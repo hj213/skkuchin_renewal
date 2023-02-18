@@ -19,6 +19,8 @@ spring:
     url: r2dbc:mysql://localhost:3306/service?characterEncoding=UTF-8
     username: root
     password: Master00!@
+    database: service
+    host: localhost
     pool:
       enabled: true
 
