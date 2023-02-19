@@ -86,8 +86,8 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place && keyword != '' && user.toggle != null) {
-          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
+        if (place && keyword != '' && user != null && user.toggle != null) {
+          setFilteredPlace(place.filter((item) => item.campus == user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
@@ -291,14 +291,14 @@ export default function list(){
     }
 
     //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
-    // const handleClick= (bool) => {
-    //     if(bool) {
-    //         setKeyword('');
-    //         setTags([]);
-    //         setFilteredPlace(null);
-    //         setHeight('0');
-    //     }
-    // }
+    const handleClick= (bool) => {
+        if(bool) {
+            setKeyword('');
+            setTags([]);
+            setFilteredPlace(null);
+            setHeight('0');
+        }
+    }
 
     return(
     <ThemeProvider theme={theme}>
