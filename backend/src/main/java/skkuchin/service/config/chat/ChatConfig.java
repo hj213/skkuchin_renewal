@@ -19,10 +19,8 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import reactor.core.publisher.Mono;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
-import skkuchin.service.r2dbcRepo.ChatRoomRepo;
 import skkuchin.service.repo.ChatSessionRepo;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
@@ -38,7 +36,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     private final ChatService chatService;
     private final ChatSessionService chatSessionService;
     private final ChatSessionRepo chatSessionRepo;
-    private final ChatRoomRepo chatRoomRepo;
 
 
     @Value("${rabbitmq.host}")
@@ -86,11 +83,10 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
                 System.out.println("accessor = " + accessor);
                 //stomp.connect으로도 생각해 볼 수 있을것
-                if (accessor.getCommand().equals(StompCommand.SEND)) {
+                if(accessor.getCommand().equals(StompCommand.SEND)){
                     String sessionId = accessor.getSessionId();
                     ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId);
-                    ChatRoom chatRoom = chatRoomRepo.findByRoomId(chatSession.getRoomId()).block();
-                    if (chatRoom.isSenderBlocked() || chatRoom.isReceiverBlocked()) {
+                    if(chatSession.getChatRoom().isSenderBlocked() == true || chatSession.getChatRoom().isReceiverBlocked() == true){
                         throw new RuntimeException("차단된 유저입니다.");
                     }
                 }
@@ -105,31 +101,11 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                   String token = accessor.getFirstNativeHeader("token");
                     System.out.println("token = " + token);
                     String sender = getUserNameFromJwt(token);
-                    ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId).block();
+                    ChatRoom chatRoom = chatService.findChatroom(roomId);
 
                     chatSessionService.setSessionId(chatRoom,sessionId,sender);
-
-                    chatService.getAllMessage1(chatRoom,sender)
-                            .doOnError(error -> {
-                                // This block will be executed if there is an error during the database operation
-                                System.err.println("Error saving room: " + error.getMessage());
-                            })
-                            .subscribe(ms -> {
-                                // This block will be executed for each element emitted by the Flux
-                                System.out.println("Received message: " + ms);
-                            });
-
-                    chatService.updateCount(chatRoom)
-                            .doOnSuccess(savedRoom -> {
-                                // This block will be executed when the database operation is successful
-                                System.out.println("Room saved successfully: " + savedRoom.toString());
-                            })
-                            .doOnError(error -> {
-                                // This block will be executed if there is an error during the database operation
-                                System.err.println("Error saving room: " + error.getMessage());
-                            })
-                            .block();
-
+                    chatService.getAllMessage1(chatRoom,sender);
+                    chatService.updateCount(chatRoom);
                     System.out.println("Subscribe");
 
                 }
@@ -144,19 +120,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                     String sessionId = (String) message.getHeaders().get("simpSessionId");
                     System.out.println("sessionId = " + sessionId);
                     ChatSession chatSession = chatSessionService.findSession(sessionId);
-                    ChatRoom chatRoom = chatRoomRepo.findByRoomId(chatSession.getRoomId()).block();
-
-                    chatService.minusCount(chatRoom)
-                            .doOnSuccess(savedRoom -> {
-                                // This block will be executed when the database operation is successful
-                                System.out.println("Room saved successfully: " + savedRoom.toString());
-                            })
-                            .doOnError(error -> {
-                                // This block will be executed if there is an error during the database operation
-                                System.err.println("Error saving room: " + error.getMessage());
-                            })
-                            .block();
-
+                    chatService.minusCount(chatSession.getChatRoom());
                     chatSessionService.deleteSession(sessionId);
 
                 }

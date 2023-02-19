@@ -41,7 +41,7 @@ public class ChatRoomDto {
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
-                    .userId(user.getId())
+                    .user(user)
                     .roomName(this.roomName)
                     .build();
 
@@ -59,7 +59,7 @@ public class ChatRoomDto {
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
-                    .userId(user.getId())
+                    .user(user)
                     .roomId(UUID.randomUUID().toString())
                     .roomName(this.roomName)
                     .build();

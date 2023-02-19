@@ -4,7 +4,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,18 +47,18 @@ public class ServiceApplication {
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; // Mac 공통 경로
 			//String path = "C:\\Users\\sunny\\skkuchin_renewal2\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
 
-//			try {
-//				tagService.insertData(path);
-//				placeService.insertData(path);
-//				imageService.insertData();
-//				menuService.insertData(path);
-//				keywordService.insertData(path);
-//				reviewService.insertData(path);
+			try {
+				tagService.insertData(path);
+				placeService.insertData(path);
+				imageService.insertData();
+				menuService.insertData(path);
+				keywordService.insertData(path);
+				reviewService.insertData(path);
 				chatService.insertData(path);
-//				userService.saveTestMatchingUsers(100);
-//			} catch (Exception e) {
-//				System.out.println(e);
-//			}
+				userService.saveTestMatchingUsers(100);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 		};
 	}
 }

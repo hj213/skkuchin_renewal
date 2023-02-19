@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.MenuDto;
+import skkuchin.service.api.dto.PlaceDto;
 import skkuchin.service.domain.Map.Menu;
 import skkuchin.service.domain.Map.Place;
 import skkuchin.service.repo.MenuRepo;
