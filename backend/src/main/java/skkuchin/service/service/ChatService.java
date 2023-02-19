@@ -9,23 +9,23 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.r2dbcRepo.ChatRepo;
-import skkuchin.service.r2dbcRepo.ChatRoomRepo;
+import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
 
-import org.springframework.transaction.annotation.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,14 +33,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ChatService {
-    private final ChatRoomRepo chatRoomRepo;
-    private final ChatRepo chatRepo;
+    private final ChatRoomRepo chatRoomRepository;
+    private final ChatRepo chatRepository;
     private final UserRepo userRepo;
 
 
     //전체 채팅방 조회
    /* public List<ChatRoomDto.Response> getAllRoom(){
-        return chatRoomRepo.findAll()
+        return chatRoomRepository.findAll()
                 .stream()
                 .map(chatroom -> new ChatRoomDto.Response(
                         chatroom))
@@ -49,147 +49,165 @@ public class ChatService {
     }*/
 
     //채팅방의 메시지들 조회
-    @Transactional("r2dbcTransactionManager")
-    public Flux<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom) {
-        return chatRepo.findByRoomId(chatRoom.getRoomId())
-                .map(message -> new ChatMessageDto.Response(message));
+    public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
+        return chatRepository.findByRoomId(chatRoom.getRoomId())
+                .stream()
+                .map(message -> new ChatMessageDto.Response(message))
+                .collect(Collectors.toList());
     }
-
 
     //상대가 읽은 메시지 카운트 0으로 바꿈
-    @Transactional("r2dbcTransactionManager")
-    public Flux<ChatMessage> getAllMessage1(ChatRoom chatRoom, String sender) {
-        return chatRepo.findByRoomId(chatRoom.getRoomId())
-                .flatMap(chatMessage -> {
-                    if (chatMessage.getUserCount() > 0 && !chatMessage.getSender().equals(sender)) {
-                        chatMessage.setUserCount(0);
-                    }
-                    return chatRepo.save(chatMessage);
-                });
+    public void getAllMessage1(ChatRoom chatRoom, String sender){
+        List<ChatMessage> chatMessages = chatRepository.findByRoomId(chatRoom.getRoomId());
+        for (int i = 0; i<chatMessages.size(); i++) {
+
+            //내 메시지를 상대방이 들어와서 읽었을 때만 0으로 바꿈
+            if(chatMessages.get(i).getUserCount() >0 && !chatMessages.get(i).getSender().equals(sender)){
+                chatMessages.get(i).setUserCount(0);
+            }
+
+
+        }
+        chatRepository.saveAll(chatMessages);
     }
 
+
     //채팅방 개설
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> makeRoom(AppUser user, ChatRoomDto.PostRequest dto) {
+    public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
+
         ChatRoom chatRoom = dto.toEntity(user);
         chatRoom.setRoomId(UUID.randomUUID().toString());
-        return chatRoomRepo.save(chatRoom);
+        chatRoomRepository.save(chatRoom);
+
     }
 
     //상대방 정보
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> receiverAccept(String roomId, AppUser user) {
-        return chatRoomRepo.findByRoomId(roomId)
-                .flatMap(chatRoom1 -> {
-                    chatRoom1.setUser1Id(user.getId());
-                    chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
-                    return chatRoomRepo.save(chatRoom1);
-                });
+    public void receiverAccept(ChatRoom chatRoom,AppUser user){
+
+        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
+        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
+        chatRoom1.setUser1(user);
+        chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
+
+
+        chatRoomRepository.save(chatRoom1);
+
     }
 
+    public void receiverHold(ChatRoom chatRoom,AppUser user){
 
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> receiverHold(String roomId, AppUser user) {
-        return chatRoomRepo.findByRoomId(roomId)
-                .flatMap(chatRoom1 -> {
-                    chatRoom1.setUser1Id(user.getId());
-                    chatRoom1.setReceiverRequestStatus(RequestStatus.HOLD);
-                    return chatRoomRepo.save(chatRoom1);
-                });
+        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
+        chatRoom1.setUser1(user);
+        chatRoom1.setReceiverRequestStatus(RequestStatus.HOLD);
+        chatRoomRepository.save(chatRoom1);
+
     }
+    public void receiverRefuse(ChatRoom chatRoom,AppUser user){
 
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> receiverRefuse(String roomId, AppUser user) {
-        return chatRoomRepo.findByRoomId(roomId)
-                .flatMap(chatRoom1 -> {
-                    chatRoom1.setUser1Id(user.getId());
-                    chatRoom1.setReceiverRequestStatus(RequestStatus.REFUSE);
-                    return chatRoomRepo.save(chatRoom1);
-                });
+        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
+        chatRoom1.setUser1(user);
+        chatRoom1.setReceiverRequestStatus(RequestStatus.REFUSE);
+        chatRoomRepository.save(chatRoom1);
+
     }
 
 
     //채팅방 인원 조정
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> updateCount(ChatRoom chatRoom) {
-        chatRoom.setUserCount(chatRoom.getUserCount() + 1);
-        return chatRoomRepo.save(chatRoom);
+    public void updateCount(ChatRoom chatRoom){
+
+        chatRoom.setUserCount(chatRoom.getUserCount()+1);
+
+        chatRoomRepository.save(chatRoom);
+
+
     }
 
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> minusCount(ChatRoom chatRoom) {
-        chatRoom.setUserCount(chatRoom.getUserCount() - 1);
-        return chatRoomRepo.save(chatRoom);
+    public void minusCount(ChatRoom chatRoom){
+
+        chatRoom.setUserCount(chatRoom.getUserCount()-1);
+
+        chatRoomRepository.save(chatRoom);
+
     }
+
 
     // 특정 룸 아이디로 채팅방 찾기
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> findChatroom(String roomId){
-        return chatRoomRepo.findByRoomId(roomId);
+    public ChatRoom findChatroom(String roomId){
+
+        ChatRoom chatroom = chatRoomRepository.findByRoomId(roomId);
+        return chatroom;
     }
 
-    @Transactional("r2dbcTransactionManager")
-    public Flux<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser) {
-        return chatRoomRepo.findByNormalSenderId(appuser.getId())
-                .flatMap(chatroom -> getLatestMessage1(chatroom.getRoomId())
-                        .map(latestMessage -> new ChatRoomDto.Response(chatroom, latestMessage))
-                );
+
+
+    public List<ChatRoomDto.Response> getSenderChatRoom(AppUser appuser){
+        List<ChatRoom> chatRooms;
+        chatRooms = chatRoomRepository.findByNormalSenderId(appuser.getId());
+        return chatRooms
+                .stream()
+                .map(chatroom -> new ChatRoomDto.Response(
+                        chatroom,getLatestMessage1(chatroom)))
+                .collect(Collectors.toList());
     }
 
-    @Transactional("r2dbcTransactionManager")
-    public Flux<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser) {
-        return chatRoomRepo.findByNormalReceiverId(appuser.getId())
-                .flatMap(chatroom -> getLatestMessage1(chatroom.getRoomId())
-                        .map(chatMessage -> new ChatRoomDto.Response(chatroom, chatMessage))
-                );
+
+    public List<ChatRoomDto.Response> getReceiverChatRoom(AppUser appuser){
+
+        List<ChatRoom> chatRooms;
+        chatRooms =chatRoomRepository.findByNormalReceiverId(appuser.getId());
+
+        return chatRooms
+                .stream()
+                .map(chatroom -> new ChatRoomDto.Response(
+                        chatroom, getLatestMessage1(chatroom)))
+                .collect(Collectors.toList());
     }
 
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> blockUser(String roomId, AppUser appUser){
-        Mono<ChatRoom> chatRoomMono = chatRoomRepo.findByRoomId(roomId);
-        return chatRoomMono.flatMap(chatRoom -> {
-                    if (appUser.getId() == chatRoom.getUserId()){
-                        chatRoom.setReceiverBlocked(true);
-                    }
-                    else if (appUser.getId() == chatRoom.getUser1Id()){
-                        chatRoom.setSenderBlocked(true);
-                    }
-                    return chatRoomRepo.save(chatRoom);
-                });
+    public void blockUser(ChatRoom chatRoom, AppUser appUser){
+        if(appUser.getId() == chatRoom.getUser().getId()){
+            chatRoom.setReceiverBlocked(true);
+            chatRoomRepository.save(chatRoom);
+        }
+        else if(appUser.getId() == chatRoom.getUser1().getId()){
+            chatRoom.setSenderBlocked(true);
+            chatRoomRepository.save(chatRoom);
+        }
     }
 
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatRoom> removeBlockedUser(String roomId, AppUser appUser){
-        Mono<ChatRoom> chatRoomMono = chatRoomRepo.findByRoomId(roomId);
-        return chatRoomMono.flatMap(chatRoom -> {
-            if (appUser.getId() == chatRoom.getUserId()){
-                chatRoom.setReceiverBlocked(false);
-            }
-            else if (appUser.getId() == chatRoom.getUser1Id()){
-                chatRoom.setSenderBlocked(false);
-            }
-            return chatRoomRepo.save(chatRoom);
-        });
+    public void removeBlockedUser(ChatRoom chatRoom, AppUser appUser){
+        if(appUser.getId() == chatRoom.getUser().getId()){
+            chatRoom.setReceiverBlocked(false);
+            chatRoomRepository.save(chatRoom);
+        }
+        else if(appUser.getId() == chatRoom.getUser1().getId()){
+            chatRoom.setSenderBlocked(false);
+            chatRoomRepository.save(chatRoom);
+        }
     }
 
-    @Transactional("r2dbcTransactionManager")
-    @Scheduled(cron = "* 0 * * * ?")
+
+
+
+
+
+
+
+    @Scheduled(cron = "* 0 * * * ?") //정각에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {
-        chatRoomRepo.findByExpireDateBefore(LocalDateTime.now())
-                .filter(chatRoom -> !chatRoom.getReceiverRequestStatus().equals(RequestStatus.ACCEPT))
-                .flatMap(chatRoomRepo::delete)
-                .doOnError(error -> {
-                    // This block will be executed if there is an error during the database operation
-                    System.err.println("Error saving room: " + error.getMessage());
-                })
-                .subscribe();
+        List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());
+        for (int i = 0; i < chatRooms.size(); i++) {
+            if(!chatRooms.get(i).getReceiverRequestStatus().equals(RequestStatus.ACCEPT)){
+                chatRoomRepository.delete(chatRooms.get(i));
+            }
+
+        }
     }
 
 
    /* @Scheduled(cron = "* 0 0 * * ?")*/ //자정에 display 시간 변경*/
     /*@Scheduled(cron = "10 * * * * ?")*/
    /* public void setDisplayDateTime() {
-        List<ChatRoom> chatRooms = chatRoomRepo.findAll();
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         LocalDateTime dateTimeNow = LocalDateTime.now();
         LocalDate dateNow = dateTimeNow.toLocalDate();
         for (int i = 0; i < chatRooms.size(); i++) {
@@ -198,17 +216,17 @@ public class ChatService {
             Period diff = Period.between(recordedDate, dateNow);
             if(diff.getDays() == 1  && diff.getMonths() ==0 && diff.getYears() ==0) {
                 chatRooms.get(i).setDisplayMessageTime("어제");
-                chatRoomRepo.save(chatRooms.get(i));
+                chatRoomRepository.save(chatRooms.get(i));
             }
             else if(diff.getDays() == 0  && diff.getMonths() ==0 && diff.getYears() ==0){
                 chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
                         "a h:mm")));
-                chatRoomRepo.save(chatRooms.get(i));
+                chatRoomRepository.save(chatRooms.get(i));
             }
             else{
                 chatRooms.get(i).setDisplayMessageTime(recordedDateTime.format(DateTimeFormatter.ofPattern("" +
                         "yyyy-MM-dd")));
-                chatRoomRepo.save(chatRooms.get(i));
+                chatRoomRepository.save(chatRooms.get(i));
             }
 
 
@@ -245,36 +263,34 @@ public class ChatService {
     }*/
 
     //방
-    @Transactional("r2dbcTransactionManager")
-    public Flux<ChatMessageDto.Response> getLatestMessages(String roomId) {
-        return chatRepo.findByLatestMessageTime(roomId)
-                .map(ChatMessageDto.Response::new);
+    public List<ChatMessageDto.Response> getLatestMessages(ChatRoom chatRoom){
+        return chatRepository.findByLatestMessageTime(chatRoom.getRoomId())
+                .stream()
+                .map(message -> new ChatMessageDto.Response(message))
+                .collect(Collectors.toList());
     }
 
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatMessageDto.Response> getLatestMessage(String roomId) {
-        return chatRepo.findByLatestMessageTime(roomId)
-                .elementAt(0)
-                .map(ChatMessageDto.Response::new);
+    public ChatMessageDto.Response getLatestMessage(ChatRoom chatRoom){
+        ChatMessage chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
+        return new ChatMessageDto.Response(chatMessage);
     }
 
-    @Transactional("r2dbcTransactionManager")
-    public Mono<ChatMessage> getLatestMessage1(String roomId) {
-        System.out.println(roomId);
-        return chatRepo.findFirstByRoomIdOrderByDateDesc(roomId)
-                .defaultIfEmpty(new ChatMessage())
-                .map(chatMessage -> {
-                    if (chatMessage.getDate() == null) {
-                        chatMessage.setDate(LocalDateTime.now());
-                    }
-                    return chatMessage;
-                });
-    }
+    public ChatMessage getLatestMessage1(ChatRoom chatRoom){
 
+        ChatMessage chatMessage = new ChatMessage() ;
+        if(chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).size() == 0){
+            chatMessage.setDate(LocalDateTime.now());
+        }
+        else{
+            chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
+
+        }
+        return chatMessage;
+    }
 
     public void insertData(String path) throws IOException, ParseException {
 
-        if (chatRoomRepo.count().defaultIfEmpty(0L).block() < 1) { //db가 비어있을 때만 실행
+        if (chatRoomRepository.count() < 1) { //db가 비어있을 때만 실행
 
 
             FileInputStream ins = new FileInputStream(path + "chatroom.json");
@@ -292,7 +308,9 @@ public class ChatService {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject temp = (JSONObject) jsonArray.get(i);
                 ChatRoomDto.TestPostRequest dto = gson.fromJson(temp.toString(), ChatRoomDto.TestPostRequest.class);
-               chatRoomRepo.save(dto.toEntity(users.get(i%2))).block();
+               chatRoomRepository.save(dto.toEntity(users.get(i%2)));
+
+
             }
         }
     }

@@ -10,7 +10,9 @@ import skkuchin.service.domain.Map.Tag;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component

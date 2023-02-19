@@ -3,7 +3,6 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 import skkuchin.service.api.dto.ReportDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Map.Review;
@@ -11,7 +10,7 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Report;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;
-import skkuchin.service.r2dbcRepo.ChatRoomRepo;
+import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.ReportRepo;
 import skkuchin.service.repo.ReviewRepo;
 
@@ -46,7 +45,7 @@ public class ReportService {
             review = reviewRepo.findById(dto.getReviewId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         }
         if (dto.getChatRoomId() != null) {
-            chatRoom = chatRoomRepo.findByRoomId(dto.getChatRoomId()).blockOptional().orElse(null);
+            chatRoom = chatRoomRepo.findByRoomId(dto.getChatRoomId());
         }
 
         Report report = dto.toEntity(user, chatRoom, review);
