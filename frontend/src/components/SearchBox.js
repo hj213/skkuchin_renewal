@@ -43,7 +43,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const handleValue = (e) => {
         setValue(e.target.value);
 
-        if(e.target.value == ''){
+        if(e.target.value === ''){
             setAuto([]);
         } else{
             const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
@@ -53,6 +53,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     }
 
     const handleKeyDown = (e) => {
+        e.preventDefault();
         if(e.keyCode === 13){
             setValue(e.target.value);
             router.push({
@@ -83,9 +84,10 @@ export default function SearchBox({openID, handleFocus, handleClick}){
         setAutoBox(true);
     }
 
-    const handleInputOnBlur = () => {
-        setAutoBox(false);
-    }
+    // const handleInputOnBlur = (e) => {
+    //     e.preventDefault();
+    //     setAutoBox(false);
+    // }
     
     // const handleOnClick = () => {
     //     handleClick(true);
@@ -109,7 +111,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                 onChange={handleValue}
                                 onKeyDown={handleKeyDown}
                                 onFocus={handleInputOnFocus}
-                                onBlur={handleInputOnBlur}
+                                // onBlur={handleInputOnBlur}
                             />
                         
                         </Grid>

@@ -32,7 +32,7 @@ const PlacePage = () => {
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const place = useSelector(state => state.place.place);
+    const searchplace = useSelector(state => state.place.searchplace);
     // 태그 검색
     const [keyword, setKeyword] = useState('');
     const [tags, setTags] = useState([]); // 태그 2개까지
@@ -41,12 +41,12 @@ const PlacePage = () => {
     const [filteredPlace, setFilteredPlace] = useState([]);
 
     useEffect(() => {
-        if (place && user.toggle != null) {
-          setFilteredPlace(place.filter(item => item.campus === user.toggle));
+        if (searchplace && user.toggle != null) {
+          setFilteredPlace(searchplace.filter(item => item.campus === user.toggle));
         } else {
           if(tags != null) setFilteredPlace(null);
         }
-      }, [place, user]);
+      }, [searchplace, user]);
 
     // Part 2) menu, 가게 정보 (menu API)
     const menus = useSelector(state => state.menu.menu);

@@ -22,7 +22,7 @@ export default function searchList(){
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
-    const place = useSelector(state => state.place.place);
+    const place = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
 
     //user의 input값 받아오기

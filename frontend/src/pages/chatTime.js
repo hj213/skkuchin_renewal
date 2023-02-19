@@ -122,7 +122,7 @@ export default function chatTime(){
         heigth:100%;
        }
        .react-calendar__tile--rangeEnd {
-        border-radius: 50%;
+        border-radius: 30px;
         background: #ffce00;
         color: white;
         height:45px
