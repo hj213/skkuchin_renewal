@@ -22,7 +22,7 @@ export default function searchList(){
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
-    const place = useSelector(state => state.place.place);
+    const place = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
 
     //user의 input값 받아오기
@@ -40,7 +40,7 @@ export default function searchList(){
             dispatch(search_places(keyword));
             dispatch(load_user());
         }
-    }, [dispatch, value]);
+    }, [dispatch]);
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -72,12 +72,12 @@ export default function searchList(){
         if(event.target.id == 'map' ){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             
-            dispatch(search_places(''));
+            dispatch(search_places('!'));
             router.push(`/?keyword=${passValue}`);
             
         } else{
             setPassValue('')
-            dispatch(search_places('')); //초기화위해서
+            dispatch(search_places('!')); //초기화위해서
             router.push('/');
         }
     };

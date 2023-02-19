@@ -5,7 +5,7 @@ import {
     LOAD_PLACES_FAIL,
     SEARCH_PLACES_SUCCESS,
     SEARCH_PLACES_FAIL,
-    CLEAR_SEARCH_RESULTS,
+    CLEAR_SEARCH_RESULTS
 } from '../actions/place/types'
 
 const initialState = {
@@ -24,7 +24,7 @@ const placeReducer = (state= initialState, action) => {
         case LOAD_PLACES_FAIL:
             return {
                 ...state,
-                place: null
+                allplaces: null
             }
         case LOAD_PLACE_SUCCESS:
             return {
@@ -39,17 +39,17 @@ const placeReducer = (state= initialState, action) => {
         case SEARCH_PLACES_SUCCESS:
             return {
                 ...state,
-                place: payload.place
+                searchplace: payload.place
             }
         case SEARCH_PLACES_FAIL:
             return {
                 ...state,
-                place: null
+                searchplace: null
             }
         case CLEAR_SEARCH_RESULTS:
             return {
               ...state,
-                place: null
+                searchplace: null
             };
         default:
             return state;

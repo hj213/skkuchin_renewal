@@ -21,9 +21,8 @@ import SearchBox from "../components/SearchBox";
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import UpperBar from "../components/UpperBar";
-import { search_places } from "../actions/place/place";
-import { SEARCH_PLACES_SUCCESS } from "../actions/place/types";
 import { clear_search_results } from "../actions/place/place";
+
 const PlacePage = () => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -34,7 +33,7 @@ const PlacePage = () => {
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const place = useSelector(state => state.place.place);
+    const place = useSelector(state => state.place.searchplace);
     // 태그 검색
     const [keyword, setKeyword] = useState('');
     const [tags, setTags] = useState([]); // 태그 2개까지
@@ -178,6 +177,7 @@ const PlacePage = () => {
 
 
     const onTagClick = (id) => {
+        dispatch(clear_search_results());
         setKeyword(id);
         if(tags!=null) {
             if(tags.length<2) {
@@ -464,4 +464,3 @@ const PlacePage = () => {
     );
 };
 export default PlacePage;
-

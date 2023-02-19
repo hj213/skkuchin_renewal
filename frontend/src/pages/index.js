@@ -19,7 +19,6 @@ import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
-
 // 상단바
 import UpperBar from "../components/UpperBar"
 
@@ -30,7 +29,7 @@ export default function list(){
     const dispatch = useDispatch();
     const router = useRouter();
     // 장소 정보 불러오기
-    const place = useSelector(state => state.place.place);
+    const place = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user); 
     
@@ -87,8 +86,8 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place && keyword != '' && user != null && user.toggle != null) {
-          setFilteredPlace(place.filter((item) => item.campus == user.toggle));
+        if (place && keyword != '' && user.toggle != null) {
+          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
@@ -106,8 +105,8 @@ export default function list(){
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
-                setFilteredPlace(null);            }
-            else {
+                setFilteredPlace(null);
+            } else {
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
@@ -150,6 +149,7 @@ export default function list(){
             visibility:'hidden'});
         setHeight('0');
         setPreventScroll('');
+        
     }
 
     // 카드 터치 했을 때 변화
@@ -287,10 +287,21 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            // dispatch(search_places(''));
+            // dispatch(search_places('!'))
             dispatch(clear_search_results());
         }
+        
     }
+
+    //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
+    // const handleClick= (bool) => {
+    //     if(bool) {
+    //         setKeyword('');
+    //         setTags([]);
+    //         setFilteredPlace(null);
+    //         setHeight('0');
+    //     }
+    // }
 
     return(
     <ThemeProvider theme={theme}>
