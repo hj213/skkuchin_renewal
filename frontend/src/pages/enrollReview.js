@@ -2,9 +2,6 @@ import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
-import { load_places } from "../actions/place/place";
-import { load_favorite } from "../actions/favorite/favorite";
-import { load_menu }  from "../actions/menu/menu";
 import { load_review } from "../actions/review/review";
 import { load_reviews } from "../actions/review/review";
 import { enroll_review } from "../actions/review/review";
@@ -35,13 +32,8 @@ import image from '../image/사진 더보기-1.png';
 
 import emptyStar from '../image/Star border-1.png';
 import filledStar from '../image/Star-1.png';
-import halfStar from '../image/Star half.png'
-import character from '../image/character.png';
 
 import TextField from '@mui/material/TextField';
-import ReviewStar from "../components/ReviewStar";
-
-
 
 const enrollReview = () => {
 
@@ -63,11 +55,11 @@ const enrollReview = () => {
     const places = useSelector(state => state.place.place);
     const place = useSelector(state => state.place.place);
 
-    const [keyword, setKeyword] = useState('');
-    const [textReview, setTextReview] = useState('');
-
     // rating
     const [rating, setRating] = useState(0);
+
+    // 리뷰 (텍스트)
+    const [textReview, setTextReview] = useState('');
 
     const handleTouch = (index) => {
         // setRating(index);
@@ -99,7 +91,6 @@ const enrollReview = () => {
         '둘이가요':false
     })
 
-    //
     useEffect(()=>{
         const newTags = [tagChoose];
 
@@ -113,7 +104,6 @@ const enrollReview = () => {
             setTagList(allTags);
         }
     }, [tagChoose]);
-
 
     // 태그 클릭 시
     const handleTagClick =(event)=>{
@@ -140,7 +130,6 @@ const enrollReview = () => {
             })
         }
     }
-
 
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{
@@ -339,7 +328,13 @@ const enrollReview = () => {
                                 </div>
                             </Grid>
 
-                            <Grid>
+                            <Grid container sx={{overFlowX:'auto', flexWrap:'nowrap'}}>
+                                <Grid item>
+                                    
+                                </Grid>
+                            </Grid>
+
+                            {/* <Grid>
                                 <div className='form-group'>
                                     <label className='form-label mt-3' htmlFor='image'>
                                         <strong>Image</strong>
@@ -349,7 +344,7 @@ const enrollReview = () => {
                                         placeholder ='Image' onChange={e => onChangeImages(e)}
                                         />
                                 </div>
-                            </Grid>
+                            </Grid> */}
 
                             <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
                                 <Grid>
