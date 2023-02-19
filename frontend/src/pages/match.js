@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { CssBaseline, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Layout from "../hocs/Layout";
+import { load_matching_info } from '../actions/matchingUser/matchingUser';
 
 import Friends from '../components/Matching/Friends';
 

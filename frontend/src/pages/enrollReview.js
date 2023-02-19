@@ -14,11 +14,7 @@ import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
-import ReviewTag from "../components/ReviewTag";
-import { reviewTagImage } from "../components/ReviewTag";
-
 // Icons
-import back from '../image/arrow_back_ios.png';
 import close from '../image/close.png';
 import tag1 from '../image/태그/리뷰등록_off/review_맛집.png';
 import tag1on from '../image/태그/리뷰등록_on/review_맛집Y.png'
@@ -68,10 +64,7 @@ const enrollReview = () => {
     const place = useSelector(state => state.place.place);
 
     const [keyword, setKeyword] = useState('');
-
-    const onTagClick = (id) => {
-        setKeyword(id);
-    }
+    const [textReview, setTextReview] = useState('');
 
     // rating
     const [rating, setRating] = useState(0);
@@ -88,14 +81,14 @@ const enrollReview = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            // callback 오류 수정
+            dispatch(load_reviews(id));
             dispatch(load_review());
-            dispatch(load_reviews(place_id));
         }
     }, [dispatch, id]);
 
     //리뷰 정보 전달
     const [rate, setRate] = useState(false);
+    const [tagList, setTagList] = useState();
     const [tagChoose, setTagChoose] = useState({
         '맛집':false,
         '간단한한끼':false,
@@ -106,9 +99,25 @@ const enrollReview = () => {
         '둘이가요':false
     })
 
+    //
+    useEffect(()=>{
+        const newTags = [tagChoose];
+
+        const allTags = newTags.reduce((acc, current)=>{
+            return acc.concat(Object.entries(current));
+        }, [])
+            .filter(([, value]) => value)
+            .map(([key]) => key);
+
+        if(allTags.length <= 3){
+            setTagList(allTags);
+        }
+    }, [tagChoose]);
+
+
     // 태그 클릭 시
     const handleTagClick =(event)=>{
-        if(tagLimit.length == 8){
+        if(tagList.length == 3){
             setTagChoose({
                 ...tagChoose
             })
@@ -132,41 +141,39 @@ const enrollReview = () => {
         }
     }
 
+
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{
         event.preventDefault();
 
-        dispatch(enroll_review(rate, tagChoose,([result, message])=>{
+        dispatch(enroll_review(rate, tagList, ([result, message])=>{
             if(result){
                 router.push({
-                    pathname: '/enrollReview',
-                    query: {viewportHeight: window.innerHeight},
-                    src: '리뷰등록'
+                    pathname: '/reviews',
+                    query: {viewportHeight: window.innerHeight,
+                    src: '리뷰등록'}
                 })
             } else {
                 alert(message);
             }
-        }))
+        }));
     }
 
-    const [tagLimit, setTagLimit] = useState('');
 
     // 이미지 미리보기
-    const onChangeImages = (e) => {
-        setImages(Array.from(e.target.files));
-    };
-    const [images, setImages] = useState([]);
+    // const onChangeImages = (e) => {
+    //     setImages(Array.from(e.target.files));
+    // };
+    // const [images, setImages] = useState([]);
 
-    const addBtnClick = e => {
-        e.preventDefault();
-        alert('add button clicked! ' + place_id + "\n" + rate + "\n" + content + "\n" + images + "\n" + tags);
+    // const addBtnClick = e => {
+    //     e.preventDefault();
+    //     alert('add button clicked! ' + place_id + "\n" + rate + "\n" + content + "\n" + images + "\n" + tags);
 
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(enroll_review(place_id, rate, content, images, tags));
-
-        }
-
-    };
+    //     if (dispatch && dispatch !== null && dispatch !== undefined) {
+    //         dispatch(enroll_review(place_id, rate, content, images, tags));
+    //     }
+    // };
 
     const user = useSelector(state => state.auth.user);
 
@@ -190,10 +197,12 @@ const enrollReview = () => {
                             }}>
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
+                            <a>
                             <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
+                            </a>
                         </Grid>
                     
-                        <Grid onClick={()=> handleEnrollClick()}>
+                        <Grid onClick={handleEnrollClick}>
                             <Typography sx={{fontSize:'18px', fontWeight:'700'}} color="#FFCE00">
                                 등록
                             </Typography>
@@ -347,13 +356,15 @@ const enrollReview = () => {
                                     <Box
                                     component="form"
                                     noValidate
-                                    autoCompelet="off"
                                     sx={{'& .MuiTextField-root': { m: 1, width: '34ch' }, justifyContent:'center', alignItems:'center'}}>
                                         <TextField
                                         id="outlined-multiline-statiic"
                                         multiline
                                         rows={7}
                                         label="솔직한 리뷰를 써주세요 :)"
+                                        value={textReview}
+                                        onChange={(e)=>{setTextReview(e.target.value)}}
+                                        maxLength={60}
                                         />
                                 </Box>
                                 </Grid>

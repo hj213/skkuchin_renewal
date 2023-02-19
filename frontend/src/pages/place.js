@@ -458,6 +458,15 @@ const PlacePage = () => {
                                     </div>
                                 </Link>
                         </li>)):null}
+
+                        { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
+                            <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                <Link href={`/myReview?id=${item.id}`} key={item.id}>
+                                    <div style={{textAlign:'right'}}>
+                                        후기 더보기 &gt;
+                                    </div>
+                                </Link>
+                        </li>)):null}
                     </Card>
                 </Container>
                 </div>

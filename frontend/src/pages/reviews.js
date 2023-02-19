@@ -9,7 +9,7 @@ import { load_menu }  from "../actions/menu/menu";
 
 import {BadgeProps} from '@mui/material/Badge'
 import {styled} from '@mui/material/styles';
-import { CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
+import { MenuItem, Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
@@ -18,8 +18,12 @@ import close from '../image/close.png'
 import tag14 from '../image/태그/mini태그/mini_가성비.png'
 import profile from '../image/profile.png'
 
+import { displayReviewTag, reviewsTags } from "../components/TagList";
+
 
 const ReviewsPage = () => {
+
+    const dispatch = useDispatch();
 
     // 뒤로가기, 수정필요
     const handleOnclick = (event) =>{
@@ -31,16 +35,17 @@ const ReviewsPage = () => {
     const router = useRouter();
     const { id } = router.query;
 
+    
+
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
             dispatch(load_reviews(place_id));
-            dispatch(load_review());
         }
     }, [dispatch, id]);
 
     // place, 가게 정보 (place API)
-    const dispatch = useDispatch();
+    
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     const places = useSelector(state => state.place.place);
 
@@ -49,6 +54,8 @@ const ReviewsPage = () => {
 
     // 유저정보
     const user = useSelector(state => state.auth.user);
+
+
 
     return(
         <ThemeProvider theme={theme}>
@@ -60,7 +67,7 @@ const ReviewsPage = () => {
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
                 <Card elevation={0} style={{
-                    position: 'absolute',
+                    position: 'fixed',
                     top: '0px',
                     width: '100%',
                     height: '98px',
@@ -92,15 +99,15 @@ const ReviewsPage = () => {
             </Container>
             
             {/* Content */}
-            <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
+            <Container component="main" style={{listStyleType: "none"}}>
                 <Grid container sx={{pt:8}} style={{justifyContent:'center'}} >
                     <Grid style={{width:'100%'}}>
                         <CardContent>
                         {places ? places.filter(item => item.id == place_id).map(item => (
                             <>
-                            <Grid container style={{margin:'30px auto 0px', justifyContent:'center'}}>
+                            <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
                                 <Grid>
-                                    <Typography sx={{fontSize: '24px', fontWeight: '700', color: '#FFCE00', lineHeight:'190%', paddingRight:'10px'}} component="div">
+                                    <Typography sx={{fontSize: '24px', fontWeight: '700', color: '#FFCE00', lineHeight:'215%', paddingRight:'0px'}} component="div">
                                         {item.rate}점
                                     </Typography>
                                 </Grid>
@@ -112,59 +119,62 @@ const ReviewsPage = () => {
                                 </Grid>
                             </Grid>
 
-                            <Grid container style={{margin:'30px auto 0px', justifyContent:'space-between'}}>
-                                <Grid>
-                                    <Typography xs={2} sx={{fontSize: '17px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
+                            <Grid container style={{margin:'25px auto 10px', justifyContent:'space-between'}}>
+                                <Grid item  >
+                                    <Typography xs={2} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
                                         스꾸리뷰
                                     </Typography>
                                 </Grid>
-                                <Grid>
-                                    <Typography xs={8} sx={{fontSize: '17px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top', paddingRight:'200px'}} color="#FFCE00" align="center">
+                                <Grid item >
+                                    <Typography xs={8}  sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingRight:'120px'}} color="#FFCE00" align="left">
                                         {item.review_count}
                                     </Typography>
                                 </Grid>
-                                <Grid>
-                                    <Typography xs={2} sx={{fontSize: '13px', fontWeight: '500', lineHeight: '150%'}} color="#a1a1a1" component="div" align="center">
-                                        {/* 필터 버튼 */}
-                                        최신순
-                                    </Typography>
+                                <Grid item > 
+                                    <Select xs={2} sx={{fontSize:'14px',lineHeight: '200%',width:"100px", height:"30px", marginTop:"-30px",border:'none',}}>
+                                        <MenuItem value='Latest'>최신순</MenuItem>
+                                        <MenuItem value='Oldest'>평점순</MenuItem>
+                                        <MenuItem value='Rating'>오래된순</MenuItem>
+                                    </Select>
                                 </Grid>
                             </Grid>
                             </>
                             )) : null }
-                
-                            {places ? places. filter(item => item.id == place_id).map(item =>(
+                <ul style={{listStyle:"none",paddingLeft:"0px"}}>
+                {places ? places. filter(item => item.id == place_id).map(item =>(
                                 <li key={item.id} data={item}>
                                     <>
                                     {reviews ? reviews.map((review, index)=>(
-                                        <Grid container key={index}>
-                                            <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
-                                                <Grid xs={2}>
-                                                    <Badge badgeContent={"나"} color="secondary">
-                                                        <Avatar alt="" src={review.user_image} />
-                                                    </Badge>
+                                        <Grid container key={index} style={{margin:"0 0 20px 0"}}>
+                                            <Grid container style={{margin:'20px 0px 0px', justifyContent:'left'}}>
+                                                <Grid item xs={2}>
+                                                    { review.user_id === user.id ?
+                                                        <Badge badgeContent={"나"} color="secondary">
+                                                            <Avatar alt="" src={user.image} />
+                                                        </Badge> : <Avatar alt="" src={user.image} />}
+                                                        
                                                 </Grid>
-                                                <Grid xs={6}>
+                                                <Grid item xs={6}>
                                                     <Stack direction="column" spacing={1}>
                                                         <Typography sx={{fontSize: '12px', fontWeight:'700', lineHeight: '200%', verticalAlign: 'top',}} align="left">
                                                             {review.nickname}
                                                         </Typography>
-                                                        <Typography sx={{fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                                                            {review.major} {review.student_id}학번
-                                                        </Typography>
+                                                        <Grid style={{display:'flex'}}>
+                                                            <Typography sx={{fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
+                                                                {review.major} {review.student_id}학번
+                                                            </Typography>
+                                                            <Typography sx={{fontSize: '12px', fontWeight: '500', lineHeight: '0%', paddingLeft:'5px'}} color="#a1a1a1" component="div" align="center">
+                                                                | {review.create_date.slice(0,10)}
+                                                            </Typography>
+                                                        </Grid>
                                                         <Grid style={{margin:'10px 0 0 -3px'}}>
-
+                                                        <Rating name="read-only" size="small" value={review.rate} readOnly precision={1} />
                                                         </Grid>
                                                     </Stack>
                                                 </Grid>
-                                                <Grid xs={4} >
-                                                    <Typography sx={{fontSize: '12px', fontWeight: '500', lineHeight: '550%', paddingLeft:'5px'}} color="#a1a1a1" component="div" align="center">
-                                                        | {review.create_date.slice(0,10)}
-                                                    </Typography>
-                                                </Grid>
                                             </Grid>
 
-                                            <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
+                                            <Grid container style={{margin:'5px 0px 0px', justifyContent:'left'}}>
                                                 <Card style={{
                                                     borderRadius: '0px 15px 15px 15px',
                                                     backgroundColor:'#FFE885'
@@ -172,7 +182,7 @@ const ReviewsPage = () => {
                                                 >
                                                     <Typography
                                                         style={{
-                                                            padding:'5px 10px',
+                                                            padding:'10px 10px 8px 10px',
                                                             fontSize: '12px'
                                                         }}>
                                                         {review.content}
@@ -182,36 +192,47 @@ const ReviewsPage = () => {
                                             </Grid>
 
                                             <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
-                                                <Grid>
-                                                    <Stack direction="column" spacing={1}>
-                                                        <Image
-                                                                width= {50}
-                                                                height= {34}
-                                                                alt="tag"
-                                                            src={tag14} />
+                                                {review.tags.map((tag, index)=>(
+                                                    <Grid>
+                                                    <Stack direction="column" style={{marginRight:"6px", marginBottom:"6px"}} key={index}>
+                                                        {reviewsTags(tag)}
                                                     </Stack>
                                                 </Grid>
+                                                ))}
                                             </Grid>
 
-                                            <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
-                                            <ImageList sx={{ width: 300, height: 300 }} rows={1} rowHeight='auto'>
-                                                {/* {itemData.map((item) => (
-                                                    <ImageListItem key={item.img}>
-                                                    <img
-                                                        src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                                                        srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                                        alt={item.title}
-                                                        loading="lazy"
+                                            <Grid container style={{margin:'15px 0px 0px', justifyContent:'left'}}>
+                                                {/* 여기 한번 봐주시면 감사하겠습니다. */}
+                                                {review.images && review.images.length > 1 ? (
+                                                    <div style={{ display: 'flex', overflow: 'auto' }}>
+                                                        {review.images.map((image, index) => (
+                                                            <div key={index} style={{ marginRight: '10px' }}>
+                                                                <Image
+                                                                    width={150}
+                                                                    height={150}
+                                                                    src={image}
+                                                                    alt={`image-${index}`}
+                                                                />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : review.images ? (
+                                                    <Image
+                                                        width={150}
+                                                        height={150}
+                                                        src={item.images[0]}
+                                                        alt="image"
                                                     />
-                                                    </ImageListItem>
-                                                ))} */}
-                                            </ImageList>
+                                                ) : null}
                                             </Grid>
                             </Grid>
                             )): null}
                             </>
-                            </li>
+                            </li> 
                         )): null}
+                        </ul>
+
+
 
                         </CardContent>
                     </Grid>
