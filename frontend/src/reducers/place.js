@@ -5,6 +5,7 @@ import {
     LOAD_PLACES_FAIL,
     SEARCH_PLACES_SUCCESS,
     SEARCH_PLACES_FAIL,
+    CLEAR_SEARCH_RESULTS,
 } from '../actions/place/types'
 
 const initialState = {
@@ -45,6 +46,11 @@ const placeReducer = (state= initialState, action) => {
                 ...state,
                 place: null
             }
+        case CLEAR_SEARCH_RESULTS:
+            return {
+              ...state,
+                place: null
+            };
         default:
             return state;
     };

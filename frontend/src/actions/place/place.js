@@ -4,7 +4,8 @@ import {
     LOAD_PLACES_FAIL,
     LOAD_PLACES_SUCCESS,
     SEARCH_PLACES_SUCCESS,
-    SEARCH_PLACES_FAIL
+    SEARCH_PLACES_FAIL,
+    CLEAR_SEARCH_RESULTS,
 } from './types'
 
 //load_places
@@ -104,3 +105,7 @@ export const search_places = (keyword, callback) => async dispatch => {
         if (callback) callback([false, error]);
     };
 }
+// 액션 생성자 정의
+export const clear_search_results = () => ({
+    type: CLEAR_SEARCH_RESULTS
+  });

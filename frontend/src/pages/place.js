@@ -21,7 +21,9 @@ import SearchBox from "../components/SearchBox";
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import UpperBar from "../components/UpperBar";
-
+import { search_places } from "../actions/place/place";
+import { SEARCH_PLACES_SUCCESS } from "../actions/place/types";
+import { clear_search_results } from "../actions/place/place";
 const PlacePage = () => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -209,6 +211,7 @@ const PlacePage = () => {
             setHeight('0');
             setFilteredPlace(null);
             setClick(!bool);
+            dispatch(clear_search_results());
         }
     }
 

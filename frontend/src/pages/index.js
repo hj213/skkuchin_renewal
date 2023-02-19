@@ -18,6 +18,7 @@ import bookmarkOn from '../image/bookmark-1.png';
 import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
+import { clear_search_results } from "../actions/place/place";
 
 // 상단바
 import UpperBar from "../components/UpperBar"
@@ -286,17 +287,8 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            dispatch(search_places(''));
-        }
-    }
-
-    //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
-    const handleClick= (bool) => {
-        if(bool) {
-            setKeyword('');
-            setTags([]);
-            setFilteredPlace(null);
-            setHeight('0');
+            // dispatch(search_places(''));
+            dispatch(clear_search_results());
         }
     }
 
