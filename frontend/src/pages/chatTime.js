@@ -4,32 +4,49 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment'; 
 import 'moment/locale/ko';
-import { CssBaseline, Box, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import { CssBaseline, Slide, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import calendar from '../image/calendar.png';
 import down from '../image/down-1.png';
 import check from '../image/확인_3.png';
-
+import styled from 'styled-components';
+import {Timeit} from "react-timeit";
 
 export default function chatTime(){
 
     const router = useRouter();
 
     const [date, setDate] = useState(new Date());
-    const [calendarOpen, setCalendarOpen] = useState('hidden');
+    const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
+    const [time, setTime] = useState('');
+    const [timeOpen, setTimeOpen] = useState('hidden');
     
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
+        return `${year}.${month}.${day}(${dayOfWeek})`;
+      };
+    
+
     const handleBack = (e) => {
         router.back();
     }
 
     const handleDownClick = (e) => {
-        if(calendarOpen == 'hidden'){
-            setCalendarOpen('visible');
-        } else {
-            setCalendarOpen('hidden');
+        // if(calendarOpen == 'hidden'){
+        //     setCalendarOpen('visible');
+        // } else {
+        //     setCalendarOpen('hidden');
+        // }
+        if(calendarOpen){
+            setCalendarOpen(false);
+        } else{
+            setCalendarOpen(true);
         }
     };
     const handleDialogOpen = (e) => {
@@ -42,8 +59,76 @@ export default function chatTime(){
         router.back();
     };
     const handleSubmit = (e) => {
-
+        // router.back();
     }
+    const handleOpenTime = () => {
+        if(timeOpen=='hidden'){
+            setTimeOpen('visible')
+
+        } else {
+            setTimeOpen('hidden')
+        }
+    }
+    const CalendarContainer = styled.div`
+    .react-calendar { 
+        width: 100%;
+        background-color: #fff;
+        color: #222;
+        border-radius: 8px;
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.125em;
+        padding:0px 20px;
+        border-color: transparent;
+       }
+       .react-calendar__navigation button {
+        color: black;
+        min-width: 30px;
+        background: none;
+        font-size: 16px;
+        margin-top: 8px;
+        font-weight: 500px;
+       }
+       .react-calendar__navigation button:enabled:hover,
+       .react-calendar__navigation button:enabled:focus {
+        background-color: #f8f8fa;
+       }
+       .react-calendar__navigation button[disabled] {
+        background-color: #f0f0f0;
+       }
+       .react-calendar__month-view__weekdays {
+        background: white;
+        abbr { /*월,화,수... 글자 부분*/
+          color: gray;
+          font-weight: 500;
+          text-decoration : none;
+        }
+      }
+      .react-calendar__tile {
+        text-align: center;
+        padding: 10px;
+        height:45px;
+      }
+       .react-calendar__tile:enabled:hover,
+       .react-calendar__tile:enabled:focus {
+        background: #f8f8fa;
+        color: #ffce00;
+        border-radius: 6px;
+       }
+       .react-calendar__tile--now {
+        background: #ffe885;
+        border-radius: 30px;
+        font-weight: bold;
+        color: white;
+        heigth:100%;
+       }
+       .react-calendar__tile--rangeEnd {
+        border-radius: 30px;
+        background: #ffce00;
+        color: white;
+        height:45px
+       }
+    `
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -70,23 +155,48 @@ export default function chatTime(){
                     </Container>
                     <Container style={{padding:'0px', margin:'30px 0px 0px 20px'}}>
                         <Grid container justify="space-around">
-                            <Grid item> 
-                                <div style={{ width:'355%', paddingBottom:'8px', borderBottom:"1px solid #BABABA"}}>
-                                    <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{moment(date).format("YYYY.MM.DD(dd)")}</Typography>
+                            <Grid item style={{width:'90%'}}> 
+                                <div style={{ width:'100%', paddingBottom:'8px', borderBottom:"1px solid #BABABA"}}>
+                                    <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{formatDate(date)}</Typography>
                                 </div>
                             </Grid>
-                            <Grid item style={{ margin:'0px 0px 0px 225px'}}>
+                            <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'20px'}}>
                                 <Image src={down} width={25} height={25} onClick={handleDownClick}/>
                             </Grid>
                         </Grid>
                         <div>
                             <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 시간 삭제하기</Button>
                         </div>
-                        <div style={{visibility: calendarOpen, position:'absolute', zIndex:'2',bottom:0}}>
-                            <Calendar onChange={setDate} value={date}></Calendar>
-                        </div>
-
+                        
                     </Container>
+                    <div style={{ position:'absolute',width:'100%', margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
+                        <Slide direction="up" in={calendarOpen} timeout={1} >
+                            <Container style={{padding:'0px',}}>
+                                <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
+                                    <CalendarContainer>
+                                        <Calendar onChange={setDate} value={date} formatDay={(locale, date) =>
+                                            date.toLocaleString('en', { day: 'numeric' })
+                                        }
+                                        next2Label={null}
+                                        prev2Label={null}
+                                        showNeighboringMonth={false}
+                                        returnValue='start'
+                                        selectRange={false}
+                                        />
+                                    </CalendarContainer>
+            
+                                    <Button onClick={handleOpenTime}>{time}</Button>
+                                    <div style={{visibility: timeOpen, positon:'relative'}}>
+                                        <Card style={{position:'absolute', zIndex:'4', bottom:0, right:0, height:'200px'}}>
+                                            <Timeit onChange={(value) => setTime(value)} value={time}/>
+                                        </Card>
+                                    </div>
+                                </Card>
+                                
+                            </Container>
+                        </Slide>
+                        
+                        </div>
                     <Container style={{justifyContent:'center', position: "absolute", bottom: 0}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>
                             <Image src={check} width={300} height={56} onClick={handleSubmit}/>
