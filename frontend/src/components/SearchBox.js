@@ -10,7 +10,7 @@ import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";
 import marker from '../image/marker.png';
 import noAuto from '../image/noinfo_enheng.png';
-
+import noInput from '../image/스꾸콘-1.png'; 
 export default function SearchBox({openID, handleFocus, handleClick}){
 
     const dispatch = useDispatch();
@@ -52,6 +52,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
         }
     }
 
+    
     const handleKeyDown = (e) => {
         e.preventDefault();
         if(e.keyCode === 13){
@@ -120,7 +121,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                         <Image src={searchBox} layout="responsive"/>
                     </div>
                 </div>
-                {autoBox && (
+                { autoBox && (
                 // <div style={{margin:'0px 0px 0px 7px',position:'absolute', top:'100%'}}>
                     <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px'}}> 
@@ -152,9 +153,13 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                 ))}
                             </ul>
                             : (
-                                <div style={{textAlign:'center', paddingTop:'110px'}}>
+                                <div style={{textAlign:'center', paddingTop:'110px'}}>        
                                     <Image src={noAuto} width={129} height={108}/>
                                     <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
+                                    {/* 검색어를 입력하지 않은 경우와 구분 */}
+                                    {/* <Image src={ value!=''? noAuto : noInput} width={129} height={108}/>
+                                    <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >{value!=''? '검색결과가 없습니다.': '검색어를 입력해주세요'}</Typography>
+                                     */}
                                 </div>
                             )}
                         </Container>

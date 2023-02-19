@@ -9,9 +9,6 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     const router = useRouter();
     const user = useSelector(state => state.auth.user); 
 
-    useEffect(()=> {
-    }, [user])
-
     useEffect(() => {
         const mapScript = document.createElement("script");
         
@@ -54,10 +51,12 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
                 const map = new window.kakao.maps.Map(container, options);
                 
+                let maxMarker = 30; // maximum number of markers to show
                 const markers = [];
 
                 { places  &&
-                places.forEach(place => {
+                places.forEach((place,index) => {
+                    if (index < maxMarker) {
                     let marker;
                     if (place.id == selectedId) {
                         // 음식점
@@ -155,13 +154,35 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
                     window.kakao.maps.event.addListener(marker, "click", function() {
                         router.push(`/place?id=${place.id}`);
-
                     });
+                }
+                });
+                window.kakao.maps.event.addListener(map, 'zoom_changed', function() {
+                    const level = map.getLevel();
+                    if (level == 1) {
+                        maxMarker = 1000;
+                    } else if (level == 2) {
+                        maxMarker = 50;
+                    } else if (level == 3) {
+                        maxMarker = 30;
+                    } else {
+                        maxMarker = 15;
+                    }
+
+                    markers.forEach(marker => {
+                        if (marker.getMap()) {
+                            marker.setMap(null);
+                        }
+                    });
+
+                    for (let i = 0; i < maxMarker && i < markers.length; i++) {
+                        markers[i].setMap(map);
+                    }
                 });
                 }
-
             });
         };
+        
         mapScript.addEventListener("load", onLoadKakaoMap);
 
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
