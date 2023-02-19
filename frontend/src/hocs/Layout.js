@@ -23,7 +23,7 @@ const Layout = ({title, content, children}) => {
             <div className="container mt-5">
                 {children}
             </div>
-            <Navbar /> 
+           
         </>
         )
 };

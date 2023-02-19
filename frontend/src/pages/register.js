@@ -9,6 +9,7 @@ import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } f
 import theme from '../theme/theme';
 import SignUpStep4 from '../components/Auth/SignUpStep4';
 import SignUpStep5 from '../components/Auth/SignUpStep5';
+import SignUpStep6 from '../components/Auth/SignUpStep6';
 
 const RegisterPage = () => {
 
@@ -25,7 +26,8 @@ const RegisterPage = () => {
         nickname: "",
         major: "",
         student_id: "",
-        email: ""
+        email: "",
+        image: ""
     })
 
     const handleNextStep = (stepData) => {
@@ -57,10 +59,13 @@ const RegisterPage = () => {
                 step === 3 && <SignUpStep3 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 4 && <SignUpStep4 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
+                step === 4 && <SignUpStep4 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 5 && <SignUpStep5 handlePrevStep={handlePrevStep} />
+                step === 5 && <SignUpStep5 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
+            }
+            {
+                step === 6 && <SignUpStep6 handlePrevStep={handlePrevStep} />
             }
             </Container>
         </Layout>

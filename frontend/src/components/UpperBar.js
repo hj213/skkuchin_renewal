@@ -22,9 +22,9 @@ const UpperBar = () => {
 
     const authLinks = (
         // 상단 네비게이션 바. maxWidth는 지도와 맞춤
-        // <div style={{ position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center"}}>
-        // 스크롤 X
-        <div style={{ position: "absolute", top: 0, width: "100%", background: "white", alignContent:"center"}}>
+        <div style={{ position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center"}}>
+        {/* // 스크롤 X */}
+        {/* // <div style={{ position: "absolute", top: 0, width: "100%", background: "white", alignContent:"center"}}> */}
 
             {/* 상단 아이콘 위치, 추후 페이지 제작 시 link 연결 필요 */}
             

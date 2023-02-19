@@ -2,7 +2,7 @@
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
-import { load_places, search_places } from "../actions/place/place";
+import { search_places } from "../actions/place/place";
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
@@ -32,7 +32,7 @@ export default function list(){
     const place = useSelector(state => state.place.place);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user); 
-
+    
     //상태
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -80,14 +80,14 @@ export default function list(){
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
     }
-
+    
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place && keyword != '' && user.toggle != null) {
-          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
+        if (place && keyword != '' && user != null && user.toggle != null) {
+          setFilteredPlace(place.filter((item) => item.campus == user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
@@ -105,8 +105,7 @@ export default function list(){
         }
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
-                setFilteredPlace(null);
-            }
+                setFilteredPlace(null);            }
             else {
                 // 키워드 확인
                 dispatch(search_places(keyword));
@@ -127,7 +126,6 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            // setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
@@ -159,7 +157,7 @@ export default function list(){
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.6;
+        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.61;
         if(WINDOW_HEIGHT > 1000){
             TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
         }
@@ -214,11 +212,13 @@ export default function list(){
 
     //북마크 기능
     const isFavorite = (placeId) => {
+        if(favorites){
         const favorite = favorites.some(favorite => favorite.place_id === placeId)
         if(favorite){
             return <Image width={15} height={15} src={bookmarkOn}/>
         }
         return null;
+    }
     };
 
     //place 페이지로 넘어가는
@@ -281,8 +281,16 @@ export default function list(){
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
+        if(bool) {
+            setKeyword('');
+            setTags([]);
+            setFilteredPlace(null);
+            setHeight('0');
+            dispatch(search_places(''));
+        }
     }
 
+    //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
     const handleClick= (bool) => {
         if(bool) {
             setKeyword('');
@@ -297,12 +305,15 @@ export default function list(){
       <CssBaseline />
        <Layout>
             <UpperBar />
-            <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}>  
-            <Container style={{position:'absolute', zIndex:'2'}} >
-                <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
+            <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
+            <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
+                <SearchBox openID={openID} handleFocus={handleFocus}/> 
+                <div style={{position:'relative', width:'100%'}}>
+                    <TagList keyword={keyword} onTagClick={onTagClick} />  
+                </div>
             </Container> 
              {/* 태그 목록 */}
-            <TagList keyword={keyword} onTagClick={onTagClick} />
+            
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
              
             <Slide direction="up" in={open.bool} timeout={1} >
@@ -317,7 +328,7 @@ export default function list(){
                     visibility: open.visibility,
                     overflowY:'hidden',
                     border: '1px solid transparent',
-                    borderRadius: '0px',
+                    borderRadius: '0px'
                     }} 
                     
                     >
@@ -355,6 +366,8 @@ export default function list(){
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
+                border: '1px solid transparent',
+                
                 }} 
                 ref = {cardRef}
                  >

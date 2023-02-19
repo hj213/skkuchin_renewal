@@ -1,22 +1,22 @@
 import Image from 'next/image';
 
 // MBTI 캐릭터
-import INTP from '../../image/mbti/INTP.png';
-import INTJ from '../../image/mbti/INTJ.png';
-import INFJ from '../../image/mbti/INFJ.png';
-import INFP from '../../image/mbti/INFP.png';
-import ISFJ from '../../image/mbti/ISFJ.png';
-import ISFP from '../../image/mbti/ISFP.png';
-import ISTJ from '../../image/mbti/ISTJ.png';
-import ISTP from '../../image/mbti/ISTP.png';
-import ESTJ from '../../image/mbti/ESTJ.png';
-import ESTP from '../../image/mbti/ESTP.png';
-import ESFJ from '../../image/mbti/ESFJ.png';
-import ESFP from '../../image/mbti/ESFP.png';
-import ENFJ from '../../image/mbti/ENFJ.png';
-import ENFP from '../../image/mbti/ENFP.png';
-import ENTJ from '../../image/mbti/ENTJ.png';
-import ENTP from '../../image/mbti/ENTP.png';
+import INTP from '../../image/mbti/프로필/INTP.png';
+import INTJ from '../../image/mbti/프로필/INTJ.png';
+import INFJ from '../../image/mbti/프로필/INFJ.png';
+import INFP from '../../image/mbti/프로필/INFP.png';
+import ISFJ from '../../image/mbti/프로필/ISFJ.png';
+import ISFP from '../../image/mbti/프로필/ISFP.png';
+import ISTJ from '../../image/mbti/프로필/ISTJ.png';
+import ISTP from '../../image/mbti/프로필/ISTP.png';
+import ESTJ from '../../image/mbti/프로필/ESTJ.png';
+import ESTP from '../../image/mbti/프로필/ESTP.png';
+import ESFJ from '../../image/mbti/프로필/ESFJ.png';
+import ESFP from '../../image/mbti/프로필/ESFP.png';
+import ENFJ from '../../image/mbti/프로필/ENFJ.png';
+import ENFP from '../../image/mbti/프로필/ENFP.png';
+import ENTJ from '../../image/mbti/프로필/ENTJ.png';
+import ENTP from '../../image/mbti/프로필/ENTP.png';
 
 export const displayMBTI= (mbti) => {
     const imageWidth = 140;

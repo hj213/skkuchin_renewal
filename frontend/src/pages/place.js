@@ -41,7 +41,7 @@ const PlacePage = () => {
     const [filteredPlace, setFilteredPlace] = useState([]);
 
     useEffect(() => {
-        if (place && user.toggle != null) {
+        if (place && user != null && user.toggle!=null) {
           setFilteredPlace(place.filter(item => item.campus === user.toggle));
         } else {
           if(tags != null) setFilteredPlace(null);
@@ -199,13 +199,9 @@ const PlacePage = () => {
     
     
     // 검색창에 포커스 잡혔을 때
-    const [focus, setFocus] = useState();
-    const handleFocus = (bool) => {
-        setFocus(bool);
-    }
     //드로워가 열리거나
     const [click, setClick] = useState(true);
-    const handleClick= (bool) => {
+    const handleFocus= (bool) => {
         setClick(bool);
         if(click) {
             setKeyword('');
@@ -221,26 +217,29 @@ const PlacePage = () => {
         <CssBaseline />
             <Layout>   
             <UpperBar/>
-                <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}> 
-                <Container style={{position:'absolute', zIndex:'2'}}>
-                    <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
+                <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
+                <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
+                    <SearchBox openID={openID} handleFocus={handleFocus}/> 
+                    <div style={{position:'relative', width:'100%'}}>
+                        <TagList keyword={keyword} onTagClick={onTagClick} />  
+                    </div>
                 </Container> 
                 {filteredPlace != null ?
                     <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} selectedId={id}/>                  
                     : <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace}/>                  
                 }
-                {/* 태그 목록 */}
-                <TagList keyword={keyword} onTagClick={onTagClick} />
+    
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
-                        <Card style={{
+                        <Card elevation={0}
+                        style={{
                             position: 'absolute',
                             top: '0px',
                             width: '100%',
                             height: '80px',
                             zIndex: '4',
-                            boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
+                            borderTop: '1.5px solid rgba(234, 234, 234, 1)',
                             visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -320,7 +319,7 @@ const PlacePage = () => {
                                                     </Grid>
                                                 )}
                                                 <Grid sx={{width: '100%'}}>
-                                                <Grid container style={{paddingTop: '11px', alignItems: 'center', justifyContent: 'center'}}>
+                                                <Grid container style={{paddingTop: '0px', alignItems: 'center', justifyContent: 'center'}}>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400', marginTop:'2px'}}  color="#505050" component="div">
                                                         스꾸친 평점 :

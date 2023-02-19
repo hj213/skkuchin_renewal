@@ -97,7 +97,8 @@ public class EmailService {
             UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
             userRoleRepo.save(userRole);
         } else {
-            throw new CustomRuntimeException("인증을 완료하지 않았습니다");
+            //throw new CustomRuntimeException("인증을 완료하지 않았습니다");
+            throw new CustomRuntimeException("인증이 완료되지 않았어요🥲\n이메일을 다시 확인해주세요");
         }
     }
 
