@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  server:
+    image: server
+    build:
+      context: "./backend"
+      dockerfile: Dockerfile
+
+  client:
+    image: client
+    build:
+      context: "./frontend"
+      dockerfile: Dockerfile

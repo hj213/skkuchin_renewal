@@ -26,13 +26,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push docker image to Amazon ECR
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: skkuchin-repo
-          IMAGE_TAG: latest
         run: |
-          docker-compose build server client
-          docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
-          docker tag client:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker pull nginx
+          docker tag nginx:latest 659575527594.dkr.ecr.ap-northeast-2.amazonaws.com/nginx:latest
+          docker push 659575527594.dkr.ecr.ap-northeast-2.amazonaws.com/nginx:latest
