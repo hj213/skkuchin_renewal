@@ -19,6 +19,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private static final String[] PERMIT_API_URL_ARRAY = {
+            "/",
             "/api/user/login",
             "/api/user/save",
             "/api/user/token/**",

@@ -11,4 +11,4 @@ services:
     image: client
     build:
       context: "./frontend"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { useStore } from '../store';
 import Container from '@mui/material/Container';
+import dynamic from "next/dynamic";
 
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);
@@ -52,4 +53,6 @@ const App = ({ Component, pageProps }) => {
   );
 }
 
-export default App;
+export default dynamic(() => Promise.resolve(App), {
+  ssr: false,
+});
