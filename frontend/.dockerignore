@@ -4,3 +4,6 @@ Dockerfile
 .gitignore
 .dockerignore
 .env
+.next
+npm-debug.log
+Footer

@@ -31,6 +31,8 @@ jobs:
           REPOSITORY: nginx
           IMAGE_TAG: latest
         run: |
-          docker pull nginx
-          docker tag nginx:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker-compose -f docker-compose.prod.yml build server client
+          docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
+          docker tag client:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:client-$IMAGE_TAG

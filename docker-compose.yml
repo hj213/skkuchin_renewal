@@ -64,7 +64,7 @@ services:
     image: client
     build:
       context: "./frontend"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: always
     container_name: skkuchin-frontend
     ports:
@@ -72,7 +72,7 @@ services:
     depends_on:
       - server
     environment:
-      - NODE_ENV=prod
+      - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://server:8080
       - NEXT_PUBLIC_KAKAOMAP_APPKEY=0d8f0e65047ebb4fce295a83614d7fae
     volumes:
