@@ -17,7 +17,7 @@ services:
       - 3306:3306
     # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기 
     # volumes:
-    #   - ./db/mysql:/var/lib/mysql
+    #   - ./db/data:/var/lib/mysql
     networks:
       - skkuchin-network
 

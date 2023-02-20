@@ -4,25 +4,11 @@ spring:
   #  url: jdbc:mysql://localhost:3306/skkuchin3?characterEncoding=UTF-8&serverTimezone=UTC
   #  username: root
   #  password: 1234
-#  r2dbc:
-#    url: r2dbc:mysql://localhost:3306/skkuchin3?characterEncoding=UTF-8
-#    username: root
-#    password: 1234
-#    pool:
-#      enabled: true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
-    username: root
-    password: Master00!@
-  r2dbc:
-    url: r2dbc:mysql://localhost:3306/service?characterEncoding=UTF-8
-    username: root
-    password: Master00!@
-    database: service
-    host: localhost
-    pool:
-      enabled: true
+  #  datasource:
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
+  #    username: root
+  #    password: Master00!@
 
   jpa:
     hibernate:
@@ -45,13 +31,3 @@ spring:
       - aws.yml
       - email.yml
       - chat.yml
-  sql:
-    init:
-      mode: always
-logging:
-  level:
-    org:
-      springframework:
-        r2dbc:
-          core:
-            DefaultDatabaseClient=debug:

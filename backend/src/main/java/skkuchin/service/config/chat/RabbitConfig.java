@@ -56,7 +56,7 @@ public class RabbitConfig {
 
     @Bean
     public RabbitTemplate rabbitTemplate(){
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(rabbitConnectionFactory());
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
         rabbitTemplate.setRoutingKey(CHAT_QUEUE_NAME);
         return rabbitTemplate;
@@ -65,7 +65,7 @@ public class RabbitConfig {
     @Bean
     public SimpleMessageListenerContainer container(){
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(rabbitConnectionFactory());
+        container.setConnectionFactory(connectionFactory());
         container.setQueueNames(CHAT_QUEUE_NAME);
         /*container.setMessageListener(null);*/
         return container;
@@ -73,7 +73,7 @@ public class RabbitConfig {
 
 
     @Bean
-    public ConnectionFactory rabbitConnectionFactory(){
+    public ConnectionFactory connectionFactory(){
         CachingConnectionFactory factory = new CachingConnectionFactory();
         factory.setHost(host);
         factory.setPort(port);

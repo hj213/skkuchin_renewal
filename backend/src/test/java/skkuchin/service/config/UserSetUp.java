@@ -6,6 +6,7 @@ import skkuchin.service.domain.User.*;
 import skkuchin.service.repo.UserRepo;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Component
 public class UserSetUp {

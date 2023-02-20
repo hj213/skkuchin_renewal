@@ -23,7 +23,7 @@ const placeReducer = (state= initialState, action) => {
         case LOAD_PLACES_FAIL:
             return {
                 ...state,
-                place: null
+                allplaces: null
             }
         case LOAD_PLACE_SUCCESS:
             return {
@@ -38,12 +38,12 @@ const placeReducer = (state= initialState, action) => {
         case SEARCH_PLACES_SUCCESS:
             return {
                 ...state,
-                place: payload.place
+                searchplace: payload.place
             }
         case SEARCH_PLACES_FAIL:
             return {
                 ...state,
-                place: null
+                searchplace: null
             }
         default:
             return state;
