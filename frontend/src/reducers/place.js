@@ -1,111 +1,59 @@
 import {
-    LOAD_PLACE_FAIL,
     LOAD_PLACE_SUCCESS,
-    LOAD_PLACES_FAIL,
+    LOAD_PLACE_FAIL,
     LOAD_PLACES_SUCCESS,
+    LOAD_PLACES_FAIL,
     SEARCH_PLACES_SUCCESS,
     SEARCH_PLACES_FAIL,
     CLEAR_SEARCH_RESULTS
-} from './types'
+} from '../actions/place/types'
 
-//load_places
-export const load_places = (callback) => async dispatch => {
-    try {
-        const res = await fetch('/api/place', {
-            method: 'GET',
-            headers: {
-                'Accept' : 'application/json',
+const initialState = {
+    place: null,
+};
+
+const placeReducer = (state= initialState, action) => {
+    const { type, payload } = action;
+
+    switch(type){
+        case LOAD_PLACES_SUCCESS:
+            return {
+                ...state,
+                allplaces: payload.place,
             }
-        });
-
-        const data = await res.json();
-
-        if (res.status === 200) {
-            dispatch({
-                type: LOAD_PLACES_SUCCESS,
-                payload: data
-            })
-            if (callback) callback([true, data.success]);
-        } else {
-            dispatch({
-                type: LOAD_PLACES_FAIL
-            });
-            if (callback) callback([false, data.error]);
-        }
-    } catch (error) {
-        dispatch({
-            type: LOAD_PLACES_FAIL
-        });
-        if (callback) callback([false, error]);
-    }
-}
-
-//load_place
-export const load_place = (id, callback) => async dispatch => {
-
-    try {
-        const res = await fetch(`/api/place/${id}`, {
-            method: 'GET',
-            headers: {
-                'Accept' : 'application/json'
+        case LOAD_PLACES_FAIL:
+            return {
+                ...state,
+                allplaces: null
             }
-        });
-
-        const data = await res.json();
-
-        if (res.status === 200) {
-            dispatch({
-                type: LOAD_PLACE_SUCCESS,
-                payload: data
-            })
-            if (callback) callback([true, data.success]);
-        } else {
-            dispatch({
-                type: LOAD_PLACE_FAIL
-            });
-            if (callback) callback([false, data.error]);
-        }
-    } catch (error) {
-        dispatch({
-            type: LOAD_PLACE_FAIL
-        });
-        if (callback) callback([false, error]);
+        case LOAD_PLACE_SUCCESS:
+            return {
+                ...state,
+                place: payload.place
+            }
+        case LOAD_PLACE_FAIL:
+            return {
+                ...state,
+                place: null
+            }
+        case SEARCH_PLACES_SUCCESS:
+            return {
+                ...state,
+                searchplace: payload.place
+            }
+        case SEARCH_PLACES_FAIL:
+            return {
+                ...state,
+                searchplace: null
+            }
+        case CLEAR_SEARCH_RESULTS:
+            return {
+              ...state,
+                searchplace: null
+            };
+        default:
+            return state;
     };
 }
 
-//search_place
-export const search_places = (keyword, callback) => async dispatch => {
-
-    try {
-        const res = await fetch(`/api/place/search/${keyword}`, {
-            method: 'GET',
-            headers: {
-                'Accept' : 'application/json'
-            }
-        });
-
-        const data = await res.json();
-
-        if (res.status === 200) {
-            dispatch({
-                type: SEARCH_PLACES_SUCCESS,
-                payload: data
-            })
-            if (callback) callback([true, data.success]);
-        } else {
-            dispatch({
-                type: SEARCH_PLACES_FAIL
-            });
-            if (callback) callback([false, data.error]);
-        }
-    } catch (error) {
-        dispatch({
-            type: SEARCH_PLACES_FAIL
-        });
-        if (callback) callback([false, error]);
-    };
-}
-
-export const clear_search_results = () => ({
-    type: CLEAR_SEARCH_RESULTS
-  });
+export default placeReducer;
