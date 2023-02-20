@@ -25,7 +25,6 @@ const MatchPage = () => {
                 <Box onClick={handleOpen}>
                     새로운 밥약 신청
                 </Box>
-                {/* <NewPromise onClose={()=> setOpen(false)}/> */} 
                 {
                     open?  <NewPromise open={open} onClose={()=> setOpen(false)}/> : null
                 }

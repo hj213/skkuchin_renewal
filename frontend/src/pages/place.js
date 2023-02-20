@@ -21,6 +21,7 @@ import SearchBox from "../components/SearchBox";
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import UpperBar from "../components/UpperBar";
+import { clear_search_results } from "../actions/place/place";
 
 const PlacePage = () => {
     
@@ -32,7 +33,7 @@ const PlacePage = () => {
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const searchplace = useSelector(state => state.place.searchplace);
+    const place = useSelector(state => state.place.searchplace);
     // 태그 검색
     const [keyword, setKeyword] = useState('');
     const [tags, setTags] = useState([]); // 태그 2개까지
@@ -41,12 +42,12 @@ const PlacePage = () => {
     const [filteredPlace, setFilteredPlace] = useState([]);
 
     useEffect(() => {
-        if (searchplace && user !=null && user.toggle != null) {
-          setFilteredPlace(searchplace.filter(item => item.campus === user.toggle));
+        if (place && user != null && user.toggle!=null) {
+          setFilteredPlace(place.filter(item => item.campus === user.toggle));
         } else {
           if(tags != null) setFilteredPlace(null);
         }
-      }, [searchplace, user]);
+      }, [place, user]);
 
     // Part 2) menu, 가게 정보 (menu API)
     const menus = useSelector(state => state.menu.menu);
@@ -176,6 +177,7 @@ const PlacePage = () => {
 
 
     const onTagClick = (id) => {
+        dispatch(clear_search_results());
         setKeyword(id);
         if(tags!=null) {
             if(tags.length<2) {
@@ -209,6 +211,7 @@ const PlacePage = () => {
             setHeight('0');
             setFilteredPlace(null);
             setClick(!bool);
+            dispatch(clear_search_results());
         }
     }
 
@@ -461,4 +464,3 @@ const PlacePage = () => {
     );
 };
 export default PlacePage;
-
