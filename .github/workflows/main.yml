@@ -32,5 +32,5 @@ jobs:
           IMAGE_TAG: latest
         run: |
           docker pull nginx
-          docker tag nginx:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker tag nginx:latest $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
