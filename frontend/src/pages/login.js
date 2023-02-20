@@ -45,6 +45,11 @@ const LoginPage = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(login(username, password, ([result, message]) => {
                 if (result) {
+                    if (rememberUsername) {
+                        localStorage.setItem("username", username);
+                    } else {
+                        localStorage.removeItem("username");
+                    }
                     alert(message);
                 } else {
                     alert(message);
@@ -60,7 +65,8 @@ const LoginPage = () => {
     useEffect(() => {
         let username = localStorage.getItem("username");
         if (username != null) {
-            setUsername(username);
+            setRememberUsername(true);
+            setFormData({...formData, username: username});
         }
     }, [])
 
@@ -124,7 +130,7 @@ const LoginPage = () => {
                         </form>
                     </div>
                 
-                <Grid container sx={{justifyContent: 'center', fontSize: '12px', fontWeight: '400', color: '#505050', marginTop: '64px', marginBottom: '25px'}}>
+                {/* <Grid container sx={{justifyContent: 'center', fontSize: '12px', fontWeight: '400', color: '#505050', marginTop: '64px', marginBottom: '25px'}}>
                     <Grid item >
                     <Link href={`/register`}> 
                         <span>회원가입</span>
@@ -138,7 +144,13 @@ const LoginPage = () => {
                         <span>비밀번호 초기화</span>
                     </Link>
                     </Grid>
-                </Grid>
+                </Grid> */}
+
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: '64px', marginBottom: '25px'}}>
+                    <div style={{justifySelf: 'right'}}>회원가입</div>
+                    <div style={{justifySelf: 'center', textAlign: 'center'}}>|</div>
+                    <div style={{justifySelf: 'left'}}>비밀번호 초기화</div>
+                </div>
                     </Box>
                 </Container>
             
