@@ -10,6 +10,8 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
 import logo from '../image/main_logo.png'
+import check from '../image/check_circle.png';
+import uncheck from '../image/uncheck.png';
 
 
 const LoginPage = () => {
@@ -18,6 +20,10 @@ const LoginPage = () => {
     const router = useRouter();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const loading = useSelector(state => state.auth.loading);
+
+    const [autoLogin, setAutoLogin] = useState(false);
+    const [rememberUsername, setRememberUsername] = useState(false);
+    const [storageUsername, setUsername] = useState("");
 
 
     const [formData, setFormData] = useState({
@@ -50,6 +56,14 @@ const LoginPage = () => {
     if (typeof window !== 'undefined' && isAuthenticated){
         router.push('/');
     } 
+
+    useEffect(() => {
+        let username = localStorage.getItem("username");
+        if (username != null) {
+            setUsername(username);
+        }
+    }, [])
+
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -97,10 +111,20 @@ const LoginPage = () => {
                                     </div>
                                 )
                             }
+                            <div style={{display: 'flex', marginTop: '10px', marginLeft: '24px'}}>
+                                {autoLogin ? 
+                                    <Image onClick={() => setAutoLogin(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}}/> : 
+                                    <Image onClick={() => setAutoLogin(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}}/>}
+                                <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>자동로그인</span>
+                                {rememberUsername ? 
+                                    <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}}/> : 
+                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}}/>}
+                                <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>아이디 기억하기</span>
+                            </div>
                         </form>
                     </div>
                 
-                <Grid container sx={{justifyContent: 'center', fontSize: '12px', fontWeight: '400', color: '#505050'}}>
+                <Grid container sx={{justifyContent: 'center', fontSize: '12px', fontWeight: '400', color: '#505050', marginTop: '64px', marginBottom: '25px'}}>
                     <Grid item >
                     <Link href={`/register`}> 
                         <span>회원가입</span>
@@ -115,14 +139,16 @@ const LoginPage = () => {
                     </Link>
                     </Grid>
                 </Grid>
-                <div style={{fontSize: '9px', fontWeight: '500', color: '#BABABA', position: 'absolute', bottom: '36px'}}>
-                    로그인하면 스꾸친 이용약관에 동의하는 것으로 간주합니다.<br/>
-                    스꾸친의 회원 정보 처리 방식은 개인정보 처리방침 및 쿠키 정책에서 확인해보세요.
-                </div>
                     </Box>
                 </Container>
             
             {/* </Layout> */}
+            <div style={{display: 'grid', justifyItems: 'center'}}>
+            <div style={{display: 'grid', justifyItems: 'center', fontSize: '4px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
+                <div>로그인하면 스꾸친 이용약관에 동의하는 것으로 간주합니다.</div>
+                <div style={{marginTop: '6px'}}>스꾸친의 회원 정보 처리 방식은 개인정보 처리방침 및 쿠키 정책에서 확인해보세요.</div>
+            </div>
+            </div>
         </ThemeProvider>
     )
 };
