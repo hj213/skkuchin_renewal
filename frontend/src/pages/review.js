@@ -24,7 +24,7 @@ const ReviewPage = () =>{
 
     const user = useSelector(state => state.auth.user);
 
-    if(typeof window !== 'undefined' && !isAuthenticated){
+    if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
 
