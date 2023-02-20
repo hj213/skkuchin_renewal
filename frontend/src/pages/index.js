@@ -378,7 +378,7 @@ export default function list(){
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
-                                    <Grid container style={{margin: '10px 0px 0px 0px'}}>
+                                    <Grid container style={{margin: '15px 0px 0px 0px'}}>
                                         <Grid item xs >
                                             <CardContent style={{padding:'0px'}}>
                                                 <Grid container spacing={2} style={{margin:'0px',}}>
@@ -388,7 +388,7 @@ export default function list(){
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
-                                                        {isSmallScreen && item.name.length >=13 ?
+                                                        {isSmallScreen && (item.name.length >=13)?
                                                         <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
                                                             {item.detail_category}
                                                         </Typography>
@@ -397,7 +397,7 @@ export default function list(){
                                                             {item.detail_category}
                                                         </Typography>
                                                         }
-                                                        <Grid item sx={{mt: isSmallScreen && item.name.length >=13 ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
+                                                        <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid item container style={{marginTop: '10px'}}>

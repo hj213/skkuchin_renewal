@@ -152,16 +152,16 @@ export default function searchList(){
                                                             </Typography>
                                                         </Grid>
                                                         <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
-                                                            {isSmallScreen && item.name.length >=13 ?
-                                                            <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
-                                                                {item.detail_category}
-                                                            </Typography>
-                                                            : 
-                                                            <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'22px'}} color="#a1a1a1" component="div" >
-                                                                {item.detail_category}
-                                                            </Typography>
+                                                            {isSmallScreen && (item.name.length >=13)?
+                                                                <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
+                                                                    {item.detail_category}
+                                                                </Typography>
+                                                                : 
+                                                                <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'22px'}} color="#a1a1a1" component="div" >
+                                                                    {item.detail_category}
+                                                                </Typography>
                                                             }
-                                                            <Grid item sx={{mt: isSmallScreen && item.name.length >=13 ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
+                                                            <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
                                                         </Grid>
                                                         {/* 화면 너비에 따라 detail_category 이미지 뒤로 씹히거나, 줄바꿈이 필요한 경우를 처리하기 위해 위처럼 수정했습니다 */}
                                                         {/* <Grid item style={{padding:'0px 0px 0px 8px'}}>
