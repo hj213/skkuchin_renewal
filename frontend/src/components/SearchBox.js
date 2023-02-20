@@ -19,7 +19,8 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     const [autoBox, setAutoBox] = useState(false);
-    
+    console.log(value);
+    console.log(auto);
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
@@ -43,8 +44,9 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const handleValue = (e) => {
         setValue(e.target.value);
 
-        if(e.target.value === ''){
+        if(e.target.value == ''){
             setAuto([]);
+            console.log('n');
         } else{
             const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
             setAuto(newAuto);
