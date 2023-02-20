@@ -19,6 +19,7 @@ import tag14 from '../image/태그/mini태그/mini_가성비.png'
 import profile from '../image/profile.png'
 import { displayReviewTag, reviewsTags } from "../components/TagList";
 
+// 야매임, 수정 필요
 const MyReviewPage = () => {
 
     const router = useRouter();
@@ -27,8 +28,7 @@ const MyReviewPage = () => {
     // place, 가게 정보 (place API)
     
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const places = useSelector(state => state.place.place);
-    const place = useSelector(state => state.place.place);
+    const places = useSelector(state => state.place.searchplace);
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);

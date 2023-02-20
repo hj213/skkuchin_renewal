@@ -25,7 +25,7 @@ const ReviewsPage = () => {
 
     const dispatch = useDispatch();
 
-    // 뒤로가기, 수정필요
+    // 뒤로가기
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
             router.back();
@@ -34,8 +34,6 @@ const ReviewsPage = () => {
 
     const router = useRouter();
     const { id } = router.query;
-
-    
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
@@ -47,15 +45,13 @@ const ReviewsPage = () => {
     // place, 가게 정보 (place API)
     
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const places = useSelector(state => state.place.place);
+    const places = useSelector(state => state.place.searchplace);
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
 
     // 유저정보
     const user = useSelector(state => state.auth.user);
-
-
 
     return(
         <ThemeProvider theme={theme}>

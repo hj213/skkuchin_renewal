@@ -35,11 +35,10 @@ import filledStar from '../image/Star-1.png';
 
 import TextField from '@mui/material/TextField';
 
-const enrollReview = () => {
+const EnrollReview = () => {
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'close' ){
-            // 뒤로가기 오류 수정
             router.back();
         } 
     };  
@@ -52,8 +51,7 @@ const enrollReview = () => {
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const places = useSelector(state => state.place.place);
-    const place = useSelector(state => state.place.place);
+    const places = useSelector(state => state.place.searchplace);
 
     // rating
     const [rating, setRating] = useState(0);
@@ -91,9 +89,9 @@ const enrollReview = () => {
         '둘이가요':false
     })
 
+    // 태그 관련
     useEffect(()=>{
         const newTags = [tagChoose];
-
         const allTags = newTags.reduce((acc, current)=>{
             return acc.concat(Object.entries(current));
         }, [])
@@ -149,20 +147,13 @@ const enrollReview = () => {
     }
 
 
-    // 이미지 미리보기
-    // const onChangeImages = (e) => {
-    //     setImages(Array.from(e.target.files));
-    // };
-    // const [images, setImages] = useState([]);
+    // 이미지 URL 배열화
+    const onChangeImages = (e) => {
+        setImages(Array.from(e.target.files));
+    };
+    const [images, setImages] = useState([]);
 
-    // const addBtnClick = e => {
-    //     e.preventDefault();
-    //     alert('add button clicked! ' + place_id + "\n" + rate + "\n" + content + "\n" + images + "\n" + tags);
 
-    //     if (dispatch && dispatch !== null && dispatch !== undefined) {
-    //         dispatch(enroll_review(place_id, rate, content, images, tags));
-    //     }
-    // };
 
     const user = useSelector(state => state.auth.user);
 
@@ -334,7 +325,7 @@ const enrollReview = () => {
                                 </Grid>
                             </Grid>
 
-                            {/* <Grid>
+                            <Grid>
                                 <div className='form-group'>
                                     <label className='form-label mt-3' htmlFor='image'>
                                         <strong>Image</strong>
@@ -344,7 +335,7 @@ const enrollReview = () => {
                                         placeholder ='Image' onChange={e => onChangeImages(e)}
                                         />
                                 </div>
-                            </Grid> */}
+                            </Grid>
 
                             <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
                                 <Grid>
@@ -381,4 +372,4 @@ const enrollReview = () => {
     )
 }
 
-export default enrollReview;
+export default EnrollReview;
