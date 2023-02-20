@@ -11,6 +11,8 @@ import { load_user } from "../actions/auth/auth";
 import marker from '../image/marker.png';
 import noAuto from '../image/noinfo_enheng.png';
 import noInput from '../image/스꾸콘-1.png'; 
+import Hangul from "hangul-js";
+
 export default function SearchBox({openID, handleFocus, handleClick}){
 
     const dispatch = useDispatch();
@@ -48,7 +50,8 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             setAuto([]);
             console.log('n');
         } else{
-            const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
+            const regex = new RegExp(e.target.value, 'i');
+            const newAuto = filteredPlace.filter((item) => regex.test(Hangul.assemble(item.name)));
             setAuto(newAuto);
             
         }
@@ -56,7 +59,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
     
     const handleKeyDown = (e) => {
-        e.preventDefault();
         if(e.keyCode === 13){
             setValue(e.target.value);
             router.push({
