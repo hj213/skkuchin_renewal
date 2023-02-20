@@ -81,12 +81,12 @@ const EnrollReview = () => {
     const [tagList, setTagList] = useState();
     const [tagChoose, setTagChoose] = useState({
         '맛집':false,
-        '간단한한끼':false,
-        '분위기좋은':false,
+        '간단한 한 끼':false,
+        '분위기 좋은':false,
         '가성비':false,
         '친절':false,
         '청결도':false,
-        '둘이가요':false
+        '둘이 가요':false
     })
 
     // 태그 관련
@@ -109,49 +109,53 @@ const EnrollReview = () => {
             setTagChoose({
                 ...tagChoose
             })
-            if(tagChoose[event.target.name]){
+            if(tagChoose[event.target.id]){
                 setTagChoose({
                     ...tagChoose,
-                    [event.target.name]:false
+                    [event.target.id]:false
                 })
             }
         }
-        else if(tagChoose[event.target.name]){
+        else if(tagChoose[event.target.id]){
             setTagChoose({
                 ...tagChoose,
-                [event.target.name]:false
+                [event.target.id]:false
             })
         } else{
             setTagChoose({
                 ...tagChoose,
-                [event.target.name]:true
+                [event.target.id]:true
             })
         }
     }
 
+        // 이미지 URL 배열화
+        const [images, setImages] = useState([]);
+    
+        const onChangeImages = (e) => {
+            setImages(Array.from(e.target.files));
+            // console.log("setImage : "+ Array.from(e.target.files));
+        };
+    
+
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{
         event.preventDefault();
-
-        dispatch(enroll_review(rate, tagList, ([result, message])=>{
+        
+        dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message])=>{
             if(result){
+                alert("POST 요청 result: " + result)
                 router.push({
                     pathname: '/reviews',
                     query: {viewportHeight: window.innerHeight,
                     src: '리뷰등록'}
                 })
             } else {
-                alert(message);
+                alert("실패!: " +message);
             }
         }));
     }
 
-
-    // 이미지 URL 배열화
-    const onChangeImages = (e) => {
-        setImages(Array.from(e.target.files));
-    };
-    const [images, setImages] = useState([]);
 
 
 
@@ -247,52 +251,52 @@ const EnrollReview = () => {
                                 <Grid container style={{margin: '13px 0px 11px 0px',  justifyContent: 'center', maxWidth:'350px'}}>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image
-                                            src={tagChoose.맛집 ? tag1on : tag1}
+                                            src={tagChoose['맛집'] ? tag1on : tag1}
                                             width= {77}
                                             height= {34}
                                             alt="tag1"
                                             onClick={handleTagClick}
-                                            name='맛집'
+                                            id='맛집'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
                                         <Image
-                                            src={tagChoose.간단한한끼 ? tag2on : tag2}
+                                            src={tagChoose['간단한 한 끼'] ? tag2on : tag2}
                                             width= {131}
                                             height= {34}
                                             alt="tag2"
                                             onClick={handleTagClick}
-                                            name='간단한한끼'
+                                            id='간단한 한 끼'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
                                         <Image
-                                            src={tagChoose.분위기좋은 ? tag3on : tag3}
+                                            src={tagChoose['분위기 좋은'] ? tag3on : tag3}
                                             width= {124}
                                             height= {34}
                                             alt="tag3"
                                             onClick={handleTagClick}
-                                            name='분위기좋은'
+                                            id='분위기 좋은'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
                                         <Image
-                                            src={tagChoose.가성비 ? tag4on : tag4}
+                                            src={tagChoose['가성비'] ? tag4on : tag4}
                                             width= {88}
                                             height= {34}
                                             alt="tag4"
                                             onClick={handleTagClick}
-                                            name='가성비'
+                                            id='가성비'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
                                         <Image
-                                            src={tagChoose.친절 ? tag5on : tag5}
+                                            src={tagChoose['친절'] ? tag5on : tag5}
                                             width= {77}
                                             height= {34}
                                             alt="tag5"
                                             onClick={handleTagClick}
-                                            name='친절'
+                                            id='친절'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -302,17 +306,17 @@ const EnrollReview = () => {
                                             height= {34}
                                             alt="tag6"
                                             onClick={handleTagClick}
-                                            name='청결도'
+                                            id='청결도'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
                                         <Image
-                                            src={tagChoose.둘이가요 ? tag7on : tag7}
+                                            src={tagChoose['둘이 가요'] ? tag7on : tag7}
                                             width= {109}
                                             height= {34}
                                             alt="tag7"
                                             onClick={handleTagClick}
-                                            name='둘이가요'
+                                            id='둘이 가요'
                                         />
                                     </Grid>
                                 </Grid>
