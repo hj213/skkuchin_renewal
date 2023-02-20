@@ -31,7 +31,7 @@ export default function list(){
     // 장소 정보 불러오기
     const place = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
-    const user = useSelector(state => state.auth.user); 
+    const user = useSelector(state => state.auth.user);
     
     //상태
     const [height, setHeight] = useState('0');

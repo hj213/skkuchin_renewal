@@ -50,6 +50,14 @@ import reviewBigTag05 from '../image/태그/리뷰등록_on/review_청결도Y.pn
 import reviewBigTag06 from '../image/태그/리뷰등록_on/review_간단한한끼Y.png';
 import reviewBigTag07 from '../image/태그/리뷰등록_on/review_분위기좋은Y.png';
 
+import reviewTagOff1 from '../image/태그/리뷰등록_off/review_맛집.png';
+import reviewTagOff2 from '../image/태그/리뷰등록_off/review_가성비.png';
+import reviewTagOff3 from '../image/태그/리뷰등록_off/review_친절.png';
+import reviewTagOff4 from '../image/태그/리뷰등록_off/review_둘이가요.png';
+import reviewTagOff5 from '../image/태그/리뷰등록_off/review_청결도.png';
+import reviewTagOff6 from '../image/태그/리뷰등록_off/review_간단한한끼.png';
+import reviewTagOff7 from '../image/태그/리뷰등록_off/review_분위기좋은.png'
+
 export const displayTagImage = (tags) => {
     const displayTags = tags.slice(0,2);
     return (
@@ -129,6 +137,28 @@ export const displayBigReviewTag = (keyword) => {
             return <Image id={"간단한 한 끼"} src={reviewBigTag06} width={95} height={25}/>
         case "분위기 좋은":
             return <Image id={"분위기 좋은"} src={reviewBigTag07} width={95} height={25}/>
+        default:
+            return null;
+    }
+}
+
+// review.js용 태그
+export const reviewsTags = (keyword) => {
+    switch(keyword) {
+        case "맛집":
+            return <Image id={"맛집"} src={reviewTagOff1} width={77} height={34}/>
+        case "가성비":
+            return <Image id={"가성비"} src={reviewTagOff2} width={88} height={34}/>
+        case "친절":
+            return <Image id={"친절"} src={reviewTagOff3} width={77} height={34}/>
+        case "둘이 가요":
+            return <Image id={"둘이 가요"} src={reviewTagOff4} width={109} height={34}/>
+        case "청결도":
+            return <Image id={"청결도"} src={reviewTagOff5} width={92} height={34}/>
+        case "간단한 한 끼":
+            return <Image id={"간단한 한 끼"} src={reviewTagOff6} width={131} height={34}/>
+        case "분위기 좋은":
+            return <Image id={"분위기 좋은"} src={reviewTagOff7} width={124} height={34}/>
         default:
             return null;
     }

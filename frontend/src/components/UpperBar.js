@@ -10,6 +10,7 @@ import mainLogo from '../image/상단바/스꾸친로고.png'
 import messageIcon from '../image/상단바/message.png'
 import notiIcon from '../image/상단바/notification.png'
 import Image from 'next/image'
+import { useEffect } from "react";
 
 const UpperBar = () => {
 
@@ -17,6 +18,20 @@ const UpperBar = () => {
     const router = useRouter();
 
     const [selected, setSelected] = useState("스꾸맵");
+
+    // 0218 상단바 에러 수정
+    useEffect(() => {
+        const currentPathname = window.location.pathname;
+        if (currentPathname === "/match") {
+          setSelected("AI 매칭");
+        } else if (currentPathname === "/magazine"){
+          setSelected("매거진");
+        } else if (currentPathname === "/mypage"){
+            setSelected("마이페이지");
+        } else {
+            setSelected("스꾸맵");
+        }
+      }, []);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
@@ -114,7 +129,7 @@ const UpperBar = () => {
     );
 
     // index.js에서도 isAuthenticated로 한번 걸러내긴 하지만
-    // 혹시 추후에 비회원 유저도 맵을 어느정도 이용하게 할 경우
+    // 혹시 추후에 비회원 유저도 맵을 일부 이용하게 할 경우
     // 마이페이지 -> 회원가입 등으로 수정하기 위해 남겨둠. (guestLinks)
     const guestLinks = (
         <>

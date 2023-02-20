@@ -90,7 +90,7 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
     //     }
     // }
 
-    if (images.length > 0) {
+    if (images?.length > 0) {
         for (const image of images) {
             formData.append('images', image);
         }
