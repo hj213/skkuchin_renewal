@@ -1,4 +1,4 @@
-import { CssBaseline, Grid,ThemeProvider, Button, Grow, Box,Card, Paper, MenuList, MenuItem, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
+import { CssBaseline, Grid,ThemeProvider, Button, Grow, useMediaQuery,Box,Card, Paper, MenuList, MenuItem, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
 import { useDispatch, useSelector, } from "react-redux";
 import { useState, useEffect, useRef, } from 'react';
 import { useRouter } from "next/router";
@@ -16,6 +16,8 @@ import { displayReviewTag } from "../components/TagList";
 
 
 export default function myFavorite(){
+    const isSmallScreen = useMediaQuery('(max-width: 420px)');
+
     const [open, setOpen] = useState(false);
     const [color, setColor] = useState(true);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -207,7 +209,7 @@ export default function myFavorite(){
                                             <Grid item xs >
                                                 <CardContent style={{padding:'0px'}}>
                                                     <Grid container spacing={2} style={{margin:'0px',}}>
-                                                        <Grid item style={{marginTop:'15px',  padding:'0px'}}>
+                                                        {/* <Grid item style={{marginTop:'15px',  padding:'0px'}}>
                                                             <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                                 {item.name}
                                                             </Typography>
@@ -219,6 +221,25 @@ export default function myFavorite(){
                                                         </Grid>
                                                         <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}} onClick={handleFavClick(item.place_id)}>
                                                             <Image width={15} height={15} src={bookmarkOn}/>
+                                                        </Grid> */}
+                                                        <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
+                                                            <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
+                                                                {item.name}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
+                                                            {isSmallScreen && item.name.length >=13 ?
+                                                            <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
+                                                                {item.detail_category}
+                                                            </Typography>
+                                                            : 
+                                                            <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'22px'}} color="#a1a1a1" component="div" >
+                                                                {item.detail_category}
+                                                            </Typography>
+                                                            }
+                                                            <Grid item sx={{mt: isSmallScreen && item.name.length >=13 ? '2px' : '19px', p: '0px 5px'}} onClick={handleFavClick(item.place_id)}>
+                                                                <Image width={15} height={15} src={bookmarkOn}/>
+                                                            </Grid>
                                                         </Grid>
                                                     </Grid>
                                                     <Grid item container style={{marginTop: '10px'}}>
