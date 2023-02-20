@@ -228,7 +228,7 @@ export default function myFavorite(){
                                                             </Typography>
                                                         </Grid>
                                                         <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
-                                                            {isSmallScreen && item.name.length >=13 ?
+                                                            {isSmallScreen && (item.name.length >=13) ?
                                                             <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
                                                                 {item.detail_category}
                                                             </Typography>
@@ -237,7 +237,7 @@ export default function myFavorite(){
                                                                 {item.detail_category}
                                                             </Typography>
                                                             }
-                                                            <Grid item sx={{mt: isSmallScreen && item.name.length >=13 ? '2px' : '19px', p: '0px 5px'}} onClick={handleFavClick(item.place_id)}>
+                                                            <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 10px 0px 5px'}} onClick={handleFavClick(item.place_id)}>
                                                                 <Image width={15} height={15} src={bookmarkOn}/>
                                                             </Grid>
                                                         </Grid>

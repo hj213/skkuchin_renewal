@@ -137,7 +137,7 @@ const ReviewsPage = () => {
                             </>
                             )) : null }
                 <ul style={{listStyle:"none",paddingLeft:"0px"}}>
-                {places ? places. filter(item => item.id == place_id).map(item =>(
+                {places ? places.filter(item => item.id == place_id).map(item =>(
                                 <li key={item.id} data={item}>
                                     <>
                                     {reviews ? reviews.map((review, index)=>(
@@ -198,8 +198,7 @@ const ReviewsPage = () => {
                                             </Grid>
 
                                             <Grid container style={{margin:'15px 0px 0px', justifyContent:'left'}}>
-                                                {/* 여기 한번 봐주시면 감사하겠습니다. */}
-                                                {review.images && review.images.length > 1 ? (
+                                                {review.images && review.images.length > 0 ? (
                                                     <div style={{ display: 'flex', overflow: 'auto' }}>
                                                         {review.images.map((image, index) => (
                                                             <div key={index} style={{ marginRight: '10px' }}>
@@ -212,13 +211,6 @@ const ReviewsPage = () => {
                                                             </div>
                                                         ))}
                                                     </div>
-                                                ) : review.images ? (
-                                                    <Image
-                                                        width={150}
-                                                        height={150}
-                                                        src={item.images[0]}
-                                                        alt="image"
-                                                    />
                                                 ) : null}
                                             </Grid>
                             </Grid>
