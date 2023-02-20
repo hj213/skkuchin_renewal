@@ -31,6 +31,6 @@ jobs:
           REPOSITORY: nginx
           IMAGE_TAG: latest
         run: |
-          docker build -t nginx .
-          docker tag nginx:latest $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
+          docker pull nginx
+          docker tag nignx:latest $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
