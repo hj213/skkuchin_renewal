@@ -10,7 +10,7 @@ import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import food from '../image/food.png';
 import mapIcon from '../image/map-1.png';
-import searchBox from '../image/검색창2.png';
+import searchBox from '../image/searchHolder2.png';
 import closeIcon from '../image/close.png';
 import { load_user } from "../actions/auth/auth";
 import {  displayReviewTag } from "../components/TagList";

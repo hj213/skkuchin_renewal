@@ -11,7 +11,7 @@ import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import marker from '../image/marker.png';
 import down from '../image/down-1.png';
-import check from '../image/확인_3.png';
+import check from '../image/check_3.png';
 import search from '../image/search.png';
 import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";

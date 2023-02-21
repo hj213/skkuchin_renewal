@@ -3,35 +3,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useRouter } from "next/router";
 import {Grid,ThemeProvider, Drawer, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Switch, styled, FormControlLabel} from '@mui/material';
-import hamburger from '../image/햄버거바.png';
+import hamburger from '../image/hamburgerBar.png';
 import bookmark from '../image/bookmark-1.png';
 import star from '../image/Star2.png';
 import profile from '../image/profile.png';
-import yj from '../image/율전_on.png';
-import mr from '../image/명륜_off.png';
+import yj from '../image/YJ_on.png';
+import mr from '../image/MR_off.png';
 import { change_toggle, load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
 
-//mbti프로필
-import profile1 from '../image/mbti/프로필/기본.png';
-import profile2 from '../image/mbti/프로필/식사.png';
-import ENFJ from '../image/mbti/프로필/ENFJ.png';
-import ENTP from '../image/mbti/프로필/ENTP.png';
-import INFP from '../image/mbti/프로필/INFP.png';
-import ENFP from '../image/mbti/프로필/ENFP.png';
-import ISTJ from '../image/mbti/프로필/ISTJ.png';
-import ISTP from '../image/mbti/프로필/ISTP.png';
-import ISFP from '../image/mbti/프로필/ISFP.png';
-import INTP from '../image/mbti/프로필/INTP.png';
-import ESTJ from '../image/mbti/프로필/ESTJ.png';
-import INFJ from '../image/mbti/프로필/INFJ.png';
-import ENTJ from '../image/mbti/프로필/ENTJ.png';
-import ESTP from '../image/mbti/프로필/ESTP.png';
-import ESFJ from '../image/mbti/프로필/ESFJ.png';
-import INTJ from '../image/mbti/프로필/INTJ.png';
-import ISFJ from '../image/mbti/프로필/ISFJ.png';
-import ESFP from '../image/mbti/프로필/ESFP.png';
+//mbti 프로필
+import profile1 from '../image/mbti/profile/mainCharacter.png';
+import profile2 from '../image/mbti/profile/mealCharacter.png';
+import ENFJ from '../image/mbti/profile/ENFJ.png';
+import ENTP from '../image/mbti/profile/ENTP.png';
+import INFP from '../image/mbti/profile/INFP.png';
+import ENFP from '../image/mbti/profile/ENFP.png';
+import ISTJ from '../image/mbti/profile/ISTJ.png';
+import ISTP from '../image/mbti/profile/ISTP.png';
+import ISFP from '../image/mbti/profile/ISFP.png';
+import INTP from '../image/mbti/profile/INTP.png';
+import ESTJ from '../image/mbti/profile/ESTJ.png';
+import INFJ from '../image/mbti/profile/INFJ.png';
+import ENTJ from '../image/mbti/profile/ENTJ.png';
+import ESTP from '../image/mbti/profile/ESTP.png';
+import ESFJ from '../image/mbti/profile/ESFJ.png';
+import INTJ from '../image/mbti/profile/INTJ.png';
+import ISFJ from '../image/mbti/profile/ISFJ.png';
+import ESFP from '../image/mbti/profile/ESFP.png';
 
 export default function MapDrawer(openID){
 
