@@ -195,6 +195,8 @@ const AiGreeting = () => {
                                 width="35px"
                                 height="35px"
                                 onClick={handleClose}
+                                placeholder="blur"
+                                layout='fixed'
                                 />
                     </div>
                 </div>
@@ -205,6 +207,8 @@ const AiGreeting = () => {
                         src={profile}
                         width="140px"
                         height="140px"
+                        placeholder="blur"
+                        layout='fixed'
                     />
                 </div>
 
