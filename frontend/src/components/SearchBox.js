@@ -67,6 +67,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     }
 
     const handleAutoOnClick = (autoValue) => {
+        
         setValue(autoValue);
         setAuto(autoValue);
         router.push({
@@ -86,11 +87,14 @@ export default function SearchBox({openID, handleFocus, handleClick}){
         setAutoBox(true);
     }
 
-    // const handleInputOnBlur = (e) => {
-    //     e.preventDefault();
-    //     setAutoBox(false);
-    // }
-    
+    const handleInputOnBlur = (e) => { 
+        setAutoBox(false);
+    }
+
+    const handleContainerMouseDown = (e) => {
+        e.preventDefault();
+    }
+
     // const handleOnClick = () => {
     //     handleClick(true);
     // }    
@@ -98,9 +102,9 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div>
+            <div onFocus={handleOnFocus} onBlur={handleInputOnBlur}>
                 <div style={{marginTop:'5px'}} >
-                    <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
+                    <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'3', alignItems: 'center'}} >
                         <Grid item name="mapdrawer">
                             <MapDrawer open={openID} />
                         </Grid>
@@ -113,7 +117,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                 onChange={handleValue}
                                 onKeyDown={handleKeyDown}
                                 onFocus={handleInputOnFocus}
-                                // onBlur={handleInputOnBlur}
+                                
                             />
                         
                         </Grid>
@@ -123,7 +127,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                     </div>
                 </div>
                 { autoBox && (
-                // <div style={{margin:'0px 0px 0px 7px',position:'absolute', top:'100%'}}>
+                <div onMouseDown={handleContainerMouseDown}>
                     <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px'}}> 
                         <Container style={{padding:'0px', marginTop:'110px'}}>
@@ -161,7 +165,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                             )}
                         </Container>
                     </Paper>
-                // </div>
+                 </div>
                 )}
             </div>
         </ThemeProvider>

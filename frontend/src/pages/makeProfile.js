@@ -405,8 +405,7 @@ export default function makeProfile(){
                     [event.target.name] : false
                 })
             }
-        }
-         else if(food[event.target.name]){
+        } else if(food[event.target.name]){
             setFood({
                 ...food,
                 [event.target.name] : false
@@ -417,6 +416,8 @@ export default function makeProfile(){
                 [event.target.name] : true
             })
         }
+        
+ 
     }
 
     //운동클릭
@@ -563,6 +564,8 @@ export default function makeProfile(){
 
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
+        }else{
+            setKeyword('');
         }
       }, [mbtiChoose, food, study, art, sports]);
 
