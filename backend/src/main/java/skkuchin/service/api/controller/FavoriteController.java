@@ -26,7 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/favorite")
+@RequestMapping("/api/favorite")
 @Slf4j
 public class FavoriteController {
     private final FavoriteService favoriteService;
