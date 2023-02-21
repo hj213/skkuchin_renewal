@@ -12,7 +12,7 @@ services:
       context: "./frontend"
       dockerfile: Dockerfile.prod
   nginx:
-    image: nginx:1.13.9-alpine
+    image: nginx
     build:
       context: "./nginx"
       dockerfile: Dockerfile
