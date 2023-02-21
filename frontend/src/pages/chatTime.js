@@ -4,26 +4,31 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment'; 
 import 'moment/locale/ko';
-import { CssBaseline, Slide, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import { CssBaseline, Slide, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, TextField, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import calendar from '../image/calendar.png';
 import down from '../image/down-1.png';
 import check from '../image/확인_3.png';
-import styled from 'styled-components';
-import {Timeit} from "react-timeit";
+import style from 'styled-components';
+import { styled } from '@mui/material/styles';
 
 export default function chatTime(){
 
     const router = useRouter();
 
-    const [date, setDate] = useState(new Date());
+    const now = new Date();
+    const hours = now.getHours() % 24; // 24 이상일 경우 24를 빼줌
+    const minutes = now.getMinutes();
+    const time = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+    const [date, setDate] = useState(now);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
-    const [time, setTime] = useState('');
+    // const [time, setTime] = useState(new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }));
     const [timeOpen, setTimeOpen] = useState('hidden');
-    
+   
     const formatDate = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -69,7 +74,7 @@ export default function chatTime(){
             setTimeOpen('hidden')
         }
     }
-    const CalendarContainer = styled.div`
+    const CalendarContainer = style.div`
     .react-calendar { 
         width: 100%;
         background-color: #fff;
@@ -128,6 +133,33 @@ export default function chatTime(){
         height:45px
        }
     `
+    const TextFieldContainer = style.div`
+    .& .MuiInputBase-root {
+        border: none;
+
+    }
+    .css-u54r9x-MuiInputBase-root-MuiOutlinedInput-root{
+        font-weight: 500;
+    }
+    .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+        font-size: 14px;
+        padding: 5px 5px 5px 10px;
+        border-color: transparent;
+    }
+    .css-u54r9x-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+        border-color: transparent;
+    }
+    .css-u54r9x-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
+        border-color: transparent;
+    }
+    `
+
+    const CustomTextField = styled(TextField)({
+        '& .MuiInputBase-root': {
+          border: 'none',
+          borderColor: 'transparent',
+        },
+      });
 
     return(
         <ThemeProvider theme={theme}>
@@ -185,12 +217,39 @@ export default function chatTime(){
                                         />
                                     </CalendarContainer>
             
-                                    <Button onClick={handleOpenTime}>{time}</Button>
-                                    <div style={{visibility: timeOpen, positon:'relative'}}>
+                                    {/* <Button onClick={handleOpenTime}>{time}</Button> */}
+                                    {/* <div style={{visibility: timeOpen, positon:'relative'}}>
                                         <Card style={{position:'absolute', zIndex:'4', bottom:0, right:0, height:'200px'}}>
-                                            <Timeit onChange={(value) => setTime(value)} value={time}/>
+                                            
                                         </Card>
-                                    </div>
+                                    </div> */}
+                                    <Grid container>
+                                        <Grid item style={{margin: '10px 0px 0px 35px'}}>
+                                            <Typography style={{fontWeight:'500', fontSize:'15px'}}>시간</Typography>
+                                        </Grid>
+                                        <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
+                                            <TextFieldContainer>
+                                            <CustomTextField
+                                                id="time"
+                                                type="time"
+                                                InputProps={{
+                                                    disableUnderline: true
+                                                  }}
+                                                sx={{ width: 35, '& input[type="time"]': {
+                                                    backgroundColor: '#EEEEF0',
+                                                    borderRadius: '5px',
+                                                    
+                                                  }, border: 'none', '& .MuiInputBase-input': {
+                                                    paddingLeft: '0px',
+                                                  }, }}
+                                            />
+                                            </TextFieldContainer>
+                                            {/* <div style={{borderRadius:'8px', backgroundColor:'#EEEEF0', width:'80px', height:'30px', textAlign:'center', paddingTop:'5px'}}>
+                                                <Typography style={{fontSize:'15px', fontWeight:'500'}}>{time}</Typography>
+                                            </div> */}
+                                        </Grid>
+                                    </Grid>
+                                    
                                 </Card>
                                 
                             </Container>

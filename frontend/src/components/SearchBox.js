@@ -8,7 +8,7 @@ import {Grid, CssBaseline, InputBase,TextField, Paper, styled, ThemeProvider, Co
 import searchBox from '../image/검색창.png';
 import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";
-import marker from '../image/marker.png';
+import marker from '../image/location.png';
 import noAuto from '../image/noinfo_enheng.png';
 import noInput from '../image/스꾸콘-1.png'; 
 import Hangul from "hangul-js";
@@ -21,8 +21,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     const [autoBox, setAutoBox] = useState(false);
-    console.log(value);
-    console.log(auto);
+    
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
@@ -48,7 +47,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
         if(e.target.value == ''){
             setAuto([]);
-            console.log('n');
         } else{
             const regex = new RegExp(e.target.value, 'i');
             const newAuto = filteredPlace.filter((item) => regex.test(Hangul.assemble(item.name)));
@@ -140,7 +138,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                     >   
                                         <Grid container>
                                             <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={17} height={23}/>
+                                                <Image src={marker} width={16} height={21}/>
                                             </Grid>
                                             <Grid item style={{margin:'0px 0px 0px 12px'}}>
                                                 <div style={{fontSize:'16px'}}>

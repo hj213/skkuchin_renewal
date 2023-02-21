@@ -10,7 +10,7 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import marker from '../image/marker.png';
-import down from '../image/down-1.png';
+import marker2 from '../image/location.png';
 import check from '../image/확인_3.png';
 import search from '../image/search.png';
 import { load_places } from "../actions/place/place";
@@ -139,9 +139,6 @@ export default function chatPlace(){
                                         style={{ padding:'15px 10px 7px 0px'}}
                                     >   
                                         <Grid container>
-                                            {/* <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={17} height={23}/>
-                                            </Grid> */}
                                             <Grid item style={{margin:'0px 0px 0px 0px'}}>
                                                 <div style={{fontSize:'16px', fontWeight:'500'}}>
                                                 {autoList.name}
