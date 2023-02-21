@@ -23,7 +23,7 @@ const LoginPage = () => {
 
     const [autoLogin, setAutoLogin] = useState(false);
     const [rememberUsername, setRememberUsername] = useState(false);
-    const [storageUsername, setUsername] = useState("");
+    const [error, setError] = useState('');
 
 
     const [formData, setFormData] = useState({
@@ -50,9 +50,10 @@ const LoginPage = () => {
                     } else {
                         localStorage.removeItem("username");
                     }
-                    alert(message);
                 } else {
-                    alert(message);
+                    console.log(message);
+                    console.log(typeof(message));
+                    //setError(message);
                 }
             }));
         }
@@ -100,9 +101,11 @@ const LoginPage = () => {
                                 <input 
                                     type = 'password' name='password' 
                                     placeholder ='비밀번호' onChange={onChange} value={password}
+                                    onClick={() => setError('')}
                                     required
                                     style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px'}}
                                 />
+                                <div style={{alignSelf: 'left'}}><Typography sx={{height: '15px', fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px'}}>{error}</Typography></div>
                             </div>
                             {
                                 loading ? (
@@ -110,7 +113,7 @@ const LoginPage = () => {
                                         <Loader type = 'Oval' color = '#00bfff' width={50} height={50}></Loader>
                                     </div>
                                 ) : (
-                                    <div style={{ margin: '30px 24px 11.5px' }}>
+                                    <div style={{ margin: '5px 24px 10px' }}>
                                         <Button variant="contained" type="submit" style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                                             스꾸친 로그인
                                         </Button>
