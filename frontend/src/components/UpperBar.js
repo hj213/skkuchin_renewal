@@ -6,9 +6,9 @@ import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
 import { useState } from 'react';
 import {Container} from '@mui/material';
-import mainLogo from '../image/상단바/스꾸친로고.png'
-import messageIcon from '../image/상단바/message.png'
-import notiIcon from '../image/상단바/notification.png'
+import mainLogo from '../image/upperBar/mainLogo.png'
+import messageIcon from '../image/upperBar/message.png'
+import notiIcon from '../image/upperBar/notification.png'
 import Image from 'next/image'
 import { useEffect } from "react";
 
@@ -19,7 +19,7 @@ const UpperBar = () => {
 
     const [selected, setSelected] = useState("스꾸맵");
 
-    // 0218 상단바 에러 수정
+    // 0218 upperBar 에러 수정
     useEffect(() => {
         const currentPathname = window.location.pathname;
         if (currentPathname === "/match") {

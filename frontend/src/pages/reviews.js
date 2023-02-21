@@ -15,7 +15,6 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
 import close from '../image/close.png'
-import tag14 from '../image/태그/mini태그/mini_가성비.png'
 import profile from '../image/profile.png'
 
 import { displayReviewTag, reviewsTags } from "../components/TagList";

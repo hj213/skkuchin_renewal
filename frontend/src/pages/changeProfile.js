@@ -7,13 +7,13 @@ import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextFie
 import Image from 'next/image';
 import theme from "../theme/theme";
 import back from '../image/arrow_back_ios.png';
-import womanCheck from '../image/성별/여성_체크.png';
-import woman from '../image/성별/여성.png';
-import man from '../image/성별/남성.png';
-import manCheck from '../image/성별/남성_체크.png'; 
-import textForm from '../image/mbti/프로필/한줄소개.png';
-import submitOk from '../image/확인_노랑.png';
-import submit from '../image/확인_회색.png';
+import womanCheck from '../image/gender/femaleY.png';
+import woman from '../image/gender/female.png';
+import man from '../image/gender/male.png';
+import manCheck from '../image/gender/maleY.png'; 
+import textForm from '../image/mbti/profile/intro.png';
+import submitOk from '../image/checkY.png';
+import submit from '../image/checkG.png';
 
 //mbti
 import E from '../image/mbti/E-1.png';
@@ -34,161 +34,122 @@ import TCheck from '../image/mbti/T_yellow.png';
 import JCheck from '../image/mbti/J.png';
 
 //문화예술
-import artTag1 from '../image/태그/태그_off/게임.png';
-import artTag2 from '../image/태그/태그_off/노래방.png';
-import artTag3 from '../image/태그/태그_off/덕질.png';
-import artTag4 from '../image/태그/태그_off/만화.png';
-import artTag5 from '../image/태그/태그_off/맛집.png';
-import artTag6 from '../image/태그/태그_off/방탈출.png';
-import artTag7 from '../image/태그/태그_off/반려동물.png';
-import artTag8 from '../image/태그/태그_off/보드게임.png';
-import artTag9 from '../image/태그/태그_off/요리.png';
-import artTag10 from '../image/태그/태그_off/영화.png';
-import artTag11 from '../image/태그/태그_off/음악.png';
-import artTag12 from '../image/태그/태그_off/전시.png';
-import artTag13 from '../image/태그/태그_off/여행.png';
-import artTag14 from '../image/태그/태그_off/연극.png';
+import artTag1 from '../image/tags/tag_off/game.png';
+import artTag2 from '../image/tags/tag_off/sing.png';
+import artTag3 from '../image/tags/tag_off/fan.png';
+import artTag4 from '../image/tags/tag_off/cartoon.png';
+import artTag5 from '../image/tags/tag_off/taste.png';
+import artTag6 from '../image/tags/tag_off/escape.png';
+import artTag7 from '../image/tags/tag_off/pet.png';
+import artTag8 from '../image/tags/tag_off/boardgame.png';
+import artTag9 from '../image/tags/tag_off/cook.png';
+import artTag10 from '../image/tags/tag_off/movie.png';
+import artTag11 from '../image/tags/tag_off/music.png';
+import artTag12 from '../image/tags/tag_off/exhibit.png';
+import artTag13 from '../image/tags/tag_off/travel.png';
+import artTag14 from '../image/tags/tag_off/theater.png';
 
-import artTag1ON from '../image/태그/태그_on/tag_게임.png';
-import artTag2ON from '../image/태그/태그_on/tag_노래방.png';
-import artTag3ON from '../image/태그/태그_on/tag_덕질.png';
-import artTag4ON from '../image/태그/태그_on/tag_만화.png';
-import artTag5ON from '../image/태그/태그_on/tag_맛집.png';
-import artTag6ON from '../image/태그/태그_on/tag_방탈출.png';
-import artTag7ON from '../image/태그/태그_on/tag_반려동물.png';
-import artTag8ON from '../image/태그/태그_on/tag_보드게임.png';
-import artTag9ON from '../image/태그/태그_on/tag_요리.png';
-import artTag10ON from '../image/태그/태그_on/tag_영화.png';
-import artTag11ON from '../image/태그/태그_on/tag_음악.png';
-import artTag12ON from '../image/태그/태그_on/tag_전시.png';
-import artTag13ON from '../image/태그/태그_on/tag_여행.png';
-import artTag14ON from '../image/태그/태그_on/tag_연극.png';
+import artTag1ON from '../image/tags/tag_on/gameY.png';
+import artTag2ON from '../image/tags/tag_on/singY.png';
+import artTag3ON from '../image/tags/tag_on/fanY.png';
+import artTag4ON from '../image/tags/tag_on/cartoonY.png';
+import artTag5ON from '../image/tags/tag_on/tasteY.png';
+import artTag6ON from '../image/tags/tag_on/escapeY.png';
+import artTag7ON from '../image/tags/tag_on/petY.png';
+import artTag8ON from '../image/tags/tag_on/boardgameY.png';
+import artTag9ON from '../image/tags/tag_on/cookY.png';
+import artTag10ON from '../image/tags/tag_on/movieY.png';
+import artTag11ON from '../image/tags/tag_on/musicY.png';
+import artTag12ON from '../image/tags/tag_on/exhibitY.png';
+import artTag13ON from '../image/tags/tag_on/travelY.png';
+import artTag14ON from '../image/tags/tag_on/theaterY.png';
 
 //음식
-import foodTag1 from '../image/태그/태그_off/빈 양식.png';
-import foodTag2 from '../image/태그/태그_off/빈 일식.png';
-import foodTag3 from '../image/태그/태그_off/빈 중식.png';
-import foodTag4 from '../image/태그/태그_off/빈 카페.png';
-import foodTag5 from '../image/태그/태그_off/빈 분식.png';
-import foodTag6 from '../image/태그/태그_off/빈 남미음식.png';
-import foodTag7 from '../image/태그/태그_off/빈 한식.png';
-import foodTag8 from '../image/태그/태그_off/빈 아시아 음식.png';
+import foodTag1 from '../image/tags/tag_off/west.png';
+import foodTag2 from '../image/tags/tag_off/japan.png';
+import foodTag3 from '../image/tags/tag_off/china.png';
+import foodTag4 from '../image/tags/tag_off/cafe.png';
+import foodTag5 from '../image/tags/tag_off/snack.png';
+import foodTag6 from '../image/tags/tag_off/southAmerican.png';
+import foodTag7 from '../image/tags/tag_off/korea.png';
+import foodTag8 from '../image/tags/tag_off/asia.png';
 
-import foodTag1On from '../image/태그/태그_on/tag_양식.png';
-import foodTag2On from '../image/태그/태그_on/tag_일식.png';
-import foodTag3On from '../image/태그/태그_on/tag_중식.png';
-import foodTag4On from '../image/태그/태그_on/tag_카페.png';
-import foodTag5On from '../image/태그/태그_on/tag_분식.png';
-import foodTag6On from '../image/태그/태그_on/tag_남미음식.png';
-import foodTag7On from '../image/태그/태그_on/tag_한식.png';
-import foodTag8On from '../image/태그/태그_on/tag_아시아음식.png';
+import foodTag1On from '../image/tags/tag_on/westY.png';
+import foodTag2On from '../image/tags/tag_on/japanY.png';
+import foodTag3On from '../image/tags/tag_on/chinaY.png';
+import foodTag4On from '../image/tags/tag_on/cafeY.png';
+import foodTag5On from '../image/tags/tag_on/snackY.png';
+import foodTag6On from '../image/tags/tag_on/southAmericanY.png';
+import foodTag7On from '../image/tags/tag_on/koreaY.png';
+import foodTag8On from '../image/tags/tag_on/asiaY.png';
 
 //운동
-import exeTag1 from '../image/태그/태그_off/빈 당구.png';
-import exeTag2 from '../image/태그/태그_off/빈 등산.png';
-import exeTag3 from '../image/태그/태그_off/빈 러닝.png';
-import exeTag4 from '../image/태그/태그_off/빈 배드민턴.png';
-import exeTag5 from '../image/태그/태그_off/빈 서핑.png';
-import exeTag6 from '../image/태그/태그_off/빈 보드스키.png';
-import exeTag7 from '../image/태그/태그_off/빈 스포츠관람.png';
-import exeTag8 from '../image/태그/태그_off/빈 야구.png';
-import exeTag9 from '../image/태그/태그_off/빈 주짓수.png';
-import exeTag10 from '../image/태그/태그_off/빈 축구.png';
-import exeTag11 from '../image/태그/태그_off/빈 테니스.png';
-import exeTag12 from '../image/태그/태그_off/빈 헬스.png';
-import exeTag13 from '../image/태그/태그_off/빈 댄스.png';
-import exeTag14 from '../image/태그/태그_off/골프.png';
-import exeTag15 from '../image/태그/태그_off/농구.png';
-import exeTag16 from '../image/태그/태그_off/빈 볼링.png';
+import exeTag1 from '../image/tags/tag_off/billiards.png';
+import exeTag2 from '../image/tags/tag_off/climbing.png';
+import exeTag3 from '../image/tags/tag_off/running.png';
+import exeTag4 from '../image/tags/tag_off/badminton.png';
+import exeTag5 from '../image/tags/tag_off/surfing.png';
+import exeTag6 from '../image/tags/tag_off/ski.png';
+import exeTag7 from '../image/tags/tag_off/sports.png';
+import exeTag8 from '../image/tags/tag_off/baseball.png';
+import exeTag9 from '../image/tags/tag_off/jiujitsu.png';
+import exeTag10 from '../image/tags/tag_off/soccer.png';
+import exeTag11 from '../image/tags/tag_off/tennis.png';
+import exeTag12 from '../image/tags/tag_off/health.png';
+import exeTag13 from '../image/tags/tag_off/dance.png';
+import exeTag14 from '../image/tags/tag_off/golf.png';
+import exeTag15 from '../image/tags/tag_off/basketball.png';
+import exeTag16 from '../image/tags/tag_off/bowling.png';
 
-import exeTag1On from '../image/태그/태그_on/tag_당구.png';
-import exeTag2On from '../image/태그/태그_on/tag_등산.png';
-import exeTag3On from '../image/태그/태그_on/tag_러닝.png';
-import exeTag4On from '../image/태그/태그_on/tag_배드민턴.png';
-import exeTag5On from '../image/태그/태그_on/tag_서핑.png';
-import exeTag6On from '../image/태그/태그_on/tag_보드스키.png';
-import exeTag7On from '../image/태그/태그_on/tag_스포츠관람.png';
-import exeTag8On from '../image/태그/태그_on/tag_야구.png';
-import exeTag9On from '../image/태그/태그_on/tag_주짓수.png';
-import exeTag10On from '../image/태그/태그_on/tag_축구.png';
-import exeTag11On from '../image/태그/태그_on/tag_테니스.png';
-import exeTag12On from '../image/태그/태그_on/tag_헬스.png';
-import exeTag13On from '../image/태그/태그_on/tag_댄스.png';
-import exeTag14On from '../image/태그/태그_on/tag_골프.png';
-import exeTag15On from '../image/태그/태그_on/tag_농구.png';
-import exeTag16On from '../image/태그/태그_on/tag_볼링.png';
+import exeTag1On from '../image/tags/tag_on/billiardsY.png';
+import exeTag2On from '../image/tags/tag_on/climbingY.png';
+import exeTag3On from '../image/tags/tag_on/runningY.png';
+import exeTag4On from '../image/tags/tag_on/badmintonY.png';
+import exeTag5On from '../image/tags/tag_on/surfingY.png';
+import exeTag6On from '../image/tags/tag_on/skiY.png';
+import exeTag7On from '../image/tags/tag_on/sportsY.png';
+import exeTag8On from '../image/tags/tag_on/baseballY.png';
+import exeTag9On from '../image/tags/tag_on/jiujitsuY.png';
+import exeTag10On from '../image/tags/tag_on/soccerY.png';
+import exeTag11On from '../image/tags/tag_on/tennisY.png';
+import exeTag12On from '../image/tags/tag_on/healthY.png';
+import exeTag13On from '../image/tags/tag_on/danceY.png';
+import exeTag14On from '../image/tags/tag_on/golfY.png';
+import exeTag15On from '../image/tags/tag_on/basketballY.png';
+import exeTag16On from '../image/tags/tag_on/bowlingY.png';
 
-//학술
-import stuTag1 from '../image/태그/학술_off/학술01.png';
-import stuTag2 from '../image/태그/학술_off/학술02.png';
-import stuTag3 from '../image/태그/학술_off/학술03.png';
-import stuTag4 from '../image/태그/학술_off/학술04.png';
-import stuTag5 from '../image/태그/학술_off/학술05.png';
-import stuTag6 from '../image/태그/학술_off/학술06.png';
-import stuTag7 from '../image/태그/학술_off/학술07.png';
-import stuTag8 from '../image/태그/학술_off/학술08.png';
-import stuTag9 from '../image/태그/학술_off/학술09.png';
-import stuTag10 from '../image/태그/학술_off/학술10.png';
-import stuTag11 from '../image/태그/학술_off/학술11.png';
-import stuTag12 from '../image/태그/학술_off/학술12.png';
-import stuTag13 from '../image/태그/학술_off/학술13.png';
-import stuTag14 from '../image/태그/학술_off/학술14.png';
-import stuTag15 from '../image/태그/학술_off/학술15.png';
+//interest
+import stuTag1 from '../image/tags/interest_off/interest01.png';
+import stuTag2 from '../image/tags/interest_off/interest02.png';
+import stuTag3 from '../image/tags/interest_off/interest03.png';
+import stuTag4 from '../image/tags/interest_off/interest04.png';
+import stuTag5 from '../image/tags/interest_off/interest05.png';
+import stuTag6 from '../image/tags/interest_off/interest06.png';
+import stuTag7 from '../image/tags/interest_off/interest07.png';
+import stuTag8 from '../image/tags/interest_off/interest08.png';
+import stuTag9 from '../image/tags/interest_off/interest09.png';
+import stuTag10 from '../image/tags/interest_off/interest10.png';
+import stuTag11 from '../image/tags/interest_off/interest11.png';
+import stuTag12 from '../image/tags/interest_off/interest12.png';
+import stuTag13 from '../image/tags/interest_off/interest13.png';
+import stuTag14 from '../image/tags/interest_off/interest14.png';
+import stuTag15 from '../image/tags/interest_off/interest15.png';
 
-import stuTag1On from '../image/태그/학술_on/tag_학회01.png';
-import stuTag2On from '../image/태그/학술_on/tag_동아리02.png';
-import stuTag3On from '../image/태그/학술_on/tag_교환학생03.png';
-import stuTag4On from '../image/태그/학술_on/tag_봉사04.png';
-import stuTag5On from '../image/태그/학술_on/tag_재테크05.png';
-import stuTag6On from '../image/태그/학술_on/tag_빅데이터06.png';
-import stuTag7On from '../image/태그/학술_on/tag_금융07.png';
-import stuTag8On from '../image/태그/학술_on/tag_문학08.png';
-import stuTag9On from '../image/태그/학술_on/tag_토론09.png';
-import stuTag10On from '../image/태그/학술_on/tag_시사10.png';
-import stuTag11On from '../image/태그/학술_on/tag_어학11.png';
-import stuTag12On from '../image/태그/학술_on/tag_cpa12.png';
-import stuTag13On from '../image/태그/학술_on/tag_피트13.png';
-import stuTag14On from '../image/태그/학술_on/tag_로스쿨14.png';
-import stuTag15On from '../image/태그/학술_on/tag_행시15.png';
-
-//mbti프로필
-import profile1 from '../image/mbti/프로필/기본.png';
-import profile2 from '../image/mbti/프로필/식사.png';
-import profile3 from '../image/mbti/프로필/ENFJ.png';
-import profile4 from '../image/mbti/프로필/ENTP.png';
-import profile5 from '../image/mbti/프로필/INFP.png';
-import profile6 from '../image/mbti/프로필/ENFP.png';
-import profile7 from '../image/mbti/프로필/ISTJ.png';
-import profile8 from '../image/mbti/프로필/ISTP.png';
-import profile9 from '../image/mbti/프로필/ISFP.png';
-import profile10 from '../image/mbti/프로필/INTP.png';
-import profile11 from '../image/mbti/프로필/ESTJ.png';
-import profile12 from '../image/mbti/프로필/INFJ.png';
-import profile13 from '../image/mbti/프로필/ENTJ.png';
-import profile14 from '../image/mbti/프로필/ESTP.png';
-import profile15 from '../image/mbti/프로필/ESFJ.png';
-import profile16 from '../image/mbti/프로필/INTJ.png';
-import profile17 from '../image/mbti/프로필/ISFJ.png';
-import profile18 from '../image/mbti/프로필/ESFP.png';
-
-import profile1On from '../image/mbti/프로필/MBTI 선택 01.png';
-import profile2On from '../image/mbti/프로필/MBTI 선택 02.png';
-import profile3On from '../image/mbti/프로필/MBTI 선택 03.png';
-import profile4On from '../image/mbti/프로필/MBTI 선택 04.png';
-import profile5On from '../image/mbti/프로필/MBTI 선택 05.png';
-import profile6On from '../image/mbti/프로필/MBTI 선택 06.png';
-import profile7On from '../image/mbti/프로필/MBTI 선택 07.png';
-import profile8On from '../image/mbti/프로필/MBTI 선택 08.png';
-import profile9On from '../image/mbti/프로필/MBTI 선택 09.png';
-import profile10On from '../image/mbti/프로필/MBTI 선택 10.png';
-import profile11On from '../image/mbti/프로필/MBTI 선택 11.png';
-import profile12On from '../image/mbti/프로필/MBTI 선택 12.png';
-import profile13On from '../image/mbti/프로필/MBTI 선택 13.png';
-import profile14On from '../image/mbti/프로필/MBTI 선택 14.png';
-import profile15On from '../image/mbti/프로필/MBTI 선택 15.png';
-import profile16On from '../image/mbti/프로필/MBTI 선택 16.png';
-import profile17On from '../image/mbti/프로필/MBTI 선택 17.png';
-import profile18On from '../image/mbti/프로필/MBTI 선택 18.png';
+import stuTag1On from '../image/tags/interest_on/interest01on.png';
+import stuTag2On from '../image/tags/interest_on/interest02on.png';
+import stuTag3On from '../image/tags/interest_on/interest03on.png';
+import stuTag4On from '../image/tags/interest_on/interest04on.png';
+import stuTag5On from '../image/tags/interest_on/interest05on.png';
+import stuTag6On from '../image/tags/interest_on/interest06on.png';
+import stuTag7On from '../image/tags/interest_on/interest07on.png';
+import stuTag8On from '../image/tags/interest_on/interest08on.png';
+import stuTag9On from '../image/tags/interest_on/interest09on.png';
+import stuTag10On from '../image/tags/interest_on/interest10on.png';
+import stuTag11On from '../image/tags/interest_on/interest11on.png';
+import stuTag12On from '../image/tags/interest_on/interest12on.png';
+import stuTag13On from '../image/tags/interest_on/interest13on.png';
+import stuTag14On from '../image/tags/interest_on/interest14on.png';
+import stuTag15On from '../image/tags/interest_on/interest15on.png';
 
 export default function makeProfile(){ 
 
@@ -263,13 +224,7 @@ export default function makeProfile(){
                 }
             });
             setKeyword(keyword);
-            
-            // //프로필
-            // const image = matchingUser.image;
-            // setProfile({
-            //     [image] : true
-            // });
-            // setImage(image);
+        
 
             //한줄소개
             const introduction = matchingUser.introduction;
@@ -350,26 +305,6 @@ export default function makeProfile(){
         '로스쿨': false,
         '행시': false,
     })
-    // const [profile, setProfile] = useState({
-    //     'DEFAULT1': false,
-    //     'DEFAULT2': false,
-    //     'ENFJ': false,
-    //     'ENTP': false,
-    //     'INFP': false,
-    //     'ENFP': false,
-    //     'ISTJ': false,
-    //     'ISTP': false,
-    //     'ISFP': false,
-    //     'INTP': false,
-    //     'ESTJ': false,
-    //     'INFJ': false,
-    //     'ENTJ': false,
-    //     'ESTP': false,
-    //     'ESFJ': false,
-    //     'INTJ': false,
-    //     'ISFJ': false,
-    //     'ESFP': false,
-    // })
 
     const [gender, setGender] = useState('');
     const [keyword, setKeyword] = useState('');
@@ -599,7 +534,7 @@ export default function makeProfile(){
         }
     }
 
-    //학술
+    //interest
     const handleStudyClick = (event) => {
         if(keyword.length == 8){
             setStudy({
@@ -911,8 +846,8 @@ export default function makeProfile(){
                                 </Grid>
                             </div>
                         </Container>
-                        <Container name='학술' style={{padding:'0px'}}>
-                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 학술</Typography>
+                        <Container name='interest' style={{padding:'0px'}}>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 interest</Typography>
                             <div style={{marginBottom:'9px'}}>
                                 <Grid container style={{maxWidth:'330px'}}>
                                     <Grid style={{marginRight:'8px'}}>
@@ -964,84 +899,7 @@ export default function makeProfile(){
                             </div>
                         </Container>
                     </Container>
-                    {/* <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
-                        <div>
-                            <Container  style={{padding:'0px', margin:'41.7px 0px 0px 10px', justifyContent:'center'}}>
-                                <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>매칭 프로필 사진*</Typography>
-                                <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>1개의 이미지를 선택해주세요.</Typography>
-                                <div style={{marginTop:'10px'}}>
-                                    <Grid container style={{maxWidth:'340px'}}>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.DEFAULT1 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='DEFAULT1'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.DEFAULT2 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='DEFAULT2'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ENFJ ? profile3On : profile3} width={100} height={100} onClick={handleProfileClick} name='ENFJ'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.ENTP ? profile4On : profile4} width={100} height={100} onClick={handleProfileClick} name='ENTP'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.INFP ? profile5On : profile5} width={100} height={100} onClick={handleProfileClick} name='INFP'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ENFP ? profile6On : profile6} width={100} height={100} onClick={handleProfileClick} name='ENFP'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.ISTJ ? profile7On : profile7} width={100} height={100} onClick={handleProfileClick} name='ISTJ'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ISTP ? profile8On : profile8} width={100} height={100} onClick={handleProfileClick} name='ISTP'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ISFP ? profile9On : profile9} width={100} height={100} onClick={handleProfileClick} name='ISFP'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.INTP ? profile10On : profile10} width={100} height={100} onClick={handleProfileClick} name='INTP'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ESTJ ? profile11On : profile11} width={100} height={100} onClick={handleProfileClick} name='ESTJ'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.INFJ ? profile12On : profile12} width={100} height={100} onClick={handleProfileClick} name='INFJ'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.ENTJ ? profile13On : profile13} width={100} height={100} onClick={handleProfileClick} name='ENTJ'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ESTP ? profile14On : profile14} width={100} height={100} onClick={handleProfileClick} name='ESTP'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ESFJ ? profile15On : profile15} width={100} height={100} onClick={handleProfileClick} name='ESFJ'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.INTJ ? profile16On : profile16} width={100} height={100} onClick={handleProfileClick} name='INTJ'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ISFJ ? profile17On : profile17} width={100} height={100} onClick={handleProfileClick} name='ISFJ'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ESFP ? profile18On : profile18} width={100} height={100} onClick={handleProfileClick} name='ESFP'/>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </div> 
-                            </Container>
-                        </div>
-                    </div> */}
+                    
                     <div name='한줄소개' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px', justifyContent:'center'}}>

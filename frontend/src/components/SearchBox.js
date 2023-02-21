@@ -5,12 +5,12 @@ import MapDrawer from "./MapDrawer";
 import theme from "../theme/theme";
 import Image from 'next/image';
 import {Grid, CssBaseline, InputBase,TextField, Paper, styled, ThemeProvider, Container, Typography} from '@mui/material';
-import searchBox from '../image/검색창.png';
+import searchBox from '../image/searchHolder.png';
 import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";
 import marker from '../image/marker.png';
 import noAuto from '../image/noinfo_enheng.png';
-import noInput from '../image/스꾸콘-1.png'; 
+ 
 export default function SearchBox({openID, handleFocus, handleClick}){
 
     const dispatch = useDispatch();
@@ -156,10 +156,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                 <div style={{textAlign:'center', paddingTop:'110px'}}>        
                                     <Image src={noAuto} width={129} height={108}/>
                                     <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
-                                    {/* 검색어를 입력하지 않은 경우와 구분 */}
-                                    {/* <Image src={ value!=''? noAuto : noInput} width={129} height={108}/>
-                                    <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >{value!=''? '검색결과가 없습니다.': '검색어를 입력해주세요'}</Typography>
-                                     */}
                                 </div>
                             )}
                         </Container>
