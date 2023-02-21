@@ -42,7 +42,7 @@ services:
     image: server
     build:
       context: "./backend"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 8080:8080

@@ -5,7 +5,7 @@ services:
     image: server
     build:
       context: "./backend"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
   client:
     image: client
     build:
