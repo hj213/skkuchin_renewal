@@ -7,8 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from "next/router";
 
-import profile1 from '../../image/mbti/profile/mainCharacter.png.png';
-import profile2 from '../../image/mbti/profile/mealCharacter.png.png';
+import profile1 from '../../image/mbti/profile/mainCharacter.png';
+import profile2 from '../../image/mbti/profile/mealCharacter.png';
 import profile3 from '../../image/mbti/profile/ENFJ.png';
 import profile4 from '../../image/mbti/profile/ENTP.png';
 import profile5 from '../../image/mbti/profile/INFP.png';

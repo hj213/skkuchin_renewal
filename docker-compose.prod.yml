@@ -6,9 +6,13 @@ services:
     build:
       context: "./backend"
       dockerfile: Dockerfile
-
   client:
     image: client
     build:
       context: "./frontend"
       dockerfile: Dockerfile.prod
+  nginx:
+    image: nginx
+    build:
+      context: "./nginx"
+      dockerfile: Dockerfile

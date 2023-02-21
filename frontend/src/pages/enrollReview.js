@@ -30,7 +30,7 @@ import tag7on from '../image/tags/review_on/review_twoY.png';
 import image from '../image/morePicY.png';
 
 
-import emptyStar from '../image/Star border-1.png';
+import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 
 import TextField from '@mui/material/TextField';
