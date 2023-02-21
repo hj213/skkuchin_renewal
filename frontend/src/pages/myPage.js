@@ -32,7 +32,7 @@ export default function myPage() {
         {user && <div style={{marginTop: '30px'}}>
             {/* 상단 회원 정보 */}
             <div style={{display: 'grid', gridTemplateColumns: '72px 1fr 11px', alignItems: 'center', padding: '0 15px'}}>
-                {displayProfile("ISFJ", 72, 72)}
+                {displayProfile(user.image, 72, 72)}
                 <div style={{display: 'flex', flexDirection: 'column', marginLeft: '9px'}}>
                     <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname} 님</Typography>
                     {/* 캠퍼스, 학과, 학번 */}
