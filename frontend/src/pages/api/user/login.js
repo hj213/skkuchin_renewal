@@ -28,7 +28,7 @@ export default async (req, res) => {
                     cookie.serialize(
                         'access', resValue.data.access, {
                             httpOnly: true,
-                            secure: process.env.NODE_ENV !== 'prod',
+                            secure: process.env.NODE_ENV !== 'production',
                             maxAge: 60 * 30,
                             sameSite: 'strict',
                             path: '/api/'
@@ -37,7 +37,7 @@ export default async (req, res) => {
                     cookie.serialize(
                         'refresh', resValue.data.refresh, {
                             httpOnly: true,
-                            secure: process.env.NODE_ENV !== 'prod',
+                            secure: process.env.NODE_ENV !== 'production',
                             maxAge: 60 * 60 * 24,
                             sameSite: 'strict',
                             path: '/api/'

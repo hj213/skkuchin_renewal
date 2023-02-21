@@ -10,7 +10,7 @@ import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import calendar from '../image/calendar.png';
 import down from '../image/down-1.png';
-import check from '../image/확인_3.png';
+import check from '../image/check_3.png';
 import style from 'styled-components';
 import { styled } from '@mui/material/styles';
 

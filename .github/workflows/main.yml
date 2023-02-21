@@ -28,9 +28,13 @@ jobs:
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: nginx
+          REPOSITORY: skkuchin-repo
           IMAGE_TAG: latest
         run: |
-          docker pull nginx
-          docker tag nginx:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker-compose -f docker-compose.prod.yml build server client nginx
+          docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
+          docker tag client:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker tag nginx:latest $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG

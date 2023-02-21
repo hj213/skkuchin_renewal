@@ -15,7 +15,6 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
 import close from '../image/close.png'
-import tag14 from '../image/태그/mini태그/mini_가성비.png'
 import profile from '../image/profile.png'
 
 import { displayReviewTag, reviewsTags } from "../components/TagList";
@@ -49,6 +48,25 @@ const ReviewsPage = () => {
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
+    const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
+
+    useEffect(() => {
+        if(reviews != null) {
+            if (filter === 'Latest') {
+                setSortedReviews([...reviews].reverse()); // 최신순으로 정렬
+                } else if (filter === 'Rating') {
+                setSortedReviews([...reviews].sort((a, b) => b.rate - a.rate)); // 평점이 높은 순으로 정렬
+                } else if (filter === 'Oldest') {
+                setSortedReviews([...reviews]); // 오래된 순으로 정렬 (기본값)
+             }
+        }
+    }, [filter, reviews]);
+    
+    const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
+
+    const handleFilterChange = (event) => {
+      setFilter(event.target.value);
+    };
 
     // 유저정보
     const user = useSelector(state => state.auth.user);
@@ -127,20 +145,25 @@ const ReviewsPage = () => {
                                     </Typography>
                                 </Grid>
                                 <Grid item > 
-                                    <Select xs={2} sx={{fontSize:'14px',lineHeight: '200%',width:"100px", height:"30px", marginTop:"-30px",border:'none',}}>
+                                    <Select
+                                        xs={2}
+                                        sx={{ fontSize: '14px', lineHeight: '200%', width: '100px', height: '30px', marginTop: '-30px', border: 'none' }}
+                                        value={filter}
+                                        onChange={handleFilterChange}
+                                    >
                                         <MenuItem value='Latest'>최신순</MenuItem>
-                                        <MenuItem value='Oldest'>평점순</MenuItem>
-                                        <MenuItem value='Rating'>오래된순</MenuItem>
+                                        <MenuItem value='Oldest'>오래된순</MenuItem>
+                                        <MenuItem value='Rating'>평점순</MenuItem>
                                     </Select>
                                 </Grid>
                             </Grid>
                             </>
                             )) : null }
-                <ul style={{listStyle:"none",paddingLeft:"0px"}}>
-                {places ? places. filter(item => item.id == place_id).map(item =>(
+                        <ul style={{listStyle:"none",paddingLeft:"0px"}}>
+                            {places ? places.filter(item => item.id == place_id).map(item =>(
                                 <li key={item.id} data={item}>
                                     <>
-                                    {reviews ? reviews.map((review, index)=>(
+                                    {reviews ? sortedReviews.map((review, index)=>(
                                         <Grid container key={index} style={{margin:"0 0 20px 0"}}>
                                             <Grid container style={{margin:'20px 0px 0px', justifyContent:'left'}}>
                                                 <Grid item xs={2}>
@@ -198,8 +221,7 @@ const ReviewsPage = () => {
                                             </Grid>
 
                                             <Grid container style={{margin:'15px 0px 0px', justifyContent:'left'}}>
-                                                {/* 여기 한번 봐주시면 감사하겠습니다. */}
-                                                {review.images && review.images.length > 1 ? (
+                                                {review.images && review.images.length > 0 ? (
                                                     <div style={{ display: 'flex', overflow: 'auto' }}>
                                                         {review.images.map((image, index) => (
                                                             <div key={index} style={{ marginRight: '10px' }}>
@@ -212,13 +234,6 @@ const ReviewsPage = () => {
                                                             </div>
                                                         ))}
                                                     </div>
-                                                ) : review.images ? (
-                                                    <Image
-                                                        width={150}
-                                                        height={150}
-                                                        src={item.images[0]}
-                                                        alt="image"
-                                                    />
                                                 ) : null}
                                             </Grid>
                             </Grid>
