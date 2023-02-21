@@ -5,20 +5,20 @@ import {Grid, CssBaseline, ThemeProvider, Stack} from '@mui/material'
 // Icons
 import back from '../image/arrow_back_ios.png';
 import close from '../image/close.png';
-import tag1 from '../image/태그/리뷰등록_off/review_맛집.png';
-import tag1on from '../image/태그/리뷰등록_on/review_맛집Y.png'
-import tag2 from '../image/태그/리뷰등록_off/review_간단한한끼.png';
-import tag2on from '../image/태그/리뷰등록_on/review_간단한한끼Y.png';
-import tag3 from '../image/태그/리뷰등록_off/review_분위기좋은.png';
-import tag3on from '../image/태그/리뷰등록_on/review_분위기좋은Y.png';
-import tag4 from '../image/태그/리뷰등록_off/review_가성비.png';
-import tag4on from '../image/태그/리뷰등록_on/review_가성비Y.png';
-import tag5 from '../image/태그/리뷰등록_off/review_친절.png';
-import tag5on from '../image/태그/리뷰등록_on/review_친절Y.png';
-import tag6 from '../image/태그/리뷰등록_off/review_청결도.png';
-import tag6on from '../image/태그/리뷰등록_on/review_청결도Y.png';
-import tag7 from '../image/태그/리뷰등록_off/review_둘이가요.png';
-import tag7on from '../image/태그/리뷰등록_on/review_둘이가요Y.png';
+import tag1 from '../image/tags/review_off/review_taste.png';
+import tag1on from '../image/tags/review_on/review_tasteY.png'
+import tag2 from '../image/tags/review_off/review_simple.png';
+import tag2on from '../image/tags/review_on/review_simpleY.png';
+import tag3 from '../image/tags/review_off/review_mood.png';
+import tag3on from '../image/tags/review_on/review_moodY.png';
+import tag4 from '../image/tags/review_off/review_money.png';
+import tag4on from '../image/tags/review_on/review_moneyY.png';
+import tag5 from '../image/tags/review_off/review_kind.png';
+import tag5on from '../image/tags/review_on/review_kindY.png';
+import tag6 from '../image/tags/review_off/review_clean.png';
+import tag6on from '../image/tags/review_on/review_cleanY.png';
+import tag7 from '../image/tags/review_off/review_two.png';
+import tag7on from '../image/tags/review_on/review_twoY.png';
 
 export const reviewTagImage = (keyword) => {
     switch(keyword){

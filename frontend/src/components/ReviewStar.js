@@ -1,7 +1,7 @@
 import { useState } from "react"; ;
 import { useSelector } from "react-redux";
 
-import emptyStar from '../image/Star border-1.png';
+import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 import character from '../image/character.png';
 
