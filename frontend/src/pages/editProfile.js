@@ -2,19 +2,22 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider, MenuItem, Button, TextField, Typography, Link, FormControl } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select } from '@mui/material';
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
-import { displayProfile } from '../components/Mypage/ProfileList';
-import { check_nickname, load_user } from '../actions/auth/auth';
+import { displayProfile } from '../components/MyPage/ProfileList';
+import { change_user, check_nickname, load_user } from '../actions/auth/auth';
 
 export default function editProfile() {
     const dispatch = useDispatch();
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
-    const [validNickname, setValidNickname] = useState(null);
+    const [validNickname, setValidNickname] = useState(false);
     const [nicknameMsg, setNicknameMsg] = useState("");
+    const [showCheck, setShowCheck] = useState(false);
+
+    const [image, setImage] = useState("");
     const [nickname, setNickname] = useState("");
     const [major, setMajor] = useState("");
     const [studentId, setStudentId] = useState("");
@@ -45,6 +48,7 @@ export default function editProfile() {
             setValidNickname(null);
         }
         setNickname(e.target.value);
+        console.log(nickname);
     }
 
     const checkNickname = () => {
@@ -57,7 +61,13 @@ export default function editProfile() {
     }
 
     const handleNextStep = () => {
-
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(change_user(nickname, major, image, studentId.slice(0, 2), ([result, message]) => {
+                setValidNickname(result);
+                setNicknameMsg(message);
+                alert(message);
+            }))
+        }
     }
 
     useEffect(() => {
@@ -68,6 +78,7 @@ export default function editProfile() {
 
     useEffect(() => {
         if (user) {
+            setImage(user.image);
             setNickname(user.nickname);
             setMajor(user.major);
             setStudentId(user.student_id + "학번");
@@ -80,7 +91,7 @@ export default function editProfile() {
 
         {user && <Box
             sx={{
-            marginTop: '45px',
+            margin: '45px 16px 16px 16px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -93,11 +104,11 @@ export default function editProfile() {
         </header>
 
         {/* 프로필 이미지 */}
-        {displayProfile(user.image, 107, 107)}
-        <Link component="button" onClick={() => router.push('/')} color="#505050" sx={{fontSize: '13px', mt: '17px', mb: '45px'}}>프로필 이미지 변경하기기</Link>
+        {displayProfile(image, 107, 107)}
+        <Link component="button" onClick={() => router.push('/')} color="#505050" sx={{fontSize: '13px', mt: '17px', mb: '45px'}}>프로필 이미지 변경하기</Link>
         
         <form style={{ width: '100%'}}>
-        <div style={{margin: '0 36px'}}>
+        <div style={{margin: '0 36px 19px'}}>
         <TextField
             variant="standard"
             label="닉네임"
@@ -113,13 +124,15 @@ export default function editProfile() {
             }}
             />
             {/* 중복확인 메소드 추가 */}
+            {nickname !== user.nickname ? 
             <div style={{display:'flex'}}>
-                <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
-                {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
-                {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
-            </div>
+                <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px', boxShadow: 'none'}}>중복확인</Button>
+                {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 0 5px'}}>{nicknameMsg}</Typography>}
+                {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 0 5px'}}>{nicknameMsg}</Typography>}
+            </div> :
+            <div style={{height: '20px'}}></div>}
         </div>
-        <div style={{margin: '0 36px 44px'}}>
+        <div style={{margin: '0 36px 39px'}}>
             <FormControl variant="standard" style={{width: '100%'}}>
             <InputLabel shrink required >학부/학과</InputLabel>
             <Select
@@ -161,12 +174,12 @@ export default function editProfile() {
             </FormControl>
         </div>
         <div style={{margin: '0 36px 12px'}}>
-            {validNickname && (nickname != '' && major != '' && studentId != '') ?
-                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+            {(nickname === user.nickname || validNickname) && (nickname != '' && major != '' && studentId != '') ?
+                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인
                     </Button>
                     :
-                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인
                     </Button>
             }

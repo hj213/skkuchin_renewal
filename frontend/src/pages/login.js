@@ -150,9 +150,9 @@ const LoginPage = () => {
                 </Grid> */}
 
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: '64px', marginBottom: '25px'}}>
-                    <div style={{justifySelf: 'right'}}>회원가입</div>
+                    <div onClick={() => router.push('/register')} style={{justifySelf: 'right'}}>회원가입</div>
                     <div style={{justifySelf: 'center', textAlign: 'center'}}>|</div>
-                    <div style={{justifySelf: 'left'}}>비밀번호 초기화</div>
+                    <div onClick={() => router.push('/resetPassword')} style={{justifySelf: 'left'}}>비밀번호 초기화</div>
                 </div>
                     </Box>
                 </Container>

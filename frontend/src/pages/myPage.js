@@ -7,16 +7,17 @@ import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import toggle_off from '../image/toggle_off.png';
 import toggle_on from '../image/toggle on.png';
-import { displayProfile } from '../components/Mypage/ProfileList';
+import { displayProfile } from '../components/MyPage/ProfileList';
 import { load_user } from '../actions/auth/auth';
 import UpperBar from '../components/UpperBar';
 
 export default function myPage() {
     const dispatch = useDispatch();
+    const router = useRouter();
     const user = useSelector(state => state.auth.user);
 
     const arrowClick = () => {
-        console.log("user", user);
+        router.push('/editProfile')
     }
 
     useEffect(() => {
@@ -45,14 +46,14 @@ export default function myPage() {
             </div>
             
             {/* 사용자 설정 */}
-            <Container style={{display: 'grid', borderBottom: '1px solid #CCCCCC', padding: '0 15px', marginTop: '30px'}}>
+            {/* <Container style={{display: 'grid', borderBottom: '1px solid #CCCCCC', padding: '0 15px', marginTop: '30px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>사용자 설정</Typography>
                 <Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>비밀번호 변경</Button>
                 <Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>차단 유저 관리</Button>
-            </Container>
+            </Container> */}
 
             {/* 알림 설정 */}
-            <Container style={{borderBottom: '1px solid #CCCCCC', padding: '0 15px', marginTop: '25px'}}>
+            {/* <Container style={{borderBottom: '1px solid #CCCCCC', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>알림 설정</Typography>
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start'}}>
                     <Typography style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>채팅 알림</Typography>
@@ -62,22 +63,22 @@ export default function myPage() {
                     <Typography style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>스꾸친 공지/이벤트 알림</Typography>
                     <Image width={48.58} height={26.5} src={toggle_off} onClick={arrowClick} style={{zIndex: '-1'}}/>
                 </div>
-            </Container>
+            </Container> */}
 
             {/* 기타 */}
-            <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
+            {/* <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
                 <Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>로그아웃</Button>
                 <Button variant="text" style={{fontSize: '16px', fontWeight: '500', color: '#000000', padding: '0', justifySelf: 'start'}}>문의하기</Button>
-            </Container>
+            </Container> */}
 
             {/* 하단 */}
-            <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '80px', marginBottom: '50px'}}>
+            {/* <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '80px', marginBottom: '50px'}}>
                 <div style={{display: 'flex', fontSize: '14px'}}>
                     <Button variant="text" color={theme.palette.fontColor.main}>탈퇴하기</Button>
                     <Button variant="text" color={theme.palette.fontColor.main}>약관 및 정책</Button>
                 </div>
-            </Container>
+            </Container> */}
 
         </div>}
         </ThemeProvider>
