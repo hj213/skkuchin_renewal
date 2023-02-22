@@ -1,16 +1,19 @@
 import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
+import pino from "pino";
 
 
 export default async (req, res) => {
+    const logger = pino();
+
     if (req.method === 'POST') {
         const { username, password } = req.body;
-        console.log(req, res)
+        
         const body = JSON.stringify({
             username,
             password
         });
-
+        logger.info('로그인 시작')
         try {
             const apiRes = await fetch(`${API_URL}/api/user/login`, {
                 method: 'POST',
@@ -21,8 +24,9 @@ export default async (req, res) => {
                 body: body
             });
 
+            logger.info(apiRes, '데이터 받아옴')
             const resValue = await apiRes.json();
-            console.log(resValue)
+            logger.info(resValue)
             if (apiRes.status === 200) {
                 res.setHeader('Set-Cookie', [
                     cookie.serialize(
@@ -44,17 +48,19 @@ export default async (req, res) => {
                         }
                     )
                 ]);
-                console.log(resValue)
+                logger.info(res)
 
                 return res.status(200).json({
                     success: resValue.message
                 });
             } else {
+                logger.info(apiRes)
                 return res.status(apiRes.status).json({
                     error: resValue.message
                 });
             }
         } catch(err) {
+            logger.info(err)
             return res.status(500).json({
                 error: 'Something went wrong when attempting login'
             });
