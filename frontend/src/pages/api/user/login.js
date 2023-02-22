@@ -22,7 +22,6 @@ export default async (req, res) => {
             });
 
             const resValue = await apiRes.json();
-            console.log(resValue)
 
             if (apiRes.status === 200) {
                 res.setHeader('Set-Cookie', [
