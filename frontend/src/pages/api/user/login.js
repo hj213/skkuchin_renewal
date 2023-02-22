@@ -4,7 +4,11 @@ import pino from "pino";
 
 
 export default async (req, res) => {
-    const logger = pino({browser: {asObject: true}});
+    const logger = pino(pino.destination({
+        dest: './login-file', // omit for stdout
+        minLength: 4096, // Buffer before writing
+        sync: false // Asynchronous logging
+    }))
 
     if (req.method === 'POST') {
         const { username, password } = req.body;
