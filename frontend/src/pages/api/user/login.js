@@ -5,7 +5,7 @@ import { API_URL } from '../../../config/index';
 export default async (req, res) => {
     if (req.method === 'POST') {
         const { username, password } = req.body;
-
+        console.log(req, res)
         const body = JSON.stringify({
             username,
             password
@@ -22,14 +22,26 @@ export default async (req, res) => {
             });
 
             const resValue = await apiRes.json();
-
+            console.log(resValue)
             if (apiRes.status === 200) {
                 res.setHeader('Set-Cookie', [
                     cookie.serialize(
-                        'access', resValue.data.access
+                        'access', resValue.data.access, {
+                            httpOnly: true,
+                            secure: process.env.NODE_ENV === 'production',
+                            maxAge: 60 * 30,
+                            // sameSite: 'none',
+                            path: '/api/'
+                        }
                     ),
                     cookie.serialize(
-                        'refresh', resValue.data.refresh
+                        'refresh', resValue.data.refresh, {
+                            httpOnly: true,
+                            secure: process.env.NODE_ENV === 'production',
+                            maxAge: 60 * 60 * 24,
+                            // sameSite: 'none',
+                            path: '/api/'
+                        }
                     )
                 ]);
 
