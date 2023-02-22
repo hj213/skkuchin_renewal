@@ -2,53 +2,61 @@ import theme from "../theme/theme";
 import Image from 'next/image';
 import {Grid, CssBaseline, ThemeProvider} from '@mui/material';
 
-// 지도 태그
-import mapTag1 from '../image/태그/지도_off/top_학생할인.png';
-import mapTag2 from '../image/태그/지도_off/top_스페셜.png';
-import mapTag3 from '../image/태그/지도_off/top_한식.png';
-import mapTag4 from '../image/태그/지도_off/top_중식.png';
-import mapTag5 from '../image/태그/지도_off/top_일식.png';
-import mapTag6 from '../image/태그/지도_off/top_양식.png';
-import mapTag7 from '../image/태그/지도_off/top_기타.png';
-import mapTag8 from '../image/태그/지도_off/top_간단한한끼.png';
-import mapTag9 from '../image/태그/지도_off/top_분위기좋은.png';
-import mapTag10 from '../image/태그/지도_off/top_맛집.png';
-import mapTag11 from '../image/태그/지도_off/top_친절.png';
-import mapTag12 from '../image/태그/지도_off/top_가성비.png';
-import mapTag13 from '../image/태그/지도_off/top_청결도.png';
-import mapTag14 from '../image/태그/지도_off/top_둘이가요.png';
+// map tags
+import mapTag1 from '../image/tags/map_off/top_dc.png';
+import mapTag2 from '../image/tags/map_off/top_special.png';
+import mapTag3 from '../image/tags/map_off/top_korea.png';
+import mapTag4 from '../image/tags/map_off/top_china.png';
+import mapTag5 from '../image/tags/map_off/top_japan.png';
+import mapTag6 from '../image/tags/map_off/top_west.png';
+import mapTag7 from '../image/tags/map_off/top_etc.png';
+import mapTag8 from '../image/tags/map_off/top_simple.png';
+import mapTag9 from '../image/tags/map_off/top_mood.png';
+import mapTag10 from '../image/tags/map_off/top_taste.png';
+import mapTag11 from '../image/tags/map_off/top_kind.png';
+import mapTag12 from '../image/tags/map_off/top_money.png';
+import mapTag13 from '../image/tags/map_off/top_clean.png';
+import mapTag14 from '../image/tags/map_off/top_two.png';
 
-import mapTagOn1 from '../image/태그/지도_on/top_학생할인Y.png';
-import mapTagOn2 from '../image/태그/지도_on/top_스페셜Y.png';
-import mapTagOn3 from '../image/태그/지도_on/top_한식Y.png';
-import mapTagOn4 from '../image/태그/지도_on/top_중식Y.png';
-import mapTagOn5 from '../image/태그/지도_on/top_일식Y.png';
-import mapTagOn6 from '../image/태그/지도_on/top_양식Y.png';
-import mapTagOn7 from '../image/태그/지도_on/top_기타Y.png';
-import mapTagOn8 from '../image/태그/지도_on/top_간단한한끼Y.png';
-import mapTagOn9 from '../image/태그/지도_on/top_분위기좋은Y.png';
-import mapTagOn10 from '../image/태그/지도_on/top_맛집Y.png';
-import mapTagOn11 from '../image/태그/지도_on/top_친절Y.png';
-import mapTagOn12 from '../image/태그/지도_on/top_가성비Y.png';
-import mapTagOn13 from '../image/태그/지도_on/top_청결도Y.png';
-import mapTagOn14 from '../image/태그/지도_on/top_둘이가요Y.png';
+import mapTagOn1 from '../image/tags/map_on/top_dcY.png';
+import mapTagOn2 from '../image/tags/map_on/top_specialY.png';
+import mapTagOn3 from '../image/tags/map_on/top_koreaY.png';
+import mapTagOn4 from '../image/tags/map_on/top_chinaY.png';
+import mapTagOn5 from '../image/tags/map_on/top_japanY.png';
+import mapTagOn6 from '../image/tags/map_on/top_westY.png';
+import mapTagOn7 from '../image/tags/map_on/top_etcY.png';
+import mapTagOn8 from '../image/tags/map_on/top_simpleY.png';
+import mapTagOn9 from '../image/tags/map_on/top_moodY.png';
+import mapTagOn10 from '../image/tags/map_on/top_tasteY.png';
+import mapTagOn11 from '../image/tags/map_on/top_kindY.png';
+import mapTagOn12 from '../image/tags/map_on/top_moneyY.png';
+import mapTagOn13 from '../image/tags/map_on/top_cleanY.png';
+import mapTagOn14 from '../image/tags/map_on/top_twoY.png';
 
-// 리뷰 태그
-import reviewTag01 from '../image/태그/mini태그/mini_맛집.png';
-import reviewTag02 from '../image/태그/mini태그/mini_가성비.png';
-import reviewTag03 from '../image/태그/mini태그/mini_친절.png';
-import reviewTag04 from '../image/태그/mini태그/mini_둘이가요.png';
-import reviewTag05 from '../image/태그/mini태그/mini_청결도.png';
-import reviewTag06 from '../image/태그/mini태그/mini_간단한한끼.png';
-import reviewTag07 from '../image/태그/mini태그/mini_분위기좋은.png';
+// 리뷰 tags
+import reviewTag01 from '../image/tags/mini/mini_taste.png';
+import reviewTag02 from '../image/tags/mini/mini_money.png';
+import reviewTag03 from '../image/tags/mini/mini_kind.png';
+import reviewTag04 from '../image/tags/mini/mini_two.png';
+import reviewTag05 from '../image/tags/mini/mini_clean.png';
+import reviewTag06 from '../image/tags/mini/mini_simple.png';
+import reviewTag07 from '../image/tags/mini/mini_mood.png';
 
-import reviewBigTag01 from '../image/태그/리뷰등록_on/review_맛집Y.png';
-import reviewBigTag02 from '../image/태그/리뷰등록_on/review_가성비Y.png';
-import reviewBigTag03 from '../image/태그/리뷰등록_on/review_친절Y.png';
-import reviewBigTag04 from '../image/태그/리뷰등록_on/review_둘이가요Y.png';
-import reviewBigTag05 from '../image/태그/리뷰등록_on/review_청결도Y.png';
-import reviewBigTag06 from '../image/태그/리뷰등록_on/review_간단한한끼Y.png';
-import reviewBigTag07 from '../image/태그/리뷰등록_on/review_분위기좋은Y.png';
+import reviewBigTag01 from '../image/tags/review_on/review_tasteY.png';
+import reviewBigTag02 from '../image/tags/review_on/review_moneyY.png';
+import reviewBigTag03 from '../image/tags/review_on/review_kindY.png';
+import reviewBigTag04 from '../image/tags/review_on/review_twoY.png';
+import reviewBigTag05 from '../image/tags/review_on/review_cleanY.png';
+import reviewBigTag06 from '../image/tags/review_on/review_simpleY.png';
+import reviewBigTag07 from '../image/tags/review_on/review_moodY.png';
+
+import reviewTagOff1 from '../image/tags/review_off/review_taste.png';
+import reviewTagOff2 from '../image/tags/review_off/review_money.png';
+import reviewTagOff3 from '../image/tags/review_off/review_kind.png';
+import reviewTagOff4 from '../image/tags/review_off/review_two.png';
+import reviewTagOff5 from '../image/tags/review_off/review_clean.png';
+import reviewTagOff6 from '../image/tags/review_off/review_simple.png';
+import reviewTagOff7 from '../image/tags/review_off/review_mood.png'
 
 export const displayTagImage = (tags) => {
     const displayTags = tags.slice(0,2);
@@ -134,11 +142,33 @@ export const displayBigReviewTag = (keyword) => {
     }
 }
 
+// review.js용 tags
+export const reviewsTags = (keyword) => {
+    switch(keyword) {
+        case "맛집":
+            return <Image id={"맛집"} src={reviewTagOff1} width={77} height={34}/>
+        case "가성비":
+            return <Image id={"가성비"} src={reviewTagOff2} width={88} height={34}/>
+        case "친절":
+            return <Image id={"친절"} src={reviewTagOff3} width={77} height={34}/>
+        case "둘이 가요":
+            return <Image id={"둘이 가요"} src={reviewTagOff4} width={109} height={34}/>
+        case "청결도":
+            return <Image id={"청결도"} src={reviewTagOff5} width={92} height={34}/>
+        case "간단한 한 끼":
+            return <Image id={"간단한 한 끼"} src={reviewTagOff6} width={131} height={34}/>
+        case "분위기 좋은":
+            return <Image id={"분위기 좋은"} src={reviewTagOff7} width={124} height={34}/>
+        default:
+            return null;
+    }
+}
+
 const TagList = ({keyword, onTagClick}) => {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            {/* 태그 목록 */}
+            {/* tags 목록 */}
             <Grid container 
             style={{  position: 'absolute', top: '0px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
             scrollbarWidth: 'none', msOverflowStyle: 'none', "&::WebkitScrollbar": { display: "none"}, padding: "0 20px"}}

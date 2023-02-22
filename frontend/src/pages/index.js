@@ -7,7 +7,7 @@ import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -18,20 +18,21 @@ import bookmarkOn from '../image/bookmark-1.png';
 import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
-
+import { clear_search_results } from "../actions/place/place";
 // 상단바
 import UpperBar from "../components/UpperBar"
 
 export default function list(){
+    const isSmallScreen = useMediaQuery('(max-width: 420px)');
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const dispatch = useDispatch();
     const router = useRouter();
     // 장소 정보 불러오기
-    const searchplace = useSelector(state => state.place.searchplace);
+    const place = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
-    const user = useSelector(state => state.auth.user); 
+    const user = useSelector(state => state.auth.user);
     
     //상태
     const [height, setHeight] = useState('0');
@@ -86,12 +87,12 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (searchplace && keyword != '' &&  user !=null && user.toggle != null) {
-          setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
+        if (place && keyword != '' && user.toggle != null) {
+          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
-    }, [searchplace, user]);
+    }, [place, user]);
 
 
     useEffect(() => {
@@ -287,20 +288,12 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            dispatch(search_places('!'))
+            // dispatch(search_places('!'))
+            dispatch(clear_search_results());
         }
         
     }
 
-    //드로워 열릴때, 검색창 클릭했을 때 다 없어져야해서 위에 포커스로 해뒀습니다!
-    const handleClick= (bool) => {
-        if(bool) {
-            setKeyword('');
-            setTags([]);
-            setFilteredPlace(null);
-            setHeight('0');
-        }
-    }
 
     return(
     <ThemeProvider theme={theme}>
@@ -385,22 +378,26 @@ export default function list(){
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
-                                    <Grid container style={{margin: '10px 0px 0px 0px'}}>
+                                    <Grid container style={{margin: '15px 0px 0px 0px'}}>
                                         <Grid item xs >
                                             <CardContent style={{padding:'0px'}}>
                                                 <Grid container spacing={2} style={{margin:'0px',}}>
-                                                    <Grid item style={{marginTop:'15px',  padding:'0px'}}>
+                                                    <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
                                                         <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                             {item.name}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item style={{padding:'0px 0px 0px 8px', whiteSpace: "normal"}}>
-                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
+                                                    <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
+                                                        {isSmallScreen && (item.name.length >=13)?
+                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
                                                             {item.detail_category}
                                                         </Typography>
-                                                    </Grid>
-                                                    <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
-                                                        {isFavorite(item.id)}
+                                                        : 
+                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'22px'}} color="#a1a1a1" component="div" >
+                                                            {item.detail_category}
+                                                        </Typography>
+                                                        }
+                                                        <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid item container style={{marginTop: '10px'}}>

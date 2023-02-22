@@ -57,10 +57,10 @@ public class ChatRoom {
 
 
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isSenderBlocked;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isReceiverBlocked;
 
 

@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@emotion/react';
-import { CssBaseline, Typography, Button, Popover, Modal, IconButton, Dialog,DialogContent,DialogActions,  } from '@mui/material';
+import { CssBaseline, Typography, Button, Grid, Popover, Modal, IconButton, Dialog,DialogContent,DialogActions,  } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
@@ -17,13 +17,15 @@ import Stack from '@mui/material/Stack';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import closeIcon from '../image/close-1.png';
+import closeIcon from '../image/close.png';
 import profile from '../image/profile.png';
 
-const AiGreeting = () => {
 
-    const router = useRouter();
+const AiGreeting = () => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
+    const userInfo = useSelector(state => state.matchingUser.matchingUser);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -36,9 +38,7 @@ const AiGreeting = () => {
                     setLoad(false);
                 }
             }));
-    
         }
-    
     }, [dispatch]);
     
     //매칭프로필 정보 받아오기
@@ -122,10 +122,6 @@ const AiGreeting = () => {
         setOpen(false);
     };
 
-    const user = useSelector(state => state.auth.user);
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
     const authLinks = (
         <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"600px"}}>
             <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px"}}>
@@ -166,7 +162,7 @@ const AiGreeting = () => {
                     {
                         isAuthenticated ? authLinks: guestLinks
                     }
-            {user !== null ?
+            {user && userInfo !== null ?
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -199,6 +195,8 @@ const AiGreeting = () => {
                                 width="35px"
                                 height="35px"
                                 onClick={handleClose}
+                                placeholder="blur"
+                                layout='fixed'
                                 />
                     </div>
                 </div>
@@ -209,6 +207,8 @@ const AiGreeting = () => {
                         src={profile}
                         width="140px"
                         height="140px"
+                        placeholder="blur"
+                        layout='fixed'
                     />
                 </div>
 
@@ -221,7 +221,7 @@ const AiGreeting = () => {
 
                 {/* 유저 가입정보 및 성별 */}
                 <div style={{textAlign:"center"}}>
-                    <Typography style={{fontSize:"10px", color:"#BABABA", textAlign:"center"}}>
+                    <Grid style={{fontSize:"10px", color:"#BABABA", textAlign:"center"}}>
                         <Typography style={{
                             fontSize:"10px", 
                             color:"#BABABA", 
@@ -235,13 +235,13 @@ const AiGreeting = () => {
                         </Typography>
                         {user.major} /&nbsp;
                         {user.student_id}학번 /&nbsp;
-                        {user.gender}
-                    </Typography>
+                        {userInfo.gender.slice(0,1)}
+                    </Grid>
                 </div>
 
                 {/* 유저 관심사, 매칭 프로필 설정 후 연결 필요 */}
                 <div style={{textAlign:"center", marginTop:"10px"}}>
-                <Typography style={{fontSize:"12px", color:"#BABABA", textAlign:"center"}}>
+                <Grid style={{fontSize:"12px", color:"#BABABA", textAlign:"center"}}>
                         <Typography style={{
                             color:"white", 
                             background:"#BABABA",
@@ -251,35 +251,28 @@ const AiGreeting = () => {
                             marginRight:"5px",
                             padding:"2px 7px 0 7px",
                             }}>
-                        Hard
+                        {userInfo.mbti}
                         </Typography>
-                        <Typography style={{
-                            color:"white", 
-                            background:"#BABABA",
-                            borderRadius:"20px", 
-                            border:"1px solid #BABABA", 
-                            display:"inline-block", 
-                            marginRight:"5px",
-                            padding:"2px 7px 0 7px",}}>
-                        Code
-                        </Typography>
-                        <Typography style={{
-                            color:"white", 
-                            background:"#BABABA",
-                            borderRadius:"20px", 
-                            border:"1px solid #BABABA", 
-                            display:"inline-block", 
-                            marginRight:"5px",
-                            padding:"2px 7px 0 7px",}}>
-                        입니다
-                        </Typography>
-                    </Typography>
+                            {(userInfo.keywords) != null?
+                                ((userInfo.keywords).slice(0,2).map((interest, index)=>(
+                                    <Typography style={{
+                                        color:"white", 
+                                        background:"#BABABA",
+                                        borderRadius:"20px", 
+                                        border:"1px solid #BABABA", 
+                                        display:"inline-block", 
+                                        marginRight:"5px",
+                                        padding:"2px 7px 0 7px",}}>
+                                    {interest}
+                                    </Typography>
+                                )))
+                            :null}
+                    </Grid>
                 </div>
 
-                {/* 유저 인사말, 추후 연결 필요 */}
                 <div style={{width:"70%", margin:"40px auto"}}>
                     <Typography style={{textAlign:"center", fontSize:"13px"}}>
-                        "ㅁㄴ오민외머농asdhajshdjahsdㅁ니오미ㅓㄴ오ㅓ몬아ㅓㅗ마너옴ㄴ"
+                        {userInfo.introduction}
                     </Typography>
                 </div>
 

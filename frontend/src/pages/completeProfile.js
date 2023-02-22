@@ -3,8 +3,8 @@ import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextFie
 import theme from "../theme/theme";
 import Link from 'next/link';
 import Image from 'next/image';
-import button1 from '../image/로그인 홈 가기.png';
-import button2 from '../image/AI매칭 시작하기.png';
+import button1 from '../image/goLoginButton.png';
+import button2 from '../image/startAIButton.png';
 
 export default function matchingComplete (){
 

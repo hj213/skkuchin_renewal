@@ -5,12 +5,12 @@ import { search_places } from "../actions/place/place";
 import Image from 'next/image';
 import Link from 'next/link';
 import theme from "../theme/theme";
-import {CssBaseline, Box,InputBase, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack} from '@mui/material';
+import {CssBaseline, Box,InputBase, ThemeProvider, useMediaQuery,  Card, CardContent, Typography, Grid, Container, Stack} from '@mui/material';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import food from '../image/food.png';
 import mapIcon from '../image/map-1.png';
-import searchBox from '../image/검색창2.png';
+import searchBox from '../image/searchHolder2.png';
 import closeIcon from '../image/close.png';
 import { load_user } from "../actions/auth/auth";
 import {  displayReviewTag } from "../components/TagList";
@@ -18,6 +18,8 @@ import UpperBar from "../components/UpperBar";
 import Layout from "../hocs/Layout";
 
 export default function searchList(){
+    const isSmallScreen = useMediaQuery('(max-width: 420px)');
+
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -144,19 +146,32 @@ export default function searchList(){
                                             <Grid item xs >
                                                 <CardContent style={{padding:'0px'}}>
                                                     <Grid container spacing={2} style={{margin:'0px',}}>
-                                                        <Grid item style={{marginTop:'15px',  padding:'0px'}}>
+                                                        <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                                 {item.name}
                                                             </Typography>
                                                         </Grid>
-                                                        <Grid item style={{padding:'0px 0px 0px 8px'}}>
+                                                        <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
+                                                            {isSmallScreen && (item.name.length >=13)?
+                                                                <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
+                                                                    {item.detail_category}
+                                                                </Typography>
+                                                                : 
+                                                                <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'22px'}} color="#a1a1a1" component="div" >
+                                                                    {item.detail_category}
+                                                                </Typography>
+                                                            }
+                                                            <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
+                                                        </Grid>
+                                                        {/* 화면 너비에 따라 detail_category 이미지 뒤로 씹히거나, 줄바꿈이 필요한 경우를 처리하기 위해 위처럼 수정했습니다 */}
+                                                        {/* <Grid item style={{padding:'0px 0px 0px 8px'}}>
                                                             <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                                 {item.detail_category}
                                                             </Typography>
                                                         </Grid>
                                                         <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
                                                             {isFavorite(item.id)}
-                                                        </Grid>
+                                                        </Grid> */}
                                                     </Grid>
                                                     <Grid item container style={{marginTop: '10px'}}>
                                                         <Grid >
