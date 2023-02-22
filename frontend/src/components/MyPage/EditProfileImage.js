@@ -114,7 +114,7 @@ export default function EditProfileImage(props) {
     return (
         <Box
             sx={{
-            marginTop: '45px',
+            margin: '45px 16px 16px 16px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -204,13 +204,13 @@ export default function EditProfileImage(props) {
                         </div>
                     </div>
             <div style={{width: '100%'}}>
-            <div style={{margin: '20px 36px 12px'}}>
+            <div style={{margin: '20px 36px 50px'}}>
                 {image ?
-                        <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                             확인
                         </Button>
                         :
-                        <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                             확인
                         </Button>
                 }

@@ -57,11 +57,11 @@ export default function myPage() {
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>알림 설정</Typography>
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start'}}>
                     <Typography style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>채팅 알림</Typography>
-                    <Image width={48.58} height={26.5} src={toggle_off} onClick={arrowClick} style={{zIndex: '-1'}}/>
+                    <Image width={48.58} src={toggle_off} onClick={arrowClick} style={{zIndex: '-1'}}/>
                 </div>
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start'}}>
                     <Typography style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>스꾸친 공지/이벤트 알림</Typography>
-                    <Image width={48.58} height={26.5} src={toggle_off} onClick={arrowClick} style={{zIndex: '-1'}}/>
+                    <Image width={48.58} src={toggle_off} onClick={arrowClick} style={{zIndex: '-1'}}/>
                 </div>
             </Container>
 
@@ -75,8 +75,8 @@ export default function myPage() {
             {/* 하단 */}
             <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '80px', marginBottom: '50px'}}>
                 <div style={{display: 'flex', fontSize: '14px'}}>
-                    <Button variant="text" color={theme.palette.fontColor.main}>탈퇴하기</Button>
-                    <Button variant="text" color={theme.palette.fontColor.main}>약관 및 정책</Button>
+                    <Button variant="text">탈퇴하기</Button>
+                    <Button variant="text">약관 및 정책</Button>
                 </div>
             </Container>
 

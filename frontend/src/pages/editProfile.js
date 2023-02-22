@@ -67,7 +67,9 @@ export default function editProfile() {
     const handleNextStep = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(change_user(nickname, major, image, studentId.slice(0, 2), ([result, message]) => {
-                alert(message);
+                if (result) {
+                    router.push('/myPage');
+                }
             }))
         }
     }
@@ -84,7 +86,6 @@ export default function editProfile() {
             setNickname(user.nickname);
             setMajor(user.major);
             setStudentId(user.student_id + "학번");
-            console.log(user.image);
         }
     }, [user])
 
@@ -177,7 +178,7 @@ export default function editProfile() {
                 </Select>
             </FormControl>
         </div>
-        <div style={{margin: '0 36px 12px'}}>
+        <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 36px 50px 36px'}}>
             {(nickname === user.nickname || validNickname) && (nickname != '' && major != '' && studentId != '') ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인
