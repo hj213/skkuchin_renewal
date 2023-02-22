@@ -4,13 +4,15 @@ import { API_URL } from '../../../config/index';
 export default async (req, res) => {
     const cookies = cookie.parse(req.headers.cookie ?? '');
     const access = cookies.access ?? false;
-
+    console.log("user load 진입")
     if (access == false) {
         console.log('access 토큰이 존재하지 않습니다')
         return res.status(401).json({
             error: '다시 로그인해주시기 바랍니다'
         });
     }
+    console.log(cookies)
+    console.log(access)
 
     if (req.method == 'GET') {
         try {
@@ -21,8 +23,9 @@ export default async (req, res) => {
                     'Authorization' : `Bearer ${access}`
                 }
             });
+            console.log("load data get"+apiRes)
             const resValue = await apiRes.json();
-
+            console.log(resValue)
             if (apiRes.status === 200) {
                 return res.status(200).json({
                     user: resValue.data,
