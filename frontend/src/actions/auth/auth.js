@@ -170,7 +170,6 @@ export const load_user = () => async dispatch => {
                 payload: data
             });
         } else {
-            console.log(data)
             dispatch({
                 type: LOAD_USER_FAIL,
                 payload: data
