@@ -37,7 +37,7 @@ const UpperBar = () => {
 
     const authLinks = (
         // 상단 네비게이션 바. maxWidth는 지도와 맞춤
-        <div style={{ position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center"}}>
+        <div style={{ position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center", paddingBottom:'9px',borderBottom: '1.5px solid rgba(234, 234, 234, 1)',}}>
         {/* // 스크롤 X */}
         {/* // <div style={{ position: "absolute", top: 0, width: "100%", background: "white", alignContent:"center"}}> */}
 
@@ -67,7 +67,7 @@ const UpperBar = () => {
                         fontWeight: 700,
                         textDecoration: "none",
                         color: selected === "스꾸맵" ? "#FFCE00" : "#505050",
-                        borderBottom: selected === "스꾸맵" ? "2px solid #FFCE00" : "none"
+                        borderBottom: selected === "스꾸맵" ? "2px solid #FFCE00" : "none",
                 }}
                 onClick={() => setSelected("스꾸맵")}
                 >

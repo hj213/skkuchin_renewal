@@ -13,6 +13,7 @@ import down from '../image/down-1.png';
 import check from '../image/check_3.png';
 import style from 'styled-components';
 import { styled } from '@mui/material/styles';
+import TimePicker from "react-time-picker";
 
 export default function chatTime(){
 
@@ -26,7 +27,7 @@ export default function chatTime(){
     const [date, setDate] = useState(now);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
-    // const [time, setTime] = useState(new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }));
+    const [changedtime, setChangedTime] = useState(time);
     const [timeOpen, setTimeOpen] = useState('hidden');
    
     const formatDate = (date) => {
@@ -143,7 +144,7 @@ export default function chatTime(){
     }
     .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
         font-size: 14px;
-        padding: 5px 5px 5px 10px;
+        padding: 6px 5px 5px 10px;
         border-color: transparent;
     }
     .css-u54r9x-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
@@ -152,6 +153,7 @@ export default function chatTime(){
     .css-u54r9x-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
         border-color: transparent;
     }
+
     `
 
     const CustomTextField = styled(TextField)({
@@ -160,6 +162,126 @@ export default function chatTime(){
           borderColor: 'transparent',
         },
       });
+
+    const TimeContainer = style.div`
+    .react-time-picker {
+        display: inline-flex;
+        position: relative;
+      }
+      
+      .react-time-picker,
+      .react-time-picker *,
+      .react-time-picker *:before,
+      .react-time-picker *:after {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      
+      .react-time-picker--disabled {
+        background-color: #f0f0f0;
+        color: #6d6d6d;
+      }
+      
+      .react-time-picker__wrapper {
+        display: flex;
+        flex-grow: 1;
+        flex-shrink: 0;
+        border: thin solid gray;
+      }
+      
+      .react-time-picker__inputGroup {
+        min-width: calc((4px * 3) + 0.54em * 6 + 0.217em * 2);
+        flex-grow: 1;
+        padding: 0 2px;
+        box-sizing: content-box;
+      }
+      
+      .react-time-picker__inputGroup__divider {
+        padding: 1px 0;
+        white-space: pre;
+      }
+      
+      .react-time-picker__inputGroup__divider,
+      .react-time-picker__inputGroup__leadingZero {
+        display: inline-block;
+      }
+      
+      .react-time-picker__inputGroup__input {
+        min-width: 0.54em;
+        height: 100%;
+        position: relative;
+        padding: 0 1px;
+        border: 0;
+        background: none;
+        font: inherit;
+        box-sizing: content-box;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
+      
+      .react-time-picker__inputGroup__input::-webkit-outer-spin-button,
+      .react-time-picker__inputGroup__input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0;
+      }
+      
+      .react-time-picker__inputGroup__input:invalid {
+        background: rgba(255, 0, 0, 0.1);
+      }
+      
+      .react-time-picker__inputGroup__input--hasLeadingZero {
+        margin-left: -0.54em;
+        padding-left: calc(1px + 0.54em);
+      }
+      
+      .react-time-picker__inputGroup__amPm {
+        font: inherit;
+        -webkit-appearance: menulist;
+        -moz-appearance: menulist;
+        appearance: menulist;
+      }
+      
+      .react-time-picker__button {
+        border: 0;
+        background: transparent;
+        padding: 4px 6px;
+      }
+      
+      .react-time-picker__button:enabled {
+        cursor: pointer;
+      }
+      
+      .react-time-picker__button:enabled:hover .react-time-picker__button__icon,
+      .react-time-picker__button:enabled:focus .react-time-picker__button__icon {
+        stroke: #0078d7;
+      }
+      
+      .react-time-picker__button:disabled .react-time-picker__button__icon {
+        stroke: #6d6d6d;
+      }
+      
+      .react-time-picker__button svg {
+        display: inherit;
+      }
+      
+      .react-time-picker__clock {
+        width: 200px;
+        height: 200px;
+        max-width: 100vw;
+        padding: 25px;
+        background-color: white;
+        border: thin solid #a0a096;
+        z-index: 1;
+      }
+      
+      .react-time-picker__clock--closed {
+        display: none;
+      }
+      `
 
     return(
         <ThemeProvider theme={theme}>
@@ -189,7 +311,7 @@ export default function chatTime(){
                         <Grid container justify="space-around">
                             <Grid item style={{width:'90%'}}> 
                                 <div style={{ width:'100%', paddingBottom:'8px', borderBottom:"1px solid #BABABA"}}>
-                                    <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{formatDate(date)}</Typography>
+                                    <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{formatDate(date)}  {changedtime}</Typography>
                                 </div>
                             </Grid>
                             <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'20px'}}>
@@ -228,25 +350,31 @@ export default function chatTime(){
                                             <Typography style={{fontWeight:'500', fontSize:'15px'}}>시간</Typography>
                                         </Grid>
                                         <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
+                                            {/* <div style={{position:'relative'}}>
                                             <TextFieldContainer>
                                             <CustomTextField
                                                 id="time"
                                                 type="time"
-                                                InputProps={{
-                                                    disableUnderline: true
-                                                  }}
-                                                sx={{ width: 35, '& input[type="time"]': {
+                                                defaultValue={changedtime}
+                                                onChange={(e) => setChangedTime(e.target.value)}
+                                                sx={{ width: 114, '& input[type="time"]': {
                                                     backgroundColor: '#EEEEF0',
                                                     borderRadius: '5px',
                                                     
                                                   }, border: 'none', '& .MuiInputBase-input': {
                                                     paddingLeft: '0px',
                                                   }, }}
+                                                
                                             />
                                             </TextFieldContainer>
+                                            </div> */}
                                             {/* <div style={{borderRadius:'8px', backgroundColor:'#EEEEF0', width:'80px', height:'30px', textAlign:'center', paddingTop:'5px'}}>
                                                 <Typography style={{fontSize:'15px', fontWeight:'500'}}>{time}</Typography>
                                             </div> */}
+                                            <TimeContainer>
+                                                <TimePicker  onChange={(e)=>setChangedTime(e.target.value)} value={changedtime} />
+                                            </TimeContainer>
+                                            
                                         </Grid>
                                     </Grid>
                                     

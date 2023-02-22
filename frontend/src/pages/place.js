@@ -242,7 +242,8 @@ const PlacePage = () => {
                             width: '100%',
                             height: '80px',
                             zIndex: '4',
-                            borderTop: '1.5px solid rgba(234, 234, 234, 1)',
+                            // borderTop: '1.5px solid rgba(234, 234, 234, 1)',
+                            borderRadius:'0px',
                             visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
