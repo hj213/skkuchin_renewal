@@ -94,6 +94,7 @@ public class UserDto {
 
     @Getter
     @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class PutRequest {
         @NotBlank
         private String nickname;
@@ -101,6 +102,11 @@ public class UserDto {
         private Major major;
         @NotNull
         private Profile image;
+        @NotNull
+        @JsonProperty
+        @Min(value = 10)
+        @Max(value = 23)
+        private int studentId;
     }
 
     @Getter

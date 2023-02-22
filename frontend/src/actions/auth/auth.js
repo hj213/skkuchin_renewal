@@ -321,9 +321,9 @@ export const check_nickname = (nickname, callback) => async dispatch => {
     }
 }
 
-export const change_user = (nickname, major, callback) => async dispatch => {
+export const change_user = (nickname, major, image, student_id, callback) => async dispatch => {
     const body = JSON.stringify({
-        nickname, major
+        nickname, major, image, student_id
     });
 
     try {
