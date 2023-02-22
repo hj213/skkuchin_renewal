@@ -4,6 +4,7 @@ import { useStore } from '../store';
 import Container from '@mui/material/Container';
 import dynamic from "next/dynamic";
 
+
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);
 

@@ -162,8 +162,7 @@ export default function list(){
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
-            // console.log(newHeight);
-            // console.log(TARGET_HEIGHT);
+            
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -176,7 +175,7 @@ export default function list(){
             setPreventScroll('scroll');
         } else {
             
-            setHeight('32%');
+            setHeight('40%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -195,7 +194,7 @@ export default function list(){
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('35%');
+            setHeight('40%');
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'

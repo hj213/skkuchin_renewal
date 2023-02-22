@@ -13,9 +13,8 @@ import down from '../image/down-1.png';
 import check from '../image/check_3.png';
 import style from 'styled-components';
 import { styled } from '@mui/material/styles';
-// import TimePicker from "react-time-picker";
-// import 'react-time-picker/dist/TimePicker.css'
-// import 'react-clock/dist/Clock.css'
+import {TimePicker }from 'antd';
+import dayjs from 'dayjs';
 
 
 export default function chatTime(){
@@ -26,6 +25,7 @@ export default function chatTime(){
     const hours = now.getHours() % 24;
     const minutes = now.getMinutes();
     const time = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const format = 'HH:mm';
 
     const [date, setDate] = useState(now);
     const [calendarOpen, setCalendarOpen] = useState(false);
@@ -328,7 +328,7 @@ export default function chatTime(){
                     </Container>
             
                     
-                    <div style={{ position:'absolute',width:'100%', margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
+                    <div style={{ position:'absolute',width:'100%', maxWidth:'600px',margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
                         <Slide direction="up" in={calendarOpen} timeout={1} >
                             <Container style={{padding:'0px', width:'100%', position:'relative'}}>
                                 <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
@@ -355,7 +355,7 @@ export default function chatTime(){
                                             <Typography style={{fontWeight:'500', fontSize:'15px'}}>시간</Typography>
                                         </Grid>
                                         <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
-                                            <div style={{position:'relative'}}>
+                                            {/* <div style={{position:'relative'}}>
                                             <TextFieldContainer>
                                             <CustomTextField
                                                 id="time"
@@ -366,19 +366,20 @@ export default function chatTime(){
                                                     backgroundColor: '#EEEEF0',
                                                     borderRadius: '5px',
                                                     
-                                                  }, border: 'none', '& .MuiInputBase-input': {
+                                                    }, border: 'none', '& .MuiInputBase-input': {
                                                     paddingLeft: '0px',
-                                                  }, }}
+                                                        }
+                                                }}
                                                 
                                             />
                                             </TextFieldContainer>
-                                            </div>
+                                            </div> */}
                                             {/* <div style={{borderRadius:'8px', backgroundColor:'#EEEEF0', width:'80px', height:'30px', textAlign:'center', paddingTop:'5px'}}>
                                                 <Typography style={{fontSize:'15px', fontWeight:'500'}}>{time}</Typography>
                                             </div> */}
-                                            {/* <TimeContainer>
-                                                <TimePicker  onChange={(e)=>setChangedTime(e.target.value)} value={changedtime} />
-                                            </TimeContainer> */}
+                                            {/* <TimeContainer> */}
+                                                <TimePicker defaultValue={dayjs('12:08', format)} format={format}/>
+                                            {/* </TimeContainer> */}
                                             
                                         </Grid>
                                     </Grid>
@@ -390,7 +391,7 @@ export default function chatTime(){
                         
                         </div>
                                         
-                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%'}}>
+                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px'}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>
                             <Image src={check} width={300} height={56} onClick={handleSubmit}/>
                         </div>
