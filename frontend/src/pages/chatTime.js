@@ -13,7 +13,10 @@ import down from '../image/down-1.png';
 import check from '../image/check_3.png';
 import style from 'styled-components';
 import { styled } from '@mui/material/styles';
-import TimePicker from "react-time-picker";
+// import TimePicker from "react-time-picker";
+// import 'react-time-picker/dist/TimePicker.css'
+// import 'react-clock/dist/Clock.css'
+
 
 export default function chatTime(){
 
@@ -286,7 +289,7 @@ export default function chatTime(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden', overflowY:'hidden'}}>
+            <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden', overflowY:'hidden', width:'100%'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
@@ -307,14 +310,14 @@ export default function chatTime(){
                             </Grid>
                         </Grid>
                     </Container>
-                    <Container style={{padding:'0px', margin:'30px 0px 0px 20px'}}>
+                    <Container style={{padding:'0px', margin:'30px 0px 0px 20px', position:'relative'}}>
                         <Grid container justify="space-around">
                             <Grid item style={{width:'90%'}}> 
                                 <div style={{ width:'100%', paddingBottom:'8px', borderBottom:"1px solid #BABABA"}}>
                                     <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{formatDate(date)}  {changedtime}</Typography>
                                 </div>
                             </Grid>
-                            <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'20px'}}>
+                            <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'40px'}}>
                                 <Image src={down} width={25} height={25} onClick={handleDownClick}/>
                             </Grid>
                         </Grid>
@@ -323,9 +326,11 @@ export default function chatTime(){
                         </div>
                         
                     </Container>
+            
+                    
                     <div style={{ position:'absolute',width:'100%', margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
                         <Slide direction="up" in={calendarOpen} timeout={1} >
-                            <Container style={{padding:'0px',}}>
+                            <Container style={{padding:'0px', width:'100%', position:'relative'}}>
                                 <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
                                     <CalendarContainer>
                                         <Calendar onChange={setDate} value={date} formatDay={(locale, date) =>
@@ -345,12 +350,12 @@ export default function chatTime(){
                                             
                                         </Card>
                                     </div> */}
-                                    <Grid container>
+                                    <Grid container style={{width:'100%'}}>
                                         <Grid item style={{margin: '10px 0px 0px 35px'}}>
                                             <Typography style={{fontWeight:'500', fontSize:'15px'}}>시간</Typography>
                                         </Grid>
                                         <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
-                                            {/* <div style={{position:'relative'}}>
+                                            <div style={{position:'relative'}}>
                                             <TextFieldContainer>
                                             <CustomTextField
                                                 id="time"
@@ -367,13 +372,13 @@ export default function chatTime(){
                                                 
                                             />
                                             </TextFieldContainer>
-                                            </div> */}
+                                            </div>
                                             {/* <div style={{borderRadius:'8px', backgroundColor:'#EEEEF0', width:'80px', height:'30px', textAlign:'center', paddingTop:'5px'}}>
                                                 <Typography style={{fontSize:'15px', fontWeight:'500'}}>{time}</Typography>
                                             </div> */}
-                                            <TimeContainer>
+                                            {/* <TimeContainer>
                                                 <TimePicker  onChange={(e)=>setChangedTime(e.target.value)} value={changedtime} />
-                                            </TimeContainer>
+                                            </TimeContainer> */}
                                             
                                         </Grid>
                                     </Grid>
@@ -384,7 +389,8 @@ export default function chatTime(){
                         </Slide>
                         
                         </div>
-                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0}}>
+                                        
+                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%'}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>
                             <Image src={check} width={300} height={56} onClick={handleSubmit}/>
                         </div>

@@ -27,10 +27,13 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
-            dispatch(load_places());
-
+            
         }
     }, [dispatch]);
+
+    useEffect(()=>{
+        dispatch(load_places());
+    }, []);
     
     //캠퍼스 필터링
     useEffect(() => {
