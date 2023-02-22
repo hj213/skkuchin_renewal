@@ -3,7 +3,7 @@ import { API_URL } from '../../../config/index';
 import pino from "pino";
 
 export default async (req, res) => {
-    const logger = pino();
+    const logger = pino({browser: {asObject: true}});
     const cookies = cookie.parse(req.headers.cookie ?? '');
     const access = cookies.access ?? false;
     

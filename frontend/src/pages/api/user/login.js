@@ -4,7 +4,7 @@ import pino from "pino";
 
 
 export default async (req, res) => {
-    const logger = pino();
+    const logger = pino({browser: {asObject: true}});
 
     if (req.method === 'POST') {
         const { username, password } = req.body;
