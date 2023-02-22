@@ -79,6 +79,7 @@ export const register = (registerData, callback) => async dispatch => {
 };
 
 export const login = (username, password, callback) => async dispatch => {
+    console.log("login");
     const body = JSON.stringify({
         username,
         password
@@ -87,6 +88,7 @@ export const login = (username, password, callback) => async dispatch => {
     dispatch({
         type: SET_AUTH_LOADING
     });
+    console.log(body);
 
     try {
         const res = await fetch('/api/user/login', {
@@ -97,8 +99,10 @@ export const login = (username, password, callback) => async dispatch => {
             },
             body: body
         });
-
+        console.log("login data get");
+        console.log(res);
         const data = await res.json();
+        console.log(data);
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -119,7 +123,7 @@ export const login = (username, password, callback) => async dispatch => {
             if (callback) callback([false, data.error]);
         }
     } catch(error) {
-        console.log(error);
+        console.log("로그인에러"+error);
         dispatch({
             type: LOGIN_FAIL
         });
@@ -154,6 +158,7 @@ export const logout = () => async dispatch => {
 }
 
 export const load_user = () => async dispatch => {
+    console.log("load user");
     try {
         const res = await fetch('/api/user/me',{
             method: 'GET',
@@ -161,8 +166,10 @@ export const load_user = () => async dispatch => {
                 'Accept': 'application/json'
             }
         });
-
+        console.log("load user get data");
+        console.log(res);
         const data = await res.json();
+        console.log(res);
 
         if (res.status === 200) {
             dispatch({
@@ -177,7 +184,7 @@ export const load_user = () => async dispatch => {
         }
 
     } catch (error) {
-        console.log(error);
+        console.log("마지막"+error);
         dispatch({
             type: LOAD_USER_FAIL
         });

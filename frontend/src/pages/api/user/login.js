@@ -30,7 +30,7 @@ export default async (req, res) => {
                             httpOnly: true,
                             secure: process.env.NODE_ENV === 'production',
                             maxAge: 60 * 30,
-                            // sameSite: 'none',
+                            sameSite: 'strict',
                             path: '/api/'
                         }
                     ),
@@ -39,11 +39,12 @@ export default async (req, res) => {
                             httpOnly: true,
                             secure: process.env.NODE_ENV === 'production',
                             maxAge: 60 * 60 * 24,
-                            // sameSite: 'none',
+                            sameSite: 'strict',
                             path: '/api/'
                         }
                     )
                 ]);
+                console.log(resValue)
 
                 return res.status(200).json({
                     success: resValue.message
