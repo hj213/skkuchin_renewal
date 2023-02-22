@@ -29,8 +29,8 @@ const nextConfig = withPWA({
 		deviceSizes: [640, 750, 828, 1080],
 		domains: ['skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com']
 	},
-	reactStrictMode: true,
-	swcMinify: true,
+	// reactStrictMode: true,
+	// swcMinify: true,
 });
 
 module.exports = nextConfig;
