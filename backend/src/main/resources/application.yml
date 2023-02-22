@@ -1,9 +1,18 @@
 spring:
-  #datasource:
-  #  driver-class-name: com.mysql.cj.jdbc.Driver
-  #  url: jdbc:mysql://localhost:3306/skkuchin3?characterEncoding=UTF-8&serverTimezone=UTC
-  #  username: root
-  #  password: 1234
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/skkuchin2?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: my-group
+      auto-offset-reset: earliest
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
@@ -12,8 +21,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
-      #ddl-auto: update
+      #ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
@@ -26,6 +35,27 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  #debezium:
+  #  connector:
+  #    name: my-sql-connector
+  #    class: io.debezium.connector.mysql.MySqlConnector
+  #  offset:
+  #    storage: org.apache.kafka.connect.storage.MemoryOffsetBackingStore
+  #    flush:
+  #      interval:
+  #        ms: 10000
+  #  database:
+  #    hostname: localhost
+  #    port: 3306
+  #    user: root
+  #    password: 1234
+  #    server:
+  #      name: my-app-db
+  #  table:
+  #    whitelist: mydb.menu
+  #  transforms: unwrap
+  #  transforms.unwrap.type: io.debezium.transforms.ExtractNewRecordState
   config:
     import:
       - aws.yml

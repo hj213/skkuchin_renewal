@@ -163,6 +163,11 @@ public class ChatRoomController {
         return "chat/rrr";
     }
 
+    @GetMapping(value = "/aa")
+    public String getRoom12(){
+        return "chat/a";
+    }
+
     @GetMapping(value = "/roomm")
     public String getRoom1(){
         return "chat/rrrr";
