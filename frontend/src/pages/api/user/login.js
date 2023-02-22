@@ -28,7 +28,7 @@ export default async (req, res) => {
                     cookie.serialize(
                         'access', resValue.data.access, {
                             httpOnly: true,
-                            secure: process.env.NODE_ENV === 'production',
+                            secure: process.env.NODE_ENV !== 'production',
                             maxAge: 60 * 30,
                             sameSite: 'strict',
                             path: '/api/'
@@ -37,13 +37,14 @@ export default async (req, res) => {
                     cookie.serialize(
                         'refresh', resValue.data.refresh, {
                             httpOnly: true,
-                            secure: process.env.NODE_ENV === 'production',
+                            secure: process.env.NODE_ENV !== 'production',
                             maxAge: 60 * 60 * 24,
                             sameSite: 'strict',
                             path: '/api/'
                         }
                     )
                 ]);
+                console.log("login"+apiRes);
 
                 return res.status(200).json({
                     success: resValue.message
