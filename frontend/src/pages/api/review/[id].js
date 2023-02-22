@@ -103,6 +103,7 @@ export default async (req, res) => {
             const apiRes = await fetch(`${API_URL}/api/review/${review_id}`, {
                 method: 'DELETE',
                 headers: {
+                    // 'Accept': 'application/json',
                     'Authorization' : `Bearer ${access}`
                 },
             });

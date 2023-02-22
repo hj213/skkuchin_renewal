@@ -147,9 +147,8 @@ const EnrollReview = () => {
                 alert("POST 요청 result: " + result)
                 router.push({
                     pathname: '/reviews',
-                    query: {viewportHeight: window.innerHeight,
-                    src: '리뷰등록'}
-                })
+                    query: { id: place_id }
+                });                  
             } else {
                 alert("실패!: " +message);
             }
