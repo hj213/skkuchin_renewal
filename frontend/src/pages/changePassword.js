@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import {  TextField, Button, Typography, Box } from '@mui/material';
+import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline } from '@mui/material';
 import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
 import Image from 'next/image';
+import theme from '../theme/theme';
 import { change_password } from '../actions/auth/auth';
 import { useRouter } from 'next/router';
 
@@ -16,6 +17,10 @@ export default function changePassword() {
     const [rePassword, setRePassword] = useState("");
     const [validPW, setValidPW] = useState(false);
 
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogMsg, setDialogMsg] = useState("");
+    const [apiResult, setApiResult] = useState(false);
+
     const handleArrowClick = () => {
         router.push('/myPage');
     }
@@ -23,12 +28,9 @@ export default function changePassword() {
     const handleNextStep = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(change_password(curPassword, password, rePassword, ([result, message]) => {
-                if (result) {
-                    alert(message);
-                    router.push('/myPage');
-                } else {
-                    alert(message);
-                }
+                setApiResult(result);
+                setDialogMsg(message);
+                setDialogOpen(true);
             }));
         }
     }
@@ -44,7 +46,20 @@ export default function changePassword() {
         }
     }
 
+    const handleDialogOpen = (e) => {
+        if(dialogOpen){
+            setDialogOpen(false);
+            if (apiResult) {
+                router.push('/myPage');
+            }
+        } else{
+            setDialogOpen(true);
+        }
+    }
+
     return (
+        <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Box
             sx={{
             margin: '45px 16px 16px 16px',
@@ -57,7 +72,7 @@ export default function changePassword() {
             <Image width={12.02} height={21.55} src={back} onClick={handleArrowClick}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>비밀번호 변경</Typography>
         </header>
-       
+
         <form style={{ width: '100%'}}>
             <div style={{margin: '0 36px 39px 36px'}}>
                 <TextField
@@ -91,9 +106,9 @@ export default function changePassword() {
                 />
                 {(password != '') ? 
                     validPW ? 
-                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>안전한 비밀번호입니다.</Typography>
-                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '25px'}}>안전하지 않은 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
+                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>안전한 비밀번호입니다.</Typography>
+                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '39px'}}>안전하지 않은 비밀번호입니다.</Typography>
+                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
             </div>
             <div style={{margin: '0 36px'}}>
                 <TextField
@@ -128,6 +143,22 @@ export default function changePassword() {
             }
             </div>
         </form>
-      </Box>
-  )
+
+        <Dialog open={dialogOpen} onClose={handleDialogOpen}>
+                <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
+                        {dialogMsg}
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center'}}>
+                        <Button onClick={handleDialogOpen} variant="text" style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
+                                확인
+                            </Typography>
+                        </Button>
+                </DialogActions>
+        </Dialog>
+    </Box>
+    </ThemeProvider>
+    )
 }
