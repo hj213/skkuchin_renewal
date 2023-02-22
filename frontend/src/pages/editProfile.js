@@ -8,6 +8,7 @@ import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
 import { change_user, check_nickname, load_user } from '../actions/auth/auth';
+import EditProfileImage from '../components/MyPage/editProfileImage';
 
 export default function editProfile() {
     const dispatch = useDispatch();
@@ -21,6 +22,8 @@ export default function editProfile() {
     const [nickname, setNickname] = useState("");
     const [major, setMajor] = useState("");
     const [studentId, setStudentId] = useState("");
+
+    const [editImage, setEditImage] = useState(false);
 
     const majorList = [
         '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공',
@@ -49,6 +52,7 @@ export default function editProfile() {
         }
         setNickname(e.target.value);
         console.log(nickname);
+        console.log(user.image);
     }
 
     const checkNickname = () => {
@@ -63,8 +67,6 @@ export default function editProfile() {
     const handleNextStep = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(change_user(nickname, major, image, studentId.slice(0, 2), ([result, message]) => {
-                setValidNickname(result);
-                setNicknameMsg(message);
                 alert(message);
             }))
         }
@@ -82,6 +84,7 @@ export default function editProfile() {
             setNickname(user.nickname);
             setMajor(user.major);
             setStudentId(user.student_id + "학번");
+            console.log(user.image);
         }
     }, [user])
 
@@ -89,7 +92,8 @@ export default function editProfile() {
         <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        {user && <Box
+        {user && !editImage && 
+        <Box
             sx={{
             margin: '45px 16px 16px 16px',
             display: 'flex',
@@ -105,7 +109,7 @@ export default function editProfile() {
 
         {/* 프로필 이미지 */}
         {displayProfile(image, 107, 107)}
-        <Link component="button" onClick={() => router.push('/')} color="#505050" sx={{fontSize: '13px', mt: '17px', mb: '45px'}}>프로필 이미지 변경하기</Link>
+        <Link component="button" onClick={() => setEditImage(true)} color="#505050" sx={{fontSize: '13px', mt: '17px', mb: '45px'}}>프로필 이미지 변경하기</Link>
         
         <form style={{ width: '100%'}}>
         <div style={{margin: '0 36px 19px'}}>
@@ -186,6 +190,8 @@ export default function editProfile() {
         </div>
         </form>
         </Box>}
+
+        {editImage && <EditProfileImage image={image} setImage={setImage} setEditImage={setEditImage} />}
         </ThemeProvider>
     )
 }
