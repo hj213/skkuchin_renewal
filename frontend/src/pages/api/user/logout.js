@@ -8,7 +8,7 @@ export default async (req, res) => {
                             httpOnly: true,
                             secure: process.env.NODE_ENV === 'production',
                             expires: new Date(0),
-                            sameSite: 'strict',
+                            sameSite: 'none',
                             path: '/api/',
 
                         }
@@ -18,7 +18,7 @@ export default async (req, res) => {
                             httpOnly: true,
                             secure: process.env.NODE_ENV === 'production',
                             expires: new Date(0),
-                            sameSite: 'strict',
+                            sameSite: 'none',
                             path: '/api/',
 
                         }
