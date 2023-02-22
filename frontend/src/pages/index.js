@@ -94,7 +94,6 @@ export default function list(){
         }
     }, [searchplace, user]);
 
-
     useEffect(() => {
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {

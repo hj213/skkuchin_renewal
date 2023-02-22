@@ -20,7 +20,7 @@ export default function chatTime(){
     const router = useRouter();
 
     const now = new Date();
-    const hours = now.getHours() % 24; // 24 이상일 경우 24를 빼줌
+    const hours = now.getHours() % 24;
     const minutes = now.getMinutes();
     const time = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
