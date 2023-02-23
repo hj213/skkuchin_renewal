@@ -4,7 +4,7 @@ import check from '../../../image/check_circle.png';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-export default function Step4() {
+const Step4 = (props) => {
   const router = useRouter();
 
   const handleSubmit = () => {
@@ -31,3 +31,4 @@ export default function Step4() {
     </Box>
   )
 }
+export default Step4;

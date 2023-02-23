@@ -1,17 +1,25 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { reset_password } from '../../../actions/auth/auth';
-import {  TextField, Button, Typography, Box } from '@mui/material';
+import {  TextField, Button, Typography, Box, Grid, Container, Dialog, DialogContent, DialogActions } from '@mui/material';
 import check from '../../../image/check_circle.png';
 import uncheck from '../../../image/uncheck.png';
+import back from '../../../image/arrow_back_ios.png'
 import Image from 'next/image';
 
-export default function Step3(props) {
+const Step3 = (props) => {
     const dispatch = useDispatch();
 
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [validPW, setValidPW] = useState(false);
+
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogMsg, setDialogMsg] = useState('');
+
+    const handlePrevStep = () => {
+        props.handlePrevStep();
+    }
 
     const handleNextStep = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -19,7 +27,8 @@ export default function Step3(props) {
                 if (result) {
                     props.handleNextStep();
                 } else {
-                    alert(message);
+                    setDialogMsg(message);
+                    setDialogOpen(true);
                 }
             }));
         }
@@ -36,18 +45,37 @@ export default function Step3(props) {
         }
     }
 
+    const handleDialogOpen = (e) => {
+        if(dialogOpen){
+            setDialogOpen(false);
+        } else{
+            setDialogOpen(true);
+        }
+    }
+
     return (
+        <div>
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep}/>
+                            </Grid>
+                            <Grid item style={{marginLeft:'28%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>비밀번호 초기화</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>
         <Box
             sx={{
-            marginTop: '45px',
+            margin: '55px 15px 15px 15px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             }}
         >
-        <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
+        {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>비밀번호 초기화</Typography>
-        </header>
+        </header> */}
        
         <form style={{ width: '100%'}}>
             <div style={{margin: '0 36px'}}>
@@ -107,5 +135,24 @@ export default function Step3(props) {
             </div>
         </form>
       </Box>
+
+      <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
+                <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px', fontWeight: '700'}}>
+                      {dialogMsg}
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center'}}>
+                    
+                        <Button onClick={e => setDialogOpen(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:'#505050'}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#505050', marginBottom:'10px'}}>
+                                확인
+                            </Typography>
+                        </Button>
+
+                </DialogActions>
+          </Dialog>
+      </div>
   )
 }
+export default Step3;

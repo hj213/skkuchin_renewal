@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  TextField, Button,  Typography,  Box, Select, MenuItem, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline } from '@mui/material';
+import {  TextField, Button,  Typography,  Box, Select, MenuItem, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
 import theme from '../../theme/theme';
 import back from '../../image/arrow_back_ios.png';
@@ -53,19 +53,29 @@ const SignUpStep4 = (props) => {
     return (
       <ThemeProvider theme={theme}>
       <CssBaseline />
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep}/>
+                            </Grid>
+                            <Grid item style={{marginLeft:'35%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>
       <Box
             sx={{
-            marginTop: '45px',
+            margin: '55px 15px 15px 15px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyItems: 'center'
             }}
         >
-        <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '61px'}}>
+        {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '61px'}}>
             <Image width={12.02} height={21.55} src={back} onClick={handlePrevStep}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>이메일 인증</Typography>
-        </header>
+        </header> */}
         <div style={{ width: '100%', textAlign: 'center' }}>
             <Image width={121} height={101} src={logo}/>
             <Typography sx={{fontSize: '25px', fontWeight: '500', mb: '37px'}}>성균관대학교 인증</Typography>
@@ -126,10 +136,13 @@ const SignUpStep4 = (props) => {
           }
         </div>
         </form>
+      </Box>
+      <div style={{display: 'grid', justifyItems: 'center', marginBottom: '22px'}}>
         <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
-        <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
-      
-        <Dialog open={dialogOpen} onClose={handleDialogOpen}>
+        <Typography sx={{fontSize: '4px', fontWeight: '400', ml: '5.58px', color: '#BABABA', mt: '8px'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
+      </div>
+
+        <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
                 <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
                       {dialogMsg}
@@ -145,7 +158,6 @@ const SignUpStep4 = (props) => {
 
                 </DialogActions>
           </Dialog>
-      </Box>
       </ThemeProvider>
     );
   };

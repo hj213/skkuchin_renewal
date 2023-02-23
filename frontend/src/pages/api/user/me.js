@@ -43,11 +43,11 @@ export default async (req, res) => {
         }
     } else if (req.method == 'PUT') {
         const { 
-            nickname, major
+            nickname, major, image, student_id
         } = req.body;
 
         const body = JSON.stringify({
-            nickname, major
+            nickname, major, image, student_id
         });
 
 

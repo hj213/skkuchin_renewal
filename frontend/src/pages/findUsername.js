@@ -23,14 +23,14 @@ export default function findUsername() {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <Layout title= '스꾸친 | 아이디 찾기' content='Register page'>
-            <Container component="main" maxWidth="xs">
+            {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <Step1 handleNextStep={handleNextStep} />
             }
             {
                 step === 2 && <Step2 handlePrevStep={handlePrevStep} />
             }
-            </Container>
+            {/* </Container> */}
         </Layout>
         </ThemeProvider>
     )
