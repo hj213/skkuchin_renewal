@@ -321,14 +321,14 @@ export const check_nickname = (nickname, callback) => async dispatch => {
     }
 }
 
-export const change_user = (nickname, major, callback) => async dispatch => {
+export const change_user = (nickname, major, image, student_id, callback) => async dispatch => {
     const body = JSON.stringify({
-        nickname, major
+        nickname, major, image, student_id
     });
 
     try {
         const res = await fetch('/api/user/me', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

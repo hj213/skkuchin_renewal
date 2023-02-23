@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, InputAdornment} from '@mui/material';
+import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, Container, Grid} from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 
 const SignUpStep2 = (props) => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const [validNickname, setValidNickname] = useState(null);
     const [nicknameMsg, setNicknameMsg] = useState("");
     const [studentId, setStudentId] = useState("");
@@ -56,18 +57,29 @@ const SignUpStep2 = (props) => {
 
 
     return (
+      <div>
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep}/>
+                            </Grid>
+                            <Grid item style={{marginLeft:'35%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>
       <Box
         sx={{
-        marginTop: '45px',
+        margin: '55px 15px 15px 15px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         }}
     >
-      <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
+      {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
             <Image width={12.02} height={21.55} src={back} onClick={handlePrevStep}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>회원가입</Typography>
-      </header>
+      </header> */}
       <form style={{ width: '100%'}}>
         <div style={{margin: '0 36px'}}>
           <TextField
@@ -87,6 +99,7 @@ const SignUpStep2 = (props) => {
             {/* 중복확인 메소드 추가 */}
             <div style={{display:'flex'}}>
               <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+              {validNickname == null && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>닉네임 중복 확인 체크를 해주세요</Typography>}
               {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
               {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
             </div>
@@ -113,7 +126,7 @@ const SignUpStep2 = (props) => {
             </Select>
           </FormControl>
         </div>
-        <div style={{margin: '0 36px 44px'}}>
+        <div style={{margin: '0 36px 65px'}}>
           {/* <TextField
             variant="standard"
             label="학번"
@@ -168,10 +181,11 @@ const SignUpStep2 = (props) => {
             }
         </div>
         </form>
-        <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
-                이미 회원이신가요? <Link href={`/login`} > 로그인 </Link> 
+        <div style={{display: 'flex', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
+                <span style={{alignSelf: 'center'}}>이미 회원이신가요?</span><Button onClick={() => router.push('/login')} variant="text" style={{alignSelf: 'start', justifySelf: 'start', fontSize: '12px', color: '#FFCE00', padding: 0, fontWeight: '700'}}>로그인</Button>
         </div>
       </Box>
+      </div>
     );
   };
 
