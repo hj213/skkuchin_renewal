@@ -21,7 +21,7 @@ export default async (req, res) => {
                 body: body
             });
 
-            const resValue = await apiRes.json();
+            // const resValue = await apiRes.json();
 
             if (apiRes.status === 200) {
                 // res.setHeader('Set-Cookie', [
@@ -45,11 +45,11 @@ export default async (req, res) => {
                 //     )
                 // ]);
                 return res.status(200).json({
-                    success: resValue.message
+                    success: "성공"
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    error: resValue.message
+                    error: "실패"
                 });
             }
         } catch(err) {
