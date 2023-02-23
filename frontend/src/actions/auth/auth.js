@@ -98,7 +98,13 @@ export const login = (username, password, callback) => async dispatch => {
             body: body
         });
         
+        console.log('res')
+        console.log(res)
+
         const data = await res.json();
+
+        console.log('data')
+        console.log(data)
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -161,8 +167,14 @@ export const load_user = () => async dispatch => {
                 'Accept': 'application/json'
             }
         });
-        
+
+        console.log('res')
+        console.log(res)
+
         const data = await res.json();
+
+        console.log('data')
+        console.log(data)
 
         if (res.status === 200) {
             dispatch({
@@ -177,6 +189,7 @@ export const load_user = () => async dispatch => {
         }
 
     } catch (error) {
+        console.log('여기로 진입')
         console.log(error);
         dispatch({
             type: LOAD_USER_FAIL
