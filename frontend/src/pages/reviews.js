@@ -37,7 +37,7 @@ const ReviewsPage = () => {
     const { id } = router.query;
 
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!=null) {
+        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!=null && id!=null) {
             setPlaceId(id);
             dispatch(load_reviews(place_id));
         }
