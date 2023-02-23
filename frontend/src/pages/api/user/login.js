@@ -1,4 +1,4 @@
-import cookie from 'cookie';
+// import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
 
 
@@ -24,26 +24,26 @@ export default async (req, res) => {
             const resValue = await apiRes.json();
 
             if (apiRes.status === 200) {
-                res.setHeader('Set-Cookie', [
-                    cookie.serialize(
-                        'access', resValue.data.access, {
-                            httpOnly: true,
-                            secure: process.env.NODE_ENV === 'production',
-                            maxAge: 60 * 30,
-                            sameSite: 'strict',
-                            path: '/api/'
-                        }
-                    ),
-                    cookie.serialize(
-                        'refresh', resValue.data.refresh, {
-                            httpOnly: true,
-                            secure: process.env.NODE_ENV === 'production',
-                            maxAge: 60 * 60 * 24,
-                            sameSite: 'strict',
-                            path: '/api/'
-                        }
-                    )
-                ]);
+                // res.setHeader('Set-Cookie', [
+                //     cookie.serialize(
+                //         'access', resValue.data.access, {
+                //             httpOnly: true,
+                //             secure: process.env.NODE_ENV === 'production',
+                //             maxAge: 60 * 30,
+                //             sameSite: 'strict',
+                //             path: '/api/'
+                //         }
+                //     ),
+                //     cookie.serialize(
+                //         'refresh', resValue.data.refresh, {
+                //             httpOnly: true,
+                //             secure: process.env.NODE_ENV === 'production',
+                //             maxAge: 60 * 60 * 24,
+                //             sameSite: 'strict',
+                //             path: '/api/'
+                //         }
+                //     )
+                // ]);
                 return res.status(200).json({
                     success: resValue.message
                 });

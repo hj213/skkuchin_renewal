@@ -109,7 +109,7 @@ export const login = (username, password, callback) => async dispatch => {
                 type: LOGIN_SUCCESS,
                 payload: data
             });
-            dispatch(load_user());
+            // dispatch(load_user());
             if (callback) callback([true, data.success]);
         } else {
             dispatch({
