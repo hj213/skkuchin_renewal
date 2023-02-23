@@ -2,13 +2,11 @@
 
 const withPWA = require('next-pwa')({
 	dest: 'public',
-	// disable: process.env.NODE_ENV === 'development',
+	// disable: process.env.NODE_ENV === 'production',
 	disable: true,
-	// register: true,
 	// scope: '/app',
 	sw: 'service-worker.js',
-	dynamicStartUrlRedirect: true
-	//...
+	dynamicStartUrlRedirect: '/login'
 })
 
 const nextConfig = withPWA({
@@ -29,8 +27,8 @@ const nextConfig = withPWA({
 		deviceSizes: [640, 750, 828, 1080],
 		domains: ['skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com']
 	},
-	// reactStrictMode: true,
-	// swcMinify: true,
+	reactStrictMode: true,
+	swcMinify: true,
 });
 
 module.exports = nextConfig;
