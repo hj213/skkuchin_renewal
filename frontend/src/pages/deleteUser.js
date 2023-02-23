@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
 import back from '../image/arrow_back_ios.png';
 import logo from '../image/email_enhang.png'
@@ -14,6 +14,7 @@ export default function deleteUser() {
 
     const [reason, setReason] = useState("");
     const [agreement, setAgreement] = useState(false);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const handleArrowClick = () => {
         router.push('/myPage');
@@ -71,18 +72,22 @@ export default function deleteUser() {
 
             <form style={{ width: '100%'}}>
                 <textarea placeholder='계정을 삭제하려는 이유를 작성해주세요.(10자 이상)' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'Noto Sans KR, sans-serif'}} />
+                <div style={{display: 'flex', justifyItems: 'center', alignItems: 'center'}}>
                 <input type="checkbox" checked={agreement} onChange={() => setAgreement(!agreement)}/>
                 <label style={{fontSize: '9px', paddingLeft: '5px'}}>유의사항을 모두 확인하였으며, 회원탈퇴 시 ~~~에 동의합니다.</label>
-                
+                </div>
+
+                <div style={{margin: '53px 18px 12px'}}>
                 {reason.length >= 10 && agreement ?
-                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', marginTop: '135px', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', marginTop: '100px', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         탈퇴하기
                     </Button>
                 :
-                    <Button variant="contained" disabled style={{width: '100%', marginTop: '135px', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+                    <Button variant="contained" disabled style={{width: '100%', marginTop: '100px', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         탈퇴하기
                     </Button>
                 }
+                </div>
             </form>
         </Box>
         </ThemeProvider>

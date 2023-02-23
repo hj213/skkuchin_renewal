@@ -99,6 +99,7 @@ const SignUpStep2 = (props) => {
             {/* 중복확인 메소드 추가 */}
             <div style={{display:'flex'}}>
               <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+              {validNickname == null && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>닉네임 중복 확인 체크를 해주세요</Typography>}
               {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
               {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
             </div>
@@ -125,7 +126,7 @@ const SignUpStep2 = (props) => {
             </Select>
           </FormControl>
         </div>
-        <div style={{margin: '0 36px 44px'}}>
+        <div style={{margin: '0 36px 65px'}}>
           {/* <TextField
             variant="standard"
             label="학번"

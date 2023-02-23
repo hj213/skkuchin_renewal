@@ -96,13 +96,13 @@ const SignUpStep5 = (props) => {
             <Link component="button" variant="body2" color="#BABABA" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
         <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', width: '90%'}}>
-            <Button variant="contained" onClick={handleSubmit} style={{width: '296px', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+            <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                 확인
             </Button>
         </div>
       </Box>
 
-      <div style={{display: 'grid', justifyItems: 'center'}}>
+      <div style={{display: 'grid', justifyItems: 'center', marginBottom: '24px'}}>
         <Typography sx={{fontSize: '6px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
         <Typography sx={{fontSize: '6px', fontWeight: '400', ml: '5.58px', color: '#BABABA', mt: '8px'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
       </div>
