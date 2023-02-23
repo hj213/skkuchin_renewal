@@ -2,8 +2,8 @@
 
 const withPWA = require('next-pwa')({
 	dest: 'public',
-	// disable: process.env.NODE_ENV === 'development',
-	disable: true,
+	disable: process.env.NODE_ENV === 'production',
+	// disable: true,
 	// scope: '/app',
 	sw: 'service-worker.js',
 	dynamicStartUrlRedirect: '/login'
@@ -31,4 +31,4 @@ const nextConfig = withPWA({
 	swcMinify: true,
 });
 
-export default nextConfig;
+module.exports = nextConfig;
