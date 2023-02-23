@@ -97,10 +97,13 @@ export const login = (username, password, callback) => async dispatch => {
             },
             body: body
         });
-
+        console.log(res.ok)
         console.log(res)
-        const data = await res.text();
-        console.log(data)
+        const jsonString = await res.text();
+        console.log(text)
+        const data = JSON.parse(jsonString);
+
+        console.log(data);
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -111,12 +114,12 @@ export const login = (username, password, callback) => async dispatch => {
                 type: LOGIN_SUCCESS
             });
             // dispatch(load_user());
-            if (callback) callback([true, res]);
+            if (callback) callback([true, data.message]);
         } else {
             dispatch({
                 type: LOGIN_FAIL
             });
-            if (callback) callback([false, res]);
+            if (callback) callback([false, data.message]);
         }
     } catch(error) {
         console.log(error);
