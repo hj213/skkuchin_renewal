@@ -77,8 +77,6 @@ export const load_review = (callback) => async dispatch => {
 // enroll review
 export const enroll_review = (place_id, rate, content, images, tags, callback) => async dispatch => {
 
-    console.log(place_id, rate, content, images, tags);
-
     const formData = new FormData();
     formData.append('place_id', place_id);
     formData.append('rate', rate);
@@ -95,8 +93,6 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
             formData.append('tags', tag);
         }
     }
-    
-    console.log([...formData.entries()]);
 
     try {
         const res = await fetch('/api/review', {

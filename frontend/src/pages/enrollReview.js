@@ -142,9 +142,9 @@ const EnrollReview = () => {
     const handleEnrollClick = (event) =>{
         event.preventDefault();
         
-        dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message])=>{
+        dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
             if(result){
-                alert("POST 요청 result: " + result)
+                alert("POST 요청 result: " + message)
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }
