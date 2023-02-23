@@ -109,6 +109,7 @@ export default function EditProfileImage(props) {
             ...profile,
             [props.image] : true
         })
+        setImage(props.image);
     }, [])
 
     return (
@@ -204,7 +205,7 @@ export default function EditProfileImage(props) {
                         </div>
                     </div>
             <div style={{width: '100%'}}>
-            <div style={{margin: '20px 36px 50px'}}>
+            <div style={{margin: '20px 20px 50px'}}>
                 {image ?
                         <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                             확인

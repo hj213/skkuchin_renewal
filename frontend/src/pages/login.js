@@ -12,6 +12,7 @@ import theme from '../theme/theme';
 import logo from '../image/main_logo.png'
 import check from '../image/check_circle.png';
 import uncheck from '../image/uncheck.png';
+import { string } from 'prop-types';
 
 
 const LoginPage = () => {
@@ -52,8 +53,9 @@ const LoginPage = () => {
                     }
                 } else {
                     console.log(message);
-                    console.log(typeof(message));
-                    //setError(message);
+                    if (typeof(message) == string) {
+                        setError(message);
+                    }
                 }
             }));
         }

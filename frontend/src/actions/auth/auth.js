@@ -329,7 +329,7 @@ export const change_user = (nickname, major, image, student_id, callback) => asy
 
     try {
         const res = await fetch('/api/user/me', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
