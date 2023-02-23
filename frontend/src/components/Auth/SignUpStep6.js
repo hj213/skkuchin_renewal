@@ -28,7 +28,7 @@ const SignUpStep6 = (props) => {
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep}/>
                             </Grid>
-                            <Grid item style={{marginLeft:'29%'}}>
+                            <Grid item style={{marginLeft:'35%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
                             </Grid>
                         </Grid>

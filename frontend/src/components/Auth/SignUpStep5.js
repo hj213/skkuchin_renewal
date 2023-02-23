@@ -63,7 +63,7 @@ const SignUpStep5 = (props) => {
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep}/>
                             </Grid>
-                            <Grid item style={{marginLeft:'29%'}}>
+                            <Grid item style={{marginLeft:'35%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
                             </Grid>
                         </Grid>
@@ -74,7 +74,7 @@ const SignUpStep5 = (props) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            width: '100%'
+            justifyItems: 'center'
             }}
         >
         {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '61px'}}>
@@ -96,7 +96,7 @@ const SignUpStep5 = (props) => {
             <Link component="button" variant="body2" color="#BABABA" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
         <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', width: '90%'}}>
-            <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+            <Button variant="contained" onClick={handleSubmit} style={{width: '296px', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                 확인
             </Button>
         </div>

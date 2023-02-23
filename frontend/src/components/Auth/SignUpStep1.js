@@ -57,7 +57,7 @@ const SignUpStep1 = (props) => {
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={backClick}/>
                             </Grid>
-                            <Grid item style={{marginLeft:'29%'}}>
+                            <Grid item style={{marginLeft:'35%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
                             </Grid>
                         </Grid>
@@ -158,7 +158,7 @@ const SignUpStep1 = (props) => {
             }
             </div>
         </form>
-        <div style={{display: 'grid', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
+        <div style={{display: 'flex', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
                 <span style={{alignSelf: 'center'}}>이미 회원이신가요?</span><Button onClick={() => router.push('/login')} variant="text" style={{alignSelf: 'start', justifySelf: 'start', fontSize: '12px', color: '#FFCE00', padding: 0, fontWeight: '700'}}>로그인</Button>
         </div>
       </Box>

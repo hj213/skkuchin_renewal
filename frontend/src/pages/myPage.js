@@ -134,9 +134,9 @@ export default function myPage() {
 
             {/* 알림 설정 */}
             <Container style={{borderBottom: '1px solid #DDDDDD', padding: '0 15px', marginTop: '25px'}}>
-                <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>알림 설정</Typography>
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start'}}>
-                    <Typography style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>채팅 알림</Typography>
+                <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '20px'}}>알림 설정</Typography>
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '13px'}}>
+                    <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>채팅 알림</Typography>
                     {/* <Image width={48.58} height={45} src={toggle_off} onClick={arrowClick} style={{alignSelf: 'start'}}/> */}
                     {/* 토글 스위치 */}
                     <FormControlLabel
@@ -145,8 +145,8 @@ export default function myPage() {
                     />
                 </div>
                 
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start'}}>
-                    <Typography style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>스꾸친 공지/이벤트 알림</Typography>
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
+                    <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>스꾸친 공지/이벤트 알림</Typography>
                     {/* 토글 스위치 */}
                     <FormControlLabel
                         style={{paddingTop:"2px"}}
@@ -165,7 +165,7 @@ export default function myPage() {
             {/* 하단 */}
             <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '80px', marginBottom: '50px'}}>
                 <div style={{display: 'flex', fontSize: '14px'}}>
-                    <Button variant="text" style={{color: "#BABABA"}}>탈퇴하기</Button>
+                    <Button onClick={() => router.push('/deleteUser')} variant="text" style={{color: "#BABABA"}}>탈퇴하기</Button>
                     <Button variant="text" style={{color: "#BABABA"}}>약관 및 정책</Button>
                 </div>
             </Container>
