@@ -14,17 +14,16 @@ const Layout = ({title, content, children}) => {
     }, [dispatch]);
 
     return ( 
-        <>
-            <Head>
-                <title>{title}</title>
-                <meta name="description" content={content} ></meta>
-            </Head>
-            
-            <div className="container mt-5">
-                {children}
-            </div>
-           
-        </>
+            <>
+                <Head>
+                    <title>{title}</title>
+                    <meta name="description" content={content} ></meta>
+                </Head>
+                
+                <div className="container mt-5">
+                    {children}
+                </div>
+            </>
         )
 };
 
