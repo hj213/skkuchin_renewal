@@ -137,7 +137,6 @@ const PlacePage = () => {
         preNewHeight=newHeight;
     };
 
-
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
      const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
@@ -214,6 +213,16 @@ const PlacePage = () => {
             dispatch(clear_search_results());
         }
     }
+// 별점 관리
+    const [rating, setRating] = useState(0);
+    const handleTouch = (index) => {
+        // setRating(index);
+        if (index + 1 === rating) {
+          setRating(0);
+        } else {
+          setRating(index + 1);
+        }
+      };
 
     return (
         <ThemeProvider theme={theme}>
@@ -440,9 +449,10 @@ const PlacePage = () => {
                         </Container>
                         { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
-                                <Link href={`enrollReview?id=${item.id}`} key={item.id}>
+                                {/* <Link href={`enrollReview?id=${item.id}`} key={item.id}> */}
+                                <Link href={{ pathname: '/enrollReview', query: { id: item.id, rating: rating } }}>
                                     <div>
-                                    <ReviewStar />
+                                    <ReviewStar rating={rating} handleTouch={handleTouch}/>
                                     </div>
                                 </Link>
                         </li>)):null}

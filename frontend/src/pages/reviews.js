@@ -27,16 +27,17 @@ const ReviewsPage = () => {
 
     // 뒤로가기
     const handleOnclick = (event) =>{
-        if(event.target.name == 'back' ){
-            router.back();
-        } 
+        router.push({
+            pathname: '/place',
+            query: { id: place_id }
+        });
     };  
 
     const router = useRouter();
     const { id } = router.query;
 
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
+        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!=null) {
             setPlaceId(id);
             dispatch(load_reviews(place_id));
         }

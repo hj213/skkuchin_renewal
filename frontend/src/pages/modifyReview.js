@@ -47,22 +47,46 @@ const ModifyReview = () => {
 
     // place.js에서 전달 받은 id 값 받아오기
     const id = router.query.id;
-    // const reviewId = router.query.review_id;
+    const review_id = router.query.review_id;
 
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    // const [review_id, setReviewId] = reviewId != null ? useState(reviewId) : useState('');
+    
     const places = useSelector(state => state.place.searchplace);
 
-    // rating
-    const [rating, setRating] = useState(0);
+    const reviews = useSelector(state => state.review.review);
+    const [rating, setRating] = useState();
+    const [textReview, setTextReview] = useState();
+    const [tagList, setTagList] = useState([]);
+    const [tagChoose, setTagChoose] = useState({
+      '맛집': false,
+      '간단한 한 끼': false,
+      '분위기 좋은': false,
+      '가성비': false,
+      '친절': false,
+      '청결도': false,
+      '둘이 가요': false
+    });
+    const [imagesPreview, setImagesPreview] = useState([]);
 
-    // 리뷰 (텍스트)
-    const [textReview, setTextReview] = useState('');
+    const review = reviews.find(review => review.id == review_id && review.place_id == place_id);
 
+    useEffect(() => {
+        setRating(review.rate);
+        setTextReview(review.content);
+        setTagList(review.tags);
+        // 태그 선택 상태 설정
+        const tagChooseTemp = {};
+        for (const tag of review.tags) {
+          tagChooseTemp[tag] = true;
+        }
+        setTagChoose(tagChooseTemp);
+
+      }, [review_id, place_id, reviews]);
+
+      
     const handleTouch = (index) => {
-        // setRating(index);
         if (index + 1 === rating) {
             setRating(0);
         } else {
@@ -74,21 +98,8 @@ const ModifyReview = () => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
             dispatch(load_reviews(id));
-            dispatch(load_review());
         }
     }, [dispatch, id]);
-
-    //리뷰 정보 전달
-    const [tagList, setTagList] = useState();
-    const [tagChoose, setTagChoose] = useState({
-        '맛집':false,
-        '간단한 한 끼':false,
-        '분위기 좋은':false,
-        '가성비':false,
-        '친절':false,
-        '청결도':false,
-        '둘이 가요':false
-    })
 
     // 태그 관련
     useEffect(()=>{
@@ -130,19 +141,9 @@ const ModifyReview = () => {
         }
     }
 
-        // 이미지 URL 배열화
-        const [images, setImages] = useState([]);
-    
-        const onChangeImages = (e) => {
-            setImages(Array.from(e.target.files));
-            // console.log("setImage : "+ Array.from(e.target.files));
-        };
-    
-
     // 등록 클릭 시
     const handleModifyClick = (event) =>{
         event.preventDefault();
-        const review_id = router.query.review_id;
         dispatch(modify_review(review_id, rating, textReview, images, tagList, ([result, message])=>{
             if(result){
                 alert("PUT 요청 result: " + result)
@@ -156,9 +157,13 @@ const ModifyReview = () => {
         }));
     }
 
+    // 이미지 URL 배열화
+    const [images, setImages] = useState(review.images || []);
+    const onChangeImages = (e) => {
+        setImages(Array.from(e.target.files));
+    };
 
-
-
+    
     const user = useSelector(state => state.auth.user);
 
     return(
@@ -200,8 +205,8 @@ const ModifyReview = () => {
                 <Grid container style={{padding: '10px 15px'}}>
                     <Grid style={{width:'100%'}}>
                         <CardContent>
-                        { places ? places.filter(item => item.id == place_id).map(item => (
-                            <Grid container sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
+                        { places ? places.filter(item => item.id == place_id).map((item,index) => (
+                            <Grid container key={index} sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
                                 <Grid>
                                     <Typography sx={{fontSize: '23px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
                                         {item.name}
@@ -323,13 +328,7 @@ const ModifyReview = () => {
                                 </div>
                             </Grid>
 
-                            <Grid container sx={{overFlowX:'auto', flexWrap:'nowrap'}}>
-                                <Grid item>
-                                    
-                                </Grid>
-                            </Grid>
-
-                            <Grid>
+                            {/* <Grid>
                                 <div className='form-group'>
                                     <label className='form-label mt-3' htmlFor='image'>
                                         <strong>Image</strong>
@@ -339,8 +338,18 @@ const ModifyReview = () => {
                                         placeholder ='Image' onChange={e => onChangeImages(e)}
                                         />
                                 </div>
+                            </Grid> */}
+                            <Grid>
+                            <div className='form-group'>
+                                <label className='form-label mt-3' htmlFor='image'>
+                                <strong>Image</strong>
+                                </label>
+                                <input 
+                                className='form-control' type='file' name='images' accept='image/*' multiple
+                                placeholder='Image' onChange={onChangeImages}
+                                />
+                            </div>
                             </Grid>
-
                             <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
                                 <Grid>
                                     <Box
@@ -363,12 +372,6 @@ const ModifyReview = () => {
                     </Grid>
                 </Grid>
             </Container>
-
-
-
-
-
-
         </div>
         </Layout>
         </ThemeProvider>
