@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline } from '@mui/material';
+import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
 import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
 import Image from 'next/image';
@@ -60,18 +60,28 @@ export default function changePassword() {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px', marginBottom: '55px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick}/>
+                            </Grid>
+                            <Grid item style={{marginLeft:'29%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>비밀번호 변경</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>
         <Box
             sx={{
-            margin: '45px 16px 16px 16px',
+            margin: '0px 16px 16px 16px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             }}
         >
-        <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
-            <Image width={12.02} height={21.55} src={back} onClick={handleArrowClick}/>
+        {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
+            <Image width={11} height={18} src={back} onClick={handleArrowClick}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>비밀번호 변경</Typography>
-        </header>
+        </header> */}
 
         <form style={{ width: '100%'}}>
             <div style={{margin: '0 36px 39px 36px'}}>
@@ -144,7 +154,7 @@ export default function changePassword() {
             </div>
         </form>
 
-        <Dialog open={dialogOpen} onClose={handleDialogOpen}>
+        <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
                 <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
                         {dialogMsg}

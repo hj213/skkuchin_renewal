@@ -51,8 +51,6 @@ export default function editProfile() {
             setValidNickname(null);
         }
         setNickname(e.target.value);
-        console.log(nickname);
-        console.log(user.image);
     }
 
     const checkNickname = () => {
@@ -104,7 +102,7 @@ export default function editProfile() {
         >
         {/* 상단 */}
         <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '55px'}}>
-            <Image width={12.02} height={21.55} src={back} onClick={handleArrowClick}/>
+            <Image width={11} height={18} src={back} onClick={handleArrowClick}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>프로필 수정</Typography>
         </header>
 

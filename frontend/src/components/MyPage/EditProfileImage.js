@@ -122,7 +122,7 @@ export default function EditProfileImage(props) {
             }}
             >
             <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
-                    <Image width={12.02} height={21.55} src={back} onClick={handlePrevStep}/>
+                    <Image width={11} height={18} src={back} onClick={handlePrevStep}/>
                     <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>프로필 이미지 변경</Typography>
             </header>
 

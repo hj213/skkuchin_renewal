@@ -107,18 +107,29 @@ export default function SignUpStep3(props) {
       }
 
     return (
+        <div>
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep}/>
+                            </Grid>
+                            <Grid item style={{marginLeft:'29%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>
         <Box
             sx={{
-            marginTop: '45px',
+            margin: '45px 15px 15px 15px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             }}
             >
-            <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
+            {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
                     <Image width={12.02} height={21.55} src={back} onClick={handlePrevStep}/>
                     <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>회원가입</Typography>
-            </header>
+            </header> */}
 
             <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
@@ -212,9 +223,10 @@ export default function SignUpStep3(props) {
             </div>
             </div>
         
-            <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050', marginBottom: '39px'}}>
-                    이미 회원이신가요? <Link href={`/login`} > 로그인 </Link> 
+            <div style={{display: 'grid', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
+                <span style={{alignSelf: 'center'}}>이미 회원이신가요?</span><Button onClick={() => router.push('/login')} variant="text" style={{alignSelf: 'start', justifySelf: 'start', fontSize: '12px', color: '#FFCE00', padding: 0, fontWeight: '700'}}>로그인</Button>
             </div>
         </Box>
+        </div>
     )
 }

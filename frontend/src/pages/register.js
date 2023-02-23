@@ -48,7 +48,7 @@ const RegisterPage = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <Layout title= '스꾸친 | Register' content='Register page'>
-            <Container component="main" maxWidth="xs">
+            {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <SignUpStep1 handleNextStep={handleNextStep} data={data} setData={setData} />
             }
@@ -67,7 +67,7 @@ const RegisterPage = () => {
             {
                 step === 6 && <SignUpStep6 handlePrevStep={handlePrevStep} />
             }
-            </Container>
+            {/* </Container> */}
         </Layout>
         </ThemeProvider>
     )

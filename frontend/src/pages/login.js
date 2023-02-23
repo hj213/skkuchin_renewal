@@ -56,6 +56,9 @@ const LoginPage = () => {
                     if (typeof(message) == string) {
                         setError(message);
                     }
+                    if (typeof(message) == 'string') {
+                        setError(message);
+                    }
                 }
             }));
         }
@@ -96,18 +99,18 @@ const LoginPage = () => {
                                     type = 'text' name='username' 
                                     placeholder ='아이디' onChange={onChange} value={username}
                                     required
-                                    style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px'}}
+                                    style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px', outline: 'none'}}
                                 />
                             </div>
-                            <div style={{ margin: '0 24px' }}>
+                            <div style={{ margin: '0 24px', display: 'flex', flexDirection: 'column' }}>
                                 <input 
                                     type = 'password' name='password' 
                                     placeholder ='비밀번호' onChange={onChange} value={password}
                                     onClick={() => setError('')}
                                     required
-                                    style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px'}}
+                                    style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px', outline: 'none'}}
                                 />
-                                <div style={{alignSelf: 'left'}}><Typography sx={{height: '15px', fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px'}}>{error}</Typography></div>
+                                <div style={{alignSelf: 'start'}}><Typography sx={{height: '15px', fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px'}}>{error}</Typography></div>
                             </div>
                             {
                                 loading ? (
@@ -163,7 +166,7 @@ const LoginPage = () => {
             <div style={{display: 'grid', justifyItems: 'center'}}>
             <div style={{display: 'grid', justifyItems: 'center', fontSize: '4px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
                 <div>로그인하면 스꾸친 이용약관에 동의하는 것으로 간주합니다.</div>
-                <div style={{marginTop: '6px'}}>스꾸친의 회원 정보 처리 방식은 개인정보 처리방침 및 쿠키 정책에서 확인해보세요.</div>
+                <div style={{marginTop: '6px', textAlign: 'center'}}>스꾸친의 회원 정보 처리 방식은 개인정보 처리방침 및 쿠키 정책에서 확인해보세요.</div>
             </div>
             </div>
         </ThemeProvider>
