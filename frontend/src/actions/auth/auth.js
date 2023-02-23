@@ -89,7 +89,7 @@ export const login = (username, password, callback) => async dispatch => {
     });
 
     try {
-        const res = await fetch('/api/user/logins', {
+        const res = await fetch('/api/user/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -97,14 +97,8 @@ export const login = (username, password, callback) => async dispatch => {
             },
             body: body
         });
-        
-        console.log('res')
-        console.log(res)
 
         const data = await res.json();
-
-        console.log('data')
-        console.log(data)
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -115,7 +109,7 @@ export const login = (username, password, callback) => async dispatch => {
                 type: LOGIN_SUCCESS,
                 payload: data
             });
-            // dispatch(load_user());
+            dispatch(load_user());
             if (callback) callback([true, data.success]);
         } else {
             dispatch({
@@ -168,13 +162,7 @@ export const load_user = () => async dispatch => {
             }
         });
 
-        console.log('res')
-        console.log(res)
-
         const data = await res.json();
-
-        console.log('data')
-        console.log(data)
 
         if (res.status === 200) {
             dispatch({
@@ -189,7 +177,6 @@ export const load_user = () => async dispatch => {
         }
 
     } catch (error) {
-        console.log('여기로 진입')
         console.log(error);
         dispatch({
             type: LOAD_USER_FAIL
