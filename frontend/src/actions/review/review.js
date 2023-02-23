@@ -128,9 +128,11 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
 
 // modify review
 export const modify_review = (review_id, rate, content, images, tags, callback) => async dispatch => {
+    
+    // alert("넘겨받은 review" + review_id);
+    console.log(review_id, rate, content, images, tags);
 
     const formData = new FormData();
-    formData.append('place_id', place_id);
     formData.append('rate', rate);
     formData.append('content', content);
 
@@ -151,10 +153,12 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
     try {
         const res = await fetch(`/api/review/${review_id}`, {
             method: 'PUT',
-            body: formData
+            body: formData,
         });
 
-        if (res.status === 201) {
+        const data = await res.json();
+
+        if (res.status === 200) {
             dispatch({
                 type: MODIFY_REVIEW_SUCCESS
             });

@@ -74,20 +74,14 @@ const ReviewsPage = () => {
 
 
     const handleEdit = (reviewId) => {
-        if((reviews.filter(item => item.id === reviewId)).user_id === user.id) {
-            router.push({
-                pathname: '/enrollReview',
-                query: { id: place_id }
-            });  
+        const review = reviews.find(item => item.id == reviewId);
+        if (review.user_id == user.id) {
+          router.push({
+            pathname: '/modifyReview',
+            query: { id: place_id, review_id: reviewId }
+          });
         }
-        else alert('너가 쓴 글이 아님');
-        // alert("다음을 수정할 것. "+ reviewId);
-        // <Link href={`enrollReview?id=${item.id}`} key={item.id}>
-        //                             <div>
-        //                             <ReviewStar />
-        //                             </div>
-        //                         </Link>
-    } 
+    }
 
     const handleDelete = (reviewId) =>{
         alert("다음을 삭제할 것. "+ reviewId);

@@ -78,8 +78,8 @@ export default async (req, res) => {
             .then((apiRes) => {
                 const resValue = apiRes.json();
 
-                if (apiRes.status === 201) {
-                    return res.status(201).json({
+                if (apiRes.status === 200) {
+                    return res.status(200).json({
                         review: resValue.data,
                         success: resValue.message
                     });

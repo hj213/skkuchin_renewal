@@ -37,9 +37,9 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
         <Grid container key={index} style={{margin:"0 0 20px 0"}}>
             <Grid container style={{margin:'20px 0px 0px', justifyContent:'left'}}>
                 <Grid item xs={2}>
-                    { review.user_id === user.id ?
+                    { review && review.user_id === user.id ?
                         <Badge badgeContent={"나"} color="secondary">
-                            <Avatar alt="" src={user.image} />
+                            <Avatar alt="" src={ user.image} />
                         </Badge> : <Avatar alt="" src={user.image} />}
 
                 </Grid>
@@ -59,6 +59,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                             {review.nickname}
                         </Typography>
                         </Grid>
+                        { review.user_id === user.id ?
                         <Grid item>
                             <IconButton onClick={handleMoreClick}>
                                 <Image src={more} width={4.33} height={17.33} />
@@ -73,13 +74,13 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                                     },
                                 }}
                                 >
-                                <MenuItem sx={{fontSize: '15px', color: '#FFCE00'}} onClick={handleEdit(review.id)}>
-                                    {/* <Link href={`enrollReview?id=${placeId}`}>수정</Link> */}
-                                    수정
+                                <MenuItem sx={{fontSize: '15px', color: '#FFCE00'}} onClick={()=>handleEdit(review.id)}>
+                                    수정 {review.id}
                                 </MenuItem>
                                 <MenuItem sx={{fontSize: '15px'}} onClick={()=> {handleDelete(review.id); handleMenuClose();}}>삭제{review.id} {index}</MenuItem>
                             </Menu>
                         </Grid>
+                        : null}
                     </Grid>
                         <Stack direction="row" alignItems="center">
                             <Typography
