@@ -129,11 +129,6 @@ const EnrollReview = () => {
         // 이미지 URL 배열화
         const [images, setImages] = useState([]);
     
-        // const onChangeImages = (e) => {
-        //     setImages(Array.from(e.target.files));
-        //     // console.log("setImage : "+ Array.from(e.target.files));
-        // };
-    
         const onChangeImages = (e) => {
             const fileArray = Array.from(e.target.files);
             setImages(fileArray);

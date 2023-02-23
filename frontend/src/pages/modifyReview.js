@@ -141,8 +141,29 @@ const ModifyReview = () => {
         }
     }
 
-    // 등록 클릭 시
-    const handleModifyClick = (event) =>{
+
+    // 이미지 URL 배열화
+
+    const [images, setImages] = useState(review.images || []);
+    const [previewImages, setPreviewImages] = useState(images);
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setPreviewImages([...previewImages, ...files.map((file) => URL.createObjectURL(file))]);
+        setImages(files);
+      };
+      
+    
+    const handleImageRemove = (index) => {
+      const newPreviewImages = [...previewImages];
+      newPreviewImages.splice(index, 1);
+      setPreviewImages(newPreviewImages);
+    };
+
+    const user = useSelector(state => state.auth.user);
+
+     // 등록 클릭 시
+     const handleModifyClick = (event) =>{
         event.preventDefault();
         dispatch(modify_review(review_id, rating, textReview, images, tagList, ([result, message])=>{
             if(result){
@@ -156,16 +177,6 @@ const ModifyReview = () => {
             }
         }));
     }
-
-    // 이미지 URL 배열화
-    const [images, setImages] = useState(review.images || []);
-    const onChangeImages = (e) => {
-        setImages(Array.from(e.target.files));
-    };
-
-    
-    const user = useSelector(state => state.auth.user);
-
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -327,28 +338,29 @@ const ModifyReview = () => {
                                 </Grid>
                                 </div>
                             </Grid>
-
-                            {/* <Grid>
-                                <div className='form-group'>
-                                    <label className='form-label mt-3' htmlFor='image'>
-                                        <strong>Image</strong>
-                                    </label>
-                                    <input 
-                                        className='form-control' type = 'file' name='images' accept='image/*' multiple
-                                        placeholder ='Image' onChange={e => onChangeImages(e)}
-                                        />
-                                </div>
-                            </Grid> */}
                             <Grid>
-                            <div className='form-group'>
-                                <label className='form-label mt-3' htmlFor='image'>
-                                <strong>Image</strong>
-                                </label>
+                                <div>
+                                <label htmlFor="image">Image</label>
                                 <input 
-                                className='form-control' type='file' name='images' accept='image/*' multiple
-                                placeholder='Image' onChange={onChangeImages}
+                                    className='form-control' type='file' name='images' accept='image/*' multiple
+                                    placeholder='Image' onChange={handleImageChange}
                                 />
-                            </div>
+                                </div>
+                                <Grid container style={{position:'relative', width:'100%'}}>
+                                <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
+                                    {previewImages.map((previewImage, index) => (
+                                    <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
+                                        <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
+                                        objectPosition: 'center center' }} />
+                                        <button type="button" onClick={() => handleImageRemove(index)}>
+                                        X
+                                        </button>
+                                    </Grid>
+                                    ))}
+                                </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid>
                             </Grid>
                             <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
                                 <Grid>

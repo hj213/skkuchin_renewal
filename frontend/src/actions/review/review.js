@@ -137,7 +137,7 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
             formData.append('images', image);
         }
     }
-
+    
     if (tags && tags.length > 0) {
         for (const tag of tags) {
             formData.append('tags', tag);
