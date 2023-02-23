@@ -97,7 +97,7 @@ export const login = (username, password, callback) => async dispatch => {
             },
             body: body
         });
-
+        
         const data = await res.json();
 
         dispatch({
@@ -161,7 +161,7 @@ export const load_user = () => async dispatch => {
                 'Accept': 'application/json'
             }
         });
-
+        
         const data = await res.json();
 
         if (res.status === 200) {
@@ -170,7 +170,6 @@ export const load_user = () => async dispatch => {
                 payload: data
             });
         } else {
-            console.log(data)
             dispatch({
                 type: LOAD_USER_FAIL,
                 payload: data

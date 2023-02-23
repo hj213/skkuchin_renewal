@@ -4,7 +4,7 @@ import { API_URL } from '../../../config/index';
 export default async (req, res) => {
     const cookies = cookie.parse(req.headers.cookie ?? '');
     const access = cookies.access ?? false;
-
+    
     if (access == false) {
         console.log('access 토큰이 존재하지 않습니다')
         return res.status(401).json({
@@ -21,8 +21,9 @@ export default async (req, res) => {
                     'Authorization' : `Bearer ${access}`
                 }
             });
+            
             const resValue = await apiRes.json();
-
+            
             if (apiRes.status === 200) {
                 return res.status(200).json({
                     user: resValue.data,
