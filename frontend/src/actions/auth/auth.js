@@ -100,7 +100,7 @@ export const login = (username, password, callback) => async dispatch => {
         console.log(res.ok)
         console.log(res)
         const jsonString = await res.text();
-        console.log(text)
+        console.log(jsonString)
         const data = JSON.parse(jsonString);
 
         console.log(data);
