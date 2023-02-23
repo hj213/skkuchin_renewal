@@ -20,6 +20,7 @@ export default async (req, res) => {
                 },
                 body: body
             });
+            console.log(apiRes)
 
             const resValue = await apiRes.json();
 
