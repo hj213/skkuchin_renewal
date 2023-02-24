@@ -30,7 +30,7 @@ export default function list(){
     const dispatch = useDispatch();
     const router = useRouter();
     // 장소 정보 불러오기
-    const place = useSelector(state => state.place.searchplace);
+    const searchplace = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user);
     
@@ -87,13 +87,12 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place && keyword != '' && user.toggle != null) {
-          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
+        if (searchplace && keyword != '' && user.toggle != null) {
+          setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
-    }, [place, user]);
-
+    }, [searchplace, user]);
 
     useEffect(() => {
         // 0-2 검색 결과 목록 -> 1 목록보기
@@ -111,7 +110,7 @@ export default function list(){
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
-                    setHeight('32%');
+                    setHeight('40%');
                     setCardStyle({
                         radius: '30px 30px 0px 0px',
                         cardVisibility: 'visible',
@@ -159,14 +158,11 @@ export default function list(){
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.61;
-        if(WINDOW_HEIGHT > 1000){
-            TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
-        }
+        const TARGET_HEIGHT = WINDOW_HEIGHT - 53;
+        
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
-            // console.log(newHeight);
-            // console.log(TARGET_HEIGHT);
+            
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -179,7 +175,7 @@ export default function list(){
             setPreventScroll('scroll');
         } else {
             
-            setHeight('32%');
+            setHeight('40%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -198,7 +194,7 @@ export default function list(){
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('32%');
+            setHeight('40%');
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
@@ -299,14 +295,17 @@ export default function list(){
     <ThemeProvider theme={theme}>
       <CssBaseline />
        <Layout>
+            
             <UpperBar />
-            <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
-            <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
-                <SearchBox openID={openID} handleFocus={handleFocus}/> 
-                <div style={{position:'relative', width:'100%'}}>
-                    <TagList keyword={keyword} onTagClick={onTagClick} />  
-                </div>
-            </Container> 
+            <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'600px', overflow: 'hidden'}}>
+                
+                <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
+                    <SearchBox openID={openID} handleFocus={handleFocus}/> 
+                    <div style={{position:'relative', width:'100%'}}>
+                        <TagList keyword={keyword} onTagClick={onTagClick} />  
+                    </div>
+                </Container> 
+            
              {/* 태그 목록 */}
             
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />

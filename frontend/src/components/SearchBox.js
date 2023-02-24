@@ -8,9 +8,10 @@ import {Grid, CssBaseline, InputBase,TextField, Paper, styled, ThemeProvider, Co
 import searchBox from '../image/searchHolder.png';
 import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";
-import marker from '../image/marker.png';
+import marker from '../image/location.png';
 import noAuto from '../image/noinfo_enheng.png';
- 
+import Hangul from "hangul-js";
+
 export default function SearchBox({openID, handleFocus, handleClick}){
 
     const dispatch = useDispatch();
@@ -26,10 +27,14 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_user());
-            dispatch(load_places());
-
+            
         }
     }, [dispatch]);
+
+    useEffect(()=>{
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_places());}
+    }, []);
     
     //캠퍼스 필터링
     useEffect(() => {
@@ -43,10 +48,11 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const handleValue = (e) => {
         setValue(e.target.value);
 
-        if(e.target.value === ''){
+        if(e.target.value == ''){
             setAuto([]);
         } else{
-            const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
+            const regex = new RegExp(e.target.value, 'i');
+            const newAuto = filteredPlace.filter((item) => regex.test(Hangul.assemble(item.name)));
             setAuto(newAuto);
             
         }
@@ -54,7 +60,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
     
     const handleKeyDown = (e) => {
-        e.preventDefault();
         if(e.keyCode === 13){
             setValue(e.target.value);
             router.push({
@@ -66,6 +71,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     }
 
     const handleAutoOnClick = (autoValue) => {
+        
         setValue(autoValue);
         setAuto(autoValue);
         router.push({
@@ -85,11 +91,14 @@ export default function SearchBox({openID, handleFocus, handleClick}){
         setAutoBox(true);
     }
 
-    // const handleInputOnBlur = (e) => {
-    //     e.preventDefault();
-    //     setAutoBox(false);
-    // }
-    
+    const handleInputOnBlur = (e) => { 
+        setAutoBox(false);
+    }
+
+    const handleContainerMouseDown = (e) => {
+        e.preventDefault();
+    }
+
     // const handleOnClick = () => {
     //     handleClick(true);
     // }    
@@ -97,9 +106,9 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div>
+            <div onFocus={handleOnFocus} onBlur={handleInputOnBlur}>
                 <div style={{marginTop:'5px'}} >
-                    <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'3', alignItems: 'center'}} onFocus={handleOnFocus}>
+                    <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'3', alignItems: 'center'}} >
                         <Grid item name="mapdrawer">
                             <MapDrawer open={openID} />
                         </Grid>
@@ -112,7 +121,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                 onChange={handleValue}
                                 onKeyDown={handleKeyDown}
                                 onFocus={handleInputOnFocus}
-                                // onBlur={handleInputOnBlur}
+                                
                             />
                         
                         </Grid>
@@ -122,7 +131,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                     </div>
                 </div>
                 { autoBox && (
-                // <div style={{margin:'0px 0px 0px 7px',position:'absolute', top:'100%'}}>
+                <div onMouseDown={handleContainerMouseDown}>
                     <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px'}}> 
                         <Container style={{padding:'0px', marginTop:'110px'}}>
@@ -136,7 +145,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                     >   
                                         <Grid container>
                                             <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={17} height={23}/>
+                                                <Image src={marker} width={16} height={21}/>
                                             </Grid>
                                             <Grid item style={{margin:'0px 0px 0px 12px'}}>
                                                 <div style={{fontSize:'16px'}}>
@@ -160,7 +169,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                             )}
                         </Container>
                     </Paper>
-                // </div>
+                 </div>
                 )}
             </div>
         </ThemeProvider>
