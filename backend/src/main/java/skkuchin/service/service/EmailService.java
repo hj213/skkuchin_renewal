@@ -166,11 +166,30 @@ public class EmailService {
         String setFrom = "skkuchin@gmail.com";
         String toEmail = email; //받는 사람
         String title = "SKKUCHIN "+emailType+" 이메일 인증";
-        String mailContent = "<h3>["+emailType+" 이메일 인증]</h3>"
+        /*
+        String mailContent = "<div style='font-size: 48px;'><span style='color: #FFCE00; font-weight: bold'>메일인증</span> <span>안내입니다.</span></div>"
                 + "<br><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
                 + "<a href='http://localhost:8080/api/email/confirm/"
                 + type.name().toLowerCase()
-                + "?email=" + email + "&authNum=" + authNum + "' target='_blenk'>이메일 인증 확인</a>";
+                + "?email=" + email + "&authNum=" + authNum + "' target='_blenk'>이메일 인증 확인</a>";*/
+        String mailContent = "<div style='margin-left: 40px'>" +
+            "<div style='margin-top: 51px; border-top: 3px; height: 61px'> </div>" +
+            "<div style='color: #BABABA; font-size: 24px; margin-bottom: 16px'>SKKUCHIN</div>" +
+            "<div style='font-size: 48px; margin-bottom: 43px'>" +
+                "<span style='color: #FFCE00; font-weight: bold'>메일인증</span>" +
+                "<span>안내입니다.</span>" +
+            "</div>" +
+            "<img src='' alt='' style='margin-bottom: 63px' />" +
+            "<div style='margin-bottom: 46px; font-size: 24px'>" +
+                "<div style='margin-bottom: 14px'>안녕하세요.</div>" +
+                "<div style='margin-bottom: 14px'>스꾸친을 이용해 주셔서 진심으로 감사드립니다.</div>" +
+                "<div style='margin-bottom: 14px'>아래 <span style='color: #FFCE00; font-weight: bold'>'메일 인증'</span>버튼을 클릭하여 회원가입을 완료해주세요.</div>" +
+                "<div>감사합니다.</div>" +
+            "</div>" +
+            "<a href='http://localhost:8080/api/email/confirm/" +
+            type.name().toLowerCase()
+            "?email=" + email + "&authNum=" + authNum + "' target='_blenk'><button style='margin-bottom: 76px; width: 353px; height: 77px; font-size: 20px; background-color: #FFCE00; color: #fff; font-size: 20px; font-weight: bold; border-radius: 15px; border: none;'>메일 인증</button></a>" +
+        "</div>";
 
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
