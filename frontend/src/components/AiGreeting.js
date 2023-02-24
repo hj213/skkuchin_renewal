@@ -23,6 +23,7 @@ import profile from '../image/profile.png';
 
 const AiGreeting = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const user = useSelector(state => state.auth.user);
     const userInfo = useSelector(state => state.matchingUser.matchingUser);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -121,6 +122,13 @@ const AiGreeting = () => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleMoveProfile = () => {
+        router.push({
+            pathname: '/makeProfile',
+            query: { src : '매칭프로필설정', }
+        })
+    }
 
     const authLinks = (
         <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"600px"}}>
@@ -298,13 +306,13 @@ const AiGreeting = () => {
                 </DialogContent>
                 <DialogActions style={{justifyContent:'center'}}>
                     
-                    <Link href={'/makeProfile'}>
-                        <Button style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>
-                            <Typography style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
-                                매칭 프로필 설정하기
-                            </Typography>
-                        </Button>
-                    </Link>
+                  
+                    <Button style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>
+                        <Typography style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}} onClick={handleMoveProfile}>
+                            매칭 프로필 설정하기
+                        </Typography>
+                    </Button> 
+                   
 
                 </DialogActions>
             </Dialog>

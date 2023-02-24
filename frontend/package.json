@@ -27,6 +27,7 @@
     "react-datetime-picker": "^4.2.0",
     "react-loader-spinner": "^4.0.0",
     "react-redux": "^8.0.4",
+    "react-swipeable": "^7.0.0",
     "react-time-picker": "^5.2.0",
     "react-timeit": "^1.2.12",
     "redux": "^4.1.2",
