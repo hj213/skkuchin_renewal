@@ -7,7 +7,7 @@ import { load_favorite, enroll_favorite, delete_favorite } from "../actions/favo
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { CssBaseline, Box, Rating, Select, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import bookmarkAdd from '../image/bookmark_add.png';
@@ -22,6 +22,9 @@ import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import UpperBar from "../components/UpperBar";
 import { clear_search_results } from "../actions/place/place";
+import { load_reviews, delete_review, modify_review } from "../actions/review/review";
+import { load_place } from "../actions/place/place";
+import ReviewItem from "../components/ReviewItem";
 
 const PlacePage = () => {
     
@@ -109,8 +112,6 @@ const PlacePage = () => {
         }
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
-            // console.log(newHeight);
-            // console.log(TARGET_HEIGHT);
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -223,6 +224,38 @@ const PlacePage = () => {
           setRating(index + 1);
         }
       };
+
+    // 리뷰 파트 컴포넌트화 필요 
+    const selectedPlace = useSelector(state => state.place.place);
+    useEffect(() => {
+        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
+            setPlaceId(id);
+            dispatch(load_reviews(place_id));
+            dispatch(load_place(place_id));
+        }
+    }, [dispatch, id, place_id, selectedPlace]);
+
+    // 리뷰정보 (review API)
+    const reviews = useSelector(state => state.review.review);
+    const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
+
+    useEffect(() => {
+        if(reviews != null) {
+            if (filter === 'Latest') {
+                setSortedReviews([...reviews].reverse()); // 최신순으로 정렬
+                } else if (filter === 'Rating') {
+                setSortedReviews([...reviews].sort((a, b) => b.rate - a.rate)); // 평점이 높은 순으로 정렬
+                } else if (filter === 'Oldest') {
+                setSortedReviews([...reviews]); // 오래된 순으로 정렬 (기본값)
+             }
+        }
+    }, [filter, reviews]);
+    
+    const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
+
+    const handleFilterChange = (event) => {
+      setFilter(event.target.value);
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -457,7 +490,65 @@ const PlacePage = () => {
                                 </Link>
                         </li>)):null}
                         </div>
+                        {/* 컴포넌트화 필요 */}
+                        {/* Content */}
+                        <Container component="main" style={{listStyleType: "none", mt: '0', pt: '0'}}>
+                            <Grid container sx={{pt: '18px'}} style={{justifyContent:'center'}} >
+                                <Grid style={{width:'100%'}}>
+                                    <CardContent>
+                                        <>
+                                        <Grid container style={{ justifyContent:'space-between'}}>
+                                            <Grid item  >
+                                                <Typography xs={2} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
+                                                    스꾸리뷰
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item >
+                                                <Typography xs={8}  sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingRight:'120px'}} color="#FFCE00" align="left">
+                                                    {selectedPlace && selectedPlace.review_count}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item > 
+                                                <Select
+                                                    xs={2}
+                                                    sx={{ fontSize: '14px', lineHeight: '200%', width: '100px', height: '30px', marginTop: '-30px', border: 'none' }}
+                                                    value={filter}
+                                                    onChange={handleFilterChange}
+                                                >
+                                                    <MenuItem value='Latest'>최신순</MenuItem>
+                                                    <MenuItem value='Oldest'>오래된순</MenuItem>
+                                                    <MenuItem value='Rating'>평점순</MenuItem>
+                                                </Select>
+                                            </Grid>
+                                        </Grid>
+                                        </>
+                                        <Grid container style={{margin:'10px auto 0px', justifyContent:'left', verticalAlign: 'center'}}>
+                                            <Grid>
+                                                <Typography sx={{fontSize: '19px', fontWeight: '700', color: '#FFCE00', lineHeight:'215%', paddingRight:'0px'}} component="div">
+                                                    {selectedPlace && selectedPlace.rate}점
+                                                </Typography>
+                                            </Grid>
+                                            <Grid>
+                                            <Box component="fieldset" borderColor="transparent">
+                                                <Rating name="read-only" size="medium" sx={{p: '0'}} value={selectedPlace && selectedPlace.rate} readOnly precision={0.1} />
+                                            </Box>
 
+                                            </Grid>
+                                        </Grid>
+                                        <ul style={{listStyle:"none",paddingLeft:"0px"}}>
+                                            { selectedPlace &&
+                                                    <>
+                                                        {reviews && sortedReviews.slice(0, 4).map((review, index)=>(
+                                                            <ReviewItem key={index} review={review} user={user} />
+                                                        ))}
+                                                    </>
+                                            }
+                                        </ul>
+                                    </CardContent>
+                                </Grid>
+                            </Grid>
+                        </Container>
+                        {/* 위까지  */}
                         { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
                                 <Link href={`reviews?id=${item.id}`} key={item.id}>

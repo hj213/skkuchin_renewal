@@ -95,7 +95,7 @@ const ModifyReview = () => {
     };
 
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
+        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             setPlaceId(id);
             dispatch(load_reviews(id));
         }
@@ -140,10 +140,7 @@ const ModifyReview = () => {
             })
         }
     }
-
-
     // 이미지 URL 배열화
-
     const [images, setImages] = useState(review.images || []);
     const [previewImages, setPreviewImages] = useState(images);
 
@@ -151,14 +148,17 @@ const ModifyReview = () => {
         const files = Array.from(e.target.files);
         setPreviewImages([...previewImages, ...files.map((file) => URL.createObjectURL(file))]);
         setImages(files);
+
+        console.log(e.target.files);
+        console.log(review.images);
       };
       
-    
     const handleImageRemove = (index) => {
       const newPreviewImages = [...previewImages];
       newPreviewImages.splice(index, 1);
       setPreviewImages(newPreviewImages);
     };
+    
 
     const user = useSelector(state => state.auth.user);
 
@@ -340,24 +340,24 @@ const ModifyReview = () => {
                             </Grid>
                             <Grid>
                                 <div>
-                                <label htmlFor="image">Image</label>
-                                <input 
-                                    className='form-control' type='file' name='images' accept='image/*' multiple
-                                    placeholder='Image' onChange={handleImageChange}
-                                />
+                                    <label htmlFor="image">Image</label>
+                                    <input 
+                                        className='form-control' type='file' name='images' accept='image/*' multiple
+                                        placeholder='Image' onChange={handleImageChange} 
+                                    />
                                 </div>
                                 <Grid container style={{position:'relative', width:'100%'}}>
-                                <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
-                                    {previewImages.map((previewImage, index) => (
-                                    <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
-                                        <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
-                                        objectPosition: 'center center' }} />
-                                        <button type="button" onClick={() => handleImageRemove(index)}>
-                                        X
-                                        </button>
+                                    <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
+                                        {previewImages.map((previewImage, index) => (
+                                            <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
+                                                <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
+                                                objectPosition: 'center center' }} />
+                                                <button type="button" onClick={() => handleImageRemove(index)}>
+                                                    X
+                                                </button>
+                                            </Grid>
+                                        ))}
                                     </Grid>
-                                    ))}
-                                </Grid>
                                 </Grid>
                             </Grid>
                             <Grid>
