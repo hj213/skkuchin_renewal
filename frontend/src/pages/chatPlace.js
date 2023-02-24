@@ -39,6 +39,11 @@ export default function chatPlace(){
         }
     }, [dispatch]);
 
+    useEffect(()=>{
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_places());}
+    }, []);
+
     //캠퍼스 필터링
     useEffect(() => {
         if (allPlaces && user) {
