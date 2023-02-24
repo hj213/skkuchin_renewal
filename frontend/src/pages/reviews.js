@@ -41,7 +41,7 @@ const ReviewsPage = () => {
             dispatch(load_reviews(place_id));
             dispatch(load_place(place_id));
         }
-    }, [dispatch, id, place_id, selectedPlace]);
+    }, [id]);
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
