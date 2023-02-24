@@ -17,7 +17,7 @@ import back from '../image/arrow_back_ios.png';
 import close from '../image/close.png';
 import profile from '../image/profile.png';
 import more from '../image/more_vert.png';
-import { displayReviewTag, reviewsTags } from "../components/TagList";
+import { displayReviewTag, reviewsTags } from "./TagList";
 import ReviewStar from "./ReviewStar";
 import Link from 'next/link';
 

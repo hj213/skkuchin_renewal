@@ -125,9 +125,6 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
 // modify review
 export const modify_review = (review_id, rate, content, images, tags, callback) => async dispatch => {
     
-    // alert("넘겨받은 review" + review_id);
-    console.log(review_id, rate, content, images, tags);
-
     const formData = new FormData();
     formData.append('rate', rate);
     formData.append('content', content);
@@ -136,7 +133,7 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
         for (const image of images) {
             formData.append('images', image);
         }
-    }
+    } 
     
     if (tags && tags.length > 0) {
         for (const tag of tags) {
@@ -175,8 +172,6 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
 
 // delete review
 export const delete_review = (review_id, callback) => async dispatch => {
-
-    alert("넘겨받은 review" + review_id);
 
     try {
         const res = await fetch(`/api/review/${review_id}`, {
