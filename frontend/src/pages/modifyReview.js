@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 import { load_review } from "../actions/review/review";
 import { load_reviews } from "../actions/review/review";
-import { enroll_review } from "../actions/review/review";
+import { modify_review } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import Layout from '../hocs/Layout';
@@ -34,8 +34,8 @@ import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 
 import TextField from '@mui/material/TextField';
-import TagList from "../components/TagList";
-const EnrollReview = () => {
+
+const ModifyReview = () => {
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'close' ){
@@ -46,23 +46,51 @@ const EnrollReview = () => {
     const router = useRouter();
 
     // place.js에서 전달 받은 id 값 받아오기
-    const { id, rating: defaultRating  } = router.query;
-    
+    const id = router.query.id;
+    const review_id = router.query.review_id;
+
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
+    
     const places = useSelector(state => state.place.searchplace);
 
-    // 리뷰 (텍스트)
-    const [textReview, setTextReview] = useState('');
+    const reviews = useSelector(state => state.review.review);
+    const [rating, setRating] = useState();
+    const [textReview, setTextReview] = useState();
+    const [tagList, setTagList] = useState([]);
+    const [tagChoose, setTagChoose] = useState({
+      '맛집': false,
+      '간단한 한 끼': false,
+      '분위기 좋은': false,
+      '가성비': false,
+      '친절': false,
+      '청결도': false,
+      '둘이 가요': false
+    });
+    const [imagesPreview, setImagesPreview] = useState([]);
 
-    // rating
-    const [rating, setRating] = useState(Number(defaultRating));
+    const review = reviews.find(review => review.id == review_id && review.place_id == place_id);
+
+    useEffect(() => {
+        setRating(review.rate);
+        setTextReview(review.content);
+        setTagList(review.tags);
+        // 태그 선택 상태 설정
+        const tagChooseTemp = {};
+        for (const tag of review.tags) {
+          tagChooseTemp[tag] = true;
+        }
+        setTagChoose(tagChooseTemp);
+
+      }, [review_id, place_id, reviews]);
+
+      
     const handleTouch = (index) => {
         if (index + 1 === rating) {
-          setRating(0);
+            setRating(0);
         } else {
-          setRating(index + 1);
+            setRating(index + 1);
         }
     };
 
@@ -70,21 +98,8 @@ const EnrollReview = () => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
             dispatch(load_reviews(id));
-            dispatch(load_review());
         }
     }, [dispatch, id]);
-
-    //리뷰 정보 전달
-    const [tagList, setTagList] = useState();
-    const [tagChoose, setTagChoose] = useState({
-        '맛집':false,
-        '간단한 한 끼':false,
-        '분위기 좋은':false,
-        '가성비':false,
-        '친절':false,
-        '청결도':false,
-        '둘이 가요':false
-    })
 
     // 태그 관련
     useEffect(()=>{
@@ -126,47 +141,48 @@ const EnrollReview = () => {
         }
     }
 
-        // 이미지 URL 배열화
-        const [images, setImages] = useState([]);
-    
-        const onChangeImages = (e) => {
-            const fileArray = Array.from(e.target.files);
-            setImages(fileArray);
-        
-            const imagePreviews = fileArray.map((file) => URL.createObjectURL(file));
-            setPreviewImages(imagePreviews);
-          };
-        
-          const [previewImages, setPreviewImages] = useState([]);
 
-    // 등록 클릭 시
-    const handleEnrollClick = (event) =>{
+    // 이미지 URL 배열화
+
+    const [images, setImages] = useState(review.images || []);
+    const [previewImages, setPreviewImages] = useState(images);
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setPreviewImages([...previewImages, ...files.map((file) => URL.createObjectURL(file))]);
+        setImages(files);
+      };
+      
+    
+    const handleImageRemove = (index) => {
+      const newPreviewImages = [...previewImages];
+      newPreviewImages.splice(index, 1);
+      setPreviewImages(newPreviewImages);
+    };
+
+    const user = useSelector(state => state.auth.user);
+
+     // 등록 클릭 시
+     const handleModifyClick = (event) =>{
         event.preventDefault();
-        
-        dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
+        dispatch(modify_review(review_id, rating, textReview, images, tagList, ([result, message])=>{
             if(result){
-                alert("POST 요청 result: " + message)
+                alert("PUT 요청 result: " + result)
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }
                 });                  
             } else {
-                alert("실패!: " +message);
+                alert("PUT 실패!: " +message);
             }
         }));
     }
-
-
-
-
-    const user = useSelector(state => state.auth.user);
-
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Layout>
             {/* 전체 틀 */}
-            <div style={{ position: 'relative', width:'100%', height:'100%' }}>
+            <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -186,9 +202,9 @@ const EnrollReview = () => {
                             </a>
                         </Grid>
                     
-                        <Grid onClick={handleEnrollClick}>
+                        <Grid onClick={handleModifyClick}>
                             <Typography sx={{fontSize:'18px', fontWeight:'700'}} color="#FFCE00">
-                                등록
+                                수정
                             </Typography>
                         </Grid> 
                     </Grid>
@@ -322,29 +338,30 @@ const EnrollReview = () => {
                                 </Grid>
                                 </div>
                             </Grid>
-
                             <Grid>
-                                <div className='form-group' >
-                                    <label className='form-label mt-3' htmlFor='image'>
-                                        <strong>Image</strong>
-                                    </label>
-                                    <input 
-                                        className='form-control' type = 'file' name='images' accept='image/*' multiple
-                                        placeholder ='Image' onChange={e => onChangeImages(e)}
-                                        />
+                                <div>
+                                <label htmlFor="image">Image</label>
+                                <input 
+                                    className='form-control' type='file' name='images' accept='image/*' multiple
+                                    placeholder='Image' onChange={handleImageChange}
+                                />
                                 </div>
-                            </Grid>
-                            <Grid container style={{position:'relative', width:'100%'}}>
+                                <Grid container style={{position:'relative', width:'100%'}}>
                                 <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
-                                    {previewImages.map((previewImage) => (
-                                        <Grid item style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
-                                            <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
-                                                objectPosition: 'center center' }} />
-                                        </Grid>
+                                    {previewImages.map((previewImage, index) => (
+                                    <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
+                                        <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
+                                        objectPosition: 'center center' }} />
+                                        <button type="button" onClick={() => handleImageRemove(index)}>
+                                        X
+                                        </button>
+                                    </Grid>
                                     ))}
                                 </Grid>
+                                </Grid>
                             </Grid>
-
+                            <Grid>
+                            </Grid>
                             <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
                                 <Grid>
                                     <Box
@@ -374,4 +391,4 @@ const EnrollReview = () => {
     )
 }
 
-export default EnrollReview;
+export default ModifyReview;
