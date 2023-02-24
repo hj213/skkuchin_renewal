@@ -8,6 +8,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
     const router = useRouter();
     const user = useSelector(state => state.auth.user); 
+    const height = window.innerHeight - 90;
 
     useEffect(() => {
         const mapScript = document.createElement("script");
@@ -192,14 +193,13 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     // const mapHeight = `calc(100vh - 90px)`;
 
     return (
-        <MapContainer id="map" style={{width:'100%', height: '65vh'}}>
+        <MapContainer id="map" style={{width:'100%', height:height, }}>
         </MapContainer>
     );
 }
 
 const MapContainer = styled.div`
     weight: 100%;
-    height: 100%;
 `;
 
 export default Map;

@@ -106,10 +106,8 @@ const PlacePage = () => {
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.56;
-        if(WINDOW_HEIGHT > 1000){
-            TARGET_HEIGHT = WINDOW_HEIGHT*0.58;
-        }
+        const TARGET_HEIGHT = WINDOW_HEIGHT-160;
+        console.log(TARGET_HEIGHT);
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
             setHeight(TARGET_HEIGHT);
@@ -284,7 +282,8 @@ const PlacePage = () => {
                             width: '100%',
                             height: '80px',
                             zIndex: '4',
-                            borderTop: '1.5px solid rgba(234, 234, 234, 1)',
+                            // borderTop: '1.5px solid rgba(234, 234, 234, 1)',
+                            borderRadius:'0px',
                             visibility: open.visibility,
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
