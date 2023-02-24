@@ -77,8 +77,6 @@ export const load_review = (callback) => async dispatch => {
 // enroll review
 export const enroll_review = (place_id, rate, content, images, tags, callback) => async dispatch => {
 
-    console.log(place_id, rate, content, images, tags);
-
     const formData = new FormData();
     formData.append('place_id', place_id);
     formData.append('rate', rate);
@@ -95,8 +93,6 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
             formData.append('tags', tag);
         }
     }
-    
-    console.log([...formData.entries()]);
 
     try {
         const res = await fetch('/api/review', {
@@ -128,32 +124,37 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
 
 // modify review
 export const modify_review = (review_id, rate, content, images, tags, callback) => async dispatch => {
+    
+    // alert("넘겨받은 review" + review_id);
+    console.log(review_id, rate, content, images, tags);
 
     const formData = new FormData();
     formData.append('rate', rate);
     formData.append('content', content);
-    formData.append('tags', tags);
 
-    // 태그 배열로 받은 후에 위에 지우고 주석 풀기
-    // if (tags.length > 0) {
-    //     for (const tag of tags) {
-    //         formData.append('tags', tag);
-    //     }
-    // }
-
-    if (images.length > 0) {
+    if (images && images.length > 0) {
         for (const image of images) {
             formData.append('images', image);
         }
     }
+    
+    if (tags && tags.length > 0) {
+        for (const tag of tags) {
+            formData.append('tags', tag);
+        }
+    }
+    
+    console.log([...formData.entries()]);
 
     try {
         const res = await fetch(`/api/review/${review_id}`, {
             method: 'PUT',
-            body: formData
+            body: formData,
         });
 
-        if (res.status === 201) {
+        const data = await res.json();
+
+        if (res.status === 200) {
             dispatch({
                 type: MODIFY_REVIEW_SUCCESS
             });
@@ -175,6 +176,8 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
 // delete review
 export const delete_review = (review_id, callback) => async dispatch => {
 
+    alert("넘겨받은 review" + review_id);
+
     try {
         const res = await fetch(`/api/review/${review_id}`, {
             method: 'DELETE',
@@ -184,6 +187,8 @@ export const delete_review = (review_id, callback) => async dispatch => {
             },
         });
 
+        const data = await res.json();
+        
         if (res.status === 200) {
             dispatch({
                 type: DELETE_REVIEW_SUCCESS

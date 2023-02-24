@@ -189,6 +189,8 @@ const Map = ({latitude, longitude, places, selectedId}) => {
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
     }, [latitude, longitude, places, selectedId, user]);
 
+    // 지도 크기 수정
+    // const mapHeight = `calc(100vh - 90px)`;
 
     return (
         <MapContainer id="map" style={{width:'100%', height:height, }}>
@@ -198,7 +200,6 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
 const MapContainer = styled.div`
     weight: 100%;
-
 `;
 
 export default Map;

@@ -2,22 +2,23 @@ import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
-import { load_reviews } from "../actions/review/review";
+import { load_reviews, delete_review, modify_review } from "../actions/review/review";
 import { load_review} from "../actions/review/review"
 import { load_favorite } from "../actions/favorite/favorite";
 import { load_menu }  from "../actions/menu/menu";
 
 import {BadgeProps} from '@mui/material/Badge'
 import {styled} from '@mui/material/styles';
-import { MenuItem, Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
+import { IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
-import back from '../image/arrow_back_ios.png'
-import close from '../image/close.png'
-import profile from '../image/profile.png'
-
+import back from '../image/arrow_back_ios.png';
+import close from '../image/close.png';
+import profile from '../image/profile.png';
+import more from '../image/more_vert.png';
 import { displayReviewTag, reviewsTags } from "../components/TagList";
+import ReviewItem from "../components/ReviewItem";
 
 
 const ReviewsPage = () => {
@@ -26,16 +27,17 @@ const ReviewsPage = () => {
 
     // 뒤로가기
     const handleOnclick = (event) =>{
-        if(event.target.name == 'back' ){
-            router.back();
-        } 
+        router.push({
+            pathname: '/place',
+            query: { id: place_id }
+        });
     };  
 
     const router = useRouter();
     const { id } = router.query;
 
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
+        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!=null && id!=null) {
             setPlaceId(id);
             dispatch(load_reviews(place_id));
         }
@@ -70,6 +72,39 @@ const ReviewsPage = () => {
 
     // 유저정보
     const user = useSelector(state => state.auth.user);
+
+
+    const handleEdit = (reviewId) => {
+        const review = reviews.find(item => item.id == reviewId);
+        if (review.user_id == user.id) {
+          router.push({
+            pathname: '/modifyReview',
+            query: { id: place_id, review_id: reviewId }
+          });
+        }
+    }
+
+    const handleDelete = (reviewId) =>{
+        alert("다음을 삭제할 것. "+ reviewId);
+        dispatch(delete_review(reviewId, ([result, message])=>{
+            if(result){
+                alert("Delete 요청 result: " + result);     
+                dispatch(load_reviews(place_id));        
+            } else {
+                alert("실패!: " +message);
+            }
+        }));
+    } 
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleMoreClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     return(
         <ThemeProvider theme={theme}>
@@ -163,29 +198,93 @@ const ReviewsPage = () => {
                             {places ? places.filter(item => item.id == place_id).map(item =>(
                                 <li key={item.id} data={item}>
                                     <>
-                                    {reviews ? sortedReviews.map((review, index)=>(
+                                        {reviews && sortedReviews.map((review, index)=>(
+                                            <ReviewItem key={index} review={review} user={user} handleDelete={handleDelete} handleEdit={handleEdit}/>
+                                        ))}
+                                    </>
+                                </li> 
+                        )): null}
+                        </ul>
+                        </CardContent>
+                    </Grid>
+                </Grid>
+            </Container>
+        </div>
+        </Layout>
+        </ThemeProvider>
+        
+    )
+}
+
+export default ReviewsPage;
+
+{/* {reviews ? sortedReviews.map((review, index)=>(
                                         <Grid container key={index} style={{margin:"0 0 20px 0"}}>
+                                            {index} {review.id} {review.user_id} 
                                             <Grid container style={{margin:'20px 0px 0px', justifyContent:'left'}}>
                                                 <Grid item xs={2}>
                                                     { review.user_id === user.id ?
                                                         <Badge badgeContent={"나"} color="secondary">
                                                             <Avatar alt="" src={user.image} />
                                                         </Badge> : <Avatar alt="" src={user.image} />}
-                                                        
+
                                                 </Grid>
-                                                <Grid item xs={6}>
-                                                    <Stack direction="column" spacing={1}>
-                                                        <Typography sx={{fontSize: '12px', fontWeight:'700', lineHeight: '200%', verticalAlign: 'top',}} align="left">
+                                                <Grid item xs={10}>
+                                                <Stack direction="column" spacing={1}>
+                                                    <Grid container alignItems='center'>
+                                                        <Grid item xs>
+                                                        <Typography
+                                                            sx={{
+                                                            fontSize: '12px',
+                                                            fontWeight: '700',
+                                                            lineHeight: '200%',
+                                                            verticalAlign: 'top',
+                                                            }}
+                                                            align='left'
+                                                        >
                                                             {review.nickname}
                                                         </Typography>
-                                                        <Grid style={{display:'flex'}}>
-                                                            <Typography sx={{fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                                                                {review.major} {review.student_id}학번
-                                                            </Typography>
-                                                            <Typography sx={{fontSize: '12px', fontWeight: '500', lineHeight: '0%', paddingLeft:'5px'}} color="#a1a1a1" component="div" align="center">
-                                                                | {review.create_date.slice(0,10)}
-                                                            </Typography>
                                                         </Grid>
+                                                        <Grid item>
+                                                            <IconButton onClick={handleMoreClick}>
+                                                                <Image src={more} width={4.33} height={17.33} />
+                                                            </IconButton>
+                                                            <Menu
+                                                                anchorEl={anchorEl}
+                                                                open={Boolean(anchorEl)}
+                                                                onClose={handleMenuClose}
+                                                                PaperProps={{
+                                                                    style: {
+                                                                    boxShadow: "0px 0px 2px 2px rgba(0,0,0,0.02)",
+                                                                    },
+                                                                }}
+                                                                >
+                                                                <MenuItem sx={{fontSize: '15px', color: '#FFCE00'}} onClick={handleEdit}>수정</MenuItem>
+                                                                <MenuItem sx={{fontSize: '15px'}} onClick={()=> handleDelete()}>삭제{review.id} {index}</MenuItem>
+                                                            </Menu>
+                                                        </Grid>
+                                                    </Grid>
+                                                        <Stack direction="row" alignItems="center">
+                                                            <Typography
+                                                            sx={{ fontSize: '12px', fontWeight: '500', lineHeight: '0%', verticalAlign: 'top' }}
+                                                            align="left"
+                                                            >
+                                                            {review.major} {review.student_id}학번
+                                                            </Typography>
+                                                            <Typography
+                                                            sx={{
+                                                                fontSize: '12px',
+                                                                fontWeight: '500',
+                                                                lineHeight: '0%',
+                                                                paddingLeft: '5px',
+                                                                color: '#a1a1a1',
+                                                            }}
+                                                            component="div"
+                                                            align="left"
+                                                            >
+                                                            | {review.create_date.slice(0, 10)}
+                                                            </Typography>
+                                                        </Stack>
                                                         <Grid style={{margin:'10px 0 0 -3px'}}>
                                                         <Rating name="read-only" size="small" value={review.rate} readOnly precision={1} />
                                                         </Grid>
@@ -237,23 +336,4 @@ const ReviewsPage = () => {
                                                 ) : null}
                                             </Grid>
                             </Grid>
-                            )): null}
-                            </>
-                            </li> 
-                        )): null}
-                        </ul>
-
-
-
-                        </CardContent>
-                    </Grid>
-                </Grid>
-            </Container>
-        </div>
-        </Layout>
-        </ThemeProvider>
-        
-    )
-}
-
-export default ReviewsPage;
+                            )): null} */}

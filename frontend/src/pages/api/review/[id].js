@@ -31,13 +31,12 @@ export default async (req, res) => {
 
         const form = new formidable.IncomingForm(options);
 
-        form.parse(req, (err, fields, files) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({
-                    'error': 'Something went wrong when parsing data'
-                });
-            }
+        // Convert the form.parse callback to a Promise
+        const parseForm = async (req) => new Promise((resolve, reject) =>
+        form.parse(req, (err, fields, files) => err ? reject(err) : resolve([fields, files])));
+
+        try {
+            const [fields, files] = await parseForm(req);
 
             const formData = new FormData();
 
@@ -67,36 +66,32 @@ export default async (req, res) => {
             } else {
                 formData.append('images', new Blob([""], { type: 'image/png' }));
             }
-
-            fetch(`${API_URL}/api/review/${review_id}`, {
+            const apiRes = await fetch(`${API_URL}/api/review/${review_id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization' : `Bearer ${access}`
                 },
                 body: formData
-            })
-            .then((apiRes) => {
-                const resValue = apiRes.json();
+            });
 
-                if (apiRes.status === 201) {
-                    return res.status(201).json({
-                        review: resValue.data,
-                        success: resValue.message
-                    });
-                } else {
-                    return res.status(apiRes.status).json({
-                        error: resValue.message
-                    });
-                }
-            })
-            .catch((err) => {
-                console.log(err)
-                return res.status(500).json({
-                    'error': 'Something went wrong when modify review'
+            const resValue = apiRes.json();
+
+            if (apiRes.status === 200) {
+                return res.status(200).json({
+                    review: resValue.data,
+                    success: resValue.message
                 });
-            })
-
-        });
+            } else {
+                return res.status(apiRes.status).json({
+                    error: resValue.message
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                'error': 'Something went wrong when modify review'
+            });
+        }
 
     } else if (req.method === 'DELETE') {
         try {

@@ -17,7 +17,8 @@ export default function resetPassword() {
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState("");
 
-    const handleNextStep = (stepData) => {
+    const handleNextStep = () => {
+        console.log("zz");
         setStep(step + 1);
     }
     
@@ -29,20 +30,20 @@ export default function resetPassword() {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <Layout title= '스꾸친 | 비밀번호 초기화' content='Register page'>
-            <Container component="main" maxWidth="xs">
+            {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <Step1 handleNextStep={handleNextStep} setEmail={setEmail} />
             }
             {
-                step === 2 && <Step2 handleNextStep={handleNextStep} email={email} />
+                step === 2 && <Step2 handlePrevStep={handlePrevStep} handleNextStep={handleNextStep} email={email} />
             }
             {
-                step === 3 && <Step3 handleNextStep={handleNextStep} email={email} />
+                step === 3 && <Step3 handlePrevStep={handlePrevStep} handleNextStep={handleNextStep} email={email} />
             }
             {
                 step === 4 && <Step4 />
             }
-            </Container>
+            {/* </Container> */}
         </Layout>
         </ThemeProvider>
     )
