@@ -204,7 +204,7 @@ const AiGreeting = () => {
                 {/* 유저 프로필 이미지 */}
                 <div style={{textAlign:"center", marginTop:"30px"}}>
                     <Image 
-                        src={profile}
+                        src={user.Image ? user.Image : profile}
                         width="140px"
                         height="140px"
                         placeholder="blur"

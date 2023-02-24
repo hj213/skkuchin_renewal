@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
+
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);
 
