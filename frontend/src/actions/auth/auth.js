@@ -98,8 +98,10 @@ export const login = (username, password, callback) => async dispatch => {
             body: body
         });
         
+        console.log(res)
         const data = await res.json();
-
+        console.log(data)
+        
         dispatch({
             type: REMOVE_AUTH_LOADING
         });

@@ -1,9 +1,10 @@
 import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
-
+import logger from '../../../logger/logger';
 
 export default async (req, res) => {
     if (req.method === 'POST') {
+        logger.debug("진입")
         const { username, password } = req.body;
 
         const body = JSON.stringify({
@@ -20,10 +21,12 @@ export default async (req, res) => {
                 },
                 body: body
             });
-            console.log(apiRes)
+            logger.debug("apiRes")
+            logger.debug(apiRes)
 
             const resValue = await apiRes.json();
-            console.log(resValue)
+            logger.debug("resValue")
+            logger.debug(resValue)
 
             if (apiRes.status === 200) {
                 res.setHeader('Set-Cookie', [
@@ -46,6 +49,7 @@ export default async (req, res) => {
                         }
                     )
                 ]);
+                logger.debug("통과")
                 return res.status(200).json({
                     success: resValue.message
                 });
