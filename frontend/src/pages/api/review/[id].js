@@ -51,6 +51,18 @@ export default async (req, res) => {
                 formData.append('tags', fields.tags);
             }
 
+            if (files.urls) {
+                if (Array.isArray(fields.urls)) {
+                    for (const url of fields.urls) {
+                        formData.append('urls', url);
+                    }
+                } else {
+                    formData.append('urls', fields.urls);
+                }
+            } else {
+                formData.append('urls', '');
+            }
+
             if (files.images) {
                 if (Array.isArray(files.images)) {
                     for (const image of files.images) {

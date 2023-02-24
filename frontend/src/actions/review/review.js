@@ -123,7 +123,7 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
 };
 
 // modify review
-export const modify_review = (review_id, rate, content, images, tags, callback) => async dispatch => {
+export const modify_review = (review_id, rate, content, images, urls, tags, callback) => async dispatch => {
     
     const formData = new FormData();
     formData.append('rate', rate);
@@ -132,6 +132,12 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
     if (images && images.length > 0) {
         for (const image of images) {
             formData.append('images', image);
+        }
+    } 
+
+    if (urls && urls.length > 0) {
+        for (const url of urls) {
+            formData.append('urls', url);
         }
     } 
     
