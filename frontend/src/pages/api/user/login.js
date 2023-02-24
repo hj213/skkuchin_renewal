@@ -30,8 +30,8 @@ export default async (req, res) => {
             //     message: apiRes
             // });
 
-            // const jsonString = await apiRes.text();
-            // const resValue = JSON.parse(jsonString);
+            const jsonString = await apiRes.text();
+            const resValue = JSON.parse(jsonString);
 
             // logger.log({
             //     level: 'debug',
