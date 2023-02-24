@@ -56,7 +56,7 @@ const PlacePage = () => {
     const favorites = useSelector(state => state.favorite.favorite);
 
     // *슬라이드탭 카드 애니메이션 관리
-    const [height, setHeight] =  useState('32%');
+    const [height, setHeight] =  useState('39%');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
@@ -104,11 +104,9 @@ const PlacePage = () => {
 
         const WINDOW_HEIGHT = window.innerHeight;
         const TARGET_HEIGHT = WINDOW_HEIGHT-160;
-        console.log(TARGET_HEIGHT);
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
-            // console.log(newHeight);
-            // console.log(TARGET_HEIGHT);
+            
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -121,7 +119,7 @@ const PlacePage = () => {
             setScroll('scroll');
         } else {
             
-            setHeight('32%');
+            setHeight('39%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -140,7 +138,7 @@ const PlacePage = () => {
         if(event.target.name == 'back' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('32%');
+            setHeight('39%');
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'

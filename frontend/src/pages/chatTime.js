@@ -151,9 +151,9 @@ export default function chatTime(){
                                         </Grid>
                                         <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
                                             
-                                            {/* <TimeContainer> */}
-                                                <TimePicker defaultValue={dayjs(defaultValue,format)}format={format} placeholder={defaultValue} onChange={handleOnChange}/>
-                                            {/* </TimeContainer> */}
+                                            
+                                            <TimePicker defaultValue={dayjs(defaultValue,format)}format={format} placeholder={defaultValue} onChange={handleOnChange}  popupStyle={{ fontWeight: '500' }} style={{border:'none', backgroundColor:'#EEEEF0', width:'80px'}}/>
+                                            
                                             
                                         </Grid>
                                     </Grid>

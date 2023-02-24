@@ -110,7 +110,7 @@ export default function list(){
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
-                    setHeight('40%');
+                    setHeight('35%');
                     setCardStyle({
                         radius: '30px 30px 0px 0px',
                         cardVisibility: 'visible',
@@ -139,6 +139,7 @@ export default function list(){
     useEffect(() => {
         if(filteredPlace) {
             setNumOfLi(filteredPlace.length);
+
         }
     }, [filteredPlace]);
 
@@ -158,7 +159,7 @@ export default function list(){
         event.preventDefault();
 
         const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT - 53;
+        const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
@@ -175,7 +176,7 @@ export default function list(){
             setPreventScroll('scroll');
         } else {
             
-            setHeight('40%');
+            setHeight('35%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -194,7 +195,7 @@ export default function list(){
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('40%');
+            setHeight('35%');
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
@@ -284,12 +285,10 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            // dispatch(search_places('!'))
             dispatch(clear_search_results());
         }
         
     }
-
 
     return(
     <ThemeProvider theme={theme}>
@@ -348,7 +347,7 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '13px 16px 0px 0px'}} >
+            <Container style={{padding: '13px 16px 0px 0px',}} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
@@ -361,7 +360,7 @@ export default function list(){
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
                 border: '1px solid transparent',
-                
+                marginBottom:'85px'
                 }} 
                 ref = {cardRef}
                  >
@@ -373,7 +372,7 @@ export default function list(){
                     </div>
                     : null
                     }
-                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} >
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
