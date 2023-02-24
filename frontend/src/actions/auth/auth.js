@@ -97,14 +97,8 @@ export const login = (username, password, callback) => async dispatch => {
             },
             body: body
         });
-        // console.log(res.ok)
-        const jsonString = await res.text();
-        const data = JSON.parse(jsonString);
-        // const data = await res.json();
-        // console.log(jsonString)
-        // const data = JSON.parse(jsonString);
-
-        console.log(data);
+        
+        const data = await res.json();
 
         dispatch({
             type: REMOVE_AUTH_LOADING

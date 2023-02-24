@@ -1,6 +1,6 @@
 import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
-import logger from '../../../logger/logger';
+
 
 export default async (req, res) => {
     if (req.method === 'POST') {
@@ -11,11 +11,6 @@ export default async (req, res) => {
             password
         });
 
-        // logger.log({
-        //     level: 'debug',
-        //     message: body
-        // });
-
         try {
             const apiRes = await fetch(`${API_URL}/api/user/login`, {
                 method: 'POST',
@@ -25,18 +20,10 @@ export default async (req, res) => {
                 },
                 body: body
             });
-            // logger.log({
-            //     level: 'debug',
-            //     message: apiRes
-            // });
+            console.log(apiRes)
 
-            const jsonString = await apiRes.text();
-            const resValue = JSON.parse(jsonString);
-
-            // logger.log({
-            //     level: 'debug',
-            //     message: resValue
-            // });
+            const resValue = await apiRes.json();
+            console.log(resValue)
 
             if (apiRes.status === 200) {
                 res.setHeader('Set-Cookie', [
@@ -61,12 +48,10 @@ export default async (req, res) => {
                 ]);
                 return res.status(200).json({
                     success: resValue.message
-                    // data: jsonString
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    success: resValue.message
-                    // data: jsonString
+                    error: resValue.message
                 });
             }
         } catch(err) {
