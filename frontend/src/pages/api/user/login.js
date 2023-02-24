@@ -11,10 +11,10 @@ export default async (req, res) => {
             password
         });
 
-        logger.log({
-            level: 'debug',
-            message: body
-        });
+        // logger.log({
+        //     level: 'debug',
+        //     message: body
+        // });
 
         try {
             const apiRes = await fetch(`${API_URL}/api/user/login`, {
@@ -25,18 +25,18 @@ export default async (req, res) => {
                 },
                 body: body
             });
-            logger.log({
-                level: 'debug',
-                message: apiRes
-            });
+            // logger.log({
+            //     level: 'debug',
+            //     message: apiRes
+            // });
 
             // const jsonString = await apiRes.text();
             // const resValue = JSON.parse(jsonString);
 
-            logger.log({
-                level: 'debug',
-                message: resValue
-            });
+            // logger.log({
+            //     level: 'debug',
+            //     message: resValue
+            // });
 
             if (apiRes.status === 200) {
                 res.setHeader('Set-Cookie', [
