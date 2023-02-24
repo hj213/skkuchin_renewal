@@ -225,17 +225,18 @@ const PlacePage = () => {
 
     // 리뷰 파트 컴포넌트화 필요 
     const selectedPlace = useSelector(state => state.place.place);
+
+    // 리뷰정보 (review API)
+    const reviews = useSelector(state => state.review.review);
+    const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
+
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             setPlaceId(id);
             dispatch(load_reviews(place_id));
             dispatch(load_place(place_id));
         }
-    }, [dispatch, id, place_id, selectedPlace]);
-
-    // 리뷰정보 (review API)
-    const reviews = useSelector(state => state.review.review);
-    const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
+    }, [id]);
 
     useEffect(() => {
         if(reviews != null) {
