@@ -18,9 +18,9 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 # 3000번 포트 노출
 EXPOSE 3000
-# RUN npm run build
+RUN npm run build
 # npm start 스크립트 실행
-ENTRYPOINT ["npm", "run", "dev"]
+ENTRYPOINT ["npm", "run", "start"]
 
 # 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
 # $ docker build .
