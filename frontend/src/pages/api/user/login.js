@@ -60,12 +60,12 @@ export default async (req, res) => {
                     )
                 ]);
                 return res.status(200).json({
-                    success: "I'm good"
+                    success: resValue.message
                     // data: jsonString
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    error: "I'm bad"
+                    success: resValue.message
                     // data: jsonString
                 });
             }
