@@ -30,7 +30,8 @@ export default async (req, res) => {
                 message: apiRes
             });
 
-            const resValue = await apiRes.json();
+            // const jsonString = await apiRes.text();
+            // const resValue = JSON.parse(jsonString);
 
             logger.log({
                 level: 'debug',
@@ -59,11 +60,13 @@ export default async (req, res) => {
                     )
                 ]);
                 return res.status(200).json({
-                    success: resValue.message
+                    success: "I'm good"
+                    // data: jsonString
                 });
             } else {
                 return res.status(apiRes.status).json({
-                    error: resValue.message
+                    error: "I'm bad"
+                    // data: jsonString
                 });
             }
         } catch(err) {

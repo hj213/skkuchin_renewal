@@ -97,11 +97,11 @@ export const login = (username, password, callback) => async dispatch => {
             },
             body: body
         });
-        console.log(res.ok)
+        // console.log(res.ok)
         console.log(res)
-        const jsonString = await res.text();
-        console.log(jsonString)
-        const data = JSON.parse(jsonString);
+        const data = await res.json();
+        // console.log(jsonString)
+        // const data = JSON.parse(jsonString);
 
         console.log(data);
 
@@ -114,12 +114,12 @@ export const login = (username, password, callback) => async dispatch => {
                 type: LOGIN_SUCCESS
             });
             // dispatch(load_user());
-            if (callback) callback([true, data.message]);
+            if (callback) callback([true, data.success]);
         } else {
             dispatch({
                 type: LOGIN_FAIL
             });
-            if (callback) callback([false, data.message]);
+            if (callback) callback([false, data.error]);
         }
     } catch(error) {
         console.log(error);
