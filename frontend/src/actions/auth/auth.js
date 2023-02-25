@@ -42,7 +42,7 @@ export const register = (registerData, callback) => async dispatch => {
     });
 
     try {
-        const res = await fetch(`${API_URL}/api/user/save`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/save`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -87,11 +87,11 @@ export const login = (username, password, callback) => async dispatch => {
         type: SET_AUTH_LOADING
     });
 
-    console.log(API_URL);
-    console.log(`${API_URL}/api/user/login`);
+    console.log(process.env.NEXT_PUBLIC_API_URL);
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`);
 
     try {
-        const res = await fetch(`${API_URL}/api/user/login`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URLI_URL}/api/user/login`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -157,7 +157,7 @@ export const load_user = () => async dispatch => {
     }
 
     try {
-        const res = await fetch(`${API_URL}/api/user/me`,{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/me`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
