@@ -36,6 +36,7 @@ export default async (req, res) => {
         form.parse(req, (err, fields, files) => err ? reject(err) : resolve([fields, files])));
 
         try {
+
             const [fields, files] = await parseForm(req);
 
             const formData = new FormData();
@@ -62,6 +63,8 @@ export default async (req, res) => {
             } else {
                 formData.append('urls', '');
             }
+
+            console.log(formData.get('urls'));
 
             if (files.images) {
                 if (Array.isArray(files.images)) {
