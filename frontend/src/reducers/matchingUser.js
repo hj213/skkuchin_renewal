@@ -28,7 +28,7 @@ const matchingUserReducer = (state = initialState, action) => {
         case LOAD_MATCHING_INFO_SUCCESS:
             return {
                 ...state,
-                matchingUser: payload.matchingUser
+                matchingUser: payload
             }
         case LOAD_MATCHING_INFO_FAIL:
             return {

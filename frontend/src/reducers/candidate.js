@@ -14,7 +14,7 @@ const candidateReducer = (state = initialState, action) => {
         case LOAD_CANDIDATE_SUCCESS:
             return {
                 ...state,
-                candidate: payload.candidate
+                candidate: payload
             }
         case LOAD_CANDIDATE_FAIL:
             return {

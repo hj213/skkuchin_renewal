@@ -25,7 +25,14 @@ const nextConfig = withPWA({
 	images: {
 		imageSizes: [64, 96, 128, 256],
 		deviceSizes: [640, 750, 828, 1080],
-		domains: ['skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com']
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com',
+				port: '',
+				pathname: '/**',
+			},
+		],
 	},
 	reactStrictMode: true,
 	swcMinify: true,
