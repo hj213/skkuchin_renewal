@@ -46,12 +46,14 @@ const LoginPage = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(login(username, password, ([result, message]) => {
                 if (result) {
+                    alert(message)
                     if (rememberUsername) {
                         localStorage.setItem("username", username);
                     } else {
                         localStorage.removeItem("username");
                     }
                 } else {
+                    alert(message)
                     console.log(message);
                     if (typeof(message) == string) {
                         setError(message);

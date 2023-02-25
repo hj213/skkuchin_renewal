@@ -20,7 +20,7 @@ const reviewReducer = (state = initialState, action) => {
         case LOAD_REVIEWS_SUCCESS:
             return{
                 ...state,
-                review: payload.review
+                review: payload
             }
         case LOAD_REVIEWS_FAIL:
             return{
@@ -30,7 +30,7 @@ const reviewReducer = (state = initialState, action) => {
         case LOAD_REVIEW_SUCCESS:
             return{
                 ...state,
-                review: payload.review
+                review: payload
             }
         case LOAD_REVIEW_FAIL:
             return{

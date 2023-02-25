@@ -19,7 +19,7 @@ const favoriteReducer = (state = initialState, action) => {
         case LOAD_FAV_SUCCESS:
             return {
                 ...state,
-                favorite: payload.favorite
+                favorite: payload
             }
         case LOAD_FAV_FAIL:
             return {

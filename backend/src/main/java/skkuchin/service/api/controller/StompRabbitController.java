@@ -88,12 +88,9 @@ public class StompRabbitController {
             prepareErrorMessage(JwtErrorCode.ACCESS_TOKEN_EXPIRATION);
 
         }*/
-
-
         //DB 저장
         chatRoomRepository.save(chatRoom);
         chatRepository.save(chat);
-
     };
 
 
