@@ -32,7 +32,7 @@ const nextConfig = withPWA({
 		// 		pathname: '/**',
 		// 	},
 		// ]
-		unoptimized: t
+		unoptimized: true
 	},
 	
 	reactStrictMode: true,
