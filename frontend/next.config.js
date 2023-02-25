@@ -22,17 +22,17 @@ const nextConfig = withPWA({
         ignoreBuildErrors: true,
     },
 	images: {
-		// imageSizes: [64, 96, 128, 256],
-		// deviceSizes: [640, 750, 828, 1080],
-		// remotePatterns: [
-		// 	{
-		// 		protocol: 'https',
-		// 		hostname: 'skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com',
-		// 		port: '',
-		// 		pathname: '/**',
-		// 	},
-		// ]
-		unoptimized: true
+		imageSizes: [64, 96, 128, 256],
+		deviceSizes: [640, 750, 828, 1080],
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com',
+				port: '',
+				pathname: '/**',
+			},
+		],
+		// unoptimized: true
 	},
 	
 	reactStrictMode: true,
