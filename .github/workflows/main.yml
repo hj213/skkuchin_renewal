@@ -31,18 +31,10 @@ jobs:
           REPOSITORY: skkuchin-repo
           IMAGE_TAG: latest
         run: |
-          docker-compose -f docker-compose.prod.yml build server
+          docker-compose -f docker-compose.prod.yml build server client nginx
           docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
+          docker tag client:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker tag nginx:latest $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
-
-      - name: npm build
-        run: |
-          cd frontend
-          npm install
-          npm run build
-
-      - name: Upload /deploy to S3
-        env:
-          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME}}
-        run: |
-          aws s3 cp --recursive --region ap-northeast-2 frontend/build s3://$BUCKET_NAME
+          docker push $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
