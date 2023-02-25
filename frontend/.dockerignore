@@ -1,5 +1,6 @@
 node_modules
-Dockerfile
+Dockerfile.dev
+Dockerfile.prod
 .git
 .gitignore
 .dockerignore
@@ -7,3 +8,4 @@ Dockerfile
 .next
 npm-debug.log
 Footer
+*.map
