@@ -50,6 +50,7 @@ export default async (req, res) => {
                 formData.append('tags', fields.tags);
             }
 
+
             if (files.images) {
                 if (Array.isArray(files.images)) {
                     for (const image of files.images) {

@@ -124,6 +124,7 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
 
 // modify review
 export const modify_review = (review_id, rate, content, images, urls, tags, callback) => async dispatch => {
+    console.log(urls);
     
     const formData = new FormData();
     formData.append('rate', rate);

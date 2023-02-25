@@ -141,16 +141,13 @@ const ModifyReview = () => {
         }
     }
     // 이미지 URL 배열화
-    const [images, setImages] = useState(review.images || []);
-    const [previewImages, setPreviewImages] = useState(images);
+    const [images, setImages] = useState([]);
+    const [previewImages, setPreviewImages] = useState(review.images);
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         setPreviewImages([...previewImages, ...files.map((file) => URL.createObjectURL(file))]);
         setImages(files);
-
-        console.log(e.target.files);
-        console.log(review.images);
       };
       
     const handleImageRemove = (index) => {
@@ -165,7 +162,8 @@ const ModifyReview = () => {
      // 등록 클릭 시
      const handleModifyClick = (event) =>{
         event.preventDefault();
-        dispatch(modify_review(review_id, rating, textReview, images, tagList, ([result, message])=>{
+        
+        dispatch(modify_review(review_id, rating, textReview, images, review.images, tagList, ([result, message])=>{
             if(result){
                 alert("PUT 요청 result: " + result)
                 router.push({
