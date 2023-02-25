@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import { API_URL } from '../../config/index';
+import { API_URL } from '../../config';
 import { 
     REGISTER_SUCCESS,
     REGISTER_FAIL,
@@ -87,8 +87,11 @@ export const login = (username, password, callback) => async dispatch => {
         type: SET_AUTH_LOADING
     });
 
+    console.log(API_URL);
+    console.log(`${API_URL}/api/user/login`);
+
     try {
-        const res = await fetch('https://www.skkuchin.com/api/user/login', {
+        const res = await fetch(`${API_URL}/api/user/login`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
