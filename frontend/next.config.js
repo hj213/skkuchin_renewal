@@ -36,6 +36,8 @@ const nextConfig = withPWA({
 	},
 	reactStrictMode: true,
 	swcMinify: true,
+	out: 'build',
+	assetPrefix: '.',
 });
 
 module.exports = nextConfig;

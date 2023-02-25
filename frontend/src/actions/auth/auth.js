@@ -87,9 +87,6 @@ export const login = (username, password, callback) => async dispatch => {
         type: SET_AUTH_LOADING
     });
 
-    console.log(API_URL);
-    console.log(`${API_URL}/api/user/login`)
-
     try {
         const res = await fetch(`${API_URL}/api/user/login`, {
             method: 'POST',
@@ -100,11 +97,7 @@ export const login = (username, password, callback) => async dispatch => {
             body: body
         });
 
-        console.log(res)
-
         const apiRes = await res.json();
-        
-        console.log(apiRes)
 
         dispatch({
             type: REMOVE_AUTH_LOADING
