@@ -28,7 +28,6 @@ const nextConfig = withPWA({
 			{
 				protocol: 'https',
 				hostname: 'skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com',
-				port: '',
 				pathname: '/**',
 			},
 		],
