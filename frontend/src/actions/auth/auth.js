@@ -97,6 +97,8 @@ export const login = (username, password, callback) => async dispatch => {
             body: body
         });
 
+        console.log(res)
+
         const apiRes = await res.json();
         
         console.log(apiRes)
