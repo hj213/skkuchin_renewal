@@ -88,7 +88,7 @@ export const login = (username, password, callback) => async dispatch => {
     });
 
     try {
-        const res = await fetch(`${API_URL}/api/user/login`, {
+        const res = await fetch(`/api/user/login`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
