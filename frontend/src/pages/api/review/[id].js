@@ -52,7 +52,7 @@ export default async (req, res) => {
                 formData.append('tags', fields.tags);
             }
 
-            if (files.urls) {
+            if (fields.urls) {
                 if (Array.isArray(fields.urls)) {
                     for (const url of fields.urls) {
                         formData.append('urls', url);
