@@ -34,7 +34,7 @@ import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 
 import TextField from '@mui/material/TextField';
-
+import TagList from "../components/TagList";
 const EnrollReview = () => {
 
     const handleOnclick = (event) =>{
@@ -46,25 +46,23 @@ const EnrollReview = () => {
     const router = useRouter();
 
     // place.js에서 전달 받은 id 값 받아오기
-    const { id } = router.query;
+    const { id, rating: defaultRating  } = router.query;
     
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     const places = useSelector(state => state.place.searchplace);
 
-    // rating
-    const [rating, setRating] = useState(0);
-
     // 리뷰 (텍스트)
     const [textReview, setTextReview] = useState('');
 
+    // rating
+    const [rating, setRating] = useState(Number(defaultRating));
     const handleTouch = (index) => {
-        // setRating(index);
         if (index + 1 === rating) {
-            setRating(0);
+          setRating(0);
         } else {
-            setRating(index + 1);
+          setRating(index + 1);
         }
     };
 
@@ -77,7 +75,6 @@ const EnrollReview = () => {
     }, [dispatch, id]);
 
     //리뷰 정보 전달
-    const [rate, setRate] = useState(false);
     const [tagList, setTagList] = useState();
     const [tagChoose, setTagChoose] = useState({
         '맛집':false,
@@ -133,10 +130,14 @@ const EnrollReview = () => {
         const [images, setImages] = useState([]);
     
         const onChangeImages = (e) => {
-            setImages(Array.from(e.target.files));
-            // console.log("setImage : "+ Array.from(e.target.files));
-        };
-    
+            const fileArray = Array.from(e.target.files);
+            setImages(fileArray);
+        
+            const imagePreviews = fileArray.map((file) => URL.createObjectURL(file));
+            setPreviewImages(imagePreviews);
+          };
+        
+          const [previewImages, setPreviewImages] = useState([]);
 
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{
@@ -147,9 +148,8 @@ const EnrollReview = () => {
                 alert("POST 요청 result: " + message)
                 router.push({
                     pathname: '/reviews',
-                    query: {viewportHeight: window.innerHeight,
-                    src: '리뷰등록'}
-                })
+                    query: { id: place_id }
+                });                  
             } else {
                 alert("실패!: " +message);
             }
@@ -166,7 +166,7 @@ const EnrollReview = () => {
             <CssBaseline />
             <Layout>
             {/* 전체 틀 */}
-            <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+            <div style={{ position: 'relative', width:'100%', height:'100%' }}>
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -200,8 +200,8 @@ const EnrollReview = () => {
                 <Grid container style={{padding: '10px 15px'}}>
                     <Grid style={{width:'100%'}}>
                         <CardContent>
-                        { places ? places.filter(item => item.id == place_id).map(item => (
-                            <Grid container sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
+                        { places ? places.filter(item => item.id == place_id).map((item,index) => (
+                            <Grid container key={index} sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
                                 <Grid>
                                     <Typography sx={{fontSize: '23px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
                                         {item.name}
@@ -323,14 +323,8 @@ const EnrollReview = () => {
                                 </div>
                             </Grid>
 
-                            <Grid container sx={{overFlowX:'auto', flexWrap:'nowrap'}}>
-                                <Grid item>
-                                    
-                                </Grid>
-                            </Grid>
-
                             <Grid>
-                                <div className='form-group'>
+                                <div className='form-group' >
                                     <label className='form-label mt-3' htmlFor='image'>
                                         <strong>Image</strong>
                                     </label>
@@ -339,6 +333,16 @@ const EnrollReview = () => {
                                         placeholder ='Image' onChange={e => onChangeImages(e)}
                                         />
                                 </div>
+                            </Grid>
+                            <Grid container style={{position:'relative', width:'100%'}}>
+                                <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
+                                    {previewImages.map((previewImage) => (
+                                        <Grid item style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
+                                            <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
+                                                objectPosition: 'center center' }} />
+                                        </Grid>
+                                    ))}
+                                </Grid>
                             </Grid>
 
                             <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
@@ -363,12 +367,6 @@ const EnrollReview = () => {
                     </Grid>
                 </Grid>
             </Container>
-
-
-
-
-
-
         </div>
         </Layout>
         </ThemeProvider>

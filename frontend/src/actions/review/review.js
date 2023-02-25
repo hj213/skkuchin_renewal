@@ -158,7 +158,7 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
 };
 
 // modify review
-export const modify_review = (review_id, rate, content, images, tags, callback) => async dispatch => {
+export const modify_review = (review_id, rate, content, images, urls, tags, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -167,7 +167,7 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
             type: AUTHENTICATED_FAIL
         });
     }
-
+    
     const formData = new FormData();
     formData.append('rate', rate);
     formData.append('content', content);
@@ -180,6 +180,14 @@ export const modify_review = (review_id, rate, content, images, tags, callback) 
         formData.append('images', new File([""], { type: 'image/png' }));
     }
 
+    if (urls && urls.length > 0) {
+        for (const url of urls) {
+            formData.append('urls', url);
+        }
+    } else {
+        formData.append('urls', '');
+    }
+    
     if (tags && tags.length > 0) {
         for (const tag of tags) {
             formData.append('tags', tag);
