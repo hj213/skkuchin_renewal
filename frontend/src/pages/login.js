@@ -47,20 +47,20 @@ const LoginPage = () => {
             dispatch(login(username, password, ([result, message]) => {
                 if (result) {
                     alert(message)
-                    // if (rememberUsername) {
-                    //     localStorage.setItem("username", username);
-                    // } else {
-                    //     localStorage.removeItem("username");
-                    // }
+                    if (rememberUsername) {
+                        localStorage.setItem("username", username);
+                    } else {
+                        localStorage.removeItem("username");
+                    }
                 } else {
                     alert(message)
-                    // console.log(message);
-                    // if (typeof(message) == string) {
-                    //     setError(message);
-                    // }
-                    // if (typeof(message) == 'string') {
-                    //     setError(message);
-                    // }
+                    console.log(message);
+                    if (typeof(message) == string) {
+                        setError(message);
+                    }
+                    if (typeof(message) == 'string') {
+                        setError(message);
+                    }
                 }
             }));
         }
