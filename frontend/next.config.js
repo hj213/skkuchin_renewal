@@ -37,7 +37,7 @@ const nextConfig = withPWA({
 	
 	reactStrictMode: true,
 	swcMinify: true,
-	assetPrefix: '.',
+	// assetPrefix: '.',
 });
 
 module.exports = nextConfig;
