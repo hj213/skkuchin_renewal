@@ -197,7 +197,6 @@ export const request_verify = () => async dispatch => {
             type: AUTHENTICATED_FAIL
         });
     }
-    
 
     try {
         const res = await fetch(`${API_URL}/api/user/token/verify`,{
