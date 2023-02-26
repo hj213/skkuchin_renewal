@@ -51,15 +51,6 @@ const MorePhotos = () => {
     const allImages = selectedPlace && selectedPlace.images.concat(totalImagesUrl);
 
     const handleImageClick = (image) => {
-        // const index = allImages.findIndex(img => img === image);
-        // const isFromSelectedPlace = index < selectedPlace.images.length;
-        // if (isFromSelectedPlace) {
-        //     console.log('가게 이미지 :', selectedPlace.images);
-        // } else {
-        //     const review = reviews.find(review => review.images.includes(image));
-        //     console.log(review);
-        //     console.log('Review :', review.images);
-        // }
         router.push({
             pathname: '/detailPhotos',
             query: { id: place_id, img: image }
@@ -75,38 +66,38 @@ const MorePhotos = () => {
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
-                <Card elevation={0} style={{
-                    position: 'fixed',
-                    top: '0px',
-                    width: '100%',
-                    zIndex: '4',
-                    border: 'none',
-                }}>
-                    <Grid container style={{padding:'45px 15px 11px', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Grid style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
-                        </Grid>
-                
-                        <Grid>
-                            {places ? places.filter(item => item.id == place_id).map((item,index) => (
-                                <Grid key={index} style={{flexDirection: 'row'}}>
-                                    <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
-                                        {item.name}
-                                    </Typography>
-                                    <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                        {item.detail_category}
-                                    </Typography>
+                        <Card elevation={0}
+                        style={{
+                            position: 'absolute',
+                            top: '0px',
+                            width: '100%',
+                            height: '80px',
+                            zIndex: '4',
+                            borderRadius:'0px',
+                        }}>
+                            <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <Grid style={{padding: '0px 10px 0px 0px'}}>
+                                <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
+                            </Grid>
+
+                                <Grid>
+                                {places ? places.filter(item => item.id == place_id).map((item,index) => (
+                                    <Grid key={index} style={{flexDirection: 'row'}}>
+                                        <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
+                                            {item.name}
+                                        </Typography>
+                                        <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
+                                            {item.detail_category}
+                                        </Typography>
+                                    </Grid>
+                                )) : null }
                                 </Grid>
-                            )) : null }
-                        </Grid>
-                    
-                        <Grid>
-                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
-                        </Grid> 
-                    </Grid>
-                </Card>
+                                <Grid>
+                                    <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
+                                </Grid> 
+                            </Grid>
+                        </Card>
             </Container>
-            
             {/* 사진 콘텐츠 */}
             <Grid container style={{paddingTop: '90px'}}>
                 {allImages && (

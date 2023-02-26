@@ -26,6 +26,7 @@ import { load_reviews, delete_review, modify_review } from "../actions/review/re
 import { load_place } from "../actions/place/place";
 import ReviewItem from "../components/ReviewItem";
 import morePic from '../image/morePicY.png';
+import { textAlign } from "@mui/system";
 
 const PlacePage = () => {
     
@@ -232,7 +233,6 @@ const PlacePage = () => {
     const reviews = useSelector(state => state.review.review);
     const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
 
-
     const totalImageCount = reviews && reviews.reduce((acc, review) => acc + review.images.length, 0);
     const totalImagesUrl = reviews && reviews.map(review => review.images).flatMap(imageArray => imageArray);
 
@@ -250,11 +250,14 @@ const PlacePage = () => {
         if(reviews != null) {
             if (filter === 'Latest') {
                 setSortedReviews([...reviews].reverse()); // 최신순으로 정렬
-                } else if (filter === 'Rating') {
+            } else if (filter === 'Rating') {
                 setSortedReviews([...reviews].sort((a, b) => b.rate - a.rate)); // 평점이 높은 순으로 정렬
-                } else if (filter === 'Oldest') {
-                setSortedReviews([...reviews]); // 오래된 순으로 정렬 (기본값)
-             }
+            } else if (filter === 'Oldest') {
+                setSortedReviews([...reviews]); // 오래된 순으로 정렬 
+            }
+            else {
+                setSortedReviews([...reviews].sort((a, b) => a.rate - b.rate));
+            }
         }
     }, [filter, reviews]);
     
@@ -490,7 +493,6 @@ const PlacePage = () => {
                         </Container>
                         { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
-                                {/* <Link href={`enrollReview?id=${item.id}`} key={item.id}> */}
                                 <Link href={{ pathname: '/enrollReview', query: { id: item.id, rating: rating } }}>
                                     <div>
                                     <ReviewStar rating={rating} handleTouch={handleTouch}/>
@@ -499,12 +501,12 @@ const PlacePage = () => {
                         </li>)):null}
                         </div>
                         {/* 이미지 */}
-                        <Grid container style={{margin:'15px 0px 0px'}}>
+                        <Grid container style={{margin:'15px 0px 0px',  justifyContent: 'center'}}>
                         {allImages && allImages.length > 5 ? (
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
-                                <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '5px', position: 'relative' }}>
+                                <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '5px', position: 'relative',}}>
                                     <Image
                                     width={150}
                                     height={150}
@@ -529,10 +531,6 @@ const PlacePage = () => {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        color: 'white',
-                                        fontWeight: 'bold',
-                                        fontSize: '1.5rem',
-                                        cursor: 'pointer',
                                     }}>
                                         <Image src={morePic} width={23} height={23}></Image>
                                         <Typography sx={{color: '#FFCE00', fontSize: '9px', fontWeight: '500'}}>사진 더보기</Typography>
@@ -567,13 +565,17 @@ const PlacePage = () => {
                                             <Grid item > 
                                                 <Select
                                                     xs={2}
-                                                    sx={{ fontSize: '14px', lineHeight: '200%', width: '100px', height: '30px', marginTop: '-30px', border: 'none' }}
+                                                    sx={{ fontSize: '14px', lineHeight: '200%', width: 'wrapContent', border: 'none',
+                                                    '& .MuiOutlinedInput-notchedOutline': {
+                                                      border: 'none'
+                                                    }, height: '30px', marginTop: '-30px', marginRight: '-15px',border: 'none', p: '5px', textAlign: 'right', color: '#A1A1A1'}}
                                                     value={filter}
                                                     onChange={handleFilterChange}
                                                 >
                                                     <MenuItem value='Latest'>최신순</MenuItem>
                                                     <MenuItem value='Oldest'>오래된순</MenuItem>
-                                                    <MenuItem value='Rating'>평점순</MenuItem>
+                                                    <MenuItem value='Rating'>평점높은순</MenuItem>
+                                                    <MenuItem value='Lowest'>평점낮은순</MenuItem>
                                                 </Select>
                                             </Grid>
                                         </Grid>
@@ -608,18 +610,9 @@ const PlacePage = () => {
                         { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
                             <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
                                 <Link href={`reviews?id=${item.id}`} key={item.id}>
-                                    <div style={{textAlign:'right'}}>
+                                    <Typography sx={{textAlign:'right', p: '0 15px 40px', color: '#505050', fontSize: '16px'}}>
                                         후기 더보기 &gt;
-                                    </div>
-                                </Link>
-                        </li>)):null}
-
-                        { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
-                            <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
-                                <Link href={`/myReview?id=${item.id}`} key={item.id}>
-                                    <div style={{textAlign:'right'}}>
-                                        후기 더보기 &gt;
-                                    </div>
+                                    </Typography>
                                 </Link>
                         </li>)):null}
                     </Card>

@@ -51,11 +51,14 @@ const ReviewsPage = () => {
         if(reviews != null) {
             if (filter === 'Latest') {
                 setSortedReviews([...reviews].reverse()); // 최신순으로 정렬
-                } else if (filter === 'Rating') {
+            } else if (filter === 'Rating') {
                 setSortedReviews([...reviews].sort((a, b) => b.rate - a.rate)); // 평점이 높은 순으로 정렬
-                } else if (filter === 'Oldest') {
+            } else if (filter === 'Oldest') {
                 setSortedReviews([...reviews]); // 오래된 순으로 정렬 (기본값)
              }
+             else {
+                setSortedReviews([...reviews].sort((a, b) => a.rate - b.rate));
+            }
         }
     }, [filter, reviews]);
     
@@ -90,16 +93,6 @@ const ReviewsPage = () => {
             }
         }));
     } 
-
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleMoreClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
 
     return(
         <ThemeProvider theme={theme}>
@@ -175,14 +168,18 @@ const ReviewsPage = () => {
                                 <Grid item > 
                                     <Select
                                         xs={2}
-                                        sx={{ fontSize: '14px', lineHeight: '200%', width: '100px', height: '30px', marginTop: '-30px', border: 'none' }}
+                                        sx={{ fontSize: '14px', lineHeight: '200%', width: 'wrapContent', border: 'none',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                          border: 'none'
+                                        }, height: '30px', marginTop: '-30px', marginRight: '-15px',border: 'none', p: '5px', textAlign: 'right', color: '#A1A1A1'}}
                                         value={filter}
                                         onChange={handleFilterChange}
                                     >
                                         <MenuItem value='Latest'>최신순</MenuItem>
                                         <MenuItem value='Oldest'>오래된순</MenuItem>
-                                        <MenuItem value='Rating'>평점순</MenuItem>
-                                    </Select>
+                                        <MenuItem value='Rating'>평점높은순</MenuItem>
+                                        <MenuItem value='Lowest'>평점낮은순</MenuItem>
+                                    </Select>                        
                                 </Grid>
                             </Grid>
                             </>

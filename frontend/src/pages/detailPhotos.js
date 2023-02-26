@@ -14,6 +14,9 @@ import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import ReviewItem from "../components/ReviewItem";
 import close from '../image/close.png';
+import next from '../image/photo_next.png';
+import prev from '../image/photo_prev.png';
+import morePic from '../image/photo_more.png';
 
 const MorePhotos = () => {
 
@@ -37,6 +40,7 @@ const MorePhotos = () => {
 
     const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
+    const user = useSelector(state => state.auth.user);
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
@@ -52,28 +56,18 @@ const MorePhotos = () => {
 
     const allImages = selectedPlace && selectedPlace.images.concat(totalImagesUrl);
     const [isFromSelectedPlace, setIsFromSelectedPlace] = useState(false);
-    const [review, setReview] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
-    
-    // useEffect(()=> {
-    //     const index = allImages.findIndex(img => img === image);
-    //     setIsFromSelectedPlace(index < selectedPlace.images.length);
-    //     if (index < selectedPlace.images.length) {
-    //         console.log('가게 이미지 :', selectedPlace.images);
-    //     } else {
-    //         setReview(reviews.find(review => review.images.includes(image)));
-    //     }
-    // },[])
+
+    const review = reviews && reviews.find(review => review.images.includes(image));
+
     useEffect(()=> {
-        const review = reviews.find(review => review.images.includes(image));
         if (review) {
           const index = review.images.findIndex(img => img === image);
           setCurrentIndex(index);
-          setReview(review);
         } else {
-          const index = allImages.findIndex(img => img === image);
+          const index = allImages.findIndex(img => img == image);
           setIsFromSelectedPlace(index < selectedPlace.images.length);
-          setCurrentIndex(index - selectedPlace.images.length);
+          setCurrentIndex(index);
         }
       },[]);
 
@@ -95,91 +89,161 @@ const MorePhotos = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout>
+            <Layout >
             {/* 전체 틀 */}
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
-                <Card elevation={0} style={{
-                    position: 'fixed',
-                    top: '0px',
-                    width: '100%',
-                    zIndex: '4',
-                    border: 'none',
-                }}>
-                    <Grid container style={{padding:'45px 15px 11px', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Grid style={{padding: '0px 10px 0px 0px'}}>
-                        </Grid>
-                
-                        <Grid>
-                            {places ? places.filter(item => item.id == place_id).map((item,index) => (
-                                <Grid key={index} style={{flexDirection: 'row'}}>
-                                    <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
-                                        {item.name}
-                                    </Typography>
-                                    <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                        {item.detail_category}
-                                    </Typography>
+                        <Card elevation={0}
+                        style={{
+                            position: 'absolute',
+                            top: '0px',
+                            width: '100%',
+                            height: '80px',
+                            zIndex: '4',
+                            borderRadius:'0px',
+                        }}>
+                            <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                                <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
+                                    {/* <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/> */}
                                 </Grid>
-                            )) : null }
-                        </Grid>
-                    
-                        <Grid>
-                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
-                        </Grid> 
-                    </Grid>
-                </Card>
+
+                                <Grid>
+                                {places ? places.filter(item => item.id == place_id).map((item,index) => (
+                                    <Grid key={index} style={{flexDirection: 'row'}}>
+                                        <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
+                                            {item.name}
+                                        </Typography>
+                                        <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
+                                            {item.detail_category}
+                                        </Typography>
+                                    </Grid>
+                                )) : null }
+                                </Grid>
+                                <Grid>
+                                    <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
+                                </Grid> 
+                            </Grid>
+                        </Card>
             </Container>
             
             {/* 사진 콘텐츠 */}
-            <Grid container style={{paddingTop: '90px'}}>
+            <Grid container style={{padding: '90px 0 0px'}}>
                 {isFromSelectedPlace? 
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {selectedPlace.images.map((image, index) => (
-                        <div key={index} style={{ width: 'auto', height: '70vh', margin: '5px', position: 'relative', overflow: 'hidden'}}>
+                        <div style={{ width: 'auto', height: '70vh', margin: '5px', position: 'relative',  overflow: 'hidden'}}>
                             <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                <button onClick={handlePrevClick}>이전</button>
+                                <Image onClick={handlePrevClick} src={prev} width={33} height={33}/>
                             </div>
                             <div style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                <button onClick={handleNextClick}>다음</button>
+                                <Image onClick={handleNextClick} src={next} width={33} height={33}/>
                             </div>
-                             <Image
-                             width={384}
-                             height={616}
-                             src={image}
-                             alt={`image-${index}`}
-                             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                            <div style={{ position: 'absolute', bottom: '13px', right: '10px', zIndex: '10', display: 'flex', alignItems: 'center'}}>
+                                <Typography sx={{color: '#FFE885', fontSize: '13px', fontWeight: '700', pr: '7px'}}>{`${currentIndex+1}/${selectedPlace.images.length}`}</Typography>
+                                <Image src={morePic} width={22} height={22}/>
+                            </div>
+                           <Image
+                                width={384}
+                                height={616}
+                                src={selectedPlace.images[currentIndex]}
+                                alt={`image`}
                              />
-                         </div>
-                        ))}
+                        </div>
                     </div>
                 </div>
                 : ( review &&
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {/* {review.images.map((image, index) => ( */}
-                            {/* <div key={index} style={{ width: 'auto', height: '70vh', margin: '5px', position: 'relative',  overflow: 'hidden'}}> */}
-                            <div style={{ width: 'auto', height: '70vh', margin: '5px', position: 'relative',  overflow: 'hidden'}}>
-                               <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                <button onClick={handlePrevClick}>이전</button>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                {/* <div style={{ width: 'auto', height: '70vh', margin: '5px', position: 'relative',  overflow: 'hidden'}}> */}
+                                <div style={{ 
+                                    width: '100%',
+                                    height: '70vh', 
+                                    margin: '5px', 
+                                    position: 'relative', 
+                                    overflow: 'hidden',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}> 
+                                    <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
+                                        <Image onClick={handlePrevClick} src={prev} width={33} height={33}/>
+                                    </div>
+                                    <div style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
+                                        <Image onClick={handleNextClick} src={next} width={33} height={33}/>
+                                    </div>
+                                    <div style={{ position: 'absolute', bottom: '13px', right: '10px', zIndex: '10', display: 'flex', alignItems: 'center'}}>
+                                        <Typography sx={{color: '#FFE885', fontSize: '13px', fontWeight: '700', pr: '7px'}}>{`${currentIndex+1}/${review.images.length}`}</Typography>
+                                        <Image src={morePic} width={22} height={22}/>
+                                    </div>
+                                <Image
+                                    width={800}
+                                    height={1200}
+                                    src={review.images[currentIndex]}
+                                    alt={`image`}
+                                    />
                                 </div>
-                                <div style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                    <button onClick={handleNextClick}>다음</button>
-                                </div>
-                               <Image
-                                width={384}
-                                height={616}
-                                src={review.images[currentIndex]}
-                                alt={`image`}
-                                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                                />
-                            </div>
-                        {/* ))} */}
+                        </div>
                     </div>
-                </div>
                 )
+                }
+            </Grid>
+            <Grid container >
+                {reviews && review && 
+                    <Grid container style={{margin:'16px 15px 10px', justifyContent:'left'}}>
+                    <Grid item xs={2}>
+                        { review && review.user_id === user.id ?
+                            <Badge badgeContent={"나"} color="secondary">
+                                <Avatar alt="" src={ user.image} />
+                            </Badge> : <Avatar alt="" src={user.image} />}
+    
+                    </Grid>
+                    <Grid item xs={10}>
+                    <Stack direction="column" spacing={1}>
+                        <Grid container alignItems='center'>
+                            <Grid item xs>
+                            <Typography
+                                sx={{
+                                fontSize: '12px',
+                                fontWeight: '700',
+                                lineHeight: '200%',
+                                verticalAlign: 'top',
+                                }}
+                                align='left'
+                            >
+                                {review.nickname}
+                            </Typography>
+                            </Grid>
+
+                        </Grid>
+                            <Stack direction="row" alignItems="center">
+                                <Typography
+                                sx={{ fontSize: '12px', fontWeight: '500', lineHeight: '0%', verticalAlign: 'top' }}
+                                align="left"
+                                >
+                                {review.major} {review.student_id}학번
+                                </Typography>
+                                <Typography
+                                sx={{
+                                    fontSize: '12px',
+                                    fontWeight: '500',
+                                    lineHeight: '0%',
+                                    paddingLeft: '5px',
+                                    color: '#a1a1a1',
+                                }}
+                                component="div"
+                                align="left"
+                                >
+                                | {review.create_date.slice(0, 10)}
+                                </Typography>
+                            </Stack>
+                            <Grid style={{margin:'10px 0 0 -3px'}}>
+                                <Rating name="read-only" size="small" value={review.rate} readOnly precision={1} />
+                            </Grid>
+                        </Stack>
+                    </Grid>
+                </Grid>
                 }
             </Grid>
         </div>
