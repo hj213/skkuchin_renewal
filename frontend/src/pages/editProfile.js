@@ -8,7 +8,7 @@ import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
 import { change_user, check_nickname, load_user } from '../actions/auth/auth';
-import EditProfileImage from '../components/MyPage/editProfileImage';
+import EditProfileImage from '../components/MyPage/EditProfileImage';
 
 export default function editProfile() {
     const dispatch = useDispatch();
