@@ -58,7 +58,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                             {review.nickname}
                         </Typography>
                         </Grid>
-                        { review.user_id === user.id ?
+                        { review.user_id === user.id && handleEdit!=undefined?
                         <Grid item>
                             <IconButton onClick={handleMoreClick}>
                                 <Image src={more} width={4.33} height={17.33} placeholder="blur" layout='fixed' />

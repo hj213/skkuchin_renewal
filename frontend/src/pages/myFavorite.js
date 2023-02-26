@@ -1,4 +1,4 @@
-import { CssBaseline, Grid,ThemeProvider, Button, Grow, useMediaQuery,Box,Card, Paper, MenuList, MenuItem, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
+import { CssBaseline, Grid,ThemeProvider, MenuItem, Menu, Select, useMediaQuery,Box,Card, Paper, ClickAwayListener, Typography, Popper, Container, CardContent, Stack} from '@mui/material';
 import { useDispatch, useSelector, } from "react-redux";
 import { useState, useEffect, useRef, } from 'react';
 import { useRouter } from "next/router";
@@ -85,6 +85,7 @@ export default function myFavorite(){
       };
 
     const prevOpen = useRef(open);
+    
     useEffect(() => {
       if (prevOpen.current === true && open === false) {
         anchorRef.current.focus();
@@ -92,6 +93,25 @@ export default function myFavorite(){
       prevOpen.current = open;
     }, [open]);
 
+    const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
+
+    useEffect(() => {
+        if(favorites != null) {
+            if (filter === 'Latest') {
+                setSortedFavs([...favorites].reverse()); // 최신순으로 정렬
+            } else if (filter === 'Oldest') {
+                setSortedFavs([...favorites]); // 오래된 순으로 정렬 (기본값)
+            } else  {
+                setSortedFavs([...favorites].sort((a, b) => a.name.localeCompare(b.name)));
+            }
+        }
+    }, [filter, favorites]);
+    
+    const [sortedFavs, setSortedFavs] = useState(favorites ? [...favorites] : []);
+
+    const handleFilterChange = (event) => {
+      setFilter(event.target.value);
+    };
 
     return(
         <ThemeProvider theme={theme}>
@@ -130,96 +150,32 @@ export default function myFavorite(){
                     </Card>
                 </Container>
                 </div>
-                <Container name='최신순' style={{background:'white', padding:'0px'}}>
-                <div style={{float:'right',zIndex:'2', margin:'90px 0px 0px 0px'}}>
-                        <Grid container style={{marginRight:'20px'}} onClick={handleToggle}>
-                            <Grid item style={{margin:'0px'}}>
-                                <Button
-                                ref={anchorRef}
-                                id="composition-button"
-                                aria-controls={open ? 'composition-menu' : undefined}
-                                aria-expanded={open ? 'true' : undefined}
-                                aria-haspopup="true"
-                                style={{padding:'0px'}}
-                                color="fontColor"
-                                >
-                                최신순
-                                </Button>
-                            </Grid>
-                            <Grid item>
-                                <Image src={down} width={13} height={8} placeholder="blur" layout='fixed' />
-                            </Grid>
-                        </Grid>
-                        <Popper
-                        open={open}
-                        anchorEl={anchorRef.current}
-                        role={undefined}
-                        placement="bottom-start"
-                        transition
-                        disablePortal
-                        style={{zIndex:'3', }}
-                        >
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                            {...TransitionProps}
-                            style={{
-                                transformOrigin:
-                                placement === 'bottom-start' ? 'left top' : 'left bottom',
-                                boxShadow: '0px 0px 4px 0px rgb(0,0,0, 0.16)', 
-                                borderRadius:'5px',
-                                padding:'4px 5px 4px 5px',
-                                height:'113px'
-                            }}
-                            >
-                            <Paper>
-                                <ClickAwayListener onClickAway={handleClose}>
-                                <MenuList
-                                    autoFocusItem={open}
-                                    id="composition-menu"
-                                    aria-labelledby="composition-button"
-                                    dense={true}
-                                    autoFocus={true}
-                                >
-                                    <Grid container justifyContent='center' >
-                                        <MenuItem style={{fontSize:'15px'}} color={color? theme.palette.primary : '#000'} name='최신순' onClick={handleClose}>최신순</MenuItem>
-                                    </Grid>
-                                    <Grid container justifyContent='center' >
-                                        <MenuItem style={{fontSize:'15px'}} name='이름순' onClick={handleClose}>이름순</MenuItem>
-                                    </Grid>
-                                    <Grid container justifyContent='center' >
-                                        <MenuItem style={{fontSize:'15px'}} name='오래된순' onClick={handleClose}>오래된순</MenuItem>
-                                    </Grid>
-                                </MenuList>
-                                </ClickAwayListener>
-                            </Paper>
-                            </Grow>
-                        )}
-                        </Popper>
-                    </div>
-                </Container>
+
+                <Grid item sx={{paddingTop: '90px', textAlign: 'right', pr: '15px'}}> 
+                    <Select
+                        xs={2}
+                        sx={{ fontSize: '14px', lineHeight: '200%', width: 'wrapContent', border: 'none',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                        border: 'none'
+                        }, height: '30px', marginTop: '-30px', marginRight: '-15px',border: 'none', p: '5px', textAlign: 'right', color: '#A1A1A1'}}
+                        value={filter}
+                        onChange={handleFilterChange}
+                    >
+                        <MenuItem value='Latest'>최신순</MenuItem>
+                        <MenuItem value='Oldest'>오래된순</MenuItem>
+                        <MenuItem value='Names'>이름순</MenuItem>
+                    </Select>                        
+                </Grid>
                 <Container name ='리스트' style={{ padding:'0px', overflowY:'scroll', zIndex:'0',border:'none'}}>
                 <Paper style={{overflowY:'auto', padding:'0px 20px 0px 20px', marginTop:'0px', border: "0px solid transparent", boxShadow:'none'}}>
                     <ul style={{listStyleType: "none", padding: '0px 0px 0px 0px', margin: '0px', }} >
-                            {favorites? favorites.map((item) => (
+                            {favorites? sortedFavs.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                         <Link href={`/place?id=${item.place_id}`} key={item.id}>
                                         <Grid container style={{margin: '10px 0px 0px 0px'}}>
                                             <Grid item xs >
                                                 <CardContent style={{padding:'0px'}}>
                                                     <Grid container spacing={2} style={{margin:'0px',}}>
-                                                        {/* <Grid item style={{marginTop:'15px',  padding:'0px'}}>
-                                                            <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
-                                                                {item.name}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item style={{padding:'0px 0px 0px 8px'}}>
-                                                            <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color={theme.palette.fontColor.light} component="div" >
-                                                                {item.detail_category}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}} onClick={handleFavClick(item.place_id)}>
-                                                            <Image width={15} height={15} src={bookmarkOn}/>
-                                                        </Grid> */}
                                                         <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                                 {item.name}
