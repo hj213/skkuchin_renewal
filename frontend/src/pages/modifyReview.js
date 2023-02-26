@@ -7,7 +7,6 @@ import { load_reviews } from "../actions/review/review";
 import { modify_review } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
-import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
@@ -36,14 +35,17 @@ import filledStar from '../image/Star-1.png';
 import TextField from '@mui/material/TextField';
 
 const ModifyReview = () => {
+    const router = useRouter();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'close' ){
             router.back();
         } 
     };  
-
-    const router = useRouter();
 
     // place.js에서 전달 받은 id 값 받아오기
     const id = router.query.id;
@@ -178,7 +180,6 @@ const ModifyReview = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout>
             {/* 전체 틀 */}
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
 
@@ -383,7 +384,6 @@ const ModifyReview = () => {
                 </Grid>
             </Container>
         </div>
-        </Layout>
         </ThemeProvider>
         
     )

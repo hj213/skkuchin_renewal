@@ -33,20 +33,24 @@ export const signup_email_send = (username, email, agreement, callback) => async
         if (res.status === 201) {
             dispatch({
                 type: SIGNUP_EMAIL_SEND_SUCCESS
-            });
+            })
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: SIGNUP_EMAIL_SEND_FAIL,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: SIGNUP_EMAIL_SEND_FAIL
-        });
+        })
         if (callback) callback([false, error]);
     }
 };
@@ -72,21 +76,30 @@ export const signup_email_check = (username, callback) => async dispatch => {
             dispatch({
                 type: SIGNUP_EMAIL_CHECK_SUCCESS,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: SIGNUP_EMAIL_CHECK_FAIL,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: SIGNUP_EMAIL_CHECK_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 };
 
@@ -110,21 +123,30 @@ export const password_email_send = (email, callback) => async dispatch => {
         if (res.status === 201) {
             dispatch({
                 type: PASSWORD_EMAIL_SEND_SUCCESS
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: PASSWORD_EMAIL_SEND_FAIL,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: PASSWORD_EMAIL_SEND_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 };
 
@@ -149,20 +171,25 @@ export const password_email_check = (email, callback) => async dispatch => {
             dispatch({
                 type: PASSWORD_EMAIL_CHECK_SUCCESS,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: PASSWORD_EMAIL_CHECK_FAIL,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: SIGNUP_EMAIL_CHECK_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
     }
 };

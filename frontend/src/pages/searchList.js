@@ -15,7 +15,6 @@ import closeIcon from '../image/close.png';
 import { load_user } from "../actions/auth/auth";
 import {  displayReviewTag } from "../components/TagList";
 import UpperBar from "../components/UpperBar";
-import Layout from "../hocs/Layout";
 
 export default function searchList(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -35,6 +34,10 @@ export default function searchList(){
     const [passValue, setPassValue] = useState(keyword);
     const [filteredPlace, setFilteredPlace] =useState([]);
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     //api 받아오기
     useEffect(() => {
@@ -101,7 +104,6 @@ export default function searchList(){
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <Layout>
             <div style={{position:'absolute', zIndex:'2'}}>
                 <UpperBar/>
             </div>
@@ -247,7 +249,6 @@ export default function searchList(){
                     </Card>
                 </Container>
             </div>
-            </Layout>
         </ThemeProvider>
     )
 }
