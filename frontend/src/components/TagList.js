@@ -66,8 +66,8 @@ export const displayTagImage = (tags) => {
             switch(tag) {
                 case "학생 할인":
                     return <Grid item key={tag}><Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/></Grid>
-                case "스페셜":
-                    return <Grid item key={tag}><Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/></Grid>
+                // case "스페셜":
+                //     return <Grid item key={tag}><Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/></Grid>
                 case "한식":
                     return <Grid item key={tag}><Image id={"한식"} src={mapTagOn3} width={64} height={36}/></Grid>
                 case "중식":
@@ -186,10 +186,10 @@ const TagList = ({keyword, onTagClick}) => {
                         { keyword.includes("학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36}/>
                         : <Image id={"학생 할인"} src={mapTag1} width={88} height={36}/> }
                     </Grid>
-                    <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px' }}>
+                    {/* <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px' }}>
                         { keyword.includes("스페셜") ? <Image id={"스페셜"} src={mapTagOn2} width={76} height={36}/>
                         : <Image id={"스페셜"} src={mapTag2} width={76} height={36}/>}
-                    </Grid>
+                    </Grid> */}
                     <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
                         { keyword.includes("한식") ? <Image id={"한식"} src={mapTagOn3} width={64} height={36}/>
                         : <Image id={"한식"} src={mapTag3} width={64} height={36}/> }
