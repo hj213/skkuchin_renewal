@@ -26,17 +26,24 @@ export default function AlertMessage({ alertOpen, alertMessage }){
             {open && (
                 <div
                 style={{
-                    position: 'absolute',                   
-                    left: '50%',
-                    top: '200px',
-                    transform: 'translate(-50%)',
-                    zIndex: '6',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '200px',
+                  transform: 'translate(-50%)',
+                  zIndex: '6',
                 }}
-                >
-                <Alert  style={{ width: '250px', color:'black', backgroundColor:'white', borderRadius:'10px', boxShadow: '0px 3px 5px rgba(0,0,0,0.3)' }} icon={false}>
-                    {alertMessage}
+              >
+                <Alert style={{width: `${alertMessage.length * 12}px`, color:'black', backgroundColor:'white', borderRadius:'10px', boxShadow: '0px 3px 5px rgba(0,0,0,0.3)' }} icon={false}>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100%"
+                    }}>
+                        <div style={{textAlign: 'center'}}>{alertMessage}</div>
+                    </div> 
                 </Alert>
-                </div>
+              </div>
             )}
             </div>
             

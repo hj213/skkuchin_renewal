@@ -20,7 +20,8 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     const [autoBox, setAutoBox] = useState(false);
-    
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
@@ -30,11 +31,12 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             
         }
     }, [dispatch]);
-
-    useEffect(()=>{
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());}
-    }, []);
+  
+    useEffect(() => {
+        if (!allPlaces || allPlaces.length === 0) {
+          dispatch(load_places());
+        }
+      }, [dispatch, allPlaces]);
     
     //캠퍼스 필터링
     useEffect(() => {

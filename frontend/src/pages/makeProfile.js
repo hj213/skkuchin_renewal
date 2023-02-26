@@ -583,13 +583,13 @@ export default function makeProfile(){
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
         }else{
-            setKeyword('');
+            setKeyword([]);
         }
       }, [mbtiChoose, food, study, art, sports]);
 
     //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
-        if(gender && keyword && introduction != '' && mbti){
+        if(gender && keyword.length >0 && introduction != '' && mbti){
     
             setCondition(true);
         } else {

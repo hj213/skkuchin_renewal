@@ -30,15 +30,15 @@ export default function chatPlace(){
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
             dispatch(load_user());
         }
     }, [dispatch]);
 
-    useEffect(()=>{
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());}
-    }, []);
+    useEffect(() => {
+        if (!allPlaces || allPlaces.length === 0) {
+          dispatch(load_places());
+        }
+      }, []);
 
     //캠퍼스 필터링
     useEffect(() => {

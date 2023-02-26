@@ -34,6 +34,7 @@ export default function list(){
     const searchplace = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user);
+    const WINDOW_HEIGHT = window.innerHeight;
     
     //상태
     const [height, setHeight] = useState('0');
@@ -111,7 +112,11 @@ export default function list(){
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
-                    setHeight('35%');
+                    if(WINDOW_HEIGHT < 750){
+                        setHeight('175px')
+                    } else {
+                        setHeight('320px')
+                    }
                     setCardStyle({
                         radius: '30px 30px 0px 0px',
                         cardVisibility: 'visible',
@@ -159,7 +164,6 @@ export default function list(){
     const handleTouchMove = (event) => {
         event.preventDefault();
 
-        const WINDOW_HEIGHT = window.innerHeight;
         const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
@@ -176,8 +180,12 @@ export default function list(){
             });
             setPreventScroll('scroll');
         } else {
-            
-            setHeight('35%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
+            // setHeight('35%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -196,7 +204,11 @@ export default function list(){
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('35%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'

@@ -599,10 +599,10 @@ export default function makeProfile(){
                     // alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
-                    
                 }
             }));
-            
+        setAlertOpen(false);
+        setAlertMessage('');
     } 
     
     //데이터 전달하기 위하여
@@ -632,13 +632,13 @@ export default function makeProfile(){
                 
                 setKeyword(allKeywords);
             } else {
-                setKeyword('');
+                setKeyword([]);
             }
       }, [mbtiChoose, food, study, art, sports]);
 
     //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
-        if(gender && keyword && introduction != '' && mbti){
+        if(gender && keyword.length > 0 && introduction != '' && mbti){
     
             setCondition(true);
         } else {
@@ -854,7 +854,7 @@ export default function makeProfile(){
                             </div>
                         </Container>
                         <Container name='interest' style={{padding:'0px'}}>
-                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 interest</Typography>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 학술</Typography>
                             <div style={{marginBottom:'9px'}}>
                                 <Grid container style={{maxWidth:'330px'}}>
                                     <Grid style={{marginRight:'8px'}}>

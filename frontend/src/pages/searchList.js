@@ -51,10 +51,11 @@ export default function searchList(){
         }
     }, [dispatch]);
 
-    useEffect(()=>{
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());}
-    }, []);
+    useEffect(() => {
+        if (!allplaces || allplaces.length === 0) {
+          dispatch(load_places());
+        }
+      }, [dispatch, allplaces]);
 
     //캠퍼스 필터링
     useEffect(() => {
