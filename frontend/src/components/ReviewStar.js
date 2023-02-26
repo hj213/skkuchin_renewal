@@ -24,7 +24,7 @@ const ReviewStar = ({rating, handleTouch}) => {
 
   return (
     <div style={{ textAlign: "center", margin: '0px -20px', padding: '19px 0 12px', borderBottom: '4px solid rgba(217, 217, 217, 0.54)', borderTop: '4px solid rgba(217, 217, 217, 0.54)'}}>
-      <Image width={50} height={50} src={character}></Image>
+      <Image width={50} height={50} src={character} placeholder="blur" layout='fixed'></Image>
       <Typography sx={{fontSize: '17px', fontWeight: '500', color: '#000000'}}> 
         <span style={{color: '#FFCE00'}}>{user !== null && user.nickname}</span> 님 후기를 남겨주세요
         </Typography>
@@ -35,7 +35,7 @@ const ReviewStar = ({rating, handleTouch}) => {
           starImage = filledStar;
         }
         return (
-            <Image key={index} width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' />
+            <Image key={index} width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' placeholder="blur" layout='fixed' />
         );
       })}
       </div>

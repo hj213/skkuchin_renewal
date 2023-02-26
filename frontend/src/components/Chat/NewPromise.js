@@ -54,6 +54,8 @@ const NewPromise = ({ onClose, open }) => {
                         height="35px"
                         onClick={onClose}
                         style={{position: 'absolute', top: '-15px', right: '-15px', cursor: 'pointer'}}
+                        placeholder="blur" 
+                        layout='fixed'
                     />
                     </div>
                 </div>

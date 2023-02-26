@@ -197,7 +197,7 @@ const ModifyReview = () => {
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
-                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
+                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} placeholder="blur" layout='fixed' />
                             </a>
                         </Grid>
                     
@@ -239,7 +239,7 @@ const ModifyReview = () => {
                                         starImage = filledStar;
                                         }
                                         return (
-                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' />
+                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' placeholder="blur" layout='fixed' />
                                         );
                                     })}
                                     <Typography sx={{fontSize: '18px', fontWeight: '700', color: '#FFCE00'}}>{`${rating}점`}</Typography>
@@ -272,6 +272,8 @@ const ModifyReview = () => {
                                             alt="tag1"
                                             onClick={handleTagClick}
                                             id='맛집'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -282,6 +284,8 @@ const ModifyReview = () => {
                                             alt="tag2"
                                             onClick={handleTagClick}
                                             id='간단한 한 끼'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -292,6 +296,8 @@ const ModifyReview = () => {
                                             alt="tag3"
                                             onClick={handleTagClick}
                                             id='분위기 좋은'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -302,6 +308,8 @@ const ModifyReview = () => {
                                             alt="tag4"
                                             onClick={handleTagClick}
                                             id='가성비'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -312,6 +320,8 @@ const ModifyReview = () => {
                                             alt="tag5"
                                             onClick={handleTagClick}
                                             id='친절'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -322,6 +332,8 @@ const ModifyReview = () => {
                                             alt="tag6"
                                             onClick={handleTagClick}
                                             id='청결도'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -332,6 +344,8 @@ const ModifyReview = () => {
                                             alt="tag7"
                                             onClick={handleTagClick}
                                             id='둘이 가요'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                 </Grid>
