@@ -10,6 +10,9 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     const user = useSelector(state => state.auth.user); 
     const height = window.innerHeight - 90;
 
+    const [selectedLevel, setSelectedLevel] = useState(1);
+    const [mapCenter, setMapCenter] = useState(null);
+
     useEffect(() => {
         const mapScript = document.createElement("script");
         
@@ -22,15 +25,16 @@ const Map = ({latitude, longitude, places, selectedId}) => {
             window.kakao.maps.load(() => {
                 const container = document.getElementById("map");
 
-                let selectedPlace;
+                let selectedPlace, options;
+
                 if (selectedId) {
                     selectedPlace = places.find(p => p.id == selectedId);
                 }
-                let options;
-                if (selectedPlace) {
+                if (selectedPlace && mapCenter) {
                     options = {
-                        center: new window.kakao.maps.LatLng(selectedPlace.ycoordinate, selectedPlace.xcoordinate),
-                        level: 1
+                        // center: new window.kakao.maps.LatLng(selectedPlace.ycoordinate, selectedPlace.xcoordinate),
+                        center: mapCenter,
+                        level: selectedLevel
                     };
                 } else if (places && places.length > 0) {
                     options = {
@@ -154,6 +158,8 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     marker.setMap(map);
 
                     window.kakao.maps.event.addListener(marker, "click", function() {
+                        setMapCenter(map.getCenter());
+                        setSelectedLevel(map.getLevel());
                         router.push(`/place?id=${place.id}`);
                     });
                 }

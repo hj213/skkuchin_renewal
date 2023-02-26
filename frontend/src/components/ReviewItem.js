@@ -1,24 +1,10 @@
-import { useDispatch, useSelector} from "react-redux";
-import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
-
-import { load_reviews, delete_review, modify_review } from "../actions/review/review";
-import { load_review} from "../actions/review/review"
-import { load_favorite } from "../actions/favorite/favorite";
-import { load_menu }  from "../actions/menu/menu";
-
-import {BadgeProps} from '@mui/material/Badge'
-import {styled} from '@mui/material/styles';
 import { IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
-import back from '../image/arrow_back_ios.png';
-import close from '../image/close.png';
-import profile from '../image/profile.png';
 import more from '../image/more_vert.png';
 import { displayReviewTag, reviewsTags } from "./TagList";
-import ReviewStar from "./ReviewStar";
-import Link from 'next/link';
+
 
 // ReviewItem 컴포넌트 추출
 const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
@@ -128,11 +114,11 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
 
             <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
                 {review.tags.map((tag, index)=>(
-                    <Grid>
-                    <Stack direction="column" style={{marginRight:"6px", marginBottom:"6px"}} key={index}>
-                        {reviewsTags(tag)}
-                    </Stack>
-                </Grid>
+                    <Grid key={index}>
+                        <Stack direction="column" style={{marginRight:"6px", marginBottom:"6px"}} >
+                            {reviewsTags(tag)}
+                        </Stack>
+                    </Grid>
                 ))}
             </Grid>
 
