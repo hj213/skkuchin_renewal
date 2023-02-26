@@ -15,6 +15,7 @@ import style from 'styled-components';
 import { styled } from '@mui/material/styles';
 import {TimePicker }from 'antd';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 export default function chatTime(){
 
@@ -29,6 +30,11 @@ export default function chatTime(){
     const [DialogOpen, setDialogOpen] = useState(false);
     const [changedtime, setChangedTime] = useState('');
     const [timeOpen, setTimeOpen] = useState('hidden');
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
    
     const formatDate = (date) => {
         const year = date.getFullYear();

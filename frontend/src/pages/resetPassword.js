@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Layout from "../hocs/Layout";
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
 import Step2 from '../components/Auth/Password/Step2';
@@ -29,7 +28,6 @@ export default function resetPassword() {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout title= '스꾸친 | 비밀번호 초기화' content='Register page'>
             {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <Step1 handleNextStep={handleNextStep} setEmail={setEmail} />
@@ -44,7 +42,6 @@ export default function resetPassword() {
                 step === 4 && <Step4 />
             }
             {/* </Container> */}
-        </Layout>
         </ThemeProvider>
     )
 };

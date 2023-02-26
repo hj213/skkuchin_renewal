@@ -16,6 +16,10 @@ export default function deleteUser() {
     const [agreement, setAgreement] = useState(false);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
     const handleArrowClick = () => {
         router.push('/myPage');
     }
@@ -32,10 +36,6 @@ export default function deleteUser() {
                 }
             }));
         }
-    }
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
     }
 
     return (

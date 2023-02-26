@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { API_URL } from '../../config/index';
+import { request_refresh } from '../auth/auth';
 import { 
     LOAD_CANDIDATE_SUCCESS,
     LOAD_CANDIDATE_FAIL
@@ -8,6 +9,7 @@ import {
     from './types';
 
 export const load_candidate = (callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -32,20 +34,29 @@ export const load_candidate = (callback) => async dispatch => {
             dispatch({
                 type: LOAD_CANDIDATE_SUCCESS,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         }else {
             dispatch({
                 type: LOAD_CANDIDATE_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
 
     } catch (error) {
         console.log(error);
         dispatch({
             type: LOAD_CANDIDATE_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }

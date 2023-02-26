@@ -1,11 +1,11 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 
 const Document = () => {
+
     return (
         <Html lang="ko">
             <Head>
                 <meta charSet="utf-8" />
-                {/* <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> */}
                 <meta name="theme-color" content="#ffffff" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -38,7 +38,6 @@ const Document = () => {
                 <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
                 <link rel="icon" href="/icons/favicon.ico" />
                 <link rel="manifest" href="/manifest.json" />
-                {/* <title>스꾸친</title> */}
             </Head>
             <body>
                 <Main/>
