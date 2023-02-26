@@ -35,8 +35,7 @@
 <br>
 
 ## 로컬에서 실행 후 모바일 접속 원할 시
-1. reducers/auth.js 주석 뒤바꾸기
-2. docker-compose -f docker-compose.mobile.yml up --build
+- docker-compose -f docker-compose.mobile.yml up --build
 
 <br>
 

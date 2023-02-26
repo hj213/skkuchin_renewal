@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react"; 
+import { useEffect, useState, useRef } from "react"; 
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import { KAKAOMAP_APPKEY } from '../config';
@@ -54,10 +54,10 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     };
                 }
 
-                const map = new window.kakao.maps.Map(container, options);
-                
-                let maxMarker = 30; // maximum number of markers to show
-                const markers = [];
+                    const map = new window.kakao.maps.Map(container, options);
+                    
+                    let maxMarker = 30; // maximum number of markers to show
+                    const markers = [];
 
                 { places  &&
                 places.forEach((place,index) => {
@@ -199,7 +199,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     // const mapHeight = `calc(100vh - 90px)`;
 
     return (
-        <MapContainer id="map" style={{width:'100%', height:height, }}>
+        <MapContainer ref={mapContainerRef} style={{width:'100%', height:height, }}>
         </MapContainer>
     );
 }
