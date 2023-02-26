@@ -129,7 +129,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                         </Grid>
                     </Grid>
                     <div style={{position: 'relative', padding:'0px 16px', zIndex:'2'}}>
-                        <Image src={searchBox} layout="responsive" priority />
+                        <Image src={searchBox} layout="responsive" placeholder='blur' priority />
                     </div>
                 </div>
                 { autoBox && value && (
