@@ -8,15 +8,19 @@ import { load_place } from "../actions/place/place";
 import {BadgeProps} from '@mui/material/Badge'
 import {styled} from '@mui/material/styles';
 import { IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
-import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import ReviewItem from "../components/ReviewItem";
 
 const ReviewsPage = () => {
-
+    const router = useRouter();
     const dispatch = useDispatch();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     // 뒤로가기
     const handleOnclick = (event) =>{
@@ -26,7 +30,6 @@ const ReviewsPage = () => {
         });
     };  
 
-    const router = useRouter();
     const { id } = router.query;
 
     // place, 가게 정보 (place API)
@@ -104,7 +107,6 @@ const ReviewsPage = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout>
             {/* 전체 틀 */}
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
 
@@ -203,7 +205,6 @@ const ReviewsPage = () => {
                 </Grid>
             </Container>
         </div>
-        </Layout>
         </ThemeProvider>
         
     )

@@ -4,14 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { enroll_favorite, delete_favorite, load_favorite } from "../actions/favorite/favorite";
 import { Typography, Grid } from '@mui/material';
 
-import Layout from "../hocs/Layout";
-import Loader from "react-loader-spinner";
-
 const FavoritePage = () => {
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    
     const router = useRouter();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
     const dispatch = useDispatch();
 
     const [place_id, setPlaceId] = useState('');
@@ -19,7 +15,7 @@ const FavoritePage = () => {
     const user = useSelector(state => state.auth.user);
     const favorites = useSelector(state => state.favorite.favorite);
 
-    if(typeof window !== 'undefined' && !isAuthenticated){
+    if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
 
@@ -57,7 +53,7 @@ const FavoritePage = () => {
 
 
     return (
-        <Layout title= '스꾸친 | Favorite' content='Favorite page'>
+        <div>
             <h1 className='display-4'>Favorite Page</h1>
             <p className="fs-4 mt-3">Hello {user !== null && user.nickname}! It's your favorite place</p>
             <form className='bg-light p-5 mt-5 mb-5'>
@@ -111,7 +107,7 @@ const FavoritePage = () => {
                     </Grid>
                 ))}
             </div>
-        </Layout>
+        </div>
     );
 };
 

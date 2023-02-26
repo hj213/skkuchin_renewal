@@ -104,7 +104,7 @@ export default function SignUpStep3(props) {
         console.log(props.data);
         dispatch(register(props.data));
         props.handleNextStep();
-      }
+    }
 
     return (
         <div>

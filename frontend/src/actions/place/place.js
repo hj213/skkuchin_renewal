@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
+import { request_refresh } from '../auth/auth';
 import {
     LOAD_PLACE_FAIL,
     LOAD_PLACE_SUCCESS,
@@ -13,6 +14,7 @@ import {
 
 //load_places
 export const load_places = (callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -38,23 +40,33 @@ export const load_places = (callback) => async dispatch => {
                 type: LOAD_PLACES_SUCCESS,
                 payload: apiRes.data
             })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: LOAD_PLACES_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         dispatch({
             type: LOAD_PLACES_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
 //load_place
 export const load_place = (id, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -80,23 +92,33 @@ export const load_place = (id, callback) => async dispatch => {
                 type: LOAD_PLACE_SUCCESS,
                 payload: apiRes.data
             })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: LOAD_PLACE_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         dispatch({
             type: LOAD_PLACE_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     };
 }
 
 //search_place
 export const search_places = (keyword, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -122,18 +144,27 @@ export const search_places = (keyword, callback) => async dispatch => {
                 type: SEARCH_PLACES_SUCCESS,
                 payload: apiRes.data
             })
+            
             if (callback) callback([true, apiRes.message]);
+            
+
         } else {
             dispatch({
                 type: SEARCH_PLACES_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         dispatch({
             type: SEARCH_PLACES_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     };
 }
 

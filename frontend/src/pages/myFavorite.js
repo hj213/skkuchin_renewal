@@ -14,7 +14,6 @@ import down from '../image/down.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
 
-
 export default function myFavorite(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
 
@@ -26,11 +25,10 @@ export default function myFavorite(){
     const dispatch = useDispatch();
     const anchorRef = useRef(null);
 
-    // if(typeof window !== 'undefined' && !isAuthenticated){
-    //     router.push('/login');
-    // }
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
-    // api에서 데이터 불러오기
     useEffect(()=>{
         dispatch(load_favorite());
     }, [dispatch]);

@@ -60,20 +60,22 @@ export const register = (registerData, callback) => async dispatch => {
         if (res.status === 201) {
             dispatch({
                 type: REGISTER_SUCCESS
-            });
+            })
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
                 type: REGISTER_FAIL
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: REGISTER_FAIL
-        });
+        })
         if (callback) callback([false, error]);
+        
     }
 };
 
@@ -104,24 +106,25 @@ export const login = (username, password, callback) => async dispatch => {
         });
 
         if (res.status === 200) {
-            dispatch({
+            await dispatch({
                 type: LOGIN_SUCCESS,
                 payload: apiRes.data
-            });
-            dispatch(load_user());
+            })
+            await dispatch(load_user());
             if (callback) callback([true, apiRes.message]);
 
         } else {
             dispatch({
                 type: LOGIN_FAIL
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
         }
     } catch(error) {
         console.log(error);
         dispatch({
             type: LOGIN_FAIL
-        });
+        })
         if (callback) callback([false, error]);
     }
 };
@@ -140,6 +143,8 @@ export const logout = () => async dispatch => {
 }
 
 export const load_user = () => async dispatch => {
+    await dispatch(request_refresh());
+
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -182,6 +187,8 @@ export const load_user = () => async dispatch => {
 
 
 export const request_verify = () => async dispatch => {
+    await dispatch(request_refresh());
+
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -278,21 +285,24 @@ export const check_username = (username, callback) => async dispatch => {
             dispatch({
                 type: CHECK_USERNAME_SUCCESS,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([true, apiRes.message]);
+            
         } else{
             dispatch({
                 type: CHECK_USERNAME_FAIL,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHECK_USERNAME_FAIL
-        });
+        })
         if (callback) callback([false, error]);
+        
     }
 }
 
@@ -317,25 +327,29 @@ export const check_nickname = (nickname, callback) => async dispatch => {
             dispatch({
                 type: CHECK_NICKNAME_SUCCESS,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([true, apiRes.message]);
+            
         } else{
             dispatch({
                 type: CHECK_NICKNAME_FAIL,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHECK_NICKNAME_FAIL
-        });
+        })
         if (callback) callback([false, error]);
+        
     }
 }
 
 export const change_user = (nickname, major, image, student_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -365,14 +379,16 @@ export const change_user = (nickname, major, image, student_id, callback) => asy
         if(res.status === 200){
             dispatch({
                 type: CHANGE_USER_SUCCESS
-            });
+            })
             if (callback) callback([true, apiRes.message]);
+            
         } else{
             dispatch({
                 type: CHANGE_USER_FAIL,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
         }
     } catch (error) {
         console.log(error);
@@ -384,6 +400,7 @@ export const change_user = (nickname, major, image, student_id, callback) => asy
 }
 
 export const change_password = (password, new_password, new_re_password, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -416,25 +433,29 @@ export const change_password = (password, new_password, new_re_password, callbac
             dispatch({
                 type: CHANGE_PASSWORD_SUCCESS,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([true, apiRes.message]);
+            
         } else{
             dispatch({
                 type: CHANGE_PASSWORD_FAIL,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHANGE_PASSWORD_FAIL
-        });
+        })
         if (callback) callback([false, error]);
+        
     }
 }
 
 export const change_toggle = (campus) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -477,6 +498,7 @@ export const change_toggle = (campus) => async dispatch => {
 }
 
 export const delete_user = (callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -500,21 +522,28 @@ export const delete_user = (callback) => async dispatch => {
             dispatch({
                 type: DELETE_USER_SUCCESS,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([true, apiRes.message]);
+            
+
         } else {
             dispatch({
                 type: DELETE_USER_FAIL,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: DELETE_USER_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
@@ -539,21 +568,28 @@ export const find_username = (email, callback) => async dispatch => {
             dispatch({
                 type: FIND_USERNAME_SUCCESS,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: FIND_USERNAME_FAIL,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: FIND_USERNAME_FAIL
-        });
+        })
         if (callback) callback([false, error]);
+        
     }
 }
 
@@ -580,20 +616,28 @@ export const reset_password = (email, new_password, new_re_password, callback) =
             dispatch({
                 type: RESET_PASSWORD_SUCCESS,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: RESET_PASSWORD_FAIL,
                 payload: apiRes.data
-            });
+            })
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         console.log(error);
         dispatch({
             type: RESET_PASSWORD_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }

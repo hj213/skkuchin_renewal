@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Layout from "../hocs/Layout";
 import SignUpStep1 from '../components/Auth/SignUpStep1';
 import SignUpStep2 from '../components/Auth/SignUpStep2';
 import SignUpStep3 from '../components/Auth/SignUpStep3';
@@ -38,8 +37,9 @@ const RegisterPage = () => {
         setStep(step - 1);
     }
 
-    if(typeof window !== 'undefined' && isAuthenticated)
-        router.push('/dashboard');
+    if (typeof window !== 'undefined' && isAuthenticated)
+        router.push('/');
+
     if(register_success)
         router.push('/login');
     
@@ -47,7 +47,6 @@ const RegisterPage = () => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout title= '스꾸친 | Register' content='Register page'>
             {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <SignUpStep1 handleNextStep={handleNextStep} data={data} setData={setData} />
@@ -68,7 +67,6 @@ const RegisterPage = () => {
                 step === 6 && <SignUpStep6 handlePrevStep={handlePrevStep} />
             }
             {/* </Container> */}
-        </Layout>
         </ThemeProvider>
     )
 };

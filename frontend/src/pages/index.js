@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { search_places } from "../actions/place/place";
-import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
@@ -30,6 +29,11 @@ export default function list(){
 
     const dispatch = useDispatch();
     const router = useRouter();
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
+
     // 장소 정보 불러오기
     const searchplace = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
@@ -79,10 +83,6 @@ export default function list(){
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
-    }
     
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
@@ -306,7 +306,6 @@ export default function list(){
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
-       <Layout>
             
             <UpperBar />
             <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'600px', overflow: 'hidden'}}>
@@ -487,7 +486,6 @@ export default function list(){
                 </Card>
             </Container> 
             </div>
-        </Layout>
     </ThemeProvider>
     )
 }

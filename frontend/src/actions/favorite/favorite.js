@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { API_URL } from '../../config/index';
 import { AUTHENTICATED_FAIL } from '../auth/types';
+import { request_refresh } from '../auth/auth';
 import { 
     LOAD_FAV_SUCCESS,
     LOAD_FAV_FAIL,
@@ -14,6 +15,7 @@ import {
 
 // load FAV
 export const load_favorite = (callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -38,26 +40,36 @@ export const load_favorite = (callback) => async dispatch => {
             dispatch({
                 type: LOAD_FAV_SUCCESS,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         }else {
             dispatch({
                 type: LOAD_FAV_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
 
     } catch (error) {
         dispatch({
             type: LOAD_FAV_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
 
 // enroll fav
 export const enroll_favorite = (place_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -85,27 +97,32 @@ export const enroll_favorite = (place_id, callback) => async dispatch => {
         const apiRes = await res.json();
 
         if (res.status === 201) {
-            dispatch({
+            await dispatch({
                 type: ENROLL_FAV_SUCCESS
-            });
-            dispatch(load_favorite());
+            })
+            await dispatch(load_favorite());
             if (callback) callback([true, apiRes.message]);
+
         } else {
             dispatch({
                 type: ENROLL_FAV_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch(error) {
         dispatch({
             type: ENROLL_FAV_FAIL
-        });
+        })
         if (callback) callback([false, error]);
     }
 };
 
 // del fav
 export const delete_favorite = (favorite_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -126,22 +143,29 @@ export const delete_favorite = (favorite_id, callback) => async dispatch => {
         const apiRes = await res.json();
 
         if (res.status === 200) {
-            dispatch({
+            await dispatch({
                 type: DELETE_FAV_SUCCESS
-            });
-            dispatch(load_favorite());
+            })
+            await dispatch(load_favorite());
             if (callback) callback([true, apiRes.message]);
+            
         } else {
             dispatch({
                 type: DELETE_FAV_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch(error) {
         dispatch({
             type: DELETE_FAV_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 };
 

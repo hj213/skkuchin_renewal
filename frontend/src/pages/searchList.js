@@ -31,7 +31,11 @@ export default function searchList(){
     const searchplace = useSelector(state => state.place.searchplace);
     const allplaces = useSelector(state => state.place.allplaces);
     const favorites = useSelector(state => state.favorite.favorite);
-
+    
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
     //user의 input값 받아오기
     const { keyword } = router.query;
 
@@ -146,7 +150,6 @@ export default function searchList(){
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <Layout>
             <div style={{position:'absolute', zIndex:'2'}}>
                 <UpperBar/>
             </div>
@@ -339,7 +342,7 @@ export default function searchList(){
                     </Card>
                 </Container> }
             </div> 
-            </Layout>
+            
         </ThemeProvider>
     )
 }

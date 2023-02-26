@@ -159,6 +159,11 @@ export default function makeProfile(){
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
     const user = useSelector(state => state.auth.user);
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+    
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
 

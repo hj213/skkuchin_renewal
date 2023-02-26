@@ -1,17 +1,18 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { request_refresh } from "../actions/auth/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
-import Navbar from "../components/Navbar";
 
 const Layout = ({title, content, children}) => {
     
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
-    
+
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined)
-            dispatch(request_refresh());
-    }, [dispatch]);
+        if (!isAuthenticated) {
+            dispatch(load_user());
+        }
+    }, []);
 
     return ( 
             <>
@@ -20,7 +21,7 @@ const Layout = ({title, content, children}) => {
                     <meta name="description" content={content} ></meta>
                 </Head>
                 
-                <div className="container mt-5">
+                <div>
                     {children}
                 </div>
             </>
@@ -29,7 +30,7 @@ const Layout = ({title, content, children}) => {
 
 Layout.defaultProps = {
     title: '스꾸친',
-    content: 'hocs의 layout.js의 페이지입니다.'
+    content: '스꾸친은 성균관대학교 학생들 간의 밥 약속을 성사시켜드립니다!'
 }
 
 export default Layout;
