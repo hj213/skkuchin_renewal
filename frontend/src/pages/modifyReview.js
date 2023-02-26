@@ -6,7 +6,8 @@ import { load_review } from "../actions/review/review";
 import { load_reviews } from "../actions/review/review";
 import { modify_review } from "../actions/review/review";
 
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, Button, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
@@ -28,9 +29,9 @@ import tag7 from '../image/tags/review_off/review_two.png';
 import tag7on from '../image/tags/review_on/review_twoY.png';
 import image from '../image/morePicY.png';
 
-
 import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
+import removeBtn from '../image/close.png';
 
 import TextField from '@mui/material/TextField';
 
@@ -165,7 +166,7 @@ const ModifyReview = () => {
      const handleModifyClick = (event) =>{
         event.preventDefault();
         
-        dispatch(modify_review(review_id, rating, textReview, images, review.images, tagList, ([result, message])=>{
+        dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
             if(result){
                 alert("PUT 요청 result: " + result)
                 router.push({
@@ -362,13 +363,12 @@ const ModifyReview = () => {
                                 <Grid container style={{position:'relative', width:'100%'}}>
                                     <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
                                         {previewImages.map((previewImage, index) => (
-                                            <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
-                                                <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
-                                                objectPosition: 'center center' }} />
-                                                <button type="button" onClick={() => handleImageRemove(index)}>
-                                                    X
-                                                </button>
-                                            </Grid>
+                                        <Grid item key={index} style={{ display: 'inline-block', flexShrink: 0, paddingRight: '5px', position: 'relative' }}>
+                                            <img key={previewImage} src={previewImage} alt="preview" style={{ width: '150px', height: '150px', objectFit: 'contain', objectPosition: 'center center' }} />
+                                            <Button type="button" onClick={() => handleImageRemove(index)} style={{ position: 'absolute', top: '0', right: '0', padding: '5px', justifyContent: 'right' }}>
+                                                <Image src={removeBtn} width={25} height={25} />
+                                            </Button>
+                                        </Grid>
                                         ))}
                                     </Grid>
                                 </Grid>
