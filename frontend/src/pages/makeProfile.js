@@ -155,6 +155,7 @@ export default function makeProfile(){
 
     const dispatch = useDispatch();
     const router = useRouter();
+    const src = router.query.src;
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -245,10 +246,26 @@ export default function makeProfile(){
     const [mbti, setMbti] = useState('');
     const [condition, setCondition] = useState(false); //확인버튼 조건 
 
-    const [visibility, setVisibility] = useState({
-        '뒤로가기': 'hidden',
-        '건너뛰기': 'hidden',
-    }); //어느 페이지에서 접근하는지에 따라 상단 바뀌도록
+    const [visibility, setVisibility] = useState(
+       {
+        'back':'hidden',
+        '건너뛰기':'hidden'
+       }
+    ); //어느 페이지에서 접근하는지에 따라 상단 바뀌도록
+
+    useEffect(() => {
+        if (src == '회원가입') {
+          setVisibility({
+            back: 'hidden',
+            건너뛰기: 'visible',
+          });
+        } else if (src == '매칭프로필설정') {
+          setVisibility({
+            back: 'visible',
+            건너뛰기: 'hidden',
+          });
+        }
+      }, [src]);
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -522,7 +539,8 @@ export default function makeProfile(){
     //     }
     // }
     
-    //확인
+    
+    //확인버튼
     const handleOnSubmit = (event) => {
         
         event.preventDefault();
@@ -533,7 +551,7 @@ export default function makeProfile(){
                     router.push({
                         pathname: '/completeProfile',
                         query: { viewportHeight: window.innerHeight,
-                        src : '매칭프로필설정', }
+                        src : src, }
                       })
                 } else {
                     alert(message);
@@ -565,13 +583,13 @@ export default function makeProfile(){
         if(allKeywords.length >= 3 ){
             setKeyword(allKeywords);
         }else{
-            setKeyword('');
+            setKeyword([]);
         }
       }, [mbtiChoose, food, study, art, sports]);
 
     //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
-        if(gender && keyword && introduction != '' && mbti){
+        if(gender && keyword.length >0 && introduction != '' && mbti){
     
             setCondition(true);
         } else {
@@ -579,7 +597,6 @@ export default function makeProfile(){
         }
     }, [gender, keyword, introduction, mbti]);
     
-      console.log(gender, keyword, introduction, mbti);
 
     return(
         <ThemeProvider theme={theme}>
@@ -587,14 +604,14 @@ export default function makeProfile(){
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility: visibility.back}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
                             </Grid>
                             <Grid item style={{marginLeft:'27%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
                             <Grid item style={{marginLeft:'18%', }}>
-                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility:'hidden'}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
+                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
                     </Container>

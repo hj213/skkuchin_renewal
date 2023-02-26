@@ -4,7 +4,8 @@ import Container from '@mui/material/Container';
 import dynamic from "next/dynamic";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-
+import Head from 'next/head';
+import Layout from '../hocs/Layout';
 
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);
@@ -41,9 +42,15 @@ const App = ({ Component, pageProps }) => {
 
   return (
       <Provider store={store}>
-        <Container style={{padding:'0px', overflowY: 'hidden'}} maxWidth="sm">
-          <Component {...pageProps} />
-        </Container>
+        <Layout>
+          <Container style={{padding:'0px', overflowY: 'hidden'}} maxWidth="sm">
+              <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+                <title>스꾸친</title>
+              </Head>
+            <Component {...pageProps} />
+          </Container>
+        </Layout>
       </Provider>
   );
 }

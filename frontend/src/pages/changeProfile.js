@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { change_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
 import { load_user } from "../actions/auth/auth";
-import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
+import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField, Alert} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
 import back from '../image/arrow_back_ios.png';
@@ -14,6 +14,7 @@ import manCheck from '../image/gender/maleY.png';
 import textForm from '../image/mbti/profile/intro.png';
 import submitOk from '../image/checkY.png';
 import submit from '../image/checkG.png';
+import AlertMessage from '../components/Alert';
 
 //mbti
 import E from '../image/mbti/E-1.png';
@@ -158,6 +159,11 @@ export default function makeProfile(){
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
     const user = useSelector(state => state.auth.user);
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+    
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
 
@@ -312,6 +318,8 @@ export default function makeProfile(){
     const [image, setImage] = useState('');
     const [mbti, setMbti] = useState('');
     const [condition, setCondition] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -593,12 +601,15 @@ export default function makeProfile(){
                     alert(message);
                     router.back();
                 } else {
-                    alert(message);
+                    // alert(message);
+                    setAlertOpen(true);
+                    setAlertMessage(message);
                 }
             }));
-            
+        setAlertOpen(false);
+        setAlertMessage('');
     } 
-
+    
     //데이터 전달하기 위하여
     useEffect(() => {
 
@@ -626,13 +637,13 @@ export default function makeProfile(){
                 
                 setKeyword(allKeywords);
             } else {
-                setKeyword('');
+                setKeyword([]);
             }
       }, [mbtiChoose, food, study, art, sports]);
 
     //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
-        if(gender && keyword && introduction != '' && mbti){
+        if(gender && keyword.length > 0 && introduction != '' && mbti){
     
             setCondition(true);
         } else {
@@ -641,10 +652,11 @@ export default function makeProfile(){
     }, [gender, keyword, introduction, mbti]);
 
     console.log(gender, keyword, introduction, mbti);
-    
+   
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+                <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
@@ -847,7 +859,7 @@ export default function makeProfile(){
                             </div>
                         </Container>
                         <Container name='interest' style={{padding:'0px'}}>
-                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 interest</Typography>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'35px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>📚 학술</Typography>
                             <div style={{marginBottom:'9px'}}>
                                 <Grid container style={{maxWidth:'330px'}}>
                                     <Grid style={{marginRight:'8px'}}>

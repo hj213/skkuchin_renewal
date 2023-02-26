@@ -10,7 +10,6 @@ import { load_menu }  from "../actions/menu/menu";
 import {BadgeProps} from '@mui/material/Badge'
 import {styled} from '@mui/material/styles';
 import { IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
-import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';

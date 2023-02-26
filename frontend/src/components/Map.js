@@ -200,6 +200,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
 const MapContainer = styled.div`
     weight: 100%;
+    
 `;
 
 export default Map;

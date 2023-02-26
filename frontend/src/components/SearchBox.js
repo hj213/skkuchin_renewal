@@ -20,7 +20,8 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     const [autoBox, setAutoBox] = useState(false);
-    
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
@@ -30,11 +31,12 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             
         }
     }, [dispatch]);
-
-    useEffect(()=>{
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());}
-    }, []);
+  
+    useEffect(() => {
+        if (!allPlaces || allPlaces.length === 0) {
+          dispatch(load_places());
+        }
+      }, [dispatch, allPlaces]);
     
     //캠퍼스 필터링
     useEffect(() => {
@@ -130,7 +132,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                         <Image src={searchBox} layout="responsive" priority />
                     </div>
                 </div>
-                { autoBox && (
+                { autoBox && value && (
                 <div onMouseDown={handleContainerMouseDown}>
                     <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px'}}> 

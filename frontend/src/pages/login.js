@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 import { login, find_username, check_nickname, check_username } from "../actions/auth/auth";
-import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
 
-import Link from 'next/link';
 import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
@@ -81,8 +79,6 @@ const LoginPage = () => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            
-            {/* <Layout title= '스꾸친 | Login' content='Register page'> */}
                 <Container component="main" maxWidth="xs">
                     <Box
                         sx={{
@@ -165,8 +161,6 @@ const LoginPage = () => {
                 </div>
                     </Box>
                 </Container>
-            
-            {/* </Layout> */}
             <div style={{display: 'grid', justifyItems: 'center', marginBottom: '40px'}}>
             <div style={{display: 'grid', justifyItems: 'center', fontSize: '9px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
                 <div>로그인하면 스꾸친 이용약관에 동의하는 것으로 간주합니다.</div>

@@ -3,6 +3,7 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -33,6 +34,9 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailService {
+
+    @Value("${mail.host}")
+    private String host;
     private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
     @Autowired
     JavaMailSenderImpl emailSender;
@@ -164,16 +168,18 @@ public class EmailService {
         String emailType = getEmailType(type);
         String s = emailType == "회원가입" ? "을" : "를";
         createCode();
-        String setFrom = "skkuchin@gmail.com";
+        String setFrom = "skkuchinmail@gmail.com";
         String toEmail = email; //받는 사람
         String title = "[SKKUCHIN "+emailType+"] 이메일 인증";
         //String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\email_enhang.png";
         /*
         String mailContent = "<div style='font-size: 48px;'><span style='color: #FFCE00; font-weight: bold'>메일인증</span> <span>안내입니다.</span></div>"
                 + "<br><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
-                + "<a href='http://localhost:8080/api/email/confirm/"
+                + "<a href='"
+                + host
+                + "/api/email/confirm/"
                 + type.name().toLowerCase()
-                + "?email=" + email + "&authNum=" + authNum + "' target='_blenk'>이메일 인증 확인</a>";*/
+                + "?email=" + email + "&authNum=" + authNum + "' target='_blank'>이메일 인증 확인</a>";*/
         String mailContent = "<div style='margin-left: 20px'>" +
             "<div style='width: 100%; height: 2px; background-color: #FFCE00; margin-bottom: 30px; margin-top: 25px'></div>" +
             "<div style='color: #BABABA; font-size: 12px; margin-bottom: 8px'>SKKUCHIN</div>" +
@@ -191,7 +197,7 @@ public class EmailService {
             "</div>" +
             "<a href='http://localhost:8080/api/email/confirm/" +
             type.name().toLowerCase() +
-            "?email=" + email + "&authNum=" + authNum + "' target='_blenk'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +
+            "?email=" + email + "&authNum=" + authNum + "' target='_blank'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +
         "</div>";
 
         MimeMessage message = emailSender.createMimeMessage();

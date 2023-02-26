@@ -8,20 +8,21 @@ import back from '../image/arrow_back_ios.png';
 import time from '../image/calendar.png';
 import place from '../image/marker.png';
 import more from '../image/more_vert.png';
-import Layout from "../hocs/Layout";
 
 
 const chatPage = () => {
 
     const router = useRouter();
 
-    const user = useSelector(state => state.auth.user); 
-    
+    const user = useSelector(state => state.auth.user);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
     
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Layout>
                 <Grid
                     sx={{
                     marginTop: '36px',
@@ -56,7 +57,6 @@ const chatPage = () => {
                         </div>
                     </Grid>
                 </Grid>
-            </Layout>
         </ThemeProvider>
     )
 }

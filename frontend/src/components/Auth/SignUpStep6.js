@@ -18,7 +18,10 @@ const SignUpStep6 = (props) => {
     }
 
     const handleButtonClick = () => {
-        router.push('/makeProfile');
+        router.push({
+          pathname: '/makeProfile',
+          query: { src : '회원가입', }
+        });
     }
       
     return (

@@ -24,6 +24,10 @@ export default function myPage() {
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -42,10 +46,6 @@ export default function myPage() {
     }
     const handleDialogClose = () => {
         setDialogOpen(false);
-    }
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
     }
 
     useEffect(() => {

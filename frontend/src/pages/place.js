@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_menu }  from "../actions/menu/menu";
 import { load_favorite, enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
-import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
 import { CssBaseline, Box, Rating, Select, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
@@ -27,9 +26,14 @@ import { load_place } from "../actions/place/place";
 import ReviewItem from "../components/ReviewItem";
 
 const PlacePage = () => {
-    
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+    const WINDOW_HEIGHT = window.innerHeight;
     const router = useRouter();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
     // list.js 에서 전달 받은 id 값 받아오기
     const { id } = router.query;
 
@@ -59,7 +63,7 @@ const PlacePage = () => {
     const favorites = useSelector(state => state.favorite.favorite);
 
     // *슬라이드탭 카드 애니메이션 관리
-    const [height, setHeight] =  useState('32%');
+    const [height, setHeight] =  useState('');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
@@ -80,6 +84,14 @@ const PlacePage = () => {
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
     }
+
+    useEffect(()=>{
+        if(WINDOW_HEIGHT < 750){
+            setHeight('175px')
+        } else {
+            setHeight('320px')
+        }
+    },[])
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
@@ -105,9 +117,7 @@ const PlacePage = () => {
     const handleTouchMove = (event) => {
         event.preventDefault();
 
-        const WINDOW_HEIGHT = window.innerHeight;
         const TARGET_HEIGHT = WINDOW_HEIGHT-160;
-        console.log(TARGET_HEIGHT);
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
             setHeight(TARGET_HEIGHT);
@@ -121,8 +131,11 @@ const PlacePage = () => {
             });
             setScroll('scroll');
         } else {
-            
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -141,7 +154,11 @@ const PlacePage = () => {
         if(event.target.name == 'back' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
@@ -195,8 +212,6 @@ const PlacePage = () => {
     const handleReviewClick = (e) => {
         e.preventDefault();
     };
-        
-    
     
     // 검색창에 포커스 잡혔을 때
     //드로워가 열리거나
@@ -259,7 +274,6 @@ const PlacePage = () => {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout>   
             <UpperBar/>
                 <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
@@ -569,7 +583,6 @@ const PlacePage = () => {
                     </Card>
                 </Container>
                 </div>
-            </Layout>
         </ThemeProvider>
     );
 };

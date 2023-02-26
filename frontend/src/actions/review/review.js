@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
+import { request_refresh } from '../auth/auth';
 import {
     LOAD_REVIEWS_FAIL,
     LOAD_REVIEWS_SUCCESS,
@@ -15,6 +16,7 @@ import {
 } from './types'
 
 export const load_reviews = (place_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -40,22 +42,32 @@ export const load_reviews = (place_id, callback) => async dispatch => {
                 type: LOAD_REVIEWS_SUCCESS,
                 payload: apiRes.data
             })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         } else {
             dispatch({
                 type: LOAD_REVIEWS_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         dispatch({
             type: LOAD_REVIEWS_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
 export const load_review = (callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -81,12 +93,18 @@ export const load_review = (callback) => async dispatch => {
                 type: LOAD_REVIEW_SUCCESS,
                 payload: apiRes.data
             })
-            if (callback) callback([true, apiRes.message]);
+            .then(() => {
+                if (callback) callback([true, apiRes.message]);
+            });
+            
         }else{
             dispatch({
                 type: LOAD_REVIEW_FAIL
+            })
+            .then(() => {
+                if (callback) callback([false, apiRes.message]);
             });
-            if (callback) callback([false, apiRes.message]);
+            
         }
     } catch (error) {
         dispatch({
@@ -98,6 +116,7 @@ export const load_review = (callback) => async dispatch => {
 
 // enroll review
 export const enroll_review = (place_id, rate, content, images, tags, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -140,25 +159,35 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
         if (res.status === 201) {
             dispatch({
                 type: ENROLL_REVIEW_SUCCESS
+            })
+            .then(() => {
+                if (callback) callback([true, apiRes.message]);
             });
-            if (callback) callback([true, apiRes.message]);
+            
         } else {
             dispatch({
                 type: ENROLL_REVIEW_FAIL
+            })
+            .then(() => {
+                if (callback) callback([false, apiRes.message]);
             });
-            if (callback) callback([false, apiRes.message]);
+            
         }
     } catch(error) {
         console.log(error)
         dispatch({
             type: ENROLL_REVIEW_FAIL
+        })
+        .then(() => {
+            if (callback) callback([false, error]);
         });
-        if (callback) callback([false, error]);
+        
     }
 };
 
 // modify review
 export const modify_review = (review_id, rate, content, images, urls, tags, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -208,24 +237,34 @@ export const modify_review = (review_id, rate, content, images, urls, tags, call
         if (res.status === 200) {
             dispatch({
                 type: MODIFY_REVIEW_SUCCESS
+            })
+            .then(() => {
+                if (callback) callback([true, apiRes.message]);
             });
-            if (callback) callback([true, apiRes.message]);
+            
         } else {
             dispatch({
                 type: MODIFY_REVIEW_FAIL
+            })
+            .then(() => {
+                if (callback) callback([false, apiRes.message]);
             });
-            if (callback) callback([false, apiRes.message]);
+            
         }
     } catch(error) {
         dispatch({
             type: MODIFY_REVIEW_FAIL
+        })
+        .then(() => {
+            if (callback) callback([false, error]);
         });
-        if (callback) callback([false, error]);
+        
     }
 };
 
 // delete review
 export const delete_review = (review_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -248,19 +287,28 @@ export const delete_review = (review_id, callback) => async dispatch => {
         if (res.status === 200) {
             dispatch({
                 type: DELETE_REVIEW_SUCCESS
+            })
+            .then(() => {
+                if (callback) callback([true, apiRes.message]);
             });
-            if (callback) callback([true, apiRes.message]);
+            
         } else {
             dispatch({
                 type: DELETE_REVIEW_FAIL
+            })
+            .then(() => {
+                if (callback) callback([false, apiRes.message]);
             });
-            if (callback) callback([false, apiRes.message]);
+            
         }
     } catch(error) {
         dispatch({
             type: DELETE_REVIEW_FAIL
+        })
+        .then(() => {
+            if (callback) callback([false, error]);
         });
-        if (callback) callback([false, error]);
+        
     }
 };
 
