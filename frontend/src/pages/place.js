@@ -26,6 +26,8 @@ import { load_place } from "../actions/place/place";
 import ReviewItem from "../components/ReviewItem";
 
 const PlacePage = () => {
+
+    const WINDOW_HEIGHT = window.innerHeight;
     const router = useRouter();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -61,7 +63,7 @@ const PlacePage = () => {
     const favorites = useSelector(state => state.favorite.favorite);
 
     // *슬라이드탭 카드 애니메이션 관리
-    const [height, setHeight] =  useState('32%');
+    const [height, setHeight] =  useState('');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
@@ -78,6 +80,18 @@ const PlacePage = () => {
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
+
+    useEffect(()=>{
+        if(WINDOW_HEIGHT < 750){
+            setHeight('175px')
+        } else {
+            setHeight('320px')
+        }
+    },[])
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
@@ -103,9 +117,7 @@ const PlacePage = () => {
     const handleTouchMove = (event) => {
         event.preventDefault();
 
-        const WINDOW_HEIGHT = window.innerHeight;
         const TARGET_HEIGHT = WINDOW_HEIGHT-160;
-        console.log(TARGET_HEIGHT);
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
             setHeight(TARGET_HEIGHT);
@@ -119,8 +131,11 @@ const PlacePage = () => {
             });
             setScroll('scroll');
         } else {
-            
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -139,7 +154,11 @@ const PlacePage = () => {
         if(event.target.name == 'back' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'

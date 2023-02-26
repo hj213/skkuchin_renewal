@@ -11,9 +11,9 @@ export default function matchingComplete (){
     const router = useRouter();
     const viewportHeight = router.query.viewportHeight ? parseInt(router.query.viewportHeight) : 0;
     const src= router.query.src;
-
+    console.log(src);
     const handleButtonClick = (e) => {
-        if(src == '로그인'){
+        if(src == '회원가입'){
             router.push('/login');
         } else if(src == '매칭프로필설정'){
             router.push('/match');
