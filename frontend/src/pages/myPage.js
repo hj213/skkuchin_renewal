@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions } from '@mui/material';
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
+import next from '../image/arrow_next.png';
 import toggle_off from '../image/toggle_off.png';
 import toggle_on from '../image/toggle on.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
@@ -122,7 +123,7 @@ export default function myPage() {
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번</Typography>
                     </div>
                 </div>
-                <div onClick={arrowClick}><Image width={10.43} height={17.69} src={back} onClick={arrowClick} style={{zIndex: '-1'}}/></div>
+                <div onClick={arrowClick}><Image width={10.43} height={17.69} src={next} onClick={arrowClick} style={{zIndex: '-1'}}/></div>
             </div>
             
             {/* 사용자 설정 */}
@@ -166,7 +167,7 @@ export default function myPage() {
             <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '80px', marginBottom: '50px'}}>
                 <div style={{display: 'flex', fontSize: '14px'}}>
                     <Button onClick={() => router.push('/deleteUser')} variant="text" style={{color: "#BABABA"}}>탈퇴하기</Button>
-                    <Button variant="text" style={{color: "#BABABA"}}>약관 및 정책</Button>
+                    <Button onClick={() => router.push('/agreement')} variant="text" style={{color: "#BABABA"}}>약관 및 정책</Button>
                 </div>
             </Container>
 

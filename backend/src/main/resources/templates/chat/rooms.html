@@ -79,6 +79,8 @@
 
     stomp.debug = onDebug;
 
+    // Define a list to hold chat messages
+    const chatMessages = [];
 
     stomp.connect('guest', 'guest', function (frame) {
 
@@ -88,21 +90,13 @@
 
       stomp.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`,function (content) {
 
-            const payload = JSON.parse(content.body);
+          const payload = JSON.parse(content.body);
 
-            let className = payload.sender == sender? 'mine' : 'yours';
+          // Append new message to list
+          chatMessages.push(payload);
 
-            const html = `<div class="${className}">
-                            <div class="sender">${payload.sender}</div>
-                            <div class="message">${payload.message}</div>
-                           <!-- <div class="message">${payload.type}</div>-->
-                            <div class="message">${payload.date}</div>
-                            <div class="message">${payload.userCount}</div>
-
-
-                        </div>`
-
-            chats.insertAdjacentHTML('beforeend', html);
+          // Render the updated list of messages
+          renderChatMessages();
 
             //밑의 인자는 Queue 생성 시 주는 옵션
             //auto-delete : Consumer가 없으면 스스로 삭제되는 Queue
@@ -119,6 +113,20 @@
 
     }, onError, '/');
 
+
+    // Render the list of chat messages
+    function renderChatMessages() {
+        const chatHtml = chatMessages.map((payload) => {
+            let className = payload.sender == sender ? 'mine' : 'yours';
+            return `<div class="${className}">
+                    <div class="sender">${payload.sender}</div>
+                    <div class="message">${payload.message}</div>
+                    <div class="message">${payload.date}</div>
+                    <div class="message">${payload.userCount}</div>
+                </div>`;
+        }).join('');
+        chats.innerHTML = chatHtml;
+    }
    
 
 sockJS.addEventListener('close', () => {

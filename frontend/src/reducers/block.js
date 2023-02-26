@@ -19,7 +19,7 @@ const blockReducer = (state = initialState, action) => {
         case LOAD_BLOCK_SUCCESS:
             return {
                 ...state,
-                blockedUsers: payload.blockedUsers
+                blockedUsers: payload
             }
         case LOAD_BLOCK_FAIL:
             return {

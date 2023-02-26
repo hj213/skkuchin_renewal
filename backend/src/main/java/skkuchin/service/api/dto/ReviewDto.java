@@ -84,6 +84,7 @@ public class ReviewDto {
         @NotBlank
         private String content;
         private List<MultipartFile> images;
+        private List<String> urls;
         private List<String> tags;
 
         public ReviewTag toReviewTagEntity(Review review, Tag tag) {

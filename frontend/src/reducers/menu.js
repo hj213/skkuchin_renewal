@@ -15,7 +15,7 @@ const menuReducer = (state= initialState, action) => {
         case LOAD_MENU_SUCCESS:
             return {
                 ...state,
-                menu: payload.menu
+                menu: payload
             }
         case LOAD_MENU_FAIL:
             return {

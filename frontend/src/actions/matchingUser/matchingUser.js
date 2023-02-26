@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie';
+import { API_URL } from '../../config/index';
+import { AUTHENTICATED_FAIL } from '../auth/types';
 import { 
     ADD_MATCHING_INFO_SUCCESS,
     ADD_MATCHING_INFO_FAIL,
@@ -11,32 +14,42 @@ import {
     from './types';
 
 export const add_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
     const body = JSON.stringify({
         gender, keywords, introduction, mbti
     });
     
     try {
-        const res = await fetch('/api/matching/user',{
+        const res = await fetch(`${API_URL}/api/matching/user`,{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
             },
             body: body
         });
 
-        const data = await res.json();
+        const apiRes = await res.json();
 
         if(res.status === 201){
             dispatch({
                 type: ADD_MATCHING_INFO_SUCCESS
             });
-            if (callback) callback([true, data.success]);
+            if (callback) callback([true, apiRes.message]);
         }else {
             dispatch({
                 type: ADD_MATCHING_INFO_FAIL
             });
-            if (callback) callback([false, data.error]);
+            if (callback) callback([false, apiRes.message]);
         }
 
     } catch (error) {
@@ -49,27 +62,37 @@ export const add_matching_info = (gender, keywords, introduction, mbti, callback
 }
 
 export const load_matching_info = (callback) => async dispatch => {
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+    
     try {
-        const res = await fetch('/api/matching/user/me',{
+        const res = await fetch(`${API_URL}/api/matching/user/me`,{
             method: 'GET',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
             }
         });
 
-        const data = await res.json();
+        const apiRes = await res.json();
 
         if(res.status === 200){
             dispatch({
                 type: LOAD_MATCHING_INFO_SUCCESS,
-                payload: data
+                payload: apiRes.data
             });
-            if (callback) callback([true, data.success]);
+            if (callback) callback([true, apiRes.message]);
         }else {
             dispatch({
                 type: LOAD_MATCHING_INFO_FAIL
             });
-            if (callback) callback([false, data.error]);
+            if (callback) callback([false, apiRes.message]);
         }
 
     } catch (error) {
@@ -82,26 +105,36 @@ export const load_matching_info = (callback) => async dispatch => {
 }
 
 export const change_status_info = (matching, callback) => async dispatch => {
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+    
     try {
-        const res = await fetch(`/api/matching/user/${matching}`,{
+        const res = await fetch(`${API_URL}/api/matching/user/${matching}`,{
             method: 'PUT',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
             }
         });
 
-        const data = await res.json();
+        const apiRes = await res.json();
 
         if(res.status === 200){
             dispatch({
                 type: CHANGE_MATCHING_STATUS_SUCCESS
             });
-            if (callback) callback([true, data.success]);
+            if (callback) callback([true, apiRes.message]);
         }else {
             dispatch({
                 type: CHANGE_MATCHING_STATUS_FAIL
             });
-            if (callback) callback([false, data.error]);
+            if (callback) callback([false, apiRes.message]);
         }
 
     } catch (error) {
@@ -114,32 +147,42 @@ export const change_status_info = (matching, callback) => async dispatch => {
 }
 
 export const change_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
     const body = JSON.stringify({
         gender, keywords, introduction, mbti
     });
 
     try {
-        const res = await fetch(`/api/matching/user`,{
+        const res = await fetch(`${API_URL}/api/matching/user`,{
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
             },
             body: body
         });
 
-        const data = await res.json();
+        const apiRes = await res.json();
 
         if(res.status === 200){
             dispatch({
                 type: CHANGE_MATCHING_INFO_SUCCESS
             });
-            if (callback) callback([true, data.success]);
+            if (callback) callback([true, apiRes.message]);
         }else {
             dispatch({
                 type: CHANGE_MATCHING_INFO_FAIL
             });
-            if (callback) callback([false, data.error]);
+            if (callback) callback([false, apiRes.message]);
         }
 
     } catch (error) {
