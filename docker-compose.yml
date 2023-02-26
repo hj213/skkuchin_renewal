@@ -64,7 +64,7 @@ services:
     image: client
     build:
       context: "./frontend"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: always
     container_name: skkuchin-frontend
     ports:
