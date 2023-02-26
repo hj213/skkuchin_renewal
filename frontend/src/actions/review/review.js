@@ -93,17 +93,17 @@ export const load_review = (callback) => async dispatch => {
                 type: LOAD_REVIEW_SUCCESS,
                 payload: apiRes.data
             })
-            .then(() => {
-                if (callback) callback([true, apiRes.message]);
-            });
+            
+            if (callback) callback([true, apiRes.message]);
+            
             
         }else{
             dispatch({
                 type: LOAD_REVIEW_FAIL
             })
-            .then(() => {
-                if (callback) callback([false, apiRes.message]);
-            });
+            
+            if (callback) callback([false, apiRes.message]);
+            
             
         }
     } catch (error) {
@@ -160,17 +160,17 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
             dispatch({
                 type: ENROLL_REVIEW_SUCCESS
             })
-            .then(() => {
-                if (callback) callback([true, apiRes.message]);
-            });
+            
+            if (callback) callback([true, apiRes.message]);
+            
             
         } else {
             dispatch({
                 type: ENROLL_REVIEW_FAIL
             })
-            .then(() => {
-                if (callback) callback([false, apiRes.message]);
-            });
+            
+            if (callback) callback([false, apiRes.message]);
+            
             
         }
     } catch(error) {
@@ -178,9 +178,9 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
         dispatch({
             type: ENROLL_REVIEW_FAIL
         })
-        .then(() => {
-            if (callback) callback([false, error]);
-        });
+        
+        if (callback) callback([false, error]);
+        
         
     }
 };
@@ -238,26 +238,26 @@ export const modify_review = (review_id, rate, content, images, urls, tags, call
             dispatch({
                 type: MODIFY_REVIEW_SUCCESS
             })
-            .then(() => {
-                if (callback) callback([true, apiRes.message]);
-            });
+            
+            if (callback) callback([true, apiRes.message]);
+            
             
         } else {
             dispatch({
                 type: MODIFY_REVIEW_FAIL
             })
-            .then(() => {
-                if (callback) callback([false, apiRes.message]);
-            });
+            
+            if (callback) callback([false, apiRes.message]);
+            
             
         }
     } catch(error) {
         dispatch({
             type: MODIFY_REVIEW_FAIL
         })
-        .then(() => {
-            if (callback) callback([false, error]);
-        });
+        
+        if (callback) callback([false, error]);
+        
         
     }
 };
@@ -288,26 +288,26 @@ export const delete_review = (review_id, callback) => async dispatch => {
             dispatch({
                 type: DELETE_REVIEW_SUCCESS
             })
-            .then(() => {
-                if (callback) callback([true, apiRes.message]);
-            });
+            
+            if (callback) callback([true, apiRes.message]);
+            
             
         } else {
             dispatch({
                 type: DELETE_REVIEW_FAIL
             })
-            .then(() => {
-                if (callback) callback([false, apiRes.message]);
-            });
+            
+            if (callback) callback([false, apiRes.message]);
+            
             
         }
     } catch(error) {
         dispatch({
             type: DELETE_REVIEW_FAIL
         })
-        .then(() => {
-            if (callback) callback([false, error]);
-        });
+        
+        if (callback) callback([false, error]);
+        
         
     }
 };

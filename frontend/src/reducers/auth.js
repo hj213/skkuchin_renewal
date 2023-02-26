@@ -104,10 +104,8 @@ const authReducer = (state = initialState, action) => {
         case REFRESH_SUCCESS:
             if (process.env.NODE_ENV === 'production') {
                 Cookies.set('access', payload.access, { secure: true, expires: 1 });
-                Cookies.set('refresh', payload.refresh, { secure: true, expires: 180 });
             } else {
                 Cookies.set('access', payload.access);
-                Cookies.set('refresh', payload.refresh);
             }
             return {
                 ...state,
