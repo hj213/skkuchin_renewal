@@ -113,7 +113,7 @@ export default function myPage() {
         <UpperBar />
         {user && <div style={{marginTop: '30px'}}>
             {/* 상단 회원 정보 */}
-            <div style={{display: 'grid', gridTemplateColumns: '72px 1fr 11px', alignItems: 'center', padding: '0 15px'}}>
+            <div style={{display: 'grid', gridTemplateColumns: '72px 1fr 38px', alignItems: 'center', padding: '0 15px'}}>
                 {displayProfile(user.image, 72, 72)}
                 <div style={{display: 'flex', flexDirection: 'column', marginLeft: '9px'}}>
                     <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname} 님</Typography>
@@ -123,7 +123,7 @@ export default function myPage() {
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번</Typography>
                     </div>
                 </div>
-                <div onClick={arrowClick}><Image width={10.43} height={17.69} src={next} onClick={arrowClick} style={{zIndex: '-1'}}/></div>
+                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}}/></div>
             </div>
             
             {/* 사용자 설정 */}

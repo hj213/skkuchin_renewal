@@ -39,7 +39,7 @@ const SignUpStep1 = (props) => {
         const password = e.target.value;
         props.setData({...props.data, password})
 
-        if (password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,16}$/)) {
+        if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/)) {
             setValidPW(true);
         } else {
             setValidPW(false);
@@ -121,7 +121,7 @@ const SignUpStep1 = (props) => {
                     validPW ? 
                     <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>안전한 비밀번호입니다.</Typography>
                     : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '25px'}}>안전하지 않은 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
+                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>영문, 숫자, 특수문자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
             </div>
             <div style={{margin: '0 36px'}}>
                 <TextField

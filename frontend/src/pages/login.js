@@ -101,6 +101,7 @@ const LoginPage = () => {
                                     type = 'text' name='username' 
                                     placeholder ='아이디' onChange={onChange} value={username}
                                     required
+                                    autoComplete='off'
                                     style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px', outline: 'none'}}
                                 />
                             </div>
@@ -110,6 +111,7 @@ const LoginPage = () => {
                                     placeholder ='비밀번호' onChange={onChange} value={password}
                                     onClick={() => setError('')}
                                     required
+                                    autoComplete='off'
                                     style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px', outline: 'none'}}
                                 />
                                 <div style={{alignSelf: 'start', justifySelf: 'start'}}><Typography sx={{height: '15px', fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px'}}>{error}</Typography></div>
@@ -166,7 +168,7 @@ const LoginPage = () => {
             
             {/* </Layout> */}
             <div style={{display: 'grid', justifyItems: 'center', marginBottom: '40px'}}>
-            <div style={{display: 'grid', justifyItems: 'center', fontSize: '4px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
+            <div style={{display: 'grid', justifyItems: 'center', fontSize: '9px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
                 <div>로그인하면 스꾸친 이용약관에 동의하는 것으로 간주합니다.</div>
                 <div style={{marginTop: '6px', textAlign: 'center'}}>스꾸친의 회원정보 처리방식은 개인정보 처리방침 및 쿠키 정책에서 확인해보세요.</div>
             </div>

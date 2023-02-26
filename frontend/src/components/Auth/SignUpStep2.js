@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, Container, Grid} from '@mui/material';
+import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, Container, Grid, AutoComplete} from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
@@ -14,6 +14,7 @@ const SignUpStep2 = (props) => {
     const [validNickname, setValidNickname] = useState(null);
     const [nicknameMsg, setNicknameMsg] = useState("");
     const [studentId, setStudentId] = useState("");
+    //const [majorValue, setMajorValue] = useState("");
 
     const majorList = [
       '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공',
@@ -38,6 +39,7 @@ const SignUpStep2 = (props) => {
 
     const handleNextStep = () => {
       //dispatch(register(props.data))
+      //props.setData({...props.data, major: majorValue});
       props.handleNextStep();
     }
 
@@ -106,7 +108,7 @@ const SignUpStep2 = (props) => {
         </div>
         <div style={{margin: '0 36px 44px'}}>
           <FormControl variant="standard" style={{width: '100%'}}>
-            <InputLabel shrink required >학부/학과</InputLabel>
+            {/* <InputLabel shrink required >학부/학과</InputLabel>
             <Select
                 MenuProps={{
                   style: {
@@ -123,7 +125,14 @@ const SignUpStep2 = (props) => {
                 {majorList.map((item, index) => (
                   <MenuItem value={item} key={index}>{item}</MenuItem>
                 ))}
-            </Select>
+            </Select> */}
+            <AutoComplete
+              inputValue={props.data.major}
+              onInputChange={(e, value) => props.setData({...props.data, major: value})}
+              disablePortal
+              options={majorList}
+              renderInput={(params) => <TextField {...params} label="학부/학과" />} 
+            />
           </FormControl>
         </div>
         <div style={{margin: '0 36px 65px'}}>
@@ -170,7 +179,7 @@ const SignUpStep2 = (props) => {
             </FormControl>
         </div>
         <div style={{margin: '0 36px 12px'}}>
-            {validNickname && (props.data.nickname != '' && props.data.major != '' && props.data.student_id.length == 2 && props.data.student_id < 24) ?
+            {validNickname && (props.data.nickname != '' && majorList.indexOf(props.data.major) != -1 && props.data.student_id.length == 2 && props.data.student_id < 24) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                         다음
                     </Button>
