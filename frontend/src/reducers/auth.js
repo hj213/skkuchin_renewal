@@ -51,10 +51,8 @@ const authReducer = (state = initialState, action) => {
                 ...state
             }
         case LOGIN_SUCCESS:
-            Cookies.set('access', payload.access);
-            Cookies.set('refresh', payload.refresh);
-            // Cookies.set('access', payload.access, { path: '/', secure: true, sameSite: 'Strict', expires: 1 });
-            // Cookies.set('refresh', payload.refresh, { path: '/', secure: true, sameSite: 'Strict', expires: 180 });
+            Cookies.set('access', payload.access, { path: '/', secure: true, sameSite: 'Strict', expires: 1 });
+            Cookies.set('refresh', payload.refresh, { path: '/', secure: true, sameSite: 'Strict', expires: 180 });
             return {
                 ...state
             }
@@ -99,9 +97,8 @@ const authReducer = (state = initialState, action) => {
                 user: null
             }
         case REFRESH_SUCCESS:
-            // Cookies.set('access', payload.access, { path: '/', secure: true, sameSite: 'Strict', expires: 1 });
-            // Cookies.set('refresh', payload.refresh, { path: '/', secure: true, sameSite: 'Strict', expires: 180 });
-            Cookies.set('access', payload.access);
+            Cookies.set('access', payload.access, { path: '/', secure: true, sameSite: 'Strict', expires: 1 });
+            Cookies.set('refresh', payload.refresh, { path: '/', secure: true, sameSite: 'Strict', expires: 180 });
             return {
                 ...state,
             }
