@@ -7,7 +7,7 @@ import { load_favorite, enroll_favorite, delete_favorite } from "../actions/favo
 import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
-import { CssBaseline, Box, Rating, Select, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import bookmarkAdd from '../image/bookmark_add.png';
@@ -25,6 +25,7 @@ import { clear_search_results } from "../actions/place/place";
 import { load_reviews, delete_review, modify_review } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 import ReviewItem from "../components/ReviewItem";
+import morePic from '../image/morePicY.png';
 
 const PlacePage = () => {
     
@@ -37,6 +38,7 @@ const PlacePage = () => {
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     const place = useSelector(state => state.place.searchplace);
+
     // 태그 검색
     const [keyword, setKeyword] = useState('');
     const [tags, setTags] = useState([]); // 태그 2개까지
@@ -229,6 +231,12 @@ const PlacePage = () => {
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
     const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
+
+
+    const totalImageCount = reviews && reviews.reduce((acc, review) => acc + review.images.length, 0);
+    const totalImagesUrl = reviews && reviews.map(review => review.images).flatMap(imageArray => imageArray);
+
+    const allImages = selectedPlace && selectedPlace.images.concat(totalImagesUrl);
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
@@ -490,7 +498,55 @@ const PlacePage = () => {
                                 </Link>
                         </li>)):null}
                         </div>
+                        {/* 이미지 */}
+                        <Grid container style={{margin:'15px 0px 0px'}}>
+                        {allImages && allImages.length > 5 ? (
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                {allImages.slice(0, 6).map((image, index) => (
+                                <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '5px', position: 'relative' }}>
+                                    <Image
+                                    width={150}
+                                    height={150}
+                                    src={image}
+                                    alt={`image-${index}`}
+                                    />
+                                    {index === 5 && (
+                                    <div 
+                                    onClick={()=> router.push({
+                                        pathname: '/morePhotos',
+                                        query: { id: place_id }
+                                    })}
+                                    style={{
+                                        position: 'absolute',
+                                        left: '0px',
+                                        top: '0px',
+                                        width: '100%',
+                                        maxWidth: '150px',
+                                        height: 'calc(100% - 7px)',
+                                        backgroundColor: 'rgba(0,0,0,0.6)',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                        fontSize: '1.5rem',
+                                        cursor: 'pointer',
+                                    }}>
+                                        <Image src={morePic} width={23} height={23}></Image>
+                                        <Typography sx={{color: '#FFCE00', fontSize: '9px', fontWeight: '500'}}>사진 더보기</Typography>
+                                    </div>
+                                    )}
+                                </div>
+                                ))}
+                            </div>
+                            </div>
+                        ) : null}
+                        </Grid>
+
                         {/* 컴포넌트화 필요 */}
+
                         {/* Content */}
                         <Container component="main" style={{listStyleType: "none", mt: '0', pt: '0'}}>
                             <Grid container sx={{pt: '18px'}} style={{justifyContent:'center'}} >
