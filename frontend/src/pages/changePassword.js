@@ -68,7 +68,7 @@ export default function changePassword() {
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px', marginBottom: '55px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick}/>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'29%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>비밀번호 변경</Typography>
@@ -116,7 +116,7 @@ export default function changePassword() {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
+                    endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
                 }}
                 />
                 {(password != '') ? 
@@ -138,7 +138,7 @@ export default function changePassword() {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (password === rePassword && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
+                    endAdornment: (password === rePassword && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
                 }}
                 />
                 { (rePassword != '') ? ((password == rePassword) ? 

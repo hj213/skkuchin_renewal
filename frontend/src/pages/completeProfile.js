@@ -43,7 +43,7 @@ export default function matchingComplete (){
                 </div>
             </div>
             <div style={{textAlign:'center', marginTop:'17px'}}>
-                <Image src={src == '로그인' ? button1: button2} width={296} height={56} onClick={handleButtonClick}/>
+                <Image src={src == '로그인' ? button1: button2} width={296} height={56} onClick={handleButtonClick} placeholder="blur" layout='fixed' />
             </div>
         </ThemeProvider>
     )

@@ -107,7 +107,7 @@ export default function editProfile() {
         >
         {/* 상단 */}
         <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '55px'}}>
-            <Image width={11} height={18} src={back} onClick={handleArrowClick}/>
+            <Image width={11} height={18} src={back} onClick={handleArrowClick} placeholder="blur" layout='fixed' />
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>프로필 수정</Typography>
         </header>
 
@@ -128,7 +128,7 @@ export default function editProfile() {
             }}
             required
             InputProps={{
-                endAdornment: (validNickname) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
+                endAdornment: (validNickname) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
             }}
             />
             {/* 중복확인 메소드 추가 */}

@@ -147,7 +147,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                     >   
                                         <Grid container>
                                             <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={16} height={21}/>
+                                                <Image src={marker} width={16} height={21} placeholder="blur" layout='fixed' />
                                             </Grid>
                                             <Grid item style={{margin:'0px 0px 0px 12px'}}>
                                                 <div style={{fontSize:'16px'}}>
@@ -165,7 +165,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                             </ul>
                             : (
                                 <div style={{textAlign:'center', paddingTop:'110px'}}>        
-                                    <Image src={noAuto} width={129} height={108}/>
+                                    <Image src={noAuto} width={129} height={108} placeholder="blur" layout='fixed' />
                                     <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
                                 </div>
                             )}

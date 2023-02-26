@@ -61,7 +61,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                         { review.user_id === user.id ?
                         <Grid item>
                             <IconButton onClick={handleMoreClick}>
-                                <Image src={more} width={4.33} height={17.33} />
+                                <Image src={more} width={4.33} height={17.33} placeholder="blur" layout='fixed' />
                             </IconButton>
                             <Menu
                                 anchorEl={anchorEl}
@@ -146,6 +146,9 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                                     height={150}
                                     src={image}
                                     alt={`image-${index}`}
+                                    placeholder="blur" 
+                                    blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                    layout='fixed'
                                 />
                             </div>
                         ))}
