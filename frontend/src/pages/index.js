@@ -7,7 +7,7 @@ import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Alert } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -21,6 +21,7 @@ import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 // 상단바
 import UpperBar from "../components/UpperBar"
+import AlertMessage from "../components/Alert";
 
 export default function list(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -306,9 +307,11 @@ export default function list(){
                 </Container> 
             
              {/* 태그 목록 */}
-            
-            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
              
+            <AlertMessage/>
+             
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
+            
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{

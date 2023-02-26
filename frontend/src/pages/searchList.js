@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState,  } from "react"; 
-import { search_places } from "../actions/place/place";
+import { search_places, load_places, clear_search_results } from "../actions/place/place";
 import Image from 'next/image';
 import Link from 'next/link';
 import theme from "../theme/theme";
-import {CssBaseline, Box,InputBase, ThemeProvider, useMediaQuery,  Card, CardContent, Typography, Grid, Container, Stack} from '@mui/material';
+import {CssBaseline, Box,InputBase, ThemeProvider, useMediaQuery, Paper,  Card, CardContent, Typography, Grid, Container, Stack, stepConnectorClasses} from '@mui/material';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import food from '../image/food.png';
@@ -16,6 +16,10 @@ import { load_user } from "../actions/auth/auth";
 import {  displayReviewTag } from "../components/TagList";
 import UpperBar from "../components/UpperBar";
 import Layout from "../hocs/Layout";
+import noAuto from '../image/noinfo_enheng.png';
+import Hangul from "hangul-js";
+import marker from '../image/location.png';
+
 
 export default function searchList(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -24,7 +28,8 @@ export default function searchList(){
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
-    const place = useSelector(state => state.place.searchplace);
+    const searchplace = useSelector(state => state.place.searchplace);
+    const allplaces = useSelector(state => state.place.allplaces);
     const favorites = useSelector(state => state.favorite.favorite);
 
     //user의 input값 받아오기
@@ -34,7 +39,9 @@ export default function searchList(){
     const [placeholderValue, setPlaceholderValue] = useState(keyword);
     const [passValue, setPassValue] = useState(keyword);
     const [filteredPlace, setFilteredPlace] =useState([]);
-
+    const [filteredAllPlace, setFilteredAllPlace] = useState([]);
+    const [auto, setAuto] = useState([]);
+    const [autoBox, setAutoBox] = useState(false);
 
     //api 받아오기
     useEffect(() => {
@@ -44,14 +51,33 @@ export default function searchList(){
         }
     }, [dispatch]);
 
+    useEffect(()=>{
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_places());}
+    }, []);
+
     //캠퍼스 필터링
     useEffect(() => {
-    if (place) {
-        setFilteredPlace(place.filter((item) => item.campus === user.toggle));
-    } else {
-        setFilteredPlace([]);
+        if (searchplace && allplaces && user) {
+            setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
+            setFilteredAllPlace(allplaces.filter((item)=> item.campus === user.toggle));
+        } else {
+            setFilteredPlace([]);
+            setFilteredAllPlace([]);
+        }
+    }, [searchplace, user, allplaces]);
+  
+    const handleValue = (e) => {
+        setValue(e.target.value);
+
+        if(e.target.value == ''){
+            setAuto([]);
+        } else{
+            const regex = new RegExp(e.target.value, 'i');
+            const newAuto = filteredAllPlace.filter((item) => regex.test(Hangul.assemble(item.name)));
+            setAuto(newAuto);
+        }
     }
-}, [place, user]);
 
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
@@ -84,20 +110,38 @@ export default function searchList(){
         }
     };
 
-    const handleValue = (e) => {
-        setValue(e.target.value);
-        
-    }
-
     const handleKeyDown = (e) => {
         if(e.keyCode === 13){
             setPassValue(value);
             setPlaceholderValue(value);
+            dispatch(clear_search_results());
             dispatch(search_places(value));
             setValue('');
         }
     }
 
+    const handleContainerMouseDown = (e) => {
+        e.preventDefault();
+    }
+
+    const handleAutoOnClick = (autoValue) => {
+        
+        setValue(autoValue);
+        setAuto(autoValue);
+        dispatch(clear_search_results());
+        dispatch(search_places(autoValue));
+        setPlaceholderValue(autoValue);
+        setValue('')
+        setAuto([]);
+    }
+    const handleInputOnFocus = () => {
+        setAutoBox(true);
+    }
+
+    const handleInputOnBlur = (e) => { 
+        setAutoBox(false);
+    }
+   
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
@@ -128,6 +172,7 @@ export default function searchList(){
                                     placeholder={placeholderValue}
                                     onChange={handleValue}
                                     onKeyDown={handleKeyDown}
+                                    onFocus={handleInputOnFocus}
                                     />   
                                 </Grid>
                                 <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image src={closeIcon} width={37} height={36} id='close'/></Grid>
@@ -136,6 +181,47 @@ export default function searchList(){
                         </Card>
                     </Container>
                 </div>
+                { autoBox && value ? (
+                <div onMouseDown={handleContainerMouseDown} style={{height:'100%'}}>
+                    <Paper style={{position:'relative',height:'100vh', width:'100%', top:'60px', overflowY:'scroll', border: '1px solid transparent',
+                    borderRadius: '0px', zIndex:'2'}}> 
+                        <Container style={{padding:'0px', marginTop:'0px'}}>
+                            {auto.length > 0 ?
+                            <ul style={{padding:'0px 20px 0px 20px', listStyleType: "none",}}>
+                                {auto.map((autoList) => (
+                                    <li
+                                        key={autoList.id}
+                                        onClick={()=>handleAutoOnClick(autoList.name)}
+                                        style={{ padding:'15px 10px 7px 0px',borderBottom: '1px solid #D9D9D9'}}
+                                    >   
+                                        <Grid container>
+                                            <Grid item style={{margin:'10px 0px 0px 0px'}}>
+                                                <Image src={marker} width={16} height={21}/>
+                                            </Grid>
+                                            <Grid item style={{margin:'0px 0px 0px 12px'}}>
+                                                <div style={{fontSize:'16px'}}>
+                                                {autoList.name}
+                                                </div>
+                                                <div style={{fontSize:'12px', color:'#a1a1a1'}}>
+                                                    {autoList.address.substr(2)}
+                                                </div>
+                                            </Grid>
+                                            
+                                        </Grid>
+                                        
+                                    </li>
+                                ))}
+                            </ul>
+                        : (
+                            <div style={{textAlign:'center', paddingTop:'110px'}}>        
+                                    <Image src={noAuto} width={129} height={108}/>
+                                    <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
+                                </div>
+                        )}
+                        </Container>
+                    </Paper>
+                </div>
+                ) :
                 <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }}>
                     <Card style={{overflowY:'auto', marginTop:'80px', border: "0px solid transparent", boxShadow:'none', borderRadius: '0px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
@@ -242,11 +328,16 @@ export default function searchList(){
                                         </Grid>
                                         </Link>
                                     </li>
-                            )): null}
+                            )):  (
+                                <div style={{textAlign:'center', paddingTop:'110px'}}>        
+                                    <Image src={noAuto} width={129} height={108}/>
+                                    <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
+                                </div>
+                            )}
                         </ul>
                     </Card>
-                </Container>
-            </div>
+                </Container> }
+            </div> 
             </Layout>
         </ThemeProvider>
     )

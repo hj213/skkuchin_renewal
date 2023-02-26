@@ -130,7 +130,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                         <Image src={searchBox} layout="responsive" priority />
                     </div>
                 </div>
-                { autoBox && (
+                { autoBox && value && (
                 <div onMouseDown={handleContainerMouseDown}>
                     <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px'}}> 
