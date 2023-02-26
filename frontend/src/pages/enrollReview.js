@@ -7,7 +7,6 @@ import { load_reviews } from "../actions/review/review";
 import { enroll_review } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
-import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
@@ -36,14 +35,17 @@ import filledStar from '../image/Star-1.png';
 import TextField from '@mui/material/TextField';
 import TagList from "../components/TagList";
 const EnrollReview = () => {
+    const router = useRouter();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'close' ){
             router.back();
         } 
     };  
-
-    const router = useRouter();
 
     // place.js에서 전달 받은 id 값 받아오기
     const { id, rating: defaultRating  } = router.query;
@@ -164,7 +166,6 @@ const EnrollReview = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout>
             {/* 전체 틀 */}
             <div style={{ position: 'relative', width:'100%', height:'100%' }}>
 
@@ -182,7 +183,7 @@ const EnrollReview = () => {
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
-                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
+                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} placeholder="blur" layout='fixed' />
                             </a>
                         </Grid>
                     
@@ -224,7 +225,7 @@ const EnrollReview = () => {
                                         starImage = filledStar;
                                         }
                                         return (
-                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' />
+                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' placeholder="blur" layout='fixed' />
                                         );
                                     })}
                                     <Typography sx={{fontSize: '18px', fontWeight: '700', color: '#FFCE00'}}>{`${rating}점`}</Typography>
@@ -257,6 +258,8 @@ const EnrollReview = () => {
                                             alt="tag1"
                                             onClick={handleTagClick}
                                             id='맛집'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -267,6 +270,8 @@ const EnrollReview = () => {
                                             alt="tag2"
                                             onClick={handleTagClick}
                                             id='간단한 한 끼'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -277,6 +282,8 @@ const EnrollReview = () => {
                                             alt="tag3"
                                             onClick={handleTagClick}
                                             id='분위기 좋은'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -287,6 +294,8 @@ const EnrollReview = () => {
                                             alt="tag4"
                                             onClick={handleTagClick}
                                             id='가성비'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -297,6 +306,8 @@ const EnrollReview = () => {
                                             alt="tag5"
                                             onClick={handleTagClick}
                                             id='친절'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -307,6 +318,8 @@ const EnrollReview = () => {
                                             alt="tag6"
                                             onClick={handleTagClick}
                                             id='청결도'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -317,6 +330,8 @@ const EnrollReview = () => {
                                             alt="tag7"
                                             onClick={handleTagClick}
                                             id='둘이 가요'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                 </Grid>
@@ -368,7 +383,6 @@ const EnrollReview = () => {
                 </Grid>
             </Container>
         </div>
-        </Layout>
         </ThemeProvider>
         
     )

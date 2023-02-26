@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { API_URL } from '../../config/index';
 import { AUTHENTICATED_FAIL } from '../auth/types';
+import { request_refresh } from '../auth/auth';
 import { 
     ADD_MATCHING_INFO_SUCCESS,
     ADD_MATCHING_INFO_FAIL,
@@ -14,6 +15,7 @@ import {
     from './types';
 
 export const add_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -43,25 +45,35 @@ export const add_matching_info = (gender, keywords, introduction, mbti, callback
         if(res.status === 201){
             dispatch({
                 type: ADD_MATCHING_INFO_SUCCESS
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         }else {
             dispatch({
                 type: ADD_MATCHING_INFO_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
 
     } catch (error) {
         console.log(error);
         dispatch({
             type: ADD_MATCHING_INFO_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
 export const load_matching_info = (callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -86,25 +98,35 @@ export const load_matching_info = (callback) => async dispatch => {
             dispatch({
                 type: LOAD_MATCHING_INFO_SUCCESS,
                 payload: apiRes.data
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         }else {
             dispatch({
                 type: LOAD_MATCHING_INFO_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
 
     } catch (error) {
         console.log(error);
         dispatch({
             type: LOAD_MATCHING_INFO_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
 export const change_status_info = (matching, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -128,25 +150,35 @@ export const change_status_info = (matching, callback) => async dispatch => {
         if(res.status === 200){
             dispatch({
                 type: CHANGE_MATCHING_STATUS_SUCCESS
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         }else {
             dispatch({
                 type: CHANGE_MATCHING_STATUS_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
 
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHANGE_MATCHING_STATUS_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
 export const change_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -176,20 +208,29 @@ export const change_matching_info = (gender, keywords, introduction, mbti, callb
         if(res.status === 200){
             dispatch({
                 type: CHANGE_MATCHING_INFO_SUCCESS
-            });
+            })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         }else {
             dispatch({
                 type: CHANGE_MATCHING_INFO_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
 
     } catch (error) {
         console.log(error);
         dispatch({
             type: CHANGE_MATCHING_INFO_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }

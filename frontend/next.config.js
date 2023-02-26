@@ -3,12 +3,14 @@
 const withPWA = require('next-pwa')({
 	dest: 'public',
 	disable: process.env.NODE_ENV !== 'production',
-	// scope: '/app',
 	sw: 'service-worker.js',
 	dynamicStartUrlRedirect: '/login'
 })
 
 const nextConfig = withPWA({
+	devIndicators: {
+        buildActivity: false
+    },
 	eslint: {
         // Warning: This allows production builds to successfully complete even if
         // your project has ESLint errors.
@@ -31,12 +33,9 @@ const nextConfig = withPWA({
 				pathname: '/**',
 			},
 		],
-		// unoptimized: true
 	},
-	
 	reactStrictMode: true,
-	swcMinify: true,
-	// assetPrefix: '.',
+	swcMinify: true
 });
 
 module.exports = nextConfig;

@@ -7,6 +7,8 @@ mail:
       required: true
   transport:
     protocol: smtp
+  host: http://localhost:8080
+#  host: https://www.skkuchin.com
 AdminMail:
-  id: skkuchin@gmail.com
-  password: eopkbojixcwwuiop
+  id: skkuchinmail@gmail.com
+  password: yqjjfbufpkpvufdl

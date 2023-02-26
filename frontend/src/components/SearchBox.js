@@ -20,7 +20,8 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const [filteredPlace, setFilteredPlace] =useState([]);
     const [auto, setAuto] = useState([]);
     const [autoBox, setAutoBox] = useState(false);
-    
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
@@ -30,11 +31,12 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             
         }
     }, [dispatch]);
-
-    useEffect(()=>{
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());}
-    }, []);
+  
+    useEffect(() => {
+        if (!allPlaces || allPlaces.length === 0) {
+          dispatch(load_places());
+        }
+      }, [dispatch, allPlaces]);
     
     //캠퍼스 필터링
     useEffect(() => {
@@ -130,7 +132,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                         <Image src={searchBox} layout="responsive" priority />
                     </div>
                 </div>
-                { autoBox && (
+                { autoBox && value && (
                 <div onMouseDown={handleContainerMouseDown}>
                     <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px'}}> 
@@ -145,7 +147,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                     >   
                                         <Grid container>
                                             <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={16} height={21}/>
+                                                <Image src={marker} width={16} height={21} placeholder="blur" layout='fixed' />
                                             </Grid>
                                             <Grid item style={{margin:'0px 0px 0px 12px'}}>
                                                 <div style={{fontSize:'16px'}}>
@@ -163,7 +165,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                             </ul>
                             : (
                                 <div style={{textAlign:'center', paddingTop:'110px'}}>        
-                                    <Image src={noAuto} width={129} height={108}/>
+                                    <Image src={noAuto} width={129} height={108} placeholder="blur" layout='fixed' />
                                     <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
                                 </div>
                             )}

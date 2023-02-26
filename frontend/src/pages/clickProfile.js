@@ -15,7 +15,11 @@ export default function clickProfile(){
 
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
     const user = useSelector(state => state.auth.user);
+
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
     
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -45,7 +49,7 @@ export default function clickProfile(){
                 <Container style={{padding:'0px', marginTop:'41px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleBack}/>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleBack} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'32%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>프로필 보기</Typography>

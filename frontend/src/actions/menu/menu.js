@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
+import { request_refresh } from '../auth/auth';
 import {
     LOAD_MENU_FAIL,
     LOAD_MENU_SUCCESS,
@@ -8,6 +9,7 @@ import {
 
 //load_menu
 export const load_menu = (place_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -33,17 +35,26 @@ export const load_menu = (place_id, callback) => async dispatch => {
                 type: LOAD_MENU_SUCCESS,
                 payload: apiRes.data
             })
+            
             if (callback) callback([true, apiRes.message]);
+            
+            
         }else{
             dispatch({
                 type: LOAD_MENU_FAIL
-            });
+            })
+            
             if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch (error) {
         dispatch({
             type: LOAD_MENU_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }

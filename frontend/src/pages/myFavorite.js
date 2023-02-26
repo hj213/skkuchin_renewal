@@ -14,7 +14,6 @@ import down from '../image/down.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
 
-
 export default function myFavorite(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
 
@@ -26,11 +25,10 @@ export default function myFavorite(){
     const dispatch = useDispatch();
     const anchorRef = useRef(null);
 
-    // if(typeof window !== 'undefined' && !isAuthenticated){
-    //     router.push('/login');
-    // }
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
 
-    // api에서 데이터 불러오기
     useEffect(()=>{
         dispatch(load_favorite());
     }, [dispatch]);
@@ -40,7 +38,7 @@ export default function myFavorite(){
     const isFavorite = (placeId) => {
         const favorite = favorites.some(favorite => favorite.place_id === placeId)
         if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn}/>
+            return <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
         }
         return null;
     };
@@ -113,12 +111,12 @@ export default function myFavorite(){
                         }}>
                         <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
                             <Grid style={{padding: '2px 10px 0px 4px'}} >
-                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid>
                                 <Grid container>
                                     <Grid item xs style={{marginTop:'4px'}} >
-                                        <Image src={bookmarkOn} width={20} height={20} />
+                                        <Image src={bookmarkOn} width={20} height={20} placeholder="blur" layout='fixed' />
                                     </Grid>
                                     <Grid item>
                                         <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>즐겨찾기 장소</Typography>
@@ -126,7 +124,7 @@ export default function myFavorite(){
                                 </Grid>
                             </Grid>
                             <Grid >
-                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick}/>
+                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
                             </Grid>
                         </Grid>
                     </Card>
@@ -149,7 +147,7 @@ export default function myFavorite(){
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Image src={down} width={13} height={8} />
+                                <Image src={down} width={13} height={8} placeholder="blur" layout='fixed' />
                             </Grid>
                         </Grid>
                         <Popper
@@ -238,7 +236,7 @@ export default function myFavorite(){
                                                             </Typography>
                                                             }
                                                             <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 10px 0px 5px'}} onClick={handleFavClick(item.place_id)}>
-                                                                <Image width={15} height={15} src={bookmarkOn}/>
+                                                                <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
                                                             </Grid>
                                                         </Grid>
                                                     </Grid>
@@ -249,7 +247,7 @@ export default function myFavorite(){
                                                             </Typography>
                                                         </Grid>
                                                         <Grid style={{margin: '-3px 7px 0px 7px'}}>
-                                                            <Image width={10} height={10} src={star}/>
+                                                            <Image width={10} height={10} src={star} placeholder="blur" layout='fixed' />
                                                         </Grid>
                                                         <Grid >
                                                             <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color={theme.palette.fontColor.dark} component="div">
@@ -305,7 +303,9 @@ export default function myFavorite(){
                                                 alt={item.name} 
                                                 src={ item.images && item.images.length > 0 ? item.images[0] : food }
                                                 style={{borderRadius: '10px'}}
-                                                
+                                                placeholder="blur" 
+                                                blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                                layout='fixed'
                                                 />
                                             </Grid>
                                         </Grid>

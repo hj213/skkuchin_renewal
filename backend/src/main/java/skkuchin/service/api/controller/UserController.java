@@ -108,7 +108,7 @@ public class UserController {
                 AppUser user = userService.getUserForRefresh(username);
                 String access = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) //10분
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000)) //1분
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getUserRoles().stream().map(userRole -> userRole.getRole().getName()).collect(Collectors.toList()))
                         .sign(algorithm);

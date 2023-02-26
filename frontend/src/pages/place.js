@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_menu }  from "../actions/menu/menu";
 import { load_favorite, enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
-import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
 import { CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
@@ -29,9 +28,14 @@ import morePic from '../image/morePicY.png';
 import { textAlign } from "@mui/system";
 
 const PlacePage = () => {
-    
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+    const WINDOW_HEIGHT = window.innerHeight;
     const router = useRouter();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
     // list.js 에서 전달 받은 id 값 받아오기
     const { id } = router.query;
 
@@ -62,7 +66,7 @@ const PlacePage = () => {
     const favorites = useSelector(state => state.favorite.favorite);
 
     // *슬라이드탭 카드 애니메이션 관리
-    const [height, setHeight] =  useState('32%');
+    const [height, setHeight] =  useState('');
     const [cardStyle, setCardStyle] = useState({
         radius: '30px 30px 0px 0px',
         cardVisibility: 'visible',
@@ -83,6 +87,14 @@ const PlacePage = () => {
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
     }
+
+    useEffect(()=>{
+        if(WINDOW_HEIGHT < 750){
+            setHeight('175px')
+        } else {
+            setHeight('320px')
+        }
+    },[])
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
@@ -108,9 +120,7 @@ const PlacePage = () => {
     const handleTouchMove = (event) => {
         event.preventDefault();
 
-        const WINDOW_HEIGHT = window.innerHeight;
         const TARGET_HEIGHT = WINDOW_HEIGHT-160;
-        console.log(TARGET_HEIGHT);
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
             setHeight(TARGET_HEIGHT);
@@ -124,8 +134,11 @@ const PlacePage = () => {
             });
             setScroll('scroll');
         } else {
-            
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -144,7 +157,11 @@ const PlacePage = () => {
         if(event.target.name == 'back' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
@@ -198,8 +215,6 @@ const PlacePage = () => {
     const handleReviewClick = (e) => {
         e.preventDefault();
     };
-        
-    
     
     // 검색창에 포커스 잡혔을 때
     //드로워가 열리거나
@@ -270,7 +285,6 @@ const PlacePage = () => {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout>   
             <UpperBar/>
                 <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
@@ -300,7 +314,7 @@ const PlacePage = () => {
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
-                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
                                 </Grid>
 
                                 <Grid>
@@ -317,7 +331,7 @@ const PlacePage = () => {
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
-                                    <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd}/>
+                                    <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} placeholder="blur" layout='fixed' />
                                 </Grid> 
                             </Grid>
                         </Card>
@@ -345,10 +359,10 @@ const PlacePage = () => {
                     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" style={{ visibility:cardStyle.iconVisibility}}>
                         <Box gridColumn="span 4"></Box>
                         <Box style={{textAlign: 'center', verticalAlign: 'top', padding: '8px'}}gridColumn="span 4">
-                            <Image width={70} height={4} src={line} /> 
+                            <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
                         </Box>
                         <Box style={{textAlign: 'right', padding: '15px 15px 0'}} gridColumn="span 4" onClick={()=> handleFavClick(place_id)}>
-                            <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd}/>
+                            <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} placeholder="blur" layout='fixed' />
                         </Box> 
                     </Box>
                     )}
@@ -382,7 +396,7 @@ const PlacePage = () => {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid sx={{height: '100%', margin:'5px 4px 0px'}}>
-                                                        <Image width={20} height={19} src={star}/>
+                                                        <Image width={20} height={19} src={star} placeholder="blur" layout='fixed' />
                                                     </Grid>
                                                     <Grid >
                                                         <Typography sx={{fontSize: '15px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
@@ -448,7 +462,7 @@ const PlacePage = () => {
                                                 <Grid container style={{marginTop: '7.5px', flexDirection: 'column'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px', flexDirection: 'row'}}>
                                                         <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        영업시간  <Image src={expand} width={10.7} height={6.5} style={{margin: '0px 6.65px'}}></Image>                                          
+                                                        영업시간  <Image src={expand} width={10.7} height={6.5} style={{margin: '0px 6.65px'}} placeholder="blur" layout='fixed' ></Image>                                          
                                                         </Typography>          
                                                     </Grid>
                                                     <Grid>
@@ -618,7 +632,6 @@ const PlacePage = () => {
                     </Card>
                 </Container>
                 </div>
-            </Layout>
         </ThemeProvider>
     );
 };

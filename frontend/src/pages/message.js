@@ -9,7 +9,6 @@ import { load_menu }  from "../actions/menu/menu";
 
 import { styled } from '@mui/material/styles';
 import { Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconButton, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
-import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
@@ -27,6 +26,11 @@ const MessagePage = () => {
 
     const router = useRouter();
     const { id } = router.query;
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
@@ -56,7 +60,6 @@ const MessagePage = () => {
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline />
-            <Layout>
             {/* 전체 틀 */}
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
 
@@ -72,7 +75,7 @@ const MessagePage = () => {
                 }}>
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
+                            <Image src={back} width={15} height={26} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
                         </Grid>
                 
                         <Grid >
@@ -93,7 +96,6 @@ const MessagePage = () => {
             </Container>
             <MessageTab />
         </div>
-        </Layout>
         </ThemeProvider>
         
     )

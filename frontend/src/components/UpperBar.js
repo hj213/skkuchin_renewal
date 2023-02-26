@@ -45,15 +45,15 @@ const UpperBar = () => {
             
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
                 <Link href="/">
-                    <Image src={mainLogo} width={85} height={19} />
+                    <Image src={mainLogo} width={85} height={19} placeholder="blur" layout='fixed' />
                 </Link>
             <div style={{flex: 1}} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <div style={{marginRight:"10px"}}>
-                        <Image src={messageIcon} width={24} height={24}/>
+                        <Image src={messageIcon} width={24} height={24} placeholder="blur" layout='fixed' />
                     </div>
                     <div>
-                        <Image src={notiIcon} width={24} height={24}/>
+                        <Image src={notiIcon} width={24} height={24} placeholder="blur" layout='fixed' />
                     </div>
                 </div>
             </div>

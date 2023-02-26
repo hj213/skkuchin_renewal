@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import moment from 'moment'; 
-import 'moment/locale/ko';
 import { CssBaseline, Paper, Input, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
@@ -32,17 +28,22 @@ export default function chatPlace(){
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
             dispatch(load_user());
         }
     }, [dispatch]);
 
-    useEffect(()=>{
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());}
-    }, []);
+    useEffect(() => {
+        if (!allPlaces || allPlaces.length === 0) {
+          dispatch(load_places());
+        }
+      }, []);
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -100,7 +101,7 @@ export default function chatPlace(){
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleBack}/>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleBack} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'32%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>장소 정하기</Typography>
@@ -110,7 +111,7 @@ export default function chatPlace(){
                     <Container style={{padding:'0px'}}>
                         <Grid container style={{margin:'50px 0px 0px 20px'}}>
                             <Grid item>
-                                <Image src={marker} width={15} height={19}/>
+                                <Image src={marker} width={15} height={19} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{margin:'0px 0px 0px 5px'}}>
                                 <Typography style={{ margin:'2px 0px 0px 0px', textAlign:'left', fontSize:'16px'}} fontWeight={theme.typography.h1}>약속 장소</Typography>
@@ -121,7 +122,7 @@ export default function chatPlace(){
                         <Grid container justify="space-around" >
                             
                             <Grid item style={{ margin:'6px 10px 0px 5px', position:'absolute', zIndex:'2'}}>
-                                <Image src={search} width={20} height={20} onClick={handleDownClick}/>
+                                <Image src={search} width={20} height={20} onClick={handleDownClick} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{width:'100%'}}> 
                                 
@@ -167,7 +168,7 @@ export default function chatPlace(){
                     </Container>
                     <Container style={{justifyContent:'center', position: "absolute", bottom: 0}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>
-                            <Image src={check} width={300} height={56} onClick={handleSubmit}/>
+                            <Image src={check} width={300} height={56} onClick={handleSubmit} placeholder="blur" layout='fixed' />
                         </div>
                     </Container>
                 </Container>

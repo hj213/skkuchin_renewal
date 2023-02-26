@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Layout from "../hocs/Layout";
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
 import Step1 from '../components/Auth/Username/Step1';
@@ -22,7 +21,6 @@ export default function findUsername() {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout title= '스꾸친 | 아이디 찾기' content='Register page'>
             {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <Step1 handleNextStep={handleNextStep} />
@@ -31,7 +29,6 @@ export default function findUsername() {
                 step === 2 && <Step2 handlePrevStep={handlePrevStep} />
             }
             {/* </Container> */}
-        </Layout>
         </ThemeProvider>
     )
 }

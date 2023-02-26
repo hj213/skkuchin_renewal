@@ -3,11 +3,10 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { search_places } from "../actions/place/place";
-import Layout from "../hocs/Layout";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Alert } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -21,6 +20,7 @@ import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 // 상단바
 import UpperBar from "../components/UpperBar"
+import AlertMessage from "../components/Alert";
 
 export default function list(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -29,10 +29,16 @@ export default function list(){
 
     const dispatch = useDispatch();
     const router = useRouter();
+
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
+
     // 장소 정보 불러오기
     const searchplace = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user);
+    const WINDOW_HEIGHT = window.innerHeight;
     
     //상태
     const [height, setHeight] = useState('0');
@@ -77,10 +83,6 @@ export default function list(){
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
-    }
     
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
@@ -110,7 +112,11 @@ export default function list(){
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
-                    setHeight('40%');
+                    if(WINDOW_HEIGHT < 750){
+                        setHeight('175px')
+                    } else {
+                        setHeight('320px')
+                    }
                     setCardStyle({
                         radius: '30px 30px 0px 0px',
                         cardVisibility: 'visible',
@@ -139,6 +145,7 @@ export default function list(){
     useEffect(() => {
         if(filteredPlace) {
             setNumOfLi(filteredPlace.length);
+
         }
     }, [filteredPlace]);
 
@@ -157,8 +164,7 @@ export default function list(){
     const handleTouchMove = (event) => {
         event.preventDefault();
 
-        const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT - 53;
+        const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
@@ -174,8 +180,12 @@ export default function list(){
             });
             setPreventScroll('scroll');
         } else {
-            
-            setHeight('40%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
+            // setHeight('35%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -194,7 +204,11 @@ export default function list(){
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('40%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
@@ -213,7 +227,7 @@ export default function list(){
         if(favorites){
         const favorite = favorites.some(favorite => favorite.place_id === placeId)
         if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn}/>
+            return <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
         }
         return null;
     }
@@ -284,17 +298,14 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
-            // dispatch(search_places('!'))
             dispatch(clear_search_results());
         }
         
     }
 
-
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
-       <Layout>
             
             <UpperBar />
             <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'600px', overflow: 'hidden'}}>
@@ -307,9 +318,11 @@ export default function list(){
                 </Container> 
             
              {/* 태그 목록 */}
-            
-            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
              
+            <AlertMessage/>
+             
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
+            
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{
@@ -328,7 +341,7 @@ export default function list(){
                     >
                         <Grid container style={{padding:'10px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
+                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item xs>
                                 <Grid container>
@@ -342,13 +355,13 @@ export default function list(){
                                 </Grid>
                             </Grid>
                             <Grid item >
-                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close'/>
+                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close' placeholder="blur" layout='fixed' />
                             </Grid>
                         </Grid>
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '13px 16px 0px 0px'}} >
+            <Container style={{padding: '13px 16px 0px 0px',}} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
@@ -361,7 +374,7 @@ export default function list(){
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
                 border: '1px solid transparent',
-                
+                marginBottom:'85px'
                 }} 
                 ref = {cardRef}
                  >
@@ -369,11 +382,11 @@ export default function list(){
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
-                        <Image width={70} height={4} src={line} /> 
+                        <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
                     </div>
                     : null
                     }
-                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} >
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
@@ -406,7 +419,7 @@ export default function list(){
                                                         </Typography>
                                                     </Grid>
                                                     <Grid style={{margin:'0px 7px 0px 7px'}}>
-                                                        <Image width={15} height={14} src={star}/>
+                                                        <Image width={15} height={14} src={star} placeholder="blur" layout='fixed' />
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
@@ -459,10 +472,15 @@ export default function list(){
                                         </Grid>
                                         <Grid style={{margin: '10px 0px 10px 16px'}}>
                                             <Image
-                                            width= {98} height= {98}
+                                            width= {98} 
+                                            height= {98}
                                             alt={item.name} 
                                             src={ item.images && item.images.length > 0 ? item.images[0] : food }
-                                            style={{borderRadius: '10px'}}/> 
+                                            style={{borderRadius: '10px'}}
+                                            placeholder="blur" 
+                                            blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                            layout='fixed'
+                                            /> 
                                         </Grid>
                                     </Grid>
                                     </Link>
@@ -473,7 +491,6 @@ export default function list(){
                 </Card>
             </Container> 
             </div>
-        </Layout>
     </ThemeProvider>
     )
 }

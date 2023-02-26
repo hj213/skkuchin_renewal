@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 import { login, find_username, check_nickname, check_username } from "../actions/auth/auth";
-import Layout from "../hocs/Layout";
 import Loader from "react-loader-spinner";
 
-import Link from 'next/link';
 import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
@@ -81,8 +79,6 @@ const LoginPage = () => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            
-            {/* <Layout title= '스꾸친 | Login' content='Register page'> */}
                 <Container component="main" maxWidth="xs">
                     <Box
                         sx={{
@@ -93,7 +89,7 @@ const LoginPage = () => {
                         textAlign: 'center'
                         }}
                     >
-                    <Image width={169} height={185} src={logo}/>
+                    <Image width={169} height={185} src={logo} placeholder="blur" layout='fixed' />
                     <div style={{ display: 'flex', width: '100%' }}>
                         <form onSubmit={onSubmit} style={{ width: '100%' }}>
                             <div style={{ margin: '67px 24px 11px' }}>
@@ -129,12 +125,12 @@ const LoginPage = () => {
                             }
                             <div style={{display: 'flex', marginTop: '10px', marginLeft: '24px'}}>
                                 {autoLogin ? 
-                                    <Image onClick={() => setAutoLogin(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}}/> : 
-                                    <Image onClick={() => setAutoLogin(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}}/>}
+                                    <Image onClick={() => setAutoLogin(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' /> : 
+                                    <Image onClick={() => setAutoLogin(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' />}
                                 <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>자동로그인</span>
                                 {rememberUsername ? 
-                                    <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}}/> : 
-                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}}/>}
+                                    <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' /> : 
+                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' />}
                                 <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>아이디 기억하기</span>
                             </div>
                         </form>
@@ -163,8 +159,6 @@ const LoginPage = () => {
                 </div>
                     </Box>
                 </Container>
-            
-            {/* </Layout> */}
             <div style={{display: 'grid', justifyItems: 'center', marginBottom: '40px'}}>
             <div style={{display: 'grid', justifyItems: 'center', fontSize: '4px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
                 <div>로그인하면 스꾸친 이용약관에 동의하는 것으로 간주합니다.</div>

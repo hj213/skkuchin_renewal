@@ -23,6 +23,10 @@ export default function myPage() {
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -41,10 +45,6 @@ export default function myPage() {
     }
     const handleDialogClose = () => {
         setDialogOpen(false);
-    }
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
     }
 
     useEffect(() => {
@@ -122,7 +122,7 @@ export default function myPage() {
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번</Typography>
                     </div>
                 </div>
-                <div onClick={arrowClick}><Image width={10.43} height={17.69} src={back} onClick={arrowClick} style={{zIndex: '-1'}}/></div>
+                <div onClick={arrowClick}><Image width={10.43} height={17.69} src={back} onClick={arrowClick} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' /></div>
             </div>
             
             {/* 사용자 설정 */}
