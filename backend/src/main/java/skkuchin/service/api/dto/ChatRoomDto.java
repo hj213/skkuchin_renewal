@@ -114,6 +114,17 @@ public class ChatRoomDto {
 
     }
 
+    @Getter
+    public static class Response1{
+        private boolean isSenderBlocked;
+        private boolean isReceiverBlocked;
+
+        public Response1(ChatRoom chatRoom){
+            this.isReceiverBlocked = chatRoom.isReceiverBlocked();
+            this.isSenderBlocked = chatRoom.isSenderBlocked();
+        }
+    }
+
 
 
 

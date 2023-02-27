@@ -76,8 +76,12 @@ public class ChatService {
     public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
 
         ChatRoom chatRoom = dto.toEntity(user);
-        chatRoom.setRoomId(UUID.randomUUID().toString());
+        ChatRoom chatRoom1 = dto.toEntity(user);
+        String id = UUID.randomUUID().toString();
+        chatRoom.setRoomId(id);
+        chatRoom1.setRoomId(id+"1");
         chatRoomRepository.save(chatRoom);
+        chatRoomRepository.save(chatRoom1);
 
     }
 
@@ -120,9 +124,11 @@ public class ChatService {
         chatRoomRepository.save(chatRoom);
 
 
+
     }
 
     public void minusCount(ChatRoom chatRoom){
+
 
         chatRoom.setUserCount(chatRoom.getUserCount()-1);
 
@@ -273,6 +279,10 @@ public class ChatService {
     public ChatMessageDto.Response getLatestMessage(ChatRoom chatRoom){
         ChatMessage chatMessage = chatRepository.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
         return new ChatMessageDto.Response(chatMessage);
+    }
+
+    public ChatRoomDto.Response1 getRoomDto(ChatRoom chatRoom){
+        return new ChatRoomDto.Response1(chatRoom);
     }
 
     public ChatMessage getLatestMessage1(ChatRoom chatRoom){

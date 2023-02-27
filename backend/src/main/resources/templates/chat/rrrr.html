@@ -37,7 +37,7 @@
             document.cookie = `access=${data.data.access}; expires=; path=/`;
             document.cookie = `refresh=${data.data.refresh}; expires=; path=/`;
             message.innerHTML = "Logged in successfully";
-            window.location.href = `${API_URL}/chat/aa`
+           window.location.href = `${API_URL}/chat/room?chatRoomId=8ea645b1-d6c8-4cf9-9cdd-0eb401537e4b`
           } else {
             message.innerHTML = "OAS_30 failed";
           }

@@ -25,6 +25,7 @@ import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.ChatSessionRepo;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
@@ -43,6 +44,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     private final ChatService chatService;
     private final ChatSessionService chatSessionService;
     private final ChatSessionRepo chatSessionRepo;
+    private final ChatRoomRepo chatRoomRepo;
     private final ChatRepo chatRepository;
     private final RabbitTemplate template;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
@@ -77,6 +79,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
         //registry.enableSimpleBroker("/queue", "/topic");
         registry.setPathMatcher(new AntPathMatcher("."));
         registry.setApplicationDestinationPrefixes("/app");
+        registry.setPreservePublishOrder(true);
         registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue")
                 .setRelayHost(host)
                 .setRelayPort(port)
@@ -98,6 +101,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 System.out.println("accessor = " + accessor);
                 //stomp.connect으로도 생각해 볼 수 있을것
                 if(accessor.getCommand().equals(StompCommand.SEND)){
+                    System.out.println("\"fuck\" = " + "fuck");
                     String sessionId = accessor.getSessionId();
                     ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId);
                     if(chatSession.getChatRoom().isSenderBlocked() == true || chatSession.getChatRoom().isReceiverBlocked() == true){
@@ -116,12 +120,20 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                     System.out.println("token = " + token);
                     String sender = getUserNameFromJwt(token);
                     ChatRoom chatRoom = chatService.findChatroom(roomId);
+                    String roomId1 = roomId +"1";
+                    System.out.println("roomId1 = " + roomId1);
 
-
+                  /*  ChatRoom chatRoom1 = chatRoomRepo.findByRoomId(roomId1);
+                    System.out.println("chatRoom1.getRoomId() = " + chatRoom1.getRoomId());
+*/
 
                     chatSessionService.setSessionId(chatRoom,sessionId,sender);
+                   /* chatSessionService.setSessionId(chatRoom1,sessionId+"1",sender);*/
+
+
                     chatService.getAllMessage1(chatRoom,sender);
                     chatService.updateCount(chatRoom);
+                 /*   chatService.updateCount(chatRoom1);*/
                     System.out.println("Subscribe");
 
                 }
