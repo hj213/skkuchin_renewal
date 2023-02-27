@@ -70,6 +70,7 @@ const LoginPage = () => {
     } 
 
     useEffect(() => {
+        setRemainHeight(window.innerHeight - 480 + "px");
         let username = localStorage.getItem("username");
         if (username != null) {
             setRememberUsername(true);
@@ -153,8 +154,8 @@ const LoginPage = () => {
                 </Container>
             <div style={{display: 'grid', justifyItems: 'center', marginBottom: '40px'}}>
             <div style={{display: 'grid', justifyItems: 'center', fontSize: '9px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
-                <div>로그인하면 스꾸친 <span onClick={() => router.push('/userAgreement')} style={{textDecoration: 'underline'}}>이용약관</span>에 동의하는 것으로 간주합니다.</div>
-                <div style={{marginTop: '6px', textAlign: 'center'}}>스꾸친의 회원정보 처리방식은 <span onClick={() => router.push('/policy')} style={{textDecoration: 'underline'}}>개인정보 처리방침</span> 및 쿠키 정책에서 확인해보세요.</div>
+                <div>로그인하면 스꾸친 <span onClick={() => router.push({pathname: '/userAgreement', query: {page: 'login'}})} style={{textDecoration: 'underline'}}>이용약관</span>에 동의하는 것으로 간주합니다.</div>
+                <div style={{marginTop: '6px', textAlign: 'center'}}>스꾸친의 회원정보 처리방식은 <span onClick={() => router.push({pathname: '/policy', query: {page: 'login'}})} style={{textDecoration: 'underline'}}>개인정보 처리방침</span> 및 쿠키 정책에서 확인해보세요.</div>
             </div>
             </div>
         </ThemeProvider>

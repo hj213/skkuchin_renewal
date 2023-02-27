@@ -8,6 +8,7 @@ import back from '../image/arrow_back_ios.png';
 
 export default function userAgreement() {
     const router = useRouter();
+    const prevPage = router.query.page;
     const content = `
   제 1 조 (목적)
 
@@ -287,7 +288,7 @@ export default function userAgreement() {
   }, [])
 
   const backClick = () => {
-    router.push('/myPage');
+    router.push(`/${prevPage}`);
   }
     return (
     <ThemeProvider theme={theme}>

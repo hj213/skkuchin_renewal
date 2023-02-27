@@ -6,14 +6,13 @@ import { CssBaseline, Box, ThemeProvider, Container, Grid, MenuItem, Button, Tex
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import next from '../image/arrow_next.png';
-import UserAgreement from '../components/MyPage/UserAgreement';
-import PersonalInfo from '../components/MyPage/PersonalInfo';
-import AdAgreement from '../components/MyPage/AdAgreement';
 
 export default function agreementList() {
     const router = useRouter();
 
     const list = ["이용약관", "개인정보 처리방침", "광고성 정보 수신 동의"]
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const backClick = e => {
         router.push('/myPage');
@@ -22,12 +21,12 @@ export default function agreementList() {
     const handleClick = e => {
         switch(e.target.id) {
             case "이용약관":
-                router.push('/userAgreement');
+                router.push({pathname: '/userAgreement', query: {page: 'agreementList'}});
                 break;
             case "개인정보 처리방침":
-                router.push('/policy');
+                router.push({pathname: '/policy', query: {page: 'agreementList'}});
                 break;
-                
+
         }
     }
 
@@ -36,19 +35,19 @@ export default function agreementList() {
         <CssBaseline />
 
         {/* 상단 */}
-        <Container style={{padding:'0px', alignItems: 'center', marginBottom: '55px'}}>
+        <Container style={{padding:'0px', alignItems: 'center', marginBottom: '55px', marginTop: '45px'}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 0px', visibility:'none'}}>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={backClick} style={{justifySelf: 'start'}} />
                             </Grid>
-                            <Grid item style={{marginLeft:'36%'}}>
+                            <Grid item style={{marginLeft:'32%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>약관 및 정책</Typography>
                             </Grid>
                         </Grid>
         </Container>
         <Box
             sx={{
-            margin: '45px 22px 22px 22px',
+            margin: '0px 22px 22px 22px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

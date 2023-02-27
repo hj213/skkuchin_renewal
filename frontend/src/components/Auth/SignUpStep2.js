@@ -91,9 +91,9 @@ const SignUpStep2 = (props) => {
             value={props.data.nickname}
             onChange={handleNicknameChange}
             style={{width: '100%'}}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            //InputLabelProps={{
+              //shrink: true,
+            //}}
             required
             InputProps={{
               endAdornment: (validNickname) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
