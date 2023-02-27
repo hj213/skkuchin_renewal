@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions } from '@mui/material';
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
+import next from '../image/arrow_next.png';
 import toggle_off from '../image/toggle_off.png';
 import toggle_on from '../image/toggle on.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
@@ -112,7 +113,7 @@ export default function myPage() {
         <UpperBar />
         {user && <div style={{marginTop: '30px'}}>
             {/* 상단 회원 정보 */}
-            <div style={{display: 'grid', gridTemplateColumns: '72px 1fr 11px', alignItems: 'center', padding: '0 15px'}}>
+            <div style={{display: 'grid', gridTemplateColumns: '72px 1fr 38px', alignItems: 'center', padding: '0 15px'}}>
                 {displayProfile(user.image, 72, 72)}
                 <div style={{display: 'flex', flexDirection: 'column', marginLeft: '9px'}}>
                     <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname} 님</Typography>
@@ -122,7 +123,7 @@ export default function myPage() {
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번</Typography>
                     </div>
                 </div>
-                <div onClick={arrowClick}><Image width={10.43} height={17.69} src={back} onClick={arrowClick} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' /></div>
+                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' /></div>
             </div>
             
             {/* 사용자 설정 */}
@@ -159,14 +160,14 @@ export default function myPage() {
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
                 <Button onClick={handleDialogOpen} variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>로그아웃</Button>
-                <Button variant="text" style={{fontSize: '16px', fontWeight: '500', color: '#000000', padding: '0', justifySelf: 'start'}}>문의하기</Button>
+                <Button onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} variant="text" style={{fontSize: '16px', fontWeight: '500', color: '#000000', padding: '0', justifySelf: 'start'}}>문의하기</Button>
             </Container>
 
             {/* 하단 */}
             <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '80px', marginBottom: '50px'}}>
                 <div style={{display: 'flex', fontSize: '14px'}}>
                     <Button onClick={() => router.push('/deleteUser')} variant="text" style={{color: "#BABABA"}}>탈퇴하기</Button>
-                    <Button variant="text" style={{color: "#BABABA"}}>약관 및 정책</Button>
+                    <Button onClick={() => router.push('/agreementList')} variant="text" style={{color: "#BABABA"}}>약관 및 정책</Button>
                 </div>
             </Container>
 
