@@ -40,7 +40,7 @@ export default function splash(){
                     <Image src={logo} />
                 </div>
                 <div style={{width:'100%', textAlign:'center', position:'absolute', bottom:35}}>
-                    <Image src={loadingImages[loadingIndex] }width={133} height={56}/>
+                    <Image src={loadingImages[loadingIndex] }width={133} height={56} placeholder="blur" layout='fixed' />
                 </div>
             </Container>
             <Container>

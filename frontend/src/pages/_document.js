@@ -6,6 +6,7 @@ const Document = () => {
         <Html lang="ko">
             <Head>
                 <meta charSet="utf-8" />
+                <meta name="robots" content="index,follow" />
                 <meta name="theme-color" content="#ffffff" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />

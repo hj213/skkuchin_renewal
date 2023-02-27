@@ -94,7 +94,7 @@ export default function chatTime(){
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleBack}/>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleBack} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'32%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>시간 정하기</Typography>
@@ -104,7 +104,7 @@ export default function chatTime(){
                     <Container style={{padding:'0px'}}>
                         <Grid container style={{margin:'50px 0px 0px 20px'}}>
                             <Grid item >
-                                <Image src={calendar} width={20} height={23}/>
+                                <Image src={calendar} width={20} height={23} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{margin:'0px 0px 0px 5px'}}>
                                 <Typography style={{ margin:'4px 0px 0px 0px', textAlign:'left', fontSize:'16px'}} fontWeight={theme.typography.h1}>약속 시간</Typography>
@@ -119,7 +119,7 @@ export default function chatTime(){
                                 </div>
                             </Grid>
                             <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'40px'}}>
-                                <Image src={down} width={25} height={25} onClick={handleDownClick}/>
+                                <Image src={down} width={25} height={25} onClick={handleDownClick} placeholder="blur" layout='fixed' />
                             </Grid>
                         </Grid>
                         <div>
@@ -173,7 +173,7 @@ export default function chatTime(){
                                         
                     <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px'}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>
-                            <Image src={check} width={300} height={56} onClick={handleSubmit}/>
+                            <Image src={check} width={300} height={56} onClick={handleSubmit} placeholder="blur" layout='fixed' />
                         </div>
                     </Container>
                 </Container>

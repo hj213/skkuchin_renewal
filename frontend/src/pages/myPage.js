@@ -123,7 +123,7 @@ export default function myPage() {
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번</Typography>
                     </div>
                 </div>
-                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}}/></div>
+                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' /></div>
             </div>
             
             {/* 사용자 설정 */}

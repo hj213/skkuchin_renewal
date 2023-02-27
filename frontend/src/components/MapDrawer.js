@@ -115,7 +115,7 @@ export default function MapDrawer(openID){
 
     //   //   }
     // } 
-
+    
     const list = (anchor) => (
         <Box
           sx={{ width: 250 }}
@@ -124,7 +124,7 @@ export default function MapDrawer(openID){
           onKeyDown={handleDrawerClick(false)}
         >   
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
-                <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
+                <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} placeholder="blur" layout='fixed'  />
                 <div>
                 <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
                 <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
@@ -134,7 +134,7 @@ export default function MapDrawer(openID){
                 <ListItem disablePadding >
                     <Grid container style={{fontSize:'20px', fontWeight:'400', lineHeight: '28px'}} >
                         <Grid item style={{marginRight:'9px'}}>
-                            <Image src={bookmark} alt='즐겨찾기' width={16} height={16}/>
+                            <Image src={bookmark} alt='즐겨찾기' width={16} height={16} placeholder="blur" layout='fixed' />
                         </Grid>
                         <Grid item>
                             <ListItemText primary="즐겨찾기 장소" style={{marginTop:'1px'}} onClick={handleMove} />  
@@ -144,7 +144,7 @@ export default function MapDrawer(openID){
                 <ListItem disablePadding>
                     <Grid container style={{marginTop:'37px', fontSize: '20px', fontWeight:'400', lineHeight: '28px'}}>
                         <Grid item style={{marginRight:'9px',}}>
-                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}}/>
+                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}} placeholder="blur" layout='fixed' />
                         </Grid>
                         <Grid item>
                             <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMove}/>
@@ -178,11 +178,11 @@ export default function MapDrawer(openID){
 
     return(
         <ThemeProvider theme={theme}>
-            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15}/>
+            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} placeholder="blur" layout='fixed' />
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
-                  {user && <Image src={ toggleInfo == '율전' ? yj: mr} width={60} height={60} />}
+                  {user && <Image src={ toggleInfo == '율전' ? yj: mr} width={60} height={60} placeholder="blur" layout='fixed' />}
                 </Grid>
               </Grid>
              

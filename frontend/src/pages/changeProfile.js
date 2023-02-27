@@ -661,7 +661,7 @@ export default function makeProfile(){
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick}/>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'29%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>프로필 수정하기</Typography>
@@ -673,10 +673,10 @@ export default function makeProfile(){
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
                             <div style={{marginBottom:'9px'}}>
-                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성'/>
+                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성' placeholder="blur" layout='fixed' />
                             </div>
                             <div>
-                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성'/>
+                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성' placeholder="blur" layout='fixed' />
                             </div>
                         </Container>
                         </div>
@@ -688,32 +688,32 @@ export default function makeProfile(){
                             <div>
                                 <Grid container maxWidth={340}>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} name='E'/>
+                                        <Image src={mbtiChoose.E ? ECheck : E} width={20} height={28} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='E'/>
                                     </Grid>
                                     <Grid style={{marginRight:'60px'}}>
-                                        <Image src={mbtiChoose.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} name='N'/>
+                                        <Image src={mbtiChoose.N ? NCheck : N} width={24} height={28} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='N'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} name='F'/>
+                                        <Image src={mbtiChoose.F ? FCheck : F} width={19} height={28} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='F'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} name='P'/>
+                                        <Image src={mbtiChoose.P ? PCheck : P} width={22} height={28} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='P'/>
                                     </Grid>
                                 </Grid>
                             </div>
                             <div style={{marginTop:'46px'}}>
                                 <Grid container>
                                 <Grid style={{marginRight:'63px', marginLeft:'4px', marginTop:'-1px'}}>
-                                        <Image src={mbtiChoose.I ? ICheck : I} width={13} height={30} onClick={handleMbtiClick} name='I'/>
+                                        <Image src={mbtiChoose.I ? ICheck : I} width={13} height={30} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='I'/>
                                     </Grid>
                                     <Grid style={{marginRight:'58px', marginTop:'-1px'}}>
-                                        <Image src={mbtiChoose.S ? SCheck : S} width={23} height={30} onClick={handleMbtiClick} name='S'/>
+                                        <Image src={mbtiChoose.S ? SCheck : S} width={23} height={30} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='S'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.T ? TCheck : T} width={21} height={28} onClick={handleMbtiClick} name='T'/>
+                                        <Image src={mbtiChoose.T ? TCheck : T} width={21} height={28} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='T'/>
                                     </Grid>
                                     <Grid style={{marginRight:'59px'}}>
-                                        <Image src={mbtiChoose.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} name='J'/>
+                                        <Image src={mbtiChoose.J ? JCheck : J} width={19} height={28} onClick={handleMbtiClick} placeholder="blur" layout='fixed' name='J'/>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -728,28 +728,28 @@ export default function makeProfile(){
                             <div style={{marginBottom:'9px'}}>
                                 <Grid container style={{maxWidth:'350px'}}>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.한식 ? foodTag7On : foodTag7} width={36} height={27} onClick={handleFoodClick} name='한식'/>
+                                        <Image src={food.한식 ? foodTag7On : foodTag7} width={36} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='한식'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.일식 ? foodTag2On : foodTag2} width={36} height={27} onClick={handleFoodClick} name='일식'/>
+                                        <Image src={food.일식 ? foodTag2On : foodTag2} width={36} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='일식'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.중식 ? foodTag3On : foodTag3} width={36} height={27} onClick={handleFoodClick} name='중식'/>
+                                        <Image src={food.중식 ? foodTag3On : foodTag3} width={36} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='중식'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.양식 ? foodTag1On : foodTag1} width={36} height={27} onClick={handleFoodClick} name='양식'/>
+                                        <Image src={food.양식 ? foodTag1On : foodTag1} width={36} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='양식'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.남미음식 ? foodTag6On : foodTag6} width={58} height={27} onClick={handleFoodClick} name='남미음식'/>
+                                        <Image src={food.남미음식 ? foodTag6On : foodTag6} width={58} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='남미음식'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.분식 ? foodTag5On : foodTag5} width={36} height={27} onClick={handleFoodClick} name='분식'/>
+                                        <Image src={food.분식 ? foodTag5On : foodTag5} width={36} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='분식'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.아시아음식 ? foodTag8On : foodTag8} width={72} height={27} onClick={handleFoodClick} name='아시아음식'/>
+                                        <Image src={food.아시아음식 ? foodTag8On : foodTag8} width={72} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='아시아음식'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={food.카페 ? foodTag4On : foodTag4} width={36} height={27} onClick={handleFoodClick} name='카페'/>
+                                        <Image src={food.카페 ? foodTag4On : foodTag4} width={36} height={27} onClick={handleFoodClick} placeholder="blur" layout='fixed' name='카페'/>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -759,52 +759,52 @@ export default function makeProfile(){
                             <div style={{marginBottom:'9px'}}>
                                 <Grid container style={{maxWidth:'330px'}}>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.축구 ? exeTag10On : exeTag10} width={36} height={27} onClick={handleSportsClick} name='축구'/>
+                                        <Image src={sports.축구 ? exeTag10On : exeTag10} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='축구'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.야구 ? exeTag8On : exeTag8} width={36} height={27} onClick={handleSportsClick} name='야구'/>
+                                        <Image src={sports.야구 ? exeTag8On : exeTag8} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='야구'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.농구 ? exeTag15On : exeTag15} width={36} height={27} onClick={handleSportsClick} name='농구'/>
+                                        <Image src={sports.농구 ? exeTag15On : exeTag15} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='농구'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.골프 ? exeTag14On : exeTag14} width={36} height={27} onClick={handleSportsClick} name='골프'/>
+                                        <Image src={sports.골프 ? exeTag14On : exeTag14} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='골프'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.테니스 ? exeTag11On : exeTag11} width={47} height={27} onClick={handleSportsClick} name='테니스'/>
+                                        <Image src={sports.테니스 ? exeTag11On : exeTag11} width={47} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='테니스'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.당구 ? exeTag1On : exeTag1} width={36} height={27} onClick={handleSportsClick} name='당구'/>
+                                        <Image src={sports.당구 ? exeTag1On : exeTag1} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='당구'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.헬스 ? exeTag12On : exeTag12} width={36} height={27} onClick={handleSportsClick} name='헬스'/>
+                                        <Image src={sports.헬스 ? exeTag12On : exeTag12} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='헬스'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} name='보드스키'/>
+                                        <Image src={sports.보드스키 ? exeTag6On : exeTag6} width={72} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='보드스키'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.주짓수 ? exeTag9On : exeTag9} width={47} height={27} onClick={handleSportsClick} name='주짓수'/>
+                                        <Image src={sports.주짓수 ? exeTag9On : exeTag9} width={47} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='주짓수'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.서핑 ? exeTag5On : exeTag5} width={36} height={27} onClick={handleSportsClick} name='서핑'/>
+                                        <Image src={sports.서핑 ? exeTag5On : exeTag5} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='서핑'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.등산 ? exeTag2On : exeTag2} width={36} height={27} onClick={handleSportsClick} name='등산'/>
+                                        <Image src={sports.등산 ? exeTag2On : exeTag2} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='등산'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.러닝 ? exeTag3On : exeTag3} width={36} height={27} onClick={handleSportsClick} name='러닝'/>
+                                        <Image src={sports.러닝 ? exeTag3On : exeTag3} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='러닝'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.스포츠관람 ? exeTag7On : exeTag7} width={72} height={27} onClick={handleSportsClick} name='스포츠관람'/>
+                                        <Image src={sports.스포츠관람 ? exeTag7On : exeTag7} width={72} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='스포츠관람'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.볼링 ? exeTag16On : exeTag16} width={36} height={27} onClick={handleSportsClick} name='볼링'/>
+                                        <Image src={sports.볼링 ? exeTag16On : exeTag16} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='볼링'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.배드민턴 ? exeTag4On : exeTag4} width={58} height={27} onClick={handleSportsClick} name='배드민턴'/>
+                                        <Image src={sports.배드민턴 ? exeTag4On : exeTag4} width={58} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='배드민턴'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={sports.댄스 ? exeTag13On : exeTag13} width={36} height={27} onClick={handleSportsClick} name='댄스'/>
+                                        <Image src={sports.댄스 ? exeTag13On : exeTag13} width={36} height={27} onClick={handleSportsClick} placeholder="blur" layout='fixed' name='댄스'/>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -814,46 +814,46 @@ export default function makeProfile(){
                             <div style={{marginBottom:'9px'}}>
                                 <Grid container style={{maxWidth:'330px'}}>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.영화 ? artTag10ON : artTag10} width={36} height={27} onClick={handleArtClick} name='영화'/>
+                                        <Image src={art.영화 ? artTag10ON : artTag10} width={36} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='영화'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.음악 ? artTag11ON : artTag11} width={36} height={27} onClick={handleArtClick} name='음악'/>
+                                        <Image src={art.음악 ? artTag11ON : artTag11} width={36} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='음악'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.전시회 ? artTag12ON : artTag12} width={47} height={27} onClick={handleArtClick} name='전시회'/>
+                                        <Image src={art.전시회 ? artTag12ON : artTag12} width={47} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='전시회'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.연극뮤지컬 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} name='연극뮤지컬'/>
+                                        <Image src={art.연극뮤지컬 ? artTag14ON : artTag14} width={79} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='연극뮤지컬'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.덕질 ? artTag3ON : artTag3} width={36} height={27} onClick={handleArtClick} name='덕질'/>
+                                        <Image src={art.덕질 ? artTag3ON : artTag3} width={36} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='덕질'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.여행 ? artTag13ON : artTag13} width={36} height={27} onClick={handleArtClick} name='여행'/>
+                                        <Image src={art.여행 ? artTag13ON : artTag13} width={36} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='여행'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.게임 ? artTag1ON : artTag1} width={36} height={27} onClick={handleArtClick} name='게임'/>
+                                        <Image src={art.게임 ? artTag1ON : artTag1} width={36} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='게임'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.노래방 ? artTag2ON : artTag2} width={47} height={27} onClick={handleArtClick} name='노래방'/>
+                                        <Image src={art.노래방 ? artTag2ON : artTag2} width={47} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='노래방'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.방탈출 ? artTag6ON : artTag6} width={47} height={27} onClick={handleArtClick} name='방탈출'/>
+                                        <Image src={art.방탈출 ? artTag6ON : artTag6} width={47} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='방탈출'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.보드게임 ? artTag8ON : artTag8} width={58} height={27} onClick={handleArtClick} name='보드게임'/>
+                                        <Image src={art.보드게임 ? artTag8ON : artTag8} width={58} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='보드게임'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.반려동물 ? artTag7ON : artTag7} width={58} height={27} onClick={handleArtClick} name='반려동물'/>
+                                        <Image src={art.반려동물 ? artTag7ON : artTag7} width={58} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='반려동물'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.요리 ? artTag9ON : artTag9} width={36} height={27} onClick={handleArtClick} name='요리'/>
+                                        <Image src={art.요리 ? artTag9ON : artTag9} width={36} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='요리'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.맛집탐방 ? artTag5ON : artTag5} width={61} height={27} onClick={handleArtClick} name='맛집탐방'/>
+                                        <Image src={art.맛집탐방 ? artTag5ON : artTag5} width={61} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='맛집탐방'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={art.만화 ? artTag4ON : artTag4} width={36} height={27} onClick={handleArtClick} name='만화'/>
+                                        <Image src={art.만화 ? artTag4ON : artTag4} width={36} height={27} onClick={handleArtClick} placeholder="blur" layout='fixed' name='만화'/>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -863,49 +863,49 @@ export default function makeProfile(){
                             <div style={{marginBottom:'9px'}}>
                                 <Grid container style={{maxWidth:'330px'}}>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.학회 ? stuTag1On : stuTag1} width={36} height={27} onClick={handleStudyClick} name='학회'/>
+                                        <Image src={study.학회 ? stuTag1On : stuTag1} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='학회'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.동아리 ? stuTag2On : stuTag2} width={47} height={27} onClick={handleStudyClick} name='동아리'/>
+                                        <Image src={study.동아리 ? stuTag2On : stuTag2} width={47} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='동아리'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.교환학생 ? stuTag3On : stuTag3} width={61} height={27} onClick={handleStudyClick} name='교환학생'/>
+                                        <Image src={study.교환학생 ? stuTag3On : stuTag3} width={61} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='교환학생'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.봉사 ? stuTag4On : stuTag4} width={36} height={27} onClick={handleStudyClick} name='봉사'/>
+                                        <Image src={study.봉사 ? stuTag4On : stuTag4} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='봉사'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.재테크 ? stuTag5On : stuTag5} width={47} height={27} onClick={handleStudyClick} name='재테크'/>
+                                        <Image src={study.재테크 ? stuTag5On : stuTag5} width={47} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='재테크'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.빅데이터 ? stuTag6On : stuTag6} width={58} height={27} onClick={handleStudyClick} name='빅데이터'/>
+                                        <Image src={study.빅데이터 ? stuTag6On : stuTag6} width={58} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='빅데이터'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.금융 ? stuTag7On : stuTag7} width={36} height={27} onClick={handleStudyClick} name='금융'/>
+                                        <Image src={study.금융 ? stuTag7On : stuTag7} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='금융'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.문학 ? stuTag8On : stuTag8} width={36} height={27} onClick={handleStudyClick} name='문학'/>
+                                        <Image src={study.문학 ? stuTag8On : stuTag8} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='문학'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.토론 ? stuTag9On : stuTag9} width={36} height={27} onClick={handleStudyClick} name='토론'/>
+                                        <Image src={study.토론 ? stuTag9On : stuTag9} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='토론'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.시사 ? stuTag10On : stuTag10} width={36} height={27} onClick={handleStudyClick} name='시사'/>
+                                        <Image src={study.시사 ? stuTag10On : stuTag10} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='시사'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.어학 ? stuTag11On : stuTag11} width={36} height={27} onClick={handleStudyClick} name='어학'/>
+                                        <Image src={study.어학 ? stuTag11On : stuTag11} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='어학'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.CPA ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} name='CPA'/>
+                                        <Image src={study.CPA ? stuTag12On : stuTag12} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='CPA'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.피트 ? stuTag13On : stuTag13} width={36} height={27} onClick={handleStudyClick} name='피트'/>
+                                        <Image src={study.피트 ? stuTag13On : stuTag13} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='피트'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.로스쿨 ? stuTag14On : stuTag14} width={47} height={27} onClick={handleStudyClick} name='로스쿨'/>
+                                        <Image src={study.로스쿨 ? stuTag14On : stuTag14} width={47} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='로스쿨'/>
                                     </Grid>
                                     <Grid style={{marginRight:'8px'}}>
-                                        <Image src={study.행시 ? stuTag15On : stuTag15} width={36} height={27} onClick={handleStudyClick} name='행시'/>
+                                        <Image src={study.행시 ? stuTag15On : stuTag15} width={36} height={27} onClick={handleStudyClick} placeholder="blur" layout='fixed' name='행시'/>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -926,14 +926,14 @@ export default function makeProfile(){
                                 />
                             </div>
                             <div style={{position:'relative'}}>
-                                <Image src={textForm} width={330} height={71}/>
+                                <Image src={textForm} width={330} height={71} placeholder="blur" layout='fixed' />
                             </div>
                         </Container>
                         </div>
                     </div>
                     <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
                         <div style={{paddingBottom:'50px', textAlign:'center'}}>
-                            <Image src={condition ? submitOk: submit} width={296} height={45} onClick={handleOnSubmit} name='확인'/>
+                            <Image src={condition ? submitOk: submit} width={296} height={45} onClick={handleOnSubmit} name='확인' placeholder="blur" layout='fixed' />
                         </div>
                     </Container>
                 </Container>

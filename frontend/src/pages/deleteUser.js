@@ -46,7 +46,7 @@ export default function deleteUser() {
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick}/>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'35%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>탈퇴하기</Typography>
@@ -62,7 +62,7 @@ export default function deleteUser() {
             }}
         >
             <div style={{ width: '100%', textAlign: 'center' }}>
-            <Image width={121} height={101} src={logo} />
+            <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
             {/* <Typography sx={{fontSize: '22px', fontWeight: '500', mb: '22px'}}>너무 아쉬워요...</Typography> */}
             <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '2px', color: '#BABABA', marginTop: '22px'}}>
                 계정을 삭제하면 회원님의 저장 목록, 리뷰, 채팅 등

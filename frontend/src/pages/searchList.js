@@ -94,7 +94,7 @@ export default function searchList(){
         const favorite = favorites || []; // favorites가 null 또는 undefined인 경우 빈 배열([])로 초기화
         const isFavorited = favorite.some(favorite => favorite.place_id === placeId);
         if (isFavorited) {
-        return <Image width={15} height={15} src={bookmarkOn} />;
+        return <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />;
         } else {
             return null;
         }
@@ -200,7 +200,7 @@ export default function searchList(){
                                     >   
                                         <Grid container>
                                             <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={16} height={21}/>
+                                                <Image src={marker} width={16} height={21} placeholder="blur" layout='fixed' />
                                             </Grid>
                                             <Grid item style={{margin:'0px 0px 0px 12px'}}>
                                                 <div style={{fontSize:'16px'}}>
@@ -218,7 +218,7 @@ export default function searchList(){
                             </ul>
                         : (
                             <div style={{textAlign:'center', paddingTop:'110px'}}>        
-                                    <Image src={noAuto} width={129} height={108}/>
+                                    <Image src={noAuto} width={129} height={108} placeholder="blur" layout='fixed' />
                                     <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
                                 </div>
                         )}
@@ -270,7 +270,7 @@ export default function searchList(){
                                                             </Typography>
                                                         </Grid>
                                                         <Grid style={{margin:'0px 7px 0px 7px'}}>
-                                                            <Image width={15} height={14} src={star}/>
+                                                            <Image width={15} height={14} src={star} placeholder="blur" layout='fixed' />
                                                         </Grid>
                                                         <Grid >
                                                             <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
@@ -327,6 +327,9 @@ export default function searchList(){
                                                     alt={ item.name } 
                                                     src={ item.images && item.images.length > 0 ? item.images[0] : food }
                                                     style={{borderRadius: '10px'}}
+                                                    placeholder="blur"
+                                                    blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                                    layout='fixed'
                                                 />
                                             </Grid>
                                         </Grid>
@@ -334,7 +337,7 @@ export default function searchList(){
                                     </li>
                             )):  (
                                 <div style={{textAlign:'center', paddingTop:'110px'}}>        
-                                    <Image src={noAuto} width={129} height={108}/>
+                                    <Image src={noAuto} width={129} height={108} placeholder="blur" layout='fixed' />
                                     <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
                                 </div>
                             )}

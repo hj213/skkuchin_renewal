@@ -6,7 +6,8 @@ import { load_review } from "../actions/review/review";
 import { load_reviews } from "../actions/review/review";
 import { modify_review } from "../actions/review/review";
 
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, Button, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
@@ -28,9 +29,9 @@ import tag7 from '../image/tags/review_off/review_two.png';
 import tag7on from '../image/tags/review_on/review_twoY.png';
 import image from '../image/morePicY.png';
 
-
 import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
+import removeBtn from '../image/close.png';
 
 import TextField from '@mui/material/TextField';
 
@@ -165,7 +166,7 @@ const ModifyReview = () => {
      const handleModifyClick = (event) =>{
         event.preventDefault();
         
-        dispatch(modify_review(review_id, rating, textReview, images, review.images, tagList, ([result, message])=>{
+        dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
             if(result){
                 alert("PUT 요청 result: " + result)
                 router.push({
@@ -197,7 +198,7 @@ const ModifyReview = () => {
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
-                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
+                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} placeholder="blur" layout='fixed' />
                             </a>
                         </Grid>
                     
@@ -239,7 +240,7 @@ const ModifyReview = () => {
                                         starImage = filledStar;
                                         }
                                         return (
-                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' />
+                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' placeholder="blur" layout='fixed' />
                                         );
                                     })}
                                     <Typography sx={{fontSize: '18px', fontWeight: '700', color: '#FFCE00'}}>{`${rating}점`}</Typography>
@@ -272,6 +273,8 @@ const ModifyReview = () => {
                                             alt="tag1"
                                             onClick={handleTagClick}
                                             id='맛집'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -282,6 +285,8 @@ const ModifyReview = () => {
                                             alt="tag2"
                                             onClick={handleTagClick}
                                             id='간단한 한 끼'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -292,6 +297,8 @@ const ModifyReview = () => {
                                             alt="tag3"
                                             onClick={handleTagClick}
                                             id='분위기 좋은'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -302,6 +309,8 @@ const ModifyReview = () => {
                                             alt="tag4"
                                             onClick={handleTagClick}
                                             id='가성비'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -312,6 +321,8 @@ const ModifyReview = () => {
                                             alt="tag5"
                                             onClick={handleTagClick}
                                             id='친절'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -322,6 +333,8 @@ const ModifyReview = () => {
                                             alt="tag6"
                                             onClick={handleTagClick}
                                             id='청결도'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                     <Grid style={{marginRight:'5px'}}>
@@ -332,6 +345,8 @@ const ModifyReview = () => {
                                             alt="tag7"
                                             onClick={handleTagClick}
                                             id='둘이 가요'
+                                            placeholder="blur" 
+                                            layout='fixed'
                                         />
                                     </Grid>
                                 </Grid>
@@ -348,13 +363,12 @@ const ModifyReview = () => {
                                 <Grid container style={{position:'relative', width:'100%'}}>
                                     <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
                                         {previewImages.map((previewImage, index) => (
-                                            <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
-                                                <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
-                                                objectPosition: 'center center' }} />
-                                                <button type="button" onClick={() => handleImageRemove(index)}>
-                                                    X
-                                                </button>
-                                            </Grid>
+                                        <Grid item key={index} style={{ display: 'inline-block', flexShrink: 0, paddingRight: '5px', position: 'relative' }}>
+                                            <img key={previewImage} src={previewImage} alt="preview" style={{ width: '150px', height: '150px', objectFit: 'contain', objectPosition: 'center center' }} />
+                                            <Button type="button" onClick={() => handleImageRemove(index)} style={{ position: 'absolute', top: '0', right: '0', padding: '5px', justifyContent: 'right' }}>
+                                                <Image src={removeBtn} width={25} height={25} />
+                                            </Button>
+                                        </Grid>
                                         ))}
                                     </Grid>
                                 </Grid>
