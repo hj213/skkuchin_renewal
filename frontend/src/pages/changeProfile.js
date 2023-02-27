@@ -179,7 +179,7 @@ export default function makeProfile(){
 
     }, [dispatch]);
 
-    //for 초기값 받아오기
+    //초기값 받아오기
     useEffect(()=>{
         if(matchingUser){
             //성별
@@ -601,7 +601,7 @@ export default function makeProfile(){
                     alert(message);
                     router.back();
                 } else {
-                    // alert(message);
+                    alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
                 }
@@ -651,7 +651,7 @@ export default function makeProfile(){
         }
     }, [gender, keyword, introduction, mbti]);
 
-    console.log(gender, keyword, introduction, mbti);
+    // console.log(gender, keyword, introduction, mbti);
    
     return(
         <ThemeProvider theme={theme}>

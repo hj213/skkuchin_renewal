@@ -113,9 +113,9 @@ export default function list(){
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
                     if(WINDOW_HEIGHT < 750){
-                        setHeight(175)
+                        setHeight(187)
                     } else {
-                        setHeight(320)
+                        setHeight(345)
                     }
                     setCardStyle({
                         radius: '30px 30px 0px 0px',
@@ -163,7 +163,7 @@ export default function list(){
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
         // event.preventDefault();
-        console.log(height);
+       
         const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
@@ -181,9 +181,9 @@ export default function list(){
             event.preventDefault();
         } else {
             if(WINDOW_HEIGHT < 750){
-                setHeight(175)
+                setHeight(187)
             } else {
-                setHeight(320)
+                setHeight(345)
             }
             // setHeight('35%');
             setOpen({
@@ -205,9 +205,9 @@ export default function list(){
             setOpen({ bool:false,
                 Visibility:'hidden'});
             if(WINDOW_HEIGHT < 750){
-                setHeight(175)
+                setHeight(187)
             } else {
-                setHeight(320)
+                setHeight(345)
             }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
