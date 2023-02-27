@@ -104,9 +104,9 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                     System.out.println("\"fuck\" = " + "fuck");
                     String sessionId = accessor.getSessionId();
                     ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId);
-                    if(chatSession.getChatRoom().isSenderBlocked() == true || chatSession.getChatRoom().isReceiverBlocked() == true){
+                    /*if(chatSession.getChatRoom().isSenderBlocked() == true || chatSession.getChatRoom().isReceiverBlocked() == true){
                         throw new RuntimeException("차단된 유저입니다.");
-                    }
+                    }*/
                 }
 
 
