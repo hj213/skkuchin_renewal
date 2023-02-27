@@ -306,7 +306,7 @@ export default function userAgreement() {
         </Container>
         <Box
             sx={{
-            margin: '45px 22px 22px 22px',
+            margin: '25px 22px 22px 22px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

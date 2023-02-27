@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select, Container, Grid } from '@mui/material';
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
@@ -96,6 +96,16 @@ export default function editProfile() {
         <ThemeProvider theme={theme}>
         <CssBaseline />
 
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick}/>
+                            </Grid>
+                            <Grid item style={{marginLeft:'30%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>프로필 수정</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>
         {user && !editImage && 
         <Box
             sx={{
@@ -106,10 +116,11 @@ export default function editProfile() {
             }}
         >
         {/* 상단 */}
-        <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '55px'}}>
+
+        {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '55px'}}>
             <Image width={11} height={18} src={back} onClick={handleArrowClick}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>프로필 수정</Typography>
-        </header>
+        </header> */}
 
         {/* 프로필 이미지 */}
         {displayProfile(image, 107, 107)}
