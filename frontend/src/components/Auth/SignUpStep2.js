@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, Container, Grid} from '@mui/material';
+import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, Container, Grid, Autocomplete} from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
@@ -14,6 +14,7 @@ const SignUpStep2 = (props) => {
     const [validNickname, setValidNickname] = useState(null);
     const [nicknameMsg, setNicknameMsg] = useState("");
     const [studentId, setStudentId] = useState("");
+    const [majorValue, setMajorValue] = useState("");
 
     const majorList = [
       '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공',
@@ -22,7 +23,7 @@ const SignUpStep2 = (props) => {
       '러시아어문학과', '문헌정보학과', '사학과', '영어영문학과', '중어중문학과',
       '철학과', '프랑스어문학과', '한문학과', '교육학과', '수학교육과',
       '컴퓨터교육과', '한문교육과', '글로벌리더학부', '미디어커뮤니케이션학과',
-      '사회복지학과', '사회학과', '사회학과', '심리학과',
+      '사회복지학과', '사회학과', '심리학과',
       '아동청소년학과', '정치외교학과', '행정학과', '바이오메카트로닉스학과', '식품생명공학과', '융합생명공학과', '글로벌바이오메디컬공학과', 
       '글로벌융합학부', '데이터사이언스융합전공', '인공지능융합전공', '컬처앤테크놀로지융합전공', '자기설계융합전공',
       '유학동양학과', '미술학과', '디자인학과', '무용학과', '영상학과', '연기예술학과', '의상학과', 
@@ -38,6 +39,7 @@ const SignUpStep2 = (props) => {
 
     const handleNextStep = () => {
       //dispatch(register(props.data))
+      //props.setData({...props.data, major: majorValue});
       props.handleNextStep();
     }
 
@@ -82,15 +84,16 @@ const SignUpStep2 = (props) => {
       </header> */}
       <form style={{ width: '100%'}}>
         <div style={{margin: '0 36px'}}>
+        <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>닉네임*</Typography>
           <TextField
             variant="standard"
-            label="닉네임"
+            //label="닉네임"
             value={props.data.nickname}
             onChange={handleNicknameChange}
             style={{width: '100%'}}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            //InputLabelProps={{
+              //shrink: true,
+            //}}
             required
             InputProps={{
               endAdornment: (validNickname) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
@@ -98,15 +101,15 @@ const SignUpStep2 = (props) => {
             />
             {/* 중복확인 메소드 추가 */}
             <div style={{display:'flex'}}>
-              <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
-              {validNickname == null && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>닉네임 중복 확인 체크를 해주세요</Typography>}
-              {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
-              {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{nicknameMsg}</Typography>}
+              <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 39px', boxShadow: 'none'}}>중복확인</Button>
+              {validNickname == null && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 39px 5px'}}>닉네임 중복 확인 체크를 해주세요</Typography>}
+              {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 39px 5px'}}>{nicknameMsg}</Typography>}
+              {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 39px 5px'}}>{nicknameMsg}</Typography>}
             </div>
         </div>
         <div style={{margin: '0 36px 44px'}}>
           <FormControl variant="standard" style={{width: '100%'}}>
-            <InputLabel shrink required >학부/학과</InputLabel>
+            {/* <InputLabel shrink required >학부/학과</InputLabel>
             <Select
                 MenuProps={{
                   style: {
@@ -123,34 +126,20 @@ const SignUpStep2 = (props) => {
                 {majorList.map((item, index) => (
                   <MenuItem value={item} key={index}>{item}</MenuItem>
                 ))}
-            </Select>
+            </Select> */}
+            <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학부/학과*</Typography>
+            <Autocomplete
+              clearOnEscape
+              value={props.data.major}
+              onChange={(e, value) => props.setData({...props.data, major: value})}
+              options={majorList.sort()}
+              renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
+            />
           </FormControl>
         </div>
         <div style={{margin: '0 36px 65px'}}>
-          {/* <TextField
-            variant="standard"
-            label="학번"
-            //value={student_id}
-            //onChange={(e) => setStudentId(e.target.value)}
-            value={props.data.student_id}
-            onChange={(e) => props.setData({...props.data, student_id: e.target.value})}
-            style={{width: '100%'}}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            required
-            InputProps={{
-              endAdornment: <InputAdornment position="end"><span style={{color: "#000", fontSize: '12px', fontWeight: '500'}}>학번</span></InputAdornment>,
-            }}
-          />
-          { (props.data.student_id != '') ?
-            (props.data.student_id.length != 2) ?
-            <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>숫자 2자리를 입력해주세요.</Typography>
-            : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mb: '34px'}}>&nbsp; </Typography>
-          : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mb: '34px'}}>숫자 2자리 입력</Typography>
-        } */}
           <FormControl variant="standard" style={{width: '100%'}}>
-              <InputLabel shrink required >학번</InputLabel>
+              {/* <InputLabel shrink required >학번</InputLabel>
               <Select
                   MenuProps={{
                     style: {
@@ -166,11 +155,19 @@ const SignUpStep2 = (props) => {
                   {studentIdList.map((item, index) => (
                     <MenuItem value={item} key={index}>{item}</MenuItem>
                   ))}
-              </Select>
+              </Select> */}
+              <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학번*</Typography>
+              <Autocomplete
+                clearOnEscape
+                value={props.data.studentId}
+                onChange={(e, value) => props.setData({...props.data, student_id: value.slice(0, 2)})}
+                options={studentIdList}
+                renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
+              />
             </FormControl>
         </div>
         <div style={{margin: '0 36px 12px'}}>
-            {validNickname && (props.data.nickname != '' && props.data.major != '' && props.data.student_id.length == 2 && props.data.student_id < 24) ?
+            {validNickname && (props.data.nickname != '' && majorList.indexOf(props.data.major) != -1 && props.data.student_id.length == 2 && props.data.student_id < 24) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
                         다음
                     </Button>
