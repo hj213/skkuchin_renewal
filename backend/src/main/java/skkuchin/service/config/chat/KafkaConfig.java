@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Configuration
 @EnableKafka
+//bootstrapServers, groupId 수정해야함
 public class KafkaConfig {
 
 

@@ -1,5 +1,5 @@
 
-package skkuchin.service.config.chat;
+package skkuchin.service.api.chatController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,13 +17,14 @@ import skkuchin.service.service.ChatService;
 
 @RestController
 @RequiredArgsConstructor
-public class DebeziumConfig{
+public class DebeziumController {
 
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final RabbitTemplate template;
     private final ChatService chatService;
 
 
+    //Topics 안에 들어갈 변수 =  topic_prefix + schema_name + table_name
     @KafkaListener(topics = "kk.skkuchin2.chat_message")
     public void listenChatMessage(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
@@ -49,38 +50,28 @@ public class DebeziumConfig{
             chatMessage.setMessage(messages);
             chatMessage.setSender(sender);
             chatMessage.setUserCount(userCnt1);
-            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +"1541d190-9021-49a6-9d6e-890953fc5b3e", chatMessage);
-            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+"8ea645b1-d6c8-4cf9-9cdd-0eb401537e4b",chatMessage);
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, chatMessage);
+           /* template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+"8ea645b1-d6c8-4cf9-9cdd-0eb401537e4b",chatMessage);*/
 
         }
 
-
-        else if(operation1.equals("u")){
+    //테스트 다시 해봐야
+     /*   else if(operation1.equals("u")){
             JsonNode beforeUserCnt = payload.get("after").get("user_count");
             JsonNode beforeId =  payload.get("after").get("id");
 
             String id = mapper.writeValueAsString(beforeId).replace("\"","");
+            JsonNode beforeRoomId = payload.get("after").get("room_id");
 
+            String roomId = mapper.writeValueAsString(beforeRoomId).replace("\"","");
             String userCnt = mapper.writeValueAsString(beforeUserCnt).replace("\"","");
-            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +"1541d190-9021-49a6-9d6e-890953fc5b3e", id);
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, id);
 
 
-        }
+        }*/
 
 
     }
-
- /*   @Service
-    @RequiredArgsConstructor
-    public class Receiver{
-        @RabbitListener(queues = "chat.queue")
-        public void consume(String message1){
-
-                System.out.println("chatMessage.toString() = " + message1);
-
-
-        }
-    }*/
 
 
     @KafkaListener(topics = "kk.skkuchin2.chat_room")
@@ -107,15 +98,14 @@ public class DebeziumConfig{
 
             String blocked = mapper.writeValueAsString(afterBlock).replace("\"","");
             String blocked1 = mapper.writeValueAsString(afterBlock1).replace("\"","");
-            //blocked = 1
+
+            //blocked = true/false
             System.out.println("blocked = " + blocked);
-            if(!beforeBlock.equals(afterBlock) && blocked.equals("1")){
+            if(!beforeBlock.equals(afterBlock) && blocked.equals("false") || !beforeBlock1.equals(afterBlock1) && blocked1.equals("false")){
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, json2);
             }
 
-            else if(!beforeBlock1.equals(afterBlock1) && blocked1.equals("1")){
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, json2);
-            }
+
 
 
         }
