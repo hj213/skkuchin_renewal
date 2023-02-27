@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select, Container, Grid, Autocomplete } from '@mui/material';
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
@@ -32,7 +32,7 @@ export default function editProfile() {
         '러시아어문학과', '문헌정보학과', '사학과', '영어영문학과', '중어중문학과',
         '철학과', '프랑스어문학과', '한문학과', '교육학과', '수학교육과',
         '컴퓨터교육과', '한문교육과', '글로벌리더학부', '미디어커뮤니케이션학과',
-        '사회복지학과', '사회학과', '사회학과', '심리학과',
+        '사회복지학과', '사회학과', '심리학과',
         '아동청소년학과', '정치외교학과', '행정학과', '바이오메카트로닉스학과', '식품생명공학과', '융합생명공학과', '글로벌바이오메디컬공학과', 
         '글로벌융합학부', '데이터사이언스융합전공', '인공지능융합전공', '컬처앤테크놀로지융합전공', '자기설계융합전공',
         '유학동양학과', '미술학과', '디자인학과', '무용학과', '영상학과', '연기예술학과', '의상학과', 
@@ -96,6 +96,16 @@ export default function editProfile() {
         <ThemeProvider theme={theme}>
         <CssBaseline />
 
+        {!editImage && <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick}  placeholder="blur" layout='fixed'/>
+                            </Grid>
+                            <Grid item style={{marginLeft:'30%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>프로필 수정</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>}
         {user && !editImage && 
         <Box
             sx={{
@@ -106,10 +116,10 @@ export default function editProfile() {
             }}
         >
         {/* 상단 */}
-        <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '55px'}}>
+        {/*<header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '55px'}}>
             <Image width={11} height={18} src={back} onClick={handleArrowClick} placeholder="blur" layout='fixed' />
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>프로필 수정</Typography>
-        </header>
+        </header> */}
 
         {/* 프로필 이미지 */}
         {displayProfile(image, 107, 107)}
@@ -117,15 +127,13 @@ export default function editProfile() {
         
         <form style={{ width: '100%'}}>
         <div style={{margin: '0 36px 19px'}}>
+            <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>닉네임*</Typography>
         <TextField
             variant="standard"
-            label="닉네임"
+            //label="닉네임"
             value={nickname}
             onChange={handleNicknameChange}
             style={{width: '100%'}}
-            InputLabelProps={{
-                shrink: true,
-            }}
             required
             InputProps={{
                 endAdornment: (validNickname) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
@@ -142,47 +150,30 @@ export default function editProfile() {
         </div>
         <div style={{margin: '0 36px 39px'}}>
             <FormControl variant="standard" style={{width: '100%'}}>
-            <InputLabel shrink required >학부/학과</InputLabel>
-            <Select
-                MenuProps={{
-                    style: {
-                        width: '212px',
-                        height: '241px',
-                    }
-                }}
-                name='major'
-                value={major}
-                onChange={(e) => setMajor(e.target.value)}
-            >
-                {majorList.map((item, index) => (
-                    <MenuItem value={item} key={index}>{item}</MenuItem>
-                ))}
-            </Select>
+            <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학부/학과*</Typography>
+            <Autocomplete
+              clearOnEscape
+              value={major}
+              onChange={(e, value) => setMajor(value)}
+              options={majorList.sort()}
+              renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
+            />
             </FormControl>
         </div>
         <div style={{margin: '0 36px 44px'}}>
             <FormControl variant="standard" style={{width: '100%'}}>
-                <InputLabel shrink required >학번</InputLabel>
-                <Select
-                    MenuProps={{
-                        style: {
-                            width: '212px',
-                            height: '241px',
-                            fontWeight: '700'
-                        }
-                    }}
-                    name='student_id'
-                    value={studentId}
-                    onChange={(e) => setStudentId(e.target.value)}
-                >
-                    {studentIdList.map((item, index) => (
-                        <MenuItem value={item} key={index}>{item}</MenuItem>
-                    ))}
-                </Select>
+                <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학번*</Typography>
+                <Autocomplete
+                clearOnEscape
+                value={studentId}
+                onChange={(e, value) => setStudentId(value)}
+                options={studentIdList}
+                renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
+                />
             </FormControl>
         </div>
         <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 36px 50px 36px'}}>
-            {(nickname === user.nickname || validNickname) && (nickname != '' && major != '' && studentId != '') ?
+            {(nickname === user.nickname || validNickname) && (nickname != '' && majorList.indexOf(major) != -1 && studentIdList.indexOf(studentId) != -1) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인
                     </Button>

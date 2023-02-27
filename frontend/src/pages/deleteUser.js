@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
 import back from '../image/arrow_back_ios.png';
-import logo from '../image/email_enhang.png'
+import logo from '../image/character_tear.png'
+import checkbox from '../image/checkbox.png'
+import checkbox_empty from '../image/checkbox_empty.png'
 import Image from 'next/image';
 import theme from '../theme/theme';
 import { change_password, delete_user, logout } from '../actions/auth/auth';
@@ -61,8 +63,8 @@ export default function deleteUser() {
         >
             <div style={{ width: '100%', textAlign: 'center' }}>
             <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
-            <Typography sx={{fontSize: '22px', fontWeight: '500', mb: '22px'}}>너무 아쉬워요...🥲</Typography>
-            <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '2px', color: '#BABABA'}}>
+            {/* <Typography sx={{fontSize: '22px', fontWeight: '500', mb: '22px'}}>너무 아쉬워요...</Typography> */}
+            <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '2px', color: '#BABABA', marginTop: '22px'}}>
                 계정을 삭제하면 회원님의 저장 목록, 리뷰, 채팅 등
             </Typography>
             <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '42px',  color: '#BABABA'}}>
@@ -73,7 +75,9 @@ export default function deleteUser() {
             <form style={{ width: '100%'}}>
                 <textarea placeholder='계정을 삭제하려는 이유를 작성해주세요.(10자 이상)' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'Noto Sans KR, sans-serif'}} />
                 <div style={{display: 'flex', justifyItems: 'center', alignItems: 'center'}}>
-                <input type="checkbox" checked={agreement} onChange={() => setAgreement(!agreement)}/>
+                {/* <input type="checkbox" checked={agreement} onChange={() => setAgreement(!agreement)}/> */}
+                {agreement ? <Image width={16} height={16} src={checkbox} onClick={() => setAgreement(false)} />
+                : <Image width={16} height={16} src={checkbox_empty} onClick={() => setAgreement(true)} />}
                 <label style={{fontSize: '9px', paddingLeft: '5px'}}>유의사항을 모두 확인하였으며, 회원탈퇴 시 ~~~에 동의합니다.</label>
                 </div>
 
