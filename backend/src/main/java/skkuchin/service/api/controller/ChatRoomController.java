@@ -71,6 +71,7 @@ public class ChatRoomController {
 
 
     //채팅방의 메시지 시간 순으로 정렬
+    //아래 api랑 합쳐야
     @GetMapping("/room/{roomId}")
     public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
@@ -122,7 +123,7 @@ public class ChatRoomController {
 
     //상대 유저 블럭
     //block or remove
-    @PostMapping("/room/response/{response}/{roomId}")
+    @PostMapping("/room/block/{response}/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
             @PathVariable String response, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
