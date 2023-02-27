@@ -187,7 +187,7 @@ public class EmailService {
                 "<span style='color: #FFCE00; font-weight: bold; margin-right: 5px;'>메일인증</span>" +
                 "<span>안내입니다.</span>" +
             "</div>" +
-            "<img src='' alt='' style='margin-bottom: 31px; width: 84px; height: 66px' />" +
+            "<img src='https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/prod/mail/email_enhang.png' alt='' style='margin-bottom: 31px; width: 84px; height: 66px' />" +
             "<div style='margin-bottom: 23px; font-size: 12px'>" +
                 "<div style='margin-bottom: 7px'>안녕하세요.</div>" +
                 "<div style='margin-bottom: 7px'>스꾸친을 이용해 주셔서 진심으로 감사드립니다.</div>" +
