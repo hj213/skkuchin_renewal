@@ -19,41 +19,45 @@ const UpperBar = () => {
 
     const [selected, setSelected] = useState("스꾸맵");
 
-    // 0218 upperBar 에러 수정
+    // 0226 myPage 적용 안되는 문제 수정 완료
     useEffect(() => {
         const currentPathname = window.location.pathname;
         if (currentPathname === "/match") {
           setSelected("AI 매칭");
         } else if (currentPathname === "/magazine"){
           setSelected("매거진");
-        } else if (currentPathname === "/mypage"){
+        } else if (currentPathname === "/myPage"){
             setSelected("마이페이지");
         } else {
             setSelected("스꾸맵");
         }
-      }, []);
+    }, []);
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
-    const authLinks = (
-        // 상단 네비게이션 바. maxWidth는 지도와 맞춤
-        <div style={{ position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center", paddingBottom:'9px',borderBottom: '1.5px solid rgba(234, 234, 234, 1)', maxWidth:'600px'}}>
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container disableGutters={true} maxWidth="xs" style={{height:"90px", margin:"0", padding:"0"}} overflow="hidden">
+        <div style={{ zIndex:'99', position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center", paddingBottom:'9px',borderBottom: '1.5px solid rgba(234, 234, 234, 1)', maxWidth:'600px'}}>
         {/* // 스크롤 X */}
         {/* // <div style={{ position: "absolute", top: 0, width: "100%", background: "white", alignContent:"center"}}> */}
 
-            {/* 상단 아이콘 위치, 추후 페이지 제작 시 link 연결 필요 */}
-            
+            {/* 0226 상단바 isAuth 삭제 안료 */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
                 <Link href="/">
-                    <Image src={mainLogo} width={85} height={19} placeholder="blur" layout='fixed' />
+                    <Image src={mainLogo} width={85} height={19} />
                 </Link>
             <div style={{flex: 1}} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <div style={{marginRight:"10px"}}>
-                        <Image src={messageIcon} width={24} height={24} placeholder="blur" layout='fixed' />
+                        {/* message.js로 연결. 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
+                        <Link href="/message">
+                            <Image src={messageIcon} width={24} height={24}/>
+                        </Link>
                     </div>
                     <div>
-                        <Image src={notiIcon} width={24} height={24} placeholder="blur" layout='fixed' />
+                        {/* 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
+                        <Image src={notiIcon} width={24} height={24}/>
                     </div>
                 </div>
             </div>
@@ -126,37 +130,6 @@ const UpperBar = () => {
             </Link>
         </div>
     </div>
-    );
-
-    // index.js에서도 isAuthenticated로 한번 걸러내긴 하지만
-    // 혹시 추후에 비회원 유저도 맵을 일부 이용하게 할 경우
-    // 마이페이지 -> 회원가입 등으로 수정하기 위해 남겨둠. (guestLinks)
-    const guestLinks = (
-        <>
-            <li className='nav-item'>
-                <Link href='/register'>
-                    <a className={router.pathname === '/register' ? 'nav-link active' : 'nav-link'}>
-                        Register
-                    </a>
-                </Link>
-            </li>
-            <li className='nav-item'>
-                <Link href='/login'>
-                    <a className={router.pathname === '/login' ? 'nav-link active' : 'nav-link'}>
-                        Login
-                    </a>
-                </Link>
-            </li>
-        </>
-    );
-
-    return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Container disableGutters={true} maxWidth="xs" style={{height:"90px", margin:"0", padding:"0"}} overflow="hidden">
-                    {
-                        isAuthenticated ? authLinks: guestLinks
-                    }
             </Container>
         </ThemeProvider>
 )};

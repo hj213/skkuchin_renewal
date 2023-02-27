@@ -22,7 +22,7 @@ const MatchPage = () => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-        {/* 0211 상단바, 내 프로필 보기 병합 완료 (재현) */}
+        {/* 0211 상단바, 내 프로필 보기 병합 완료 */}
             <UpperBar />
             <AiGreeting />
             
