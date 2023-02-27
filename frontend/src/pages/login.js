@@ -23,7 +23,8 @@ const LoginPage = () => {
     const [autoLogin, setAutoLogin] = useState(false);
     const [rememberUsername, setRememberUsername] = useState(false);
     const [error, setError] = useState('');
-    const remainHeight = window.innerHeight - 480 + "px";
+    //const remainHeight = window.innerHeight - 480 + "px";
+    const [remainHeight, setRemainHeight] = useState(window.innerHeight - 480 + "px");
 
     const [formData, setFormData] = useState({
         username: '',
@@ -44,14 +45,14 @@ const LoginPage = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(login(username, password, ([result, message]) => {
                 if (result) {
-                    alert(message)
+                    //alert(message)
                     if (rememberUsername) {
                         localStorage.setItem("username", username);
                     } else {
                         localStorage.removeItem("username");
                     }
                 } else {
-                    alert(message)
+                    //alert(message)
                     console.log(message);
                     if (typeof(message) == string) {
                         setError(message);
@@ -76,6 +77,10 @@ const LoginPage = () => {
         }
     }, [])
 
+    useEffect(() => {
+        setRemainHeight(window.innerHeight - 480 + "px");
+    }, [window.innerHeight])
+
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -88,12 +93,12 @@ const LoginPage = () => {
                         alignItems: 'center',
                         textAlign: 'center'
                         }}
-                        style={{marginTop: `calc(${remainHeight} * 0.5)`}}
+                        style={{marginTop: `calc(${remainHeight} * 0.55)`}}
                     >
                     <Image width={169} height={185} src={logo}/>
                     <div style={{ display: 'flex', width: '100%' }}>
                         <form onSubmit={onSubmit} style={{ width: '100%' }}>
-                            <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.25)` }}>
+                            <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.22)` }}>
                                 <input 
                                     type = 'text' name='username' 
                                     placeholder ='아이디' onChange={onChange} value={username}
@@ -138,24 +143,8 @@ const LoginPage = () => {
                             </div>
                         </form>
                     </div>
-                
-                {/* <Grid container sx={{justifyContent: 'center', fontSize: '12px', fontWeight: '400', color: '#505050', marginTop: '64px', marginBottom: '25px'}}>
-                    <Grid item >
-                    <Link href={`/register`}> 
-                        <span>회원가입</span>
-                    </Link>
-                    </Grid>
-                    <Grid item xs={1}>
-                        |
-                    </Grid>
-                    <Grid item>
-                    <Link href={`/resetPassword`}> 
-                        <span>비밀번호 초기화</span>
-                    </Link>
-                    </Grid>
-                </Grid> */}
 
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.25)`, marginBottom: '25px'}}>
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.22)`, marginBottom: '25px'}}>
                     <div onClick={() => router.push('/register')} style={{justifySelf: 'right'}}>회원가입</div>
                     <div style={{justifySelf: 'center', textAlign: 'center'}}>|</div>
                     <div onClick={() => router.push('/resetPassword')} style={{justifySelf: 'left'}}>비밀번호 초기화</div>
@@ -164,8 +153,8 @@ const LoginPage = () => {
                 </Container>
             <div style={{display: 'grid', justifyItems: 'center', marginBottom: '40px'}}>
             <div style={{display: 'grid', justifyItems: 'center', fontSize: '9px', fontWeight: '500', color: '#BABABA', bottom: '36px'}}>
-                <div>로그인하면 스꾸친 이용약관에 동의하는 것으로 간주합니다.</div>
-                <div style={{marginTop: '6px', textAlign: 'center'}}>스꾸친의 회원정보 처리방식은 개인정보 처리방침 및 쿠키 정책에서 확인해보세요.</div>
+                <div>로그인하면 스꾸친 <span onClick={() => router.push('/userAgreement')} style={{textDecoration: 'underline'}}>이용약관</span>에 동의하는 것으로 간주합니다.</div>
+                <div style={{marginTop: '6px', textAlign: 'center'}}>스꾸친의 회원정보 처리방식은 <span onClick={() => router.push('/policy')} style={{textDecoration: 'underline'}}>개인정보 처리방침</span> 및 쿠키 정책에서 확인해보세요.</div>
             </div>
             </div>
         </ThemeProvider>
