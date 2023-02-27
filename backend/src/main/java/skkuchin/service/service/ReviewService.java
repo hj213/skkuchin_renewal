@@ -68,8 +68,8 @@ public class ReviewService {
     public void write(AppUser user, ReviewDto.PostRequest dto) {
         List<ReviewImage> reviewImages = new ArrayList<>();
 
-        List<Review> myReview = reviewRepo.findByUserIdAndPlaceId(user.getId(), dto.getPlaceId());
-        if (myReview.size() > 0) throw new CustomRuntimeException("리뷰 작성 실패", "이미 리뷰를 작성했습니다.");
+//        List<Review> myReview = reviewRepo.findByUserIdAndPlaceId(user.getId(), dto.getPlaceId());
+//        if (myReview.size() > 0) throw new CustomRuntimeException("리뷰 작성 실패", "이미 리뷰를 작성했습니다.");
 
         Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
         Review review = dto.toEntity(user, place);
@@ -89,9 +89,10 @@ public class ReviewService {
                 String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
                 ReviewImage reviewImage = ReviewImage.builder().review(review).url(url).build();
                 reviewImages.add(reviewImage);
-
-                reviewImageRepo.saveAll(reviewImages);
             }
+        }
+        if (reviewImages.size() > 0) {
+            reviewImageRepo.saveAll(reviewImages);
         }
     }
 
@@ -99,6 +100,7 @@ public class ReviewService {
     public void update(Long reviewId, ReviewDto.PutRequest dto, AppUser user) {
         Review existingReview = reviewRepo.findById(reviewId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         Place place = existingReview.getPlace();
+        // s3 저장후 받은 url로 저장할 새로운 이미지 배열
         List<ReviewImage> newImages = new ArrayList<>();
         canHandleReview(existingReview.getUser(), user);
 
@@ -124,6 +126,7 @@ public class ReviewService {
 
         List<ReviewImage> existingImages = reviewImageRepo.findByReview(existingReview);
 
+        // s3에 업로드 후 newImages 배열에 url 정보 저장
         for (MultipartFile image : dto.getImages()) {
             if (!image.isEmpty()) {
                 String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
@@ -132,11 +135,16 @@ public class ReviewService {
             }
         }
 
-        reviewImageRepo.saveAll(newImages);
-        reviewImageRepo.deleteAll(existingImages);
+        if (newImages.size() > 0) {
+            reviewImageRepo.saveAll(newImages);
+        }
 
+        // 기존 image url 중 없어진 url 삭제
         for (ReviewImage existingImage : existingImages) {
-            s3Service.deleteObject(existingImage.getUrl());
+            if (!dto.getUrls().contains(existingImage.getUrl())) {
+                s3Service.deleteObject(existingImage.getUrl());
+                reviewImageRepo.delete(existingImage);
+            }
         }
     }
 

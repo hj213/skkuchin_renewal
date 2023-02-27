@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react"; 
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
@@ -15,14 +14,7 @@ const Friends = () => {
       }, [dispatch]);
     
 
-    const [isExpanded, setIsExpanded] = useState(false);
     const [height, setHeight] = useState('383px');
-    const handleExpand = () => {
-        setIsExpanded(!isExpanded);
-        if(!isExpanded) {
-            setHeight('439px');
-        } else setHeight('383px');
-    };
 
     // 밥약 신청하기 버튼
     const [open, setOpen] = useState(false);
@@ -61,19 +53,10 @@ const Friends = () => {
                         )))
                     : null}
                 </Grid >
-                {/* <Grid item sx={{width: '169px', textAlign: 'center', pb: '13px'}}> */}
-                <Grid item sx={{width: '169px', textAlign: 'center', pb: '8px'}}>
-                    {isExpanded ?
-                        <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
-                        : <Typography sx={{overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
-                    }
-                    { person.introduction.length > 17 ? 
-                    <Button sx={{fontSize: '12px', color: '#BABABA'}} onClick={handleExpand}>
-                        <u>{isExpanded ? '닫기' : '더보기'}</u>
-                    </Button>
-                    : null }
+                <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
+                    <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                 </Grid> 
-                <Button onClick={handleSubmit} sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : isExpanded ? '0' : '5px 0px'}}>
+                <Button onClick={handleSubmit} sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
                     밥약 신청하기
                 </Button>
                 <Dialog

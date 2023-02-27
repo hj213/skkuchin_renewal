@@ -1,6 +1,6 @@
 // 아이디, 비밀번호
 import { useState } from "react";
-import {  TextField, Button, Typography, Box } from '@mui/material';
+import {  TextField, Button, Typography, Box, Container, Grid } from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
@@ -51,18 +51,29 @@ const SignUpStep1 = (props) => {
     }
 
     return (
+        <div>
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+                        <Grid container>
+                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                                <Image src={back} width={11} height={18} name='back' onClick={backClick} placeholder="blur" layout='fixed' />
+                            </Grid>
+                            <Grid item style={{marginLeft:'35%'}}>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
+                            </Grid>
+                        </Grid>
+        </Container>
         <Box
             sx={{
-            marginTop: '45px',
+            margin: '55px 15px 15px 15px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             }}
         >
-        <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
+        {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
             <Image width={12.02} height={21.55} src={back} onClick={backClick}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>회원가입</Typography>
-        </header>
+        </header> */}
        
         <form style={{ width: '100%'}}>
             <div style={{margin: '0 36px'}}>
@@ -76,10 +87,14 @@ const SignUpStep1 = (props) => {
                     shrink: true,
                 }}
                 required
+                InputProps={{
+                    endAdornment: (validUsername) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
+                }}
                 />
                 {/* 중복확인 메소드 추가 */}
                 <div style={{display:'flex'}}>
                     <Button variant="contained" onClick={checkUsername} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
+                    {validUsername == null && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>아이디 중복 확인 체크를 해주세요</Typography>}
                     {validUsername && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{usernameMsg}</Typography>}
                     {validUsername == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{usernameMsg}</Typography>}
                 </div>
@@ -99,7 +114,7 @@ const SignUpStep1 = (props) => {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
+                    endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
                 }}
                 />
                 {(props.data.password != '') ? 
@@ -123,7 +138,7 @@ const SignUpStep1 = (props) => {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (props.data.password === props.data.re_password && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}}/> : null 
+                    endAdornment: (props.data.password === props.data.re_password && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
                 }}
                 />
                 { (props.data.re_password != '') ? ((props.data.password == props.data.re_password) ? 
@@ -144,10 +159,11 @@ const SignUpStep1 = (props) => {
             }
             </div>
         </form>
-        <div style={{textAlign: 'center', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
-                이미 회원이신가요? <Link href={`/login`} > 로그인 </Link> 
+        <div style={{display: 'flex', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
+                <span style={{alignSelf: 'center'}}>이미 회원이신가요?</span><Button onClick={() => router.push('/login')} variant="text" style={{alignSelf: 'start', justifySelf: 'start', fontSize: '12px', color: '#FFCE00', padding: 0, fontWeight: '700'}}>로그인</Button>
         </div>
       </Box>
+      </div>
     );
   };
 

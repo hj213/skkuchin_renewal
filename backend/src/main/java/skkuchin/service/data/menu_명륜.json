@@ -1590,6 +1590,421 @@
       "placeId": 61,
       "name": "소심줄",
       "price": 13000
+    },
+    {
+      "placeId": 62,
+      "name": "매운사태찜",
+      "price": 25000
+    },
+    {
+      "placeId": 62,
+      "name": "한우튀김",
+      "price": 20000
+    },
+    {
+      "placeId": 62,
+      "name": "안매운사태찜",
+      "price": 25000
+    },
+    {
+      "placeId": 62,
+      "name": "통순살치킨",
+      "price": 17000
+    },
+    {
+      "placeId": 62,
+      "name": "생고기육회",
+      "price": 20000
+    },
+    {
+      "placeId": 62,
+      "name": "육사시미",
+      "price": 20000
+    },
+    {
+      "placeId": 63,
+      "name": "과일접시",
+      "price": 5800
+    },
+    {
+      "placeId": 63,
+      "name": "맥앤치즈",
+      "price": 7900
+    },
+    {
+      "placeId": 63,
+      "name": "치즈떡볶이",
+      "price": 13900
+    },
+    {
+      "placeId": 63,
+      "name": "프루츠화채빙수",
+      "price": 14900
+    },
+    {
+      "placeId": 64,
+      "name": "해물치즈 빈대떡",
+      "price": 16000
+    },
+    {
+      "placeId": 64,
+      "name": "해물파전",
+      "price": 16000
+    },
+    {
+      "placeId": 64,
+      "name": "제육볶음",
+      "price": 20000
+    },
+    {
+      "placeId": 64,
+      "name": "전+탕 세트",
+      "price": 30000
+    },
+    {
+      "placeId": 64,
+      "name": "김치전",
+      "price": 13000
+    },
+    {
+      "placeId": 65,
+      "name": "페퍼로니피자",
+      "price": 8900
+    },
+    {
+      "placeId": 65,
+      "name": "고르곤졸라피자",
+      "price": 8900
+    },
+    {
+      "placeId": 65,
+      "name": "와사비마요다코야끼",
+      "price": 6900
+    },
+    {
+      "placeId": 65,
+      "name": "통삼겹카츠",
+      "price": 12900
+    },
+    {
+      "placeId": 65,
+      "name": "감자튀김",
+      "price": 6900
+    },
+    {
+      "placeId": 66,
+      "name": "꼬치A세트",
+      "price": 26000
+    },
+    {
+      "placeId": 66,
+      "name": "꼬치B세트",
+      "price": 34000
+    },
+    {
+      "placeId": 66,
+      "name": "나가사끼짬뽕",
+      "price": 20000
+    },
+    {
+      "placeId": 66,
+      "name": "메로구이",
+      "price": 19000
+    },
+    {
+      "placeId": 67,
+      "name": "오꼬노미야끼",
+      "price": 7900
+    },
+    {
+      "placeId": 67,
+      "name": "새우오꼬노미야끼",
+      "price": 8900
+    },
+    {
+      "placeId": 67,
+      "name": "오꼬베이컨감자전",
+      "price": 8900
+    },
+    {
+      "placeId": 67,
+      "name": "차돌숙주 야끼소바",
+      "price": 9900
+    },
+    {
+      "placeId": 67,
+      "name": "불닭야끼소바",
+      "price": 11900
+    },
+    {
+      "placeId": 67,
+      "name": "해물야끼우동",
+      "price": 12900
+    },
+    {
+      "placeId": 68,
+      "name": "씽콩",
+      "price": 6900
+    },
+    {
+      "placeId": 68,
+      "name": "감자튀김",
+      "price": 8900
+    },
+    {
+      "placeId": 68,
+      "name": "치킨가라아게",
+      "price": 13900
+    },
+    {
+      "placeId": 68,
+      "name": "치즈플레이트",
+      "price": 13900
+    },
+    {
+      "placeId": 69,
+      "name": "소시지 플레이트",
+      "price": 25000
+    },
+    {
+      "placeId": 69,
+      "name": "콰이엇 티임",
+      "price": 15000
+    },
+    {
+      "placeId": 69,
+      "name": "슬리핑 레슨",
+      "price": 16000
+    },
+    {
+      "placeId": 69,
+      "name": "드라이 마티니",
+      "price": 17000
+    },
+    {
+      "placeId": 69,
+      "name": "생제르망 뮬",
+      "price": 15000
+    },
+    {
+      "placeId": 70,
+      "name": "모둠보쌈",
+      "price": 30000
+    },
+    {
+      "placeId": 70,
+      "name": "감자전",
+      "price": 18000
+    },
+    {
+      "placeId": 70,
+      "name": "명태무침보쌈",
+      "price": 23000
+    },
+    {
+      "placeId": 70,
+      "name": "해물파전",
+      "price": 20000
+    },
+    {
+      "placeId": 70,
+      "name": "명란구이",
+      "price": 18000
+    },
+    {
+      "placeId": 71,
+      "name": "오뎅 닭볶음탕",
+      "price": 25000
+    },
+    {
+      "placeId": 71,
+      "name": "얼큰닭볶음탕",
+      "price": 22000
+    },
+    {
+      "placeId": 71,
+      "name": "오목이 중",
+      "price": 15000
+    },
+    {
+      "placeId": 71,
+      "name": "오목이 대",
+      "price": 20000
+    },
+    {
+      "placeId": 71,
+      "name": "황기대파백숙",
+      "price": 30000
+    },
+    {
+      "placeId": 71,
+      "name": "동태찌개",
+      "price": 15000
+    },
+    {
+      "placeId": 72,
+      "name": "얼큰 해물 짬뽕탕",
+      "price": 18000
+    },
+    {
+      "placeId": 72,
+      "name": "콘치즈 치킨",
+      "price": 18000
+    },
+    {
+      "placeId": 72,
+      "name": "크림야채 치킨",
+      "price": 18000
+    },
+    {
+      "placeId": 72,
+      "name": "떡볶이 치킨",
+      "price": 18000
+    },
+    {
+      "placeId": 72,
+      "name": "고래고 떡볶이",
+      "price": 12000
+    },
+    {
+      "placeId": 73,
+      "name": "동화닭갈비",
+      "price": 23000
+    },
+    {
+      "placeId": 73,
+      "name": "청양고추크림파스타+돈가스",
+      "price": 19500
+    },
+    {
+      "placeId": 73,
+      "name": "라구떡볶이",
+      "price": 19500
+    },
+    {
+      "placeId": 73,
+      "name": "조개술찜파스타",
+      "price": 21000
+    },
+    {
+      "placeId": 73,
+      "name": "나폴리탄스파케티+소세지",
+      "price": 21000
+    },
+    {
+      "placeId": 74,
+      "name": "꼬막",
+      "price": 15000
+    },
+    {
+      "placeId": 74,
+      "name": "보쌈",
+      "price": 25000
+    },
+    {
+      "placeId": 74,
+      "name": "삼합",
+      "price": 35000
+    },
+    {
+      "placeId": 74,
+      "name": "홍어회",
+      "price": 20000
+    },
+    {
+      "placeId": 74,
+      "name": "닭볶음탕",
+      "price": 25000
+    },
+    {
+      "placeId": 75,
+      "name": "특별한 잔치상 3-4인",
+      "price": 53000
+    },
+    {
+      "placeId": 75,
+      "name": "푸짐한잔치상 2-3인",
+      "price": 38000
+    },
+    {
+      "placeId": 75,
+      "name": "깔끔 상 2인",
+      "price": 40000
+    },
+    {
+      "placeId": 75,
+      "name": "모듬상 2인",
+      "price": 32000
+    },
+    {
+      "placeId": 75,
+      "name": "부추전",
+      "price": 18000
+    },
+    {
+      "placeId": 75,
+      "name": "김치전",
+      "price": 20000
+    },
+    {
+      "placeId": 76,
+      "name": "계략가통닭",
+      "price": 23000
+    },
+    {
+      "placeId": 76,
+      "name": "계략가 크림 통닭",
+      "price": 25000
+    },
+    {
+      "placeId": 76,
+      "name": "계략가 전골",
+      "price": 27000
+    },
+    {
+      "placeId": 76,
+      "name": "열계면",
+      "price": 10000
+    },
+    {
+      "placeId": 77,
+      "name": "마늘탕수육",
+      "price": 15000
+    },
+    {
+      "placeId": 77,
+      "name": "차돌짬뽕",
+      "price": 9000
+    },
+    {
+      "placeId": 77,
+      "name": "간짜장",
+      "price": 7000
+    },
+    {
+      "placeId": 78,
+      "name": "더블치즈피자",
+      "price": 10500
+    },
+    {
+      "placeId": 78,
+      "name": "페퍼로니피자",
+      "price": 10500
+    },
+    {
+      "placeId": 78,
+      "name": "싱글치즈피자",
+      "price": 9500
+    },
+    {
+      "placeId": 78,
+      "name": "에그앤베이컨피자",
+      "price": 10500
+    },
+    {
+      "placeId": 78,
+      "name": "프렌치프라이",
+      "price": 8000
     }
   ]
 }

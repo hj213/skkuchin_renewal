@@ -3,6 +3,7 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -33,6 +34,9 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailService {
+
+    @Value("${mail.host}")
+    private String host;
     private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
     @Autowired
     JavaMailSenderImpl emailSender;
@@ -97,7 +101,8 @@ public class EmailService {
             UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
             userRoleRepo.save(userRole);
         } else {
-            throw new CustomRuntimeException("인증을 완료하지 않았습니다");
+            //throw new CustomRuntimeException("인증을 완료하지 않았습니다");
+            throw new CustomRuntimeException("인증이 완료되지 않았어요🥲\n이메일을 다시 확인해주세요");
         }
     }
 
@@ -162,14 +167,16 @@ public class EmailService {
     public MimeMessage createEmailForm(String email, EmailType type) throws MessagingException, UnsupportedEncodingException {
         String emailType = getEmailType(type);
         createCode();
-        String setFrom = "skkuchin@gmail.com";
+        String setFrom = "skkuchinmail@gmail.com";
         String toEmail = email; //받는 사람
         String title = "SKKUCHIN "+emailType+" 이메일 인증";
         String mailContent = "<h3>["+emailType+" 이메일 인증]</h3>"
                 + "<br><p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
-                + "<a href='http://localhost:8080/api/email/confirm/"
+                + "<a href='"
+                + host
+                + "/api/email/confirm/"
                 + type.name().toLowerCase()
-                + "?email=" + email + "&authNum=" + authNum + "' target='_blenk'>이메일 인증 확인</a>";
+                + "?email=" + email + "&authNum=" + authNum + "' target='_blank'>이메일 인증 확인</a>";
 
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정

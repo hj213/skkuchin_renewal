@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import Layout from "../hocs/Layout";
 import SignUpStep1 from '../components/Auth/SignUpStep1';
 import SignUpStep2 from '../components/Auth/SignUpStep2';
 import SignUpStep3 from '../components/Auth/SignUpStep3';
@@ -9,6 +8,7 @@ import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } f
 import theme from '../theme/theme';
 import SignUpStep4 from '../components/Auth/SignUpStep4';
 import SignUpStep5 from '../components/Auth/SignUpStep5';
+import SignUpStep6 from '../components/Auth/SignUpStep6';
 
 const RegisterPage = () => {
 
@@ -25,7 +25,8 @@ const RegisterPage = () => {
         nickname: "",
         major: "",
         student_id: "",
-        email: ""
+        email: "",
+        image: ""
     })
 
     const handleNextStep = (stepData) => {
@@ -36,8 +37,9 @@ const RegisterPage = () => {
         setStep(step - 1);
     }
 
-    if(typeof window !== 'undefined' && isAuthenticated)
-        router.push('/dashboard');
+    if (typeof window !== 'undefined' && isAuthenticated)
+        router.push('/');
+
     if(register_success)
         router.push('/login');
     
@@ -45,8 +47,7 @@ const RegisterPage = () => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Layout title= '스꾸친 | Register' content='Register page'>
-            <Container component="main" maxWidth="xs">
+            {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <SignUpStep1 handleNextStep={handleNextStep} data={data} setData={setData} />
             }
@@ -57,13 +58,15 @@ const RegisterPage = () => {
                 step === 3 && <SignUpStep3 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 4 && <SignUpStep4 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
+                step === 4 && <SignUpStep4 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 5 && <SignUpStep5 handlePrevStep={handlePrevStep} />
+                step === 5 && <SignUpStep5 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
             }
-            </Container>
-        </Layout>
+            {
+                step === 6 && <SignUpStep6 handlePrevStep={handlePrevStep} />
+            }
+            {/* </Container> */}
         </ThemeProvider>
     )
 };

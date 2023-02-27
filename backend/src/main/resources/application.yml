@@ -1,9 +1,10 @@
 spring:
-  #datasource:
-  #  driver-class-name: com.mysql.cj.jdbc.Driver
-  #  url: jdbc:mysql://localhost:3306/skkuchin2?characterEncoding=UTF-8&serverTimezone=UTC
-  #  username: root
-  #  password: 1234
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/skkuchin2?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
@@ -19,10 +20,19 @@ spring:
 #    username: root
 #    password: Master00!@
 
+
+
+  #  datasource:
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
+  #    username: root
+  #    password: Master00!@
+
   jpa:
     hibernate:
       #ddl-auto: create
-      ddl-auto: update
+      #ddl-auto: validate
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true

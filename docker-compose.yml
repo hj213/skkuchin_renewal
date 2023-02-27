@@ -42,7 +42,7 @@ services:
     image: server
     build:
       context: "./backend"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 8080:8080
@@ -51,7 +51,7 @@ services:
       - database
     container_name: skkuchin-backend
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
     volumes:
@@ -64,7 +64,7 @@ services:
     image: client
     build:
       context: "./frontend"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: always
     container_name: skkuchin-frontend
     ports:
@@ -72,9 +72,9 @@ services:
     depends_on:
       - server
     environment:
-      - NODE_ENV=prod
-      - NEXT_PUBLIC_API_URL=http://server:8080
-      - NEXT_PUBLIC_KAKAOMAP_APPKEY=0d8f0e65047ebb4fce295a83614d7fae
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+      - NEXT_PUBLIC_KAKAOMAP_APPKEY=53a909c464c1aac1af1ee43c1f03ce86
     volumes:
       - ./frontend:/app
       - /app/node_modules

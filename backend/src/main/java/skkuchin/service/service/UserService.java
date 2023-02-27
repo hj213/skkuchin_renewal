@@ -143,6 +143,7 @@ public class UserService {
         user.setNickname(dto.getNickname());
         user.setMajor(dto.getMajor());
         user.setImage(dto.getImage());
+        user.setStudentId(dto.getStudentId());
 
         userRepo.save(user);
     }

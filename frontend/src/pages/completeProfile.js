@@ -3,17 +3,17 @@ import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextFie
 import theme from "../theme/theme";
 import Link from 'next/link';
 import Image from 'next/image';
-import button1 from '../image/로그인 홈 가기.png';
-import button2 from '../image/AI매칭 시작하기.png';
+import button1 from '../image/goLoginButton.png';
+import button2 from '../image/startAIButton.png';
 
 export default function matchingComplete (){
 
     const router = useRouter();
     const viewportHeight = router.query.viewportHeight ? parseInt(router.query.viewportHeight) : 0;
     const src= router.query.src;
-
+    console.log(src);
     const handleButtonClick = (e) => {
-        if(src == '로그인'){
+        if(src == '회원가입'){
             router.push('/login');
         } else if(src == '매칭프로필설정'){
             router.push('/match');
@@ -43,7 +43,7 @@ export default function matchingComplete (){
                 </div>
             </div>
             <div style={{textAlign:'center', marginTop:'17px'}}>
-                <Image src={src == '로그인' ? button1: button2} width={296} height={56} onClick={handleButtonClick}/>
+                <Image src={src == '로그인' ? button1: button2} width={296} height={56} onClick={handleButtonClick} placeholder="blur" layout='fixed' />
             </div>
         </ThemeProvider>
     )

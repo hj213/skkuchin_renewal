@@ -34,13 +34,8 @@
 
 <br>
 
-## 스프링 로컬에서 실행 시
-1. chat.yml에서 host: localhost로 교체하기
-2. application.yml에서 본인 datasource로 주석 풀기
-3. skkuchin_renewal에서 docker-compose -f docker-compose.rabbitmq.yml up 입력 (채팅서버만 도커 올림)
-4. 스프링 실행
-5. 빌드 필요한 경우 1-2번 되돌려놓고 빌드하기
-6. pr 보낼 시에는 1-2번 되돌려놓기!!
+## 로컬에서 실행 후 모바일 접속 원할 시
+- docker-compose -f docker-compose.mobile.yml up --build
 
 <br>
 

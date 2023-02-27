@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build, Push Docker Image and Deploy
 on:
   push:
     branches:
@@ -25,13 +25,18 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Update frontend config
+        run: |
+          sed -i 's|export const API_URL = process.env.NEXT_PUBLIC_API_URL;|export const API_URL = "https://www.skkuchin.com";|' frontend/src/config/index.js
+          sed -i 's|export const KAKAOMAP_APPKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY;|export const KAKAOMAP_APPKEY = "0d8f0e65047ebb4fce295a83614d7fae";|' frontend/src/config/index.js
+
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: skkuchin-repo
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
         run: |
-          docker-compose build server client
+          docker-compose -f docker-compose.prod.yml build server client
           docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
           docker tag client:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:server-$IMAGE_TAG

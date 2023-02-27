@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
@@ -50,6 +51,13 @@ const authReducer = (state = initialState, action) => {
                 ...state
             }
         case LOGIN_SUCCESS:
+            if (process.env.NODE_ENV === 'production') {
+                Cookies.set('access', payload.access, { secure: true, expires: 1 });
+                Cookies.set('refresh', payload.refresh, { secure: true, expires: 180 });
+            } else {
+                Cookies.set('access', payload.access);
+                Cookies.set('refresh', payload.refresh);
+            }
             return {
                 ...state
             }
@@ -59,6 +67,8 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false
             }
         case LOGOUT_SUCCESS:
+            Cookies.remove('access');
+            Cookies.remove('refresh');
             return {
                 ...state,
                 isAuthenticated: false,
@@ -72,7 +82,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthenticated: true,
-                user: payload.user
+                user: payload
             }
         case LOAD_USER_FAIL:
             return {
@@ -92,10 +102,17 @@ const authReducer = (state = initialState, action) => {
                 user: null
             }
         case REFRESH_SUCCESS:
+            if (process.env.NODE_ENV === 'production') {
+                Cookies.set('access', payload.access, { secure: true, expires: 1 });
+            } else {
+                Cookies.set('access', payload.access);
+            }
             return {
                 ...state,
             }
         case REFRESH_FAIL:
+            Cookies.remove('access');
+            Cookies.remove('refresh');
             return {
                 ...state,
                 isAuthenticated: false,
@@ -152,6 +169,8 @@ const authReducer = (state = initialState, action) => {
                 ...state
             }
         case DELETE_USER_SUCCESS:
+            Cookies.remove('access');
+            Cookies.remove('refresh');
             return {
                 ...state
             }
@@ -163,7 +182,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: {
-                    username: payload.username
+                    username: payload
                 }
             }
         case FIND_USERNAME_FAIL:

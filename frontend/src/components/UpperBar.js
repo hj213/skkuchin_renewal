@@ -6,10 +6,11 @@ import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
 import { useState } from 'react';
 import {Container} from '@mui/material';
-import mainLogo from '../image/상단바/스꾸친로고.png'
-import messageIcon from '../image/상단바/message.png'
-import notiIcon from '../image/상단바/notification.png'
+import mainLogo from '../image/upperBar/mainLogo.png'
+import messageIcon from '../image/upperBar/message.png'
+import notiIcon from '../image/upperBar/notification.png'
 import Image from 'next/image'
+import { useEffect } from "react";
 
 const UpperBar = () => {
 
@@ -18,27 +19,41 @@ const UpperBar = () => {
 
     const [selected, setSelected] = useState("스꾸맵");
 
+    // 0218 upperBar 에러 수정
+    useEffect(() => {
+        const currentPathname = window.location.pathname;
+        if (currentPathname === "/match") {
+          setSelected("AI 매칭");
+        } else if (currentPathname === "/magazine"){
+          setSelected("매거진");
+        } else if (currentPathname === "/mypage"){
+            setSelected("마이페이지");
+        } else {
+            setSelected("스꾸맵");
+        }
+      }, []);
+
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const authLinks = (
         // 상단 네비게이션 바. maxWidth는 지도와 맞춤
-        // <div style={{ position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center"}}>
-        // 스크롤 X
-        <div style={{ position: "absolute", top: 0, width: "100%", background: "white", alignContent:"center"}}>
+        <div style={{ position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center", paddingBottom:'9px',borderBottom: '1.5px solid rgba(234, 234, 234, 1)', maxWidth:'600px'}}>
+        {/* // 스크롤 X */}
+        {/* // <div style={{ position: "absolute", top: 0, width: "100%", background: "white", alignContent:"center"}}> */}
 
             {/* 상단 아이콘 위치, 추후 페이지 제작 시 link 연결 필요 */}
             
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
                 <Link href="/">
-                    <Image src={mainLogo} width={85} height={19} />
+                    <Image src={mainLogo} width={85} height={19} placeholder="blur" layout='fixed' />
                 </Link>
             <div style={{flex: 1}} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <div style={{marginRight:"10px"}}>
-                        <Image src={messageIcon} width={24} height={24}/>
+                        <Image src={messageIcon} width={24} height={24} placeholder="blur" layout='fixed' />
                     </div>
                     <div>
-                        <Image src={notiIcon} width={24} height={24}/>
+                        <Image src={notiIcon} width={24} height={24} placeholder="blur" layout='fixed' />
                     </div>
                 </div>
             </div>
@@ -52,7 +67,7 @@ const UpperBar = () => {
                         fontWeight: 700,
                         textDecoration: "none",
                         color: selected === "스꾸맵" ? "#FFCE00" : "#505050",
-                        borderBottom: selected === "스꾸맵" ? "2px solid #FFCE00" : "none"
+                        borderBottom: selected === "스꾸맵" ? "2px solid #FFCE00" : "none",
                 }}
                 onClick={() => setSelected("스꾸맵")}
                 >
@@ -114,7 +129,7 @@ const UpperBar = () => {
     );
 
     // index.js에서도 isAuthenticated로 한번 걸러내긴 하지만
-    // 혹시 추후에 비회원 유저도 맵을 어느정도 이용하게 할 경우
+    // 혹시 추후에 비회원 유저도 맵을 일부 이용하게 할 경우
     // 마이페이지 -> 회원가입 등으로 수정하기 위해 남겨둠. (guestLinks)
     const guestLinks = (
         <>

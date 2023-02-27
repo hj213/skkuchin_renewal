@@ -2,12 +2,11 @@
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
-import { load_places, search_places } from "../actions/place/place";
-import Layout from "../hocs/Layout";
+import { search_places } from "../actions/place/place";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Alert } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -18,21 +17,29 @@ import bookmarkOn from '../image/bookmark-1.png';
 import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
-
+import { clear_search_results } from "../actions/place/place";
 // 상단바
 import UpperBar from "../components/UpperBar"
+import AlertMessage from "../components/Alert";
 
 export default function list(){
+    const isSmallScreen = useMediaQuery('(max-width: 420px)');
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const dispatch = useDispatch();
     const router = useRouter();
-    // 장소 정보 불러오기
-    const place = useSelector(state => state.place.place);
-    const favorites = useSelector(state => state.favorite.favorite);
-    const user = useSelector(state => state.auth.user); 
 
+    if(typeof window !== 'undefined' && !isAuthenticated){
+        router.push('/login');
+    }
+
+    // 장소 정보 불러오기
+    const searchplace = useSelector(state => state.place.searchplace);
+    const favorites = useSelector(state => state.favorite.favorite);
+    const user = useSelector(state => state.auth.user);
+    const WINDOW_HEIGHT = window.innerHeight;
+    
     //상태
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -60,6 +67,11 @@ export default function list(){
         {id: '기타', exclusiveGroup: 'cuisine'},
         {id: '간단한 한 끼', exclusiveGroup: null},
         {id: '분위기 좋은', exclusiveGroup: null},
+        {id: '맛집', exclusiveGroup: null},
+        {id: '친절', exclusiveGroup: null},
+        {id: '가성비', exclusiveGroup: null},
+        {id: '청결도', exclusiveGroup: null},
+        {id: '둘이 가요', exclusiveGroup: null},
     ]);
 
     // key props warning 해러 필요
@@ -71,23 +83,18 @@ export default function list(){
     const cardRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
-    }
-
+    
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (place && keyword != '' && user.toggle != null) {
-          setFilteredPlace(place.filter((item) => item.campus === user.toggle));
+        if (searchplace && keyword != '' && user.toggle != null) {
+          setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
-    }, [place, user]);
-
+    }, [searchplace, user]);
 
     useEffect(() => {
         // 0-2 검색 결과 목록 -> 1 목록보기
@@ -101,12 +108,15 @@ export default function list(){
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
                 setFilteredPlace(null);
-            }
-            else {
+            } else {
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
-                    setHeight('32%');
+                    if(WINDOW_HEIGHT < 750){
+                        setHeight('175px')
+                    } else {
+                        setHeight('320px')
+                    }
                     setCardStyle({
                         radius: '30px 30px 0px 0px',
                         cardVisibility: 'visible',
@@ -122,7 +132,6 @@ export default function list(){
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
-            // setHeight(cardRef.current.getBoundingClientRect().height);
         }
         return () => {
             if (cardRef.current) {
@@ -136,6 +145,7 @@ export default function list(){
     useEffect(() => {
         if(filteredPlace) {
             setNumOfLi(filteredPlace.length);
+
         }
     }, [filteredPlace]);
 
@@ -146,6 +156,7 @@ export default function list(){
             visibility:'hidden'});
         setHeight('0');
         setPreventScroll('');
+        
     }
 
     // 카드 터치 했을 때 변화
@@ -153,15 +164,11 @@ export default function list(){
     const handleTouchMove = (event) => {
         event.preventDefault();
 
-        const WINDOW_HEIGHT = window.innerHeight;
-        const TARGET_HEIGHT = WINDOW_HEIGHT * 0.6;
-        if(WINDOW_HEIGHT > 1000){
-            TARGET_HEIGHT = WINDOW_HEIGHT*0.62;
-        }
+        const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
+        
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
-            // console.log(newHeight);
-            // console.log(TARGET_HEIGHT);
+            
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -173,8 +180,12 @@ export default function list(){
             });
             setPreventScroll('scroll');
         } else {
-            
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
+            // setHeight('35%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -193,7 +204,11 @@ export default function list(){
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            setHeight('32%');
+            if(WINDOW_HEIGHT < 750){
+                setHeight('175px')
+            } else {
+                setHeight('320px')
+            }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
@@ -209,11 +224,13 @@ export default function list(){
 
     //북마크 기능
     const isFavorite = (placeId) => {
+        if(favorites){
         const favorite = favorites.some(favorite => favorite.place_id === placeId)
         if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn}/>
+            return <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
         }
         return null;
+    }
     };
 
     //place 페이지로 넘어가는
@@ -276,30 +293,36 @@ export default function list(){
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
-    }
-
-    const handleClick= (bool) => {
         if(bool) {
             setKeyword('');
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
+            dispatch(clear_search_results());
         }
+        
     }
 
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
-       <Layout>
+            
             <UpperBar />
-            <div style={{ position: 'relative', height:'100%', overflow: 'hidden'}}>  
-            <Container style={{position:'absolute', zIndex:'2'}} >
-                <SearchBox openID={openID} handleFocus={handleFocus} handleClick={handleClick}/>   
-            </Container> 
+            <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'600px', overflow: 'hidden'}}>
+                
+                <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
+                    <SearchBox openID={openID} handleFocus={handleFocus}/> 
+                    <div style={{position:'relative', width:'100%'}}>
+                        <TagList keyword={keyword} onTagClick={onTagClick} />  
+                    </div>
+                </Container> 
+            
              {/* 태그 목록 */}
-            <TagList keyword={keyword} onTagClick={onTagClick} />
-            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
              
+            <AlertMessage/>
+             
+            <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
+            
             <Slide direction="up" in={open.bool} timeout={1} >
                 <Container fixed style={{padding: '0px 16px 0px 0px',}}>
                     <Card style={{
@@ -312,13 +335,13 @@ export default function list(){
                     visibility: open.visibility,
                     overflowY:'hidden',
                     border: '1px solid transparent',
-                    borderRadius: '0px',
+                    borderRadius: '0px'
                     }} 
                     
                     >
                         <Grid container style={{padding:'10px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
+                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item xs>
                                 <Grid container>
@@ -332,13 +355,13 @@ export default function list(){
                                 </Grid>
                             </Grid>
                             <Grid item >
-                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close'/>
+                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close' placeholder="blur" layout='fixed' />
                             </Grid>
                         </Grid>
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '13px 16px 0px 0px'}} >
+            <Container style={{padding: '13px 16px 0px 0px',}} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
@@ -350,6 +373,8 @@ export default function list(){
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
+                border: '1px solid transparent',
+                marginBottom:'85px'
                 }} 
                 ref = {cardRef}
                  >
@@ -357,30 +382,34 @@ export default function list(){
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
-                        <Image width={70} height={4} src={line} /> 
+                        <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
                     </div>
                     : null
                     }
-                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} >
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
-                                    <Grid container style={{margin: '10px 0px 0px 0px'}}>
+                                    <Grid container style={{margin: '15px 0px 0px 0px'}}>
                                         <Grid item xs >
                                             <CardContent style={{padding:'0px'}}>
                                                 <Grid container spacing={2} style={{margin:'0px',}}>
-                                                    <Grid item style={{marginTop:'15px',  padding:'0px'}}>
+                                                    <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
                                                         <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                             {item.name}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item style={{padding:'0px 0px 0px 8px', whiteSpace: "normal"}}>
-                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
+                                                    <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
+                                                        {isSmallScreen && (item.name.length >=13)?
+                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
                                                             {item.detail_category}
                                                         </Typography>
-                                                    </Grid>
-                                                    <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
-                                                        {isFavorite(item.id)}
+                                                        : 
+                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'22px'}} color="#a1a1a1" component="div" >
+                                                            {item.detail_category}
+                                                        </Typography>
+                                                        }
+                                                        <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid item container style={{marginTop: '10px'}}>
@@ -390,7 +419,7 @@ export default function list(){
                                                         </Typography>
                                                     </Grid>
                                                     <Grid style={{margin:'0px 7px 0px 7px'}}>
-                                                        <Image width={15} height={14} src={star}/>
+                                                        <Image width={15} height={14} src={star} placeholder="blur" layout='fixed' />
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
@@ -443,10 +472,15 @@ export default function list(){
                                         </Grid>
                                         <Grid style={{margin: '10px 0px 10px 16px'}}>
                                             <Image
-                                            width= {98} height= {98}
+                                            width= {98} 
+                                            height= {98}
                                             alt={item.name} 
                                             src={ item.images && item.images.length > 0 ? item.images[0] : food }
-                                            style={{borderRadius: '10px'}}/> 
+                                            style={{borderRadius: '10px'}}
+                                            placeholder="blur" 
+                                            blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                            layout='fixed'
+                                            /> 
                                         </Grid>
                                     </Grid>
                                     </Link>
@@ -457,7 +491,6 @@ export default function list(){
                 </Card>
             </Container> 
             </div>
-        </Layout>
     </ThemeProvider>
     )
 }

@@ -135,7 +135,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                     chatService.updateCount(chatRoom);
                  /*   chatService.updateCount(chatRoom1);*/
                     System.out.println("Subscribe");
-
                 }
 
                 else if(accessor.getCommand().equals(StompCommand.CONNECT)){

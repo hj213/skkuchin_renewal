@@ -3,35 +3,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useRouter } from "next/router";
 import {Grid,ThemeProvider, Drawer, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Switch, styled, FormControlLabel} from '@mui/material';
-import hamburger from '../image/햄버거바.png';
+import hamburger from '../image/hamburgerBar.png';
 import bookmark from '../image/bookmark-1.png';
 import star from '../image/Star2.png';
 import profile from '../image/profile.png';
-import yj from '../image/율전_on.png';
-import mr from '../image/명륜_off.png';
+import yj from '../image/YJ_on.png';
+import mr from '../image/MR_off.png';
 import { change_toggle, load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
 
-//mbti프로필
-import profile1 from '../image/mbti/프로필/기본.png';
-import profile2 from '../image/mbti/프로필/식사.png';
-import ENFJ from '../image/mbti/프로필/ENFJ.png';
-import ENTP from '../image/mbti/프로필/ENTP.png';
-import INFP from '../image/mbti/프로필/INFP.png';
-import ENFP from '../image/mbti/프로필/ENFP.png';
-import ISTJ from '../image/mbti/프로필/ISTJ.png';
-import ISTP from '../image/mbti/프로필/ISTP.png';
-import ISFP from '../image/mbti/프로필/ISFP.png';
-import INTP from '../image/mbti/프로필/INTP.png';
-import ESTJ from '../image/mbti/프로필/ESTJ.png';
-import INFJ from '../image/mbti/프로필/INFJ.png';
-import ENTJ from '../image/mbti/프로필/ENTJ.png';
-import ESTP from '../image/mbti/프로필/ESTP.png';
-import ESFJ from '../image/mbti/프로필/ESFJ.png';
-import INTJ from '../image/mbti/프로필/INTJ.png';
-import ISFJ from '../image/mbti/프로필/ISFJ.png';
-import ESFP from '../image/mbti/프로필/ESFP.png';
+//mbti 프로필
+import profile1 from '../image/mbti/profile/mainCharacter.png';
+import profile2 from '../image/mbti/profile/mealCharacter.png';
+import ENFJ from '../image/mbti/profile/ENFJ.png';
+import ENTP from '../image/mbti/profile/ENTP.png';
+import INFP from '../image/mbti/profile/INFP.png';
+import ENFP from '../image/mbti/profile/ENFP.png';
+import ISTJ from '../image/mbti/profile/ISTJ.png';
+import ISTP from '../image/mbti/profile/ISTP.png';
+import ISFP from '../image/mbti/profile/ISFP.png';
+import INTP from '../image/mbti/profile/INTP.png';
+import ESTJ from '../image/mbti/profile/ESTJ.png';
+import INFJ from '../image/mbti/profile/INFJ.png';
+import ENTJ from '../image/mbti/profile/ENTJ.png';
+import ESTP from '../image/mbti/profile/ESTP.png';
+import ESFJ from '../image/mbti/profile/ESFJ.png';
+import INTJ from '../image/mbti/profile/INTJ.png';
+import ISFJ from '../image/mbti/profile/ISFJ.png';
+import ESFP from '../image/mbti/profile/ESFP.png';
 
 export default function MapDrawer(openID){
 
@@ -51,7 +51,7 @@ export default function MapDrawer(openID){
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggle, setToggle] = useState(user&&user.toggle);
+    const [toggleInfo, setToggleInfo] = useState(user&&user.toggle);
     
     //뒤로가기 시 드로워 열리도록
     if(openID.open){
@@ -66,12 +66,9 @@ export default function MapDrawer(openID){
     }, [dispatch]);
 
     useEffect(()=>{
-      if ( user && user.toggle != null) {
+        dispatch(change_toggle(toggleInfo));
         dispatch(load_user());
-        dispatch(change_toggle(toggle));
-      }
-    }, [dispatch, toggle]);
-
+    }, [dispatch, toggleInfo]);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
@@ -86,26 +83,39 @@ export default function MapDrawer(openID){
     }
 
     //토글 클릭
-    const handleToggle = (e) =>{
-      dispatch(load_user());
-        if( user && user.toggle == '명륜'){
-          const prevUser = '명륜'
-          setToggle((prevUser) => {
-            const newUser = '율전';
-            return newUser;
-          });
+    const handleToggle = async (e) => {
+      try {
+        if (user.toggle === '명륜') {
+          await dispatch(change_toggle('율전'));
+          setToggleInfo('율전');
+        } else if (user.toggle === '율전') {
+          await dispatch(change_toggle('명륜'));
+          setToggleInfo('명륜');
+        }
+        await dispatch(load_user());
+      } catch (error) {
+      }
+    };
 
-        } else if(user && user.toggle == '율전'){
-          const prevUser = '율전'
-          setToggle((prevUser) => {
-            const newUser = '명륜';
-            return newUser;
-          });
+    // const handleToggle = (e) =>{
+    //   dispatch(load_user());
+    //   //  if( user && user.toggle == '명륜'){
+    //   //     const prevUser = '명륜'
+    //   //     setToggle((prevUser) => {
+    //   //       const newUser = '율전';
+    //   //       return newUser;
+    //   //     });
 
-          }
+    //   //   } else if(user && user.toggle == '율전'){
+    //   //     const prevUser = '율전'
+    //   //     setToggle((prevUser) => {
+    //   //       const newUser = '명륜';
+    //   //       return newUser;
+    //   //     });
 
-    } 
-
+    //   //   }
+    // } 
+    
     const list = (anchor) => (
         <Box
           sx={{ width: 250 }}
@@ -114,7 +124,7 @@ export default function MapDrawer(openID){
           onKeyDown={handleDrawerClick(false)}
         >   
             <Box style={{ textAlign:'center', marginTop:'40px'}}>
-                <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} />
+                <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} placeholder="blur" layout='fixed'  />
                 <div>
                 <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
                 <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
@@ -124,7 +134,7 @@ export default function MapDrawer(openID){
                 <ListItem disablePadding >
                     <Grid container style={{fontSize:'20px', fontWeight:'400', lineHeight: '28px'}} >
                         <Grid item style={{marginRight:'9px'}}>
-                            <Image src={bookmark} alt='즐겨찾기' width={16} height={16}/>
+                            <Image src={bookmark} alt='즐겨찾기' width={16} height={16} placeholder="blur" layout='fixed' />
                         </Grid>
                         <Grid item>
                             <ListItemText primary="즐겨찾기 장소" style={{marginTop:'1px'}} onClick={handleMove} />  
@@ -134,7 +144,7 @@ export default function MapDrawer(openID){
                 <ListItem disablePadding>
                     <Grid container style={{marginTop:'37px', fontSize: '20px', fontWeight:'400', lineHeight: '28px'}}>
                         <Grid item style={{marginRight:'9px',}}>
-                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}}/>
+                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}} placeholder="blur" layout='fixed' />
                         </Grid>
                         <Grid item>
                             <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMove}/>
@@ -168,11 +178,11 @@ export default function MapDrawer(openID){
 
     return(
         <ThemeProvider theme={theme}>
-            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15}/>
+            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} placeholder="blur" layout='fixed' />
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
-                  {user && <Image src={ toggle == '율전' ? yj: mr} width={60} height={60} />}
+                  {user && <Image src={ toggleInfo == '율전' ? yj: mr} width={60} height={60} placeholder="blur" layout='fixed' />}
                 </Grid>
               </Grid>
              

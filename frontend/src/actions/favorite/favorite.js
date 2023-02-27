@@ -1,3 +1,7 @@
+import Cookies from 'js-cookie';
+import { API_URL } from '../../config/index';
+import { AUTHENTICATED_FAIL } from '../auth/types';
+import { request_refresh } from '../auth/auth';
 import { 
     LOAD_FAV_SUCCESS,
     LOAD_FAV_FAIL,
@@ -11,101 +15,157 @@ import {
 
 // load FAV
 export const load_favorite = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('refresh 토큰이 존재하지 않습니다');
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
     try {
-        const res = await fetch('/api/favorite',{
+        const res = await fetch(`${API_URL}/api/favorite`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
             }
         });
 
-        const data = await res.json();
+        const apiRes = await res.json();
 
         if(res.status === 200){
             dispatch({
                 type: LOAD_FAV_SUCCESS,
-                payload: data
-            });
-            if (callback) callback([true, data.success]);
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
         }else {
             dispatch({
                 type: LOAD_FAV_FAIL
-            });
-            if (callback) callback([false, data.error]);
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
         }
 
     } catch (error) {
         dispatch({
             type: LOAD_FAV_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 }
 
 
 // enroll fav
 export const enroll_favorite = (place_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('refresh 토큰이 존재하지 않습니다');
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+    
     const body = JSON.stringify({
         place_id
     });
 
     try {
-        const res = await fetch('/api/favorite', {
+        const res = await fetch(`${API_URL}/api/favorite`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
             },
             body: body
         });
 
+        const apiRes = await res.json();
+
         if (res.status === 201) {
-            dispatch({
+            await dispatch({
                 type: ENROLL_FAV_SUCCESS
-            });
-            dispatch(load_favorite());
-            if (callback) callback([true, data.success]);
+            })
+            await dispatch(load_favorite());
+            if (callback) callback([true, apiRes.message]);
+
         } else {
             dispatch({
                 type: ENROLL_FAV_FAIL
-            });
-            if (callback) callback([false, data.error]);
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch(error) {
         dispatch({
             type: ENROLL_FAV_FAIL
-        });
+        })
         if (callback) callback([false, error]);
     }
 };
 
 // del fav
 export const delete_favorite = (favorite_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다');
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
     try {
-        const res = await fetch(`/api/favorite/${favorite_id}`, {
+        const res = await fetch(`${API_URL}/api/favorite/${favorite_id}`, {
             method: 'DELETE',
             headers: {
-                'Accept': 'application/json'
+                'Authorization' : `Bearer ${access}`
             }
         });
 
+        const apiRes = await res.json();
+
         if (res.status === 200) {
-            dispatch({
+            await dispatch({
                 type: DELETE_FAV_SUCCESS
-            });
-            dispatch(load_favorite());
-            if (callback) callback([true, data.success]);
+            })
+            await dispatch(load_favorite());
+            if (callback) callback([true, apiRes.message]);
+            
         } else {
             dispatch({
                 type: DELETE_FAV_FAIL
-            });
-            if (callback) callback([false, data.error]);
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
         }
     } catch(error) {
         dispatch({
             type: DELETE_FAV_FAIL
-        });
+        })
+        
         if (callback) callback([false, error]);
+        
+        
     }
 };
 

@@ -155,11 +155,10 @@ public class StompRabbitController {
             prepareErrorMessage(JwtErrorCode.ACCESS_TOKEN_EXPIRATION);
 
         }*/
-
-
         //DB 저장
         chatRoomRepository.save(chatRoom);
         chatRepository.save(chat);
+
 
     }
 
@@ -176,6 +175,7 @@ public class StompRabbitController {
         int count = chatRoom.getUserCount();
         chat.setMessage("over");
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId,chat);
+
     };
 
 
