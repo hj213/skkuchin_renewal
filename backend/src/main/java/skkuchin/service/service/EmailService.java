@@ -195,7 +195,9 @@ public class EmailService {
                 emailType+s+" 완료해주세요.</div>" +
                 "<div>감사합니다.</div>" +
             "</div>" +
-            "<a href='http://localhost:8080/api/email/confirm/" +
+            "<a href='" +
+            host +
+            "/api/email/confirm/" +
             type.name().toLowerCase() +
             "?email=" + email + "&authNum=" + authNum + "' target='_blank'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +
         "</div>";
