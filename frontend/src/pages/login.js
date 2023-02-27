@@ -23,7 +23,7 @@ const LoginPage = () => {
     const [autoLogin, setAutoLogin] = useState(false);
     const [rememberUsername, setRememberUsername] = useState(false);
     const [error, setError] = useState('');
-
+    const remainHeight = window.innerHeight - 480 + "px";
 
     const [formData, setFormData] = useState({
         username: '',
@@ -82,17 +82,18 @@ const LoginPage = () => {
                 <Container component="main" maxWidth="xs">
                     <Box
                         sx={{
-                        marginTop: '191px',
+                        //marginTop: '191px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         textAlign: 'center'
                         }}
+                        style={{marginTop: `calc(${remainHeight} * 0.5)`}}
                     >
                     <Image width={169} height={185} src={logo}/>
                     <div style={{ display: 'flex', width: '100%' }}>
                         <form onSubmit={onSubmit} style={{ width: '100%' }}>
-                            <div style={{ margin: '67px 24px 11px' }}>
+                            <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.25)` }}>
                                 <input 
                                     type = 'text' name='username' 
                                     placeholder ='아이디' onChange={onChange} value={username}
@@ -154,7 +155,7 @@ const LoginPage = () => {
                     </Grid>
                 </Grid> */}
 
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: '64px', marginBottom: '25px'}}>
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.25)`, marginBottom: '25px'}}>
                     <div onClick={() => router.push('/register')} style={{justifySelf: 'right'}}>회원가입</div>
                     <div style={{justifySelf: 'center', textAlign: 'center'}}>|</div>
                     <div onClick={() => router.push('/resetPassword')} style={{justifySelf: 'left'}}>비밀번호 초기화</div>

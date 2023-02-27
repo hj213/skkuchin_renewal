@@ -48,6 +48,7 @@ import { register } from '../../actions/auth/auth';
 import { useDispatch } from 'react-redux';
 
 export default function SignUpStep3(props) {
+    const router = useRouter();
     const dispatch = useDispatch();
     const [image, setImage] = useState('');
     const [profile, setProfile] = useState({
