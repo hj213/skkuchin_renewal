@@ -227,7 +227,7 @@ export default function list(){
         if(favorites){
         const favorite = favorites.some(favorite => favorite.place_id === placeId)
         if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn}/>
+            return <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
         }
         return null;
     }
@@ -341,7 +341,7 @@ export default function list(){
                     >
                         <Grid container style={{padding:'10px 15px 0px 15px'}}>
                             <Grid item style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' />
+                            <Image src={mapIcon} width={37} height={36} onClick={handleIconOnclick} name='map' placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item xs>
                                 <Grid container>
@@ -355,7 +355,7 @@ export default function list(){
                                 </Grid>
                             </Grid>
                             <Grid item >
-                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close'/>
+                            <Image src={closeIcon} width={36} height={36} onClick={handleIconOnclick} name='close' placeholder="blur" layout='fixed' />
                             </Grid>
                         </Grid>
                     </Card>
@@ -382,7 +382,7 @@ export default function list(){
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
-                        <Image width={70} height={4} src={line} /> 
+                        <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
                     </div>
                     : null
                     }
@@ -419,7 +419,7 @@ export default function list(){
                                                         </Typography>
                                                     </Grid>
                                                     <Grid style={{margin:'0px 7px 0px 7px'}}>
-                                                        <Image width={15} height={14} src={star}/>
+                                                        <Image width={15} height={14} src={star} placeholder="blur" layout='fixed' />
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
@@ -472,10 +472,15 @@ export default function list(){
                                         </Grid>
                                         <Grid style={{margin: '10px 0px 10px 16px'}}>
                                             <Image
-                                            width= {98} height= {98}
+                                            width= {98} 
+                                            height= {98}
                                             alt={item.name} 
                                             src={ item.images && item.images.length > 0 ? item.images[0] : food }
-                                            style={{borderRadius: '10px'}}/> 
+                                            style={{borderRadius: '10px'}}
+                                            placeholder="blur" 
+                                            blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                            layout='fixed'
+                                            /> 
                                         </Grid>
                                     </Grid>
                                     </Link>
