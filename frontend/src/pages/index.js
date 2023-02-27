@@ -6,7 +6,7 @@ import { search_places } from "../actions/place/place";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Alert } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -113,9 +113,9 @@ export default function list(){
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
                     if(WINDOW_HEIGHT < 750){
-                        setHeight('175px')
+                        setHeight(175)
                     } else {
-                        setHeight('320px')
+                        setHeight(320)
                     }
                     setCardStyle({
                         radius: '30px 30px 0px 0px',
@@ -162,13 +162,12 @@ export default function list(){
     // 카드 터치 했을 때 변화
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
-        event.preventDefault();
-
+        // event.preventDefault();
+        console.log(height);
         const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
         if (newHeight >= preNewHeight) {
-            
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -179,11 +178,12 @@ export default function list(){
                 iconVisibility:'hidden'
             });
             setPreventScroll('scroll');
+            event.preventDefault();
         } else {
             if(WINDOW_HEIGHT < 750){
-                setHeight('175px')
+                setHeight(175)
             } else {
-                setHeight('320px')
+                setHeight(320)
             }
             // setHeight('35%');
             setOpen({
@@ -205,9 +205,9 @@ export default function list(){
             setOpen({ bool:false,
                 Visibility:'hidden'});
             if(WINDOW_HEIGHT < 750){
-                setHeight('175px')
+                setHeight(175)
             } else {
-                setHeight('320px')
+                setHeight(320)
             }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
@@ -386,7 +386,7 @@ export default function list(){
                     </div>
                     : null
                     }
-                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} >
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%', overflowY:'scroll'}} >
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
