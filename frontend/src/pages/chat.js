@@ -306,7 +306,7 @@ const chatPage = () => {
                                     fontSize: '14px',
                                     maxWidth:'100%'
                                     }}>
-                                    상대 1, 첫 chat
+                                    상대 1, 첫 chat 
                                 </Typography>
                                 </Card>
                                 <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
@@ -336,7 +336,7 @@ const chatPage = () => {
                                     fontSize: '14px',
                                     maxWidth:'100%'
                                     }}>
-                                    상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat
+                                    상대 2, 연속된 chat 상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat
                                 </Typography>
                                 </Card>
                                 <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
@@ -354,7 +354,7 @@ const chatPage = () => {
                     <Grid item style={{paddingRight:"7px"}}>
                         <Stack direction="column" spacing={1}>
                             <Grid style={{display:'flex'}}>
-                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
+                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'right', display: 'flex', alignItems: 'flex-end'}}>
                                 <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
                                 오후 10:30
                                 </Typography>
@@ -364,7 +364,7 @@ const chatPage = () => {
                                 }}>
                                     <Typography
                                         style={{
-                                        padding:'8px 10px 6px 10px',
+                                        padding:'10px 10px 6px 10px',
                                         fontSize: '14px'
                                         }}>
                                         나 1, 첫 chat
@@ -381,7 +381,7 @@ const chatPage = () => {
                     <Grid item style={{paddingRight:"7px"}}>
                         <Stack direction="column" spacing={1}>
                             <Grid style={{display:'flex'}}>
-                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
+                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'right', display: 'flex', alignItems: 'flex-end'}}>
                                 <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
                                 오후 10:30
                                 </Typography>
@@ -391,7 +391,7 @@ const chatPage = () => {
                                 }}>
                                     <Typography
                                         style={{
-                                        padding:'8px 10px 6px 10px',
+                                        padding:'10px 10px 6px 10px',
                                         fontSize: '14px'
                                         }}>
                                         나 2, 연속된 chat
