@@ -99,11 +99,8 @@ public class ChatRoomController {
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
             String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("reaction = " + reaction);
-        System.out.println("chatRoom = " + chatRoom.getRoomName());
         AppUser user = principalDetails.getUser();
         if(reaction.equals("accept")){
-            System.out.println("his = ");
             chatService.receiverAccept(chatRoom,user);
         }
         else if(reaction.equals("refuse")){
@@ -123,7 +120,7 @@ public class ChatRoomController {
 
     //상대 유저 블럭
     //block or remove
-    @PostMapping("/room/block/{response}/{roomId}")
+    @PostMapping("/block/{response}/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
             @PathVariable String response, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);

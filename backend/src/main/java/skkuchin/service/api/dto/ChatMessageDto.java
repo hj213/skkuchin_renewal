@@ -26,13 +26,11 @@ public class ChatMessageDto {
 
     public static class Response{
         private Long id;
-        private String roomId;
         private String sender;
         private String message;
         public Response(ChatMessage chatMessage){
 
-            this.id = chatMessage.getId();
-            this.roomId = chatMessage.getRoomId();
+            this.id = chatMessage.getId();;
             this.sender= chatMessage.getSender();
             this.message = chatMessage.getMessage();
         }

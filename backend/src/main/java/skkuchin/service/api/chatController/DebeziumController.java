@@ -25,7 +25,7 @@ public class DebeziumController {
 
 
     //Topics 안에 들어갈 변수 =  topic_prefix + schema_name + table_name
-    @KafkaListener(topics = "kk.skkuchin2.chat_message")
+    @KafkaListener(topics = "dbserver.service.chat_message")
     public void listenChatMessage(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
         ObjectMapper mapper = new ObjectMapper();
@@ -74,7 +74,7 @@ public class DebeziumController {
     }
 
 
-    @KafkaListener(topics = "kk.skkuchin2.chat_room")
+    @KafkaListener(topics = "dbserver.service.chat_room")
     public void blockUser(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
         ObjectMapper mapper = new ObjectMapper();
@@ -89,6 +89,8 @@ public class DebeziumController {
         ChatRoomDto.Response1 chatRoom2 = chatService.getRoomDto(chatRoom);
         String json2 = new Gson().toJson(chatRoom2);
         System.out.println("payload = " + payload);
+        System.out.println("operation1 = " + operation1);
+
         if(operation1.equals("u")){
             JsonNode beforeBlock =  payload.get("before").get("is_receiver_blocked");
             JsonNode afterBlock = payload.get("after").get("is_receiver_blocked");
@@ -101,7 +103,7 @@ public class DebeziumController {
 
             //blocked = true/false
             System.out.println("blocked = " + blocked);
-            if(!beforeBlock.equals(afterBlock) && blocked.equals("false") || !beforeBlock1.equals(afterBlock1) && blocked1.equals("false")){
+            if(!beforeBlock.equals(afterBlock) && blocked.equals("true") || !beforeBlock1.equals(afterBlock1) && blocked1.equals("true")){
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, json2);
             }
 
@@ -112,4 +114,19 @@ public class DebeziumController {
 
 
     }
+
+    @KafkaListener(topics = "dbserver.service.favorite")
+    public void test(@Payload(required = false) String message) throws Exception {
+        System.out.println("kafka consume test topic : "  + message);
+        }
+
+
+
+    @KafkaListener(topics = "dbserver.service.user")
+    public void test1(@Payload(required = false) String message) throws Exception {
+        System.out.println("kafka consume test topic : "  + message);
+    }
+
 }
+
+
