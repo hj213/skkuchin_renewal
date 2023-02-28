@@ -58,6 +58,7 @@ dependencies {
 	implementation 'org.webjars.bower:vue:2.5.16'
 	implementation 'org.webjars.bower:axios:0.17.1'
 
+
 	//spring email
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
 
@@ -87,6 +88,20 @@ dependencies {
 	//swagger ui
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
+
+
+
+	//kafka
+	implementation 'org.springframework.kafka:spring-kafka:2.8.1'
+
+	//Debezium Connector for MySQL
+	implementation 'io.debezium:debezium-connector-mysql:1.6.1.Final'
+
+	implementation 'com.zaxxer:HikariCP:4.0.3'
+	implementation 'io.debezium:debezium-embedded:1.5.0.Final'
+
+
+
 }
 
 tasks.named('test') {

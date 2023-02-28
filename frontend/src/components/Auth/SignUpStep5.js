@@ -91,7 +91,7 @@ const SignUpStep5 = (props) => {
             </Typography>
             <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '97px', lineHeight: '25px', color: '#505050'}}>
                         모바일인 경우 <br/>
-                        [킹고M 어플&gt;메뉴&gt;킹고포털&gt;메일]에서 확인 가능합니다
+                        [킹고M 어플&gt;메뉴&gt;킹고포털&gt;G-Mail]에서 확인 가능합니다
             </Typography>
             <Link component="button" variant="body2" color="#BABABA" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
@@ -103,8 +103,8 @@ const SignUpStep5 = (props) => {
       </Box>
 
       <div style={{display: 'grid', justifyItems: 'center', marginBottom: '24px'}}>
-        <Typography sx={{fontSize: '6px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
-        <Typography sx={{fontSize: '6px', fontWeight: '400', ml: '5.58px', color: '#BABABA', mt: '8px'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
+        <Typography sx={{fontSize: '9px', fontWeight: '400', ml: '5.58px', color: '#BABABA', marginTop: '22px'}}>*이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다.</Typography>
+        <Typography sx={{fontSize: '9px', fontWeight: '400', ml: '5.58px', color: '#BABABA', mt: '8px'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
       </div>
         <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
                 <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
@@ -116,7 +116,7 @@ const SignUpStep5 = (props) => {
                       </>
                       :
                       {dialogMsg}} */}
-                      {dialogMsg.split('\n').length > 1 ? 
+                      {(dialogMsg||'').split('\n').length > 1 ? 
                       <>
                       {dialogMsg.split('\n')[0]}<br/>
                       {dialogMsg.split('\n')[1]}

@@ -38,12 +38,26 @@ const SignUpStep1 = (props) => {
     const handlePasswordChange = (e) => {
         const password = e.target.value;
         props.setData({...props.data, password})
-
-        if (password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,16}$/)) {
+/*
+        // if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*|\\\'\";:\/?])[A-Za-z\d!@#$%^&*]{8,16}$/)) {
+        if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*|\\\'\";:\/?\(\)-_=+{},<.>])[A-Za-z\d`~!@#$%^&*|\\\'\";:\/?\(\)-_=+\[\]{},<.>]{8,16}$/)) {
             setValidPW(true);
         } else {
             setValidPW(false);
+        }*/
+
+        let num = password.search(/[0-9]/g)
+        let eng = password.search(/[a-z]/ig)
+        let spe = password.search(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g)
+
+        if (password.length < 8 || password.length > 16) {
+            setValidPW(false);
+        } else if (num < 0 || eng < 0 || spe < 0) {
+            setValidPW(false);
+        } else {
+            setValidPW(true);
         }
+        
     }
 
     const backClick = () => {
@@ -77,9 +91,10 @@ const SignUpStep1 = (props) => {
        
         <form style={{ width: '100%'}}>
             <div style={{margin: '0 36px'}}>
+                <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>아이디*</Typography>
                 <TextField
                 variant="standard"
-                label="아이디"
+                //label="아이디"
                 value={props.data.username}
                 onChange={handleUsernameChange}
                 style={{width: '100%'}}
@@ -93,17 +108,18 @@ const SignUpStep1 = (props) => {
                 />
                 {/* 중복확인 메소드 추가 */}
                 <div style={{display:'flex'}}>
-                    <Button variant="contained" onClick={checkUsername} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 28px', boxShadow: 'none'}}>중복확인</Button>
-                    {validUsername == null && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>아이디 중복 확인 체크를 해주세요</Typography>}
-                    {validUsername && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 28px 5px'}}>{usernameMsg}</Typography>}
-                    {validUsername == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 28px 5px'}}>{usernameMsg}</Typography>}
+                    <Button variant="contained" onClick={checkUsername} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px 39px', boxShadow: 'none'}}>중복확인</Button>
+                    {validUsername == null && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 39px 5px'}}>아이디 중복 확인 체크를 해주세요</Typography>}
+                    {validUsername && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 39px 5px'}}>{usernameMsg}</Typography>}
+                    {validUsername == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 39px 5px'}}>{usernameMsg}</Typography>}
                 </div>
             </div>
 
             <div style={{margin: '0 36px'}}>
+                <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>비밀번호*</Typography>
                 <TextField
                 variant="standard"
-                label="비밀번호"
+                //label="비밀번호"
                 type="password"
                 //value={password}
                 value={props.data.password}
@@ -119,14 +135,15 @@ const SignUpStep1 = (props) => {
                 />
                 {(props.data.password != '') ? 
                     validPW ? 
-                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>안전한 비밀번호입니다.</Typography>
-                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '25px'}}>안전하지 않은 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '25px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
+                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>안전한 비밀번호입니다.</Typography>
+                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '39px'}}>안전하지 않은 비밀번호입니다.</Typography>
+                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>영문, 숫자, 특수문자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
             </div>
             <div style={{margin: '0 36px'}}>
+                <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>비밀번호 확인*</Typography>
                 <TextField
                 variant="standard"
-                label="비밀번호 확인"
+                //label="비밀번호 확인"
                 type="password"
                 //value={re_password}
                 value={props.data.re_password}
@@ -144,9 +161,9 @@ const SignUpStep1 = (props) => {
                 { (props.data.re_password != '') ? ((props.data.password == props.data.re_password) ? 
                 <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px'}}>동일한 비밀번호입니다.</Typography>
                 : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px'}}>일치하지 않는 비밀번호입니다.</Typography>)
-                : null}
+                : <div style={{height: '21px'}}></div>}
             </div>
-            <div style={{margin: '53px 36px 12px'}}>
+            <div style={{margin: '39px 36px 12px'}}>
             {/* 아이디 중복확인 처리 필요 */}
             {validUsername && validPW && (props.data.password == props.data.re_password) && props.data.username != null ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
