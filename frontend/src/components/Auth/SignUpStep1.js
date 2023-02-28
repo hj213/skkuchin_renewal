@@ -38,12 +38,26 @@ const SignUpStep1 = (props) => {
     const handlePasswordChange = (e) => {
         const password = e.target.value;
         props.setData({...props.data, password})
-
-        if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/)) {
+/*
+        // if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*|\\\'\";:\/?])[A-Za-z\d!@#$%^&*]{8,16}$/)) {
+        if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*|\\\'\";:\/?\(\)-_=+{},<.>])[A-Za-z\d`~!@#$%^&*|\\\'\";:\/?\(\)-_=+\[\]{},<.>]{8,16}$/)) {
             setValidPW(true);
         } else {
             setValidPW(false);
+        }*/
+
+        let num = password.search(/[0-9]/g)
+        let eng = password.search(/[a-z]/ig)
+        let spe = password.search(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g)
+
+        if (password.length < 8 || password.length > 16) {
+            setValidPW(false);
+        } else if (num < 0 || eng < 0 || spe < 0) {
+            setValidPW(false);
+        } else {
+            setValidPW(true);
         }
+        
     }
 
     const backClick = () => {

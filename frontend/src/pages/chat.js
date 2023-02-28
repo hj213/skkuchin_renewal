@@ -396,7 +396,7 @@ const chatPage = () => {
                                 fontSize: '14px',
                                 maxWidth:'100%'
                             }}>
-                            나 2, 연속된 chat
+                                나 2, 연속된 chat
                             </Typography>
                         </Card>
                         </Grid>
