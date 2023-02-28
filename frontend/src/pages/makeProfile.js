@@ -14,6 +14,7 @@ import manCheck from '../image/gender/maleY.png';
 import textForm from '../image/mbti/profile/intro.png';
 import submitOk from '../image/checkY.png';
 import submit from '../image/checkG.png';
+import AlertMessage from '../components/Alert';
 
 //mbti
 import E from '../image/mbti/E-1.png';
@@ -156,6 +157,7 @@ export default function makeProfile(){
     const dispatch = useDispatch();
     const router = useRouter();
     const src = router.query.src;
+    const height = window.innerHeight;
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -245,6 +247,8 @@ export default function makeProfile(){
     const [image, setImage] = useState('');
     const [mbti, setMbti] = useState('');
     const [condition, setCondition] = useState(false); //확인버튼 조건 
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const [visibility, setVisibility] = useState(
        {
@@ -554,9 +558,13 @@ export default function makeProfile(){
                         src : src, }
                       })
                 } else {
-                    alert(message);
+                    // alert(message);
+                    setAlertOpen(true);
+                    setAlertMessage(message);
                 }
             }));
+        setAlertOpen(false);
+        setAlertMessage('');
     } 
 
     //데이터 전달하기 위해
@@ -601,6 +609,9 @@ export default function makeProfile(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+                <div style={{height:'100%', zIndex:'6', position:'absolute', left:'50%', marginTop:"830px"}}>
+                <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
+                </div>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>

@@ -39,6 +39,7 @@ export default function list(){
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user);
     const WINDOW_HEIGHT = window.innerHeight;
+    const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
     
     //상태
     const [height, setHeight] = useState('0');
@@ -139,7 +140,7 @@ export default function list(){
             }
         };
       }, [cardRef]);
-    
+
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
     useEffect(() => {
@@ -164,10 +165,9 @@ export default function list(){
     const handleTouchMove = (event) => {
         // event.preventDefault();
        
-        const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        if (newHeight >= preNewHeight) {
+        if ( newHeight >= preNewHeight) {
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
