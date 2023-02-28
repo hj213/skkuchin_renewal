@@ -20,9 +20,17 @@ import notiOff from '../image/chat/notifications_off.png'
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
 
-
+function calculateRows() {
+    const input = document.getElementsByName('chat')[0];
+    const inputWidth = input.clientWidth;
+    const fontSize = parseInt(getComputedStyle(input).fontSize);
+    const textLength = input.value.length;
+    const rows = Math.ceil(textLength * fontSize / inputWidth);
+    return rows;
+  }
 
 const chatPage = () => {
+
 
     const router = useRouter();
 
@@ -441,14 +449,14 @@ const chatPage = () => {
                 </Grid>
 
                 {/* 텍스트 인풋 필드 & 버튼 */}
-                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px',backgroundColor:"white", zIndex:"4"}}>
-                                <input 
-                                    type='text' 
-                                    name='chat' 
-                                    placeholder ='메세지를 입력하세요.'
-                                    required
-                                    style={{fontSize:'14px',width: '100%', height: '42px', padding: '10px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '20px', outline:'none'}}
-                                />
+                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px',backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
+                    <textarea 
+                        name='chat' 
+                        placeholder='메세지를 입력하세요.'
+                        required
+                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle'}}
+                        rows={calculateRows}
+                    />
                     <Grid sx={{ marginLeft: '10px', paddingTop:'5px' }}>
                         <Image src={send} width={41} height={41} layout="fixed"/>
                     </Grid>
