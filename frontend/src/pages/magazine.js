@@ -1,4 +1,4 @@
-import {profile, Avatar, CssBaseline, Box, ThemeProvider, Rating, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import { Avatar, CssBaseline, Box, ThemeProvider, Rating, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import React from 'react';
@@ -53,7 +53,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         김명륜/경영17
                     </Typography>
@@ -93,7 +93,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         이율전/소프트17
                     </Typography>
@@ -133,7 +133,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         김명륜/경영17
                     </Typography>
@@ -173,7 +173,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         이율전/소프트17
                     </Typography>

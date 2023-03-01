@@ -2,7 +2,8 @@
 FROM openjdk:11 AS build
 WORKDIR /app
 COPY . .
-RUN ./gradlew clean build -x test
+RUN sh -c './gradlew clean build -x test'  # for macOS/Linux
+RUN cmd /C gradlew.bat clean build -x test # for Windows
 
 # Package stage
 FROM openjdk:11-jre-slim
