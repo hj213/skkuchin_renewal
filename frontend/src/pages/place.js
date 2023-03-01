@@ -90,9 +90,9 @@ const PlacePage = () => {
 
     useEffect(()=>{
         if(WINDOW_HEIGHT < 750){
-            setHeight('175px')
+            setHeight(183)
         } else {
-            setHeight('320px')
+            setHeight(345)
         }
     },[])
 
@@ -135,9 +135,9 @@ const PlacePage = () => {
             setScroll('scroll');
         } else {
             if(WINDOW_HEIGHT < 750){
-                setHeight('175px')
+                setHeight(183)
             } else {
-                setHeight('320px')
+                setHeight(345)
             }
             setOpen({
                 bool: false,
@@ -158,9 +158,9 @@ const PlacePage = () => {
             setOpen({ bool:false,
                 Visibility:'hidden'});
             if(WINDOW_HEIGHT < 750){
-                setHeight('175px')
+                setHeight(187)
             } else {
-                setHeight('320px')
+                setHeight(345)
             }
             setCardStyle({
                 radius:'30px 30px 0px 0px',

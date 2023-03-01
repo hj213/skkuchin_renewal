@@ -11,7 +11,7 @@ export default function matchingComplete (){
     const router = useRouter();
     const viewportHeight = router.query.viewportHeight ? parseInt(router.query.viewportHeight) : 0;
     const src= router.query.src;
-    console.log(src);
+
     const handleButtonClick = (e) => {
         if(src == '회원가입'){
             router.push('/login');
@@ -19,11 +19,13 @@ export default function matchingComplete (){
             router.push('/match');
         }
     }
+    const height = window.innerHeight / 2 - 100;
+    const height2 = window.innerHeight /3 - 50;
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div style={ viewportHeight < 700 ? {marginTop:'180px'} : {marginTop:'350px'}}>
+            <div style={{ marginTop:height}}>
                 <div style={{textAlign:'center', fontSize:'36px'}}>
                     👏
                 </div>
@@ -34,7 +36,7 @@ export default function matchingComplete (){
                     매칭이 활성화되었습니다. 
                 </Typography>
             </div>
-            <div style={ viewportHeight < 700 ? {marginTop:'160px'} : {marginTop:'200px'}}>
+            <div style={ {marginTop:height2}}>
                 <div style={{textAlign:'center'}}>
                     <Typography style={{fontSize:'10px'}}>
                         *매칭 프로필을 변경하고 싶은 경우<br/>

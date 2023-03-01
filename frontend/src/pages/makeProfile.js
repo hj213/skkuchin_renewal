@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import { useDispatch } from "react-redux";
 import { add_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
-import { load_user } from "../actions/auth/auth";
+import { load_user, login } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
@@ -14,6 +14,7 @@ import manCheck from '../image/gender/maleY.png';
 import textForm from '../image/mbti/profile/intro.png';
 import submitOk from '../image/checkY.png';
 import submit from '../image/checkG.png';
+import AlertMessage from '../components/Alert';
 
 //mbti
 import E from '../image/mbti/E-1.png';
@@ -156,6 +157,7 @@ export default function makeProfile(){
     const dispatch = useDispatch();
     const router = useRouter();
     const src = router.query.src;
+    const height = window.innerHeight;
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -245,6 +247,8 @@ export default function makeProfile(){
     const [image, setImage] = useState('');
     const [mbti, setMbti] = useState('');
     const [condition, setCondition] = useState(false); //확인버튼 조건 
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const [visibility, setVisibility] = useState(
        {
@@ -275,6 +279,8 @@ export default function makeProfile(){
             
         } else if(event.target.name == '건너뛰기'){
             //웰컴페이지로 이동
+            router.push('./login');
+            console.log('hi')
         }
     };
 
@@ -550,13 +556,16 @@ export default function makeProfile(){
                     // alert(message);
                     router.push({
                         pathname: '/completeProfile',
-                        query: { viewportHeight: window.innerHeight,
-                        src : src, }
+                        query: { src : src, }
                       })
                 } else {
-                    alert(message);
+                    // alert(message);
+                    setAlertOpen(true);
+                    setAlertMessage(message);
                 }
             }));
+        setAlertOpen(false);
+        setAlertMessage('');
     } 
 
     //데이터 전달하기 위해
@@ -601,6 +610,9 @@ export default function makeProfile(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+                <div style={{height:'100%', zIndex:'6', position:'absolute', left:'50%', marginTop:"830px"}}>
+                <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
+                </div>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
@@ -610,7 +622,7 @@ export default function makeProfile(){
                             <Grid item style={{marginLeft:'27%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
-                            <Grid item style={{marginLeft:'18%', }}>
+                            <Grid item style={{marginLeft:'18%', }} onClick={handleIconOnclick}>
                                 <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
