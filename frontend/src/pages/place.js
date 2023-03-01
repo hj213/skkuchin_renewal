@@ -562,7 +562,7 @@ const PlacePage = () => {
                         </Grid>
 
                         {/* Content */}
-                        { selectedPlace && 
+                        { selectedPlace && selectedPlace.review_count > 0 && 
                         <Container component="main" style={{listStyleType: "none", mt: '0', pt: '0'}}>
                             <Grid container sx={{pt: '18px'}} style={{justifyContent:'center'}} >
                                 <Grid style={{width:'100%'}}>
@@ -610,26 +610,28 @@ const PlacePage = () => {
                                             </Grid>
                                         </Grid>
                                         <ul style={{listStyle:"none",paddingLeft:"0px", marginTop:'0px'}}>
-                                                    <>
-                                                        {reviews && sortedReviews.slice(0, 4).map((review, index)=>(
-                                                            <PlaceReview key={index} review={review} user={user} />
-                                                        ))}
-                                                    </>
+                                            <>
+                                                {reviews && sortedReviews.slice(0, 4).map((review, index)=>(
+                                                    <PlaceReview key={index} review={review} user={user} />
+                                                ))}
+                                            </>
                                         </ul>
                                     </CardContent>
                                 </Grid>
                             </Grid>
+                            { selectedPlace && 
+                                <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                        <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
+                                            <Typography sx={{fontWeight:'700',marginTop:'-20px',textAlign:'right', p: '0 20px 40px', color: '#505050', fontSize: '16px'}}>
+                                                후기 더보기 &gt;
+                                            </Typography>
+                                        </Link>
+                                </li>
+                                }
                         </Container>
+                        
                         }
-                        { selectedPlace && 
-                        <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
-                                <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
-                                    <Typography sx={{fontWeight:'700',marginTop:'-20px',textAlign:'right', p: '0 20px 40px', color: '#505050', fontSize: '16px'}}>
-                                        후기 더보기 &gt;
-                                    </Typography>
-                                </Link>
-                        </li>
-                        }
+
                     </Card>
                 </Container>
                 </div>

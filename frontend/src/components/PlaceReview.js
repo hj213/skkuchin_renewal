@@ -128,7 +128,6 @@ const PlaceReview = ({ index, review, user, handleEdit, handleDelete }) => {
                         {review.content}
                     </Typography>
                 </Card>
-
             </Grid>
 
             <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>

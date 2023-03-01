@@ -23,9 +23,9 @@ const UpperBar = () => {
     useEffect(() => {
         const currentPathname = window.location.pathname;
         if (currentPathname === "/match") {
-          setSelected("AI 매칭");
+        setSelected("AI 매칭");
         } else if (currentPathname === "/magazine"){
-          setSelected("매거진");
+        setSelected("매거진");
         } else if (currentPathname === "/myPage"){
             setSelected("마이페이지");
         } else {
@@ -49,7 +49,7 @@ const UpperBar = () => {
                 </Link>
             <div style={{flex: 1}} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <div style={{marginRight:"10px"}}>
+                    <div style={{marginRight:"18px"}}>
                         {/* message.js로 연결. 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
                         <Link href="/message">
                             <Image src={messageIcon} width={24} height={24}/>

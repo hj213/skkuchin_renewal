@@ -146,19 +146,19 @@ export const displayBigReviewTag = (keyword) => {
 export const reviewsTags = (keyword) => {
     switch(keyword) {
         case "맛집":
-            return <Image id={"맛집"} src={reviewTagOff1} width={69} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"맛집"} src={reviewTagOff1} width={65} height={34} placeholder="blur" layout='fixed' />
         case "가성비":
-            return <Image id={"가성비"} src={reviewTagOff2} width={82} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"가성비"} src={reviewTagOff2} width={76} height={34} placeholder="blur" layout='fixed' />
         case "친절":
-            return <Image id={"친절"} src={reviewTagOff3} width={67} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"친절"} src={reviewTagOff3} width={65} height={34} placeholder="blur" layout='fixed' />
         case "둘이 가요":
-            return <Image id={"둘이 가요"} src={reviewTagOff4} width={96} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"둘이 가요"} src={reviewTagOff4} width={89} height={34} placeholder="blur" layout='fixed' />
         case "청결도":
-            return <Image id={"청결도"} src={reviewTagOff5} width={80} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"청결도"} src={reviewTagOff5} width={76} height={34} placeholder="blur" layout='fixed' />
         case "간단한 한 끼":
-            return <Image id={"간단한 한 끼"} src={reviewTagOff6} width={112} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"간단한 한 끼"} src={reviewTagOff6} width={102} height={34} placeholder="blur" layout='fixed' />
         case "분위기 좋은":
-            return <Image id={"분위기 좋은"} src={reviewTagOff7} width={110} height={34} placeholder="blur"  layout='fixed' />
+            return <Image id={"분위기 좋은"} src={reviewTagOff7} width={102} height={34} placeholder="blur"  layout='fixed' />
         default:
             return null;
     }
