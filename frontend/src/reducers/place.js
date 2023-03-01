@@ -48,8 +48,9 @@ const placeReducer = (state= initialState, action) => {
             }
         case CLEAR_SEARCH_RESULTS:
             return {
-              ...state,
-                searchplace: null
+                ...state,
+                searchplace: null,
+                place: null
             };
         default:
             return state;
