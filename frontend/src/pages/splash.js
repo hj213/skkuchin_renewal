@@ -8,19 +8,27 @@ import loading0 from '../image/loading0.png';
 import loading1 from '../image/loading1.png';
 import loading2 from '../image/loading2.png';
 import loading3 from '../image/loading3.png';
+import { useSelector } from 'react-redux';
 
 const loadingImages = [loading0, loading1, loading2, loading3];
 
 export default function splash(){
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const [loadingIndex, setLoadingIndex] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
         setTimeout(() => {
-          router.push('/nextSplash');
+            if (typeof window !== 'undefined') {
+                if (isAuthenticated) {
+                    router.push('/');
+                } else {
+                    router.push('/nextSplash');
+                }
+            }
         }, 10000);
-      }, []);
+    }, []);
 
     useEffect(() => {
         const intervalId = setInterval(() => {

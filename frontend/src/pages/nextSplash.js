@@ -23,14 +23,8 @@ export default function nextSplash(){
     const handleSplashChange = (index) => {
         setSplashIndex(index);
     };
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const handleStartClick = () => {
-
-        if (typeof window !== 'undefined' && !isAuthenticated) {
-            router.push('/login');
-        } else {
-            router.push('/login');
-        }
+        router.push('/login')
     }
 
     const height = window.innerHeight / 2 - 250;
