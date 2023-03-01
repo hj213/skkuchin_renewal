@@ -30,11 +30,6 @@ services:
       - 15672:15672
       - 61613:61613
     command: sh -c "rabbitmq-plugins enable rabbitmq_web_stomp rabbitmq_web_stomp_examples && rabbitmq-server start"
-    # rabbitmq 데이터 유지하고 싶을 때 밑의 주석 풀기 
-    # volumes:
-    #   - ./rabbitmq/etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-    #   - ./rabbitmq/data/:/var/lib/rabbitmq/
-    #   - ./rabbitmq/logs/:/var/log/rabbitmq/
     networks:
       - skkuchin-network
 
@@ -54,9 +49,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
-    volumes:
-      - ./backend:/app
-    working_dir: /app
+      - RABBITMQ_HOST=rabbitmq
+      - MAIL_HOST=http://192.168.45.20:8080
     networks:
       - skkuchin-network
 
@@ -73,7 +67,7 @@ services:
       - server
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://192.168.0.13:8080
+      - NEXT_PUBLIC_API_URL=http://192.168.45.20:8080
       - NEXT_PUBLIC_KAKAOMAP_APPKEY=53a909c464c1aac1af1ee43c1f03ce86
     volumes:
       - ./frontend:/app

@@ -30,14 +30,22 @@ jobs:
           sed -i 's|export const API_URL = process.env.NEXT_PUBLIC_API_URL;|export const API_URL = "https://www.skkuchin.com";|' frontend/src/config/index.js
           sed -i 's|export const KAKAOMAP_APPKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY;|export const KAKAOMAP_APPKEY = "0d8f0e65047ebb4fce295a83614d7fae";|' frontend/src/config/index.js
 
+      - name: Build backend
+        working-directory: ./backend
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
+
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: skkuchin-repo
           IMAGE_TAG: latest
         run: |
-          docker-compose -f docker-compose.prod.yml build server client
+          docker-compose -f docker-compose.prod.yml build server client nginx
           docker tag server:latest $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
           docker tag client:latest $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker tag nginx:latest $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:server-$IMAGE_TAG
           docker push $REGISTRY/$REPOSITORY:client-$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:nginx-$IMAGE_TAG
