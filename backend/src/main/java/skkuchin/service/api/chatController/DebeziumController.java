@@ -25,7 +25,7 @@ public class DebeziumController {
 
 
     //Topics 안에 들어갈 변수 =  topic_prefix + schema_name + table_name
-    @KafkaListener(topics = "kk.skkuchin2.chat_message")
+    @KafkaListener(topics = "dbserver.service.chat_message")
     public void listenChatMessage(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
         ObjectMapper mapper = new ObjectMapper();
@@ -74,7 +74,7 @@ public class DebeziumController {
     }
 
 
-    @KafkaListener(topics = "kk.skkuchin2.chat_room")
+    @KafkaListener(topics = "dbserver.service.chat_room")
     public void blockUser(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
         ObjectMapper mapper = new ObjectMapper();

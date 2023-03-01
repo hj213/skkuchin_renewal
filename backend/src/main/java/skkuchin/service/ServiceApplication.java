@@ -29,13 +29,13 @@ public class ServiceApplication {
 
 	@Bean
 	CommandLineRunner run(UserService userService,
-						  TagService tagService,
-						  PlaceService placeService,
-						  ImageService imageService,
-						  MenuService menuService,
-						  KeywordService keywordService,
-						  ReviewService reviewService,
-						  ChatService chatService) {
+							TagService tagService,
+							PlaceService placeService,
+							ImageService imageService,
+							MenuService menuService,
+							KeywordService keywordService,
+							ReviewService reviewService,
+							ChatService chatService) {
 		return args -> {
 			userService.saveRole(Role.builder().name("ROLE_USER").build());
 			userService.saveRole(Role.builder().name("ROLE_ADMIN").build());
@@ -59,10 +59,6 @@ public class ServiceApplication {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-
-
-			userService.saveTestMatchingUsers(100);
-
 		};
 	}
 }

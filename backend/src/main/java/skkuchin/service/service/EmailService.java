@@ -37,6 +37,8 @@ public class EmailService {
 
     @Value("${mail.host}")
     private String host;
+    @Value("${admin-mail.id}")
+    private String address;
     private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
     @Autowired
     JavaMailSenderImpl emailSender;
@@ -168,7 +170,7 @@ public class EmailService {
         String emailType = getEmailType(type);
         String s = emailType == "회원가입" ? "을" : "를";
         createCode();
-        String setFrom = "skkuchinmail@gmail.com";
+        String setFrom = address;
         String toEmail = email; //받는 사람
         String title = "[SKKUCHIN "+emailType+"] 이메일 인증";
         //String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\email_enhang.png";
