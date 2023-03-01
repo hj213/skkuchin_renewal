@@ -269,12 +269,14 @@ export default function makeProfile(){
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
+        console.log(event.target.name)
         if(event.target.name == 'back' ){
             
             router.back();
             
         } else if(event.target.name == '건너뛰기'){
             //웰컴페이지로 이동
+            router.push('/welcome');
         }
     };
 
