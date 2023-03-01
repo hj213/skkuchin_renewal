@@ -92,7 +92,7 @@ const UpperBar = () => {
                 onClick={() => setSelected("매거진")}
                 >
                 <span style={{padding:"0 0 2px 0"}}>
-                    메거진
+                    매거진
                 </span>
                 </a>
             </Link>
