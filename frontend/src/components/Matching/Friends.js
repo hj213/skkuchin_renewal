@@ -30,7 +30,7 @@ const Friends = () => {
         <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
         { candidate ? 
         candidate.map((person, index) => (
-        <Card key={index} variant="outlined" sx={{height: height, width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 40px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
+        <Card key={index} variant="outlined" sx={{height: height, width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
              <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
                 {displayMBTI(person.mbti)}
                 <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{person !== null && person.nickname}</Typography>
