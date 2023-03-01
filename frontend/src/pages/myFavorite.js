@@ -151,7 +151,7 @@ export default function myFavorite(){
                 </Container>
                 </div>
 
-                <Grid item sx={{paddingTop: '90px', textAlign: 'right', pr: '15px'}}> 
+                <Grid item sx={{paddingTop: '90px', textAlign: 'right', pr: '25px'}}> 
                     <Select
                         xs={2}
                         sx={{ fontSize: '14px', lineHeight: '200%', width: 'wrapContent', border: 'none',
