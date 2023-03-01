@@ -72,7 +72,7 @@ const PlacePage = () => {
         cardVisibility: 'visible',
         iconVisibility: 'visible',
     });
-    const [numOfLi, setNumOfLi] = useState(0);
+
     const [open, setOpen] = useState({
             bool:false,
             visibility: 'hidden'
@@ -255,9 +255,9 @@ const PlacePage = () => {
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
+            dispatch(load_place(id));
+            dispatch(load_reviews(id));
             setPlaceId(id);
-            dispatch(load_reviews(place_id));
-            dispatch(load_place(place_id));
         }
     }, [id]);
 
@@ -318,16 +318,16 @@ const PlacePage = () => {
                                 </Grid>
 
                                 <Grid>
-                                    { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
-                                        <Grid key={item.id} style={{flexDirection: 'row'}}>
+                                    { selectedPlace &&
+                                        <Grid key={selectedPlace.id} style={{flexDirection: 'row'}}>
                                             <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
-                                                {item.name}
+                                                {selectedPlace.name}
                                             </Typography>
                                             <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                                {item.detail_category}
+                                                {selectedPlace.detail_category}
                                             </Typography>
                                         </Grid>
-                                    )) : null }
+                                    }
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
@@ -337,7 +337,7 @@ const PlacePage = () => {
                         </Card>
                     </Container>
                 </Slide>
-                {/* 카드 Content */}
+                { selectedPlace && 
                 <Container style={{padding: '0px 16px 0px 0px', overflow: 'hidden'}}>
                     <Card style={{
                         borderRadius: cardStyle.radius,
@@ -368,8 +368,7 @@ const PlacePage = () => {
                     )}
                     
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
-                    { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
-                            <li key={item.id} data={item}>
+                            <li key={selectedPlace.id} >
                                 <>
                                 <Grid container style={{padding: '0px 15px'}}>
                                         <Grid style={{width: '100%'}}>
@@ -378,12 +377,12 @@ const PlacePage = () => {
                                                     <Grid container sx={{mt: 0, pt: 0, justifyContent: 'center'}}>
                                                         <Grid>
                                                         <Typography sx={{fontSize: '20px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000">
-                                                                {item.name}
+                                                                {selectedPlace.name}
                                                             </Typography>
                                                         </Grid>
                                                         <Grid>
                                                             <Typography sx={{fontSize: '15px', fontWeight: '500', lineHeight: '129%', paddingLeft: '4px'}} color="#a1a1a1" component="div" >
-                                                                {item.detail_category}
+                                                                {selectedPlace.detail_category}
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
@@ -400,7 +399,7 @@ const PlacePage = () => {
                                                     </Grid>
                                                     <Grid >
                                                         <Typography sx={{fontSize: '15px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                        {item.rate}
+                                                        {selectedPlace.rate}
                                                         </Typography>
                                                     </Grid >
                                                     <Grid style={{margin:'0px 7px 0px 0px'}}>
@@ -420,14 +419,14 @@ const PlacePage = () => {
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
-                                                        {item.review_count}개
+                                                        {selectedPlace.review_count}개
                                                         </Typography>
                                                     </Grid>
                                                     
                                                 </Grid>
                                                 <Grid container sx={{justifyContent: 'center'}}>
                                                     {/* 태그 받아오기 */}
-                                                    {item.tags.map((tag, index) => (
+                                                    {selectedPlace.tags.map((tag, index) => (
                                                     <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
                                                         {displayBigReviewTag(tag)}
                                                     </Grid>
@@ -438,24 +437,24 @@ const PlacePage = () => {
                                                 <Grid container>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        위치 : {item.gate}   
+                                                        위치 : {selectedPlace.gate}   
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
                                                         <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#BABABA" component="div">
-                                                        ({item.address})
+                                                        ({selectedPlace.address})
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{marginTop: '7.5px'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        학생 할인 : {(item.discount_content != null) ? 'O' : 'X'}   
+                                                        학생 할인 : {(selectedPlace.discount_content != null) ? 'O' : 'X'}   
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#BABABA" component="div">
-                                                        {(item.discount_content != null) ? '('+item.discount_content+')' : ''}
+                                                        {(selectedPlace.discount_content != null) ? '('+selectedPlace.discount_content+')' : ''}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -467,12 +466,12 @@ const PlacePage = () => {
                                                     </Grid>
                                                     <Grid>
                                                         <Typography  sx={{marginTop: '7.5px', fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        매일 : {item.service_time}
+                                                        매일 : {selectedPlace.service_time}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{margin: '7.5px 0px 11.5px', fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        브레이크 타임 : {item.break_time}
+                                                        브레이크 타임 : {selectedPlace.break_time}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -503,16 +502,14 @@ const PlacePage = () => {
                                     </Grid>
                                 </>
                             </li> 
-                            )) : null }
                         </Container>
-                        { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
-                            <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
-                                <Link href={{ pathname: '/enrollReview', query: { id: item.id, rating: rating } }}>
+                            <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
                                     <div>
                                     <ReviewStar rating={rating} handleTouch={handleTouch}/>
                                     </div>
                                 </Link>
-                        </li>)):null}
+                        </li>
                         </div>
                         {/* 이미지 */}
                         <Grid container style={{margin:'15px 0px 0px',  justifyContent: 'center'}}>
@@ -608,30 +605,28 @@ const PlacePage = () => {
                                             </Grid>
                                         </Grid>
                                         <ul style={{listStyle:"none",paddingLeft:"0px"}}>
-                                            { selectedPlace &&
                                                     <>
                                                         {reviews && sortedReviews.slice(0, 4).map((review, index)=>(
                                                             <ReviewItem key={index} review={review} user={user} />
                                                         ))}
                                                     </>
-                                            }
                                         </ul>
                                     </CardContent>
                                 </Grid>
                             </Grid>
                         </Container>
-                        {/* 위까지  */}
-                        { filteredPlace? filteredPlace.filter(item => item.id == place_id).map(item => (
-                            <li key={item.id} data={item} style={{listStyleType:"none"}} onClick={handleReviewClick} >
-                                <Link href={`reviews?id=${item.id}`} key={item.id}>
+                        <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
                                     <Typography sx={{textAlign:'right', p: '0 15px 40px', color: '#505050', fontSize: '16px'}}>
                                         후기 더보기 &gt;
                                     </Typography>
                                 </Link>
-                        </li>)):null}
+                        </li>
                     </Card>
                 </Container>
+                }
                 </div>
+                
         </ThemeProvider>
     );
 };
