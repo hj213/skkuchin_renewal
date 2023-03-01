@@ -56,8 +56,10 @@ const UpperBar = () => {
                         </Link>
                     </div>
                     <div>
-                        {/* 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
-                        <Image src={notiIcon} width={24} height={24}/>
+                        {/* notification.js로 연결. 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
+                        <Link href="/notification">
+                            <Image src={notiIcon} width={24} height={24}/>
+                        </Link>
                     </div>
                 </div>
             </div>

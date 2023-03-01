@@ -50,13 +50,13 @@ import reviewBigTag05 from '../image/tags/review_on/review_cleanY.png';
 import reviewBigTag06 from '../image/tags/review_on/review_simpleY.png';
 import reviewBigTag07 from '../image/tags/review_on/review_moodY.png';
 
-import reviewTagOff1 from '../image/tags/review_off/review_taste.png';
-import reviewTagOff2 from '../image/tags/review_off/review_money.png';
-import reviewTagOff3 from '../image/tags/review_off/review_kind.png';
-import reviewTagOff4 from '../image/tags/review_off/review_two.png';
-import reviewTagOff5 from '../image/tags/review_off/review_clean.png';
-import reviewTagOff6 from '../image/tags/review_off/review_simple.png';
-import reviewTagOff7 from '../image/tags/review_off/review_mood.png'
+import reviewTagOff1 from '../image/tags/reviews/taste.png';
+import reviewTagOff2 from '../image/tags/reviews/money.png';
+import reviewTagOff3 from '../image/tags/reviews/kind.png';
+import reviewTagOff4 from '../image/tags/reviews/two.png';
+import reviewTagOff5 from '../image/tags/reviews/clean.png';
+import reviewTagOff6 from '../image/tags/reviews/simple.png';
+import reviewTagOff7 from '../image/tags/reviews/mood.png'
 
 export const displayTagImage = (tags) => {
     const displayTags = tags.slice(0,2);
@@ -146,19 +146,19 @@ export const displayBigReviewTag = (keyword) => {
 export const reviewsTags = (keyword) => {
     switch(keyword) {
         case "맛집":
-            return <Image id={"맛집"} src={reviewTagOff1} width={77} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"맛집"} src={reviewTagOff1} width={69} height={34} placeholder="blur" layout='fixed' />
         case "가성비":
-            return <Image id={"가성비"} src={reviewTagOff2} width={88} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"가성비"} src={reviewTagOff2} width={82} height={34} placeholder="blur" layout='fixed' />
         case "친절":
-            return <Image id={"친절"} src={reviewTagOff3} width={77} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"친절"} src={reviewTagOff3} width={67} height={34} placeholder="blur" layout='fixed' />
         case "둘이 가요":
-            return <Image id={"둘이 가요"} src={reviewTagOff4} width={109} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"둘이 가요"} src={reviewTagOff4} width={96} height={34} placeholder="blur" layout='fixed' />
         case "청결도":
-            return <Image id={"청결도"} src={reviewTagOff5} width={92} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"청결도"} src={reviewTagOff5} width={80} height={34} placeholder="blur" layout='fixed' />
         case "간단한 한 끼":
-            return <Image id={"간단한 한 끼"} src={reviewTagOff6} width={131} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"간단한 한 끼"} src={reviewTagOff6} width={112} height={34} placeholder="blur" layout='fixed' />
         case "분위기 좋은":
-            return <Image id={"분위기 좋은"} src={reviewTagOff7} width={124} height={34} placeholder="blur" layout='fixed' />
+            return <Image id={"분위기 좋은"} src={reviewTagOff7} width={110} height={34} placeholder="blur"  layout='fixed' />
         default:
             return null;
     }
