@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
+    RESET_REGISTER_SUCCESS,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
@@ -14,28 +14,13 @@ import {
     REFRESH_FAIL,
     SET_AUTH_LOADING,
     REMOVE_AUTH_LOADING,
-    CHECK_USERNAME_SUCCESS,
-    CHECK_USERNAME_FAIL,
-    CHECK_NICKNAME_SUCCESS,
-    CHECK_NICKNAME_FAIL,
-    CHANGE_USER_SUCCESS,
-    CHANGE_USER_FAIL,
-    CHANGE_PASSWORD_SUCCESS,
-    CHANGE_PASSWORD_FAIL,
-    CHANGE_TOGGLE_SUCCESS,
-    CHANGE_TOGGLE_FAIL,
-    DELETE_USER_SUCCESS,
-    DELETE_USER_FAIL,
-    FIND_USERNAME_SUCCESS,
-    FIND_USERNAME_FAIL,
-    RESET_PASSWORD_SUCCESS,
-    RESET_PASSWORD_FAIL
-} from '../actions/auth/types';
+} from '../actions/types';
 
 const initialState = {
     user: null,
     isAuthenticated: false,
-    loading: false
+    loading: false,
+    register_success: false
 };
 
 const authReducer = (state = initialState, action) => {
@@ -44,23 +29,22 @@ const authReducer = (state = initialState, action) => {
     switch(type) {
         case REGISTER_SUCCESS:
             return {
-                ...state
+                ...state,
+                register_success: true
             }
         case REGISTER_FAIL:
             return {
-                ...state
+                ...state,
+            }
+        case RESET_REGISTER_SUCCESS:
+            return {
+                ...state,
+                register_success: false
             }
         case LOGIN_SUCCESS:
-            console.log(payload);
-            // Cookies.set('access', payload.access, { path: '/', secure: true, expires: 1 });
-            // Cookies.set('refresh', payload.refresh, { path: '/', secure: true, expires: 180 });
-            Cookies.set('access', payload.access);
-            Cookies.set('refresh', payload.refresh);
-
-            console.log(Cookies.get("access"));
-            console.log(Cookies.get("refresh"));
             return {
-                ...state
+                ...state,
+                isAuthenticated: true
             }
         case LOGIN_FAIL:
             return {
@@ -68,8 +52,6 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false
             }
         case LOGOUT_SUCCESS:
-            Cookies.remove('access');
-            Cookies.remove('refresh');
             return {
                 ...state,
                 isAuthenticated: false,
@@ -82,13 +64,11 @@ const authReducer = (state = initialState, action) => {
         case LOAD_USER_SUCCESS:
             return {
                 ...state,
-                isAuthenticated: true,
-                user: payload
+                user: payload.user
             }
         case LOAD_USER_FAIL:
             return {
                 ...state,
-                isAuthenticated: false,
                 user: null
             }
         case AUTHENTICATED_SUCCESS:
@@ -103,14 +83,10 @@ const authReducer = (state = initialState, action) => {
                 user: null
             }
         case REFRESH_SUCCESS:
-            // Cookies.set('access', payload.access, { path: '/', secure: true, expires: 1 });
-            Cookies.set('access', payload.access);
             return {
                 ...state,
             }
         case REFRESH_FAIL:
-            Cookies.remove('access');
-            Cookies.remove('refresh');
             return {
                 ...state,
                 isAuthenticated: false,
@@ -126,76 +102,6 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 loading: false
             }
-        case CHECK_USERNAME_SUCCESS:
-            return {
-                ...state
-            }
-        case CHECK_USERNAME_FAIL:
-            return {
-                ...state
-            }
-        case CHECK_NICKNAME_SUCCESS:
-            return {
-                ...state
-            }
-        case CHECK_NICKNAME_FAIL:
-            return {
-                ...state
-            }
-        case CHANGE_USER_SUCCESS:
-            return {
-                ...state
-            }
-        case CHANGE_USER_FAIL:
-            return {
-                ...state
-            }
-        case CHANGE_PASSWORD_SUCCESS:
-            return {
-                ...state
-            }
-        case CHANGE_PASSWORD_FAIL:
-            return {
-                ...state
-            }
-        case CHANGE_TOGGLE_SUCCESS:
-            return {
-                ...state
-            }
-        case CHANGE_TOGGLE_FAIL:
-            return {
-                ...state
-            }
-        case DELETE_USER_SUCCESS:
-            Cookies.remove('access');
-            Cookies.remove('refresh');
-            return {
-                ...state
-            }
-        case DELETE_USER_FAIL:
-            return {
-                ...state
-            }
-        case FIND_USERNAME_SUCCESS:
-            return {
-                ...state,
-                user: {
-                    username: payload
-                }
-            }
-        case FIND_USERNAME_FAIL:
-            return {
-                ...state,
-                user: null
-            }
-        case RESET_PASSWORD_SUCCESS:
-            return {
-                ...state
-            }
-        case RESET_PASSWORD_FAIL:
-            return {
-                ...state
-                }
         default:
             return state;
     };

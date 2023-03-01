@@ -82,6 +82,7 @@ export default function list(){
     const [focus, setFocus] = useState();
 
     const cardRef = useRef(null);
+    const listRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
     
@@ -129,7 +130,7 @@ export default function list(){
     }, [keyword, router.query.keyword, dispatch, tags,user]);
     
     
-    // 사용자 터치에 따라 카드 사이즈 변화
+    // // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
         if (cardRef.current) {
             cardRef.current.addEventListener("touchmove", handleTouchMove);
@@ -139,7 +140,26 @@ export default function list(){
                 cardRef.current.removeEventListener("touchmove", handleTouchMove);
             }
         };
+       
       }, [cardRef]);
+    // 사용자 터치에 따라 카드 사이즈 변화
+    // useEffect(() => {
+    //     if (cardRef.current) {
+    //     cardRef.current.addEventListener("touchmove", handleTouchMove);
+    //     // 카드 내부의 리스트에 대한 스크롤 제어
+    //     const list = cardRef.current.querySelector("ul");
+    //     list.addEventListener("touchmove", handleListTouchMove, { passive: false });
+    //     }
+    //     return () => {
+    //     if (cardRef.current) {
+    //         cardRef.current.removeEventListener("touchmove", handleTouchMove);
+    //         // 카드 내부의 리스트에 대한 스크롤 제어 해제
+    //         const list = cardRef.current.querySelector("ul");
+    //         list.removeEventListener("touchmove", handleListTouchMove);
+    //     }
+    //     };
+    // }, [cardRef]);
+  
 
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
@@ -163,11 +183,11 @@ export default function list(){
     // 카드 터치 했을 때 변화
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
-        // event.preventDefault();
-       
+        event.preventDefault();
         
         const newHeight = window.innerHeight - event.touches[0].clientY;
-        if ( newHeight >= preNewHeight) {
+        if (newHeight >= preNewHeight ) {
+            
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -178,8 +198,7 @@ export default function list(){
                 iconVisibility:'hidden'
             });
             setPreventScroll('scroll');
-            event.preventDefault();
-        } else {
+        } else if(newHeight < preNewHeight){
             if(WINDOW_HEIGHT < 750){
                 setHeight(187)
             } else {
@@ -199,7 +218,7 @@ export default function list(){
         preNewHeight=newHeight;
     };
 
-    // 아이콘 클릭했을 때 이벤트
+    // // 아이콘 클릭했을 때 이벤트
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
@@ -221,6 +240,33 @@ export default function list(){
             handleReset();
         }
     };
+    // // 카드 내부 리스트의 터치 스크롤 이벤트
+    // const handleListTouchMove = (event) => {
+    //     const list = cardRef.current.querySelector("ul");
+    //     const scrollDiff = list.scrollHeight - list.offsetHeight - list.scrollTop;
+    //     if (event.touches[0].clientY > event.touches[event.touches.length - 1].clientY) {
+    //       // 스크롤을 아래로 내리는 경우
+    //       if (scrollDiff > 0) {
+    //         // 리스트가 아직 스크롤할 수 있는 경우
+    //         event.stopPropagation();
+    //         list.scrollTop += Math.abs(event.touches[0].clientY - event.touches[event.touches.length - 1].clientY);
+    //       } else {
+    //         // 리스트가 더이상 스크롤할 수 없는 경우, 부모 엘리먼트인 카드의 스크롤 이벤트가 발생하도록 함
+    //         // event.preventDefault();
+    //       }
+    //     } else {
+    //       // 스크롤을 위로 올리는 경우
+    //       if (list.scrollTop > 0) {
+    //         // 리스트가 아직 스크롤할 수 있는 경우
+    //         event.stopPropagation();
+    //         list.scrollTop -= Math.abs(event.touches[0].clientY - event.touches[event.touches.length - 1].clientY);
+    //       } else {
+    //         // 리스트가 더이상 스크롤할 수 없는 경우, 부모 엘리먼트인 카드의 스크롤 이벤트가 발생하도록 함
+    //         // event.preventDefault();
+    //       }
+    //     }
+    //   };
+
 
     //북마크 기능
     const isFavorite = (placeId) => {
@@ -361,7 +407,7 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '13px 16px 0px 0px',}} >
+            <Container style={{padding: '13px 16px 0px 0px',}} ref = {cardRef} >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
@@ -369,6 +415,7 @@ export default function list(){
                 width: '100%',
                 height: height,
                 overflowY: preventScroll,
+                
                 zIndex: '3',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
@@ -376,9 +423,9 @@ export default function list(){
                 border: '1px solid transparent',
                 marginBottom:'85px'
                 }} 
-                ref = {cardRef}
+                
                  >
-                <div>
+                <div ref={listRef}>
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
@@ -386,7 +433,7 @@ export default function list(){
                     </div>
                     : null
                     }
-                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%', overflowY:'scroll'}} >
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} >
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>

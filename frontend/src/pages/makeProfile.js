@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import { useDispatch } from "react-redux";
 import { add_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
-import { load_user } from "../actions/auth/auth";
+import { load_user, login } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
@@ -279,6 +279,8 @@ export default function makeProfile(){
             
         } else if(event.target.name == '건너뛰기'){
             //웰컴페이지로 이동
+            router.push('./login');
+            console.log('hi')
         }
     };
 
@@ -554,8 +556,7 @@ export default function makeProfile(){
                     // alert(message);
                     router.push({
                         pathname: '/completeProfile',
-                        query: { viewportHeight: window.innerHeight,
-                        src : src, }
+                        query: { src : src, }
                       })
                 } else {
                     // alert(message);
@@ -621,7 +622,7 @@ export default function makeProfile(){
                             <Grid item style={{marginLeft:'27%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
-                            <Grid item style={{marginLeft:'18%', }}>
+                            <Grid item style={{marginLeft:'18%', }} onClick={handleIconOnclick}>
                                 <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
                             </Grid>
                         </Grid>

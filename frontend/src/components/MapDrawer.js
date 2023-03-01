@@ -51,7 +51,7 @@ export default function MapDrawer(openID){
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleInfo, setToggleInfo] = useState(user&&user.toggle);
+    const [toggleInfo, setToggleInfo] = useState(user ? user.toggle : '');
     
     //뒤로가기 시 드로워 열리도록
     useEffect(()=>{
