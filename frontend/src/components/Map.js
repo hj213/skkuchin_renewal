@@ -167,7 +167,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         marker.setMap(map);
 
                         window.kakao.maps.event.addListener(marker, "click", function() {
-                            map.relayout();
+                            // map.relayout();
                             setMapCenter(map.getCenter());
                             setSelectedLevel(map.getLevel());
                             router.push(`/place?id=${place.id}`);
@@ -197,7 +197,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         }
                     });
                     }
-                    map.relayout();
+                    // map.relayout();
                 }
             });
             

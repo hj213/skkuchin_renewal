@@ -337,7 +337,6 @@ const PlacePage = () => {
                         </Card>
                     </Container>
                 </Slide>
-                { selectedPlace && 
                 <Container style={{padding: '0px 16px 0px 0px', overflow: 'hidden'}}>
                     <Card style={{
                         borderRadius: cardStyle.radius,
@@ -366,7 +365,7 @@ const PlacePage = () => {
                         </Box> 
                     </Box>
                     )}
-                    
+                    { selectedPlace && 
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
                             <li key={selectedPlace.id} >
                                 <>
@@ -503,13 +502,16 @@ const PlacePage = () => {
                                 </>
                             </li> 
                         </Container>
+                        }
+                        { selectedPlace && 
                             <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
                                 <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
                                     <div>
                                     <ReviewStar rating={rating} handleTouch={handleTouch}/>
                                     </div>
                                 </Link>
-                        </li>
+                            </li>
+                        }
                         </div>
                         {/* 이미지 */}
                         <Grid container style={{margin:'15px 0px 0px',  justifyContent: 'center'}}>
@@ -553,10 +555,11 @@ const PlacePage = () => {
                             </div>
                         ) : null}
                         </Grid>
-
+                
                         {/* 컴포넌트화 필요 */}
 
                         {/* Content */}
+                        { selectedPlace && 
                         <Container component="main" style={{listStyleType: "none", mt: '0', pt: '0'}}>
                             <Grid container sx={{pt: '18px'}} style={{justifyContent:'center'}} >
                                 <Grid style={{width:'100%'}}>
@@ -615,6 +618,8 @@ const PlacePage = () => {
                                 </Grid>
                             </Grid>
                         </Container>
+                        }
+                        { selectedPlace && 
                         <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
                                 <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
                                     <Typography sx={{textAlign:'right', p: '0 15px 40px', color: '#505050', fontSize: '16px'}}>
@@ -622,9 +627,9 @@ const PlacePage = () => {
                                     </Typography>
                                 </Link>
                         </li>
+                        }
                     </Card>
                 </Container>
-                }
                 </div>
                 
         </ThemeProvider>
