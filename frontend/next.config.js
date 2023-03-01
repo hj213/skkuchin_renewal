@@ -5,7 +5,7 @@ const withPWA = require('next-pwa')({
 	dest: 'public',
 	disable: process.env.NODE_ENV !== 'production',
 	sw: 'service-worker.js',
-	dynamicStartUrlRedirect: '/login'
+	dynamicStartUrlRedirect: '/splash'
 })
 
 const nextConfig = withPWA({

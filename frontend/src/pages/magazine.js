@@ -5,8 +5,6 @@ import React from 'react';
 
 import UpperBar from '../components/UpperBar';
 
-import example from '../image/magazine/example.jpg'
-
 import markerY from '../image/marker.png'
 import booked from '../image/bookmark-1.png'
 
@@ -53,7 +51,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         김명륜/경영17
                     </Typography>
@@ -93,7 +91,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         이율전/소프트17
                     </Typography>
@@ -133,7 +131,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         김명륜/경영17
                     </Typography>
@@ -173,7 +171,7 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={example} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
                         이율전/소프트17
                     </Typography>
