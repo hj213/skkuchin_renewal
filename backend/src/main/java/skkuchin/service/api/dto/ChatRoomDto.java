@@ -1,6 +1,8 @@
 package skkuchin.service.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.springframework.web.socket.WebSocketSession;
 import skkuchin.service.domain.Chat.ChatMessage;
@@ -23,6 +25,7 @@ public class ChatRoomDto {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static  class PostRequest{
 
         @JsonProperty

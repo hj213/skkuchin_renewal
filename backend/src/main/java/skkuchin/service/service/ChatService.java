@@ -75,42 +75,33 @@ public class ChatService {
     public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
 
         ChatRoom chatRoom = dto.toEntity(user);
-        ChatRoom chatRoom1 = dto.toEntity(user);
         String id = UUID.randomUUID().toString();
+        AppUser user1 = userRepo.findByUsername(dto.getUserName());
         chatRoom.setRoomId(id);
-        chatRoom1.setRoomId(id+"1");
+        chatRoom.setUser1(user1);
         chatRoomRepository.save(chatRoom);
-        chatRoomRepository.save(chatRoom1);
+
 
     }
 
     //상대방 정보
     public void receiverAccept(ChatRoom chatRoom,AppUser user){
-
-        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
-        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
-        chatRoom1.setUser1(user);
-        chatRoom1.setReceiverRequestStatus(RequestStatus.ACCEPT);
-
-
-        chatRoomRepository.save(chatRoom1);
+        chatRoom.setReceiverRequestStatus(RequestStatus.ACCEPT);
+        chatRoomRepository.save(chatRoom);
 
     }
 
     public void receiverHold(ChatRoom chatRoom,AppUser user){
 
-        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
-        chatRoom1.setUser1(user);
-        chatRoom1.setReceiverRequestStatus(RequestStatus.HOLD);
-        chatRoomRepository.save(chatRoom1);
+
+        chatRoom.setReceiverRequestStatus(RequestStatus.HOLD);
+        chatRoomRepository.save(chatRoom);
 
     }
     public void receiverRefuse(ChatRoom chatRoom,AppUser user){
 
-        ChatRoom chatRoom1 = chatRoomRepository.findByRoomId(chatRoom.getRoomId());
-        chatRoom1.setUser1(user);
-        chatRoom1.setReceiverRequestStatus(RequestStatus.REFUSE);
-        chatRoomRepository.save(chatRoom1);
+        chatRoom.setReceiverRequestStatus(RequestStatus.REFUSE);
+        chatRoomRepository.save(chatRoom);
 
     }
 

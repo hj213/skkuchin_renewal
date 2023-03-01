@@ -95,6 +95,7 @@ public class ChatRoomController {
 
 
     //reaction = accept, refuse, hold
+    //검증 추가 receiver id가 맞는지
     @PostMapping("/room/{reaction}/{roomId}")
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
             String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
