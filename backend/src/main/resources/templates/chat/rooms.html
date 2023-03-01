@@ -153,8 +153,7 @@ const header =Cookies.get('access')
                 stomp.send(`/app/chat.message.${chatRoomId}`, {}, JSON.stringify({
                     message: message,
                     memberId: 1,
-                    sender: sender,
-                    token: header
+                    sender: sender
                 }));
         } catch (error) {
             console.log(error);

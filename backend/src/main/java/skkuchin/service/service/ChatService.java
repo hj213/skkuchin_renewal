@@ -19,19 +19,18 @@ import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
 
+import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ChatService {
     private final ChatRoomRepo chatRoomRepository;
     private final ChatRepo chatRepository;
@@ -323,6 +322,13 @@ public class ChatService {
 
             }
         }
+    }
+
+    @Transactional
+    public AppUser findUser(ChatRoom chatRoom){
+        System.out.println("chatRoom.getUser().getId() = " + chatRoom.getUser().getId());
+        AppUser user = userRepo.findById(chatRoom.getUser().getId()).orElseThrow();
+        return user;
     }
 
 

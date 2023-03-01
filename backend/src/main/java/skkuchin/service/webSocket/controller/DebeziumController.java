@@ -1,18 +1,30 @@
 
-package skkuchin.service.api.chatController;
+package skkuchin.service.webSocket.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.RestController;
+import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
+import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ChatService;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,6 +34,8 @@ public class DebeziumController {
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final RabbitTemplate template;
     private final ChatService chatService;
+    private final ChatRepo chatRepo;
+    private final UserRepo userRepo;
 
 
     //Topics 안에 들어갈 변수 =  topic_prefix + schema_name + table_name
@@ -86,11 +100,21 @@ public class DebeziumController {
         JsonNode beforeRoomId = payload.get("after").get("room_id");
         String roomId = mapper.writeValueAsString(beforeRoomId).replace("\"","");
         ChatRoom chatRoom = chatService.findChatroom(roomId);
+        List<ChatMessageDto.Response> chatMessages = chatRepo.findByChatRoom(chatRoom)
+                .stream()
+                .map(message1 -> new ChatMessageDto.Response(message1))
+                .collect(Collectors.toList());
+
         ChatRoomDto.Response1 chatRoom2 = chatService.getRoomDto(chatRoom);
         String json2 = new Gson().toJson(chatRoom2);
         System.out.println("payload = " + payload);
         System.out.println("operation1 = " + operation1);
-
+        String chatMessageToJson = new Gson().toJson(chatMessages);
+        JsonElement chatRoom2Element = JsonParser.parseString(new Gson().toJson(chatRoom2));
+        JsonElement chatMessagesElement = JsonParser.parseString(chatMessageToJson);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("chatMessages", chatMessagesElement);
+        jsonObject.add("chatRoom", chatRoom2Element);
         if(operation1.equals("u")){
             JsonNode beforeBlock =  payload.get("before").get("is_receiver_blocked");
             JsonNode afterBlock = payload.get("after").get("is_receiver_blocked");
@@ -103,8 +127,26 @@ public class DebeziumController {
 
             //blocked = true/false
             System.out.println("blocked = " + blocked);
-            if(!beforeBlock.equals(afterBlock) && blocked.equals("true") || !beforeBlock1.equals(afterBlock1) && blocked1.equals("true")){
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, json2);
+            if(!beforeBlock.equals(afterBlock)){
+
+
+                AppUser user = chatService.findUser(chatRoom);
+                UserDto.Response user1 = new UserDto.Response(user);
+                String userToJson = new Gson().toJson(user1);
+                JsonElement user1Element = JsonParser.parseString(userToJson);
+                jsonObject.add("user", user1Element);
+                String concatenatedJson = jsonObject.toString();
+                template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, concatenatedJson);
+            }
+            else if(!beforeBlock1.equals(afterBlock1) && blocked1.equals("true")){/*
+                AppUser user = chatRoom.getUser1();
+                UserDto.Response user1 = new UserDto.Response(user);
+                String userToJson = new Gson().toJson(user1);
+                JsonElement user1Element = JsonParser.parseString(userToJson);
+                jsonObject.add("user", user1Element);*/
+                String concatenatedJson = jsonObject.toString();
+                template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, concatenatedJson);
+
             }
 
 

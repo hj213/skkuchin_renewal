@@ -1,11 +1,9 @@
-package skkuchin.service.api.chatController;
+package skkuchin.service.webSocket.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -29,7 +27,6 @@ import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.repo.ChatSessionRepo;
 import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
@@ -81,8 +78,7 @@ public class StompRabbitController {
         String chatMessageToJson = new Gson().toJson(chatMessages);
         String userToJson = new Gson().toJson(user1);
 
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode mergedJson = mapper.createArrayNode();
+
         JsonObject jsonObject = new JsonObject();
         JsonElement chatMessagesElement = JsonParser.parseString(chatMessageToJson);
         JsonElement user1Element = JsonParser.parseString(userToJson);
