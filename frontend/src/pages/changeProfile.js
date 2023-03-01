@@ -179,7 +179,7 @@ export default function makeProfile(){
 
     }, [dispatch]);
 
-    //for 초기값 받아오기
+    //초기값 받아오기
     useEffect(()=>{
         if(matchingUser){
             //성별
@@ -601,7 +601,7 @@ export default function makeProfile(){
                     alert(message);
                     router.back();
                 } else {
-                    // alert(message);
+                    alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
                 }
@@ -651,12 +651,14 @@ export default function makeProfile(){
         }
     }, [gender, keyword, introduction, mbti]);
 
-    console.log(gender, keyword, introduction, mbti);
+    // console.log(gender, keyword, introduction, mbti);
    
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+                <div style={{height:'100%', marginTop:'820px', zIndex:'6', position:'absolute', left:'50%'}}>
                 <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
+                </div>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
