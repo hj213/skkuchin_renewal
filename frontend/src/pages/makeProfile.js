@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import { useDispatch } from "react-redux";
-import { add_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
+import { add_matching_info, load_matching_info, add_new_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
 import { load_user, login } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
@@ -158,6 +158,7 @@ export default function makeProfile(){
     const router = useRouter();
     const src = router.query.src;
     const height = window.innerHeight;
+    const username = router.query.username;
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -550,7 +551,8 @@ export default function makeProfile(){
     const handleOnSubmit = (event) => {
         
         event.preventDefault();
-console.log(gender, keyword, introduction, mbti)
+
+        if (src == '매칭프로필설정') {
         dispatch(add_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
                     // alert(message);
@@ -566,6 +568,24 @@ console.log(gender, keyword, introduction, mbti)
             }));
         setAlertOpen(false);
         setAlertMessage('');
+        }
+        else if (src == '회원가입') {
+            dispatch(add_new_matching_info(username, gender, keyword, introduction, mbti, ([result, message]) => {
+                if (result) {
+                    // alert(message);
+                    router.push({
+                        pathname: '/completeProfile',
+                        query: { src : src, }
+                    })
+                } else {
+                    //alert(message);
+                    setAlertOpen(true);
+                    setAlertMessage(message);
+                }
+            }));
+        setAlertOpen(false);
+        setAlertMessage('');
+        }
     } 
 
     //데이터 전달하기 위해
