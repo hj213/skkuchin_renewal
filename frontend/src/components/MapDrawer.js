@@ -53,11 +53,11 @@ export default function MapDrawer(openID){
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleInfo, setToggleInfo] = useState(user ? user.toggle : '');
+    const [toggleInfo, setToggleInfo] = useState(user?.toggle);
     const [toggleImage, setToggleImage] = useState('');
     
     useEffect(()=>{
-      if(user != null){
+      if(user){
         if (user.campus == '명륜'){
           if(user.toggle == '율전'){
             setToggleImage(myj)
@@ -92,7 +92,7 @@ export default function MapDrawer(openID){
     useEffect(()=>{
         dispatch(change_toggle(toggleInfo));
         dispatch(load_user());
-    }, [dispatch, toggleInfo, user.campus]);
+    }, [dispatch, toggleInfo, user?.campus]);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {

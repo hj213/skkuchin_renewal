@@ -128,41 +128,6 @@ export default function list(){
             }
         }
     }, [keyword, router.query.keyword, dispatch, tags,user]);
-    
-    
-    // // 사용자 터치에 따라 카드 사이즈 변화
-    useEffect(() => {
-        if (cardRef.current) {
-          cardRef.current.addEventListener("touchstart", handleTouchStart);
-          cardRef.current.addEventListener("touchmove", handleTouchMove);
-          cardRef.current.addEventListener("touchend", handleTouchEnd);
-        }
-        return () => {
-          if (cardRef.current) {
-            cardRef.current.removeEventListener("touchstart", handleTouchStart);
-            cardRef.current.removeEventListener("touchmove", handleTouchMove);
-            cardRef.current.removeEventListener("touchend", handleTouchEnd);
-          }
-        };
-      }, [cardRef]);
-    // 사용자 터치에 따라 카드 사이즈 변화
-    // useEffect(() => {
-    //     if (cardRef.current) {
-    //     cardRef.current.addEventListener("touchmove", handleTouchMove);
-    //     // 카드 내부의 리스트에 대한 스크롤 제어
-    //     const list = cardRef.current.querySelector("ul");
-    //     list.addEventListener("touchmove", handleListTouchMove, { passive: false });
-    //     }
-    //     return () => {
-    //     if (cardRef.current) {
-    //         cardRef.current.removeEventListener("touchmove", handleTouchMove);
-    //         // 카드 내부의 리스트에 대한 스크롤 제어 해제
-    //         const list = cardRef.current.querySelector("ul");
-    //         list.removeEventListener("touchmove", handleListTouchMove);
-    //     }
-    //     };
-    // }, [cardRef]);
-  
 
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
@@ -183,10 +148,26 @@ export default function list(){
         
     }
 
+    // 사용자 터치에 따라 카드 사이즈 변화
+    useEffect(() => {
+        if (cardRef.current) {
+          cardRef.current.addEventListener("touchstart", handleTouchStart);
+          cardRef.current.addEventListener("touchmove", handleTouchMove);
+          cardRef.current.addEventListener("touchend", handleTouchEnd);
+        }
+        return () => {
+          if (cardRef.current) {
+            cardRef.current.removeEventListener("touchstart", handleTouchStart);
+            cardRef.current.removeEventListener("touchmove", handleTouchMove);
+            cardRef.current.removeEventListener("touchend", handleTouchEnd);
+          }
+        };
+      }, [cardRef]);
+
     // 카드 터치 했을 때 변화
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         const newHeight = event.touches[0].clientY;
         if (newHeight <= preNewHeight && cardRef.current.offsetHeight < TARGET_HEIGHT ) {
             setHeight(TARGET_HEIGHT);
