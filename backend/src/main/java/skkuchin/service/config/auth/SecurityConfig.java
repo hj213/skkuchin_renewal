@@ -27,6 +27,7 @@ public class SecurityConfig {
             "/api/user/token/**",
             "/api/user/check/**",
             "/api/user/find/**",
+            "/api/matching/user/new",
             "/api/user/password/reset",
             "/api/email/**",
             "/chat/**",

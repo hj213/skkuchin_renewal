@@ -8,5 +8,3 @@ aws:
     bucket: skkuchin2023-bucket
     prefix: dev/media/
     start-url: https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/
-  stack:
-    auto: false
