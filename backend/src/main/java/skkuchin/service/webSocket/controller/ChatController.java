@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class StompRabbitController {
+public class ChatController {
 
     private final RabbitTemplate template;
     private final ChatRepo chatRepository;
@@ -65,7 +65,7 @@ public class StompRabbitController {
         chat.setSender(username);
         chat.setMessage("입장하셨습니다.");
         ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
-        ChatRoomDto.Response1 chatRoom2 = chatService.getRoomDto(chatRoom);
+        ChatRoomDto.blockResponse chatRoom2 = chatService.getRoomDto(chatRoom);
 
 
         List<ChatMessageDto.Response> chatMessages = chatRepository.findByChatRoom(chatRoom)
@@ -77,8 +77,6 @@ public class StompRabbitController {
 
         String chatMessageToJson = new Gson().toJson(chatMessages);
         String userToJson = new Gson().toJson(user1);
-
-
         JsonObject jsonObject = new JsonObject();
         JsonElement chatMessagesElement = JsonParser.parseString(chatMessageToJson);
         JsonElement user1Element = JsonParser.parseString(userToJson);
@@ -87,39 +85,60 @@ public class StompRabbitController {
         jsonObject.add("user", user1Element);
         jsonObject.add("chatRoom", chatRoom2Element);
         String concatenatedJson = jsonObject.toString();
-
-
-
-
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId,concatenatedJson);
 
     }
 
-    @MessageMapping("chat.message.{chatRoomId}")
-    public void send(ChatMessage chat, @DestinationVariable String chatRoomId
-   , Message<?> message){
-        StompHeaderAccessor accessor =
-                MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-        //세션, 채팅방 정보, 유저 정보 설정, 받아오기
-        String sessionId = accessor.getSessionId();
+    //기존의 유저 메시지 불러오기
+    @MessageMapping("chat.alarm.{chatRoomId}")
+    public void newAppointment(ChatMessage chat, @Header("token") String token,@DestinationVariable String chatRoomId){
 
-        ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
-        ChatSession chatSession = chatSessionService.findSession(sessionId);
-        String username = chatSession.getSender();
+        String username = getUserNameFromJwt(token);
+        AppUser user = userRepo.findByUsername(username);
+        List<ChatRoom> chatRooms = chatRoomRepository.findByReceiverId(user.getId());
+        System.out.println("user.getId() = " + user.getId());
+        List<ChatRoomDto.userResponse> chatRoom = chatRooms
+                .stream()
+                .map(message -> new ChatRoomDto.userResponse(message))
+                .collect(Collectors.toList());
 
-        //chat 메시지 + 채팅방 정보 설정
+        System.out.println("chatRooms = " + chatRoom);
+        for (int i = 0; i < chatRooms.size(); i++) {
+            System.out.println("chatRooms.get(i).getRoomName() = " + chatRooms.get(i).isReceiverBlocked());
+        }
+        String chatMessageToJson = new Gson().toJson(chatRoom);
+        JsonObject jsonObject = new JsonObject();
+        JsonElement chatMessagesElement = JsonParser.parseString(chatMessageToJson);
 
-        chat.setSender(username);
-        chat.setRoomId(chatRoom.getRoomId());
-        chat.setChatRoom(chatRoom);
-        chat.setDate(LocalDateTime.now());
-        chat.setUserCount(2-chatRoom.getUserCount());
+        jsonObject.add("Alarm", chatMessagesElement);
+        String concatenatedJson = jsonObject.toString();
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId,concatenatedJson);
 
-        //DB 저장
-        chatRoomRepository.save(chatRoom);
-        chatRepository.save(chat);
+    }
 
+    @MessageMapping("chat.list.{chatRoomId}")
+    public void myChatList(@Header("token") String token,@DestinationVariable String chatRoomId){
+        String username = getUserNameFromJwt(token);
+        AppUser user = userRepo.findByUsername(username);
+        List<ChatRoom> chatRooms = chatRoomRepository.findByNormalReceiverId(user.getId());
+        System.out.println("user.getId() = " + user.getId());
+        List<ChatRoomDto.blockResponse> chatMessages = chatRooms
+                .stream()
+                .map(message1 -> new ChatRoomDto.blockResponse(message1))
+                .collect(Collectors.toList());
+
+        System.out.println("chatRooms = " + chatRooms);
+        for (int i = 0; i < chatRooms.size(); i++) {
+            System.out.println("chatRooms.get(i).getRoomName() = " + chatRooms.get(i).getRoomName());
+        }
+        String chatMessageToJson = new Gson().toJson(chatMessages);
+        JsonObject jsonObject = new JsonObject();
+        JsonElement chatMessagesElement = JsonParser.parseString(chatMessageToJson);
+
+        jsonObject.add("chatMessages", chatMessagesElement);
+        String concatenatedJson = jsonObject.toString();
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId,concatenatedJson);
 
     }
 

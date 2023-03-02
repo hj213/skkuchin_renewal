@@ -14,8 +14,6 @@ import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.ChatService;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -26,37 +24,6 @@ public class ChatRoomController {
     private final ChatService chatService;
     private final ChatRoomRepo chatRoomRepository;
 
-
-
-    @GetMapping("/senderRooms")
-    public ResponseEntity<?> sortSenderChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser appUser = principalDetails.getUser();
-
-        List<ChatRoomDto.Response> responses = chatService.getSenderChatRoom(appUser);
-         Collections.sort(responses,new DateComparator().reversed());
-        return new ResponseEntity<>(new CMRespDto<>(1, "sender's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
-
-    //receiver 기준 최신 채탕방 정렬
-    @GetMapping("/receiverRooms")
-    public ResponseEntity<?> sortReceiverChatRoom(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        AppUser appUser = principalDetails.getUser();
-
-        List<ChatRoomDto.Response> responses = chatService.getReceiverChatRoom(appUser);
-        Collections.sort(responses,new DateComparator().reversed());
-        return new ResponseEntity<>(new CMRespDto<>(1, "receiver's 정렬된 채팅방 조회 완료", responses), HttpStatus.OK);
-    }
-    class DateComparator implements Comparator<ChatRoomDto.Response> {
-        @Override
-        public int compare(ChatRoomDto.Response f1, ChatRoomDto.Response f2) {
-            if (f1.getLocalDateTime().isAfter(f2.getLocalDateTime()) ) {
-                return 1;
-            } else  {
-                return -1;
-            }
-
-        }
-    }
 
 
      @PostMapping("/rooms")
@@ -75,43 +42,20 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
-        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
         List<ChatMessageDto.Response> responses = chatService.getLatestMessages(chatRoom);
         System.out.println("responses = " + responses.size());
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
     }
 
-    //채팅방의 가장 최근 메시지 1개만 받아옴
-    @GetMapping("/room/latest/{roomId}")
-    public ResponseEntity<?> getLatestOneMessage(@PathVariable String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("chatRoom.getRoomId() = " + chatRoom.getRoomId());
-        System.out.println("chatRoom.getRoomName() = " + chatRoom.getRoomName());
-        ChatMessageDto.Response responses = chatService.getLatestMessage(chatRoom);
-
-        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
-    }
 
 
     //reaction = accept, refuse, hold
     //검증 추가 receiver id가 맞는지
-    @PostMapping("/room/{reaction}/{roomId}")
-    public ResponseEntity<?> receiverReaction(@PathVariable String roomId, @PathVariable
-            String reaction,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    @PostMapping("/room/{roomId}")
+    public ResponseEntity<?> receiverReaction(@PathVariable String roomId,  @RequestBody ChatRoomDto.Request dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        if(reaction.equals("accept")){
-            chatService.receiverAccept(chatRoom,user);
-        }
-        else if(reaction.equals("refuse")){
-            chatService.receiverRefuse(chatRoom,user);
-        }
-
-        else if (reaction.equals("hold")){
-            chatService.receiverHold(chatRoom,user);
-        }
-
+        chatService.receiverAccept(chatRoom,user,dto.getReaction());
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭 완료", null), HttpStatus.CREATED);
 
 
@@ -121,15 +65,15 @@ public class ChatRoomController {
 
     //상대 유저 블럭
     //block or remove
-    @PostMapping("/block/{response}/{roomId}")
+    @PostMapping("/block/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
-            @PathVariable String response, @AuthenticationPrincipal PrincipalDetails principalDetails){
+                                       @RequestBody ChatRoomDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        if(response.equals("block") ){
+        if(dto.getReaction().equals("block")){
             chatService.blockUser(chatRoom,user);
         }
-        else if(response.equals("remove")){
+        else if(dto.getReaction().equals("remove")){
             chatService.removeBlockedUser(chatRoom,user);
         }
 
@@ -146,8 +90,10 @@ public class ChatRoomController {
     }
 
 
-
-
+    @GetMapping(value = "/roommm")
+    public String getRoom(){
+        return "chat/rrr";
+    }
     @GetMapping(value = "/room")
     public String getRoom(String chatRoomId, String sender, Model model){
 
@@ -155,21 +101,6 @@ public class ChatRoomController {
         model.addAttribute("sender", sender);
 
         return "chat/rooms";
-    }
-
-    @GetMapping(value = "/roommm")
-    public String getRoom(){
-        return "chat/rrr";
-    }
-
-    @GetMapping(value = "/aa")
-    public String getRoom12(){
-        return "chat/a";
-    }
-
-    @GetMapping(value = "/roomm")
-    public String getRoom1(){
-        return "chat/rrrr";
     }
 
 

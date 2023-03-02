@@ -1,23 +1,42 @@
 package skkuchin.service.api.dto;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import skkuchin.service.domain.Chat.ChatMessage;
+import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.User.AppUser;
+
+import java.time.LocalDateTime;
+
 public class ChatMessageDto {
 
-    @JsonProperty
-    private Long id;
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static  class PostRequest{
 
-    //채팅방 ID
-    @JsonProperty
-    private String roomId;
-    //보내는 사람
-    @JsonProperty
-    private String sender;
-    //내용
-    @JsonProperty
-    private String message;
+        private String message;
+
+        @JsonProperty
+        private Long chatRoomId;
+
+
+        public ChatMessage toEntity(ChatRoom chatRoom, AppUser user){
+            return ChatMessage.builder()
+                    .message(this.message)
+                    .chatRoom(chatRoom)
+                    .roomId(chatRoom.getRoomId())
+                    .sender(user.getUsername())
+                    .Date(LocalDateTime.now())
+                    .userCount(chatRoom.getUserCount())
+                    .build();
+
+        }
+    }
 
 
 

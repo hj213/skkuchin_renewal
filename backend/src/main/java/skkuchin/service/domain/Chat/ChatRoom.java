@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -28,20 +28,16 @@ public class ChatRoom {
     private String roomName;
 
     @OneToMany(mappedBy = "chatRoom")
-    @JsonIgnore
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom")
-    @JsonIgnore
     private List<ChatSession> chatSessions = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "sender_id")
     private AppUser user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "receiver_id")
     private AppUser user1;
 

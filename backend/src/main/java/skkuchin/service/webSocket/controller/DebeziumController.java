@@ -60,6 +60,7 @@ public class DebeziumController {
             String userCnt = mapper.writeValueAsString(beforeUserCnt).replace("\"","");
             int userCnt1 = Integer.parseInt(userCnt);
             System.out.println("sender = " + sender);
+            System.out.println("userCnt1 = " + userCnt1);
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setMessage(messages);
             chatMessage.setSender(sender);
@@ -105,7 +106,7 @@ public class DebeziumController {
                 .map(message1 -> new ChatMessageDto.Response(message1))
                 .collect(Collectors.toList());
 
-        ChatRoomDto.Response1 chatRoom2 = chatService.getRoomDto(chatRoom);
+        ChatRoomDto.blockResponse chatRoom2 = chatService.getRoomDto(chatRoom);
         String json2 = new Gson().toJson(chatRoom2);
         System.out.println("payload = " + payload);
         System.out.println("operation1 = " + operation1);
@@ -168,6 +169,14 @@ public class DebeziumController {
     public void test1(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
     }
+
+   /* @KafkaListener(topics = "dbserver.service.")
+    public void message(@Payload(required = false) String message) throws Exception {
+        System.out.println("kafka consume test topic : "  + message);
+    }*/
+
+
+
 
 }
 

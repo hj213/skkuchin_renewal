@@ -111,6 +111,13 @@
         }));
 
 
+
+         stomp.send(`/app/chat.alarm.${chatRoomId}`, {"token" : header}, JSON.stringify({
+            memberId: 1,
+            sender: sender
+        }));
+
+
     }, onError, '/');
 
 

@@ -15,6 +15,7 @@ import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.RequestStatus;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -85,23 +86,21 @@ public class ChatService {
     }
 
     //상대방 정보
-    public void receiverAccept(ChatRoom chatRoom,AppUser user){
-        chatRoom.setReceiverRequestStatus(RequestStatus.ACCEPT);
-        chatRoomRepository.save(chatRoom);
+    public void receiverAccept(ChatRoom chatRoom,AppUser user, String status){
+        if(status.equals("ACCEPT")){
+            chatRoom.setReceiverRequestStatus(RequestStatus.ACCEPT);
+            chatRoomRepository.save(chatRoom);
+        }
 
-    }
+        else if(status.equals("REFUSE") ){
+            chatRoom.setReceiverRequestStatus(RequestStatus.REFUSE);
+            chatRoomRepository.save(chatRoom);
+        }
+        else if(status.equals("HOLD")){
+            chatRoom.setReceiverRequestStatus(RequestStatus.HOLD);
+            chatRoomRepository.save(chatRoom);
+        }
 
-    public void receiverHold(ChatRoom chatRoom,AppUser user){
-
-
-        chatRoom.setReceiverRequestStatus(RequestStatus.HOLD);
-        chatRoomRepository.save(chatRoom);
-
-    }
-    public void receiverRefuse(ChatRoom chatRoom,AppUser user){
-
-        chatRoom.setReceiverRequestStatus(RequestStatus.REFUSE);
-        chatRoomRepository.save(chatRoom);
 
     }
 
@@ -271,8 +270,8 @@ public class ChatService {
         return new ChatMessageDto.Response(chatMessage);
     }
 
-    public ChatRoomDto.Response1 getRoomDto(ChatRoom chatRoom){
-        return new ChatRoomDto.Response1(chatRoom);
+    public ChatRoomDto.blockResponse getRoomDto(ChatRoom chatRoom){
+        return new ChatRoomDto.blockResponse(chatRoom);
     }
 
     public ChatMessage getLatestMessage1(ChatRoom chatRoom){

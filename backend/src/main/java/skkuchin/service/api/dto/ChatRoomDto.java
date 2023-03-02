@@ -43,6 +43,8 @@ public class ChatRoomDto {
         }
     }
 
+
+
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
@@ -60,6 +62,16 @@ public class ChatRoomDto {
 
 
         }
+    }
+
+
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static  class Request{
+
+        private String reaction;
+
     }
 
 
@@ -109,13 +121,24 @@ public class ChatRoomDto {
     }
 
     @Getter
-    public static class Response1{
+    public static class blockResponse{
         private boolean isSenderBlocked;
         private boolean isReceiverBlocked;
 
-        public Response1(ChatRoom chatRoom){
+        public blockResponse(ChatRoom chatRoom){
             this.isReceiverBlocked = chatRoom.isReceiverBlocked();
             this.isSenderBlocked = chatRoom.isSenderBlocked();
+        }
+    }
+
+    @Getter
+    public static class userResponse{
+        private Long senderUserId;
+        private Long receiverUserId;
+
+        public userResponse(ChatRoom chatRoom){
+            this.senderUserId = chatRoom.getUser().getId();
+            this.receiverUserId = chatRoom.getUser1().getId();
         }
     }
 
