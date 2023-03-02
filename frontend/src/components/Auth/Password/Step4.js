@@ -1,6 +1,6 @@
 import React from 'react'
 import {  Button, Typography, Box } from '@mui/material';
-import check from '../../../image/check_circle.png';
+import check from '../../../image/checkedIcon.png';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 

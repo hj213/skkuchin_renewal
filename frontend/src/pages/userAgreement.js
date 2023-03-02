@@ -293,9 +293,8 @@ export default function userAgreement() {
     return (
     <ThemeProvider theme={theme}>
         <CssBaseline />
-
         {/* 상단 */}
-        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+        <Container style={{position: 'fixed', left: '0', right: '0', top: '0', padding:'0px', alignItems: 'center', paddingTop: '45px', paddingBottom: '10px', backgroundColor: 'white'}}> 
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={backClick} />
@@ -307,7 +306,7 @@ export default function userAgreement() {
         </Container>
         <Box
             sx={{
-            margin: '25px 22px 22px 22px',
+            margin: '95px 22px 22px 22px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

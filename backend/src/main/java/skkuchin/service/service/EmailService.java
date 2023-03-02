@@ -78,14 +78,26 @@ public class EmailService {
     }
 
     @Transactional
-    public Boolean confirmSignup(EmailAuthRequestDto requestDto) {
+    public String confirmSignup(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
         AppUser user = userRepo.findByEmail(requestDto.getEmail());
         emailAuth.setIsAuth(true);
         user.emailVerifiedSuccess();
-        return true;
+
+        String content = "<div style='margin-left: 40px'>" +
+                "<div style='width: 100%; height: 3px; background-color: #FFCE00; margin-bottom: 60px; margin-top: 100px'></div>" +
+                "<div style='color: #BABABA; font-size: 24px; margin-bottom: 16px'>SKKUCHIN</div>" +
+                "<img src='https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/prod/mail/email_enhang.png' alt='' style='margin-bottom: 62px; width: 168px; height: 132px' />" +
+                "<div style='font-size: 48px; margin-bottom: 42px'>" +
+                "<span style='color: #FFCE00'>인증이 완료되었습니다.</span>" +
+                "</div>" +
+                "<div style='margin-bottom: 46px; font-size: 24px'>" +
+                "<div style='margin-bottom: 14px'>앱으로 돌아가 회원가입을 완료해주세요.</div>" +
+                "</div>" +
+                "</div>";
+        return content;
     }
 
     //회원가입 - 이메일 인증 완료한 유저인지 확인
@@ -122,12 +134,24 @@ public class EmailService {
     }
 
     @Transactional
-    public Boolean confirmPassword(EmailAuthRequestDto requestDto) {
+    public String confirmPassword(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
         emailAuth.setIsAuth(true);
-        return true;
+
+        String content = "<div style='margin-left: 40px'>" +
+                "<div style='width: 100%; height: 3px; background-color: #FFCE00; margin-bottom: 60px; margin-top: 100px'></div>" +
+                "<div style='color: #BABABA; font-size: 24px; margin-bottom: 16px'>SKKUCHIN</div>" +
+                "<img src='https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/prod/mail/email_enhang.png' alt='' style='margin-bottom: 62px; width: 168px; height: 132px' />" +
+                "<div style='font-size: 48px; margin-bottom: 42px'>" +
+                "<span style='color: #FFCE00'>인증이 완료되었습니다.</span>" +
+                "</div>" +
+                "<div style='margin-bottom: 46px; font-size: 24px'>" +
+                "<div style='margin-bottom: 14px'>앱으로 돌아가 비밀번호 초기화를 완료해주세요.</div>" +
+                "</div>" +
+                "</div>";
+        return content;
     }
 
     @Transactional
@@ -169,6 +193,7 @@ public class EmailService {
     public MimeMessage createEmailForm(String email, EmailType type) throws MessagingException, UnsupportedEncodingException {
         String emailType = getEmailType(type);
         String s = emailType == "회원가입" ? "을" : "를";
+        emailType = emailType == "비밀번호 초기화" ? "</div><div style='margin-bottom: 7px'>"+emailType : emailType;
         createCode();
         String setFrom = address;
         String toEmail = email; //받는 사람

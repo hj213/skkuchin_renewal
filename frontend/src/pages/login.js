@@ -145,10 +145,16 @@ const LoginPage = () => {
                         </form>
                     </div>
 
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.22)`, marginBottom: '25px'}}>
+                {/* <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.22)`, marginBottom: '25px'}}>
                     <div onClick={() => router.push('/register')} style={{justifySelf: 'right'}}>회원가입</div>
                     <div style={{justifySelf: 'center', textAlign: 'center'}}>|</div>
                     <div onClick={() => router.push('/resetPassword')} style={{justifySelf: 'left'}}>비밀번호 초기화</div>
+                </div> */}
+
+                <div style={{fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.22)`, marginBottom: '25px', marginLeft: '10px'}}>
+                    <span onClick={() => router.push('/register')}>회원가입</span>
+                    <span style={{padding: '0 13px'}}>|</span>
+                    <span onClick={() => router.push('/resetPassword')}>비밀번호 초기화</span>
                 </div>
                     </Box>
                 </Container>
