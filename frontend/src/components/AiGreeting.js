@@ -251,6 +251,7 @@ const AiGreeting = () => {
                 <div style={{textAlign:"center", marginTop:"10px"}}>
                 <Grid style={{fontSize:"12px", color:"#BABABA", textAlign:"center"}}>
                         <Typography style={{
+                            fontSize:'12px',
                             color:"white", 
                             background:"#BABABA",
                             borderRadius:"20px", 
@@ -270,7 +271,8 @@ const AiGreeting = () => {
                                         border:"1px solid #BABABA", 
                                         display:"inline-block", 
                                         marginRight:"5px",
-                                        padding:"2px 7px 0 7px",}}>
+                                        padding:"2px 7px 0 7px",
+                                        fontSize:'12px'}}>
                                     {interest}
                                     </Typography>
                                 )))

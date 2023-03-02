@@ -22,7 +22,7 @@ export default function nextSplash(){
     const [splashIndex, setSplashIndex] = useState(0);
     const handleSplashChange = (index) => {
         setSplashIndex(index);
-      };
+    };
     const handleStartClick = () => {
         router.push('/login')
     }

@@ -34,6 +34,5 @@ public class ChatMessage {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime Date;
 
-
     private int userCount;
 }

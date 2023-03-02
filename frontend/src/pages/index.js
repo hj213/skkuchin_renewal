@@ -184,10 +184,8 @@ export default function list(){
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
         event.preventDefault();
-        
-        const newHeight = window.innerHeight - event.touches[0].clientY;
-        if (newHeight >= preNewHeight ) {
-            
+        const newHeight = event.touches[0].clientY;
+        if (newHeight <= preNewHeight && cardRef.current.offsetHeight < TARGET_HEIGHT ) {
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -198,7 +196,7 @@ export default function list(){
                 iconVisibility:'hidden'
             });
             setPreventScroll('scroll');
-        } else if(newHeight < preNewHeight){
+        } else if(newHeight > preNewHeight){
             if(WINDOW_HEIGHT < 750){
                 setHeight(187)
             } else {
@@ -214,10 +212,12 @@ export default function list(){
                 iconVisibility:'visible'
             });
             setPreventScroll('');
-        }
+        } 
         preNewHeight=newHeight;
-    };
+        // console.log(newHeight);
+       
 
+    };
     // // 아이콘 클릭했을 때 이벤트
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'map' ){
@@ -407,7 +407,7 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '13px 16px 0px 0px',}} ref = {cardRef} >
+            <Container style={{padding: '13px 16px 0px 0px',}}  >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
@@ -423,7 +423,7 @@ export default function list(){
                 border: '1px solid transparent',
                 marginBottom:'85px'
                 }} 
-                
+                ref = {cardRef}
                  >
                 <div ref={listRef}>
                     {
