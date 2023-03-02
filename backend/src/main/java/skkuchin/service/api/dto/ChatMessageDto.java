@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import skkuchin.service.domain.Chat.ChatMessage;
+
 public class ChatMessageDto {
 
     @JsonProperty
@@ -19,25 +20,18 @@ public class ChatMessageDto {
     @JsonProperty
     private String message;
 
-
-
     @Getter
     @RequiredArgsConstructor
-
     public static class Response{
         private Long id;
         private String roomId;
         private String sender;
         private String message;
         public Response(ChatMessage chatMessage){
-
             this.id = chatMessage.getId();
             this.roomId = chatMessage.getRoomId();
             this.sender= chatMessage.getSender();
             this.message = chatMessage.getMessage();
         }
-
-
-
     }
 }

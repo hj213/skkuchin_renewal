@@ -72,6 +72,55 @@ export const add_matching_info = (gender, keywords, introduction, mbti, callback
     }
 }
 
+export const add_new_matching_info = (username, gender, keywords, introduction, mbti, callback) => async dispatch => {
+
+    const body = JSON.stringify({
+        gender, keywords, introduction, mbti
+    });
+    
+    try {
+        const res = await fetch(`${API_URL}/api/matching/user/new/${username}`,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if(res.status === 201){
+            dispatch({
+                type: ADD_MATCHING_INFO_SUCCESS
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
+        }else {
+            dispatch({
+                type: ADD_MATCHING_INFO_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: ADD_MATCHING_INFO_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+        
+        
+    }
+}
+
 export const load_matching_info = (callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
