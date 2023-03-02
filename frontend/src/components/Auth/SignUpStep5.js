@@ -30,7 +30,7 @@ const SignUpStep5 = (props) => {
             }
           }
           console.log(message);
-          //setDialogOpen(true);
+          setDialogOpen(true);
         }));
       }
     }

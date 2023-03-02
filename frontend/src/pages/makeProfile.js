@@ -550,7 +550,7 @@ export default function makeProfile(){
     const handleOnSubmit = (event) => {
         
         event.preventDefault();
-
+console.log(gender, keyword, introduction, mbti)
         dispatch(add_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
                     // alert(message);
@@ -622,8 +622,8 @@ export default function makeProfile(){
                             <Grid item style={{marginLeft:'27%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
-                            <Grid item style={{marginLeft:'18%', }} name='건너뛰기' onClick={handleIconOnclick}>
-                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}><div name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</div></Typography>
+                            <Grid item style={{marginLeft:'14%', }} onClick={() => router.push('/welcome')}>
+                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={() => router.push('/welcome')}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
                     </Container>

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import uncheck from '../../image/uncheck.png';
-import logo from '../../image/email_enhang.png'
+import logo from '../../image/email_enheng_wink.png'
 import Image from 'next/image';
 import { register } from "../../actions/auth/auth";
 import { signup_email_check, signup_email_send } from '../../actions/email/email';
