@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,20 +19,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @DynamicUpdate
 public class ChatRoom {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String roomId;
     private String roomName;
-
-    @OneToMany(mappedBy = "chatRoom")
-    @JsonIgnore
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "chatRoom")
-    @JsonIgnore
-    private List<ChatSession> chatSessions = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -45,7 +35,6 @@ public class ChatRoom {
     @JoinColumn(name = "receiver_id")
     private AppUser user1;
 
-
     @Enumerated(EnumType.STRING)
     private RequestStatus receiverRequestStatus;
 
@@ -53,16 +42,11 @@ public class ChatRoom {
 
     private LocalDateTime expireDate;
 
-
-
-
-
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isSenderBlocked;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isReceiverBlocked;
-
 
     @PrePersist
     public void setDate() {
@@ -71,8 +55,15 @@ public class ChatRoom {
         /*this.expireDate = now.plusMinutes(1);*/
     }
 
-    // 신고 관련 매핑입니다 지우지 마세요
-    @JsonIgnore
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatSession> chatSessions = new ArrayList<>();
+
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Appointment> appointments = new ArrayList<>();
 }

@@ -30,7 +30,7 @@ public class ReportController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> ReportUser(@Valid @RequestBody ReportDto.Request dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> reportUser(@Valid @RequestBody ReportDto.Request dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> errorMap = new HashMap<>();
         try {
             if (bindingResult.hasErrors()) {
