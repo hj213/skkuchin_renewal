@@ -251,15 +251,16 @@ const PlacePage = () => {
     const totalImageCount = reviews && reviews.reduce((acc, review) => acc + review.images.length, 0);
     const totalImagesUrl = reviews && reviews.map(review => review.images).flatMap(imageArray => imageArray);
 
-    const allImages = selectedPlace && selectedPlace.images.concat(totalImagesUrl);
-
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
+            alert(id);
             dispatch(load_place(id));
             dispatch(load_reviews(id));
             setPlaceId(id);
         }
     }, [id]);
+
+    const allImages = selectedPlace && selectedPlace.images ? selectedPlace.images.concat(totalImagesUrl) : [];
 
     useEffect(() => {
         if(reviews != null) {
@@ -425,7 +426,7 @@ const PlacePage = () => {
                                                 </Grid>
                                                 <Grid container sx={{justifyContent: 'center'}}>
                                                     {/* 태그 받아오기 */}
-                                                    {selectedPlace.tags.map((tag, index) => (
+                                                    {selectedPlace && selectedPlace.tags && selectedPlace.tags.map((tag, index) => (
                                                     <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
                                                         {displayBigReviewTag(tag)}
                                                     </Grid>
@@ -515,7 +516,7 @@ const PlacePage = () => {
                         </div>
                         {/* 이미지 */}
                         <Grid container style={{margin:'15px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
-                        {allImages && allImages.length > 5 ? (
+                        {selectedPlace & allImages && allImages.length > 5 ? (
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
