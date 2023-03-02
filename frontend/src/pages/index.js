@@ -133,14 +133,17 @@ export default function list(){
     // // 사용자 터치에 따라 카드 사이즈 변화
     useEffect(() => {
         if (cardRef.current) {
-            cardRef.current.addEventListener("touchmove", handleTouchMove);
+          cardRef.current.addEventListener("touchstart", handleTouchStart);
+          cardRef.current.addEventListener("touchmove", handleTouchMove);
+          cardRef.current.addEventListener("touchend", handleTouchEnd);
         }
         return () => {
-            if (cardRef.current) {
-                cardRef.current.removeEventListener("touchmove", handleTouchMove);
-            }
+          if (cardRef.current) {
+            cardRef.current.removeEventListener("touchstart", handleTouchStart);
+            cardRef.current.removeEventListener("touchmove", handleTouchMove);
+            cardRef.current.removeEventListener("touchend", handleTouchEnd);
+          }
         };
-       
       }, [cardRef]);
     // 사용자 터치에 따라 카드 사이즈 변화
     // useEffect(() => {
@@ -202,7 +205,6 @@ export default function list(){
             } else {
                 setHeight(345)
             }
-            // setHeight('35%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -215,9 +217,32 @@ export default function list(){
         } 
         preNewHeight=newHeight;
         // console.log(newHeight);
-       
-
+      // ul 요소의 위치 조정
+    const touchY = event.touches[0].clientY;
+    const ul = event.target && event.target.querySelector("ul");
+    const ulHeight = ul && ul.offsetHeight;
+    const cardHeight = cardRef.current.offsetHeight;
+    const cardBottom = cardRef.current.getBoundingClientRect().bottom;
+    const isScrollable = ulHeight > cardHeight;
+    if (isScrollable) {
+        if (touchY > cardBottom - 40) {
+        ul.style.transform = `translateY(-${ulHeight - cardHeight}px)`;
+        } else {
+        ul.style.transform = "";
+        }
+    }
     };
+
+    const handleTouchStart = () => {
+    const ul = cardRef.current.querySelector("ul");
+    ul.style.transition = "transform 0.3s ease-out";
+    };
+
+    const handleTouchEnd = () => {
+    const ul = cardRef.current.querySelector("ul");
+    ul.style.transition = "";
+    };
+
     // // 아이콘 클릭했을 때 이벤트
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'map' ){
@@ -414,18 +439,18 @@ export default function list(){
                 bottom: '0px',
                 width: '100%',
                 height: height,
-                overflowY: preventScroll,
-                
+                // overflowY: preventScroll,
                 zIndex: '3',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
                 border: '1px solid transparent',
-                marginBottom:'85px'
+                marginBottom:'85px',
+                
                 }} 
-                ref = {cardRef}
+                ref={cardRef}
                  >
-                <div ref={listRef}>
+                <div style={{height:height, }}>
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
