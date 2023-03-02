@@ -22,6 +22,12 @@ public class AppointmentService {
     private final ChatRoomRepo chatRoomRepo;
 
     @Transactional
+    public AppointmentDto.Response getAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepo.findById(appointmentId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 약속입니다"));
+        return new AppointmentDto.Response(appointment);
+    }
+
+    @Transactional
     public void makeAppointment(AppointmentDto.Request dto) {
         if (dto.getPlace() == null && dto.getDateTime() == null) {
             throw new CustomRuntimeException("장소나 시간이 정해지지 않았습니다");
@@ -36,10 +42,16 @@ public class AppointmentService {
         Appointment existingAppointment = appointmentRepo.findById(appointmentId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 약속입니다"));
 
         if (dto.getPlace() == null && dto.getDateTime() == null) {
-            throw new CustomRuntimeException("장소나 시간이 정해지지 않았습니다");
+            cancelAppointment(appointmentId);
+        } else {
+            existingAppointment.setDateTime(dto.getDateTime());
+            existingAppointment.setPlace(dto.getPlace());
+            appointmentRepo.save(existingAppointment);
         }
-        existingAppointment.setDateTime(dto.getDateTime());
-        existingAppointment.setPlace(dto.getPlace());
-        appointmentRepo.save(existingAppointment);
+    }
+
+    @Transactional
+    public void cancelAppointment(Long appointmentId) {
+        appointmentRepo.deleteById(appointmentId);
     }
 }

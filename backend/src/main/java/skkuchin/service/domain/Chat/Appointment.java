@@ -11,6 +11,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(
+        uniqueConstraints={
+                @UniqueConstraint(columnNames={"id", "chat_room_id"})
+        }
+)
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

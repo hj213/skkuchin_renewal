@@ -1,9 +1,11 @@
 package skkuchin.service.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 import skkuchin.service.domain.Chat.Appointment;
 import skkuchin.service.domain.Chat.ChatRoom;
 
@@ -14,6 +16,7 @@ public class AppointmentDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Request {
         @JsonProperty
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime dateTime;
         private String place;
         @JsonProperty
@@ -33,6 +36,7 @@ public class AppointmentDto {
     public static class Response {
         private Long id;
         @JsonProperty
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime dateTime;
         private String place;
 
