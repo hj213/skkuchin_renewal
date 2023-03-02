@@ -6,8 +6,8 @@ import { load_reviews, delete_review, modify_review } from "../actions/review/re
 import { load_place } from "../actions/place/place";
 
 import {BadgeProps} from '@mui/material/Badge'
-import {styled} from '@mui/material/styles';
-import { IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
+
+import { makeStyles, IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
@@ -114,7 +114,7 @@ const ReviewsPage = () => {
                 }}>
                     <Grid container style={{padding:'45px 15px 11px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={back} width={15} height={26} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
+                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
                         </Grid>
                 
                         <Grid>
@@ -142,7 +142,7 @@ const ReviewsPage = () => {
                     <Grid style={{width:'100%'}}>
                         <CardContent>
                             <>
-                            <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
+                            <Grid container style={{margin:'0px auto 0px', justifyContent:'center'}}>
                                 <Grid>
                                     <Typography sx={{fontSize: '24px', fontWeight: '700', color: '#FFCE00', lineHeight:'215%', paddingRight:'0px'}} component="div">
                                         {selectedPlace && selectedPlace.rate}점
@@ -157,13 +157,11 @@ const ReviewsPage = () => {
                             </Grid>
 
                             <Grid container style={{margin:'25px auto 10px', justifyContent:'space-between'}}>
-                                <Grid item  >
-                                    <Typography xs={2} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
+                                <Grid item style={{display:'flex'}}>
+                                    <Typography xs={3} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
                                         스꾸리뷰
                                     </Typography>
-                                </Grid>
-                                <Grid item >
-                                    <Typography xs={8}  sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingRight:'120px'}} color="#FFCE00" align="left">
+                                    <Typography sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingLeft:'10px'}} color="#FFCE00" align="left">
                                         {selectedPlace && selectedPlace.review_count}
                                     </Typography>
                                 </Grid>

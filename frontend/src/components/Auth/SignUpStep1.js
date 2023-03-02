@@ -31,7 +31,11 @@ const SignUpStep1 = (props) => {
     const checkUsername = () => {
         dispatch(check_username(props.data.username, ([result, message]) => {
             setValidUsername(result);
-            setUsernameMsg(message);
+            if (typeof(message) == 'string') {
+                setUsernameMsg(message);
+            }
+            console.log(message);
+            //setUsernameMsg(message);
         }))
     }
     
@@ -133,11 +137,16 @@ const SignUpStep1 = (props) => {
                     endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
                 }}
                 />
-                {(props.data.password != '') ? 
+                {/* {(props.data.password != '') ? 
                     validPW ? 
                     <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>안전한 비밀번호입니다.</Typography>
                     : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '39px'}}>안전하지 않은 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>영문, 숫자, 특수문자를 포함한 8~16자 조합으로 입력해주세요.</Typography> }
+                : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>영문, 숫자, 특수문자를 포함한 8~16자 조합으로 입력해주세요.</Typography> } */}
+                {(props.data.password != '') ? 
+                    validPW ? 
+                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>안전한 비밀번호입니다.</Typography>
+                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '39px'}}>영문, 숫자, 특수문자를 포함한 8~16자 조합으로 입력해주세요.</Typography>
+                : <div style={{height: '21px', marginBottom: '39px'}}></div> }
             </div>
             <div style={{margin: '0 36px'}}>
                 <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>비밀번호 확인*</Typography>

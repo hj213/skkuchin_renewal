@@ -84,13 +84,11 @@ export const add_new_matching_info = (username, gender, keywords, introduction, 
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : `Bearer ${access}`
+                //'Authorization' : `Bearer ${access}`
             },
             body: body
         });
-
         const apiRes = await res.json();
-
         if(res.status === 201){
             dispatch({
                 type: ADD_MATCHING_INFO_SUCCESS

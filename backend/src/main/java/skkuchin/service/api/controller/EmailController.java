@@ -47,7 +47,7 @@ public class EmailController {
     }
 
     @GetMapping("/confirm/signup")
-    public ResponseEntity<Boolean> signupConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
+    public ResponseEntity<String> signupConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
         return ResponseEntity.ok().body(emailService.confirmSignup(requestDto));
     }
 
@@ -64,7 +64,7 @@ public class EmailController {
     }
 
     @GetMapping("/confirm/password")
-    public ResponseEntity<Boolean> passwordConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
+    public ResponseEntity<String> passwordConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
         return ResponseEntity.ok().body(emailService.confirmPassword(requestDto));
     }
 

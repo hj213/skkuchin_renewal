@@ -120,7 +120,7 @@ export default function myPage() {
                     {/* 캠퍼스, 학과, 학번 */}
                     <div style={{display: 'flex'}}>
                         <Typography sx={{height: '16px', border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}} color={theme.palette.fontColor.main}>{user.campus}</Typography>
-                        <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번</Typography>
+                        <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
                     </div>
                 </div>
                 <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' /></div>
@@ -159,8 +159,10 @@ export default function myPage() {
             {/* 기타 */}
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
-                <Button onClick={handleDialogOpen} variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>로그아웃</Button>
-                <Button onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} variant="text" style={{fontSize: '16px', fontWeight: '500', color: '#000000', padding: '0', justifySelf: 'start'}}>문의하기</Button>
+                {/* <Button onClick={handleDialogOpen} variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>로그아웃</Button>
+                <Button onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} variant="text" style={{fontSize: '16px', fontWeight: '500', color: '#000000', padding: '0', justifySelf: 'start'}}>문의하기</Button> */}
+                <Typography onClick={handleDialogOpen} style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>로그아웃</Typography>
+                <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '16px', fontWeight: '500'}}>문의하기</Typography>
             </Container>
 
             {/* 하단 */}

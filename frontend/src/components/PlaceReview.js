@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 
 
 // ReviewItem 컴포넌트 추출
-const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
+const PlaceReview = ({ index, review, user, handleEdit, handleDelete }) => {
     const [anchorEl, setAnchorEl] = useState(null);
   
     const handleMoreClick = (event) => {
@@ -37,7 +37,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
       }));
 
     return (
-        <Grid container key={index} style={{margin:"-10px 0 40px 0"}}>
+        <Grid container key={index} style={{margin:"-10px 0 30px 0"}}>
             <Grid container style={{margin:'0px 0px 0px', justifyContent:'left'}}>
                 <Grid item xs={2} style={{marginTop:'3px'}}>
                     { review && review.user_id === user.id ?
@@ -128,7 +128,6 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                         {review.content}
                     </Typography>
                 </Card>
-
             </Grid>
 
             <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
@@ -140,31 +139,9 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                     </Grid>
                 ))}
             </Grid>
-
-            <Grid container style={{margin:'3px 0px 0px', justifyContent:'left'}}>
-                {review.images && review.images.length > 0 ? (
-                    <div style={{ display: 'flex', overflow: 'auto' }}>
-                        {review.images.map((image, index) => (
-                            <div key={index} style={{ marginRight: '10px'}}>
-                                <Image
-                                    width={150}
-                                    height={150}
-                                    src={image}
-                                    alt={`image-${index}`}
-                                    placeholder="blur" 
-                                    blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
-                                    layout='fixed'
-                                    objectFit='cover'
-                                    style={{borderRadius:'10px'}}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                ) : null}
-            </Grid>
       </Grid>
     );
   }
   
 
-export default ReviewItem;
+export default PlaceReview;

@@ -128,38 +128,6 @@ export default function list(){
             }
         }
     }, [keyword, router.query.keyword, dispatch, tags,user]);
-    
-    
-    // // 사용자 터치에 따라 카드 사이즈 변화
-    useEffect(() => {
-        if (cardRef.current) {
-            cardRef.current.addEventListener("touchmove", handleTouchMove);
-        }
-        return () => {
-            if (cardRef.current) {
-                cardRef.current.removeEventListener("touchmove", handleTouchMove);
-            }
-        };
-       
-      }, [cardRef]);
-    // 사용자 터치에 따라 카드 사이즈 변화
-    // useEffect(() => {
-    //     if (cardRef.current) {
-    //     cardRef.current.addEventListener("touchmove", handleTouchMove);
-    //     // 카드 내부의 리스트에 대한 스크롤 제어
-    //     const list = cardRef.current.querySelector("ul");
-    //     list.addEventListener("touchmove", handleListTouchMove, { passive: false });
-    //     }
-    //     return () => {
-    //     if (cardRef.current) {
-    //         cardRef.current.removeEventListener("touchmove", handleTouchMove);
-    //         // 카드 내부의 리스트에 대한 스크롤 제어 해제
-    //         const list = cardRef.current.querySelector("ul");
-    //         list.removeEventListener("touchmove", handleListTouchMove);
-    //     }
-    //     };
-    // }, [cardRef]);
-  
 
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
@@ -180,14 +148,28 @@ export default function list(){
         
     }
 
+    // 사용자 터치에 따라 카드 사이즈 변화
+    useEffect(() => {
+        if (cardRef.current) {
+          cardRef.current.addEventListener("touchstart", handleTouchStart);
+          cardRef.current.addEventListener("touchmove", handleTouchMove);
+          cardRef.current.addEventListener("touchend", handleTouchEnd);
+        }
+        return () => {
+          if (cardRef.current) {
+            cardRef.current.removeEventListener("touchstart", handleTouchStart);
+            cardRef.current.removeEventListener("touchmove", handleTouchMove);
+            cardRef.current.removeEventListener("touchend", handleTouchEnd);
+          }
+        };
+      }, [cardRef]);
+
     // 카드 터치 했을 때 변화
     let preNewHeight = 0;
     const handleTouchMove = (event) => {
-        event.preventDefault();
-        
-        const newHeight = window.innerHeight - event.touches[0].clientY;
-        if (newHeight >= preNewHeight ) {
-            
+        // event.preventDefault();
+        const newHeight = event.touches[0].clientY;
+        if (newHeight <= preNewHeight && cardRef.current.offsetHeight < TARGET_HEIGHT ) {
             setHeight(TARGET_HEIGHT);
             setOpen({
                 bool: true,
@@ -198,13 +180,12 @@ export default function list(){
                 iconVisibility:'hidden'
             });
             setPreventScroll('scroll');
-        } else if(newHeight < preNewHeight){
+        } else if(newHeight > preNewHeight){
             if(WINDOW_HEIGHT < 750){
                 setHeight(187)
             } else {
                 setHeight(345)
             }
-            // setHeight('35%');
             setOpen({
                 bool: false,
                 visibility: 'hidden'
@@ -214,8 +195,33 @@ export default function list(){
                 iconVisibility:'visible'
             });
             setPreventScroll('');
-        }
+        } 
         preNewHeight=newHeight;
+        // console.log(newHeight);
+      // ul 요소의 위치 조정
+    const touchY = event.touches[0].clientY;
+    const ul = event.target && event.target.querySelector("ul");
+    const ulHeight = ul && ul.offsetHeight;
+    const cardHeight = cardRef.current.offsetHeight;
+    const cardBottom = cardRef.current.getBoundingClientRect().bottom;
+    const isScrollable = ulHeight > cardHeight;
+    if (isScrollable) {
+        if (touchY > cardBottom - 40) {
+        ul.style.transform = `translateY(-${ulHeight - cardHeight}px)`;
+        } else {
+        ul.style.transform = "";
+        }
+    }
+    };
+
+    const handleTouchStart = () => {
+    const ul = cardRef.current.querySelector("ul");
+    ul.style.transition = "transform 0.3s ease-out";
+    };
+
+    const handleTouchEnd = () => {
+    const ul = cardRef.current.querySelector("ul");
+    ul.style.transition = "";
     };
 
     // // 아이콘 클릭했을 때 이벤트
@@ -407,25 +413,25 @@ export default function list(){
                     </Card>
                 </Container>
             </Slide>
-            <Container style={{padding: '13px 16px 0px 0px',}} ref = {cardRef} >
+            <Container style={{padding: '13px 16px 0px 0px',}}  >
                 <Card style={{
                 borderRadius: cardStyle.radius,
                 position: 'absolute',
                 bottom: '0px',
                 width: '100%',
                 height: height,
-                overflowY: preventScroll,
-                
+                // overflowY: preventScroll,
                 zIndex: '3',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
                 transition: `height ${animationDuration} ${animationTimingFunction}`,
                 border: '1px solid transparent',
-                marginBottom:'85px'
-                }} 
+                marginBottom:'85px',
                 
+                }} 
+                ref={cardRef}
                  >
-                <div ref={listRef}>
+                <div style={{height:height, }}>
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
