@@ -1,8 +1,8 @@
 import { useEffect,useState } from "react";
 import { useDispatch } from "react-redux";
-import { add_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
+import { add_matching_info, load_matching_info, add_new_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
-import { load_user } from "../actions/auth/auth";
+import { load_user, login } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
@@ -14,6 +14,7 @@ import manCheck from '../image/gender/maleY.png';
 import textForm from '../image/mbti/profile/intro.png';
 import submitOk from '../image/checkY.png';
 import submit from '../image/checkG.png';
+import AlertMessage from '../components/Alert';
 
 //mbti
 import E from '../image/mbti/E-1.png';
@@ -156,6 +157,8 @@ export default function makeProfile(){
     const dispatch = useDispatch();
     const router = useRouter();
     const src = router.query.src;
+    const height = window.innerHeight;
+    const username = router.query.username;
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -245,6 +248,8 @@ export default function makeProfile(){
     const [image, setImage] = useState('');
     const [mbti, setMbti] = useState('');
     const [condition, setCondition] = useState(false); //확인버튼 조건 
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const [visibility, setVisibility] = useState(
        {
@@ -269,12 +274,14 @@ export default function makeProfile(){
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
+        
         if(event.target.name == 'back' ){
             
             router.back();
             
         } else if(event.target.name == '건너뛰기'){
             //웰컴페이지로 이동
+            router.push('/welcome');
         }
     };
 
@@ -545,18 +552,40 @@ export default function makeProfile(){
         
         event.preventDefault();
 
+        if (src == '매칭프로필설정') {
         dispatch(add_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
                     // alert(message);
                     router.push({
                         pathname: '/completeProfile',
-                        query: { viewportHeight: window.innerHeight,
-                        src : src, }
+                        query: { src : src, }
                       })
                 } else {
-                    alert(message);
+                    // alert(message);
+                    setAlertOpen(true);
+                    setAlertMessage(message);
                 }
             }));
+        setAlertOpen(false);
+        setAlertMessage('');
+        }
+        else if (src == '회원가입') {
+            dispatch(add_new_matching_info(username, gender, keyword, introduction, mbti, ([result, message]) => {
+                if (result) {
+                    // alert(message);
+                    router.push({
+                        pathname: '/completeProfile',
+                        query: { src : src, }
+                    })
+                } else {
+                    //alert(message);
+                    setAlertOpen(true);
+                    setAlertMessage(message);
+                }
+            }));
+        setAlertOpen(false);
+        setAlertMessage('');
+        }
     } 
 
     //데이터 전달하기 위해
@@ -601,6 +630,9 @@ export default function makeProfile(){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+                <div style={{height:'100%', zIndex:'6', position:'absolute', left:'50%', marginTop:"830px"}}>
+                <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
+                </div>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
@@ -610,8 +642,8 @@ export default function makeProfile(){
                             <Grid item style={{marginLeft:'27%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
                             </Grid>
-                            <Grid item style={{marginLeft:'18%', }}>
-                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={handleIconOnclick}>건너뛰기</Typography>
+                            <Grid item style={{marginLeft:'14%', }} onClick={() => router.push('/welcome')}>
+                                <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={() => router.push('/welcome')}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
                     </Container>
@@ -670,7 +702,7 @@ export default function makeProfile(){
                     </div>
                     <Container name='관심사' style={{padding:'0px', margin:'41.7px 0px 0px 25px', justifyContent:'center'}}>
                         <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>관심사*</Typography>
-                        <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>최소 3개 이상의 태그를 선택해주세요.</Typography>
+                        <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>3개 이상 8개 이하의 태그를 선택해주세요.</Typography>
                         <Container name='음식' style={{padding:'0px'}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🍎 음식</Typography>
                             <div style={{marginBottom:'9px'}}>
@@ -940,7 +972,7 @@ export default function makeProfile(){
                     <div name='한줄소개' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px', justifyContent:'center'}}>
-                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>한 줄 자기소개*</Typography>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>한 줄 자기소개(30자 이내)*</Typography>
                             <div style={{margin:'10px 0px 0px 15px', zIndex:'2', textAlign:'center', position:'absolute'}}>
                                 <textarea
                                 value={introduction}

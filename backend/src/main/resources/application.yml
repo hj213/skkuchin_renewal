@@ -1,11 +1,12 @@
 spring:
- # datasource:
- #   driver-class-name: com.mysql.cj.jdbc.Driver
- #   url: jdbc:mysql://localhost:3306/skkuchin2?characterEncoding=UTF-8&serverTimezone=UTC
- #   username: root
- #   password: 1234
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
 
   kafka:
+    bootstrap-servers: localhost:9092
     consumer:
       bootstrap-servers: localhost:9092
       group-id: my-group
@@ -14,16 +15,9 @@ spring:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC
-#    username: root
-#    password: Master00!@
 
   jpa:
     hibernate:
-      #ddl-auto: update
-      #ddl-auto: validate
       ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
@@ -37,8 +31,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
-
+  servlet:
+    multipart:
+      maxFileSize: 500MB
+      maxRequestSize: 500MB
   config:
     import:
       - aws.yml

@@ -45,6 +45,28 @@ public class MatchingUserService {
     }
 
     @Transactional
+    public void addNewInfo(String username, MatchingUserDto.Request dto) {
+        AppUser existingUser = userRepo.findByUsername(username);
+        if (existingUser == null) {
+            throw new CustomValidationApiException("존재하지 않는 유저입니다");
+        }
+        existingUser.setGender(dto.getGender());
+        existingUser.setIntroduction(dto.getIntroduction());
+        existingUser.setMbti(dto.getMbti());
+        existingUser.setMatching(true);
+        userRepo.save(existingUser);
+
+        List<UserKeyword> userKeywords = dto.getKeywords()
+                .stream()
+                .map(k -> {
+                    Keyword keyword = keywordRepo.findByName(k);
+                    return dto.toUserKeywordEntity(existingUser, keyword);
+                })
+                .collect(Collectors.toList());
+        userKeywordRepo.saveAll(userKeywords);
+    }
+
+    @Transactional
     public MatchingUserDto.Response getMyInfo(AppUser user) {
         if (user.getMatching() == null) {
             throw new CustomValidationApiException("AI 매칭 기능을 이용하시려면\n" +

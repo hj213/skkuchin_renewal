@@ -23,7 +23,7 @@ import UpperBar from "../components/UpperBar";
 import { clear_search_results } from "../actions/place/place";
 import { load_reviews, delete_review, modify_review } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
-import ReviewItem from "../components/ReviewItem";
+import PlaceReview from "../components/PlaceReview";
 import morePic from '../image/morePicY.png';
 import { textAlign } from "@mui/system";
 
@@ -90,9 +90,9 @@ const PlacePage = () => {
 
     useEffect(()=>{
         if(WINDOW_HEIGHT < 750){
-            setHeight('175px')
+            setHeight(183)
         } else {
-            setHeight('320px')
+            setHeight(345)
         }
     },[])
 
@@ -135,9 +135,9 @@ const PlacePage = () => {
             setScroll('scroll');
         } else {
             if(WINDOW_HEIGHT < 750){
-                setHeight('175px')
+                setHeight(183)
             } else {
-                setHeight('320px')
+                setHeight(345)
             }
             setOpen({
                 bool: false,
@@ -158,9 +158,9 @@ const PlacePage = () => {
             setOpen({ bool:false,
                 Visibility:'hidden'});
             if(WINDOW_HEIGHT < 750){
-                setHeight('175px')
+                setHeight(187)
             } else {
-                setHeight('320px')
+                setHeight(345)
             }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
@@ -514,17 +514,21 @@ const PlacePage = () => {
                         }
                         </div>
                         {/* 이미지 */}
-                        <Grid container style={{margin:'15px 0px 0px',  justifyContent: 'center'}}>
+                        <Grid container style={{margin:'15px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
                         {allImages && allImages.length > 5 ? (
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
-                                <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '5px', position: 'relative',}}>
+                                <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '0px', position: 'relative',}}>
                                     <Image
-                                    width={150}
-                                    height={150}
+                                    width={120}
+                                    height={120}
                                     src={image}
                                     alt={`image-${index}`}
+                                    blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                    layout='fixed'
+                                    objectFit='cover'
+                                    style={{borderRadius:'5px'}}
                                     />
                                     {index === 5 && (
                                     <div 
@@ -544,6 +548,7 @@ const PlacePage = () => {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
+                                        borderRadius:'5px'
                                     }}>
                                         <Image src={morePic} width={23} height={23}></Image>
                                         <Typography sx={{color: '#FFCE00', fontSize: '9px', fontWeight: '500'}}>사진 더보기</Typography>
@@ -555,48 +560,45 @@ const PlacePage = () => {
                             </div>
                         ) : null}
                         </Grid>
-                
-                        {/* 컴포넌트화 필요 */}
 
                         {/* Content */}
-                        { selectedPlace && 
+                        { selectedPlace && selectedPlace.review_count > 0 && 
                         <Container component="main" style={{listStyleType: "none", mt: '0', pt: '0'}}>
                             <Grid container sx={{pt: '18px'}} style={{justifyContent:'center'}} >
                                 <Grid style={{width:'100%'}}>
                                     <CardContent>
                                         <>
-                                        <Grid container style={{ justifyContent:'space-between'}}>
-                                            <Grid item  >
-                                                <Typography xs={2} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
+                                        <Grid container style={{margin:'-10px auto 10px', justifyContent:'space-between'}}>
+                                            <Grid item style={{display:'flex'}}>
+                                                <Typography xs={3} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
                                                     스꾸리뷰
                                                 </Typography>
-                                            </Grid>
-                                            <Grid item >
-                                                <Typography xs={8}  sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingRight:'120px'}} color="#FFCE00" align="left">
+                                                <Typography sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingLeft:'10px'}} color="#FFCE00" align="left">
                                                     {selectedPlace && selectedPlace.review_count}
                                                 </Typography>
                                             </Grid>
                                             <Grid item > 
                                                 <Select
                                                     xs={2}
-                                                    sx={{ fontSize: '14px', lineHeight: '200%', width: 'wrapContent', border: 'none',
+                                                    sx={{ fontSize: '14px', lineHeight: '150%', width: 'wrapContent', border: 'none', padding:'0',
                                                     '& .MuiOutlinedInput-notchedOutline': {
-                                                      border: 'none'
-                                                    }, height: '30px', marginTop: '-30px', marginRight: '-15px',border: 'none', p: '5px', textAlign: 'right', color: '#A1A1A1'}}
+                                                    border: 'none'
+                                                    }, height: '30px', marginTop: '-10px', marginRight: '-15px',border: 'none', textAlign: 'right', color: '#A1A1A1'}}
                                                     value={filter}
                                                     onChange={handleFilterChange}
+                                                    style={{top:-2}}
                                                 >
-                                                    <MenuItem value='Latest'>최신순</MenuItem>
-                                                    <MenuItem value='Oldest'>오래된순</MenuItem>
-                                                    <MenuItem value='Rating'>평점높은순</MenuItem>
-                                                    <MenuItem value='Lowest'>평점낮은순</MenuItem>
-                                                </Select>
+                                                    <MenuItem value='Latest' style={{fontSize:'14px'}}>최신순</MenuItem>
+                                                    <MenuItem value='Oldest' style={{fontSize:'14px'}}>오래된순</MenuItem>
+                                                    <MenuItem value='Rating' style={{fontSize:'14px'}}>평점높은순</MenuItem>
+                                                    <MenuItem value='Lowest' style={{fontSize:'14px'}}>평점낮은순</MenuItem>
+                                                </Select>                        
                                             </Grid>
                                         </Grid>
                                         </>
-                                        <Grid container style={{margin:'10px auto 0px', justifyContent:'left', verticalAlign: 'center'}}>
+                                        <Grid container style={{margin:'-10px auto 0px', justifyContent:'left', verticalAlign: 'center'}}>
                                             <Grid>
-                                                <Typography sx={{fontSize: '19px', fontWeight: '700', color: '#FFCE00', lineHeight:'215%', paddingRight:'0px'}} component="div">
+                                                <Typography sx={{fontSize: '19px', fontWeight: '700', color: '#FFCE00', marginTop:'8px', paddingRight:'0px'}} component="div">
                                                     {selectedPlace && selectedPlace.rate}점
                                                 </Typography>
                                             </Grid>
@@ -607,27 +609,29 @@ const PlacePage = () => {
 
                                             </Grid>
                                         </Grid>
-                                        <ul style={{listStyle:"none",paddingLeft:"0px"}}>
-                                                    <>
-                                                        {reviews && sortedReviews.slice(0, 4).map((review, index)=>(
-                                                            <ReviewItem key={index} review={review} user={user} />
-                                                        ))}
-                                                    </>
+                                        <ul style={{listStyle:"none",paddingLeft:"0px", marginTop:'0px'}}>
+                                            <>
+                                                {reviews && sortedReviews.slice(0, 4).map((review, index)=>(
+                                                    <PlaceReview key={index} review={review} user={user} />
+                                                ))}
+                                            </>
                                         </ul>
                                     </CardContent>
                                 </Grid>
                             </Grid>
+                            { selectedPlace && 
+                                <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                        <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
+                                            <Typography sx={{fontWeight:'700',marginTop:'-20px',textAlign:'right', p: '0 20px 40px', color: '#505050', fontSize: '16px'}}>
+                                                후기 더보기 &gt;
+                                            </Typography>
+                                        </Link>
+                                </li>
+                                }
                         </Container>
+                        
                         }
-                        { selectedPlace && 
-                        <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
-                                <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
-                                    <Typography sx={{textAlign:'right', p: '0 15px 40px', color: '#505050', fontSize: '16px'}}>
-                                        후기 더보기 &gt;
-                                    </Typography>
-                                </Link>
-                        </li>
-                        }
+
                     </Card>
                 </Container>
                 </div>

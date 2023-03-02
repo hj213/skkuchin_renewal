@@ -51,12 +51,14 @@ export default function MapDrawer(openID){
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleInfo, setToggleInfo] = useState(user&&user.toggle);
+    const [toggleInfo, setToggleInfo] = useState(user ? user.toggle : '');
     
     //뒤로가기 시 드로워 열리도록
-    if(openID.open){
-      open = true;
-    }
+    useEffect(()=>{
+      if(openID.open){
+        setDrawerOpen(true)
+      }
+    }, []);
 
     useEffect(()=>{
       if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -178,7 +180,7 @@ export default function MapDrawer(openID){
       ISFJ:ISFJ,
       ESFP:ESFP,
     }
-
+    
     return(
         <ThemeProvider theme={theme}>
             <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} placeholder="blur" layout='fixed' />

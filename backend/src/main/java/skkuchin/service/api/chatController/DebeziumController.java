@@ -18,14 +18,12 @@ import skkuchin.service.service.ChatService;
 @RestController
 @RequiredArgsConstructor
 public class DebeziumController {
-
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final RabbitTemplate template;
     private final ChatService chatService;
 
-
     //Topics 안에 들어갈 변수 =  topic_prefix + schema_name + table_name
-    @KafkaListener(topics = "kk.skkuchin2.chat_message")
+    @KafkaListener(topics = "dbserver.service.chat_message")
     public void listenChatMessage(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
         ObjectMapper mapper = new ObjectMapper();
@@ -52,7 +50,6 @@ public class DebeziumController {
             chatMessage.setUserCount(userCnt1);
             template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, chatMessage);
            /* template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+"8ea645b1-d6c8-4cf9-9cdd-0eb401537e4b",chatMessage);*/
-
         }
 
     //테스트 다시 해봐야
@@ -69,12 +66,9 @@ public class DebeziumController {
 
 
         }*/
-
-
     }
 
-
-    @KafkaListener(topics = "kk.skkuchin2.chat_room")
+    @KafkaListener(topics = "dbserver.service.chat_room")
     public void blockUser(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
         ObjectMapper mapper = new ObjectMapper();
@@ -104,12 +98,11 @@ public class DebeziumController {
             if(!beforeBlock.equals(afterBlock) && blocked.equals("false") || !beforeBlock1.equals(afterBlock1) && blocked1.equals("false")){
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId, json2);
             }
-
-
-
-
         }
+    }
 
-
+    @KafkaListener(topics = "dbserver.service.user")
+    public void test1(@Payload(required = false) String message) throws Exception {
+        System.out.println("kafka consume test topic : "  + message);
     }
 }

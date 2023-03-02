@@ -1,11 +1,9 @@
-import {profile, Avatar, CssBaseline, Box, ThemeProvider, Rating, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import { Avatar, CssBaseline, Box, ThemeProvider, Rating, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import React from 'react';
 
 import UpperBar from '../components/UpperBar';
-
-import example from '../image/magazine/example.jpg'
 
 import markerY from '../image/marker.png'
 import booked from '../image/bookmark-1.png'
@@ -32,7 +30,7 @@ const Magazine = () => {
                     <Grid container>
                         <Grid xs={10}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={markerY} width={16} height={20}/>
+                                <Image layout='fixed' src={markerY} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
                                     명륜 맛집
                                 </Typography>
@@ -40,9 +38,9 @@ const Magazine = () => {
                         </Grid>
                         <Grid xs={2}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={booked} width={16} height={20}/>
+                                <Image layout='fixed' src={booked} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="right">
-                                    20
+                                    49
                                 </Typography>
                             </div>
                         </Grid>
@@ -53,9 +51,9 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
-                        김명륜/경영17
+                        김명륜 / 경영18
                     </Typography>
                 </div>
 
@@ -72,7 +70,7 @@ const Magazine = () => {
                     <Grid container>
                         <Grid xs={10}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={markerY} width={16} height={20}/>
+                                <Image layout='fixed' src={markerY} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
                                     율전 맛집
                                 </Typography>
@@ -80,9 +78,9 @@ const Magazine = () => {
                         </Grid>
                         <Grid xs={2}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={booked} width={16} height={20}/>
+                                <Image layout='fixed' src={booked} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="right">
-                                    20
+                                    35
                                 </Typography>
                             </div>
                         </Grid>
@@ -93,9 +91,9 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
-                        이율전/소프트17
+                        이율전 / 소프트17
                     </Typography>
                 </div>
 
@@ -112,7 +110,7 @@ const Magazine = () => {
                     <Grid container>
                         <Grid xs={10}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={markerY} width={16} height={20}/>
+                                <Image layout='fixed' src={markerY} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
                                     명륜 맛집
                                 </Typography>
@@ -120,7 +118,7 @@ const Magazine = () => {
                         </Grid>
                         <Grid xs={2}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={booked} width={16} height={20}/>
+                                <Image layout='fixed' src={booked} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="right">
                                     20
                                 </Typography>
@@ -133,9 +131,9 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
-                        김명륜/경영17
+                        박명륜 / 컬텍20
                     </Typography>
                 </div>
 
@@ -146,13 +144,13 @@ const Magazine = () => {
                     width:'90%', 
                     height:'190px', 
                     borderRadius:'20px',
-                    marginBottom:'10px',
+                    marginBottom:'20px',
                     boxShadow: "2px 2px 5px gray"
                     }}>
                     <Grid container>
                         <Grid xs={10}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={markerY} width={16} height={20}/>
+                                <Image layout='fixed' src={markerY} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
                                     율전 맛집
                                 </Typography>
@@ -160,9 +158,9 @@ const Magazine = () => {
                         </Grid>
                         <Grid xs={2}>
                             <div style={{display:'flex',margin:"11px 0 0 11px"}}>
-                                <Image src={booked} width={16} height={20}/>
+                                <Image layout='fixed' src={booked} width={16} height={20}/>
                                 <Typography sx={{color:"white",paddingLeft:'6px', marginTop:'5px',fontSize: '12px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="right">
-                                    20
+                                    28
                                 </Typography>
                             </div>
                         </Grid>
@@ -173,9 +171,9 @@ const Magazine = () => {
                     <Typography style={{color:'white', fontSize:'25px', fontWeight:'700', marginBottom:'25px'}}>
                         "COMING SOON"
                     </Typography>
-                    <Avatar alt="" src={profile} style={{ width: '30px', height: '30px' }}/>
+                    <Avatar alt="" style={{ width: '30px', height: '30px' }}/>
                     <Typography style={{color:'white', fontSize:'10px', fontWeight:'700',marginTop:'5px'}}>
-                        이율전/소프트17
+                        최율전 / 건축17
                     </Typography>
                 </div>
             </Grid>

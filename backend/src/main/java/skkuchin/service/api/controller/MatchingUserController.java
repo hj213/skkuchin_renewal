@@ -42,6 +42,26 @@ public class MatchingUserController {
             }
             AppUser user = principalDetails.getUser();
             matchingUserService.addInfo(user.getId(), dto);
+            return new ResponseEntity<>(new CMRespDto<>(1, "매칭 정보 입력이 완료되었습니다", null), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomValidationApiException("적합하지 않은 정보가 포함되었습니다");
+        }
+    }
+
+    @PostMapping("/user/new/{username}")
+    public ResponseEntity<?> addNewInfo(@PathVariable String username, @Valid @RequestBody MatchingUserDto.Request dto, BindingResult bindingResult) {
+        Map<String, String> errorMap = new HashMap<>();
+        try {
+            if (bindingResult.hasErrors()) {
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+                }
+                if (errorMap.containsKey("keywords")) {
+                    throw new CustomValidationApiException("키워드는 3개부터 8개까지 입력 가능합니다", errorMap);
+                }
+                throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+            }
+            matchingUserService.addNewInfo(username, dto);
             return new ResponseEntity<>(new CMRespDto<>(1, "추가 정보 입력이 완료되었습니다", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             throw new CustomValidationApiException("적합하지 않은 정보가 포함되었습니다");

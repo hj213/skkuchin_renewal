@@ -326,7 +326,7 @@ const chatPage = () => {
                             <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
                                 <Card elevation="none" style={{
                                 borderRadius: '0px 15px 15px 15px',
-                                backgroundColor:'white',
+                                backgroundColor: 'white',
                                 border:'1px solid #FFCE00',
                                 maxWidth:'75%'
                                 }}>
@@ -350,27 +350,29 @@ const chatPage = () => {
 
 
                 {/* 내 카톡 틀 1 (내 첫 메시지) */}
-                <Grid container style={{width:"100%",margin:'22px 0px 0px 0px', paddingRight:'15px', justifyContent:'Right'}}>
+                <Grid container style={{width:"100%", margin:'22px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
                     <Grid item style={{paddingRight:"7px"}}>
                         <Stack direction="column" spacing={1}>
                             <Grid style={{display:'flex'}}>
-                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'right', display: 'flex', alignItems: 'flex-end'}}>
-                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                오후 10:30
-                                </Typography>
-                                <Card elevation="none"  style={{
-                                borderRadius: '15px 0px 15px 15px',
-                                backgroundColor:'#FFE885',
-                                }}>
+                                <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
+                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                        오후 10:30
+                                    </Typography>
+                                    <Card elevation="none"  sx={{
+                                        borderRadius: '15px 0px 15px 15px',
+                                        backgroundColor:'#FFE885',
+                                        maxWidth:'80%'
+                                    }}>
                                     <Typography
                                         style={{
-                                        padding:'10px 10px 6px 10px',
-                                        fontSize: '14px'
+                                            padding:'10px 10px 6px 10px',
+                                            fontSize: '14px',
+                                            maxWidth:'100%',
                                         }}>
-                                        나 1, 첫 chat
+                                        나 1. 이 메시지는 영국에서부터 시작되어 상단 마진이 22px로 설정되어 있습니다. 상대방의 메시지 이후 내가 보내는 첫 메시지입니다.
                                     </Typography>
                                 </Card>
-                            </Grid>
+                                </Grid>
                             </Grid>
                         </Stack>
                     </Grid>
@@ -378,31 +380,31 @@ const chatPage = () => {
 
                 {/* 내 카톡 틀 2 (내 연속 메시지) */}
                 <Grid container style={{width:"100%", margin:'10px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
-                <Grid item style={{paddingRight:"7px"}}>
-                    <Stack direction="column" spacing={1}>
-                    <Grid style={{display:'flex'}}>
-                        <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
-                        <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                            오후 10:30
-                        </Typography>
-                        <Card elevation="none"  sx={{
-                            borderRadius: '15px 0px 15px 15px',
-                            backgroundColor:'#FFE885',
-                            maxWidth:['100%', '75%']
-                        }}>
-                            <Typography
-                            style={{
-                                padding:'10px 10px 6px 10px',
-                                fontSize: '14px',
-                                maxWidth:'100%'
-                            }}>
-                            나 2, 연속된 chat
-                            </Typography>
-                        </Card>
-                        </Grid>
+                    <Grid item style={{paddingRight:"7px"}}>
+                        <Stack direction="column" spacing={1}>
+                            <Grid style={{display:'flex'}}>
+                                <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
+                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                        오후 10:30
+                                    </Typography>
+                                    <Card elevation="none"  sx={{
+                                        borderRadius: '15px 0px 15px 15px',
+                                        backgroundColor:'#FFE885',
+                                        maxWidth:'80%'
+                                    }}>
+                                    <Typography
+                                        style={{
+                                            padding:'10px 10px 6px 10px',
+                                            fontSize: '14px',
+                                            maxWidth:'100%',
+                                        }}>
+                                        나 2, 상단 마진이 10px로 설정되어 있습니다. 내가 보낸 메시지 이후 연속적으로 보내는 메시지입니다.
+                                    </Typography>
+                                </Card>
+                                </Grid>
+                            </Grid>
+                        </Stack>
                     </Grid>
-                    </Stack>
-                </Grid>
                 </Grid>
 
                 {/* 약속 확인 메시지 */}
@@ -451,7 +453,7 @@ const chatPage = () => {
                 </Grid>
 
                 {/* 텍스트 인풋 필드 & 버튼 */}
-                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px',backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
+                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px 10px 20px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
                     <textarea 
                         name='chat' 
                         placeholder='메세지를 입력하세요.'

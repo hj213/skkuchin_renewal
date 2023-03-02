@@ -13,7 +13,7 @@ export default function AlertMessage({ alertOpen, alertMessage }){
         if(alertOpen){
         const timer = setTimeout(() => {
           setOpen(false);
-        }, 2000);
+        }, 3000);
     
         return () => clearTimeout(timer);
         }
@@ -29,18 +29,19 @@ export default function AlertMessage({ alertOpen, alertMessage }){
                   position: 'absolute',
                   left: '50%',
                   top: '200px',
-                  transform: 'translate(-50%)',
+                  transform: 'translate(-50%, -50%)',
                   zIndex: '6',
+                  textAlign:'center'
                 }}
               >
-                <Alert style={{width: `${alertMessage.length * 12}px`, color:'black', backgroundColor:'white', borderRadius:'10px', boxShadow: '0px 3px 5px rgba(0,0,0,0.3)' }} icon={false}>
+                <Alert style={{width: `${alertMessage.length * 11}px`, color:'black', backgroundColor:'white', borderRadius:'10px', boxShadow: '0px 3px 5px rgba(0,0,0,0.3)' }} icon={false}>
                     <div style={{
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         height: "100%"
                     }}>
-                        <div style={{textAlign: 'center'}}>{alertMessage}</div>
+                        <div style={{textAlign: 'center', padding:'5px'}}>{alertMessage}</div>
                     </div> 
                 </Alert>
               </div>

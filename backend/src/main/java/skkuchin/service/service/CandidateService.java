@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.CandidateDto;
 import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.repo.CandidateRepo;
 import skkuchin.service.repo.UserKeywordRepo;
 import skkuchin.service.repo.UserRepo;
@@ -39,6 +40,10 @@ public class CandidateService {
 
     @Transactional
     public List<CandidateDto.Response> getCandidate(AppUser user) {
+        if (!user.getMatching()) {
+            throw new CustomRuntimeException("매칭 활성화가 꺼져있습니다");
+        }
+
         List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
         Candidate recentCandidate = null;
         Long differenceTime;
