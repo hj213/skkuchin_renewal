@@ -25,6 +25,7 @@ const LoginPage = () => {
     const [error, setError] = useState('');
     //const remainHeight = window.innerHeight - 480 + "px";
     const [remainHeight, setRemainHeight] = useState(window.innerHeight - 480 + "px");
+    const [isClicked, setIsClicked] = useState(false);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -79,7 +80,9 @@ const LoginPage = () => {
     }, [])
 
     useEffect(() => {
+        if (!isClicked) {
         setRemainHeight(window.innerHeight - 480 + "px");
+        }
     }, [window.innerHeight])
 
     return(
@@ -101,6 +104,7 @@ const LoginPage = () => {
                         <form onSubmit={onSubmit} style={{ width: '100%' }}>
                             <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.22)` }}>
                                 <input 
+                                    onClick={() => setIsClicked(true)}
                                     type = 'text' name='username' 
                                     placeholder ='아이디' onChange={onChange} value={username}
                                     required
@@ -112,7 +116,7 @@ const LoginPage = () => {
                                 <input 
                                     type = 'password' name='password' 
                                     placeholder ='비밀번호' onChange={onChange} value={password}
-                                    onClick={() => setError('')}
+                                    onClick={() => {setError(''); setIsClicked(true)}}
                                     required
                                     autoComplete='off'
                                     style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px', outline: 'none'}}

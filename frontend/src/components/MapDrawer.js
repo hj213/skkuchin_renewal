@@ -7,8 +7,10 @@ import hamburger from '../image/hamburgerBar.png';
 import bookmark from '../image/bookmark-1.png';
 import star from '../image/Star2.png';
 import profile from '../image/profile.png';
-import yj from '../image/YJ_on.png';
-import mr from '../image/MR_off.png';
+import yyj from '../image/YJ_on.png'; //캠퍼스 율전
+import ymr from '../image/MR_off.png'; //캠퍼스 율전
+import myj from '../image/YJ_off.png'; //캠퍼스 명륜
+import mmr from '../image/MR_on.png'; //캠퍼스 명륜
 import { change_toggle, load_user } from '../actions/auth/auth';
 import { load_favorite } from '../actions/favorite/favorite';
 import theme from '../theme/theme';
@@ -51,8 +53,28 @@ export default function MapDrawer(openID){
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleInfo, setToggleInfo] = useState(user ? user.toggle : '');
+    const [toggleInfo, setToggleInfo] = useState(user?.toggle);
+    const [toggleImage, setToggleImage] = useState('');
     
+    useEffect(()=>{
+      if(user){
+        if (user.campus == '명륜'){
+          if(user.toggle == '율전'){
+            setToggleImage(myj)
+          } else if(user.toggle == '명륜'){
+            setToggleImage(mmr)
+          }
+        } else if(user.campus == '율전'){
+          if(user.toggle == '율전'){
+            setToggleImage(yyj)
+          } else if(user.toggle == '명륜'){
+            setToggleImage(ymr)
+          }
+        }
+      }
+      
+    },[])
+
     //뒤로가기 시 드로워 열리도록
     useEffect(()=>{
       if(openID.open){
@@ -70,7 +92,7 @@ export default function MapDrawer(openID){
     useEffect(()=>{
         dispatch(change_toggle(toggleInfo));
         dispatch(load_user());
-    }, [dispatch, toggleInfo]);
+    }, [dispatch, toggleInfo, user?.campus]);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
@@ -93,33 +115,25 @@ export default function MapDrawer(openID){
         if (user.toggle === '명륜') {
           await dispatch(change_toggle('율전'));
           setToggleInfo('율전');
+          if(user.campus === '명륜'){
+            setToggleImage(myj)
+          } else if(user.campus === '율전'){
+            setToggleImage(yyj)
+          }
+
         } else if (user.toggle === '율전') {
           await dispatch(change_toggle('명륜'));
           setToggleInfo('명륜');
+          if(user.campus === '명륜'){
+            setToggleImage(mmr)
+          } else if(user.campus === '율전'){
+            setToggleImage(ymr)
+          }
         }
         await dispatch(load_user());
       } catch (error) {
       }
     };
-
-    // const handleToggle = (e) =>{
-    //   dispatch(load_user());
-    //   //  if( user && user.toggle == '명륜'){
-    //   //     const prevUser = '명륜'
-    //   //     setToggle((prevUser) => {
-    //   //       const newUser = '율전';
-    //   //       return newUser;
-    //   //     });
-
-    //   //   } else if(user && user.toggle == '율전'){
-    //   //     const prevUser = '율전'
-    //   //     setToggle((prevUser) => {
-    //   //       const newUser = '명륜';
-    //   //       return newUser;
-    //   //     });
-
-    //   //   }
-    // } 
     
     const list = (anchor) => (
         <Box
@@ -187,7 +201,7 @@ export default function MapDrawer(openID){
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
-                  {user && <Image src={ toggleInfo == '율전' ? yj: mr} width={60} height={60} placeholder="blur" layout='fixed' />}
+                  {user && <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />}
                 </Grid>
               </Grid>
              
