@@ -64,7 +64,7 @@ const RegisterPage = () => {
                 step === 5 && <SignUpStep5 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
             }
             {
-                step === 6 && <SignUpStep6 handlePrevStep={handlePrevStep} />
+                step === 6 && <SignUpStep6 handlePrevStep={handlePrevStep} username={data.username} />
             }
             {/* </Container> */}
         </ThemeProvider>

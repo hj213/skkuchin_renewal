@@ -30,13 +30,10 @@ const App = ({ Component, pageProps }) => {
   const router = useRouter()
   useEffect(() => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined && isOnline) {
-      // skip index route, because it's already cached under `start-url` caching object
-      if (router.route !== '/') {
-        const wb = window.workbox
-        wb.active.then(worker => {
-          wb.messageSW({ action: 'CACHE_NEW_ROUTE' })
-        })
-      }
+      const wb = window.workbox
+      wb.active.then(worker => {
+        wb.messageSW({ action: 'CACHE_NEW_ROUTE' })
+      })
     }
   }, [isOnline, router.route])
 

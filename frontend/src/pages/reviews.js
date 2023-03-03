@@ -5,9 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { load_reviews, delete_review, modify_review } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 
-import {BadgeProps} from '@mui/material/Badge'
-import {styled} from '@mui/material/styles';
-import { IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
+import { makeStyles, IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
@@ -33,18 +31,18 @@ const ReviewsPage = () => {
     const { id } = router.query;
 
     // place, 가게 정보 (place API)
-    
-    const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
+    const [place_id, setPlaceId] = useState(id || '');
     const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
-
+    const [reviewCount, setReviewCount] = useState(selectedPlace?.review_count || "");
+  
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
-            setPlaceId(id);
+        if(dispatch && place_id !== '' && id !== '' ) {
+            setPlaceId(place_id);
             dispatch(load_reviews(place_id));
             dispatch(load_place(place_id));
-        }
-    }, [id]);
+        }            
+    }, [ place_id, id, reviewCount]);
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
@@ -90,7 +88,8 @@ const ReviewsPage = () => {
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
                 alert("Delete 요청 result: " + result);     
-                dispatch(load_reviews(place_id));        
+                dispatch(load_reviews(place_id));   
+                setReviewCount(reviewCount-1);     
             } else {
                 alert("실패!: " +message);
             }
@@ -114,20 +113,21 @@ const ReviewsPage = () => {
                 }}>
                     <Grid container style={{padding:'45px 15px 11px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={back} width={15} height={26} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
+                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
                         </Grid>
                 
                         <Grid>
-                            {places ? places.filter(item => item.id == place_id).map((item,index) => (
-                                <Grid key={index} style={{flexDirection: 'row'}}>
+                            {/* {places ? places.filter(item => item.id == place_id).map((item,index) => ( */}
+                            { selectedPlace &&
+                                <Grid style={{flexDirection: 'row'}}>
                                     <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
-                                        {item.name}
+                                        {selectedPlace.name}
                                     </Typography>
                                     <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                        {item.detail_category}
+                                        {selectedPlace.detail_category}
                                     </Typography>
                                 </Grid>
-                            )) : null }
+                            }
                         </Grid>
                     
                         <Grid>
@@ -142,7 +142,7 @@ const ReviewsPage = () => {
                     <Grid style={{width:'100%'}}>
                         <CardContent>
                             <>
-                            <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
+                            <Grid container style={{margin:'0px auto 0px', justifyContent:'center'}}>
                                 <Grid>
                                     <Typography sx={{fontSize: '24px', fontWeight: '700', color: '#FFCE00', lineHeight:'215%', paddingRight:'0px'}} component="div">
                                         {selectedPlace && selectedPlace.rate}점
@@ -157,13 +157,11 @@ const ReviewsPage = () => {
                             </Grid>
 
                             <Grid container style={{margin:'25px auto 10px', justifyContent:'space-between'}}>
-                                <Grid item  >
-                                    <Typography xs={2} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
+                                <Grid item style={{display:'flex'}}>
+                                    <Typography xs={3} sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
                                         스꾸리뷰
                                     </Typography>
-                                </Grid>
-                                <Grid item >
-                                    <Typography xs={8}  sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingRight:'120px'}} color="#FFCE00" align="left">
+                                    <Typography sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingLeft:'10px'}} color="#FFCE00" align="left">
                                         {selectedPlace && selectedPlace.review_count}
                                     </Typography>
                                 </Grid>
@@ -186,15 +184,14 @@ const ReviewsPage = () => {
                             </Grid>
                             </>
                             <ul style={{listStyle:"none",paddingLeft:"0px"}}>
-                                {places ? places.filter(item => item.id == place_id).map((item, index) =>(
-                                    <li key={item.id} data={item}>
-                                        <>
-                                            {reviews && sortedReviews.map((review, index)=>(
-                                                <ReviewItem key={index} review={review} user={user} handleDelete={handleDelete} handleEdit={handleEdit}/>
-                                            ))}
-                                        </>
-                                    </li> 
-                            )): null}
+                                {/* {places ? places.filter(item => item.id == place_id).map((item, index) =>( */}
+                                { selectedPlace && 
+                                     <>
+                                        {reviews && sortedReviews.map((review, index)=>(
+                                            <ReviewItem key={index} review={review} user={user} handleDelete={handleDelete} handleEdit={handleEdit}/>
+                                        ))}
+                                    </>
+                                }
                             </ul>
                         </CardContent>
                     </Grid>

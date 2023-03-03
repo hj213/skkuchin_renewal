@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @DynamicUpdate
 public class ChatRoom {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +31,7 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatSession> chatSessions = new ArrayList<>();
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     private AppUser user1;
@@ -40,27 +40,24 @@ public class ChatRoom {
     @JoinColumn(name = "receiver_id")
     private AppUser user2;
 
-
     @Enumerated(EnumType.STRING)
     private ResponseType response;
-
-    private int userCount;
 
 
     private LocalDateTime expireDate;
 
-
-
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isUser1Blocked;
+
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isUser2Blocked;
 
+    @Column(columnDefinition = "BIT DEFAULT TRUE")
     private boolean isUser1AlarmOn;
 
+    @Column(columnDefinition = "BIT DEFAULT TRUE")
     private boolean isUSer2AlarmOn;
-
 
     @PrePersist
     public void setDate() {
@@ -73,4 +70,7 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Appointment> appointments = new ArrayList<>();
 }

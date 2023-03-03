@@ -102,9 +102,18 @@ export default function SignUpStep3(props) {
     }
 
     const handleNextStep = () => {
-        console.log(props.data);
-        dispatch(register(props.data));
-        props.handleNextStep();
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(register(props.data, ([result, message]) => {
+            if (result) {
+                console.log(result);
+                props.handleNextStep();
+            } else {
+                console.log(message);
+                //setDialogMsg(message);
+                //setDialogOpen(true);
+            }
+            }));
+        }
     }
 
     return (

@@ -18,8 +18,6 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String roomId;
-
     private String sender;
 
     @Column
@@ -28,10 +26,9 @@ public class ChatMessage {
     @ManyToOne
     private ChatRoom chatRoom;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime Date;
-
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean readStatus;
+
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import skkuchin.service.domain.Map.Campus;
+import skkuchin.service.domain.Matching.Gender;
 import skkuchin.service.domain.User.Profile;
 import skkuchin.service.domain.User.*;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 
 public class UserDto {
@@ -149,6 +151,7 @@ public class UserDto {
         private Profile image;
         private Campus campus;
         private Campus toggle;
+        private Optional<Gender> gender;
 
         public Response(AppUser user) {
             this.id = user.getId();
@@ -159,6 +162,7 @@ public class UserDto {
             this.image = user.getImage();
             this.campus = findCampus(user.getMajor());
             this.toggle = user.getToggle();
+            this.gender = Optional.ofNullable(user.getGender());
         }
 
         public Campus findCampus(Major major) {
@@ -201,7 +205,5 @@ public class UserDto {
         private String username;
         private Major major;
         private Profile image;
-
-
     }
 }

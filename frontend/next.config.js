@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 
 const withPWA = require('next-pwa')({
+	maximumFileSizeToCacheInBytes: 3145728,
 	dest: 'public',
 	disable: process.env.NODE_ENV !== 'production',
 	sw: 'service-worker.js',
-	dynamicStartUrlRedirect: '/login'
+	dynamicStartUrlRedirect: '/splash'
 })
 
 const nextConfig = withPWA({
@@ -24,7 +25,6 @@ const nextConfig = withPWA({
         ignoreBuildErrors: true,
     },
 	images: {
-		sizes: "250px",
 		imageSizes: [64, 96, 128, 256],
 		deviceSizes: [640, 750, 828, 1080],
 		remotePatterns: [

@@ -37,6 +37,8 @@ public class EmailService {
 
     @Value("${mail.host}")
     private String host;
+    @Value("${admin-mail.id}")
+    private String address;
     private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
     @Autowired
     JavaMailSenderImpl emailSender;
@@ -76,14 +78,26 @@ public class EmailService {
     }
 
     @Transactional
-    public Boolean confirmSignup(EmailAuthRequestDto requestDto) {
+    public String confirmSignup(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
         AppUser user = userRepo.findByEmail(requestDto.getEmail());
         emailAuth.setIsAuth(true);
         user.emailVerifiedSuccess();
-        return true;
+
+        String content = "<div style='margin-left: 40px'>" +
+                "<div style='width: 100%; height: 3px; background-color: #FFCE00; margin-bottom: 60px; margin-top: 100px'></div>" +
+                "<div style='color: #BABABA; font-size: 24px; margin-bottom: 16px'>SKKUCHIN</div>" +
+                "<img src='https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/prod/mail/email_enhang.png' alt='' style='margin-bottom: 62px; width: 168px; height: 132px' />" +
+                "<div style='font-size: 48px; margin-bottom: 42px'>" +
+                "<span style='color: #FFCE00'>인증이 완료되었습니다.</span>" +
+                "</div>" +
+                "<div style='margin-bottom: 46px; font-size: 24px'>" +
+                "<div style='margin-bottom: 14px'>앱으로 돌아가 회원가입을 완료해주세요.</div>" +
+                "</div>" +
+                "</div>";
+        return content;
     }
 
     //회원가입 - 이메일 인증 완료한 유저인지 확인
@@ -120,12 +134,24 @@ public class EmailService {
     }
 
     @Transactional
-    public Boolean confirmPassword(EmailAuthRequestDto requestDto) {
+    public String confirmPassword(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
                 .orElseThrow(() -> new EmailAuthNumNotFoundException());
         emailAuth.setIsAuth(true);
-        return true;
+
+        String content = "<div style='margin-left: 40px'>" +
+                "<div style='width: 100%; height: 3px; background-color: #FFCE00; margin-bottom: 60px; margin-top: 100px'></div>" +
+                "<div style='color: #BABABA; font-size: 24px; margin-bottom: 16px'>SKKUCHIN</div>" +
+                "<img src='https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/prod/mail/email_enhang.png' alt='' style='margin-bottom: 62px; width: 168px; height: 132px' />" +
+                "<div style='font-size: 48px; margin-bottom: 42px'>" +
+                "<span style='color: #FFCE00'>인증이 완료되었습니다.</span>" +
+                "</div>" +
+                "<div style='margin-bottom: 46px; font-size: 24px'>" +
+                "<div style='margin-bottom: 14px'>앱으로 돌아가 비밀번호 초기화를 완료해주세요.</div>" +
+                "</div>" +
+                "</div>";
+        return content;
     }
 
     @Transactional
@@ -167,8 +193,9 @@ public class EmailService {
     public MimeMessage createEmailForm(String email, EmailType type) throws MessagingException, UnsupportedEncodingException {
         String emailType = getEmailType(type);
         String s = emailType == "회원가입" ? "을" : "를";
+        emailType = emailType == "비밀번호 초기화" ? "</div><div style='margin-bottom: 7px'>"+emailType : emailType;
         createCode();
-        String setFrom = "skkuchinmail@gmail.com";
+        String setFrom = address;
         String toEmail = email; //받는 사람
         String title = "[SKKUCHIN "+emailType+"] 이메일 인증";
         //String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\email_enhang.png";
@@ -187,7 +214,7 @@ public class EmailService {
                 "<span style='color: #FFCE00; font-weight: bold; margin-right: 5px;'>메일인증</span>" +
                 "<span>안내입니다.</span>" +
             "</div>" +
-            "<img src='' alt='' style='margin-bottom: 31px; width: 84px; height: 66px' />" +
+            "<img src='https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/prod/mail/email_enhang.png' alt='' style='margin-bottom: 31px; width: 84px; height: 66px' />" +
             "<div style='margin-bottom: 23px; font-size: 12px'>" +
                 "<div style='margin-bottom: 7px'>안녕하세요.</div>" +
                 "<div style='margin-bottom: 7px'>스꾸친을 이용해 주셔서 진심으로 감사드립니다.</div>" +

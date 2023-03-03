@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.CMRespDto;
 import skkuchin.service.api.dto.ChatMessageDto;
@@ -18,32 +17,24 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-/*@RequestMapping("/chat")*/
-@RequestMapping("/api/chat")
+@RequestMapping("/api/chat/room")
 public class ChatRoomController {
     private final ChatService chatService;
     private final ChatRoomRepo chatRoomRepository;
 
-
-
-     @PostMapping("")
+    @PostMapping("")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
-
          AppUser user = principalDetails.getUser();
          chatService.makeRoom(user,dto);
          return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
-
-
      }
 
 
 
-    //채팅방의 메시지 시간 순으로 정렬
-    //아래 api랑 합쳐야
-    @GetMapping("/room/{roomId}")
+    @GetMapping("/{roomId}")
     public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        List<ChatMessageDto.Response> responses = chatService.getLatestMessages(chatRoom);
+        List<ChatMessageDto.Response> responses = chatService.getLatestMessage(chatRoom);
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
     }
 
@@ -51,12 +42,12 @@ public class ChatRoomController {
 
     //reaction = accept, refuse, hold
     //검증 추가 receiver id가 맞는지
-    @PostMapping("/room/{roomId}")
+    @PostMapping("/{roomId}")
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId,  @RequestBody ChatRoomDto.Request dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.receiverAccept(chatRoom,user,dto.getReaction());
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭 완료", null), HttpStatus.CREATED);
+        chatService.user2Accept(chatRoom,user,dto.getReaction());
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭", null), HttpStatus.CREATED);
 
 
     }
@@ -79,15 +70,29 @@ public class ChatRoomController {
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.CREATED);
     }
 
+    @PostMapping("/alarm/{roomId}")
+    public ResponseEntity<?> roomAlarm(@PathVariable String roomId,
+                                       @RequestBody ChatRoomDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        AppUser user = principalDetails.getUser();
+        if(dto.getReaction().equals("set")){
+            chatService.setAlarm(chatRoom,user);
+        }
+        else if(dto.getReaction().equals("disable")){
+            chatService.disableAlarm(chatRoom,user);
+        }
+
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 알람 설정", null), HttpStatus.CREATED);
+    }
+
 
 
 
     @PutMapping("/{roomId}")
     public ResponseEntity<?> deleteExpiredData(@PathVariable String roomId,@AuthenticationPrincipal PrincipalDetails principalDetails) {
-
         AppUser user = principalDetails.getUser();
         chatService.exitRoom(roomId,user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "삭제 완료", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 나가기 완료", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")

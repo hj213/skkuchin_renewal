@@ -57,6 +57,8 @@ const ModifyReview = () => {
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     
     const places = useSelector(state => state.place.searchplace);
+    
+    const selectedPlace = useSelector(state => state.place.place);
 
     const reviews = useSelector(state => state.review.review);
     const [rating, setRating] = useState();
@@ -216,20 +218,21 @@ const ModifyReview = () => {
                 <Grid container style={{padding: '10px 15px'}}>
                     <Grid style={{width:'100%'}}>
                         <CardContent>
-                        { places ? places.filter(item => item.id == place_id).map((item,index) => (
-                            <Grid container key={index} sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
+                        {/* { places ? places.filter(item => item.id == place_id).map((item,index) => ( */}
+                        { selectedPlace &&
+                            <Grid container sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
                                 <Grid>
                                     <Typography sx={{fontSize: '23px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
-                                        {item.name}
+                                        {selectedPlace.name}
                                     </Typography>
                                 </Grid>
                                 <Grid>
                                     <Typography sx={{fontSize: '12px', fontWeight: '500', lineHeight: '250%', paddingLeft: '4px'}} color="#a1a1a1" component="div" align="center">
-                                        {item.detail_category}
+                                        {selectedPlace.detail_category}
                                     </Typography>
                                 </Grid>
                             </Grid>
-                        )) : null }
+                        }
 
                             <Grid sx={{width: '100%'}}>
                                 <Grid>

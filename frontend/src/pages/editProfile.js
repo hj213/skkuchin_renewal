@@ -160,7 +160,7 @@ export default function editProfile() {
             />
             </FormControl>
         </div>
-        <div style={{margin: '0 36px 44px'}}>
+        <div style={{margin: '0 36px 64px'}}>
             <FormControl variant="standard" style={{width: '100%'}}>
                 <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학번*</Typography>
                 <Autocomplete
@@ -172,7 +172,8 @@ export default function editProfile() {
                 />
             </FormControl>
         </div>
-        <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 36px 50px 36px'}}>
+        {/* <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 36px 50px 36px'}}> */}
+        <div style={{display: 'grid', margin: '0 36px 50px 36px'}}>
             {(nickname === user.nickname || validNickname) && (nickname != '' && majorList.indexOf(major) != -1 && studentIdList.indexOf(studentId) != -1) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인

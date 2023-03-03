@@ -16,8 +16,6 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
-import skkuchin.service.util.LocalDateTimeSerializer;
-import skkuchin.service.webSocket.controller.DebeziumController;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -40,11 +38,10 @@ public class ChatMessageService {
     public void write(AppUser user, ChatMessageDto.PostRequest dto){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(dto.getRoomId());
         ChatMessage chatMessage = dto.toEntity(chatRoom,user);
-        if(chatRoom.getUserCount() == 2){
-            chatMessage.setReadStatus(true);
-        }
         chatRepo.save(chatMessage);
     }
+
+
 
 
 
@@ -52,13 +49,13 @@ public class ChatMessageService {
     public List<ChatRoomDto.Response> getChatList(String sender){
 
         AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepository.findByUserId(user.getId());
+        List<ChatRoom> chatRooms = chatRoomRepository.findByUser1Id(user.getId());
         List<ChatRoomDto.Response> chatRoomsFindByUserId = chatRooms
                 .stream()
-                .map(chatRoom -> new ChatRoomDto.Response(chatRoom,getLatestMessage(chatRoom)))
+                .map(chatRoom -> new ChatRoomDto.Response(chatRoom,getLatestMessage(chatRoom),
+                        unReadMessage(chatRoom.getRoomId(),sender)))
                 .collect(Collectors.toList());
         Collections.sort(chatRoomsFindByUserId,new DateComparator().reversed());
-
 
         return chatRoomsFindByUserId;
     }
@@ -67,7 +64,7 @@ public class ChatMessageService {
     public List<ChatRoomDto.userResponse> getAlarmList(String sender){
 
         AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepository.findByReceiverId(user.getId());
+        List<ChatRoom> chatRooms = chatRoomRepository.findByUser2Id(user.getId());
         List<ChatRoomDto.userResponse> chatRoom = chatRooms
                 .stream()
                 .map(message -> new ChatRoomDto.userResponse(message))
@@ -75,9 +72,11 @@ public class ChatMessageService {
         return chatRoom;
     }
 
+
+
     @Transactional
-    public int unReadMessage(String roomId){
-        List<ChatMessage> chatMessages = chatRepo.findByReadStatus(roomId);
+    public int unReadMessage(String roomId, String sender){
+        List<ChatMessage> chatMessages = chatRepo.findByReadStatus(roomId, sender);
         return chatMessages.size();
     }
 
@@ -100,7 +99,7 @@ public class ChatMessageService {
 
         ChatMessage chatMessage = new ChatMessage() ;
         if(chatRepo.findByLatestMessageTime(chatRoom.getRoomId()).size() == 0){
-            chatMessage.setDate(LocalDateTime.now());
+            chatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
         }
         else{
             chatMessage = chatRepo.findByLatestMessageTime(chatRoom.getRoomId()).get(0);

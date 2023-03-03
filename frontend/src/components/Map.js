@@ -38,7 +38,14 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             center: mapCenter,
                             level: selectedLevel
                         };
-                    } else if (places && places.length > 0) {
+                    } 
+                    else if(selectedPlace) {
+                        options = {
+                            center: new window.kakao.maps.LatLng(selectedPlace.ycoordinate, selectedPlace.xcoordinate),
+                            level: 1
+                        };
+                    }
+                    else if (places && places.length > 0) {
                         options = {
                             center: new window.kakao.maps.LatLng(places[0].ycoordinate, places[0].xcoordinate),
                             level: 1
@@ -56,10 +63,10 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         };
                     }
 
-                        const map = new window.kakao.maps.Map(container, options);
-                        
-                        let maxMarker = 30; // maximum number of markers to show
-                        const markers = [];
+                    const map = new window.kakao.maps.Map(container, options);
+                                          
+                    let maxMarker = 30; // maximum number of markers to show
+                    const markers = [];
 
                     { places  &&
                     places.forEach((place,index) => {
@@ -160,6 +167,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         marker.setMap(map);
 
                         window.kakao.maps.event.addListener(marker, "click", function() {
+                            // map.relayout();
                             setMapCenter(map.getCenter());
                             setSelectedLevel(map.getLevel());
                             router.push(`/place?id=${place.id}`);
@@ -189,8 +197,10 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         }
                     });
                     }
+                    // map.relayout();
                 }
             });
+            
         };        
         mapScript.addEventListener("load", onLoadKakaoMap);
 

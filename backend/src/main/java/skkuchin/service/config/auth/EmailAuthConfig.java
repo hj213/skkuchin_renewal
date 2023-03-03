@@ -19,9 +19,9 @@ public class EmailAuthConfig {
     private boolean starttls;
     @Value("${mail.smtp.starttls.required}")
     private boolean startlls_required;
-    @Value("${AdminMail.id}")
+    @Value("${admin-mail.id}")
     private String id;
-    @Value("${AdminMail.password}")
+    @Value("${admin-mail.password}")
     private String password;
 
     @Bean

@@ -1,0 +1,75 @@
+version: '2'
+services:
+  database:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE=service
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=1234
+    command:
+      [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+      ]
+    ports:
+      - 3306:3306
+    # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기 
+    # volumes:
+    #   - ./db/data:/var/lib/mysql
+
+  zookeeper:
+    image: quay.io/debezium/zookeeper:2.1
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+    networks:
+      - debezium-network
+
+  kafka:
+    image: quay.io/debezium/kafka:2.1
+    ports:
+      - 9092:9092
+    environment:
+      ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_HEAP_OPTS: "-Xmx256m -Xms256m"
+      KAFKA_LISTENERS: LISTENER_DOCKER://0.0.0.0:29092,LISTENER_LOCAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER://kafka:29092,LISTENER_LOCAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER:PLAINTEXT,LISTENER_LOCAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER
+    networks:
+      - debezium-network 
+
+  apicurio:
+    image: apicurio/apicurio-registry-mem:2.2.5.Final
+    ports:
+      - 8081:8080
+    networks:
+      - debezium-network  
+
+  connect:
+    image: quay.io/debezium/connect:2.1
+    ports:
+      - 8083:8083
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:29092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+      - ENABLE_APICURIO_CONVERTERS=true
+    networks:
+      - debezium-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-container
+    ports:
+      - "5672:5672"
+      - "15670:15670"
+      - "15672:15672"
+      - "61613:61613"
+    command: sh -c "rabbitmq-plugins enable rabbitmq_web_stomp rabbitmq_web_stomp_examples && rabbitmq-server start"
+
+networks:
+  debezium-network:

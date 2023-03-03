@@ -25,8 +25,11 @@ const SignUpStep5 = (props) => {
           if (result) {
             setDialogMsg("이메일을 재전송했습니다.");
           } else {
-            setDialogMsg(message);
+            if (typeof(message) == 'string') {
+              setDialogMsg(message);
+            }
           }
+          console.log(message);
           setDialogOpen(true);
         }));
       }

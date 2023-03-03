@@ -30,13 +30,9 @@ import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
-import skkuchin.service.util.LocalDateTimeSerializer;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,16 +40,13 @@ import java.util.stream.Collectors;
 public class ChatController {
 
     private final RabbitTemplate template;
-    private final ChatRepo chatRepository;
     private final ChatService chatService;
-    private final ChatSessionService chatSessionService;
     private final UserRepo userRepo;
     private final ChatMessageService chatMessageService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";
 
 
-    //로직하나 더 만들어서 전체 채팅방 구독하는 거 하나 만들기
     @MessageMapping("chat.enter.{chatRoomId}")
     public void enter(@DestinationVariable String chatRoomId, @Header("token") String token){
         ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
@@ -63,8 +56,8 @@ public class ChatController {
         ChatRoomDto.blockResponse blockResponse = chatService.getRoomDto(chatRoom);
         List<ChatMessageDto.Response> chatMessages = chatService.getAllMessage(chatRoom);
 
-       if(chatService.findUser(chatRoom).getUsername().equals(username)){
-            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user1",blockResponse);
+       if(chatService.findUser1(chatRoom).getUsername().equals(username)){
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user1",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user1",chatMessages);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user1",userDto);
 

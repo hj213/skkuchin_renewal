@@ -81,16 +81,16 @@ const MorePhotos = () => {
                             </Grid>
 
                                 <Grid>
-                                {places ? places.filter(item => item.id == place_id).map((item,index) => (
-                                    <Grid key={index} style={{flexDirection: 'row'}}>
+                                    { selectedPlace &&
+                                    <Grid style={{flexDirection: 'row'}}>
                                         <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
-                                            {item.name}
+                                            {selectedPlace.name}
                                         </Typography>
                                         <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                            {item.detail_category}
+                                            {selectedPlace.detail_category}
                                         </Typography>
                                     </Grid>
-                                )) : null }
+                                    }
                                 </Grid>
                                 <Grid>
                                     <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>

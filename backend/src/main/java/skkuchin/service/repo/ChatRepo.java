@@ -10,13 +10,15 @@ import java.util.List;
 
 public interface ChatRepo extends JpaRepository<ChatMessage,Long> {
     List<ChatMessage> findByChatRoom(ChatRoom chatRoom);
-    List<ChatMessage> findByRoomId(String roomId);
 
-    @Query("SELECT a FROM ChatMessage a WHERE a.roomId = :roomId ORDER BY a.Date DESC")
+
+    @Query("SELECT a FROM ChatMessage a WHERE a.chatRoom.roomId = :roomId ORDER BY a.Date DESC")
     List<ChatMessage> findByLatestMessageTime(@Param("roomId") String roomId);
 
-    @Query("SELECT a FROM ChatMessage a WHERE a.roomId = :roomId AND a.readStatus = false")
-    List<ChatMessage> findByReadStatus(@Param("roomId") String roomId);
+    @Query("SELECT a FROM ChatMessage a WHERE a.chatRoom.roomId = :roomId AND a.readStatus = false " +
+            "AND a.sender <> :sender")
+    List<ChatMessage> findByReadStatus(@Param("roomId") String roomId,
+                                       @Param("sender") String sender);
 
 
 }

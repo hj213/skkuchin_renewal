@@ -179,7 +179,7 @@ export default function makeProfile(){
 
     }, [dispatch]);
 
-    //for 초기값 받아오기
+    //초기값 받아오기
     useEffect(()=>{
         if(matchingUser){
             //성별
@@ -601,7 +601,7 @@ export default function makeProfile(){
                     alert(message);
                     router.back();
                 } else {
-                    // alert(message);
+                    alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
                 }
@@ -651,12 +651,14 @@ export default function makeProfile(){
         }
     }, [gender, keyword, introduction, mbti]);
 
-    console.log(gender, keyword, introduction, mbti);
+    // console.log(gender, keyword, introduction, mbti);
    
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+                <div style={{height:'100%', marginTop:'820px', zIndex:'6', position:'absolute', left:'50%'}}>
                 <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
+                </div>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
@@ -722,7 +724,7 @@ export default function makeProfile(){
                     </div>
                     <Container name='관심사' style={{padding:'0px', margin:'41.7px 0px 0px 25px', justifyContent:'center'}}>
                         <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>관심사*</Typography>
-                        <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>최소 3개 이상의 태그를 선택해주세요.</Typography>
+                        <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>3개 이상 8개 이하의 태그를 선택해주세요.</Typography>
                         <Container name='음식' style={{padding:'0px'}}>
                             <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color='black' fontWeight={theme.typography.h1}>🍎 음식</Typography>
                             <div style={{marginBottom:'9px'}}>
@@ -915,7 +917,7 @@ export default function makeProfile(){
                     <div name='한줄소개' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px', justifyContent:'center'}}>
-                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>한 줄 자기소개*</Typography>
+                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>한 줄 자기소개(30자 이내)*</Typography>
                             <div style={{margin:'15px 0px 0px 15px', zIndex:'2', textAlign:'center', position:'absolute'}}>
                                 <textarea
                                 value={introduction}

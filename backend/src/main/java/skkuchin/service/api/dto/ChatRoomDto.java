@@ -1,5 +1,6 @@
 package skkuchin.service.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -47,59 +48,82 @@ public class ChatRoomDto {
 
 
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
+        @JsonProperty
         private String roomId;
+        @JsonProperty
         private String roomName;
         private String message;
-        private Long senderUserId;
-        private Long receiverUserId;
+        @JsonProperty
+        private Long user1Id;
+        @JsonProperty
+        private Long user2Id;
+        @JsonProperty
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime messageTime;
-        public Response(ChatRoom chatroom, ChatMessage chatMessage) {
+        @JsonProperty
+        private int messageCount;
+        public Response(ChatRoom chatroom, ChatMessage chatMessage,int messageCount) {
             this.messageTime = chatMessage.getDate();
             this.message = chatMessage.getMessage();
             this.roomId = chatroom.getRoomId();
             this.roomName = chatroom.getRoomName();
-            this.senderUserId = chatroom.getUser1().getId();
-            this.receiverUserId = chatroom.getUser2().getId();
+            this.user1Id = chatroom.getUser1().getId();
+            this.user2Id = chatroom.getUser2().getId();
+            this.messageCount = messageCount;
         }
 
     }
 
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class blockResponse{
-        private boolean isSenderBlocked;
-        private boolean isReceiverBlocked;
+        @JsonProperty
+        private boolean isUser1Blocked;
+
+        @JsonProperty
+        private boolean isUser2Blocked;
 
         public blockResponse(ChatRoom chatRoom){
-            this.isReceiverBlocked = chatRoom.isUser1Blocked();
-            this.isSenderBlocked = chatRoom.isUser2Blocked();
+            this.isUser1Blocked = chatRoom.isUser1Blocked();
+            this.isUser2Blocked = chatRoom.isUser2Blocked();
         }
     }
 
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class userResponse{
-        private Long senderUserId;
-        private Long receiverUserId;
+        @JsonProperty
+        private Long user1Id;
+        @JsonProperty
+        private Long user2Id;
+        @JsonProperty
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdDate;
 
         public userResponse(ChatRoom chatRoom){
-            this.senderUserId = chatRoom.getUser1().getId();
-            this.receiverUserId = chatRoom.getUser2().getId();
+            this.user1Id = chatRoom.getUser1().getId();
+            this.user2Id = chatRoom.getUser2().getId();
             this.createdDate = chatRoom.getExpireDate().minusDays(2);
         }
     }
 
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class ChatListResponse{
 
+        @JsonProperty
         private String roomId;
-        private Long senderUserId;
-        private Long receiverUserId;
+        @JsonProperty
+        private Long user1Id;
+        @JsonProperty
+        private Long user2Id;
 
         public ChatListResponse(ChatRoom chatRoom){
             this.roomId = chatRoom.getRoomId();
-            this.senderUserId = chatRoom.getUser1().getId();
-            this.receiverUserId = chatRoom.getUser2().getId();
+            this.user1Id = chatRoom.getUser1().getId();
+            this.user2Id = chatRoom.getUser2().getId();
 
         }
     }
@@ -116,6 +140,8 @@ public class ChatRoomDto {
         private Long sender_id;
         private Long receiver_id;
     }
+
+
 
 
 

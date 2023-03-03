@@ -9,11 +9,9 @@ import lombok.Setter;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-
 import java.time.LocalDateTime;
 
 public class ChatMessageDto {
-
 
     @Getter
     @Setter
@@ -21,11 +19,8 @@ public class ChatMessageDto {
         private Long id;
         private long date;
         private String message;
-        private String room_id;
         private String sender;
-        private int user_count;
-        private int chat_room_id;
-
+        private Long chat_room_id;
     }
 
 
@@ -47,7 +42,6 @@ public class ChatMessageDto {
             return ChatMessage.builder()
                     .message(this.message)
                     .chatRoom(chatRoom)
-                    .roomId(chatRoom.getRoomId())
                     .sender(user.getUsername())
                     .Date(LocalDateTime.now())
                     .build();
@@ -57,15 +51,16 @@ public class ChatMessageDto {
 
     @Getter
     @RequiredArgsConstructor
+
     public static class Response{
         private Long id;
         private String sender;
         private String message;
         public Response(ChatMessage chatMessage){
-
             this.id = chatMessage.getId();;
             this.sender= chatMessage.getSender();
             this.message = chatMessage.getMessage();
         }
 }
+
 }
