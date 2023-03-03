@@ -12,6 +12,11 @@ import { useRouter } from 'next/router';
 
 const SignUpStep6 = (props) => {
     const router = useRouter();
+    const [remainHeight, setRemainHeight] = useState(window.innerHeight - (143+56) + "px");
+
+    useEffect(() => {
+        setRemainHeight(window.innerHeight - (143+56) + "px")
+    }, [window.innerHeight])
     
     const handlePrevStep = () => {
       props.handlePrevStep();
@@ -48,7 +53,7 @@ const SignUpStep6 = (props) => {
             <Image width={12.02} height={21.55} src={back} onClick={handlePrevStep}/>
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>이메일 인증</Typography>
         </header> */}
-        <div style={{ width: '100%', textAlign: 'center', marginTop: '150px' }}>
+        <div style={{ width: '100%', textAlign: 'center', marginTop: `calc(${remainHeight} * 0.45)` }}>
             <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
             <Typography sx={{fontSize: '25px', fontWeight: '400', mb: '37px'}}>인증 완료!</Typography>
         </div>
