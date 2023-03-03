@@ -16,6 +16,8 @@ const RegisterPage = () => {
     const router = useRouter();
     const register_success = useSelector(state => state.auth.register_success);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const src = router.query.src;
+    const pathUsername = router.query.username;
 
     const [step, setStep] = useState(1);
     const [data, setData] = useState({
@@ -42,6 +44,13 @@ const RegisterPage = () => {
 
     if(register_success)
         router.push('/login');
+
+    useEffect(() => {
+        if (src == '이메일') {
+            setData({...data, username: pathUsername})
+            setStep(4);
+        }
+    }, [src])
     
     
     return(

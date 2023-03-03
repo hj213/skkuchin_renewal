@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {  TextField, Button,  Typography,  Box, Link, Container, Grid} from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
 import back from '../../image/arrow_back_ios.png';
@@ -37,13 +37,13 @@ const SignUpStep6 = (props) => {
                                 <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'35%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}></Typography>
                             </Grid>
                         </Grid>
         </Container>
       <Box
             sx={{
-            margin: '55px 15px 15px 15px',
+            margin: '0px 15px 15px 15px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
