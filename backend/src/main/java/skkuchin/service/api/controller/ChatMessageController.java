@@ -16,17 +16,16 @@ import skkuchin.service.service.ChatMessageService;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/message")
+@RequestMapping("/api/message")
 public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
-    @PostMapping("/rooms")
+    @PostMapping("")
     public ResponseEntity<?> makeRoom(@RequestBody ChatMessageDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
 
         AppUser user = principalDetails.getUser();
         chatMessageService.write(user,dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅 메시지 생성 완료", null), HttpStatus.CREATED);
-
 
     }
 

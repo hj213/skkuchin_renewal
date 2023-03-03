@@ -18,15 +18,15 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/chat")
-/*@RequestMapping("/api/chat")*/
+/*@RequestMapping("/chat")*/
+@RequestMapping("/api/chat")
 public class ChatRoomController {
     private final ChatService chatService;
     private final ChatRoomRepo chatRoomRepository;
 
 
 
-     @PostMapping("/rooms")
+     @PostMapping("")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
 
          AppUser user = principalDetails.getUser();
@@ -37,13 +37,13 @@ public class ChatRoomController {
      }
 
 
+
     //채팅방의 메시지 시간 순으로 정렬
     //아래 api랑 합쳐야
     @GetMapping("/room/{roomId}")
     public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         List<ChatMessageDto.Response> responses = chatService.getLatestMessages(chatRoom);
-        System.out.println("responses = " + responses.size());
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
     }
 
@@ -60,7 +60,6 @@ public class ChatRoomController {
 
 
     }
-
 
 
     //상대 유저 블럭
@@ -82,25 +81,19 @@ public class ChatRoomController {
 
 
 
-    //데이터 삭제
+
+    @PutMapping("/{roomId}")
+    public ResponseEntity<?> deleteExpiredData(@PathVariable String roomId,@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        AppUser user = principalDetails.getUser();
+        chatService.exitRoom(roomId,user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "삭제 완료", null), HttpStatus.OK);
+    }
+
     @DeleteMapping("")
-    public ResponseEntity<?> deleteExpiredData() {
+    public ResponseEntity<?> exitRoom() {
         chatService.deleteExpiredData();
         return new ResponseEntity<>(new CMRespDto<>(1, "만료 기간 지난 데이터 삭제 완료", null), HttpStatus.OK);
-    }
-
-
-    @GetMapping(value = "/roommm")
-    public String getRoom(){
-        return "chat/rrr";
-    }
-    @GetMapping(value = "/room")
-    public String getRoom(String chatRoomId, String sender, Model model){
-
-        model.addAttribute("chatRoomId", chatRoomId);
-        model.addAttribute("sender", sender);
-
-        return "chat/rooms";
     }
 
 

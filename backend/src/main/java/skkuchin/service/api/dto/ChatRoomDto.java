@@ -4,20 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import org.springframework.web.socket.WebSocketSession;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
-import skkuchin.service.domain.Chat.RequestStatus;
-import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.User.AppUser;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 
 public class ChatRoomDto {
@@ -35,28 +26,7 @@ public class ChatRoomDto {
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
-                    .user(user)
-                    .roomName(this.roomName)
-                    .build();
-
-
-        }
-    }
-
-
-
-    @Getter
-    @RequiredArgsConstructor
-    @AllArgsConstructor
-    public static  class TestPostRequest{
-
-        private String roomName;
-
-
-        public ChatRoom toEntity(AppUser user){
-            return ChatRoom.builder()
-                    .user(user)
-                    .roomId(UUID.randomUUID().toString())
+                    .user1(user)
                     .roomName(this.roomName)
                     .build();
 
@@ -80,43 +50,18 @@ public class ChatRoomDto {
     public static class Response {
         private String roomId;
         private String roomName;
-        private String latestDisplayTime;
-        private LocalDateTime localDateTime;
+        private String message;
+        private Long senderUserId;
+        private Long receiverUserId;
+        private LocalDateTime messageTime;
         public Response(ChatRoom chatroom, ChatMessage chatMessage) {
-            this.latestDisplayTime = setDisplayDateTime1(chatMessage);
-            this.localDateTime = chatMessage.getDate();
+            this.messageTime = chatMessage.getDate();
+            this.message = chatMessage.getMessage();
             this.roomId = chatroom.getRoomId();
             this.roomName = chatroom.getRoomName();
+            this.senderUserId = chatroom.getUser1().getId();
+            this.receiverUserId = chatroom.getUser2().getId();
         }
-
-        public String setDisplayDateTime1(ChatMessage chatMessage) {
-
-            LocalDateTime dateTimeNow = LocalDateTime.now();
-            LocalDate dateNow = dateTimeNow.toLocalDate();
-            String displayTime;
-            LocalDateTime recordedDateTime = chatMessage.getDate();
-            LocalDate recordedDate = recordedDateTime.toLocalDate();
-            Period diff = Period.between(recordedDate, dateNow);
-            if(diff.getDays() == 1  && diff.getMonths() ==0 && diff.getYears() ==0) {
-                displayTime = "어제";
-
-            }
-            else if(diff.getDays() == 0  && diff.getMonths() ==0 && diff.getYears() ==0){
-                displayTime = (recordedDateTime.format(DateTimeFormatter.ofPattern("" +
-                        "a h:mm")));
-
-            }
-            else{
-                displayTime = (recordedDateTime.format(DateTimeFormatter.ofPattern("" +
-                        "yyyy-MM-dd")));
-
-            }
-
-            return displayTime;
-
-        }
-
-
 
     }
 
@@ -126,8 +71,8 @@ public class ChatRoomDto {
         private boolean isReceiverBlocked;
 
         public blockResponse(ChatRoom chatRoom){
-            this.isReceiverBlocked = chatRoom.isReceiverBlocked();
-            this.isSenderBlocked = chatRoom.isSenderBlocked();
+            this.isReceiverBlocked = chatRoom.isUser1Blocked();
+            this.isSenderBlocked = chatRoom.isUser2Blocked();
         }
     }
 
@@ -135,11 +80,41 @@ public class ChatRoomDto {
     public static class userResponse{
         private Long senderUserId;
         private Long receiverUserId;
+        private LocalDateTime createdDate;
 
         public userResponse(ChatRoom chatRoom){
-            this.senderUserId = chatRoom.getUser().getId();
-            this.receiverUserId = chatRoom.getUser1().getId();
+            this.senderUserId = chatRoom.getUser1().getId();
+            this.receiverUserId = chatRoom.getUser2().getId();
+            this.createdDate = chatRoom.getExpireDate().minusDays(2);
         }
+    }
+
+    @Getter
+    public static class ChatListResponse{
+
+        private String roomId;
+        private Long senderUserId;
+        private Long receiverUserId;
+
+        public ChatListResponse(ChatRoom chatRoom){
+            this.roomId = chatRoom.getRoomId();
+            this.senderUserId = chatRoom.getUser1().getId();
+            this.receiverUserId = chatRoom.getUser2().getId();
+
+        }
+    }
+
+    @Getter
+    public static class DebeziumDto{
+        private Long id;
+        private String expire_date;
+        private String is_user1_blocked;
+        private String is_user2_blocked;
+        private String room_id;
+        private String response;
+        private String room_name;
+        private Long sender_id;
+        private Long receiver_id;
     }
 
 

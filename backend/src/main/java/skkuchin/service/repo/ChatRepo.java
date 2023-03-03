@@ -14,4 +14,9 @@ public interface ChatRepo extends JpaRepository<ChatMessage,Long> {
 
     @Query("SELECT a FROM ChatMessage a WHERE a.roomId = :roomId ORDER BY a.Date DESC")
     List<ChatMessage> findByLatestMessageTime(@Param("roomId") String roomId);
+
+    @Query("SELECT a FROM ChatMessage a WHERE a.roomId = :roomId AND a.readStatus = false")
+    List<ChatMessage> findByReadStatus(@Param("roomId") String roomId);
+
+
 }

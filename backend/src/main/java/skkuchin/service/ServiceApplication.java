@@ -34,8 +34,8 @@ public class ServiceApplication {
 						  ImageService imageService,
 						  MenuService menuService,
 						  KeywordService keywordService,
-						  ReviewService reviewService,
-						  ChatService chatService) {
+						  ReviewService reviewService
+						  ) {
 		return args -> {
 			userService.saveRole(Role.builder().name("ROLE_USER").build());
 			userService.saveRole(Role.builder().name("ROLE_ADMIN").build());
@@ -54,7 +54,7 @@ public class ServiceApplication {
 				menuService.insertData(path);
 				keywordService.insertData(path);
 				reviewService.insertData(path);
-				chatService.insertData(path);*//*
+
 				*//*userService.saveTestMatchingUsers(100);*//*
 			} catch (Exception e) {
 				System.out.println(e);

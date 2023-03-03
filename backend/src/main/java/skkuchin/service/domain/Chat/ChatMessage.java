@@ -32,5 +32,6 @@ public class ChatMessage {
     private LocalDateTime Date;
 
 
-    private int userCount;
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean readStatus;
 }

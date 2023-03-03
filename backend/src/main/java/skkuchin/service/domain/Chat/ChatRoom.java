@@ -1,6 +1,5 @@
 package skkuchin.service.domain.Chat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import skkuchin.service.domain.User.AppUser;
@@ -35,29 +34,32 @@ public class ChatRoom {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
-    private AppUser user;
+    private AppUser user1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
-    private AppUser user1;
+    private AppUser user2;
 
 
     @Enumerated(EnumType.STRING)
-    private RequestStatus receiverRequestStatus;
+    private ResponseType response;
 
     private int userCount;
+
 
     private LocalDateTime expireDate;
 
 
 
-
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean isUser1Blocked;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isSenderBlocked;
+    private boolean isUser2Blocked;
 
-    @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isReceiverBlocked;
+    private boolean isUser1AlarmOn;
+
+    private boolean isUSer2AlarmOn;
 
 
     @PrePersist
@@ -68,7 +70,7 @@ public class ChatRoom {
     }
 
     // 신고 관련 매핑입니다 지우지 마세요
-    @JsonIgnore
+
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();
 }

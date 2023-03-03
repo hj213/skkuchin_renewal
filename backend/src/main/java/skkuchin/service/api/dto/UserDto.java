@@ -173,4 +173,35 @@ public class UserDto {
             }
         }
     }
+
+
+    @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class chatRoomResponse {
+        private Long id;
+        private String nickname;
+        private String username;
+        private Major major;
+        private Profile image;
+
+        public chatRoomResponse(AppUser user) {
+            this.id = user.getId();
+            this.nickname = user.getNickname();
+            this.username = user.getUsername();
+            this.major = user.getMajor();
+            this.image = user.getImage();
+        }
+    }
+
+    @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class DebeziumUserResponse {
+        private Long id;
+        private String nickname;
+        private String username;
+        private Major major;
+        private Profile image;
+
+
+    }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
@@ -12,6 +13,21 @@ import skkuchin.service.domain.User.AppUser;
 import java.time.LocalDateTime;
 
 public class ChatMessageDto {
+
+
+    @Getter
+    @Setter
+    public static class DebeziumDto {
+        private Long id;
+        private long date;
+        private String message;
+        private String room_id;
+        private String sender;
+        private int user_count;
+        private int chat_room_id;
+
+    }
+
 
     @Getter
     @RequiredArgsConstructor
@@ -22,7 +38,9 @@ public class ChatMessageDto {
         private String message;
 
         @JsonProperty
-        private Long chatRoomId;
+        private String roomId;
+
+
 
 
         public ChatMessage toEntity(ChatRoom chatRoom, AppUser user){
@@ -32,17 +50,13 @@ public class ChatMessageDto {
                     .roomId(chatRoom.getRoomId())
                     .sender(user.getUsername())
                     .Date(LocalDateTime.now())
-                    .userCount(chatRoom.getUserCount())
                     .build();
 
         }
     }
 
-
-
     @Getter
     @RequiredArgsConstructor
-
     public static class Response{
         private Long id;
         private String sender;
@@ -53,8 +67,5 @@ public class ChatMessageDto {
             this.sender= chatMessage.getSender();
             this.message = chatMessage.getMessage();
         }
-
-
-
-    }
+}
 }

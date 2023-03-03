@@ -12,20 +12,31 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
     ChatRoom findByRoomName(String roomName);
     ChatRoom findByRoomId(String roomId);
 
-    @Query("SELECT a FROM ChatRoom a where a.user.id = :senderId " +
-            "AND a.receiverRequestStatus = 'ACCEPT'")
+    @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
+            "AND a.response = 'ACCEPT'")
     List<ChatRoom> findByNormalSenderId
             (@Param("senderId") Long senderId);
 
-    @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
-            "AND a.receiverRequestStatus = 'ACCEPT'")
+    @Query("SELECT a FROM ChatRoom a where a.user2.id = :senderId " +
+            "AND a.response = 'ACCEPT'")
     List<ChatRoom> findByNormalReceiverId
             (@Param("senderId") Long senderId);
 
-    @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
-            "AND (a.receiverRequestStatus <> 'ACCEPT' OR a.receiverRequestStatus IS NULL OR a.receiverRequestStatus = '')")
+    @Query("SELECT a FROM ChatRoom a where (a.user2.id = :senderId OR a.user1.id = :senderId )" +
+            "AND a.response = 'ACCEPT'")
+    List<ChatRoom> findByUserId
+            (@Param("senderId") Long senderId);
+
+    @Query("SELECT a FROM ChatRoom a where a.user2.id = :senderId " +
+            "AND (a.response <> 'ACCEPT' OR a.response IS NULL OR a.response = '')")
    List<ChatRoom> findByReceiverId
             (@Param("senderId") Long senderId);
+
+    @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
+            "AND (a.response <> 'ACCEPT' OR a.response IS NULL OR a.response = '')")
+    List<ChatRoom> findBySenderId
+            (@Param("senderId") Long senderId);
+
 
 
 

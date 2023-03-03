@@ -98,10 +98,8 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
              StompHeaderAccessor accessor =
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-                System.out.println("accessor = " + accessor);
-                //stomp.connect으로도 생각해 볼 수 있을것
+
                 if(accessor.getCommand().equals(StompCommand.SEND)){
-                    System.out.println("\"fuck\" = " + "fuck");
                     String sessionId = accessor.getSessionId();
                     ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId);
                     /*if(chatSession.getChatRoom().isSenderBlocked() == true || chatSession.getChatRoom().isReceiverBlocked() == true){
@@ -111,49 +109,37 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
 
                 else if(accessor.getCommand().equals(StompCommand.SUBSCRIBE)){
-                    System.out.println("accessor.getDestination() = " + accessor.getDestination().substring(29));
                     String sessionId = accessor.getSessionId();
-                    System.out.println("sessionId = " + sessionId);
                     String roomId = accessor.getDestination().substring(29);
-                    System.out.println("accessor = " + accessor);
+                    /*&& roomId.length()>36*/
+                    if(roomId.contains("user1" )){
+                        roomId = roomId.replace("user1","");
+                    }
+                    else if(roomId.contains("user2")){
+                        roomId = roomId.replace("user2","");
+                    }
+
                   String token = accessor.getFirstNativeHeader("token");
-                    System.out.println("token = " + token);
                     String sender = getUserNameFromJwt(token);
                     ChatRoom chatRoom = chatService.findChatroom(roomId);
-                    String roomId1 = roomId +"1";
-                    System.out.println("roomId1 = " + roomId1);
-
-                  /*  ChatRoom chatRoom1 = chatRoomRepo.findByRoomId(roomId1);
-                    System.out.println("chatRoom1.getRoomId() = " + chatRoom1.getRoomId());
-*/
-
                     chatSessionService.setSessionId(chatRoom,sessionId,sender);
-                   /* chatSessionService.setSessionId(chatRoom1,sessionId+"1",sender);*/
-
-
                     chatService.getAllMessage1(chatRoom,sender);
                     chatService.updateCount(chatRoom);
-                 /*   chatService.updateCount(chatRoom1);*/
-                    System.out.println("Subscribe");
+
                 }
 
                 else if(accessor.getCommand().equals(StompCommand.CONNECT)){
-                    System.out.println("message = " + message);
+
                 }
 
                 else if(accessor.getCommand().equals(StompCommand.DISCONNECT)){
-                    System.out.println(" disconnect");
 
                     String sessionId = (String) message.getHeaders().get("simpSessionId");
-                    System.out.println("sessionId = " + sessionId);
                     ChatSession chatSession = chatSessionService.findSession(sessionId);
                     chatService.minusCount(chatSession.getChatRoom());
                     chatSessionService.deleteSession(sessionId);
 
                 }
-                System.out.println("message = " + message);
-                System.out.println("accessor = " + accessor.getCommand());
-
                 return message;
             }
         });
@@ -174,8 +160,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
         JWTVerifier verifier = JWT.require(algorithm).build();
 
         DecodedJWT decodedJWT = verifier.verify(jwt);
-        System.out.println("decodedJWT = " + decodedJWT.getId());
-        System.out.println("decodedJWT.getType() = " + decodedJWT.getType());
+
 
         return username;
     }
