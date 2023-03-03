@@ -1,7 +1,6 @@
 package skkuchin.service.domain.User;
 
 import lombok.*;
-import skkuchin.service.domain.Map.Place;
 
 import javax.persistence.*;
 
@@ -11,19 +10,21 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Subscription {
+public class PushToken {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String endpoint;
+    @Column(nullable = false)
+    private String token;
 
-    private String auth;
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean isInfoAlarmOn;
 
-    private String p256dh;
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean isChatAlarmOn;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 }
-
-Vvn4Y6jrAZ-L7CL5gstrMVbxjST11dQ8lsNLoJkLw0I

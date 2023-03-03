@@ -83,5 +83,5 @@ public class AppUser {
     private List<Candidate> candidates = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Subscription> subscriptions = new ArrayList<>();
+    private List<PushToken> pushTokens = new ArrayList<>();
 }
