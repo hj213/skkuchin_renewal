@@ -106,6 +106,9 @@ export default function MapDrawer(openID){
       router.push('/myFavorite');
     }
 
+    const handleMyReview = (e) =>{
+      router.push('/myReview');
+    }
     //토글 클릭
     const handleToggle = async (e) => {
       try {
@@ -163,7 +166,7 @@ export default function MapDrawer(openID){
                             <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}} placeholder="blur" layout='fixed' />
                         </Grid>
                         <Grid item>
-                            <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMove}/>
+                            <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMyReview}/>
                         </Grid>
                     </Grid>
                 </ListItem>

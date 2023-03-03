@@ -9,16 +9,6 @@ import Image from 'next/image';
 import { Typography } from "@mui/material";
 
 const ReviewStar = ({rating, handleTouch}) => {
-  // const [rating, setRating] = useState(0);
-
-  // const handleTouch = (index) => {
-  //   // setRating(index);
-  //   if (index + 1 === rating) {
-  //     setRating(0);
-  //   } else {
-  //     setRating(index + 1);
-  //   }
-  // };
 
   const user = useSelector(state => state.auth.user);
 

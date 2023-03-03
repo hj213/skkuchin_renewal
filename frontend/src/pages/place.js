@@ -251,8 +251,6 @@ const PlacePage = () => {
     const totalImageCount = reviews && reviews.reduce((acc, review) => acc + review.images.length, 0);
     const totalImagesUrl = reviews && reviews.map(review => review.images).flatMap(imageArray => imageArray);
 
-    const allImages = selectedPlace && selectedPlace.images.concat(totalImagesUrl);
-
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             dispatch(load_place(id));
@@ -260,6 +258,8 @@ const PlacePage = () => {
             setPlaceId(id);
         }
     }, [id]);
+
+    const allImages = selectedPlace && selectedPlace.images ? selectedPlace.images.concat(totalImagesUrl) : [];
 
     useEffect(() => {
         if(reviews != null) {
@@ -425,7 +425,7 @@ const PlacePage = () => {
                                                 </Grid>
                                                 <Grid container sx={{justifyContent: 'center'}}>
                                                     {/* 태그 받아오기 */}
-                                                    {selectedPlace.tags.map((tag, index) => (
+                                                    {selectedPlace && selectedPlace.tags && selectedPlace.tags.map((tag, index) => (
                                                     <Grid sx={{padding: "5px 5px 10px 0px"}} key={index}>
                                                         {displayBigReviewTag(tag)}
                                                     </Grid>
