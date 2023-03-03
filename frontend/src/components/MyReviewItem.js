@@ -49,9 +49,11 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
                                         }}
                                         >
                                         <MenuItem sx={{fontSize: '15px', color: '#FFCE00'}} onClick={()=>handleEdit(review.id)}>
-                                            수정 {review.id} 
+                                            수정 
                                         </MenuItem>
-                                        <MenuItem sx={{fontSize: '15px'}} onClick={()=> {handleDelete(review.id); handleMenuClose();}}>삭제{review.id}</MenuItem>
+                                        <MenuItem sx={{fontSize: '15px'}} onClick={()=> {handleDelete(review.id); handleMenuClose();}}>
+                                            삭제
+                                        </MenuItem>
                                     </Menu>
                                 </Grid>
                             </Grid>
