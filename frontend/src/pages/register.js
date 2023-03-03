@@ -49,6 +49,8 @@ const RegisterPage = () => {
         if (src == '이메일') {
             setData({...data, username: pathUsername})
             setStep(4);
+        } else if (src == 'emailDone') {
+            setStep(6);
         }
     }, [src])
     
