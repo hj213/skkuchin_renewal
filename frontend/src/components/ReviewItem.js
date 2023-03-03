@@ -42,7 +42,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                 <Grid item xs={2} style={{marginTop:'3px'}}>
                     { review && review.user_id === user.id ?
                         <StyledBadge badgeContent={"나"}>
-                            <Avatar alt="" src={ user.image} />
+                            <Avatar alt="" src={ user.image } />
                         </StyledBadge> : <Avatar alt="" src={user.image} />}
                 </Grid>
                 <Grid item xs={10}>
@@ -77,10 +77,10 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                                 }}
                                 >
                                 <MenuItem sx={{fontSize: '15px', color: '#FFCE00'}} onClick={()=>handleEdit(review.id)}>
-                                    수정 {review.id}
+                                    수정 
                                 </MenuItem>
                                 <MenuItem sx={{fontSize: '15px'}} onClick={()=> {handleDelete(review.id); handleMenuClose();}}>
-                                    삭제 {review.id} {index}
+                                    삭제 
                                 </MenuItem>
                             </Menu>
                         </Grid>
