@@ -106,20 +106,20 @@ const MorePhotos = () => {
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
-                                    {/* <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/> */}
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
                                 </Grid>
 
                                 <Grid>
-                                {places ? places.filter(item => item.id == place_id).map((item,index) => (
-                                    <Grid key={index} style={{flexDirection: 'row'}}>
+                                { selectedPlace &&
+                                    <Grid style={{flexDirection: 'row'}}>
                                         <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
-                                            {item.name}
+                                            {selectedPlace.name}
                                         </Typography>
                                         <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                            {item.detail_category}
+                                            {selectedPlace.detail_category}
                                         </Typography>
                                     </Grid>
-                                )) : null }
+                                }
                                 </Grid>
                                 <Grid>
                                     <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
@@ -133,7 +133,16 @@ const MorePhotos = () => {
                 {isFromSelectedPlace? 
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <div style={{ width: 'auto', height: '70vh', margin: '5px', position: 'relative',  overflow: 'hidden'}}>
+                        <div style={{ 
+                            width: '100%',
+                            height: 'auto', 
+                            margin: '5px', 
+                            position: 'relative', 
+                            overflow: 'hidden',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}> 
                             <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
                                 <Image onClick={handlePrevClick} src={prev} width={33} height={33}/>
                             </div>
@@ -145,8 +154,8 @@ const MorePhotos = () => {
                                 <Image src={morePic} width={22} height={22}/>
                             </div>
                            <Image
-                                width={384}
-                                height={616}
+                                width={800}
+                                height={1200}
                                 src={selectedPlace.images[currentIndex]}
                                 alt={`image`}
                              />
@@ -156,10 +165,9 @@ const MorePhotos = () => {
                 : ( review &&
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                                {/* <div style={{ width: 'auto', height: '70vh', margin: '5px', position: 'relative',  overflow: 'hidden'}}> */}
                                 <div style={{ 
                                     width: '100%',
-                                    height: '70vh', 
+                                    height: 'auto', 
                                     margin: '5px', 
                                     position: 'relative', 
                                     overflow: 'hidden',
@@ -177,12 +185,12 @@ const MorePhotos = () => {
                                         <Typography sx={{color: '#FFE885', fontSize: '13px', fontWeight: '700', pr: '7px'}}>{`${currentIndex+1}/${review.images.length}`}</Typography>
                                         <Image src={morePic} width={22} height={22}/>
                                     </div>
-                                <Image
-                                    width={800}
-                                    height={1200}
-                                    src={review.images[currentIndex]}
-                                    alt={`image`}
-                                    />
+                                    <Image
+                                        width={800}
+                                        height={1200}
+                                        src={review.images[currentIndex]}
+                                        alt={`image`}
+                                        />
                                 </div>
                         </div>
                     </div>
@@ -190,7 +198,7 @@ const MorePhotos = () => {
                 }
             </Grid>
             <Grid container >
-                {reviews && review && 
+                {reviews && review ? 
                     <Grid container style={{margin:'16px 15px 10px', justifyContent:'left'}}>
                     <Grid item xs={2}>
                         { review && review.user_id === user.id ?
@@ -242,6 +250,31 @@ const MorePhotos = () => {
                                 <Rating name="read-only" size="small" value={review.rate} readOnly precision={1} />
                             </Grid>
                         </Stack>
+                    </Grid>
+                </Grid>
+                : 
+                <Grid container sx={{p: '0 20px', mt: '15px'}}>
+                    <Grid item xs={2}>
+                       <Avatar alt="" src={user.image} />
+                    </Grid>
+                    <Grid item xs={10}>
+                        <Typography
+                                sx={{
+                                fontSize: '12px',
+                                fontWeight: '700',
+                                lineHeight: '24px',
+                                verticalAlign: 'top'
+                                }}
+                                align='left'
+                        >
+                            {selectedPlace.name}
+                        </Typography>
+                        <Typography
+                            sx={{ fontSize: '12px', fontWeight: '500',  verticalAlign: 'top'}}
+                            align="left"
+                        >
+                        업체등록사진
+                        </Typography>
                     </Grid>
                 </Grid>
                 }
