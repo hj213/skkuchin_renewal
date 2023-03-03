@@ -5,8 +5,6 @@ import { useEffect, useState, useRef } from "react";
 import { load_reviews, delete_review, modify_review } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 
-import {BadgeProps} from '@mui/material/Badge'
-
 import { makeStyles, IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
@@ -33,18 +31,18 @@ const ReviewsPage = () => {
     const { id } = router.query;
 
     // place, 가게 정보 (place API)
-    
-    const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
+    const [place_id, setPlaceId] = useState(id || '');
     const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
-
+    const [reviewCount, setReviewCount] = useState(selectedPlace?.review_count || "");
+  
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
-            setPlaceId(id);
+        if(dispatch && place_id !== '' && id !== '' ) {
+            setPlaceId(place_id);
             dispatch(load_reviews(place_id));
             dispatch(load_place(place_id));
-        }
-    }, [id]);
+        }            
+    }, [ place_id, id, reviewCount]);
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
@@ -90,7 +88,8 @@ const ReviewsPage = () => {
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
                 alert("Delete 요청 result: " + result);     
-                dispatch(load_reviews(place_id));        
+                dispatch(load_reviews(place_id));   
+                setReviewCount(reviewCount-1);     
             } else {
                 alert("실패!: " +message);
             }

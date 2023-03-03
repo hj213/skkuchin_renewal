@@ -2,7 +2,7 @@ import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
-import { load_review,  delete_review, modify_review} from "../actions/review/review"
+import { load_review,  delete_review, load_reviews, modify_review} from "../actions/review/review"
 import { load_places, load_place } from "../actions/place/place";
 
 import {BadgeProps} from '@mui/material/Badge'
@@ -83,7 +83,7 @@ const MyReviewPage = () => {
     const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
 
     const [selectedPlaceId, setSelectedPlaceId] = useState('');
-    
+
     const handleFilterChange = (event) => {
       setFilter(event.target.value);
     };
@@ -96,7 +96,7 @@ const MyReviewPage = () => {
         return () => {
             isMounted = false;
         };
-    }, [selectedPlaceId]);
+    }, [selectedPlaceId, dispatch]);
 
     const handleEdit = (reviewId) => {
         const review = reviews.find(item => item.id == reviewId);
@@ -108,15 +108,17 @@ const MyReviewPage = () => {
     }
 
     const handleDelete = (reviewId) =>{
-        alert("다음을 삭제할 것. "+ reviewId);
+        const review = reviews.find(item => item.id == reviewId);
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
-                alert("Delete 요청 result: " + result);            
+                alert("Delete 요청 result: " + result);    
+                dispatch(load_reviews(review.place_id));              
             } else {
                 alert("실패!: " +message);
             }
         }));
     } 
+
 
     return(
         <ThemeProvider theme={theme}>

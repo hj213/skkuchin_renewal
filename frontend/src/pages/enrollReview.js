@@ -54,6 +54,7 @@ const EnrollReview = () => {
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     const places = useSelector(state => state.place.searchplace);
+    const selectedPlace = useSelector(state => state.place.place);
 
     // 리뷰 (텍스트)
     const [textReview, setTextReview] = useState('');
@@ -201,20 +202,21 @@ const EnrollReview = () => {
                 <Grid container style={{padding: '10px 15px'}}>
                     <Grid style={{width:'100%'}}>
                         <CardContent>
-                        { places ? places.filter(item => item.id == place_id).map((item,index) => (
-                            <Grid container key={index} sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
+                        {/* { places ? places.filter(item => item.id == place_id).map((item,index) => ( */}
+                        { selectedPlace &&
+                            <Grid container sx={{mt:0, pt:11}} style={{ justifyContent:'center'}}>
                                 <Grid>
                                     <Typography sx={{fontSize: '23px', fontWeight:'500', lineHeight: '97%', verticalAlign: 'top'}} color="#000000" align="center">
-                                        {item.name}
+                                        {selectedPlace.name}
                                     </Typography>
                                 </Grid>
                                 <Grid>
                                     <Typography sx={{fontSize: '12px', fontWeight: '500', lineHeight: '250%', paddingLeft: '4px'}} color="#a1a1a1" component="div" align="center">
-                                        {item.detail_category}
+                                        {selectedPlace.detail_category}
                                     </Typography>
                                 </Grid>
                             </Grid>
-                        )) : null }
+                        }
 
                             <Grid sx={{width: '100%'}}>
                                 <Grid>
@@ -351,8 +353,8 @@ const EnrollReview = () => {
                             </Grid>
                             <Grid container style={{position:'relative', width:'100%'}}>
                                 <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
-                                    {previewImages.map((previewImage) => (
-                                        <Grid item style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
+                                    {previewImages.map((previewImage, index) => (
+                                        <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
                                             <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
                                                 objectPosition: 'center center' }} />
                                         </Grid>

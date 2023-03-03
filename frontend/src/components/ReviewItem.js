@@ -42,7 +42,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                 <Grid item xs={2} style={{marginTop:'3px'}}>
                     { review && review.user_id === user.id ?
                         <StyledBadge badgeContent={"나"}>
-                            <Avatar alt="" src={ user.image} />
+                            <Avatar alt="" src={ user.image } />
                         </StyledBadge> : <Avatar alt="" src={user.image} />}
                 </Grid>
                 <Grid item xs={10}>

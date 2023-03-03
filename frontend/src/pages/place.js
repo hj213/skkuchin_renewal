@@ -253,7 +253,6 @@ const PlacePage = () => {
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
-            alert(id);
             dispatch(load_place(id));
             dispatch(load_reviews(id));
             setPlaceId(id);
@@ -516,7 +515,7 @@ const PlacePage = () => {
                         </div>
                         {/* 이미지 */}
                         <Grid container style={{margin:'15px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
-                        {selectedPlace & allImages && allImages.length > 5 ? (
+                        {allImages && allImages.length > 5 ? (
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
