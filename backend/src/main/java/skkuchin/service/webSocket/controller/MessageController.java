@@ -22,7 +22,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class ChatMessageController {
+public class MessageController {
 
     private final RabbitTemplate template;
     private final ChatService chatService;

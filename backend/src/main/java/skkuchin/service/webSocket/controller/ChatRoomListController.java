@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.api.dto.DebeziumDto;
 import skkuchin.service.api.dto.UserDto;
-import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.service.ChatMessageService;
-import skkuchin.service.service.ChatService;
-import skkuchin.service.service.ChatSessionService;
 import skkuchin.service.service.UserService;
 
 import java.util.List;
@@ -20,7 +17,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class ChatListController {
+public class ChatRoomListController {
 
     private final RabbitTemplate template;
     private final ChatMessageService chatMessageService;

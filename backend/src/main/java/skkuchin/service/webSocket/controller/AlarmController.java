@@ -24,11 +24,11 @@ public class AlarmController {
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
 
 
-    @MessageMapping("chat.alarm.{chatRoomId}")
+    @MessageMapping("chat.alarm")
     public void newMatching(@Header("token") String token){
         String username = chatMessageService.getUserNameFromJwt(token);
         List<ChatRoomDto.userResponse> alarmList = chatMessageService.getAlarmList(username);
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+username+"alarm",alarmList);
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+username,alarmList);
 
     }
 }

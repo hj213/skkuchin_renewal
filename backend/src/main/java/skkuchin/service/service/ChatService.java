@@ -1,11 +1,15 @@
 package skkuchin.service.service;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.api.dto.ChatMessageDto;
 import skkuchin.service.api.dto.ChatRoomDto;
+import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
@@ -34,7 +38,7 @@ public class ChatService {
     public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
         return chatRepo.findByChatRoom(chatRoom)
                 .stream()
-                .map(message -> new ChatMessageDto.Response(message))
+                .map(message -> new ChatMessageDto.Response(message,chatRoom))
                 .collect(Collectors.toList());
     }
 
@@ -51,7 +55,7 @@ public class ChatService {
 
 
     @Transactional
-    public void makeRoom(AppUser user, ChatRoomDto.PostRequest dto){
+    public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
         ChatRoom chatRoom = dto.toEntity(user);
         String id = UUID.randomUUID().toString();
         AppUser user1 = userRepo.findByUsername(dto.getUserName());
@@ -61,16 +65,16 @@ public class ChatService {
     }
 
     @Transactional
-    public void user2Accept(ChatRoom chatRoom,AppUser user, String status){
-        if(status.equals("ACCEPT")){
+    public void user2Accept(ChatRoom chatRoom,AppUser user, ResponseType responseType){
+        if(responseType.equals(ResponseType.ACCEPT)){
             chatRoom.setResponse(ResponseType.ACCEPT);
             chatRoomRepo.save(chatRoom);
         }
-        else if(status.equals("REFUSE") ){
+        else if(responseType.equals(ResponseType.REFUSE) ){
             chatRoom.setResponse(ResponseType.REFUSE);
             chatRoomRepo.save(chatRoom);
         }
-        else if(status.equals("HOLD")){
+        else if(responseType.equals(ResponseType.HOLD)){
             chatRoom.setResponse(ResponseType.HOLD);
             chatRoomRepo.save(chatRoom);
         }
@@ -92,52 +96,57 @@ public class ChatService {
 
 
     @Transactional
-    public void blockUser(ChatRoom chatRoom, AppUser appUser){
-        if(appUser.getId() == chatRoom.getUser1().getId()){
-            chatRoom.setUser1Blocked(true);
-            chatRoomRepo.save(chatRoom);
+    public void blockUser(ChatRoom chatRoom, AppUser appUser, Boolean isTrue){
+        if(isTrue.equals(true)){
+            if(appUser.getId() == chatRoom.getUser1().getId()){
+                chatRoom.setUser1Blocked(true);
+                chatRoomRepo.save(chatRoom);
+            }
+            else if(appUser.getId() == chatRoom.getUser2().getId()){
+                chatRoom.setUser2Blocked(true);
+                chatRoomRepo.save(chatRoom);
+            }
         }
-        else if(appUser.getId() == chatRoom.getUser2().getId()){
-            chatRoom.setUser2Blocked(true);
-            chatRoomRepo.save(chatRoom);
+        else{
+            if(appUser.getId() == chatRoom.getUser1().getId()){
+                chatRoom.setUser1Blocked(false);
+                chatRoomRepo.save(chatRoom);
+            }
+            else if(appUser.getId() == chatRoom.getUser2().getId()){
+                chatRoom.setUser2Blocked(false);
+                chatRoomRepo.save(chatRoom);
+            }
+
         }
+
     }
 
 
     @Transactional
-    public void removeBlockedUser(ChatRoom chatRoom, AppUser appUser){
-        if(appUser.getId() == chatRoom.getUser1().getId()){
-            chatRoom.setUser1Blocked(false);
-            chatRoomRepo.save(chatRoom);
+    public void setAlarm(ChatRoom chatRoom, AppUser appUser, Boolean isTrue){
+        if(isTrue.equals(true)){
+            if(appUser.getId() == chatRoom.getUser1().getId()){
+                chatRoom.setUser1AlarmOn(true);
+                chatRoomRepo.save(chatRoom);
+            }
+            else if(appUser.getId() == chatRoom.getUser2().getId()){
+                chatRoom.setUSer2AlarmOn(true);
+                chatRoomRepo.save(chatRoom);
+            }
         }
-        else if(appUser.getId() == chatRoom.getUser2().getId()){
-            chatRoom.setUser2Blocked(false);
-            chatRoomRepo.save(chatRoom);
+        else{
+            if(appUser.getId() == chatRoom.getUser1().getId()){
+                chatRoom.setUser1AlarmOn(false);
+                chatRoomRepo.save(chatRoom);
+            }
+            else if(appUser.getId() == chatRoom.getUser2().getId()){
+                chatRoom.setUSer2AlarmOn(false);
+                chatRoomRepo.save(chatRoom);
+            }
         }
-    }
-    @Transactional
-    public void setAlarm(ChatRoom chatRoom, AppUser appUser){
-        if(appUser.getId() == chatRoom.getUser1().getId()){
-            chatRoom.setUser1AlarmOn(true);
-            chatRoomRepo.save(chatRoom);
-        }
-        else if(appUser.getId() == chatRoom.getUser2().getId()){
-            chatRoom.setUSer2AlarmOn(true);
-            chatRoomRepo.save(chatRoom);
-        }
+
     }
 
-    @Transactional
-    public void disableAlarm(ChatRoom chatRoom, AppUser appUser){
-        if(appUser.getId() == chatRoom.getUser1().getId()){
-            chatRoom.setUser1AlarmOn(false);
-            chatRoomRepo.save(chatRoom);
-        }
-        else if(appUser.getId() == chatRoom.getUser2().getId()){
-            chatRoom.setUSer2AlarmOn(false);
-            chatRoomRepo.save(chatRoom);
-        }
-    }
 
     @Transactional
     public void exitRoom(String roomId, AppUser appUser){
@@ -175,7 +184,7 @@ public class ChatService {
     public List<ChatMessageDto.Response> getLatestMessage(ChatRoom chatRoom){
         return chatRepo.findByLatestMessageTime(chatRoom.getRoomId())
                 .stream()
-                .map(message -> new ChatMessageDto.Response(message))
+                .map(message -> new ChatMessageDto.Response(message,chatRoom))
                 .collect(Collectors.toList());
     }
 
@@ -201,6 +210,8 @@ public class ChatService {
         AppUser user = userRepo.findById(chatRoom.getUser2().getId()).orElseThrow();
         return user;
     }
+
+
 
 
 }

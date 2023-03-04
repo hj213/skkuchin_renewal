@@ -49,7 +49,7 @@ public class ChatMessageService {
     public List<ChatRoomDto.Response> getChatList(String sender){
 
         AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepo.findByUser1Id(user.getId());
+        List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(user.getId());
         List<ChatRoomDto.Response> chatRoomsFindByUserId = chatRooms
                 .stream()
                 .map(chatRoom -> new ChatRoomDto.Response(chatRoom,getLatestMessage(chatRoom),

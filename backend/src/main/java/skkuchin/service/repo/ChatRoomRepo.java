@@ -14,17 +14,13 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
 
     @Query("SELECT a FROM ChatRoom a where (a.user2.id = :senderId OR a.user1.id = :senderId )" +
             "AND a.response = 'ACCEPT'")
-    List<ChatRoom> findByUser1Id
+    List<ChatRoom> findMyRoomList
             (@Param("senderId") Long senderId);
 
     @Query("SELECT a FROM ChatRoom a where a.user2.id = :senderId " +
-            "AND (a.response <> 'ACCEPT' OR a.response IS NULL OR a.response = '')")
+            "AND (a.response <> 'ACCEPT' OR a.response IS NULL OR a.response = '')" +
+            "AND a.response <> 'REFUSE'")
    List<ChatRoom> findByUser2Id
-            (@Param("senderId") Long senderId);
-
-    @Query("SELECT a FROM ChatRoom a where a.user1.id = :senderId " +
-            "AND (a.response <> 'ACCEPT' OR a.response IS NULL OR a.response = '')")
-    List<ChatRoom> findBySenderId
             (@Param("senderId") Long senderId);
 
 

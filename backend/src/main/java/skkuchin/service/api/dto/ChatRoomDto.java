@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import skkuchin.service.config.chat.ResponseCode;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.domain.User.AppUser;
 
 import java.time.LocalDateTime;
@@ -18,7 +20,7 @@ public class ChatRoomDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static  class PostRequest{
+    public static  class RoomRequest{
 
         @JsonProperty
         private String userName;
@@ -36,9 +38,18 @@ public class ChatRoomDto {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    public static  class Request{
+    public static  class ReactionRequest{
 
-        private String reaction;
+        private ResponseType reaction;
+
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static  class BooleanRequest{
+
+        private Boolean reaction;
 
     }
 

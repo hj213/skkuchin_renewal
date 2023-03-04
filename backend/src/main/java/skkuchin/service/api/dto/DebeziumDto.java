@@ -1,17 +1,12 @@
 package skkuchin.service.api.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
 @Setter
 public class DebeziumDto {
-
-
 
     @Getter
     @Setter
@@ -21,7 +16,6 @@ public class DebeziumDto {
         @Getter
         @Setter
         public static class Payload {
-            private UserDto.DebeziumUserResponse before;
             private UserDto.DebeziumUserResponse after;
             private String op;
 
@@ -36,7 +30,6 @@ public class DebeziumDto {
         @Getter
         @Setter
         public static class Payload {
-            private ChatMessageDto.DebeziumDto before;
             private ChatMessageDto.DebeziumDto after;
             private String op;
 
@@ -50,7 +43,6 @@ public class DebeziumDto {
         @Getter
         @Setter
         public static class Payload {
-            private ChatRoomDto.DebeziumDto before;
             private ChatRoomDto.DebeziumDto after;
             private String op;
 

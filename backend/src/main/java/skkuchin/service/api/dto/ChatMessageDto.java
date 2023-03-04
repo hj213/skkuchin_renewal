@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.bytebuddy.asm.Advice;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
@@ -41,7 +42,6 @@ public class ChatMessageDto {
                     .message(this.message)
                     .chatRoom(chatRoom)
                     .sender(user.getUsername())
-                    .date(LocalDateTime.now())
                     .build();
 
         }
@@ -55,10 +55,14 @@ public class ChatMessageDto {
         private String message;
         @JsonProperty
         private String roomId;
+
+        @JsonProperty
+        private LocalDateTime date;
         public Response(ChatMessage chatMessage, ChatRoom chatRoom){
             this.sender= chatMessage.getSender();
             this.message = chatMessage.getMessage();
             this.roomId = chatRoom.getRoomId();
+            this.date = chatMessage.getDate();
         }
 }
 

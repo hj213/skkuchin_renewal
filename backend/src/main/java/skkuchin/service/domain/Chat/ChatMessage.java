@@ -3,6 +3,7 @@ package skkuchin.service.domain.Chat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,12 +21,13 @@ public class ChatMessage {
 
     private String sender;
 
-    @Column
     private String message;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
+    @CreationTimestamp
     private LocalDateTime date;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
