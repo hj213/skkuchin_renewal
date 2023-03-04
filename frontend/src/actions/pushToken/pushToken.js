@@ -3,33 +3,30 @@ import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 import {
-    LOAD_PLACE_FAIL,
-    LOAD_PLACE_SUCCESS,
-    LOAD_PLACES_FAIL,
-    LOAD_PLACES_SUCCESS,
-    SEARCH_PLACES_SUCCESS,
-    SEARCH_PLACES_FAIL,
-    CLEAR_SEARCH_RESULTS
+    LOAD_PUSHTOKEN_FAIL,
+    LOAD_PUSHTOKEN_SUCCESS,
+    ENROLL_PUSHTOKEN_FAIL,
+    ENROLL_PUSHTOKEN_SUCCESS,
+    MODIFY_PUSHTOKEN_FAIL,
+    MODIFY_PUSHTOKEN_SUCCESS
 } from './types'
 
-//load_places
-export const load_places = (callback) => async dispatch => {
+export const load_token = async (callback) => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
-    if (access === null) {
+    if (access === nuwll) {
         console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
     }
-    
+
     try {
-        const res = await fetch(`${API_URL}/api/place`, {
+        const res = await fetch(`${API_URL}/api/push`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept': 'application/json',
             }
         });
 
@@ -37,35 +34,27 @@ export const load_places = (callback) => async dispatch => {
 
         if (res.status === 200) {
             dispatch({
-                type: LOAD_PLACES_SUCCESS,
+                type: LOAD_PUSHTOKEN_SUCCESS,
                 payload: apiRes.data
-            })
-            
+            });
+
             if (callback) callback([true, apiRes.message]);
-            
-            
         } else {
             dispatch({
-                type: LOAD_PLACES_FAIL
-            })
-            
+                type: LOAD_PUSHTOKEN_FAIL
+            });
             if (callback) callback([false, apiRes.message]);
-            
-            
         }
-    } catch (error) {
+    } catch(error) {
         dispatch({
-            type: LOAD_PLACES_FAIL
-        })
-        
-        if (callback) callback([false, error]);
-        
-        
-    }
-}
+            type: LOAD_PUSHTOKEN_FAIL
+        });
 
-//load_place
-export const load_place = (id, callback) => async dispatch => {
+        if (callback) callback([false, error]);
+    }
+};
+
+export const enroll_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback) => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -76,48 +65,46 @@ export const load_place = (id, callback) => async dispatch => {
         });
     }
 
+    const body = JSON.stringify({
+        token, isInfoAlarmOn, isChatAlarmOn
+    });
+
     try {
-        const res = await fetch(`${API_URL}/api/place/${id}`, {
-            method: 'GET',
+        const res = await fetch(`${API_URL}/api/push`, {
+            method: 'POST',
             headers: {
-                'Accept' : 'application/json',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${access}`
-            }
+            },
+            body: body
         });
 
         const apiRes = await res.json();
 
-        if (res.status === 200) {
+        if (res.status === 201) {
             dispatch({
-                type: LOAD_PLACE_SUCCESS,
-                payload: apiRes.data
-            })
-            
+                type: ENROLL_PUSHTOKEN_SUCCESS
+            });
+
             if (callback) callback([true, apiRes.message]);
-            
-            
         } else {
             dispatch({
-                type: LOAD_PLACE_FAIL
-            })
-            
-            if (callback) callback([false, apiRes.message]);
-            
-            
-        }
-    } catch (error) {
-        dispatch({
-            type: LOAD_PLACE_FAIL
-        })
-        
-        if (callback) callback([false, error]);
-        
-        
-    };
-}
+                type: ENROLL_PUSHTOKEN_FAIL
+            });
 
-//search_place
-export const search_places = (keyword, callback) => async dispatch => {
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: ENROLL_PUSHTOKEN_FAIL
+        });
+
+        if (callback) callback([false, error]);
+    }
+};
+
+export const modify_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback) => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -128,44 +115,41 @@ export const search_places = (keyword, callback) => async dispatch => {
         });
     }
 
+    const body = JSON.stringify({
+        token, isInfoAlarmOn, isChatAlarmOn
+    });
+
     try {
-        const res = await fetch(`${API_URL}/api/place/search?q=${keyword}`, {
-            method: 'GET',
+        const res = await fetch(`${API_URL}/api/push`, {
+            method: 'PUT',
             headers: {
-                'Accept' : 'application/json',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${access}`
-            }
+            },
+            body: body
         });
 
         const apiRes = await res.json();
 
         if (res.status === 200) {
             dispatch({
-                type: SEARCH_PLACES_SUCCESS,
-                payload: apiRes.data
-            })
-            
-            if (callback) callback([true, apiRes.message]);
-            
+                type: MODIFY_PUSHTOKEN_SUCCESS
+            });
 
+            if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
-                type: SEARCH_PLACES_FAIL
-            })
-            
-            if (callback) callback([false, apiRes.message]);
-            
-            
-        }
-    } catch (error) {
-        dispatch({
-            type: SEARCH_PLACES_FAIL
-        })
-        
-        if (callback) callback([false, error]);
-    };
-}
+                type: MODIFY_PUSHTOKEN_FAIL
+            });
 
-export const clear_search_results = () => ({
-    type: CLEAR_SEARCH_RESULTS
-});
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: MODIFY_PUSHTOKEN_FAIL
+        });
+
+        if (callback) callback([false, error]);
+    }
+};

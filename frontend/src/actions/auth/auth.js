@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import { API_URL } from '../../config';
+import { modify_token } from '../pushToken/pushToken';
 import { 
     REGISTER_SUCCESS,
     REGISTER_FAIL,
