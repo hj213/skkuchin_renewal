@@ -2,9 +2,7 @@ import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
-import { load_review } from "../actions/review/review";
-import { load_reviews } from "../actions/review/review";
-import { modify_review } from "../actions/review/review";
+import { modify_review, clear_my_review, load_reviews } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider, Button, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import Layout from '../hocs/Layout';
@@ -102,7 +100,6 @@ const ModifyReview = () => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             setPlaceId(id);
             dispatch(load_reviews(id));
-            alert(review.content +' ' + review.images.length);
         }
     }, [id]);
 
@@ -168,6 +165,7 @@ const ModifyReview = () => {
         dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
             if(result){
                 alert("PUT 요청 result: " + result)
+                dispatch(clear_my_review());
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }

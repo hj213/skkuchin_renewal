@@ -2,7 +2,7 @@ import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
-import { load_review,  delete_review, load_reviews, modify_review} from "../actions/review/review"
+import { load_review,  delete_review, modify_review, clear_my_review} from "../actions/review/review"
 import { load_places, load_place } from "../actions/place/place";
 
 import {BadgeProps} from '@mui/material/Badge'
@@ -18,7 +18,6 @@ import { displayReviewTag, reviewsTags } from "../components/TagList";
 import MyReviewItem from "../components/MyReviewItem";
 import more from '../image/more_vert.png';
 
-// 야매임, 수정 필요
 const MyReviewPage = () => {
 
     const router = useRouter();
@@ -28,23 +27,25 @@ const MyReviewPage = () => {
     const reviews = useSelector(state => state.review.myReview);
  
     const allPlaces = useSelector(state => state.place.allplaces);
- 
+    const [selectedPlaceId, setSelectedPlaceId] = useState('');
+
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
-
-    useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined ) {
-            dispatch(load_review());
-        }
-    }, [dispatch]);
-
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_places());
+            dispatch(load_review());
         }
     }, []);
+
+
+    useEffect(() => {
+        if(dispatch && dispatch !== null && dispatch !== undefined ) {
+            dispatch(load_place(selectedPlaceId));
+        }
+    }, [selectedPlaceId]);
 
         //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -82,21 +83,9 @@ const MyReviewPage = () => {
     
     const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
 
-    const [selectedPlaceId, setSelectedPlaceId] = useState('');
-
     const handleFilterChange = (event) => {
       setFilter(event.target.value);
     };
-
-    useEffect(() => {
-        // let isMounted = true;
-        if(dispatch && dispatch !== null && dispatch !== undefined ) {
-            dispatch(load_place(selectedPlaceId));
-        }
-        // return () => {
-        //     isMounted = false;
-        // };
-    }, [selectedPlaceId, dispatch]);
 
     const handleEdit = (reviewId) => {
         const review = reviews && reviews.find(item => item.id == reviewId);
@@ -112,7 +101,7 @@ const MyReviewPage = () => {
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
                 alert("Delete 요청 result: " + result);    
-                dispatch(load_reviews(review.place_id));              
+                dispatch(load_review());             
             } else {
                 alert("실패!: " +message);
             }

@@ -32,10 +32,8 @@ const ReviewsPage = () => {
 
     // place, 가게 정보 (place API)
     const [place_id, setPlaceId] = useState(id || '');
-    const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
-    const [reviewCount, setReviewCount] = useState(selectedPlace?.review_count || "");
-  
+   
     useEffect(() => {
         if(dispatch && place_id !== '' && id !== '' ) {
             setPlaceId(place_id);

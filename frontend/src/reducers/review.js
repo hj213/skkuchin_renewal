@@ -6,7 +6,8 @@ import{
     DELETE_REVIEW_FAIL,
     DELETE_REVIEW_SUCCESS,
     MODIFY_REVIEW_FAIL,
-    MODIFY_REVIEW_SUCCESS
+    MODIFY_REVIEW_SUCCESS,
+    CLEAR_MY_REVIEW,
 } from '../actions/review/types'
 
 const initialState = {
@@ -53,6 +54,11 @@ const reviewReducer = (state = initialState, action) => {
             return{
                 ...state
             }
+        case CLEAR_MY_REVIEW:
+            return{
+                ...state,
+                myReview: null
+            };
         default:
             return state;
     }
