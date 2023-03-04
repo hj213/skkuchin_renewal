@@ -1,13 +1,13 @@
 package skkuchin.service.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.User.PushToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -43,6 +43,30 @@ public class FCMService {
                     .build();
 
             FirebaseMessaging.getInstance().send(message);
+        } catch (FirebaseMessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendInfoNotification(List<PushToken> pushTokens, String title, String content) {
+        try {
+            List<String> registrationTokens = new ArrayList<>();
+
+            for (PushToken pushToken : pushTokens) {
+                if (pushToken.getToken() != null && pushToken.isInfoAlarmOn()) {
+                    registrationTokens.add(pushToken.getToken());
+                }
+            }
+
+            MulticastMessage message = MulticastMessage.builder()
+                    .addAllTokens(registrationTokens)
+                    .setNotification(Notification.builder()
+                            .setTitle(title)
+                            .setBody(content)
+                            .build())
+                    .build();
+
+            FirebaseMessaging.getInstance().sendMulticast(message);
         } catch (FirebaseMessagingException e) {
             throw new RuntimeException(e);
         }

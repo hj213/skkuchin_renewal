@@ -22,10 +22,18 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/push_token")
+@RequestMapping("/api/push")
 @Slf4j
 public class PushTokenController {
     private final PushTokenService pushTokenService;
+
+    @GetMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> get(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        PushTokenDto.Response dto = pushTokenService.get(user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "토큰 조회 완료", dto), HttpStatus.OK);
+    }
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
@@ -35,7 +43,7 @@ public class PushTokenController {
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             }
-            throw new CustomValidationApiException("토큰이 존재하지 않습니다", errorMap);
+            throw new CustomValidationApiException("데이터가 올바르지 않습니다", errorMap);
         }
         AppUser user = principalDetails.getUser();
         pushTokenService.upload(user, dto);
@@ -50,7 +58,7 @@ public class PushTokenController {
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             }
-            throw new CustomValidationApiException("토큰이 존재하지 않습니다", errorMap);
+            throw new CustomValidationApiException("데이터가 올바르지 않습니다", errorMap);
         }
         AppUser user = principalDetails.getUser();
         pushTokenService.update(user, dto);

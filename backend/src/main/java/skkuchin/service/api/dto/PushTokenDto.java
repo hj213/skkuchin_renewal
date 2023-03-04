@@ -1,23 +1,19 @@
 package skkuchin.service.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
-import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.PushToken;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import skkuchin.service.domain.User.*;
 
 public class PushTokenDto {
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Request {
-        @NotBlank
         private String token;
-        @NotNull
+        @JsonProperty
         private Boolean isChatAlarmOn;
-        @NotNull
+        @JsonProperty
         private Boolean isInfoAlarmOn;
 
         public PushToken toEntity(AppUser user) {
@@ -27,6 +23,25 @@ public class PushTokenDto {
                     .isInfoAlarmOn(this.isInfoAlarmOn)
                     .user(user)
                     .build();
+        }
+    }
+
+    @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class Response {
+        @JsonProperty
+        private Long tokenId;
+        private String token;
+        @JsonProperty
+        private Boolean isChatAlarmOn;
+        @JsonProperty
+        private Boolean isInfoAlarmOn;
+
+        public Response(PushToken pushToken) {
+            this.tokenId = pushToken.getId();
+            this.token = pushToken.getToken() ;
+            this.isChatAlarmOn = pushToken.isChatAlarmOn();
+            this.isInfoAlarmOn =  pushToken.isInfoAlarmOn();
         }
     }
 }

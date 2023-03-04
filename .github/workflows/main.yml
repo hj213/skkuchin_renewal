@@ -29,6 +29,14 @@ jobs:
         run: |
           sed -i 's|export const API_URL = process.env.NEXT_PUBLIC_API_URL;|export const API_URL = "https://www.skkuchin.com";|' frontend/src/config/index.js
           sed -i 's|export const KAKAOMAP_APPKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY;|export const KAKAOMAP_APPKEY = "0d8f0e65047ebb4fce295a83614d7fae";|' frontend/src/config/index.js
+          sed -i 's|export const FIREBASE_VAPID_KEY = '';|export const FIREBASE_VAPID_KEY = "BOBg9xf76J229A6M-Vc6kfxtza6bXB1N9cYCxp2MOh2zNcx73pGocGUeVofNbe_TW0b5XVQ3NsGncxt-LAA0gys";|' frontend/src/config/index.js
+          sed -i 's|apiKey: "",|apiKey: "AIzaSyCJfOv3y3wkfgwdZ4B013eyIhOXDDjp72w",|' frontend/public/firebase-messaging-sw.js
+          sed -i 's|authDomain: "",|authDomain: "skkuchin-renewal-d20c6.firebaseapp.com",|' frontend/public/firebase-messaging-sw.js
+          sed -i 's|projectId: "",|projectId: "skkuchin-renewal-d20c6",|' frontend/public/firebase-messaging-sw.js
+          sed -i 's|storageBucket: "",|storageBucket: "skkuchin-renewal-d20c6.appspot.com",|' frontend/public/firebase-messaging-sw.js
+          sed -i 's|messagingSenderId: "",|messagingSenderId: "344929940532",|' frontend/public/firebase-messaging-sw.js
+          sed -i 's|appId: "",|appId: "1:344929940532:web:07d2e9d94a19828ce5c661",|' frontend/public/firebase-messaging-sw.js
+          sed -i 's|measurementId: ""|measurementId: "G-0H1CX4383K"|' frontend/public/firebase-messaging-sw.js
 
       - name: Copy prod ServiceApplication.java file
         run: |

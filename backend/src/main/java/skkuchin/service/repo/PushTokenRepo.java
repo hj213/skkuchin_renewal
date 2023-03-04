@@ -5,5 +5,5 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.PushToken;
 
 public interface PushTokenRepo extends JpaRepository<PushToken, Long> {
-    PushToken findByUsername(AppUser user);
+    PushToken findByUser(AppUser user);
 }
