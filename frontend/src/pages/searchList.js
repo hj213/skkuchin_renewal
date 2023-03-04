@@ -54,12 +54,6 @@ export default function searchList(){
         }
     }, [keyword]);
 
-    useEffect(() => {
-        if (!allplaces || allplaces.length === 0) {
-            dispatch(load_places());
-        }
-    }, [allplaces]);
-
     //캠퍼스 필터링
     useEffect(() => {
         if (searchplace && allplaces && user) {
