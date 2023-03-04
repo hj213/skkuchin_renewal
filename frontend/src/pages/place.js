@@ -30,7 +30,7 @@ import { textAlign } from "@mui/system";
 const PlacePage = () => {
 
     const WINDOW_HEIGHT = window.innerHeight;
-    const TARGET_HEIGHT = WINDOW_HEIGHT - 80;
+    const TARGET_HEIGHT = WINDOW_HEIGHT - 78;
     const router = useRouter();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -162,7 +162,7 @@ const PlacePage = () => {
             if(WINDOW_HEIGHT < 750){
                 setHeight(270)
             } else {
-                setHeight(430)
+                setHeight(435)
             }
             setIsTall(false);
             setScroll("");
@@ -175,6 +175,7 @@ const PlacePage = () => {
                 iconVisibility:'visible'
             });
         } 
+        console.log(scroll);
       };
   
       
@@ -196,6 +197,7 @@ const PlacePage = () => {
             setScroll('');
             cardRef.current.scrollTo({top:0});
         } 
+    
     };
 
     // Favorite 관리

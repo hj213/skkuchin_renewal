@@ -183,9 +183,9 @@ export default function list(){
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
             cardRef.current.scrollTo({top:0});
             if(WINDOW_HEIGHT < 750){
-                setHeight('175px')
+                setHeight(187)
             } else {
-                setHeight('320px')
+                setHeight(345)
             }
             setIsTall(false);
             setPreventScroll("");
@@ -199,12 +199,6 @@ export default function list(){
             });
         } 
         
-      };
-  
-      const handleTouchEnd = () => {
-        if (cardRef.current.offsetHeight === TARGET_HEIGHT) {
-        //   setPreventScroll("scroll");
-        }
       };
     
     // // 아이콘 클릭했을 때 이벤트
@@ -222,7 +216,7 @@ export default function list(){
                 iconVisibility: 'visible'
             });
             setPreventScroll('');
-            cardRef.current.scrollTo({top:0, behavior:'smooth'});
+            cardRef.current.scrollTo({top:0});
             setIsTall(false);
         } else{
             setKeyword('');
@@ -390,7 +384,6 @@ export default function list(){
                 ref={cardRef}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
                  >
                 <div style={{height:height, }} className="card-content">
                     {
@@ -408,12 +401,20 @@ export default function list(){
                                         <Grid item xs >
                                             <CardContent style={{padding:'0px'}}>
                                                 <Grid container spacing={2} style={{margin:'0px',}}>
-                                                    <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
-                                                        <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
-                                                            {item.name}
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
+                                                    {isSmallScreen ?
+                                                        <Grid item style={{marginTop:'15px',  padding:'0px 0px 0px 0px'}}>
+                                                            <Typography sx={{fontSize: '16px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
+                                                                {item.name}
+                                                            </Typography>
+                                                        </Grid>
+                                                        : 
+                                                        <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
+                                                            <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
+                                                                {item.name}
+                                                            </Typography>
+                                                        </Grid>
+                                                    }
+                                                    {/* <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
                                                         {isSmallScreen && (item.name.length >=13)?
                                                         <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
                                                             {item.detail_category}
@@ -424,7 +425,15 @@ export default function list(){
                                                         </Typography>
                                                         }
                                                         <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
-                                                    </Grid>
+                                                    </Grid> */}
+                                                    <Grid item style={{padding:'0px 0px 0px 8px'}}>
+                                                            <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
+                                                                {item.detail_category}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
+                                                            {isFavorite(item.id)}
+                                                        </Grid>
                                                 </Grid>
                                                 <Grid item container style={{marginTop: '10px'}}>
                                                     <Grid >
