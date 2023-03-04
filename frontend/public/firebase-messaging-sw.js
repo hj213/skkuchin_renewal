@@ -8,13 +8,13 @@ importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js')
 // your app's Firebase config object.
 // https://firebase.google.com/docs/web/setup#config-object
 firebase.initializeApp({
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "",
-    measurementId: ""
+    apiKey: "AIzaSyCJfOv3y3wkfgwdZ4B013eyIhOXDDjp72w",
+    authDomain: "skkuchin-renewal-d20c6.firebaseapp.com",
+    projectId: "skkuchin-renewal-d20c6",
+    storageBucket: "skkuchin-renewal-d20c6.appspot.com",
+    messagingSenderId: "344929940532",
+    appId: "1:344929940532:web:07d2e9d94a19828ce5c661",
+    measurementId: "G-0H1CX4383K"
 });
 
 const messaging = firebase.messaging();

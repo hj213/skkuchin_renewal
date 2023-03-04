@@ -38,7 +38,6 @@ public class FriebaseConfig {
             }
         } catch (IOException e) {
             log.error(e.getMessage());
-            // spring 뜰때 알림 서버가 잘 동작하지 않는 것이므로 바로 죽임
             throw new RuntimeException(e.getMessage());
         }
     }
