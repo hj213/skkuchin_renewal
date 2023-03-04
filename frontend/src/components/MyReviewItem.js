@@ -1,6 +1,6 @@
 import { useDispatch, useSelector} from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
-import { IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
+import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import more from '../image/more_vert.png';
@@ -21,6 +21,15 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
     const handleMenuClose = () => {
       setAnchorEl(null);
     };
+      // 밥약 신청하기 버튼
+    const [open, setOpen] = useState(false);
+    const handleSubmit = () => {
+        setOpen(true);
+    }
+    const handleClose = () => {
+        setOpen(false);
+    }
+  
   
     return (
         <Container key={index} sx={{listStyle: 'none', pl: '35px'}}>
@@ -51,10 +60,41 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
                                         <MenuItem sx={{fontSize: '15px', color: '#FFCE00'}} onClick={()=>handleEdit(review.id)}>
                                             수정 
                                         </MenuItem>
-                                        <MenuItem sx={{fontSize: '15px'}} onClick={()=> {handleDelete(review.id); handleMenuClose();}}>
-                                            삭제
+                                        <MenuItem sx={{fontSize: '15px'}} onClick={handleSubmit}>
+                                            삭제 
                                         </MenuItem>
                                     </Menu>
+                                    <Dialog
+                                        open={open}
+                                        onClose={handleClose}
+                                        PaperProps={{
+                                            style: { 
+                                            borderRadius: '10px', 
+                                            boxShadow: 'none', 
+                                            maxWidth: '100vw', 
+                                            maxHeight: '100vh'
+                                            }
+                                        }}
+                                        BackdropProps={{
+                                            sx: {
+                                            backgroundColor: 'rgba(50, 50, 50, 0.25)',
+                                            maxWidth: '100vw',
+                                            maxHeight: '100vh'
+                                            }
+                                        }}
+                                    >
+                                        <DialogContent sx={{p: '20px 24px 13px'}}>
+                                            <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
+                                                <DialogTitle component="span" sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>{"삭제하시겠습니까?"}</DialogTitle>
+                                            </DialogContentText>
+                                        </DialogContent>
+                                        <DialogActions sx={{p:'0'}}>
+                                            <div style={{width: '100%', paddingBottom: '16px'}}>
+                                                <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
+                                                <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={()=> {handleDelete(review.id); handleClose(); handleMenuClose();}}>삭제</Button>
+                                            </div>
+                                        </DialogActions>
+                                    </Dialog>
                                 </Grid>
                             </Grid>
                             <Grid style={{display:'flex'}}>

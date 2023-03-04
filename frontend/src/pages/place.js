@@ -124,8 +124,10 @@ const PlacePage = () => {
             setPlaceId(id);
             dispatch(load_favorite());
             dispatch(load_menu(id));
+            dispatch(load_place(id));
+            dispatch(load_reviews(id));
         }
-    }, [dispatch, id]);
+    }, [id]);
 
         
     const handleTouchStart = (event) => {
@@ -279,14 +281,6 @@ const PlacePage = () => {
 
     const totalImageCount = reviews && reviews.reduce((acc, review) => acc + review.images.length, 0);
     const totalImagesUrl = reviews && reviews.map(review => review.images).flatMap(imageArray => imageArray);
-
-    useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
-            dispatch(load_place(id));
-            dispatch(load_reviews(id));
-            setPlaceId(id);
-        }
-    }, [id]);
 
     const allImages = selectedPlace && selectedPlace.images ? selectedPlace.images.concat(totalImagesUrl) : [];
 

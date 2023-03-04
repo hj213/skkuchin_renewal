@@ -6,7 +6,8 @@ import{
     DELETE_REVIEW_FAIL,
     DELETE_REVIEW_SUCCESS,
     MODIFY_REVIEW_FAIL,
-    MODIFY_REVIEW_SUCCESS
+    MODIFY_REVIEW_SUCCESS,
+    CLEAR_MY_REVIEW,
 } from '../actions/review/types'
 
 const initialState = {
@@ -30,12 +31,12 @@ const reviewReducer = (state = initialState, action) => {
         case LOAD_REVIEW_SUCCESS:
             return{
                 ...state,
-                review: payload
+                myReview: payload
             }
         case LOAD_REVIEW_FAIL:
             return{
                 ...state,
-                review: null
+                myReview: null
             }
         case DELETE_REVIEW_SUCCESS:
             return{
@@ -53,6 +54,11 @@ const reviewReducer = (state = initialState, action) => {
             return{
                 ...state
             }
+        case CLEAR_MY_REVIEW:
+            return{
+                ...state,
+                myReview: null
+            };
         default:
             return state;
     }

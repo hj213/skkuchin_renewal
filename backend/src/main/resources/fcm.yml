@@ -1,4 +1,0 @@
-fcm:
-  key:
-    path: skkuchin-fcm.json
-    scope: https://www.googleapis.com/auth/cloud-platform
