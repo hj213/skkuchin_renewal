@@ -54,11 +54,11 @@ const PlacePage = () => {
 
     useEffect(() => {
         if (place && user != null && user.toggle!=null) {
-          setFilteredPlace(place.filter(item => item.campus === user.toggle));
+            setFilteredPlace(place.filter(item => item.campus === user.toggle));
         } else {
-          if(tags != null) setFilteredPlace(null);
+            if (tags != null) setFilteredPlace(null);
         }
-      }, [place, user]);
+    }, [place, user]);
 
     // Part 2) menu, 가게 정보 (menu API)
     const menus = useSelector(state => state.menu.menu);
@@ -122,10 +122,13 @@ const PlacePage = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            dispatch(load_favorite());
-            dispatch(load_menu(id));
-            dispatch(load_place(id));
-            dispatch(load_reviews(id));
+            dispatch(load_favorite(([result, message]) => {
+                dispatch(load_place(id, ([result, message]) => {
+                    dispatch(load_menu(id, ([result, message]) => {
+                        dispatch(load_reviews(id));
+                    }));
+                }));
+            }));
         }
     }, [id]);
 
@@ -139,7 +142,7 @@ const PlacePage = () => {
             setScroll("");
             setStartY(event.touches[0].clientY);
         }
-      };
+    };
 
     const handleTouchMove = (event) => {
         const touchY = event.touches[0].clientY;
@@ -176,11 +179,11 @@ const PlacePage = () => {
             });
         } 
         console.log(scroll);
-      };
-  
-      
+    };
+
+
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
-     const handleOnclick = (event) =>{
+    const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
@@ -206,7 +209,6 @@ const PlacePage = () => {
     }
     
     const handleFavClick = (placeId) => {
-        dispatch(load_favorite());
         const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
         if(favorite_id) {
             dispatch(delete_favorite(favorite_id.id));
@@ -266,11 +268,11 @@ const PlacePage = () => {
     const handleTouch = (index) => {
         // setRating(index);
         if (index + 1 === rating) {
-          setRating(0);
+            setRating(0);
         } else {
-          setRating(index + 1);
+            setRating(index + 1);
         }
-      };
+    };
 
     // 리뷰 파트 컴포넌트화 필요 
     const selectedPlace = useSelector(state => state.place.place);
@@ -302,7 +304,7 @@ const PlacePage = () => {
     const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
 
     const handleFilterChange = (event) => {
-      setFilter(event.target.value);
+        setFilter(event.target.value);
     };
 
     return (

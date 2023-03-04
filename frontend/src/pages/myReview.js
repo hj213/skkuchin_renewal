@@ -27,7 +27,6 @@ const MyReviewPage = () => {
     const reviews = useSelector(state => state.review.myReview);
  
     const allPlaces = useSelector(state => state.place.allplaces);
-    const [selectedPlaceId, setSelectedPlaceId] = useState('');
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -39,13 +38,6 @@ const MyReviewPage = () => {
             dispatch(load_review());
         }
     }, []);
-
-
-    useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined ) {
-            dispatch(load_place(selectedPlaceId));
-        }
-    }, [selectedPlaceId]);
 
         //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -89,7 +81,7 @@ const MyReviewPage = () => {
 
     const handleEdit = (reviewId) => {
         const review = reviews && reviews.find(item => item.id == reviewId);
-        setSelectedPlaceId(review.place_id);
+        dispatch(load_place(review.place_id));
         router.push({
             pathname: '/modifyReview',
             query: { id: review.place_id, review_id: review.id }
@@ -101,7 +93,7 @@ const MyReviewPage = () => {
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
                 alert("Delete 요청 result: " + result);    
-                dispatch(load_review());             
+                dispatch(load_review());
             } else {
                 alert("실패!: " +message);
             }

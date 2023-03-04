@@ -159,14 +159,6 @@ export default function makeProfile(){
     const src = router.query.src;
     const height = window.innerHeight;
     const username = router.query.username;
-
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_user());
-
-        }
-
-    }, [dispatch]);
     
     const [womanClick, setWomanClick] = useState(false);
     const [manClick, setManClick] = useState(false);

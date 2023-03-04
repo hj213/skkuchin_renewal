@@ -48,13 +48,6 @@ export default function myPage() {
         setDialogOpen(false);
     }
 
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_user());
-        }
-    }, [dispatch])
-
-
     const IOSSwitch = styled((props) => (
         <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
         ))(({ theme }) => ({

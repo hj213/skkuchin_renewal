@@ -2,6 +2,11 @@ import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
+import {
+    SEND_CHAT_MESSAGE_SUCCESS,
+    SEND_CHAT_MESSAGE_FAIL
+}
+    from './types';
 
 export const send_message = async (message, room_id, callback) => {
     await dispatch(request_refresh());
@@ -32,11 +37,20 @@ export const send_message = async (message, room_id, callback) => {
         const apiRes = await res.json();
 
         if (res.status === 201) {
+            dispatch({
+                type: SEND_CHAT_MESSAGE_SUCCESS
+            })
             if (callback) callback([true, apiRes.message]);
         } else {
+            dispatch({
+                type: SEND_CHAT_MESSAGE_FAIL
+            })
             if (callback) callback([false, apiRes.message]);
         }
     } catch(error) {
+        dispatch({
+            type: SEND_CHAT_MESSAGE_FAIL
+        })
         if (callback) callback([false, error]);
     }
 };

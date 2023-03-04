@@ -9,7 +9,6 @@ import Link from 'next/link';
 
 // MyReviewItem 컴포넌트 추출
 const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
-    const dispatch = useDispatch();
     const allPlaces = useSelector(state => state.place.allplaces);
 
     const [anchorEl, setAnchorEl] = useState(null);

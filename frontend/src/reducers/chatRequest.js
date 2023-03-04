@@ -8,7 +8,7 @@ const initialState = {
     chatRequest: null,
 };
 
-const chatRoomReducer = (state= initialState, action) => {
+const chatRequestReducer = (state= initialState, action) => {
     const { type, payload } = action;
 
     switch(type){
@@ -27,4 +27,4 @@ const chatRoomReducer = (state= initialState, action) => {
     };
 }
 
-export default chatRoomReducer;
+export default chatRequestReducer;
