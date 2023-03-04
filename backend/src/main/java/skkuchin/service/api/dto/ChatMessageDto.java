@@ -28,14 +28,12 @@ public class ChatMessageDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static  class PostRequest{
+    public static  class Request{
 
         private String message;
 
         @JsonProperty
         private String roomId;
-
-
 
 
         public ChatMessage toEntity(ChatRoom chatRoom, AppUser user){
@@ -51,15 +49,16 @@ public class ChatMessageDto {
 
     @Getter
     @RequiredArgsConstructor
-
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response{
-        private Long id;
         private String sender;
         private String message;
-        public Response(ChatMessage chatMessage){
-            this.id = chatMessage.getId();;
+        @JsonProperty
+        private String roomId;
+        public Response(ChatMessage chatMessage, ChatRoom chatRoom){
             this.sender= chatMessage.getSender();
             this.message = chatMessage.getMessage();
+            this.roomId = chatRoom.getRoomId();
         }
 }
 

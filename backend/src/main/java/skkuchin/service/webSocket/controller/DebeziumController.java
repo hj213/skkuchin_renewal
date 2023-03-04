@@ -15,7 +15,6 @@ import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.UserService;
-
 import java.util.List;
 
 @RestController
@@ -25,11 +24,10 @@ public class DebeziumController {
     private final RabbitTemplate template;
     private final ChatService chatService;
     private final ChatMessageService chatMessageService;
-    private final ChatRoomRepo chatRoomRepository;
+    private final ChatRoomRepo chatRoomRepo;
     private final UserService userService;
 
-
-
+    
     @KafkaListener(topics = "dbserver.service.chat_message")
     public void listenChatMessage(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
@@ -152,7 +150,7 @@ public class DebeziumController {
             template.convertAndSend(CHAT_EXCHANGE_NAME,
                     "room."+userName1+"alarm",dto);
 
-            List<ChatRoom> chatRooms = chatRoomRepository.findByUser1Id(userId);
+            List<ChatRoom> chatRooms = chatRoomRepo.findByUser1Id(userId);
             for (int i = 0; i < chatRooms.size(); i++) {
                 template.convertAndSend(CHAT_EXCHANGE_NAME,
                         "room."+chatRooms.get(i).getRoomId()+"user1",dto);

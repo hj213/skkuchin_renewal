@@ -21,7 +21,7 @@ public class ChatMessageController {
 
     private final ChatMessageService chatMessageService;
     @PostMapping("")
-    public ResponseEntity<?> createMessage(@RequestBody ChatMessageDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public ResponseEntity<?> createMessage(@RequestBody ChatMessageDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         AppUser user = principalDetails.getUser();
         chatMessageService.write(user,dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅 메시지 생성 완료", null), HttpStatus.CREATED);

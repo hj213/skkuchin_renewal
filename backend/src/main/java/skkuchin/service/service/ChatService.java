@@ -24,15 +24,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ChatService {
-    private final ChatRoomRepo chatRoomRepository;
-    private final ChatRepo chatRepository;
+    private final ChatRoomRepo chatRoomRepo;
+    private final ChatRepo chatRepo;
     private final UserRepo userRepo;
     private final ChatMessageService chatMessageService;
 
 
     //채팅방의 메시지들 조회
     public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
-        return chatRepository.findByChatRoom(chatRoom)
+        return chatRepo.findByChatRoom(chatRoom)
                 .stream()
                 .map(message -> new ChatMessageDto.Response(message))
                 .collect(Collectors.toList());
@@ -40,13 +40,13 @@ public class ChatService {
 
 
     public void updateReadStatus(ChatRoom chatRoom, String sender){
-        List<ChatMessage> chatMessages = chatRepository.findByChatRoom(chatRoom);
+        List<ChatMessage> chatMessages = chatRepo.findByChatRoom(chatRoom);
         for (int i = 0; i<chatMessages.size(); i++) {
             if(chatMessages.get(i).isReadStatus() == false && !chatMessages.get(i).getSender().equals(sender)){
                 chatMessages.get(i).setReadStatus(true);
             }
         }
-        chatRepository.saveAll(chatMessages);
+        chatRepo.saveAll(chatMessages);
     }
 
 
@@ -57,35 +57,35 @@ public class ChatService {
         AppUser user1 = userRepo.findByUsername(dto.getUserName());
         chatRoom.setRoomId(id);
         chatRoom.setUser2(user1);
-        chatRoomRepository.save(chatRoom);
+        chatRoomRepo.save(chatRoom);
     }
 
     @Transactional
     public void user2Accept(ChatRoom chatRoom,AppUser user, String status){
         if(status.equals("ACCEPT")){
             chatRoom.setResponse(ResponseType.ACCEPT);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
         else if(status.equals("REFUSE") ){
             chatRoom.setResponse(ResponseType.REFUSE);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
         else if(status.equals("HOLD")){
             chatRoom.setResponse(ResponseType.HOLD);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
     }
 
 
     @Transactional
     public ChatRoom findChatroom(String roomId){
-        ChatRoom chatroom = chatRoomRepository.findByRoomId(roomId);
+        ChatRoom chatroom = chatRoomRepo.findByRoomId(roomId);
         return chatroom;
     }
 
     @Transactional
     public ChatRoom findChatById(Long id){
-        ChatRoom chatroom = chatRoomRepository.findById(id).orElseThrow();
+        ChatRoom chatroom = chatRoomRepo.findById(id).orElseThrow();
         return chatroom;
     }
 
@@ -95,11 +95,11 @@ public class ChatService {
     public void blockUser(ChatRoom chatRoom, AppUser appUser){
         if(appUser.getId() == chatRoom.getUser1().getId()){
             chatRoom.setUser1Blocked(true);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
         else if(appUser.getId() == chatRoom.getUser2().getId()){
             chatRoom.setUser2Blocked(true);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
     }
 
@@ -108,22 +108,22 @@ public class ChatService {
     public void removeBlockedUser(ChatRoom chatRoom, AppUser appUser){
         if(appUser.getId() == chatRoom.getUser1().getId()){
             chatRoom.setUser1Blocked(false);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
         else if(appUser.getId() == chatRoom.getUser2().getId()){
             chatRoom.setUser2Blocked(false);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
     }
     @Transactional
     public void setAlarm(ChatRoom chatRoom, AppUser appUser){
         if(appUser.getId() == chatRoom.getUser1().getId()){
             chatRoom.setUser1AlarmOn(true);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
         else if(appUser.getId() == chatRoom.getUser2().getId()){
             chatRoom.setUSer2AlarmOn(true);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
     }
 
@@ -131,25 +131,25 @@ public class ChatService {
     public void disableAlarm(ChatRoom chatRoom, AppUser appUser){
         if(appUser.getId() == chatRoom.getUser1().getId()){
             chatRoom.setUser1AlarmOn(false);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
         else if(appUser.getId() == chatRoom.getUser2().getId()){
             chatRoom.setUSer2AlarmOn(false);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
     }
 
     @Transactional
     public void exitRoom(String roomId, AppUser appUser){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         if(appUser.getId().equals(chatRoom.getUser1().getId())){
             chatRoom.setUser1(null);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
 
         else if(appUser.getId().equals(chatRoom.getUser2().getId())){
             chatRoom.setUser2(null);
-            chatRoomRepository.save(chatRoom);
+            chatRoomRepo.save(chatRoom);
         }
 
     }
@@ -161,10 +161,10 @@ public class ChatService {
     @Transactional
     @Scheduled(cron = "* 0 * * * ?") //정각에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {
-        List<ChatRoom> chatRooms = chatRoomRepository.findByExpireDateBefore(LocalDateTime.now());
+        List<ChatRoom> chatRooms = chatRoomRepo.findByExpireDateBefore(LocalDateTime.now());
         for (int i = 0; i < chatRooms.size(); i++) {
             if(!chatRooms.get(i).getResponse().equals(ResponseType.ACCEPT)){
-                chatRoomRepository.delete(chatRooms.get(i));
+                chatRoomRepo.delete(chatRooms.get(i));
             }
 
         }
@@ -173,7 +173,7 @@ public class ChatService {
 
     @Transactional
     public List<ChatMessageDto.Response> getLatestMessage(ChatRoom chatRoom){
-        return chatRepository.findByLatestMessageTime(chatRoom.getRoomId())
+        return chatRepo.findByLatestMessageTime(chatRoom.getRoomId())
                 .stream()
                 .map(message -> new ChatMessageDto.Response(message))
                 .collect(Collectors.toList());

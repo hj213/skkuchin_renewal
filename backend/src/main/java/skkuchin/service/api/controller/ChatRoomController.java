@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/chat/room")
 public class ChatRoomController {
     private final ChatService chatService;
-    private final ChatRoomRepo chatRoomRepository;
+    private final ChatRoomRepo chatRoomRepo;
 
     @PostMapping("")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -37,7 +37,7 @@ public class ChatRoomController {
     //검증 추가 receiver id가 맞는지
     @PutMapping("/reaction/{roomId}")
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId,  @RequestBody ChatRoomDto.Request dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
         chatService.user2Accept(chatRoom,user,dto.getReaction());
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭", null), HttpStatus.OK);
@@ -49,7 +49,7 @@ public class ChatRoomController {
     @PutMapping("/block/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
                                        @RequestBody ChatRoomDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
         if(dto.getReaction().equals("block")){
             chatService.blockUser(chatRoom,user);
@@ -64,7 +64,7 @@ public class ChatRoomController {
     @PutMapping("/alarm/{roomId}")
     public ResponseEntity<?> roomAlarm(@PathVariable String roomId,
                                        @RequestBody ChatRoomDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
         if(dto.getReaction().equals("set")){
             chatService.setAlarm(chatRoom,user);

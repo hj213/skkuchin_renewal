@@ -32,10 +32,10 @@ public class ChatMessageService {
     private final ChatRoomRepo chatRoomRepo;
     private final ChatRepo chatRepo;
     private final UserRepo userRepo;
-    private final ChatRoomRepo chatRoomRepository;
+
 
     @Transactional
-    public void write(AppUser user, ChatMessageDto.PostRequest dto){
+    public void write(AppUser user, ChatMessageDto.Request dto){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(dto.getRoomId());
         ChatMessage chatMessage = dto.toEntity(chatRoom,user);
         chatRepo.save(chatMessage);
@@ -49,7 +49,7 @@ public class ChatMessageService {
     public List<ChatRoomDto.Response> getChatList(String sender){
 
         AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepository.findByUser1Id(user.getId());
+        List<ChatRoom> chatRooms = chatRoomRepo.findByUser1Id(user.getId());
         List<ChatRoomDto.Response> chatRoomsFindByUserId = chatRooms
                 .stream()
                 .map(chatRoom -> new ChatRoomDto.Response(chatRoom,getLatestMessage(chatRoom),
@@ -64,7 +64,7 @@ public class ChatMessageService {
     public List<ChatRoomDto.userResponse> getAlarmList(String sender){
 
         AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepository.findByUser2Id(user.getId());
+        List<ChatRoom> chatRooms = chatRoomRepo.findByUser2Id(user.getId());
         List<ChatRoomDto.userResponse> chatRoom = chatRooms
                 .stream()
                 .map(message -> new ChatRoomDto.userResponse(message))
