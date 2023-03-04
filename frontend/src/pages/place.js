@@ -160,7 +160,7 @@ const PlacePage = () => {
             if(WINDOW_HEIGHT < 750){
                 setHeight(270)
             } else {
-                setHeight(430)
+                setHeight(435)
             }
             setIsTall(false);
             setScroll("");
@@ -173,6 +173,7 @@ const PlacePage = () => {
                 iconVisibility:'visible'
             });
         } 
+        console.log(scroll);
       };
   
       
@@ -194,6 +195,7 @@ const PlacePage = () => {
             setScroll('');
             cardRef.current.scrollTo({top:0});
         } 
+    
     };
 
     // Favorite 관리
