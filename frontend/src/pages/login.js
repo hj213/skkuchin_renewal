@@ -54,9 +54,11 @@ const LoginPage = () => {
                     }
                 } else {
                     //alert(message)
-                    console.log(message);
-                    if (typeof(message) == string) {
-                        setError(message);
+                    if (message == '인증이 필요한 유저입니다') {
+                        router.push({
+                            pathname: '/register', 
+                            query: {src: '이메일', username: username}
+                        })
                     }
                     if (typeof(message) == 'string') {
                         setError(message);
