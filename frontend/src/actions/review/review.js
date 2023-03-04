@@ -12,7 +12,8 @@ import {
     MODIFY_REVIEW_FAIL,
     MODIFY_REVIEW_SUCCESS,
     ENROLL_REVIEW_FAIL,
-    ENROLL_REVIEW_SUCCESS
+    ENROLL_REVIEW_SUCCESS,
+    CLEAR_MY_REVIEW
 } from './types'
 
 export const load_reviews = (place_id, callback) => async dispatch => {
@@ -312,3 +313,6 @@ export const delete_review = (review_id, callback) => async dispatch => {
     }
 };
 
+export const clear_my_review = () => ({
+    type: CLEAR_MY_REVIEW
+});

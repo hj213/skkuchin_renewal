@@ -32,17 +32,21 @@ const ReviewsPage = () => {
 
     // place, 가게 정보 (place API)
     const [place_id, setPlaceId] = useState(id || '');
-    const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
-    const [reviewCount, setReviewCount] = useState(selectedPlace?.review_count || "");
-  
+   
     useEffect(() => {
         if(dispatch && place_id !== '' && id !== '' ) {
             setPlaceId(place_id);
-            dispatch(load_reviews(place_id));
             dispatch(load_place(place_id));
+            dispatch(load_reviews(place_id));
         }            
-    }, [ place_id, id, reviewCount]);
+    }, [place_id]);
+
+    useEffect(() => {
+        if(dispatch && place_id !== '' && id !== '' ) {
+            dispatch(load_reviews(place_id));
+        }            
+    }, [reviews]);
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
@@ -89,7 +93,7 @@ const ReviewsPage = () => {
             if(result){
                 alert("Delete 요청 result: " + result);     
                 dispatch(load_reviews(place_id));   
-                setReviewCount(reviewCount-1);     
+                // setReviewCount(reviewCount-1);     
             } else {
                 alert("실패!: " +message);
             }
@@ -162,7 +166,7 @@ const ReviewsPage = () => {
                                         스꾸리뷰
                                     </Typography>
                                     <Typography sx={{fontSize: '17px', fontWeight:'700', lineHeight: '97%', verticalAlign: 'top', paddingLeft:'10px'}} color="#FFCE00" align="left">
-                                        {selectedPlace && selectedPlace.review_count}
+                                        {reviews.length}
                                     </Typography>
                                 </Grid>
                                 <Grid item > 

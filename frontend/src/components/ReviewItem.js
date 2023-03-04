@@ -124,7 +124,56 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                                 </DialogActions>
                             </Dialog>
                         </Grid>
-                        : null}
+                        : <Grid item style={{marginTop:'-10px'}}>
+                            <IconButton onClick={handleMoreClick} style={{top:5}}>
+                                <Image src={more} width={5} height={17.33} placeholder="blur" layout='fixed' />
+                            </IconButton>
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleMenuClose}
+                                PaperProps={{
+                                    style: {
+                                    boxShadow: "0px 0px 2px 2px rgba(0,0,0,0.02)",
+                                    },
+                                }}
+                                >
+                                <MenuItem sx={{fontSize: '15px'}} onClick={handleSubmit}>
+                                    신고
+                                </MenuItem>
+                            </Menu>
+                            <Dialog
+                                open={open}
+                                onClose={handleClose}
+                                PaperProps={{
+                                    style: { 
+                                    borderRadius: '10px', 
+                                    boxShadow: 'none', 
+                                    maxWidth: '100vw', 
+                                    maxHeight: '100vh'
+                                    }
+                                }}
+                                BackdropProps={{
+                                    sx: {
+                                    backgroundColor: 'rgba(50, 50, 50, 0.25)',
+                                    maxWidth: '100vw',
+                                    maxHeight: '100vh'
+                                    }
+                                }}
+                            >
+                                <DialogContent sx={{p: '20px 24px 13px'}}>
+                                    <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
+                                        <DialogTitle component="span" sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>{"신고하시겠습니까?"}</DialogTitle>
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions sx={{p:'0'}}>
+                                    <div style={{width: '100%', paddingBottom: '16px'}}>
+                                        <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
+                                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={()=> {handleDelete(review.id); handleClose(); handleMenuClose();}}>신고</Button>
+                                    </div>
+                                </DialogActions>
+                            </Dialog>
+                        </Grid>}
                     </Grid>
                         <Stack direction="row" alignItems="center">
                             <Typography
