@@ -22,7 +22,6 @@ import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.repo.ChatSessionRepo;
 import skkuchin.service.service.ChatService;
 import skkuchin.service.service.ChatSessionService;
 

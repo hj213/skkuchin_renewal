@@ -13,7 +13,6 @@ import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Role;
 import skkuchin.service.service.*;
 
-
 @EnableScheduling
 @SpringBootApplication
 public class ServiceApplication {

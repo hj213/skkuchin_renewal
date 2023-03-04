@@ -16,6 +16,7 @@
     "antd": "^5.2.2",
     "cookie": "^0.5.0",
     "dayjs": "^1.11.7",
+    "firebase": "^9.17.2",
     "formidable": "^2.1.1",
     "hangul-js": "^0.2.6",
     "js-cookie": "^3.0.1",

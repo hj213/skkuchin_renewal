@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import { API_URL } from '../../config';
+import { modify_token } from '../pushToken/pushToken';
 import { 
     REGISTER_SUCCESS,
     REGISTER_FAIL,
@@ -131,9 +132,10 @@ export const login = (username, password, callback) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try {
-        dispatch({
+        await dispatch({
             type: LOGOUT_SUCCESS
         });
+        dispatch(modify_token(null, null, null));
     } catch(error){
         console.log(error);
         dispatch({

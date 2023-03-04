@@ -102,10 +102,10 @@
             //auto-delete : Consumer가 없으면 스스로 삭제되는 Queue
             //durable : 서버와 연결이 끊겨도 메세지를 저장하고 있음
             //exclusive : 동일한 이름의 Queue 생길 수 있음
-        },{'auto-delete':true, 'durable':false, 'exclusive':false,token : header});
+        },{'auto-delete':true, 'durable':false, 'exclusive':false,pushToken : header});
 
         //입장 메세지 전송
-        stomp.send(`/app/chat.enter.${chatRoomId}`, {"token" : header}, JSON.stringify({
+        stomp.send(`/app/chat.enter.${chatRoomId}`, {"pushToken" : header}, JSON.stringify({
             memberId: 1,
             sender: sender
         }));
@@ -154,7 +154,7 @@ const header =Cookies.get('access')
                     message: message,
                     memberId: 1,
                     sender: sender,
-                    token: header
+                    pushToken: header
                 }));
         } catch (error) {
             console.log(error);
