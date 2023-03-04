@@ -109,6 +109,9 @@ export default function list(){
                 tags.push(router.query.keyword);
             router.query.keyword = '';
         }
+    }, [router.query.keyword, tags])
+
+    useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
                 setFilteredPlace(null);
@@ -129,7 +132,7 @@ export default function list(){
                 }
             }
         }
-    }, [keyword, router.query.keyword, dispatch, tags,user]);
+    }, [keyword]);
 
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
@@ -308,7 +311,6 @@ export default function list(){
             setIsTall(false);
             dispatch(clear_search_results());
         }
-        
     }
 
     return(

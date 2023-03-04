@@ -7,7 +7,6 @@ import Image from 'next/image';
 import {Grid, CssBaseline, InputBase,TextField, Paper, styled, ThemeProvider, Container, Typography} from '@mui/material';
 import searchBox from '../image/searchHolder.png';
 import { load_places } from "../actions/place/place";
-import { load_user } from "../actions/auth/auth";
 import marker from '../image/location.png';
 import noAuto from '../image/noinfo_enheng.png';
 import Hangul from "hangul-js";
@@ -25,13 +24,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
 
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_user());
-            
-        }
-    }, [dispatch]);
-  
     useEffect(() => {
         if (!allPlaces || allPlaces.length === 0) {
           dispatch(load_places());
@@ -100,10 +92,6 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     const handleContainerMouseDown = (e) => {
         e.preventDefault();
     }
-
-    // const handleOnClick = () => {
-    //     handleClick(true);
-    // }    
 
     return(
         <ThemeProvider theme={theme}>
