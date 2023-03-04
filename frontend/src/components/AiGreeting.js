@@ -20,6 +20,25 @@ import Link from 'next/link';
 import closeIcon from '../image/close.png';
 import profile from '../image/profile.png';
 
+//mbti 프로필
+import profile1 from '../image/mbti/profile/mainCharacter.png';
+import profile2 from '../image/mbti/profile/mealCharacter.png';
+import ENFJ from '../image/mbti/profile/ENFJ.png';
+import ENTP from '../image/mbti/profile/ENTP.png';
+import INFP from '../image/mbti/profile/INFP.png';
+import ENFP from '../image/mbti/profile/ENFP.png';
+import ISTJ from '../image/mbti/profile/ISTJ.png';
+import ISTP from '../image/mbti/profile/ISTP.png';
+import ISFP from '../image/mbti/profile/ISFP.png';
+import INTP from '../image/mbti/profile/INTP.png';
+import ESTJ from '../image/mbti/profile/ESTJ.png';
+import INFJ from '../image/mbti/profile/INFJ.png';
+import ENTJ from '../image/mbti/profile/ENTJ.png';
+import ESTP from '../image/mbti/profile/ESTP.png';
+import ESFJ from '../image/mbti/profile/ESFJ.png';
+import INTJ from '../image/mbti/profile/INTJ.png';
+import ISFJ from '../image/mbti/profile/ISFJ.png';
+import ESFP from '../image/mbti/profile/ESFP.png';
 
 const AiGreeting = () => {
     const dispatch = useDispatch();
@@ -28,6 +47,27 @@ const AiGreeting = () => {
     const userInfo = useSelector(state => state.matchingUser.matchingUser);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
+    const src ={
+        DEFAULT1: profile1,
+        DEFAULT2: profile2,
+        INFP:INFP,
+        ENFJ:ENFJ,
+        ENTP:ENTP,
+        ENFP:ENFP,
+        ISTJ:ISTJ,
+        ISTP:ISTP,
+        ISFP:ISFP,
+        INTP:INTP,
+        ESTJ:ESTJ,
+        INFJ:INFJ,
+        ENTJ:ENTJ,
+        ESTP:ESTP,
+        ESFJ:ESFJ,
+        INTJ:INTJ,
+        ISFJ:ISFJ,
+        ESFP:ESFP,
+      }
+    
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_matching_info(([result, message]) => {
@@ -212,7 +252,7 @@ const AiGreeting = () => {
                 {/* 유저 프로필 이미지 */}
                 <div style={{textAlign:"center", marginTop:"30px"}}>
                     <Image 
-                        src={user.Image ? user.Image : profile}
+                        src={user.image ? src[user.image] : profile}
                         width="140px"
                         height="140px"
                         placeholder="blur"

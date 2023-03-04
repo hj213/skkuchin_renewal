@@ -30,7 +30,7 @@ import { textAlign } from "@mui/system";
 const PlacePage = () => {
 
     const WINDOW_HEIGHT = window.innerHeight;
-    const TARGET_HEIGHT = WINDOW_HEIGHT - 80;
+    const TARGET_HEIGHT = WINDOW_HEIGHT - 78;
     const router = useRouter();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
