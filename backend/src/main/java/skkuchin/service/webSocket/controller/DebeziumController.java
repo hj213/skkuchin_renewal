@@ -43,33 +43,49 @@ public class DebeziumController {
         ChatRoom chatRoom = chatService.findChatById(dto.getPayload().getAfter().getChat_room_id());
         AppUser user1 = chatService.findUser1(chatRoom);
         AppUser user2 = chatService.findUser2(chatRoom);
+
         String roomId = chatRoom.getRoomId();
         String user1Name = user1.getUsername();
         String user2Name = user2.getUsername();
 
+        UserDto.chatRoomResponse user1Info = userService.getChatRoomUser(user1Name);
+        UserDto.chatRoomResponse user2Info = userService.getChatRoomUser(user2Name);
+        List<ChatRoomDto.Response> user1ChatMessages = chatMessageService.getChatList(user1Name);
+        List<ChatRoomDto.Response> user2chatMessages = chatMessageService.getChatList(user2Name);
+        DebeziumDto.UserChatInfo user1ChatInfo = new DebeziumDto.UserChatInfo(user1Info,user1ChatMessages);
+        DebeziumDto.UserChatInfo user2ChatInfo = new DebeziumDto.UserChatInfo(user2Info,user2chatMessages);
+
+
         if(dto.getPayload().getOp().equals("c")){
             String sender = dto.getPayload().getAfter().getSender();
+            UserDto.chatRoomResponse senderInfo = userService.getChatRoomUser(sender);
+            List<ChatRoomDto.Response> senderChatMessages = chatMessageService.getChatList(sender);
+            DebeziumDto.UserChatInfo senderChatInfo = new DebeziumDto.UserChatInfo(senderInfo,senderChatMessages);
+
             template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + roomId+"user1", dto);
             template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + roomId+"user2", dto);
-            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+sender+"chatRoomList",chatMessageService.getChatList(sender));
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+sender+"chatRoomList",senderChatInfo);
             if(user1Name.equals(sender)){
-            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList",chatMessageService.getChatList(user2Name));
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList",user2ChatInfo);
              }
             else{
-                template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList",chatMessageService.getChatList(user1Name));
+                template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList",user1ChatInfo);
             }
         }
 
 
         else if(dto.getPayload().getOp().equals("u")){
             String sender = dto.getPayload().getAfter().getSender();
-            List<ChatRoomDto.Response> chatMessages = chatMessageService.getChatList(sender);
-            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+sender+"chatRoomList",chatMessages);
+            UserDto.chatRoomResponse senderInfo = userService.getChatRoomUser(sender);
+            List<ChatRoomDto.Response> senderChatMessages = chatMessageService.getChatList(sender);
+            DebeziumDto.UserChatInfo senderChatInfo = new DebeziumDto.UserChatInfo(senderInfo,senderChatMessages);
+
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+sender+"chatRoomList",senderChatInfo);
             if(user1Name.equals(sender)){
-                template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList",chatMessageService.getChatList(user2Name));
+                template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList",user2ChatInfo);
             }
             else{
-                template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList",chatMessageService.getChatList(user1Name));
+                template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList",user1ChatInfo);
             }
         }
     }
