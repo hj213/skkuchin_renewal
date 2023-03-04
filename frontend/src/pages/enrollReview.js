@@ -144,7 +144,7 @@ const EnrollReview = () => {
         event.preventDefault();
         
         dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
-            if (result) {
+            if(result){
                 alert("POST 요청 result: " + message)
                 router.push({
                     pathname: '/reviews',
@@ -155,6 +155,11 @@ const EnrollReview = () => {
             }
         }));
     }
+
+
+
+
+    const user = useSelector(state => state.auth.user);
 
     return(
         <ThemeProvider theme={theme}>

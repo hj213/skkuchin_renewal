@@ -60,8 +60,8 @@ const ReviewsPage = () => {
                 setSortedReviews([...reviews].sort((a, b) => b.rate - a.rate)); // 평점이 높은 순으로 정렬
             } else if (filter === 'Oldest') {
                 setSortedReviews([...reviews]); // 오래된 순으로 정렬 (기본값)
-            }
-            else {
+             }
+             else {
                 setSortedReviews([...reviews].sort((a, b) => a.rate - b.rate));
             }
         }

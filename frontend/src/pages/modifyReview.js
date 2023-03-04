@@ -60,15 +60,17 @@ const ModifyReview = () => {
     const [textReview, setTextReview] = useState();
     const [tagList, setTagList] = useState([]);
     const [tagChoose, setTagChoose] = useState({
-        '맛집': false,
-        '간단한 한 끼': false,
-        '분위기 좋은': false,
-        '가성비': false,
-        '친절': false,
-        '청결도': false,
-        '둘이 가요': false
+      '맛집': false,
+      '간단한 한 끼': false,
+      '분위기 좋은': false,
+      '가성비': false,
+      '친절': false,
+      '청결도': false,
+      '둘이 가요': false
     });
-    const [imagesPreview, setImagesPreview] = useState([]);
+
+    const reviews = useSelector(state => state.review.review);
+    const myReviews = useSelector(state => state.review.myReview);
 
     const review = reviews && reviews.find(review => review.id == review_id && review.place_id == place_id) || myReviews && myReviews.find(review => review.id == review_id && review.place_id == place_id);
 
@@ -79,12 +81,13 @@ const ModifyReview = () => {
         // 태그 선택 상태 설정
         const tagChooseTemp = {};
         for (const tag of review.tags) {
-            tagChooseTemp[tag] = true;
+          tagChooseTemp[tag] = true;
         }
         setTagChoose(tagChooseTemp);
-    }, [review_id, place_id, reviews]);
 
+      }, [review_id, place_id, reviews]);
 
+      
     const handleTouch = (index) => {
         if (index + 1 === rating) {
             setRating(0);
@@ -147,19 +150,16 @@ const ModifyReview = () => {
         const files = Array.from(e.target.files);
         setPreviewImages([...previewImages, ...files.map((file) => URL.createObjectURL(file))]);
         setImages(files);
-    };
-
+      };
+      
     const handleImageRemove = (index) => {
-        const newPreviewImages = [...previewImages];
-        newPreviewImages.splice(index, 1);
-        setPreviewImages(newPreviewImages);
+      const newPreviewImages = [...previewImages];
+      newPreviewImages.splice(index, 1);
+      setPreviewImages(newPreviewImages);
     };
     
-
-    const user = useSelector(state => state.auth.user);
-
      // 등록 클릭 시
-    const handleModifyClick = (event) =>{
+     const handleModifyClick = (event) =>{
         event.preventDefault();
         
         dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{

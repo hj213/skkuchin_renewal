@@ -53,12 +53,12 @@ const PlacePage = () => {
     const [filteredPlace, setFilteredPlace] = useState([]);
 
     useEffect(() => {
-        if (place && user != null && user.toggle != null) {
-            setFilteredPlace(place.filter(item => item.campus === user.toggle));
+        if (place && user != null && user.toggle!=null) {
+          setFilteredPlace(place.filter(item => item.campus === user.toggle));
         } else {
-            if (tags != null) setFilteredPlace(null);
+          if(tags != null) setFilteredPlace(null);
         }
-    }, [place, user]);
+      }, [place, user]);
 
     // Part 2) menu, 가게 정보 (menu API)
     const menus = useSelector(state => state.menu.menu);
@@ -264,11 +264,11 @@ const PlacePage = () => {
     const handleTouch = (index) => {
         // setRating(index);
         if (index + 1 === rating) {
-            setRating(0);
+          setRating(0);
         } else {
-            setRating(index + 1);
+          setRating(index + 1);
         }
-    };
+      };
 
     // 리뷰 파트 컴포넌트화 필요 
     const selectedPlace = useSelector(state => state.place.place);
@@ -300,7 +300,7 @@ const PlacePage = () => {
     const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
 
     const handleFilterChange = (event) => {
-        setFilter(event.target.value);
+      setFilter(event.target.value);
     };
 
     return (
