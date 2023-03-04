@@ -163,8 +163,6 @@ export const search_places = (keyword, callback) => async dispatch => {
         })
         
         if (callback) callback([false, error]);
-        
-        
     };
 }
 

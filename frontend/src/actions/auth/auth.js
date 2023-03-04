@@ -132,10 +132,9 @@ export const login = (username, password, callback) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try {
-        await dispatch({
+        dispatch({
             type: LOGOUT_SUCCESS
         });
-        dispatch(modify_token(null, null, null));
     } catch(error){
         console.log(error);
         dispatch({
