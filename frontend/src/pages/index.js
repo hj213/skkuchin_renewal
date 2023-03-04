@@ -55,6 +55,8 @@ export default function list(){
         visibility: 'hidden',
     });
     const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
+    const [isTall, setIsTall] = useState(false);
+    const [startY, setStartY] = useState(0);
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
 
@@ -145,85 +147,63 @@ export default function list(){
             visibility:'hidden'});
         setHeight('0');
         setPreventScroll('');
-        
+        setIsTall(false);
     }
 
-    // 사용자 터치에 따라 카드 사이즈 변화
-    useEffect(() => {
-        if (cardRef.current) {
-          cardRef.current.addEventListener("touchstart", handleTouchStart);
-          cardRef.current.addEventListener("touchmove", handleTouchMove);
-          cardRef.current.addEventListener("touchend", handleTouchEnd);
-        }
-        return () => {
-          if (cardRef.current) {
-            cardRef.current.removeEventListener("touchstart", handleTouchStart);
-            cardRef.current.removeEventListener("touchmove", handleTouchMove);
-            cardRef.current.removeEventListener("touchend", handleTouchEnd);
-          }
-        };
-      }, [cardRef]);
+    const handleTouchStart = (event) => {
+        if(isTall){
+            setPreventScroll('scroll');
+            setStartY(event.touches[0].clientY);
 
-    // 카드 터치 했을 때 변화
-    let preNewHeight = 0;
+        } else if(!isTall){
+            setPreventScroll("");
+            setStartY(event.touches[0].clientY);
+        }
+      };
+
     const handleTouchMove = (event) => {
-        // event.preventDefault();
-        const newHeight = event.touches[0].clientY;
-        if (newHeight <= preNewHeight && cardRef.current.offsetHeight < TARGET_HEIGHT ) {
+        const touchY = event.touches[0].clientY;
+        const deltaY = touchY - startY;
+    
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
-            setOpen({
-                bool: true,
-                visibility: 'visible'
-            });
+            setPreventScroll("scroll");
+            setIsTall(true);
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
             });
-            setPreventScroll('scroll');
-        } else if(newHeight > preNewHeight){
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            cardRef.current.scrollTo({top:0});
             if(WINDOW_HEIGHT < 750){
-                setHeight(187)
+                setHeight('175px')
             } else {
-                setHeight(345)
+                setHeight('320px')
             }
+            setIsTall(false);
+            setPreventScroll("");
             setOpen({
                 bool: false,
-                visibility: 'hidden'
+                visibility: "hidden"
             });
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
-            setPreventScroll('');
         } 
-        preNewHeight=newHeight;
-        // console.log(newHeight);
-      // ul 요소의 위치 조정
-    const touchY = event.touches[0].clientY;
-    const ul = event.target && event.target.querySelector("ul");
-    const ulHeight = ul && ul.offsetHeight;
-    const cardHeight = cardRef.current.offsetHeight;
-    const cardBottom = cardRef.current.getBoundingClientRect().bottom;
-    const isScrollable = ulHeight > cardHeight;
-    if (isScrollable) {
-        if (touchY > cardBottom - 40) {
-        ul.style.transform = `translateY(-${ulHeight - cardHeight}px)`;
-        } else {
-        ul.style.transform = "";
+        
+      };
+  
+      const handleTouchEnd = () => {
+        if (cardRef.current.offsetHeight === TARGET_HEIGHT) {
+        //   setPreventScroll("scroll");
         }
-    }
-    };
-
-    const handleTouchStart = () => {
-    const ul = cardRef.current.querySelector("ul");
-    ul.style.transition = "transform 0.3s ease-out";
-    };
-
-    const handleTouchEnd = () => {
-    const ul = cardRef.current.querySelector("ul");
-    ul.style.transition = "";
-    };
-
+      };
+    
     // // 아이콘 클릭했을 때 이벤트
     const handleIconOnclick = (event) =>{
         if(event.target.name == 'map' ){
@@ -240,39 +220,13 @@ export default function list(){
             });
             setPreventScroll('');
             cardRef.current.scrollTo({top:0, behavior:'smooth'});
+            setIsTall(false);
         } else{
             setKeyword('');
             setTags([]);
             handleReset();
         }
     };
-    // // 카드 내부 리스트의 터치 스크롤 이벤트
-    // const handleListTouchMove = (event) => {
-    //     const list = cardRef.current.querySelector("ul");
-    //     const scrollDiff = list.scrollHeight - list.offsetHeight - list.scrollTop;
-    //     if (event.touches[0].clientY > event.touches[event.touches.length - 1].clientY) {
-    //       // 스크롤을 아래로 내리는 경우
-    //       if (scrollDiff > 0) {
-    //         // 리스트가 아직 스크롤할 수 있는 경우
-    //         event.stopPropagation();
-    //         list.scrollTop += Math.abs(event.touches[0].clientY - event.touches[event.touches.length - 1].clientY);
-    //       } else {
-    //         // 리스트가 더이상 스크롤할 수 없는 경우, 부모 엘리먼트인 카드의 스크롤 이벤트가 발생하도록 함
-    //         // event.preventDefault();
-    //       }
-    //     } else {
-    //       // 스크롤을 위로 올리는 경우
-    //       if (list.scrollTop > 0) {
-    //         // 리스트가 아직 스크롤할 수 있는 경우
-    //         event.stopPropagation();
-    //         list.scrollTop -= Math.abs(event.touches[0].clientY - event.touches[event.touches.length - 1].clientY);
-    //       } else {
-    //         // 리스트가 더이상 스크롤할 수 없는 경우, 부모 엘리먼트인 카드의 스크롤 이벤트가 발생하도록 함
-    //         // event.preventDefault();
-    //       }
-    //     }
-    //   };
-
 
     //북마크 기능
     const isFavorite = (placeId) => {
@@ -309,7 +263,7 @@ export default function list(){
     const onTagClick = (id) => {
         const selectedTag = tagsId.find(tag => tag.id === id);
         if (!selectedTag) return;
-      
+        
         const exclusiveGroup = selectedTag.exclusiveGroup;
         let newTags;
       
@@ -339,6 +293,7 @@ export default function list(){
         setTags(newTags);
         setKeyword(newTags.join(', '));
         if(newTags.length == 0) handleReset();
+        setIsTall(false);
       }
       
     
@@ -350,6 +305,7 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
+            setIsTall(false);
             dispatch(clear_search_results());
         }
         
@@ -420,7 +376,7 @@ export default function list(){
                 bottom: '0px',
                 width: '100%',
                 height: height,
-                // overflowY: preventScroll,
+                overflowY: preventScroll,
                 zIndex: '3',
                 boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                 visibility: cardStyle.cardVisibility,
@@ -430,16 +386,19 @@ export default function list(){
                 
                 }} 
                 ref={cardRef}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
                  >
-                <div style={{height:height, }}>
+                <div style={{height:height, }} className="card-content">
                     {
                         !open.bool ?
-                    <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}}>
+                    <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}} >
                         <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
                     </div>
                     : null
                     }
-                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} >
+                    <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} ref={listRef} >
                         {filteredPlace? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
