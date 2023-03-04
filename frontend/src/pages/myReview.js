@@ -74,8 +74,8 @@ const MyReviewPage = () => {
                     const aName = aPlace?.name || '';
                     const bName = bPlace?.name || '';
                     return aName.localeCompare(bName);
-                  });
-                  setSortedReviews(sortedReviews);
+                });
+                setSortedReviews(sortedReviews);
             }
         }
     }, [filter, reviews]);
