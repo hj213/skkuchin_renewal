@@ -8,6 +8,7 @@ mail:
   transport:
     protocol: smtp
   host: http://localhost:8080
+  page: http://localhost:3000
 admin-mail:
   id: skkuchinbackup@gmail.com
   password: crxkwfdcjsonltwh
