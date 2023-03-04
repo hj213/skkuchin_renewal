@@ -1,7 +1,7 @@
 import { getMessaging, getToken } from "firebase/messaging";
 import { FIREBASE_VAPID_KEY } from '../config';
 
-export async function getToken() {
+export async function createToken() {
     const messaging = getMessaging();
     getToken(messaging, { vapidKey: FIREBASE_VAPID_KEY }).then((token) => {
         return token;
