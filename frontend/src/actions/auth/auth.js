@@ -377,9 +377,10 @@ export const change_user = (nickname, major, image, student_id, callback) => asy
         const apiRes = await res.json();
 
         if(res.status === 200){
-            dispatch({
+            await dispatch({
                 type: CHANGE_USER_SUCCESS
-            })
+            });
+            await dispatch(load_user());
             if (callback) callback([true, apiRes.message]);
             
         } else{
@@ -481,9 +482,10 @@ export const change_toggle = (campus) => async dispatch => {
         });
 
         if(res.status === 200){
-            dispatch({
+            await dispatch({
                 type: CHANGE_TOGGLE_SUCCESS
             });
+            await dispatch(load_user());
         } else{
             dispatch({
                 type: CHANGE_TOGGLE_FAIL

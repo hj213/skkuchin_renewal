@@ -34,12 +34,6 @@ export default function chatPlace(){
     }
 
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_user());
-        }
-    }, [dispatch]);
-
-    useEffect(() => {
         if (!allPlaces || allPlaces.length === 0) {
           dispatch(load_places());
         }

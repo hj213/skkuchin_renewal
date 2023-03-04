@@ -1,7 +1,6 @@
 import {
-    LOAD_MENU_FAIL,
-    LOAD_MENU_SUCCESS,
-
+    SEND_CHAT_MESSAGE_SUCCESS,
+    SEND_CHAT_MESSAGE_FAIL
 } from '../actions/chat/types'
 
 const initialState = {
@@ -16,15 +15,13 @@ const chatMessageReducer = (state= initialState, action) => {
     const { type, payload } = action;
 
     switch(type){
-        case LOAD_MENU_SUCCESS:
+        case SEND_CHAT_MESSAGE_SUCCESS:
             return {
-                ...state,
-                menu: payload
+                ...state
             }
-        case LOAD_MENU_FAIL:
+        case SEND_CHAT_MESSAGE_FAIL:
             return {
-                ...state,
-                menu: null
+                ...state
             }
         default:
             return state;

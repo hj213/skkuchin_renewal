@@ -17,12 +17,6 @@ export default function reportUser(){
     const router = useRouter();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_user());
-        }
-    }, [dispatch]);
-
     const handleBack = (e) => {
         router.back();
     }

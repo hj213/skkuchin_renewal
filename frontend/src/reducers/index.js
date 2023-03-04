@@ -7,6 +7,9 @@ import reviewReducer from './review';
 import candidateReducer from './candidate';
 import matchingUserReducer from './matchingUser';
 import pushTokenReducer from './pushToken'
+import chatMessageReducer from './chatMessage';
+import chatRoomReducer from './chatRoom';
+import chatRequestReducer from './chatRequest';
 
 export default combineReducers({
     auth: authReducer,
@@ -16,5 +19,8 @@ export default combineReducers({
     review: reviewReducer,
     candidate: candidateReducer,
     matchingUser: matchingUserReducer,
-    pushToken: pushTokenReducer
+    pushToken: pushTokenReducer,
+    chatMessage: chatMessageReducer,
+    chatRequest: chatRequestReducer,
+    chatRoom: chatRoomReducer
 });

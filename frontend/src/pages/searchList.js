@@ -56,9 +56,9 @@ export default function searchList(){
 
     useEffect(() => {
         if (!allplaces || allplaces.length === 0) {
-          dispatch(load_places());
+            dispatch(load_places());
         }
-      }, [allplaces]);
+    }, [allplaces]);
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -70,7 +70,7 @@ export default function searchList(){
             setFilteredAllPlace([]);
         }
     }, [searchplace, user, allplaces]);
-  
+
     const handleValue = (e) => {
         setValue(e.target.value);
 

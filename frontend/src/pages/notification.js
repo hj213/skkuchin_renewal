@@ -35,10 +35,7 @@ const NotificationPage = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            // dispatch(load_favorite());
-            // dispatch(load_menu(id));
             dispatch(load_reviews(place_id));
-            // dispatch(load_review());
         }
     }, [dispatch, id]);
 

@@ -26,9 +26,9 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
     useEffect(() => {
         if (!allPlaces || allPlaces.length === 0) {
-          dispatch(load_places());
+            dispatch(load_places());
         }
-      }, [dispatch, allPlaces]);
+    }, []);
     
     //캠퍼스 필터링
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             setFilteredPlace([]);
         }
     }, [allPlaces, user]);
-   
+
     const handleValue = (e) => {
         setValue(e.target.value);
 
@@ -59,7 +59,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             router.push({
                 pathname: '/searchList',
                 query: { keyword: value}
-              });
+            });
             setValue('');
         }
     }

@@ -42,12 +42,6 @@ const ReviewsPage = () => {
         }            
     }, [place_id]);
 
-    useEffect(() => {
-        if(dispatch && place_id !== '' && id !== '' ) {
-            dispatch(load_reviews(place_id));
-        }            
-    }, [reviews]);
-
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.review);
     const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
@@ -80,10 +74,10 @@ const ReviewsPage = () => {
     const handleEdit = (reviewId) => {
         const review = reviews.find(item => item.id == reviewId);
         if (review.user_id == user.id) {
-          router.push({
-            pathname: '/modifyReview',
-            query: { id: place_id, review_id: reviewId }
-          });
+            router.push({
+                pathname: '/modifyReview',
+                query: { id: place_id, review_id: reviewId }
+            });
         }
     }
 
@@ -92,8 +86,7 @@ const ReviewsPage = () => {
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
                 alert("Delete 요청 result: " + result);     
-                dispatch(load_reviews(place_id));   
-                // setReviewCount(reviewCount-1);     
+                dispatch(load_reviews(place_id));
             } else {
                 alert("실패!: " +message);
             }

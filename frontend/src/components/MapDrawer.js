@@ -49,31 +49,29 @@ export default function MapDrawer(openID){
     
     //api
     const user = useSelector(state => state.auth.user);
-    const favorites = useSelector(state => state.favorite.favorite);
 
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleInfo, setToggleInfo] = useState(user?.toggle);
     const [toggleImage, setToggleImage] = useState('');
     
-    useEffect(()=>{
-      if(user){
-        if (user.campus == '명륜'){
-          if(user.toggle == '율전'){
+    useEffect(() => {
+      if (user) {
+        if (user.campus == '명륜') {
+          if (user.toggle == '율전') {
             setToggleImage(myj)
-          } else if(user.toggle == '명륜'){
+          } else if (user.toggle == '명륜') {
             setToggleImage(mmr)
           }
-        } else if(user.campus == '율전'){
-          if(user.toggle == '율전'){
+        } else if(user.campus == '율전') {
+          if (user.toggle == '율전') {
             setToggleImage(yyj)
-          } else if(user.toggle == '명륜'){
+          } else if (user.toggle == '명륜') {
             setToggleImage(ymr)
           }
         }
       }
       
-    },[])
+    },[user])
 
     //뒤로가기 시 드로워 열리도록
     useEffect(()=>{
@@ -81,21 +79,6 @@ export default function MapDrawer(openID){
         setDrawerOpen(true)
       }
     }, []);
-
-    useEffect(()=>{
-      if (dispatch && dispatch !== null && dispatch !== undefined) {
-        dispatch(load_favorite());
-        dispatch(load_user());
-      }
-    }, [dispatch]);
-
-    useEffect(()=>{
-      if(toggleInfo){
-        dispatch(change_toggle(toggleInfo));
-        dispatch(load_user());
-      }
-        
-    }, [toggleInfo, user?.campus]);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
@@ -113,28 +96,11 @@ export default function MapDrawer(openID){
       router.push('/myReview');
     }
     //토글 클릭
-    const handleToggle = async (e) => {
-      try {
-        if (user.toggle === '명륜') {
-          await dispatch(change_toggle('율전'));
-          setToggleInfo('율전');
-          if(user.campus === '명륜'){
-            setToggleImage(myj)
-          } else if(user.campus === '율전'){
-            setToggleImage(yyj)
-          }
-
-        } else if (user.toggle === '율전') {
-          await dispatch(change_toggle('명륜'));
-          setToggleInfo('명륜');
-          if(user.campus === '명륜'){
-            setToggleImage(mmr)
-          } else if(user.campus === '율전'){
-            setToggleImage(ymr)
-          }
-        }
-        await dispatch(load_user());
-      } catch (error) {
+    const handleToggle = (e) => {
+      if (user.toggle === '명륜') {
+        dispatch(change_toggle('율전'));
+      } else if (user.toggle === '율전') {
+        dispatch(change_toggle('명륜'))
       }
     };
     
@@ -207,7 +173,6 @@ export default function MapDrawer(openID){
                   {user && <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />}
                 </Grid>
               </Grid>
-             
                 {list('left')}
             </Drawer>
         </ ThemeProvider>
