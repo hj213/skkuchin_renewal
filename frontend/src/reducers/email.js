@@ -3,6 +3,8 @@ import {
     SIGNUP_EMAIL_SEND_FAIL,
     SIGNUP_EMAIL_CHECK_SUCCESS,
     SIGNUP_EMAIL_CHECK_FAIL,
+    SIGNUP_EMAIL_CONFIRM_SUCCESS,
+    SIGNUP_EMAIL_CONFIRM_FAIL,
     PASSWORD_EMAIL_SEND_SUCCESS,
     PASSWORD_EMAIL_SEND_FAIL,
     PASSWORD_EMAIL_CHECK_SUCCESS,
@@ -31,6 +33,14 @@ const emailReducer = (state = initialState, action) => {
                 isAuthenticated: true
             }
         case SIGNUP_EMAIL_CHECK_FAIL:
+            return {
+                ...state
+            }
+        case SIGNUP_EMAIL_CONFIRM_SUCCESS:
+            return {
+                ...state
+            }
+        case SIGNUP_EMAIL_CONFIRM_FAIL:
             return {
                 ...state
             }

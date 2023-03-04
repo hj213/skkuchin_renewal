@@ -4,6 +4,8 @@ import {
     SIGNUP_EMAIL_SEND_FAIL,
     SIGNUP_EMAIL_CHECK_SUCCESS,
     SIGNUP_EMAIL_CHECK_FAIL,
+    SIGNUP_EMAIL_CONFIRM_SUCCESS,
+    SIGNUP_EMAIL_CONFIRM_FAIL,
     PASSWORD_EMAIL_SEND_SUCCESS,
     PASSWORD_EMAIL_SEND_FAIL,
     PASSWORD_EMAIL_CHECK_SUCCESS,
@@ -54,6 +56,53 @@ export const signup_email_send = (username, email, agreement, callback) => async
         if (callback) callback([false, error]);
     }
 };
+
+export const signup_email_confirm = (email, authNum, callback) => async dispatch => {
+    const body = JSON.stringify({
+        email, authNum
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/email/confirm/signup`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+        console.log(apiRes);
+        
+        if (res.status === 200) {
+            dispatch({
+                type: SIGNUP_EMAIL_CONFIRM_SUCCESS,
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
+        } else {
+            dispatch({
+                type: SIGNUP_EMAIL_CONFIRM_FAIL,
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch(error) {
+        console.log(error);
+        dispatch({
+            type: SIGNUP_EMAIL_CONFIRM_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+        
+        
+    }
+}
 
 export const signup_email_check = (username, callback) => async dispatch => {
     const body = JSON.stringify({
