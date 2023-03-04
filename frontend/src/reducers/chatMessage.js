@@ -1,7 +1,6 @@
 import {
     SEND_CHAT_MESSAGE_SUCCESS,
-    SEND_CHAT_MESSAGE_FAIL,
-
+    SEND_CHAT_MESSAGE_FAIL
 } from '../actions/chat/types'
 
 const initialState = {
