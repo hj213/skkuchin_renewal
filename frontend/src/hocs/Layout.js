@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
-import { getToken } from '../utils/firebase';
+import { createToken } from '../utils/firebase';
 import { enroll_token } from "../actions/pushToken/pushToken";
 import { getMessaging, onMessage } from 'firebase/messaging';
 
@@ -23,7 +23,7 @@ const Layout = ({title, content, children}) => {
                 console.log("This browser does not support desktop notification");
             } else if (Notification.permission === "granted") {
                 console.log("granted");
-                const token = await getToken();
+                const token = await createToken();
 
                 if (token !== null) {
                     dispatch(enroll_token(token, null, null));
@@ -33,7 +33,7 @@ const Layout = ({title, content, children}) => {
                     console.log(permission)
                     if (permission === "granted") {
                         console.log("granted");
-                        const token = await getToken();
+                        const token = await createToken();
 
                         if (token !== null) {
                             dispatch(enroll_token(token, true, true));
