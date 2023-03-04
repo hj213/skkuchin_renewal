@@ -96,8 +96,8 @@ dependencies {
 	implementation 'com.zaxxer:HikariCP:4.0.3'
 	implementation 'io.debezium:debezium-embedded:1.5.0.Final'
 
-
-
+	//Firebase
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
 }
 
 tasks.named('test') {
