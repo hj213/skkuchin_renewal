@@ -2,9 +2,7 @@ import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
-import { load_review } from "../actions/review/review";
-import { load_reviews } from "../actions/review/review";
-import { modify_review } from "../actions/review/review";
+import { modify_review, clear_my_review, load_reviews } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider, Button, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import Layout from '../hocs/Layout';
@@ -55,10 +53,9 @@ const ModifyReview = () => {
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    
+   
     const selectedPlace = useSelector(state => state.place.place);
 
-    const reviews = useSelector(state => state.review.review);
     const [rating, setRating] = useState();
     const [textReview, setTextReview] = useState();
     const [tagList, setTagList] = useState([]);
@@ -71,8 +68,9 @@ const ModifyReview = () => {
         '청결도': false,
         '둘이 가요': false
     });
+    const [imagesPreview, setImagesPreview] = useState([]);
 
-    const review = reviews.find(review => review.id == review_id && review.place_id == place_id);
+    const review = reviews && reviews.find(review => review.id == review_id && review.place_id == place_id) || myReviews && myReviews.find(review => review.id == review_id && review.place_id == place_id);
 
     useEffect(() => {
         setRating(review.rate);
@@ -156,6 +154,9 @@ const ModifyReview = () => {
         newPreviewImages.splice(index, 1);
         setPreviewImages(newPreviewImages);
     };
+    
+
+    const user = useSelector(state => state.auth.user);
 
      // 등록 클릭 시
     const handleModifyClick = (event) =>{
@@ -164,6 +165,7 @@ const ModifyReview = () => {
         dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
             if(result){
                 alert("PUT 요청 result: " + result)
+                dispatch(clear_my_review());
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }
