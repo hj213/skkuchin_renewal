@@ -30,6 +30,7 @@ import { textAlign } from "@mui/system";
 const PlacePage = () => {
 
     const WINDOW_HEIGHT = window.innerHeight;
+    const TARGET_HEIGHT = WINDOW_HEIGHT - 80;
     const router = useRouter();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -79,8 +80,11 @@ const PlacePage = () => {
         });
     const [scroll, setScroll] = useState('');
     const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isTall, setIsTall] = useState(false);
+    const [startY, setStartY] = useState(0);
 
     const cardRef = useRef(null);
+    const listRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
 
@@ -90,11 +94,30 @@ const PlacePage = () => {
 
     useEffect(()=>{
         if(WINDOW_HEIGHT < 750){
-            setHeight(183)
+            setHeight(270)
         } else {
-            setHeight(345)
+            setHeight(430)
         }
+        setIsTall(false);
+        setScroll("");
+        setOpen({
+            bool: false,
+            visibility: "hidden"
+        });
+        setCardStyle({
+            radius:'30px 30px 0px 0px',
+            iconVisibility:'visible'
+        });
+        cardRef.current.scrollTo({top:0});
     },[])
+
+    useEffect(()=>{
+        if(isTall){
+            setScroll('scroll')
+        } else{
+            setScroll('')
+        }
+    },[isTall])
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
@@ -104,70 +127,72 @@ const PlacePage = () => {
         }
     }, [dispatch, id]);
 
-    useEffect(() => {
-        if (cardRef.current) {
-            cardRef.current.addEventListener("touchmove", handleTouchMove);
-        }
-        return () => {
-            if (cardRef.current) {
-                cardRef.current.removeEventListener("touchmove", handleTouchMove);
-            }
-        };
-    }, [cardRef]);
         
-    // 카드 터치 했을 때 변화
-    let preNewHeight = 0;
-    const handleTouchMove = (event) => {
-        event.preventDefault();
+    const handleTouchStart = (event) => {
+        if(isTall){
+            setScroll('scroll');
+            setStartY(event.touches[0].clientY);
 
-        const TARGET_HEIGHT = WINDOW_HEIGHT-160;
-        const newHeight = window.innerHeight - event.touches[0].clientY;
-        if (newHeight >= preNewHeight) {
+        } else if(!isTall){
+            setScroll("");
+            setStartY(event.touches[0].clientY);
+        }
+      };
+
+    const handleTouchMove = (event) => {
+        const touchY = event.touches[0].clientY;
+        const deltaY = touchY - startY;
+    
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
-            setOpen({
-                bool: true,
-                visibility: 'visible'
-            });
+            setIsTall(true);
+            setScroll("scroll");
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
             });
-            setScroll('scroll');
-        } else {
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            cardRef.current.scrollTo({top:0});
             if(WINDOW_HEIGHT < 750){
-                setHeight(183)
+                setHeight(270)
             } else {
-                setHeight(345)
+                setHeight(430)
             }
+            setIsTall(false);
+            setScroll("");
             setOpen({
                 bool: false,
-                visibility: 'hidden'
+                visibility: "hidden"
             });
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
-            setScroll('');
-        }
-        preNewHeight=newHeight;
-    };
-
+        } 
+      };
+  
+      
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
      const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
             if(WINDOW_HEIGHT < 750){
-                setHeight(187)
+                setHeight(270)
             } else {
-                setHeight(345)
+                setHeight(430)
             }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
             });
+            setIsTall(false);
             setScroll('');
-            cardRef.current.scrollTo({top:0, behavior: 'smooth'});
+            cardRef.current.scrollTo({top:0});
         } 
     };
 
@@ -197,6 +222,7 @@ const PlacePage = () => {
     const onTagClick = (id) => {
         dispatch(clear_search_results());
         setKeyword(id);
+        setIsTall(false);
         if(tags!=null) {
             if(tags.length<2) {
                 tags.push(id);
@@ -225,6 +251,7 @@ const PlacePage = () => {
             setKeyword('');
             setTags(null);
             setHeight('0');
+            setIsTall(false);
             setFilteredPlace(null);
             setClick(!bool);
             dispatch(clear_search_results());
@@ -286,7 +313,7 @@ const PlacePage = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
-                <div style={{ position: 'relative', height:'100%', width:'100%',overflow: 'hidden'}}>  
+                <div style={{ position: 'fixed', height:'100%', width:'100%',overflow: 'hidden'}}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
                     <SearchBox openID={openID} handleFocus={handleFocus}/> 
                     <div style={{position:'relative', width:'100%'}}>
@@ -311,6 +338,7 @@ const PlacePage = () => {
                             // borderTop: '1.5px solid rgba(234, 234, 234, 1)',
                             borderRadius:'0px',
                             visibility: open.visibility,
+                            
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
@@ -349,8 +377,12 @@ const PlacePage = () => {
                         boxShadow: '0px -10px 20px -5px rgb(0,0,0, 0.16)',
                         visibility: cardStyle.cardVisibility,
                         transition: `height ${animationDuration} ${animationTimingFunction}`,
+                        
                     }} 
-                    ref = {cardRef}
+                    ref={cardRef}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+
                     >
                     <div>
 
@@ -367,7 +399,7 @@ const PlacePage = () => {
                     )}
                     { selectedPlace && 
                     <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
-                            <li key={selectedPlace.id} >
+                            <li key={selectedPlace.id} ref={listRef}>
                                 <>
                                 <Grid container style={{padding: '0px 15px'}}>
                                         <Grid style={{width: '100%'}}>
@@ -620,9 +652,9 @@ const PlacePage = () => {
                                 </Grid>
                             </Grid>
                             { selectedPlace && 
-                                <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                                <li key={selectedPlace.id} style={{listStyleType:"none", marginBottom:'100px'}} onClick={handleReviewClick} >
                                         <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
-                                            <Typography sx={{fontWeight:'700',marginTop:'-20px',textAlign:'right', p: '0 20px 40px', color: '#505050', fontSize: '16px'}}>
+                                            <Typography sx={{fontWeight:'700',marginTop:'0px',textAlign:'right', p: '0 20px 40px', color: '#505050', fontSize: '16px'}}>
                                                 후기 더보기 &gt;
                                             </Typography>
                                         </Link>
