@@ -21,14 +21,11 @@ public class ChatRoomDto {
     public static  class PostRequest{
 
         @JsonProperty
-        private String roomName;
-        @JsonProperty
         private String userName;
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
                     .user1(user)
-                    .roomName(this.roomName)
                     .build();
 
 
@@ -52,8 +49,7 @@ public class ChatRoomDto {
     public static class Response {
         @JsonProperty
         private String roomId;
-        @JsonProperty
-        private String roomName;
+
         private String message;
         @JsonProperty
         private Long user1Id;
@@ -68,7 +64,6 @@ public class ChatRoomDto {
             this.messageTime = chatMessage.getDate();
             this.message = chatMessage.getMessage();
             this.roomId = chatroom.getRoomId();
-            this.roomName = chatroom.getRoomName();
             this.user1Id = chatroom.getUser1().getId();
             this.user2Id = chatroom.getUser2().getId();
             this.messageCount = messageCount;
@@ -109,24 +104,6 @@ public class ChatRoomDto {
         }
     }
 
-    @Getter
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class ChatListResponse{
-
-        @JsonProperty
-        private String roomId;
-        @JsonProperty
-        private Long user1Id;
-        @JsonProperty
-        private Long user2Id;
-
-        public ChatListResponse(ChatRoom chatRoom){
-            this.roomId = chatRoom.getRoomId();
-            this.user1Id = chatRoom.getUser1().getId();
-            this.user2Id = chatRoom.getUser2().getId();
-
-        }
-    }
 
     @Getter
     public static class DebeziumDto{

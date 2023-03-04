@@ -9,7 +9,6 @@ import skkuchin.service.domain.Chat.ChatRoom;
 import java.time.LocalDateTime;
 import java.util.List;
 public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
-    ChatRoom findByRoomName(String roomName);
     ChatRoom findByRoomId(String roomId);
 
 

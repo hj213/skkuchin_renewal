@@ -1,7 +1,11 @@
 package skkuchin.service.api.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -51,5 +55,14 @@ public class DebeziumDto {
             private String op;
 
         }
+    }
+
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    public static class UserChatInfo {
+        private UserDto.chatRoomResponse userInfo;
+        private List<ChatRoomDto.Response> chatMessages;
     }
 }

@@ -22,12 +22,10 @@ public class AlarmController {
     private final RabbitTemplate template;
     private final ChatMessageService chatMessageService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
-    private final static String CHAT_QUEUE_NAME = "chat.queue";
 
 
-    //기존의 유저 메시지 불러오기
     @MessageMapping("chat.alarm.{chatRoomId}")
-    public void newAlarm(@Header("token") String token){
+    public void newMatching(@Header("token") String token){
         String username = chatMessageService.getUserNameFromJwt(token);
         List<ChatRoomDto.userResponse> alarmList = chatMessageService.getAlarmList(username);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+username+"alarm",alarmList);

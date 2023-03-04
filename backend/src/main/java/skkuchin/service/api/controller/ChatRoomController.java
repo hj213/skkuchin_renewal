@@ -31,31 +31,22 @@ public class ChatRoomController {
 
 
 
-    @GetMapping("/{roomId}")
-    public ResponseEntity<?> getLatestMessage(@PathVariable String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        List<ChatMessageDto.Response> responses = chatService.getLatestMessage(chatRoom);
-        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 id로 메시지 조회 완료", responses), HttpStatus.OK);
-    }
-
 
 
     //reaction = accept, refuse, hold
     //검증 추가 receiver id가 맞는지
-    @PostMapping("/{roomId}")
+    @PutMapping("/reaction/{roomId}")
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId,  @RequestBody ChatRoomDto.Request dto,@AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
         chatService.user2Accept(chatRoom,user,dto.getReaction());
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭", null), HttpStatus.CREATED);
-
-
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭", null), HttpStatus.OK);
     }
 
 
     //상대 유저 블럭
     //block or remove
-    @PostMapping("/block/{roomId}")
+    @PutMapping("/block/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
                                        @RequestBody ChatRoomDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
@@ -67,10 +58,10 @@ public class ChatRoomController {
             chatService.removeBlockedUser(chatRoom,user);
         }
 
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.OK);
     }
 
-    @PostMapping("/alarm/{roomId}")
+    @PutMapping("/alarm/{roomId}")
     public ResponseEntity<?> roomAlarm(@PathVariable String roomId,
                                        @RequestBody ChatRoomDto.Request dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
@@ -82,24 +73,19 @@ public class ChatRoomController {
             chatService.disableAlarm(chatRoom,user);
         }
 
-        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 알람 설정", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 알람 설정", null), HttpStatus.OK);
     }
 
 
 
 
-    @PutMapping("/{roomId}")
-    public ResponseEntity<?> deleteExpiredData(@PathVariable String roomId,@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    @PutMapping("/exit/{roomId}")
+    public ResponseEntity<?> exitRoom(@PathVariable String roomId,@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         chatService.exitRoom(roomId,user);
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 나가기 완료", null), HttpStatus.OK);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> exitRoom() {
-        chatService.deleteExpiredData();
-        return new ResponseEntity<>(new CMRespDto<>(1, "만료 기간 지난 데이터 삭제 완료", null), HttpStatus.OK);
-    }
 
 
 }

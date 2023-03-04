@@ -26,7 +26,7 @@ public class ChatMessage {
     @ManyToOne
     private ChatRoom chatRoom;
 
-    private LocalDateTime Date;
+    private LocalDateTime date;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean readStatus;

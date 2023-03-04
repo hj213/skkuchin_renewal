@@ -43,7 +43,7 @@ public class ChatMessageDto {
                     .message(this.message)
                     .chatRoom(chatRoom)
                     .sender(user.getUsername())
-                    .Date(LocalDateTime.now())
+                    .date(LocalDateTime.now())
                     .build();
 
         }

@@ -89,8 +89,8 @@ public class DebeziumController {
                 String userName1 = user1.getUsername();
                 String userName2 = user2.getUsername();
 
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId+"user1", chatRoomBlockInfo);
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "room." +roomId+"user2", chatRoomBlockInfo);
+                template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user1", chatRoomBlockInfo);
+                template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user2", chatRoomBlockInfo);
                 template.convertAndSend(CHAT_EXCHANGE_NAME,
                         "room."+userName1 +"chatRoomList",chatMessageService.getChatList(userName1));
                 template.convertAndSend(CHAT_EXCHANGE_NAME,
@@ -102,7 +102,7 @@ public class DebeziumController {
             AppUser user2 = chatService.findUser2(chatRoom);
             String username = user2.getUsername();
             List<ChatRoomDto.userResponse> alarmList = chatMessageService.getAlarmList(username);
-            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+ username+"alarm",username);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+ username+"alarm",alarmList);
         }
     }
 

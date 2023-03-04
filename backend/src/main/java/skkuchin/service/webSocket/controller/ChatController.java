@@ -57,15 +57,15 @@ public class ChatController {
         List<ChatMessageDto.Response> chatMessages = chatService.getAllMessage(chatRoom);
 
        if(chatService.findUser1(chatRoom).getUsername().equals(username)){
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user1",blockResponse);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user1",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user1",chatMessages);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user1",userDto);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",userDto);
 
        }
        else{
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user2",blockResponse);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user2",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user2",chatMessages);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+chatRoomId +"user2",userDto);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",userDto);
         }
     }
 
