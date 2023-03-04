@@ -6,8 +6,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Layout from '../hocs/Layout';
-import { initializeApp } from "firebase/app";
-import { getMessaging } from "firebase/messaging";
 
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);

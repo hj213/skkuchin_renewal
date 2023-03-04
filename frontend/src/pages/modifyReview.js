@@ -56,8 +56,6 @@ const ModifyReview = () => {
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     
-    const places = useSelector(state => state.place.searchplace);
-    
     const selectedPlace = useSelector(state => state.place.place);
 
     const reviews = useSelector(state => state.review.review);
@@ -65,15 +63,14 @@ const ModifyReview = () => {
     const [textReview, setTextReview] = useState();
     const [tagList, setTagList] = useState([]);
     const [tagChoose, setTagChoose] = useState({
-      '맛집': false,
-      '간단한 한 끼': false,
-      '분위기 좋은': false,
-      '가성비': false,
-      '친절': false,
-      '청결도': false,
-      '둘이 가요': false
+        '맛집': false,
+        '간단한 한 끼': false,
+        '분위기 좋은': false,
+        '가성비': false,
+        '친절': false,
+        '청결도': false,
+        '둘이 가요': false
     });
-    const [imagesPreview, setImagesPreview] = useState([]);
 
     const review = reviews.find(review => review.id == review_id && review.place_id == place_id);
 
@@ -84,13 +81,12 @@ const ModifyReview = () => {
         // 태그 선택 상태 설정
         const tagChooseTemp = {};
         for (const tag of review.tags) {
-          tagChooseTemp[tag] = true;
+            tagChooseTemp[tag] = true;
         }
         setTagChoose(tagChooseTemp);
+    }, [review_id, place_id, reviews]);
 
-      }, [review_id, place_id, reviews]);
 
-      
     const handleTouch = (index) => {
         if (index + 1 === rating) {
             setRating(0);
@@ -104,7 +100,7 @@ const ModifyReview = () => {
             setPlaceId(id);
             dispatch(load_reviews(id));
         }
-    }, [dispatch, id]);
+    }, [id]);
 
     // 태그 관련
     useEffect(()=>{
@@ -153,19 +149,16 @@ const ModifyReview = () => {
         const files = Array.from(e.target.files);
         setPreviewImages([...previewImages, ...files.map((file) => URL.createObjectURL(file))]);
         setImages(files);
-      };
-      
-    const handleImageRemove = (index) => {
-      const newPreviewImages = [...previewImages];
-      newPreviewImages.splice(index, 1);
-      setPreviewImages(newPreviewImages);
     };
-    
 
-    const user = useSelector(state => state.auth.user);
+    const handleImageRemove = (index) => {
+        const newPreviewImages = [...previewImages];
+        newPreviewImages.splice(index, 1);
+        setPreviewImages(newPreviewImages);
+    };
 
      // 등록 클릭 시
-     const handleModifyClick = (event) =>{
+    const handleModifyClick = (event) =>{
         event.preventDefault();
         
         dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{

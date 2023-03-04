@@ -51,15 +51,14 @@ export default function searchList(){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(search_places(keyword));
-            dispatch(load_user());
         }
-    }, [dispatch]);
+    }, [keyword]);
 
     useEffect(() => {
         if (!allplaces || allplaces.length === 0) {
-          dispatch(load_places());
+            dispatch(load_places());
         }
-      }, [dispatch, allplaces]);
+    }, [allplaces]);
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -71,13 +70,13 @@ export default function searchList(){
             setFilteredAllPlace([]);
         }
     }, [searchplace, user, allplaces]);
-  
+
     const handleValue = (e) => {
         setValue(e.target.value);
 
         if(e.target.value == ''){
             setAuto([]);
-        } else{
+        } else {
             const regex = new RegExp(e.target.value, 'i');
             const newAuto = filteredAllPlace.filter((item) => regex.test(Hangul.assemble(item.name)));
             setAuto(newAuto);
@@ -89,7 +88,7 @@ export default function searchList(){
         e.preventDefault();
     };
 
-        // 북마크 기능
+    // 북마크 기능
     const isFavorite = (placeId) => {
         const favorite = favorites || []; // favorites가 null 또는 undefined인 경우 빈 배열([])로 초기화
         const isFavorited = favorite.some(favorite => favorite.place_id === placeId);
@@ -139,6 +138,7 @@ export default function searchList(){
         setValue('')
         setAuto([]);
     }
+
     const handleInputOnFocus = () => {
         setAutoBox(true);
     }
@@ -146,7 +146,7 @@ export default function searchList(){
     const handleInputOnBlur = (e) => { 
         setAutoBox(false);
     }
-   
+
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
