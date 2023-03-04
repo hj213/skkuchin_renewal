@@ -1,6 +1,5 @@
 package skkuchin.service.domain.Chat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import skkuchin.service.domain.User.AppUser;
@@ -10,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Getter
 @Setter
@@ -23,30 +23,41 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String roomId;
-    private String roomName;
+
+
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatSession> chatSessions = new ArrayList<>();
+
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "sender_id")
-    private AppUser user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JoinColumn(name = "receiver_id")
     private AppUser user1;
 
-    @Enumerated(EnumType.STRING)
-    private RequestStatus receiverRequestStatus;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id")
+    private AppUser user2;
 
-    private int userCount;
+    @Enumerated(EnumType.STRING)
+    private ResponseType response;
+
 
     private LocalDateTime expireDate;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isSenderBlocked;
+    private boolean isUser1Blocked;
+
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isReceiverBlocked;
+    private boolean isUser2Blocked;
+
+    @Column(columnDefinition = "BIT DEFAULT TRUE")
+    private boolean isUser1AlarmOn;
+
+    @Column(columnDefinition = "BIT DEFAULT TRUE")
+    private boolean isUSer2AlarmOn;
 
     @PrePersist
     public void setDate() {
@@ -55,11 +66,7 @@ public class ChatRoom {
         /*this.expireDate = now.plusMinutes(1);*/
     }
 
-    @OneToMany(mappedBy = "chatRoom")
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "chatRoom")
-    private List<ChatSession> chatSessions = new ArrayList<>();
+    // 신고 관련 매핑입니다 지우지 마세요
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();

@@ -262,4 +262,10 @@ public class UserService {
             userKeywordRepo.saveAll(userKeywords);
         }
     }
+
+    @Transactional
+    public UserDto.chatRoomResponse getChatRoomUser(String username) {
+        AppUser user = userRepo.findByUsername(username);
+        return new UserDto.chatRoomResponse(user);
+    }
 }

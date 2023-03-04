@@ -1,6 +1,6 @@
 package skkuchin.service.domain.Chat;
 
-public enum RequestStatus {
+public enum ResponseType {
 
     ACCEPT, REFUSE, HOLD
 }
