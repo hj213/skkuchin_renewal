@@ -69,6 +69,8 @@ public class ChatMessageService {
                 .stream()
                 .map(message -> new ChatRoomDto.userResponse(message))
                 .collect(Collectors.toList());
+        Collections.sort(chatRoom,new AlarmListDateComparator().reversed());
+
         return chatRoom;
     }
 
@@ -96,7 +98,6 @@ public class ChatMessageService {
 
 
     private ChatMessage getLatestMessage(ChatRoom chatRoom){
-
         ChatMessage chatMessage = new ChatMessage() ;
         if(chatRepo.findByLatestMessageTime(chatRoom.getRoomId()).size() == 0){
             chatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
@@ -107,6 +108,7 @@ public class ChatMessageService {
         }
         return chatMessage;
     }
+
     private class DateComparator implements Comparator<ChatRoomDto.Response> {
         @Override
         public int compare(ChatRoomDto.Response f1, ChatRoomDto.Response f2) {
@@ -115,7 +117,17 @@ public class ChatMessageService {
             } else  {
                 return -1;
             }
+        }
+    }
 
+    private class AlarmListDateComparator implements Comparator<ChatRoomDto.userResponse> {
+        @Override
+        public int compare(ChatRoomDto.userResponse f1, ChatRoomDto.userResponse f2) {
+            if (f1.getCreatedDate().isAfter(f2.getCreatedDate()) ) {
+                return 1;
+            } else  {
+                return -1;
+            }
         }
     }
 

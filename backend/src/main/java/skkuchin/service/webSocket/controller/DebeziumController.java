@@ -57,15 +57,11 @@ public class DebeziumController {
         dto.getPayload().getAfter().getChat_room_id();
         List<ChatMessageDto.Response> chatMessages = chatService.getAllMessage(chatRoom);
 
-
         template.convertAndSend(CHAT_EXCHANGE_NAME, "chat." + roomId+"user1", chatMessages);
         template.convertAndSend(CHAT_EXCHANGE_NAME, "chat." + roomId+"user2", chatMessages);
 
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList",user2ChatInfo);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList",user1ChatInfo);
-
-
-
 
     }
 
@@ -92,13 +88,14 @@ public class DebeziumController {
         DebeziumDto.UserChatInfo user1ChatInfo = new DebeziumDto.UserChatInfo(user1Info,user1ChatMessages);
         DebeziumDto.UserChatInfo user2ChatInfo = new DebeziumDto.UserChatInfo(user2Info,user2chatMessages);
 
+
+        
         template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user1", chatRoomBlockInfo);
         template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user2", chatRoomBlockInfo);
         template.convertAndSend(CHAT_EXCHANGE_NAME,
                         "room."+userName1 +"chatRoomList",user1ChatInfo);
         template.convertAndSend(CHAT_EXCHANGE_NAME,
                         "room."+userName2+"chatRoomList",user2ChatInfo);
-
 
         if(dto.getPayload().getOp().equals("c")){
             String username = user2.getUsername();
