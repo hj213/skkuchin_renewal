@@ -30,12 +30,12 @@ const reviewReducer = (state = initialState, action) => {
         case LOAD_REVIEW_SUCCESS:
             return{
                 ...state,
-                review: payload
+                myReview: payload
             }
         case LOAD_REVIEW_FAIL:
             return{
                 ...state,
-                review: null
+                myReview: null
             }
         case DELETE_REVIEW_SUCCESS:
             return{

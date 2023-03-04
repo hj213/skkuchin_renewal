@@ -55,12 +55,9 @@ const ModifyReview = () => {
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    
-    const places = useSelector(state => state.place.searchplace);
-    
+   
     const selectedPlace = useSelector(state => state.place.place);
 
-    const reviews = useSelector(state => state.review.review);
     const [rating, setRating] = useState();
     const [textReview, setTextReview] = useState();
     const [tagList, setTagList] = useState([]);
@@ -73,9 +70,11 @@ const ModifyReview = () => {
       '청결도': false,
       '둘이 가요': false
     });
-    const [imagesPreview, setImagesPreview] = useState([]);
 
-    const review = reviews.find(review => review.id == review_id && review.place_id == place_id);
+    const reviews = useSelector(state => state.review.review);
+    const myReviews = useSelector(state => state.review.myReview);
+
+    const review = reviews && reviews.find(review => review.id == review_id && review.place_id == place_id) || myReviews && myReviews.find(review => review.id == review_id && review.place_id == place_id);
 
     useEffect(() => {
         setRating(review.rate);
@@ -103,8 +102,9 @@ const ModifyReview = () => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             setPlaceId(id);
             dispatch(load_reviews(id));
+            alert(review.content +' ' + review.images.length);
         }
-    }, [dispatch, id]);
+    }, [id]);
 
     // 태그 관련
     useEffect(()=>{
@@ -161,9 +161,6 @@ const ModifyReview = () => {
       setPreviewImages(newPreviewImages);
     };
     
-
-    const user = useSelector(state => state.auth.user);
-
      // 등록 클릭 시
      const handleModifyClick = (event) =>{
         event.preventDefault();

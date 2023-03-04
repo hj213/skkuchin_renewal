@@ -25,7 +25,7 @@ const MyReviewPage = () => {
     const dispatch = useDispatch();
 
     // 리뷰정보 (review API)
-    const reviews = useSelector(state => state.review.review);
+    const reviews = useSelector(state => state.review.myReview);
  
     const allPlaces = useSelector(state => state.place.allplaces);
  
@@ -89,17 +89,17 @@ const MyReviewPage = () => {
     };
 
     useEffect(() => {
-        let isMounted = true;
+        // let isMounted = true;
         if(dispatch && dispatch !== null && dispatch !== undefined ) {
             dispatch(load_place(selectedPlaceId));
         }
-        return () => {
-            isMounted = false;
-        };
+        // return () => {
+        //     isMounted = false;
+        // };
     }, [selectedPlaceId, dispatch]);
 
     const handleEdit = (reviewId) => {
-        const review = reviews.find(item => item.id == reviewId);
+        const review = reviews && reviews.find(item => item.id == reviewId);
         setSelectedPlaceId(review.place_id);
         router.push({
             pathname: '/modifyReview',

@@ -53,7 +53,6 @@ const EnrollReview = () => {
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
 
     // 리뷰 (텍스트)
@@ -72,10 +71,8 @@ const EnrollReview = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            dispatch(load_reviews(id));
-            dispatch(load_review());
         }
-    }, [dispatch, id]);
+    }, [id]);
 
     //리뷰 정보 전달
     const [tagList, setTagList] = useState();
