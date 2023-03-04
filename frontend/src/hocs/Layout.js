@@ -5,6 +5,7 @@ import Head from "next/head";
 import { createToken } from '../utils/firebase';
 import { enroll_token } from "../actions/pushToken/pushToken";
 import { getMessaging, onMessage } from 'firebase/messaging';
+import { initializeApp } from 'firebase/app';
 
 const Layout = ({title, content, children}) => {
     
@@ -16,6 +17,19 @@ const Layout = ({title, content, children}) => {
             console.log("load")
             dispatch(load_user());
         }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJfOv3y3wkfgwdZ4B013eyIhOXDDjp72w",
+            authDomain: "skkuchin-renewal-d20c6.firebaseapp.com",
+            projectId: "skkuchin-renewal-d20c6",
+            storageBucket: "skkuchin-renewal-d20c6.appspot.com",
+            messagingSenderId: "344929940532",
+            appId: "1:344929940532:web:07d2e9d94a19828ce5c661",
+            measurementId: "G-0H1CX4383K"
+        };
+            
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
 
         async function getMessageToken() {
             console.log(Notification.permission);
@@ -29,6 +43,7 @@ const Layout = ({title, content, children}) => {
                     dispatch(enroll_token(token, null, null));
                 }
             } else {
+                console.log("not granted");
                 Notification.requestPermission().then(async (permission) => {
                     console.log(permission)
                     if (permission === "granted") {
@@ -47,8 +62,6 @@ const Layout = ({title, content, children}) => {
             }
         }
         getMessageToken();
-
-        const messaging = getMessaging();
         onMessage(messaging, (payload) => {
             console.log('Message received. ', payload);
             const notificationTitle = payload.notification.title;
