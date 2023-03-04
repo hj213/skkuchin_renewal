@@ -55,7 +55,7 @@ export default function list(){
         visibility: 'hidden',
     });
     const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
-    const [isTall, setIshTall] = useState(false);
+    const [isTall, setIsTall] = useState(false);
     const [startY, setStartY] = useState(0);
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
@@ -147,7 +147,7 @@ export default function list(){
             visibility:'hidden'});
         setHeight('0');
         setPreventScroll('');
-        setIshTall(false);
+        setIsTall(false);
     }
 
     const handleTouchStart = (event) => {
@@ -155,8 +155,8 @@ export default function list(){
             setPreventScroll('scroll');
             setStartY(event.touches[0].clientY);
 
-        } else {
-            setPreventScroll("hidden");
+        } else if(!isTall){
+            setPreventScroll("");
             setStartY(event.touches[0].clientY);
         }
       };
@@ -164,11 +164,11 @@ export default function list(){
     const handleTouchMove = (event) => {
         const touchY = event.touches[0].clientY;
         const deltaY = touchY - startY;
-
+    
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
             setPreventScroll("scroll");
-            setIshTall(true);
+            setIsTall(true);
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
@@ -184,7 +184,7 @@ export default function list(){
             } else {
                 setHeight('320px')
             }
-            setIshTall(false);
+            setIsTall(false);
             setPreventScroll("");
             setOpen({
                 bool: false,
@@ -195,11 +195,12 @@ export default function list(){
                 iconVisibility:'visible'
             });
         } 
+        
       };
-          
+  
       const handleTouchEnd = () => {
         if (cardRef.current.offsetHeight === TARGET_HEIGHT) {
-          setPreventScroll("scroll");
+        //   setPreventScroll("scroll");
         }
       };
     
@@ -219,6 +220,7 @@ export default function list(){
             });
             setPreventScroll('');
             cardRef.current.scrollTo({top:0, behavior:'smooth'});
+            setIsTall(false);
         } else{
             setKeyword('');
             setTags([]);
@@ -261,7 +263,7 @@ export default function list(){
     const onTagClick = (id) => {
         const selectedTag = tagsId.find(tag => tag.id === id);
         if (!selectedTag) return;
-      
+        
         const exclusiveGroup = selectedTag.exclusiveGroup;
         let newTags;
       
@@ -291,6 +293,7 @@ export default function list(){
         setTags(newTags);
         setKeyword(newTags.join(', '));
         if(newTags.length == 0) handleReset();
+        setIsTall(false);
       }
       
     
@@ -302,6 +305,7 @@ export default function list(){
             setTags([]);
             setFilteredPlace(null);
             setHeight('0');
+            setIsTall(false);
             dispatch(clear_search_results());
         }
         

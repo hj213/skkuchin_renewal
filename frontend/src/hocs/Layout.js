@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
-import { createToken } from '../utils/firebase';
 import { enroll_token } from "../actions/pushToken/pushToken";
 import { getMessaging, onMessage } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
