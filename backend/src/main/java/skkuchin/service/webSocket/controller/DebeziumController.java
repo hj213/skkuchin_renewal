@@ -8,11 +8,14 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.RestController;
 import skkuchin.service.api.dto.ChatRoomDto;
 import skkuchin.service.api.dto.DebeziumDto;
+import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.ChatService;
+import skkuchin.service.service.UserService;
+
 import java.util.List;
 
 @RestController
@@ -23,6 +26,7 @@ public class DebeziumController {
     private final ChatService chatService;
     private final ChatMessageService chatMessageService;
     private final ChatRoomRepo chatRoomRepository;
+    private final UserService userService;
 
 
 
@@ -88,13 +92,21 @@ public class DebeziumController {
                 AppUser user2 = chatService.findUser2(chatRoom);
                 String userName1 = user1.getUsername();
                 String userName2 = user2.getUsername();
+                UserDto.chatRoomResponse user1Info = userService.getChatRoomUser(userName1);
+                UserDto.chatRoomResponse user2Info = userService.getChatRoomUser(userName2);
+                List<ChatRoomDto.Response> user1ChatMessages = chatMessageService.getChatList(userName1);
+                List<ChatRoomDto.Response> user2chatMessages = chatMessageService.getChatList(userName2);
+                DebeziumDto.UserChatInfo user1ChatInfo = new DebeziumDto.UserChatInfo(user1Info,user1ChatMessages);
+                DebeziumDto.UserChatInfo user2ChatInfo = new DebeziumDto.UserChatInfo(user2Info,user2chatMessages);
+
+
 
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user1", chatRoomBlockInfo);
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user2", chatRoomBlockInfo);
                 template.convertAndSend(CHAT_EXCHANGE_NAME,
-                        "room."+userName1 +"chatRoomList",chatMessageService.getChatList(userName1));
+                        "room."+userName1 +"chatRoomList",user1ChatInfo);
                 template.convertAndSend(CHAT_EXCHANGE_NAME,
-                        "room."+userName2+"chatRoomList",chatMessageService.getChatList(userName2));
+                        "room."+userName2+"chatRoomList",user2ChatInfo);
 
         }
 

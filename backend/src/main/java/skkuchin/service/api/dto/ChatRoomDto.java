@@ -55,6 +55,13 @@ public class ChatRoomDto {
         private Long user1Id;
         @JsonProperty
         private Long user2Id;
+
+        @JsonProperty
+        private boolean isUser1AlarmOn;
+
+        @JsonProperty
+        private boolean isUser2AlarmOn;
+
         @JsonProperty
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime messageTime;
@@ -67,6 +74,8 @@ public class ChatRoomDto {
             this.user1Id = chatroom.getUser1().getId();
             this.user2Id = chatroom.getUser2().getId();
             this.messageCount = messageCount;
+            this.isUser1AlarmOn = chatroom.isUser1AlarmOn();
+            this.isUser2AlarmOn = chatroom.isUSer2AlarmOn();
         }
 
     }
