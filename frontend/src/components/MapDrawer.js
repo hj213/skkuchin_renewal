@@ -90,9 +90,12 @@ export default function MapDrawer(openID){
     }, [dispatch]);
 
     useEffect(()=>{
+      if(toggleInfo){
         dispatch(change_toggle(toggleInfo));
         dispatch(load_user());
-    }, [dispatch, toggleInfo, user?.campus]);
+      }
+        
+    }, [toggleInfo, user?.campus]);
 
     //drawer 열리는
     const handleDrawerClick = (bool) => (e) => {
