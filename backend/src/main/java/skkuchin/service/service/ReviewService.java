@@ -10,7 +10,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import skkuchin.service.api.dto.ReviewDto;
+import skkuchin.service.dto.ReviewDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.CustomRuntimeException;

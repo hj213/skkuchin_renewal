@@ -12,7 +12,6 @@ import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
-import ReviewItem from "../components/ReviewItem";
 import close from '../image/close.png';
 
 const MorePhotos = () => {
@@ -33,14 +32,11 @@ const MorePhotos = () => {
     // place, 가게 정보 (place API)
     
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             setPlaceId(id);
-            dispatch(load_reviews(place_id));
-            dispatch(load_place(place_id));
         }
     }, [id]);
 

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import skkuchin.service.api.dto.MenuDto;
+import skkuchin.service.dto.MenuDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Map.Menu;
 import skkuchin.service.domain.Map.Place;

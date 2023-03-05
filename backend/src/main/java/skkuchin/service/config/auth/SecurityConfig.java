@@ -30,7 +30,6 @@ public class SecurityConfig {
             "/api/matching/user/new/**",
             "/api/user/password/reset",
             "/api/email/**",
-            "/chat/**",
             "/ws/chat/**"
     };
     private static final String[] PERMIT_SWAGGER_URL_ARRAY = {

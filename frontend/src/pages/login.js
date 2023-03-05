@@ -10,7 +10,7 @@ import theme from '../theme/theme';
 import logo from '../image/main_logo.png'
 import check from '../image/check_circle.png';
 import uncheck from '../image/uncheck.png';
-import { string } from 'prop-types';
+import { load_favorite } from '../actions/favorite/favorite';
 
 
 const LoginPage = () => {

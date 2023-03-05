@@ -8,8 +8,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.EmailAuthRequestDto;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.EmailAuthRequestDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.EmailAuth;
 import skkuchin.service.domain.User.EmailType;
@@ -37,8 +37,6 @@ public class EmailService {
 
     @Value("${mail.host}")
     private String host;
-    @Value("${mail.page}")
-    private String page;
     @Value("${admin-mail.id}")
     private String address;
     private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료

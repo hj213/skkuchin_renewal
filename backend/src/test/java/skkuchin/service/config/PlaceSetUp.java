@@ -2,7 +2,7 @@ package skkuchin.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import skkuchin.service.api.dto.PlaceDto;
+import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.domain.Map.Place;
 import skkuchin.service.repo.PlaceRepo;
 

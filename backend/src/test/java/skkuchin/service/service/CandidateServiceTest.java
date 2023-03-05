@@ -3,7 +3,7 @@ package skkuchin.service.service;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import skkuchin.service.api.dto.CandidateDto;
+import skkuchin.service.dto.CandidateDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;

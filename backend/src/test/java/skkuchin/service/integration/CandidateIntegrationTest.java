@@ -2,26 +2,21 @@ package skkuchin.service.integration;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import skkuchin.service.api.dto.CandidateDto;
+import skkuchin.service.dto.CandidateDto;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.CandidateSetUp;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
-import skkuchin.service.domain.User.Role;
 import skkuchin.service.repo.UserRepo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;

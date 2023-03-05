@@ -3,12 +3,10 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.PlaceDto;
-import skkuchin.service.api.dto.PushTokenDto;
+import skkuchin.service.dto.PushTokenDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.PushToken;
 import skkuchin.service.exception.CustomRuntimeException;
-import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.PushTokenRepo;
 
 import javax.transaction.Transactional;

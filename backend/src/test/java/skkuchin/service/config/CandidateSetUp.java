@@ -2,7 +2,6 @@ package skkuchin.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import skkuchin.service.api.dto.CandidateDto;
 import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
@@ -10,7 +9,6 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.CandidateRepo;
 import skkuchin.service.repo.KeywordRepo;
 import skkuchin.service.repo.UserKeywordRepo;
-import skkuchin.service.repo.UserRepo;
 
 import java.time.LocalDateTime;
 import java.util.List;

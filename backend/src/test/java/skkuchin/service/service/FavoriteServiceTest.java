@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import skkuchin.service.api.dto.FavoriteDto;
+import skkuchin.service.dto.FavoriteDto;
 
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Map.*;

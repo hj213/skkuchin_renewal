@@ -3,21 +3,22 @@ import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 import {
-    CREATE_CHAT_ROOM_SUCCESS,
-    CREATE_CHAT_ROOM_FAIL,
+    REQUEST_CHAT_SUCCESS,
+    REQUEST_CHAT_FAIL,
     REPLY_CHAT_REQUEST_SUCCESS,
     REPLY_CHAT_REQUEST_FAIL,
-    MODIFY_CHAT_BLOCK_SUCCESS,
-    MODIFY_CHAT_BLOCK_FAIL,
-    MODIFY_CHAT_ALARM_SUCCESS,
-    MODIFY_CHAT_ALARM_FAIL,
+    SET_USER_BLOCK_SUCCESS,
+    SET_USER_BLOCK_FAIL,
+    SET_CHAT_ALARM_SUCCESS,
+    SET_CHAT_ALARM_FAIL,
     EXIT_CHAT_ROOM_SUCCESS,
-    EXIT_CHAT_ROOM_FAIL
+    EXIT_CHAT_ROOM_FAIL,
+    GET_REALTIME_ROOM_SUCCESS,
+    GET_REALTIME_ROOM_FAIL
 }
     from './types';
-import { EXIT_CHAT_ROOM_FAIL, EXIT_CHAT_ROOM_SUCCESS } from './type';
 
-export const make_room = async (username, callback) => {
+export const request_chat = async (username, callback) => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -47,18 +48,18 @@ export const make_room = async (username, callback) => {
 
         if (res.status === 201) {
             dispatch({
-                type: CREATE_CHAT_ROOM_SUCCESS
+                type: REQUEST_CHAT_SUCCESS
             })
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
-                type: CREATE_CHAT_ROOM_FAIL
+                type: REQUEST_CHAT_FAIL
             })
             if (callback) callback([false, apiRes.message]);
         }
     } catch(error) {
         dispatch({
-            type: CREATE_CHAT_ROOM_FAIL
+            type: REQUEST_CHAT_FAIL
         })
         if (callback) callback([false, error]);
     }
@@ -111,7 +112,7 @@ export const reply_chat_request = async (reaction, room_id, callback) => {
     }
 };
 
-export const block_user = async (reaction, room_id, callback) => {
+export const set_user_block = async (reaction, room_id, callback) => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -141,18 +142,18 @@ export const block_user = async (reaction, room_id, callback) => {
 
         if (res.status === 200) {
             dispatch({
-                type: MODIFY_CHAT_BLOCK_SUCCESS
+                type: SET_USER_BLOCK_SUCCESS
             })
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
-                type: MODIFY_CHAT_BLOCK_FAIL
+                type: SET_USER_BLOCK_FAIL
             })
             if (callback) callback([false, apiRes.message]);
         }
     } catch(error) {
         dispatch({
-            type: MODIFY_CHAT_BLOCK_FAIL
+            type: SET_USER_BLOCK_FAIL
         })
         if (callback) callback([false, error]);
     }
@@ -188,18 +189,18 @@ export const set_chat_room_alarm = async (reaction, room_id, callback) => {
 
         if (res.status === 200) {
             dispatch({
-                type: MODIFY_CHAT_ALARM_SUCCESS
+                type: SET_CHAT_ALARM_SUCCESS
             })
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
-                type: MODIFY_CHAT_ALARM_FAIL
+                type: SET_CHAT_ALARM_FAIL
             })
             if (callback) callback([false, apiRes.message]);
         }
     } catch(error) {
         dispatch({
-            type: MODIFY_CHAT_ALARM_FAIL
+            type: SET_CHAT_ALARM_FAIL
         })
         if (callback) callback([false, error]);
     }
@@ -243,4 +244,8 @@ export const exit_room = async (room_id, callback) => {
         })
         if (callback) callback([false, error]);
     }
+};
+
+export const get_realtime_chat_room = async () => {
+    
 };
