@@ -6,8 +6,11 @@ import {
     SEND_CHAT_MESSAGE_SUCCESS,
     SEND_CHAT_MESSAGE_FAIL,
     GET_REALTIME_MESSAGE_SUCCESS,
+    GET_REALTIME_MESSAGE_FAIL,
     GET_REALTIME_BLOCK_SUCCESS,
-    GET_REALTIME_USER_SUCCESS
+    GET_REALTIME_BLOCK_FAIL,
+    GET_REALTIME_USER_SUCCESS,
+    GET_REALTIME_USER_FAIL
 }
     from './types';
 
@@ -78,13 +81,14 @@ export const get_realtime_otherUser = (room_id, user_number, stompClient) => asy
         })
 
     },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
         pushToken : access
-    });
-    
-    stompClient.publish({
-        destination: `/app/chat.chatMessage.${room_id}`
-    });
-    
+        }
+    );
+    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+
     return subscription;
 };
 
@@ -108,13 +112,14 @@ export const get_realtime_block = (room_id, user_number, stompClient) => async d
         })
 
     },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
         pushToken : access
-    });
+        }
+    );
+    stompClient.send(`/app/chat.chatMessage.${room_id}`);
 
-    stompClient.publish({
-        destination: `/app/chat.chatMessage.${room_id}`
-    });
-    
     return subscription;
 };
 
@@ -138,11 +143,13 @@ export const get_realtime_message = (room_id, user_number, stompClient)  => asyn
         })
 
     },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
         pushToken : access
-    });
-    stompClient.publish({
-        destination: `/app/chat.chatMessage.${room_id}`
-    });
-    
+        }
+    );
+    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+
     return subscription;
 };

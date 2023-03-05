@@ -69,10 +69,10 @@ export default function MessageTab() {
 
     return () => {
       if (subscriptionChatRoom) {
-        subscriptionChatRoom.unsubscribe();
+        stompClient.unsubscribe(subscriptionChatRoom);
       }
       if (subscriptionChatRequest) {
-        subscriptionChatRequest.unsubscribe();
+        stompClient.unsubscribe(subscriptionChatRequest);
       }
     }
   }, [user, stompClient])
