@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 const Layout = ({title, content, children}) => {
     
@@ -10,8 +12,10 @@ const Layout = ({title, content, children}) => {
 
     useEffect(() => {
         if (!isAuthenticated) {
-            console.log("load")
             dispatch(load_user());
+
+            const sockJS = new SockJS("/ws/chat");
+            const stomp = Stomp.over(sockJS);
         }
     }, []);
 
