@@ -27,11 +27,9 @@ function calculateRows() {
     const textLength = input.value.length;
     const rows = Math.ceil(textLength * fontSize / inputWidth);
     return rows;
-  }
+}
 
 const chatPage = () => {
-
-
     const router = useRouter();
 
     const user = useSelector(state => state.auth.user); 
@@ -51,29 +49,29 @@ const chatPage = () => {
     const [openBlockDialog, setBlockDialog] = useState(false);
 
     const handleBlockUser = () => {
-      setBlockDialog(true);
+        setBlockDialog(true);
     };
   
     const handleCloseDialog = () => {
-      setBlockDialog(false);
-      setExitDialog(false);
+        setBlockDialog(false);
+        setExitDialog(false);
     };
-  
+
     const handleConfirmBlockUser = () => {
       // Code to leave the chat room
-      setBlockDialog(false);
+        setBlockDialog(false);
     };
 
     // 채팅방 나가기 Dialog
     const [openExitDialog, setExitDialog] = useState(false);
 
     const handleExit = () => {
-      setExitDialog(true);
+        setExitDialog(true);
     };
   
     const handleConfirmExit = () => {
       // Code to leave the chat room
-      setExitDialog(false);
+        setExitDialog(false);
     };
 
     // 신고하기

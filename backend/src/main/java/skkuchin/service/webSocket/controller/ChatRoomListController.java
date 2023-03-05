@@ -6,9 +6,9 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
-import skkuchin.service.api.dto.ChatRoomDto;
-import skkuchin.service.api.dto.DebeziumDto;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.ChatRoomDto;
+import skkuchin.service.dto.DebeziumDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.UserService;
 

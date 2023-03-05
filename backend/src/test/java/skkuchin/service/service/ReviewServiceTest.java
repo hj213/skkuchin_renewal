@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import skkuchin.service.api.dto.ReviewDto;
+import skkuchin.service.dto.ReviewDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;

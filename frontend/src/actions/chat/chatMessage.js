@@ -4,7 +4,13 @@ import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 import {
     SEND_CHAT_MESSAGE_SUCCESS,
-    SEND_CHAT_MESSAGE_FAIL
+    SEND_CHAT_MESSAGE_FAIL,
+    GET_REALTIME_MESSAGE_SUCCESS,
+    GET_REALTIME_MESSAGE_FAIL,
+    GET_REALTIME_BLOCK_SUCCESS,
+    GET_REALTIME_BLOCK_FAIL,
+    GET_REALTIME_USER_SUCCESS,
+    GET_REALTIME_USER_FAIL
 }
     from './types';
 
@@ -53,4 +59,16 @@ export const send_message = async (message, room_id, callback) => {
         })
         if (callback) callback([false, error]);
     }
+};
+
+export const get_realtime_otherUser = async (message, room_id) => {
+
+};
+
+export const get_realtime_block = async (message, room_id) => {
+    
+};
+
+export const get_realtime_message = async (message, room_id) => {
+    
 };

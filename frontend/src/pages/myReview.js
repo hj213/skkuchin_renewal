@@ -76,7 +76,7 @@ const MyReviewPage = () => {
     const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
 
     const handleFilterChange = (event) => {
-      setFilter(event.target.value);
+        setFilter(event.target.value);
     };
 
     const handleEdit = (reviewId) => {

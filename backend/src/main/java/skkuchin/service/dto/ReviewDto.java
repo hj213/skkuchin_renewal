@@ -1,4 +1,4 @@
-package skkuchin.service.api.dto;
+package skkuchin.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

@@ -7,7 +7,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-import skkuchin.service.api.dto.CMRespDto;
+import skkuchin.service.dto.CMRespDto;
 
 import java.util.HashMap;
 import java.util.Map;
