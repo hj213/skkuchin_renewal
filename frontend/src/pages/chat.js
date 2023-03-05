@@ -19,6 +19,9 @@ import notiOff from '../image/chat/notifications_off.png'
 
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
+import { get_realtime_otherUser } from '../actions/chat/chatMessage';
+import { get_realtime_block } from '../actions/chat/chatMessage';
+import { get_realtime_message } from '../actions/chat/chatMessage';
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -32,13 +35,23 @@ function calculateRows() {
 const chatPage = () => {
     const router = useRouter();
 
-    const user = useSelector(state => state.auth.user); 
+    const user = useSelector(state => state.auth.user);
+    const messages = useSelector(state => state.chatMessage.messages);
+    const otherUser = useSelector(state => state.chatMessage.otherUser);
+    const isUser1Blocked = useSelector(state => state.chatMessage.isUser1Blocked);
+    const isUser2Blocked = useSelector(state => state.chatMessage.isUser2Blocked); 
     
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
             router.back();
         } 
     };  
+
+    useEffect(() => {
+        dispatch(get_realtime_otherUser(room_id, user_number));
+        dispatch(get_realtime_block(room_id, user_number));
+        dispatch(get_realtime_message(room_id, user_number));
+    }, [])
 
     // 프로필 보기
     const handleProfile = ()=>{

@@ -8,6 +8,7 @@ import Image from 'next/image';
 import character from '../image/mainCharacterY.png';
 
 import Link from 'next/link';
+get_realtime
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -44,14 +45,17 @@ function a11yProps(index) {
 
 export default function MessageTab() {
   const [value, setValue] = React.useState(0);
+  const user = useSelector(state => state.auth.user);
+  const chatRoom = useSelector(state => state.chatRoom.chatRoom);
+  const chatRequest = useSelector(state => state.chatRequest.chatRequest);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  // useEffect(() => {
+  useEffect(() => {
     
-  // }, [])
+  }, [])
 
   return (
     <Box sx={{ width: '100%' }}>

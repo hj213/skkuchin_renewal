@@ -24,7 +24,7 @@ public class ChatRoomListController {
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final UserService userService;
 
-    @MessageMapping("chat.list.{chatRoomId}")
+    @MessageMapping("chat.list")
     public void myChatList(@Header("token") String token){
         String username = chatMessageService.getUserNameFromJwt(token);
         UserDto.chatRoomResponse userInfo = userService.getChatRoomUser(username);
