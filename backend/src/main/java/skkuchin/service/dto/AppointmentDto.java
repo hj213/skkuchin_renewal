@@ -19,8 +19,6 @@ public class AppointmentDto {
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime dateTime;
         private String place;
-        @JsonProperty
-        private Long chatRoomId;
 
         public Appointment toEntity(ChatRoom chatRoom) {
             return Appointment.builder()

@@ -231,7 +231,6 @@ public class EmailService {
                     "<div>감사합니다.</div>" +
                     "</div>" +
                     "<a href='" +
-                    page +
                     "/register?src=emailDone&email=" + email + "&authNum=" + authNum + "' target='_blank'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +
             /*"<a href='" +
             host +
