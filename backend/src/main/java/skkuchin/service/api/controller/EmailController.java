@@ -43,8 +43,8 @@ public class EmailController {
         }
     }
 
-    @PostMapping("/confirm/signup")
-    public ResponseEntity<?> signupConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
+    @GetMapping("/confirm/signup")
+    public ResponseEntity<String> signupConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
         return ResponseEntity.ok().body(emailService.confirmSignup(requestDto));
     }
 
@@ -60,8 +60,8 @@ public class EmailController {
         return new ResponseEntity<>(new CMRespDto<>(1, "인증 메일이 발송되었습니다", null), HttpStatus.CREATED);
     }
 
-    @PostMapping("/confirm/password")
-    public ResponseEntity<?> passwordConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
+    @GetMapping("/confirm/password")
+    public ResponseEntity<String> passwordConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
         return ResponseEntity.ok().body(emailService.confirmPassword(requestDto));
     }
 
