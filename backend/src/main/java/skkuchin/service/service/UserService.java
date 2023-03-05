@@ -226,6 +226,7 @@ public class UserService {
             );
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
+            appUser.setEmail("email@example.com");
             appUser.emailVerifiedSuccess();
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_USER")).build();
             userRepo.save(appUser);
