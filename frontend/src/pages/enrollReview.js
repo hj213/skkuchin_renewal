@@ -2,8 +2,6 @@ import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
-import { load_review } from "../actions/review/review";
-import { load_reviews } from "../actions/review/review";
 import { enroll_review } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';

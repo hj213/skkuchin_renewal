@@ -18,7 +18,6 @@ export default function myFavorite(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
 
     const [open, setOpen] = useState(false);
-    const [color, setColor] = useState(true);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const router = useRouter();
@@ -30,8 +29,10 @@ export default function myFavorite(){
     }
 
     useEffect(()=>{
-        dispatch(load_favorite());
-    }, [dispatch]);
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_favorite());
+        }
+    }, []);
     
     const favorites = useSelector(state => state.favorite.favorite);
 
@@ -54,7 +55,7 @@ export default function myFavorite(){
             router.push({
                 pathname: '/',
                 query: { openID: true }
-              });
+            });
             
         } else{
             router.push('/');
@@ -64,7 +65,6 @@ export default function myFavorite(){
     //즐겨찾기 클릭시 즐겨찾기 삭제
     const handleFavClick = (placeId) => (e) => {
         e.preventDefault();
-        dispatch(load_favorite());
         const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
         if(favorite_id) {
             dispatch(delete_favorite(favorite_id.id));
@@ -82,15 +82,15 @@ export default function myFavorite(){
         }
     
         setOpen(false);
-      };
+    };
 
     const prevOpen = useRef(open);
     
     useEffect(() => {
-      if (prevOpen.current === true && open === false) {
-        anchorRef.current.focus();
-      }
-      prevOpen.current = open;
+        if (prevOpen.current === true && open === false) {
+            anchorRef.current.focus();
+        }
+        prevOpen.current = open;
     }, [open]);
 
     const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
@@ -110,7 +110,7 @@ export default function myFavorite(){
     const [sortedFavs, setSortedFavs] = useState(favorites ? [...favorites] : []);
 
     const handleFilterChange = (event) => {
-      setFilter(event.target.value);
+        setFilter(event.target.value);
     };
 
     return(

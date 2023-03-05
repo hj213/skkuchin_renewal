@@ -99,7 +99,6 @@ const ModifyReview = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             setPlaceId(id);
-            dispatch(load_reviews(id));
         }
     }, [id]);
 

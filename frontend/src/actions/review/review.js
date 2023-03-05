@@ -158,9 +158,10 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
         const apiRes = await res.json();
 
         if (res.status === 201) {
-            dispatch({
+            await dispatch({
                 type: ENROLL_REVIEW_SUCCESS
             })
+            await dispatch(load_reviews(place_id));
             
             if (callback) callback([true, apiRes.message]);
             
@@ -236,7 +237,7 @@ export const modify_review = (review_id, rate, content, images, urls, tags, call
         const apiRes = await res.json();
 
         if (res.status === 200) {
-            dispatch({
+            await dispatch({
                 type: MODIFY_REVIEW_SUCCESS
             })
             

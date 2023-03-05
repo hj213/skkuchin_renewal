@@ -78,12 +78,6 @@ export default function editProfile() {
     }
 
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_user());
-        }
-    }, [dispatch])
-
-    useEffect(() => {
         if (user) {
             setImage(user.image);
             setNickname(user.nickname);
