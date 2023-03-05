@@ -1,5 +1,6 @@
 import { useEffect,useState } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 // import moment from 'moment'; 
@@ -15,11 +16,13 @@ import style from 'styled-components';
 import { styled } from '@mui/material/styles';
 import {TimePicker }from 'antd';
 import dayjs from 'dayjs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { enroll_appointment } from "../actions/appointment/appointment"; 
 
 export default function chatTime(){
 
     const router = useRouter();
+    const dispatch =useDispatch();
 
     const now = new Date();
     const format = 'HH:mm';
@@ -72,6 +75,7 @@ export default function chatTime(){
     };
     const handleSubmit = (e) => {
         // router.back();
+        dispatch
     }
     const handleOpenTime = () => {
         if(timeOpen=='hidden'){

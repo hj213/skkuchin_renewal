@@ -12,7 +12,7 @@ import line from '../image/Line1.png';
 import bookmarkAdd from '../image/bookmark_add.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
-import expand from '../image/expand_more.png'
+import expand from '../image/expand_more2.png'
 import back from '../image/arrow_back_ios.png'
 import ReviewStar from '../components/ReviewStar'
 import TagList from "../components/TagList";
@@ -488,7 +488,7 @@ const PlacePage = () => {
                                                 <Grid container style={{marginTop: '7.5px', flexDirection: 'column'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px', flexDirection: 'row'}}>
                                                         <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        영업시간  <Image src={expand} width={10.7} height={6.5} style={{margin: '0px 6.65px'}} placeholder="blur" layout='fixed' ></Image>                                          
+                                                        영업시간  <Image src={expand} width={10} height={6.5}  placeholder="blur" layout='fixed' />                                          
                                                         </Typography>          
                                                     </Grid>
                                                     <Grid>
@@ -532,7 +532,7 @@ const PlacePage = () => {
                         </Container>
                         }
                         { selectedPlace && 
-                            <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                            <li key={selectedPlace.id} style={{listStyleType:"none", height:'100%'}} onClick={handleReviewClick} >
                                 <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
                                     <div>
                                     <ReviewStar rating={rating} handleTouch={handleTouch}/>
@@ -542,7 +542,7 @@ const PlacePage = () => {
                         }
                         </div>
                         {/* 이미지 */}
-                        <Grid container style={{margin:'15px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
+                        <Grid container style={{margin:'-85px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
                         {allImages && allImages.length > 5 ? (
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
