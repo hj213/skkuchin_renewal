@@ -1,5 +1,71 @@
-version: '2'
+version: "2"
+
 services:
+  database:
+    image: mysql
+    container_name: skkuchin-db
+    environment:
+      - MYSQL_DATABASE=service
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=1234
+    command:
+      [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+      ]
+    ports:
+      - 3306:3306
+    # db 데이터 유지하고 싶을 때 밑의 2줄 주석 풀기 
+    # volumes:
+    #   - ./db/data:/var/lib/mysql
+    networks:
+      - skkuchin-network
+
+  server:
+    image: server
+    build:
+      context: "./backend"
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+      - connect
+    container_name: skkuchin-backend
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS=kafka:9092
+      - RABBITMQ_HOST=rabbitmq
+    networks:
+      - skkuchin-network
+
+  client:
+    image: client
+    build:
+      context: "./frontend"
+      dockerfile: Dockerfile.dev
+    restart: always
+    container_name: skkuchin-frontend
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://10.5.91.73:8080
+      - NEXT_PUBLIC_KAKAOMAP_APPKEY=53a909c464c1aac1af1ee43c1f03ce86
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    networks:
+      - skkuchin-network
+
   zookeeper:
     image: quay.io/debezium/zookeeper:2.1
     ports:
@@ -7,7 +73,7 @@ services:
       - 2888:2888
       - 3888:3888
     networks:
-      - debezium-network
+      - skkuchin-network
 
   kafka:
     image: quay.io/debezium/kafka:2.1
@@ -16,33 +82,29 @@ services:
     environment:
       ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_HEAP_OPTS: "-Xmx256m -Xms256m"
-      KAFKA_LISTENERS: LISTENER_DOCKER://0.0.0.0:29092,LISTENER_LOCAL://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER://kafka:29092,LISTENER_LOCAL://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER:PLAINTEXT,LISTENER_LOCAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER
     networks:
-      - debezium-network 
+      - skkuchin-network
 
   apicurio:
     image: apicurio/apicurio-registry-mem:2.2.5.Final
     ports:
       - 8081:8080
     networks:
-      - debezium-network  
+      - skkuchin-network
 
   connect:
     image: quay.io/debezium/connect:2.1
     ports:
       - 8083:8083
     environment:
-      - BOOTSTRAP_SERVERS=kafka:29092
+      - BOOTSTRAP_SERVERS=kafka:9092
       - GROUP_ID=1
       - CONFIG_STORAGE_TOPIC=my_connect_configs
       - OFFSET_STORAGE_TOPIC=my_connect_offsets
       - STATUS_STORAGE_TOPIC=my_connect_statuses
       - ENABLE_APICURIO_CONVERTERS=true
     networks:
-      - debezium-network
+      - skkuchin-network
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -53,6 +115,8 @@ services:
       - "15672:15672"
       - "61613:61613"
     command: sh -c "rabbitmq-plugins enable rabbitmq_web_stomp rabbitmq_web_stomp_examples && rabbitmq-server start"
+    networks:
+      - skkuchin-network
 
 networks:
-  debezium-network:
+  skkuchin-network:

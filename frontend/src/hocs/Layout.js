@@ -1,27 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
-import { get_realtime_chat_request } from '../actions/chat/chatRequest';
+import { set_stomp_client } from '../actions/stompClient/stompClient';
+import { Client } from '@stomp/stompjs';
+import { WS_URL } from '../config';
 
 const Layout = ({title, content, children}) => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
+    const stompClient = new Client({
+        brokerURL: `${WS_URL}/ws/chat`,
+        reconnectDelay: 5000,
+        heartbeatIncoming: 0,
+        heartbeatOutgoing: 0,
+        connectHeaders: {
+            login: 'guest',
+            passcode: 'guest',
+        },
+    });
+
     useEffect(() => {
+        stompClient.activate();
+        dispatch(set_stomp_client(stompClient));
+
         if (!isAuthenticated) {
             dispatch(load_user());
         }
     }, []);
-
-    useEffect(() => {
-        if (user !== null) {
-            dispatch(get_realtime_chat_request(user.username));
-        }
-    }, [user]);
-
 
     return ( 
             <>

@@ -8,8 +8,8 @@ import Image from 'next/image';
 import character from '../image/mainCharacterY.png';
 
 import Link from 'next/link';
-get_realtime
-
+import { get_realtime_chat_room } from '../actions/chat/chatRoom';
+import { get_realtime_chat_request } from '../actions/chat/chatRequest';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -46,16 +46,36 @@ function a11yProps(index) {
 export default function MessageTab() {
   const [value, setValue] = React.useState(0);
   const user = useSelector(state => state.auth.user);
-  const chatRoom = useSelector(state => state.chatRoom.chatRoom);
-  const chatRequest = useSelector(state => state.chatRequest.chatRequest);
+  const userInfo = useSelector(state => state.chatRoom.userInfo);
+  const chatMessages = useSelector(state => state.chatRoom.chatMessages);
+  const chatRequests = useSelector(state => state.chatRequest.chatRequest);
+  const stompClient = useSelector(state => state.stompClient.stompClient);
+
+  const [subscriptionChatRoom, setSubscriptionChatRoom] = useState(null);
+  const [subscriptionChatRequest, setSubscriptionChatRequest] = useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    
-  }, [])
+    if (user && stompClient) {
+      const subChatRoom = dispatch(get_realtime_chat_room(user.username, stompClient));
+      const subChatRequest = dispatch(get_realtime_chat_request(user.username, stompClient));
+
+      setSubscriptionChatRoom(subChatRoom);
+      setSubscriptionChatRequest(subChatRequest);
+    }
+
+    return () => {
+      if (subscriptionChatRoom) {
+        subscriptionChatRoom.unsubscribe();
+      }
+      if (subscriptionChatRequest) {
+        subscriptionChatRequest.unsubscribe();
+      }
+    }
+  }, [user, stompClient])
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -66,131 +86,138 @@ export default function MessageTab() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-          {/* 참여중인 채팅 없을 경우
+        {
+          chatMessages &&
+          <>
+            { chatMessages.length > 0 ?
+              <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
+                { chatMessages.map((chatMessage, index)=>(
+                    <li key={index}>
+                      <Link href={{
+                        pathname: '/chat',
+                        query: {
+                          room_id: chatMessage.room_id,
+                          user_number: chatMessage.user1_id === user.id ? 'user1' : 'user2'
+                        }
+                      }}>
+                        <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
+                            <Grid xs={2}>
+                                <Avatar alt="" src={ userInfo.image } style={{ width: '55px', height: '55px' }}/>
+                            </Grid>
+                            <Grid xs={8}>
+                                <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
+                                    <div style={{display:'flex'}}>
+                                      <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
+                                        {userInfo.nickname}
+                                      </Typography>
+                                      <Typography sx={{color:"#BABABA",paddingLeft:'5px',fontSize: '9px', fontWeight:'500', lineHeight: '200%', verticalAlign: 'top',}} align="left">
+                                        {userInfo.major}
+                                      </Typography>
+                                      {/* 알림끄기 연결 시 조건문으로 수정 */}
+                                      <Box sx={{paddingLeft:'5px', lineHeight: '120%'}}>
+                                      <Image
+                                        src={
+                                          userInfo.user1_id === user.id
+                                            ? !userInfo.is_user1_alarm_on && notiOff
+                                            : !userInfo.is_user2_alarm_on && notiOff
+                                        }
+                                        width="12px"
+                                        height="12px"
+                                      />
+                                      </Box>
+                                    </div>
+                                    <Typography sx={{paddingTop:"5px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
+                                        {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
+                                        {chatMessage.message}
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                            <Grid xs={2}>
+                            <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
+                              <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
+                                {chatMessage.message_time}
+                              </Typography>
+                              <div
+                                style={{
+                                  margin:'0 0 0 auto',
+                                  width:'fit-content',
+                                  height:'20px',
+                                  backgroundColor: '#FFCE00',
+                                  borderRadius: '15px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center'
+                                }}
+                              >
+                                <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
+                                  { chatMessage.message_count === 0 ? NEW : chatMessage.message_count }
+                                </Typography>
+                              </div>
+                            </Stack>
+                            </Grid>
+                        </Grid>
+                      </Link>
+                    </li>
+                ))}
+              </ul>
+            :
             <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Grid item>
-                    <Image src={character} width={138} height={100} style={{ opacity: '0.6' }} />
-                </Grid>
-                <Grid item>
-                    <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
-                    참여중인 채팅이 없네요!
-                    </Typography>
-                    <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
-                    'AI매칭' 탭에서 새로운 채팅에 참여해보세요.
-                    </Typography>
-                </Grid>
-            </Grid> */}
-        <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
-          <li>
-          <Link href='/chat'>
-          <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
-              <Grid xs={2}>
-                  <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
+              <Grid item>
+                  <Image src={character} width={138} height={100} style={{ opacity: '0.6' }} />
               </Grid>
-              <Grid xs={8}>
-                  <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
-                      <div style={{display:'flex'}}>
-                        <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
-                            진메르
-                        </Typography>
-                        <Typography sx={{color:"#BABABA",paddingLeft:'5px',fontSize: '9px', fontWeight:'500', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                            컬쳐엔테크놀로지학과
-                        </Typography>
-                        {/* 알림끄기 연결 시 조건문으로 수정 */}
-                        <Box sx={{paddingLeft:'5px', lineHeight: '120%'}}>
-                          <Image src={notiOff} width="12px" height="12px"/>
-                        </Box>
-                      </div>
-                      <Typography sx={{paddingTop:"5px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                          {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
-                          나는야 상금 사냥꾼
-                      </Typography>
-                  </Stack>
+              <Grid item>
+                <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
+                참여중인 채팅이 없네요!
+                </Typography>
+                <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
+                'AI매칭' 탭에서 새로운 채팅에 참여해보세요.
+                </Typography>
               </Grid>
-              <Grid xs={2}>
-              <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
-                  <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                      10분전
-                  </Typography>
-                  <div
-                    style={{
-                      margin:'0 0 0 auto',
-                      width:'fit-content',
-                      height:'20px',
-                      backgroundColor: '#FFCE00',
-                      borderRadius: '15px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
-                      NEW
-                    </Typography>
-                  </div>
-                  </Stack>
-              </Grid>
-          </Grid>
-          </Link>
-          </li>
-          <li >
-          <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
-              <Grid xs={2}>
-                  <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
-              </Grid>
-              <Grid xs={8}>
-                  <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
-                      <div style={{display:'flex'}}>
-                        <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
-                            김아무개
-                        </Typography>
-                        <Typography sx={{color:"#BABABA",paddingLeft:'5px',fontSize: '9px', fontWeight:'500', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                            유학동양학과
-                        </Typography>
-                        {/* 알림끄기 연결 시 조건문으로 수정 */}
-                        <Box sx={{paddingLeft:'5px', lineHeight: '120%'}}>
-                          {/* <Image src={notiOff} width="12px" height="12px"/> */}
-                        </Box>
-                      </div>
-                      <Typography sx={{paddingTop:"5px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                          {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
-                          새로운 채팅방이 개설되었습니다! ㅁㄴㅇㅁ
-                      </Typography>
-                  </Stack>
-              </Grid>
-              <Grid xs={2}>
-              <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
-                  <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                      10분전
-                  </Typography>
-                  <div
-                    style={{
-                      margin:'0 0 0 auto',
-                      width:'fit-content',
-                      height:'20px',
-                      backgroundColor: '#FFCE00',
-                      borderRadius: '15px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
-                      2
-                    </Typography>
-                  </div>
-                  </Stack>
-              </Grid>
-          </Grid>
-          </li>
-          
-        </ul>
+            </Grid> 
+            }
+          </>
+        }
       </TabPanel>
 
 
       <TabPanel value={value} index={1}>
-        {/* 받은 밥약 신청 없을 경우
-            <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        { 
+          chatRequests &&
+          <>
+            {
+              chatRequests.length > 0 ?
+              <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
+                { chatRequests.map((chatRequest, index)=>(
+                  <li >
+                    <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
+                        <Grid xs={2}>
+                            <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
+                        </Grid>
+                        <Grid xs={8}>
+                            <Stack direction="column" spacing={1} sx={{margin:"4px 0 0 8px"}}>
+                                <div style={{display:'flex'}}>
+                                  <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '200%', verticalAlign: 'top',}} align="left">
+                                      새로운 밥약 신청이 있습니다!
+                                  </Typography>
+                                </div>
+                                <Typography sx={{paddingTop:"3px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
+                                    클릭해서 확인해보세요!
+                                </Typography>
+                            </Stack>
+                        </Grid>
+                        <Grid xs={2}>
+                          <Stack direction="column" spacing={1} sx={{margin:"5px 0 7px 7px",height:'20px',}}>
+                              <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
+                                  {chatRequest.created_date}
+                              </Typography>
+                            </Stack>
+                        </Grid>
+                    </Grid>
+                  </li>
+                ))}
+              </ul>
+              :
+              <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid item>
                     <Image src={character} width={138} height={100} style={{ opacity: '0.6' }} />
                 </Grid>
@@ -202,61 +229,10 @@ export default function MessageTab() {
                     'AI매칭' 탭에서 새로운 채팅에 참여해보세요.
                     </Typography>
                 </Grid>
-            </Grid> */}
-        <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
-          <li >
-            <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
-                <Grid xs={2}>
-                    <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
-                </Grid>
-                <Grid xs={8}>
-                    <Stack direction="column" spacing={1} sx={{margin:"4px 0 0 8px"}}>
-                        <div style={{display:'flex'}}>
-                          <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                              새로운 밥약 신청이 있습니다!
-                          </Typography>
-                        </div>
-                        <Typography sx={{paddingTop:"3px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                            클릭해서 확인해보세요!
-                        </Typography>
-                    </Stack>
-                </Grid>
-                <Grid xs={2}>
-                  <Stack direction="column" spacing={1} sx={{margin:"5px 0 7px 7px",height:'20px',}}>
-                      <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                          10분전
-                      </Typography>
-                    </Stack>
-                </Grid>
-            </Grid>
-          </li>
-          <li >
-            <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
-                <Grid xs={2}>
-                    <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
-                </Grid>
-                <Grid xs={8}>
-                    <Stack direction="column" spacing={1} sx={{margin:"4px 0 0 8px"}}>
-                        <div style={{display:'flex'}}>
-                          <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                              새로운 밥약 신청이 있습니다!
-                          </Typography>
-                        </div>
-                        <Typography sx={{paddingTop:"3px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                            클릭해서 확인해보세요!
-                        </Typography>
-                    </Stack>
-                </Grid>
-                <Grid xs={2}>
-                  <Stack direction="column" spacing={1} sx={{margin:"5px 0 7px 7px",height:'20px',}}>
-                      <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                          10분전
-                      </Typography>
-                    </Stack>
-                </Grid>
-            </Grid>
-          </li>
-        </ul>
+              </Grid>
+            }
+          </>
+        }
       </TabPanel>
     </Box>
   );
