@@ -12,6 +12,7 @@ export default function resetPassword() {
 
     const dispatch = useDispatch();
     const router = useRouter();
+    const src = router.query.src;
 
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState("");
@@ -24,6 +25,12 @@ export default function resetPassword() {
     const handlePrevStep = () => {
         setStep(step - 1);
     }
+
+    useEffect(() => {
+        if (src == 'emailDone') {
+            setStep(3);
+        }
+    }, [src])
     
     return(
         <ThemeProvider theme={theme}>

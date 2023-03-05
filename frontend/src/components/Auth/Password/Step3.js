@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { reset_password } from '../../../actions/auth/auth';
 import {  TextField, Button, Typography, Box, Grid, Container, Dialog, DialogContent, DialogActions } from '@mui/material';
@@ -6,9 +6,15 @@ import check from '../../../image/check_circle.png';
 import uncheck from '../../../image/uncheck.png';
 import back from '../../../image/arrow_back_ios.png'
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { password_email_confirm } from '../../../actions/email/email';
 
 const Step3 = (props) => {
     const dispatch = useDispatch();
+    const router = useRouter();
+    const email = router.query.email;
+    const authNum = router.query.authNum;
+    const [success, setSuccess] = useState(null);
 
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
@@ -16,6 +22,9 @@ const Step3 = (props) => {
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogMsg, setDialogMsg] = useState('');
+
+    const [dialogOpen2, setDialogOpen2] = useState(false);
+    const [dialogMsg2, setDialogMsg2] = useState('');
 
     const handlePrevStep = () => {
         props.handlePrevStep();
@@ -59,8 +68,34 @@ const Step3 = (props) => {
         }
     }
 
+    const handleDialogOpen2 = (e) => {
+        if(dialogOpen2){
+            router.push('/resetPassword');
+            setDialogOpen2(false);
+        } else{
+            setDialogOpen2(true);
+        }
+    }
+
+    useEffect(() => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(password_email_confirm(email, authNum, ([result, message]) => {
+                if (result) {
+                    setSuccess(true);
+                } else {
+                    //alert(message);
+                    setDialogOpen2(true);
+                    if (typeof(message) == 'string') {
+                        setDialogMsg2(message);
+                    }
+                }
+            }))
+        }
+    }, [])
+
     return (
         <div>
+        {success && <div>
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
@@ -158,7 +193,25 @@ const Step3 = (props) => {
 
                 </DialogActions>
           </Dialog>
-      </div>
-  )
+      </div>}
+
+    {!success && <Dialog open={dialogOpen2} onClose={handleDialogOpen2} PaperProps={{ style: { borderRadius: '10px' } }}>
+                <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight='700'>
+                        {dialogMsg2}
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center'}}>
+                    
+                        <Button onClick={e => setDialogOpen2(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:'#505050'}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#505050', marginBottom:'10px'}}>
+                                확인
+                            </Typography>
+                        </Button>
+
+                </DialogActions>
+        </Dialog>}
+    </div>
+    )
 }
 export default Step3;

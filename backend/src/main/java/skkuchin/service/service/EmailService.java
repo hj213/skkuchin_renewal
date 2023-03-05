@@ -142,12 +142,13 @@ public class EmailService {
     }
 
     @Transactional
-    public String confirmPassword(EmailAuthRequestDto requestDto) {
+    public void confirmPassword(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
-                .orElseThrow(() -> new EmailAuthNumNotFoundException());
+                .orElseThrow(() -> new CustomRuntimeException("인증에 실패하였습니다"));
         emailAuth.setIsAuth(true);
 
+        /*
         String content = "<div style='margin-left: 40px'>" +
                 "<div style='width: 100%; height: 3px; background-color: #FFCE00; margin-bottom: 60px; margin-top: 100px'></div>" +
                 "<div style='color: #BABABA; font-size: 24px; margin-bottom: 16px'>SKKUCHIN</div>" +
@@ -159,7 +160,7 @@ public class EmailService {
                 "<div style='margin-bottom: 14px'>앱으로 돌아가 비밀번호 초기화를 완료해주세요.</div>" +
                 "</div>" +
                 "</div>";
-        return content;
+        return content;*/
     }
 
     @Transactional
@@ -258,9 +259,8 @@ public class EmailService {
                     "<div>감사합니다.</div>" +
                     "</div>" +
             "<a href='" +
-            host +
-            "/api/email/confirm/" +
-            type.name().toLowerCase() +
+            page +
+            "/resetPassword?src=emailDone" +
             "?email=" + email + "&authNum=" + authNum + "' target='_blank'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +
                     "</div>";
         }
