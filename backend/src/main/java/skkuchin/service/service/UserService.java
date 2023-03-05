@@ -72,6 +72,7 @@ public class UserService {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
             appUser.emailVerifiedSuccess();
+            appUser.setEmailAuth(true);
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_ADMIN")).build();
             userRepo.save(appUser);
             userRoleRepo.save(userRole);
@@ -84,6 +85,7 @@ public class UserService {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
             appUser.emailVerifiedSuccess();
+            appUser.setEmailAuth(true);
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_USER")).build();
             userRepo.save(appUser);
             userRoleRepo.save(userRole);

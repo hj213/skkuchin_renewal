@@ -10,7 +10,8 @@ import Layout from '../hocs/Layout';
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);
 
-  const [isOnline, setIsOnline] = useState(true)
+  const [isOnline, setIsOnline] = useState(true);
+
   useEffect(() => {
     if (typeof window !== 'undefined' && 'ononline' in window && 'onoffline' in window) {
       setIsOnline(window.navigator.onLine)
