@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
-import SockJS from "sockjs-client";
 
 const Layout = ({title, content, children}) => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -16,6 +16,12 @@ const Layout = ({title, content, children}) => {
             
         }
     }, []);
+
+    useEffect(() => {
+        if (user !== null) {
+            dispatch(get_realtime_chat_request(user.username));
+        }
+    }, [user]);
 
 
     return ( 

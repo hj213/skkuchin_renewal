@@ -8,7 +8,7 @@ import { displayReviewTag, reviewsTags } from "./TagList";
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 
-
+import { displayProfile } from '../components/MyPage/ProfileList';
 
 // ReviewItem 컴포넌트 추출
 const PlaceReview = ({ index, review, user, handleEdit, handleDelete }) => {
@@ -42,8 +42,10 @@ const PlaceReview = ({ index, review, user, handleEdit, handleDelete }) => {
                 <Grid item xs={2} style={{marginTop:'3px'}}>
                     { review && review.user_id === user.id ?
                         <StyledBadge badgeContent={"나"}>
-                            <Avatar alt="" src={ user.image} />
-                        </StyledBadge> : <Avatar alt="" src={user.image} />}
+                            {displayProfile(user.image, 40, 40)}
+                        </StyledBadge> : <Grid>
+                            {displayProfile(review.user_image, 40, 40)}
+                        </Grid>}
                 </Grid>
                 <Grid item xs={10}>
                 <Stack direction="column" spacing={1}>
