@@ -171,7 +171,7 @@ const TagList = ({keyword, onTagClick}) => {
             {/* tags 목록 */}
             <Grid container 
             style={{  position: 'absolute', top: '0px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
-            scrollbarWidth: 'none', msOverflowStyle: 'none', "&::WebkitScrollbar": { display: "none"}, padding: "0 20px"}}
+            padding: "0 20px",}}
                 onClick={(e) => {
                     e.preventDefault();
                     let target = e.target;

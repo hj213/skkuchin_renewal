@@ -155,9 +155,8 @@ const MorePhotos = () => {
                     <div style={{ display: 'flex', flexWrap: 'wrap'}}>
                         <div style={{ 
                             width: '100%',
-                            height: '450px', 
-                            margin: '5px', 
-                            position: 'relative', 
+                            height: '100%',
+                            marginTop: ' 5px', 
                             overflow: 'hidden',
                             display: 'flex',
                             alignItems: 'center',
@@ -189,13 +188,12 @@ const MorePhotos = () => {
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                                 <div style={{ 
                                     width: '100%',
-                                    height: '450px', 
-                                    margin: '5px', 
-                                    position: 'relative', 
+                                    height: '100%',
+                                    marginTop: ' 5px', 
                                     overflow: 'hidden',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    justifyContent: 'center'
+                                    justifyContent: 'center',
                                 }}> 
                                     <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
                                         <Image onClick={handlePrevClick} src={prev} width={33} height={33}/>

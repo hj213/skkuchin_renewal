@@ -5,10 +5,11 @@ import { Profile, Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Butt
 import profile from '../image/profile.png';
 import notiOff from '../image/chat/notifications_off.png';
 import Image from 'next/image';
+import character from '../image/mainCharacterY.png';
 
 import Link from 'next/link';
-import { get_realtime_chat_room } from '../actions/chat/chatRoom';
-import { get_realtime_chat_request } from '../actions/chat/chatRequest';
+get_realtime
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -53,8 +54,7 @@ export default function MessageTab() {
   };
 
   useEffect(() => {
-    dispatch(get_realtime_chat_room(user.username));
-    dispatch(get_realtime_chat_request(user.username));
+    
   }, [])
 
   return (
@@ -66,8 +66,21 @@ export default function MessageTab() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
+          {/* 참여중인 채팅 없을 경우
+            <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Grid item>
+                    <Image src={character} width={138} height={100} style={{ opacity: '0.6' }} />
+                </Grid>
+                <Grid item>
+                    <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
+                    참여중인 채팅이 없네요!
+                    </Typography>
+                    <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
+                    'AI매칭' 탭에서 새로운 채팅에 참여해보세요.
+                    </Typography>
+                </Grid>
+            </Grid> */}
         <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
-          
           <li>
           <Link href='/chat'>
           <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
@@ -176,6 +189,20 @@ export default function MessageTab() {
 
 
       <TabPanel value={value} index={1}>
+        {/* 받은 밥약 신청 없을 경우
+            <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Grid item>
+                    <Image src={character} width={138} height={100} style={{ opacity: '0.6' }} />
+                </Grid>
+                <Grid item>
+                    <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
+                    받은 밥약 신청이 없네요!
+                    </Typography>
+                    <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
+                    'AI매칭' 탭에서 새로운 채팅에 참여해보세요.
+                    </Typography>
+                </Grid>
+            </Grid> */}
         <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
           <li >
             <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>

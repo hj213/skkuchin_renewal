@@ -15,11 +15,13 @@ import style from 'styled-components';
 import { styled } from '@mui/material/styles';
 import {TimePicker }from 'antd';
 import dayjs from 'dayjs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { enroll_appointment } from "../actions/appointment/appointment"; 
 
 export default function chatTime(){
 
     const router = useRouter();
+    const dispatch =useDispatch();
 
     const now = new Date();
     const format = 'HH:mm';
@@ -28,7 +30,7 @@ export default function chatTime(){
     const [date, setDate] = useState(now);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
-    const [changedtime, setChangedTime] = useState('');
+    const [changedtime, setChangedTime] = useState(defaultValue);
     const [timeOpen, setTimeOpen] = useState('hidden');
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -44,17 +46,12 @@ export default function chatTime(){
         return `${year}.${month}.${day}(${dayOfWeek})`;
       };
     
-
+      
     const handleBack = (e) => {
         router.back();
     }
 
     const handleDownClick = (e) => {
-        // if(calendarOpen == 'hidden'){
-        //     setCalendarOpen('visible');
-        // } else {
-        //     setCalendarOpen('hidden');
-        // }
         if(calendarOpen){
             setCalendarOpen(false);
         } else{
@@ -72,6 +69,10 @@ export default function chatTime(){
     };
     const handleSubmit = (e) => {
         // router.back();
+        const dateInfo = dayjs(date).format('YYYY-MM-DD')+"'T'"+changedtime+':00'
+        console.log(dateInfo);
+
+        // dispatch(enroll_appointment())
     }
     const handleOpenTime = () => {
         if(timeOpen=='hidden'){
@@ -130,7 +131,7 @@ export default function chatTime(){
             
                     
                     <div style={{ position:'absolute',width:'100%', maxWidth:'600px',margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
-                        <Slide direction="up" in={calendarOpen} timeout={1} >
+                        <Slide direction="up" in={calendarOpen} timeout={200} >
                             <Container style={{padding:'0px', width:'100%', position:'relative'}}>
                                 <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
                                     <CalendarContainer>
@@ -158,7 +159,7 @@ export default function chatTime(){
                                         <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
                                             
                                             
-                                            <TimePicker defaultValue={dayjs(defaultValue,format)}format={format} placeholder={defaultValue} onChange={handleOnChange}  popupStyle={{ fontWeight: '500' }} style={{border:'none', backgroundColor:'#EEEEF0', width:'80px'}}/>
+                                            <TimePicker defaultValue={dayjs(defaultValue,format)} format={format} placeholder={defaultValue} onChange={handleOnChange}  popupStyle={{ fontWeight: '500' }} style={{border:'none', backgroundColor:'#EEEEF0', width:'80px'}}/>
                                             
                                             
                                         </Grid>

@@ -23,7 +23,7 @@ import UpperBar from "../components/UpperBar"
 import AlertMessage from "../components/Alert";
 
 export default function list(){
-    const isSmallScreen = useMediaQuery('(max-width: 420px)');
+    const isSmallScreen = useMediaQuery('(max-width: 375px)');
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
@@ -119,7 +119,11 @@ export default function list(){
                 // 키워드 확인
                 dispatch(search_places(keyword));
                 if((open.bool) == false) {
-                    if(WINDOW_HEIGHT < 750){
+                    if(keyword==''){
+                        setHeight(0);
+                    } else if( router.query.length == 1 || filteredPlace?.length == 1){
+                        setHeight(187)
+                    } else if(WINDOW_HEIGHT < 750){
                         setHeight(187)
                     } else {
                         setHeight(345)
@@ -137,11 +141,19 @@ export default function list(){
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
     useEffect(() => {
+
         if(filteredPlace) {
             setNumOfLi(filteredPlace.length);
-
         }
-    }, [filteredPlace]);
+    }, [filteredPlace, keyword]);
+
+    useEffect(()=>{
+        if(numOfLi == 1){
+            setHeight(187)
+        } else {
+            return
+        }
+    },[numOfLi])
 
     // 카드 리셋 
     const handleReset = () => {
@@ -182,7 +194,9 @@ export default function list(){
             });
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
             cardRef.current.scrollTo({top:0});
-            if(WINDOW_HEIGHT < 750){
+            if(filteredPlace.length == 1){
+                setHeight(187)
+            } else if(WINDOW_HEIGHT < 750){
                 setHeight(187)
             } else {
                 setHeight(345)
@@ -206,11 +220,13 @@ export default function list(){
         if(event.target.name == 'map' ){
             setOpen({ bool:false,
                 Visibility:'hidden'});
-            if(WINDOW_HEIGHT < 750){
-                setHeight(187)
-            } else {
-                setHeight(345)
-            }
+                if(filteredPlace.length == 1){
+                    setHeight(187)
+                } else if(WINDOW_HEIGHT < 750){
+                    setHeight(187)
+                } else {
+                    setHeight(345)
+                }
             setCardStyle({
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
@@ -298,12 +314,12 @@ export default function list(){
     const handleFocus = (bool) => {
         setFocus(bool);
         if(bool) {
-            setKeyword('');
-            setTags([]);
-            setFilteredPlace(null);
+            // setKeyword('');
+            // setTags([]);
+            // setFilteredPlace(null);
             setHeight('0');
             setIsTall(false);
-            dispatch(clear_search_results());
+            // dispatch(clear_search_results());
         }
     }
 

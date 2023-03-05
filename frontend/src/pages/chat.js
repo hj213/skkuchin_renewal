@@ -127,6 +127,8 @@ const chatPage = () => {
                             height: '90px',
                             zIndex: '4',
                             borderRadius:'0',
+                            boxShadow:'none',
+                            borderBottom: '1.5px solid #BABABA',
                             }}>
                     <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>

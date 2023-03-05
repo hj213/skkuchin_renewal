@@ -50,6 +50,7 @@ export default function searchList(){
     //api 받아오기
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(clear_search_results());
             dispatch(search_places(keyword));
         }
     }, [keyword]);
@@ -99,7 +100,10 @@ export default function searchList(){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             
             dispatch(search_places('!'));
-            router.push(`/?keyword=${passValue}`);
+            router.push({
+                pathname: '/',
+                query: { keyword : passValue, length: filteredPlace.length }
+              })
             
         } else{
             setPassValue('')
