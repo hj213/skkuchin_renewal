@@ -7,7 +7,6 @@ import notiOff from '../image/chat/notifications_off.png';
 import Image from 'next/image';
 
 import Link from 'next/link';
-get_realtime
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,9 +48,9 @@ export default function MessageTab() {
     setValue(newValue);
   };
 
-  useEffect(() => {
+  // useEffect(() => {
     
-  }, [])
+  // }, [])
 
   return (
     <Box sx={{ width: '100%' }}>

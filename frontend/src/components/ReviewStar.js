@@ -13,10 +13,10 @@ const ReviewStar = ({rating, handleTouch}) => {
   const user = useSelector(state => state.auth.user);
 
   return (
-    <div style={{ textAlign: "center", margin: '0px -20px', padding: '19px 0 12px', borderBottom: '4px solid rgba(217, 217, 217, 0.54)', borderTop: '4px solid rgba(217, 217, 217, 0.54)'}}>
+    <div style={{ textAlign: "center", margin: '0px 0px 100px 0px', padding: '19px 0 12px', borderBottom: '4px solid rgba(217, 217, 217, 0.54)', borderTop: '4px solid rgba(217, 217, 217, 0.54)'}}>
       <Image width={50} height={50} src={character} placeholder="blur" layout='fixed'></Image>
       <Typography sx={{fontSize: '17px', fontWeight: '500', color: '#000000'}}> 
-        <span style={{color: '#FFCE00'}}>{user !== null && user.nickname}</span> 님 후기를 남겨주세요
+        <span style={{color: '#FFCE00',fontWeight:'700'}}>{user !== null && user.nickname}</span> 님 후기를 남겨주세요
         </Typography>
       <div>
       {[1, 2, 3, 4, 5].map((item, index) => {
