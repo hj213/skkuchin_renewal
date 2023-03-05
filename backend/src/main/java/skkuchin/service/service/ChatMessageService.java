@@ -94,6 +94,15 @@ public class ChatMessageService {
         return username;
     }
 
+    public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
+        List<ChatMessageDto.Response> messages = chatRepo.findByChatRoom(chatRoom)
+                .stream()
+                .map(message -> new ChatMessageDto.Response(message,chatRoom))
+                .collect(Collectors.toList());
+        Collections.sort(messages,new MessageDateComparator().reversed());
+        return messages;
+    }
+
 
 
 
@@ -124,6 +133,17 @@ public class ChatMessageService {
         @Override
         public int compare(ChatRoomDto.userResponse f1, ChatRoomDto.userResponse f2) {
             if (f1.getCreatedDate().isAfter(f2.getCreatedDate()) ) {
+                return 1;
+            } else  {
+                return -1;
+            }
+        }
+    }
+
+    private class MessageDateComparator implements Comparator<ChatMessageDto.Response> {
+        @Override
+        public int compare(ChatMessageDto.Response f1, ChatMessageDto.Response f2) {
+            if (f1.getDate().isAfter(f2.getDate()) ) {
                 return 1;
             } else  {
                 return -1;

@@ -14,7 +14,7 @@ import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ChatMessageService;
-import skkuchin.service.service.ChatService;
+import skkuchin.service.service.ChatRoomService;
 
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
 public class MessageController {
 
     private final RabbitTemplate template;
-    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
     private final UserRepo userRepo;
     private final ChatMessageService chatMessageService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
@@ -34,14 +34,14 @@ public class MessageController {
 
     @MessageMapping("chat.chatMessage.{chatRoomId}")
     public void chatMessage(@DestinationVariable String chatRoomId, @Header("token") String token){
-        ChatRoom chatRoom = chatService.findChatroom(chatRoomId);
+        ChatRoom chatRoom = chatRoomService.findChatroom(chatRoomId);
         String username = chatMessageService.getUserNameFromJwt(token);
         AppUser user = userRepo.findByUsername(username);
         UserDto.Response userDto= new UserDto.Response(user);
-        ChatRoomDto.blockResponse blockResponse = chatService.getRoomDto(chatRoom);
-        List<ChatMessageDto.Response> chatMessages = chatService.getAllMessage(chatRoom);
+        ChatRoomDto.blockResponse blockResponse = chatRoomService.getRoomDto(chatRoom);
+        List<ChatMessageDto.Response> chatMessages = chatMessageService.getAllMessage(chatRoom);
 
-       if(chatService.findUser1(chatRoom).getUsername().equals(username)){
+       if(chatRoomService.findUser1(chatRoom).getUsername().equals(username)){
            template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user1",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user1",chatMessages);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",userDto);
