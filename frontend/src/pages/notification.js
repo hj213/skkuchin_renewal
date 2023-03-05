@@ -3,9 +3,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
 import { load_reviews } from "../actions/review/review";
-import { load_review} from "../actions/review/review"
-import { load_favorite } from "../actions/favorite/favorite";
-import { load_menu }  from "../actions/menu/menu";
 
 import { styled } from '@mui/material/styles';
 import { Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconButton, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';

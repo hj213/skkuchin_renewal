@@ -9,9 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import skkuchin.service.api.dto.AppointmentDto;
-import skkuchin.service.api.dto.CMRespDto;
-import skkuchin.service.domain.Chat.Appointment;
+import skkuchin.service.dto.AppointmentDto;
+import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.service.AppointmentService;
 

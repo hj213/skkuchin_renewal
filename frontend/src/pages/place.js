@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_menu }  from "../actions/menu/menu";
-import { load_favorite, enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
+import { enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
 import Map from "../components/Map";
 import Image from 'next/image';
 import { CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
@@ -21,7 +21,7 @@ import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import UpperBar from "../components/UpperBar";
 import { clear_search_results } from "../actions/place/place";
-import { load_reviews, delete_review, modify_review } from "../actions/review/review";
+import { load_reviews } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 import PlaceReview from "../components/PlaceReview";
 import morePic from '../image/morePicY.png';
@@ -122,11 +122,9 @@ const PlacePage = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            dispatch(load_favorite(([result, message]) => {
-                dispatch(load_place(id, ([result, message]) => {
-                    dispatch(load_menu(id, ([result, message]) => {
-                        dispatch(load_reviews(id));
-                    }));
+            dispatch(load_place(id, ([result, message]) => {
+                dispatch(load_menu(id, ([result, message]) => {
+                    dispatch(load_reviews(id));
                 }));
             }));
         }

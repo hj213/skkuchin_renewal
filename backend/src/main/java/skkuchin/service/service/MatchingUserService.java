@@ -2,7 +2,7 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.MatchingUserDto;
+import skkuchin.service.dto.MatchingUserDto;
 import skkuchin.service.domain.Matching.Keyword;
 import skkuchin.service.domain.Matching.UserKeyword;
 import skkuchin.service.domain.User.AppUser;

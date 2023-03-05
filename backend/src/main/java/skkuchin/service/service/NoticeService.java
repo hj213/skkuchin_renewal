@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.NoticeDto;
+import skkuchin.service.dto.NoticeDto;
 import skkuchin.service.domain.Notice.Notice;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.NoticeRepo;

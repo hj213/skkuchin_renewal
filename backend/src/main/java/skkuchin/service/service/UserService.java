@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Matching.*;
 import skkuchin.service.domain.User.*;

@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.TagDto;
+import skkuchin.service.dto.TagDto;
 import skkuchin.service.domain.Map.Tag;
 import skkuchin.service.repo.TagRepo;
 

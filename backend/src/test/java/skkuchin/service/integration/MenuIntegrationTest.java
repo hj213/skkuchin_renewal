@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
-import skkuchin.service.api.dto.MenuDto;
+import skkuchin.service.dto.MenuDto;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.MenuSetUp;
 import skkuchin.service.domain.Map.Place;

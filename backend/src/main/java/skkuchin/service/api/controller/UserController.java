@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import skkuchin.service.api.dto.*;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.CMRespDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.UserService;

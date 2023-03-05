@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.KeywordDto;
+import skkuchin.service.dto.KeywordDto;
 import skkuchin.service.repo.KeywordRepo;
 
 import java.io.FileInputStream;
