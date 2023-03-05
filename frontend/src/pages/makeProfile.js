@@ -553,9 +553,9 @@ export default function makeProfile(){
                         query: { src : src, }
                       })
                 } else {
-                    alert(message);
+                    // alert(message);
                     setAlertOpen(true);
-                    // setAlertMessage(message);
+                    setAlertMessage(message);
                 }
             }));
         setAlertOpen(false);
@@ -623,7 +623,7 @@ export default function makeProfile(){
         <ThemeProvider theme={theme}>
             <CssBaseline />
                 <div style={{height:'100%', zIndex:'6', position:'absolute', left:'50%', marginTop:"830px"}}>
-                {/* <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/> */}
+                <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
                 </div>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
                     <Container style={{padding:'0px', alignItems: 'center',}}>

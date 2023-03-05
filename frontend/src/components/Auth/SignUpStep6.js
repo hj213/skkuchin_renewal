@@ -55,7 +55,7 @@ const SignUpStep6 = (props) => {
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>이메일 인증</Typography>
         </header> */}
         <div style={{ width: '100%', textAlign: 'center', marginTop: `calc(${remainHeight} * 0.45)` }}>
-            <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
+            <Image width={131} height={101} src={logo} placeholder="blur" layout='fixed' />
             <Typography sx={{fontSize: '25px', fontWeight: '400', mb: '37px'}}>인증 완료!</Typography>
         </div>
 
