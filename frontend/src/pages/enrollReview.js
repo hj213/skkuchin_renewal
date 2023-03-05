@@ -46,12 +46,6 @@ const EnrollReview = () => {
         } 
     };  
 
-    const handleImageRemove = (index) => {
-      const newPreviewImages = [...previewImages];
-      newPreviewImages.splice(index, 1);
-      setPreviewImages(newPreviewImages);
-    };
-
     // place.js에서 전달 받은 id 값 받아오기
     const { id, rating: defaultRating  } = router.query;
     
@@ -358,13 +352,6 @@ const EnrollReview = () => {
                                                 objectPosition: 'center center' ,
                                                 borderRadius:'10px'
                                                 }} />
-                                            <Button type="button" onClick={() => handleImageRemove(index)} style={{ position: 'absolute', top: '0', right: '3px', padding: '10px', justifyContent: 'right' }}>
-                                            <Image src={removeBtn} width={25} height={25} 
-                                                style={{ 
-                                                    backgroundColor:'white',
-                                                    borderRadius:'20px'
-                                                }}/>
-                                            </Button>
                                         </Grid>
                                     ))}
                                 </Grid>
