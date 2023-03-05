@@ -52,11 +52,6 @@ export default function chatTime(){
     }
 
     const handleDownClick = (e) => {
-        // if(calendarOpen == 'hidden'){
-        //     setCalendarOpen('visible');
-        // } else {
-        //     setCalendarOpen('hidden');
-        // }
         if(calendarOpen){
             setCalendarOpen(false);
         } else{
