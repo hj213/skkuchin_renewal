@@ -69,13 +69,13 @@ const chatPage = () => {
     
         return () => {
             if (subscriptionOtherUser) {
-                subscriptionOtherUser.unsubscribe();
+                stompClient.unsubscribe(subscriptionOtherUser);
             }
             if (subscriptionBlock) {
-                subscriptionBlock.unsubscribe();
+                stompClient.unsubscribe(subscriptionBlock);
             }
             if (subscriptionMessage) {
-                subscriptionMessage.unsubscribe();
+                stompClient.unsubscribe(subscriptionMessage);
             }
         }
     }, [stompClient, room_id, user_number])

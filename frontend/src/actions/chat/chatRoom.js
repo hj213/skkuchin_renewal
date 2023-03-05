@@ -13,7 +13,8 @@ import {
     SET_CHAT_ALARM_FAIL,
     EXIT_CHAT_ROOM_SUCCESS,
     EXIT_CHAT_ROOM_FAIL,
-    GET_REALTIME_ROOM_SUCCESS
+    GET_REALTIME_ROOM_SUCCESS,
+    GET_REALTIME_ROOM_FAIL
 }
     from './types';
 
@@ -265,10 +266,12 @@ export const get_realtime_chat_room = (username, stompClient) => async dispatch 
         })
 
     },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
         pushToken : access
-    });
-    stompClient.publish({
-        destination: '/app/chat.list'
-    });
+        }
+    );
+    stompClient.send('/app/chat.list');
     return subscription;
 };

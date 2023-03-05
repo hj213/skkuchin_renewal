@@ -2,7 +2,8 @@ import Cookies from 'js-cookie';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 import {
-    GET_REALTIME_REQUEST_SUCCESS
+    GET_REALTIME_REQUEST_SUCCESS,
+    GET_REALTIME_REQUEST_FAIL
 }
     from './types';
 
@@ -25,10 +26,11 @@ export const get_realtime_chat_request = (username, stompClient) => async dispat
         })
 
     },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
         pushToken : access
     });
-    stompClient.publish({
-        destination: '/app/chat.alarm'
-    });
+    stompClient.send(`/app/chat.alarm`);
     return subscription;
 };
