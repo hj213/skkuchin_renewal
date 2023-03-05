@@ -17,6 +17,7 @@ const Layout = ({title, content, children}) => {
 
     stompClient.heartbeat.outgoing = 0;
     stompClient.heartbeat.incoming = 0;
+    // stompClient.debug = null;
 
     useEffect(() => {
         stompClient.connect('guest', 'guest');
