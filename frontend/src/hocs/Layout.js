@@ -1,23 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+import { get_realtime_chat_request } from '../actions/chat/chatRequest';
 
 const Layout = ({title, content, children}) => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!isAuthenticated) {
             dispatch(load_user());
-
-            const sockJS = new SockJS("/ws/chat");
-            const stomp = Stomp.over(sockJS);
         }
     }, []);
+
+    useEffect(() => {
+        if (user !== null) {
+            dispatch(get_realtime_chat_request(user.username));
+        }
+    }, [user]);
 
 
     return ( 

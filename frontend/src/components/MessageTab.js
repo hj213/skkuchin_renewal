@@ -7,8 +7,8 @@ import notiOff from '../image/chat/notifications_off.png';
 import Image from 'next/image';
 
 import Link from 'next/link';
-get_realtime
-
+import { get_realtime_chat_room } from '../actions/chat/chatRoom';
+import { get_realtime_chat_request } from '../actions/chat/chatRequest';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -44,13 +44,17 @@ function a11yProps(index) {
 
 export default function MessageTab() {
   const [value, setValue] = React.useState(0);
+  const user = useSelector(state => state.auth.user);
+  const chatRoom = useSelector(state => state.chatRoom.chatRoom);
+  const chatRequest = useSelector(state => state.chatRequest.chatRequest);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    
+    dispatch(get_realtime_chat_room(user.username));
+    dispatch(get_realtime_chat_request(user.username));
   }, [])
 
   return (

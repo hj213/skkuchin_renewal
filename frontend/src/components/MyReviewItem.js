@@ -27,8 +27,7 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
     const handleClose = () => {
         setOpen(false);
     }
-  
-  
+
     return (
         <Container key={index} sx={{listStyle: 'none', pl: '35px'}}>
             <Grid container>
