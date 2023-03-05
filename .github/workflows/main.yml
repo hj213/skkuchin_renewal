@@ -28,7 +28,7 @@ jobs:
       - name: Update frontend config
         run: |
           sed -i 's|export const API_URL = process.env.NEXT_PUBLIC_API_URL;|export const API_URL = "https://www.skkuchin.com";|' frontend/src/config/index.js
-          sed -i 's|export const WS_URL = process.env.NEXT_PUBLIC_WS_URL;|export const WS_URL = "ws://www.skkuchin.com";|' frontend/src/config/index.js
+          sed -i 's|export const KAKAOMAP_APPKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY;|export const KAKAOMAP_APPKEY = "0d8f0e65047ebb4fce295a83614d7fae";|' frontend/src/config/index.js
 
       - name: Copy prod ServiceApplication.java file
         run: |
