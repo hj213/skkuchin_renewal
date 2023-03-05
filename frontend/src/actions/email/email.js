@@ -9,7 +9,9 @@ import {
     PASSWORD_EMAIL_SEND_SUCCESS,
     PASSWORD_EMAIL_SEND_FAIL,
     PASSWORD_EMAIL_CHECK_SUCCESS,
-    PASSWORD_EMAIL_CHECK_FAIL
+    PASSWORD_EMAIL_CHECK_FAIL,
+    PASSWORD_EMAIL_CONFIRM_SUCCESS,
+    PASSWORD_EMAIL_CONFIRM_FAIL
 }
     from './types';
 
@@ -242,3 +244,50 @@ export const password_email_check = (email, callback) => async dispatch => {
         if (callback) callback([false, error]);
     }
 };
+
+export const password_email_confirm = (email, authNum, callback) => async dispatch => {
+    const body = JSON.stringify({
+        email, authNum
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/email/confirm/password`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+        console.log(apiRes);
+        
+        if (res.status === 200) {
+            dispatch({
+                type: PASSWORD_EMAIL_CONFIRM_SUCCESS,
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
+        } else {
+            dispatch({
+                type: PASSWORD_EMAIL_CONFIRM_FAIL,
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch(error) {
+        console.log(error);
+        dispatch({
+            type: PASSWORD_EMAIL_CONFIRM_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+        
+        
+    }
+}

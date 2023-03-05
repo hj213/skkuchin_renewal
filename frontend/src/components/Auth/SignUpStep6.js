@@ -14,8 +14,6 @@ const SignUpStep6 = (props) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [remainHeight, setRemainHeight] = useState(window.innerHeight - (143+56) + "px");
-    const email = router.query.email;
-    const authNum = router.query.authNum;
 
     useEffect(() => {
         setRemainHeight(window.innerHeight - (143+56) + "px")
@@ -31,19 +29,6 @@ const SignUpStep6 = (props) => {
           query: { src : '회원가입', username: props.username }
         });
     }
-
-    useEffect(() => {
-      console.log(email, authNum);
-      if (dispatch && dispatch !== null && dispatch !== undefined) {
-        dispatch(signup_email_confirm(email, authNum, ([result, message]) => {
-          if (result) {
-            //alert(message);
-          } else {
-            alert(message);
-          }
-        }))
-      }
-    }, [])
       
     return (
       <div>

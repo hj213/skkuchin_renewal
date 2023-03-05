@@ -117,7 +117,7 @@ const ReviewsPage = () => {
                             {/* {places ? places.filter(item => item.id == place_id).map((item,index) => ( */}
                             { selectedPlace &&
                                 <Grid style={{flexDirection: 'row'}}>
-                                    <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
+                                    <Typography sx={{fontSize: '23px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                         {selectedPlace.name}
                                     </Typography>
                                     <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
