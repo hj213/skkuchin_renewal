@@ -4,11 +4,12 @@ import { useEffect, useState, useRef } from "react";
 
 import { enroll_review } from "../actions/review/review";
 
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { Button, CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
 // Icons
+import removeBtn from '../image/close.png';
 import close from '../image/close.png';
 import tag1 from '../image/tags/review_off/review_taste.png';
 import tag1on from '../image/tags/review_on/review_tasteY.png'
@@ -335,23 +336,22 @@ const EnrollReview = () => {
                                 </div>
                             </Grid>
 
-                            <Grid>
-                                <div className='form-group' >
-                                    <label className='form-label mt-3' htmlFor='image'>
-                                        <strong>Image</strong>
-                                    </label>
-                                    <input 
-                                        className='form-control' type = 'file' name='images' accept='image/*' multiple
-                                        placeholder ='Image' onChange={e => onChangeImages(e)}
-                                        />
-                                </div>
-                            </Grid>
                             <Grid container style={{position:'relative', width:'100%'}}>
-                                <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap'}}>
+                                <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', marginTop:'20px'}}>
+                                    <div style={{ position: 'relative', overflow: 'hidden', display: 'inline-block', borderRadius: '5px', backgroundColor: '#eee', color: '#333', fontSize: '16px', fontWeight: 'bold', marginRight:'5px'}}>
+                                        <input onChange={e => onChangeImages(e)} style={{position: 'absolute', fontSize: '100px', left: '0', top: '0', opacity: '0' }} type="file" name="images" accept="image/*" multiple />
+                                        <label style={{width:'150px', height:'150px', textAlign:'center', display: 'inline-block', cursor: 'pointer',borderRadius:'10px', backgroundColor:'white', border:'1px solid grey', paddingTop:'60px'}} htmlFor="images">사진 추가하기</label>
+                                    </div>
                                     {previewImages.map((previewImage, index) => (
-                                        <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px'}}>
-                                            <img key={previewImage} src={previewImage} alt="preview" style={{width: '150px', height: '150px', objectFit: 'contain',
-                                                objectPosition: 'center center' }} />
+                                        <Grid item key={index} style={{ display:'inline-block',flexShrink: 0, paddingRight: '5px', position:'relative'}}>
+                                            <img key={previewImage} src={previewImage} alt="preview" 
+                                            style={{
+                                                width: '150px',
+                                                height: '150px', 
+                                                objectFit: 'cover',
+                                                objectPosition: 'center center' ,
+                                                borderRadius:'10px'
+                                                }} />
                                         </Grid>
                                     ))}
                                 </Grid>

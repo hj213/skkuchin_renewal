@@ -10,6 +10,7 @@ import pushTokenReducer from './pushToken'
 import chatMessageReducer from './chatMessage';
 import chatRoomReducer from './chatRoom';
 import chatRequestReducer from './chatRequest';
+import appointmentReducer from './appointment';
 
 export default combineReducers({
     auth: authReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
     pushToken: pushTokenReducer,
     chatMessage: chatMessageReducer,
     chatRequest: chatRequestReducer,
-    chatRoom: chatRoomReducer
+    chatRoom: chatRoomReducer,
+    appointment: appointmentReducer
 });
