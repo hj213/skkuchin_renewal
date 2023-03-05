@@ -30,6 +30,11 @@ const MorePhotos = () => {
         });
     };  
 
+    // 뒤로가기
+    const handleOnExitclick = (event) =>{
+        router.back()
+    };  
+
     const router = useRouter();
     const { id, img } = router.query;
 
@@ -59,6 +64,21 @@ const MorePhotos = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const review = reviews && reviews.find(review => review.images.includes(image));
+
+    // '나' 뱃지 customize
+    const StyledBadge = styled(Badge)(({ theme }) => ({
+        '& .MuiBadge-badge': {
+        right: 3,
+        top: 33,
+        border: `2px solid ${theme.palette.background.paper}`,
+        padding: '1px 3px 0',
+        backgroundColor:'#FFCE00',
+        color:'white',
+        fontSize:'10px',
+        fontWeight:'700',
+        marginRight:'2px'
+        },
+    }));
 
     useEffect(()=> {
         if (review) {
@@ -91,13 +111,13 @@ const MorePhotos = () => {
             <CssBaseline />
             <Layout >
             {/* 전체 틀 */}
-            <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+            <div style={{ width:'100%'}}>  
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
                         <Card elevation={0}
                         style={{
-                            position: 'absolute',
+                            position: 'fixed',
                             top: '0px',
                             width: '100%',
                             height: '80px',
@@ -122,7 +142,7 @@ const MorePhotos = () => {
                                 }
                                 </Grid>
                                 <Grid>
-                                    <Image src={close} width={37} height={37} name='close' onClick={handleOnclick}/>
+                                    <Image src={close} width={37} height={37} name='close' onClick={handleOnExitclick}/>
                                 </Grid> 
                             </Grid>
                         </Card>
@@ -131,17 +151,17 @@ const MorePhotos = () => {
             {/* 사진 콘텐츠 */}
             <Grid container style={{padding: '90px 0 0px'}}>
                 {isFromSelectedPlace? 
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', width:'100%' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap'}}>
                         <div style={{ 
                             width: '100%',
-                            height: 'auto', 
+                            height: '450px', 
                             margin: '5px', 
                             position: 'relative', 
                             overflow: 'hidden',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
                         }}> 
                             <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
                                 <Image onClick={handlePrevClick} src={prev} width={33} height={33}/>
@@ -153,21 +173,23 @@ const MorePhotos = () => {
                                 <Typography sx={{color: '#FFE885', fontSize: '13px', fontWeight: '700', pr: '7px'}}>{`${currentIndex+1}/${selectedPlace.images.length}`}</Typography>
                                 <Image src={morePic} width={22} height={22}/>
                             </div>
-                           <Image
-                                width={800}
-                                height={1200}
+                            <Image
+                                width='100%'
+                                height={1900}
                                 src={selectedPlace.images[currentIndex]}
                                 alt={`image`}
-                             />
+                                layout='fill'
+                                objectFit='contain'
+                            />
                         </div>
                     </div>
                 </div>
                 : ( review &&
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', width:'100%'  }}>
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                                 <div style={{ 
                                     width: '100%',
-                                    height: 'auto', 
+                                    height: '450px', 
                                     margin: '5px', 
                                     position: 'relative', 
                                     overflow: 'hidden',
@@ -186,10 +208,12 @@ const MorePhotos = () => {
                                         <Image src={morePic} width={22} height={22}/>
                                     </div>
                                     <Image
-                                        width={800}
-                                        height={1200}
+                                        width='100%'
+                                        height={1900}
                                         src={review.images[currentIndex]}
                                         alt={`image`}
+                                        layout='fill'
+                                        objectFit='contain'
                                         />
                                 </div>
                         </div>
@@ -199,12 +223,18 @@ const MorePhotos = () => {
             </Grid>
             <Grid container >
                 {reviews && review ? 
-                    <Grid container style={{margin:'16px 15px 10px', justifyContent:'left'}}>
+                    <Grid container sx={{
+                        p: '0 20px',
+                        position: 'absolute',
+                        bottom: 30,
+                        left: 0,
+                        right: 0,
+                    }}>
                     <Grid item xs={2}>
                         { review && review.user_id === user.id ?
-                            <Badge badgeContent={"나"} color="secondary">
+                            <StyledBadge badgeContent={"나"} color="secondary">
                                 <Avatar alt="" src={ user.image} />
-                            </Badge> : <Avatar alt="" src={user.image} />}
+                            </StyledBadge> : <Avatar alt="" src={user.image} />}
     
                     </Grid>
                     <Grid item xs={10}>
@@ -253,30 +283,39 @@ const MorePhotos = () => {
                     </Grid>
                 </Grid>
                 : 
-                <Grid container sx={{p: '0 20px', mt: '15px'}}>
+                <Grid
+                    container
+                    sx={{
+                        p: '0 20px',
+                        position: 'absolute',
+                        bottom: 30,
+                        left: 0,
+                        right: 0,
+                    }}
+                    >
                     <Grid item xs={2}>
-                       <Avatar alt="" src={user.image} />
+                        <Avatar alt="" src={user.image} />
                     </Grid>
                     <Grid item xs={10}>
                         <Typography
-                                sx={{
-                                fontSize: '12px',
-                                fontWeight: '700',
-                                lineHeight: '24px',
-                                verticalAlign: 'top'
-                                }}
-                                align='left'
+                        sx={{
+                            fontSize: '12px',
+                            fontWeight: '700',
+                            lineHeight: '24px',
+                            verticalAlign: 'top'
+                        }}
+                        align='left'
                         >
-                            {selectedPlace.name}
+                        {selectedPlace.name}
                         </Typography>
                         <Typography
-                            sx={{ fontSize: '12px', fontWeight: '500',  verticalAlign: 'top'}}
-                            align="left"
+                        sx={{ fontSize: '12px', fontWeight: '500',  verticalAlign: 'top'}}
+                        align="left"
                         >
                         업체등록사진
                         </Typography>
                     </Grid>
-                </Grid>
+                    </Grid>
                 }
             </Grid>
         </div>
