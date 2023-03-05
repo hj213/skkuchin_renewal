@@ -14,6 +14,14 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     const [selectedLevel, setSelectedLevel] = useState(1);
     const [mapCenter, setMapCenter] = useState(null);
 
+    const removePreviousMap = () => {
+        const container = mapContainerRef.current;
+        while (container.hasChildNodes()) {
+          container.removeChild(container.firstChild);
+        }
+    };
+
+      
     useEffect(() => {
         const mapScript = document.createElement("script");
         
@@ -22,11 +30,9 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
         document.head.appendChild(mapScript);
 
-        let prevCenter = null;
-        let prevLevel = null;
-
         const onLoadKakaoMap = () => {
             window.kakao.maps.load(() => {
+                removePreviousMap(); 
                 const container = mapContainerRef.current;
                 if (container) {
                     let selectedPlace;
@@ -42,56 +48,32 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             level: selectedLevel
                         };
                     } 
-                    // else if(selectedPlace) {
-                    //     options = {
-                    //         center: new window.kakao.maps.LatLng(selectedPlace.ycoordinate, selectedPlace.xcoordinate),
-                    //         level: 1
-                    //     };
-                    // }
-                    // else if (places && places.length > 0) {
-                    //     options = {
-                    //         center: new window.kakao.maps.LatLng(places[0].ycoordinate, places[0].xcoordinate),
-                    //         level: 1
-                    //     };
-                      
-                    // } 
                     else if(user && user.toggle == '율전') {
                         options = {
                             center : new window.kakao.maps.LatLng(37.2965, 126.9717),
-                            level: 5
+                            level: 5,
+                            preventDraggable: true,
+                            zoomControl: true,
                         };
                     }
                     else{
-                        // if prevCenter and prevLevel exist, use them as the center and level values
-                        if (prevCenter && prevLevel) {
-                          options = {
-                            center : prevCenter,
-                            level: prevLevel
-                          };
-                        } else {
                           options = {
                             center : new window.kakao.maps.LatLng(latitude, longitude),
-                            level: 5
+                            level: 5,
+                            preventDraggable: true,
+                            zoomControl: true,
                           };
-                        }
+                        
                     }
-                    // else{
-                    //     options = {
-                    //         center : new window.kakao.maps.LatLng(latitude, longitude),
-                    //         level: 4
-                    //     };
-                    // }
-                    
 
                     const map = new window.kakao.maps.Map(container, options);
 
-                    // enable smoother zooming and panning
                     map.setZoomable(false);
                     map.setZoomable(true);
-                    
+                  
                     let maxMarker = 30; // maximum number of markers to show
                     const markers = [];
-
+                    
                     { places  &&
                     places.forEach((place,index) => {
                         if (index < maxMarker) {
@@ -219,18 +201,18 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         for (let i = 0; i < maxMarker && i < markers.length; i++) {
                             markers[i].setMap(map);
                         }
+                        
                     });
-                    }
-                    // map.relayout();
+                }
+                    
                 }
             });
             
         };        
         mapScript.addEventListener("load", onLoadKakaoMap);
 
-        
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
-    }, [latitude, longitude, places, selectedId, user]);
+    }, [latitude, longitude, places, selectedId, user, selectedLevel, mapCenter]);
 
 
     return (
