@@ -1,4 +1,4 @@
-package skkuchin.service.api.dto;
+package skkuchin.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

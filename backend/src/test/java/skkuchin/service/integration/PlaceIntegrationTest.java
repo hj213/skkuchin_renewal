@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import skkuchin.service.api.dto.PlaceDto;
+import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.common.BaseIntegrationTest;
 import skkuchin.service.config.PlaceSetUp;
 import skkuchin.service.domain.Map.Campus;

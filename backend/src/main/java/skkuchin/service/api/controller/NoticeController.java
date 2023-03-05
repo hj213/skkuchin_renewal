@@ -6,10 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import skkuchin.service.api.dto.CMRespDto;
-import skkuchin.service.api.dto.NoticeDto;
-import skkuchin.service.api.dto.ReportDto;
-import skkuchin.service.domain.Notice.Notice;
+import skkuchin.service.dto.CMRespDto;
+import skkuchin.service.dto.NoticeDto;
 import skkuchin.service.service.NoticeService;
 
 import java.util.List;

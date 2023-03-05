@@ -7,7 +7,7 @@ import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import check from '../image/check_circle.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
-import { change_user, check_nickname, load_user } from '../actions/auth/auth';
+import { change_user, check_nickname } from '../actions/auth/auth';
 import EditProfileImage from '../components/MyPage/EditProfileImage';
 
 export default function editProfile() {
@@ -146,11 +146,11 @@ export default function editProfile() {
             <FormControl variant="standard" style={{width: '100%'}}>
             <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학부/학과*</Typography>
             <Autocomplete
-              clearOnEscape
-              value={major}
-              onChange={(e, value) => setMajor(value)}
-              options={majorList.sort()}
-              renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
+                clearOnEscape
+                value={major}
+                onChange={(e, value) => setMajor(value)}
+                options={majorList.sort()}
+                renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
             />
             </FormControl>
         </div>

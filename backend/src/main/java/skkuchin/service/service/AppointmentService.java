@@ -3,7 +3,7 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.AppointmentDto;
+import skkuchin.service.dto.AppointmentDto;
 import skkuchin.service.domain.Chat.Appointment;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.exception.CustomRuntimeException;

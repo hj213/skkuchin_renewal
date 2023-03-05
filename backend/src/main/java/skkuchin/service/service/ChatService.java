@@ -1,15 +1,11 @@
 package skkuchin.service.service;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.ChatMessageDto;
-import skkuchin.service.api.dto.ChatRoomDto;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.ChatMessageDto;
+import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;

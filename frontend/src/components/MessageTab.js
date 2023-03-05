@@ -2,11 +2,12 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Profile, Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconButton, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 
-import profile from '../image/profile.png'
-import notiOff from '../image/chat/notifications_off.png'
-import Image from 'next/image'
+import profile from '../image/profile.png';
+import notiOff from '../image/chat/notifications_off.png';
+import Image from 'next/image';
 
-import Link from 'next/link'
+import Link from 'next/link';
+get_realtime
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,6 +48,10 @@ export default function MessageTab() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    
+  }, [])
 
   return (
     <Box sx={{ width: '100%' }}>

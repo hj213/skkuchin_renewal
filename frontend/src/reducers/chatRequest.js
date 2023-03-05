@@ -1,8 +1,7 @@
 import {
-    LOAD_MENU_FAIL,
-    LOAD_MENU_SUCCESS,
-
-} from '../actions/menu/types'
+    GET_REALTIME_REQUEST_SUCCESS,
+    GET_REALTIME_REQUEST_FAIL
+} from '../actions/chat/types'
 
 const initialState = {
     chatRequest: null,
@@ -12,15 +11,15 @@ const chatRequestReducer = (state= initialState, action) => {
     const { type, payload } = action;
 
     switch(type){
-        case LOAD_MENU_SUCCESS:
+        case GET_REALTIME_REQUEST_SUCCESS:
             return {
                 ...state,
-                menu: payload
+                chatRequest: payload
             }
-        case LOAD_MENU_FAIL:
+        case GET_REALTIME_REQUEST_FAIL:
             return {
                 ...state,
-                menu: null
+                chatRequest: null
             }
         default:
             return state;

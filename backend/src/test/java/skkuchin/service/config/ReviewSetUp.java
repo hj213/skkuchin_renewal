@@ -2,7 +2,7 @@ package skkuchin.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import skkuchin.service.api.dto.ReviewDto;
+import skkuchin.service.dto.ReviewDto;
 import skkuchin.service.domain.Map.Place;
 import skkuchin.service.domain.Map.Review;
 import skkuchin.service.domain.Map.ReviewTag;
@@ -10,9 +10,7 @@ import skkuchin.service.domain.Map.Tag;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
