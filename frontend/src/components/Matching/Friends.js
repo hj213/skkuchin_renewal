@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
 import { displayMBTI } from './MBTIList';
 import { load_candidate } from '../../actions/candidate/candidate'
+import { request_chat } from '../../actions/chat/chatRoom';
 const Friends = () => {
     const dispatch = useDispatch();
 
@@ -10,17 +11,21 @@ const Friends = () => {
     const candidate = useSelector(state => state.candidate.candidate);
 
     useEffect(() => {
+        //dispatch(load_candidate());
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_candidate(([result, message]) => {
-                if (!result) {
-                    if (typeof(message) == 'string') {
-                        setDialogMsg(message);
-                    }
-                }
-                setDialogOpen2(true);
-            }));
-        }
-    }, []);
+        dispatch(load_candidate(([result, message]) => {
+          if (result) {
+
+          } else {
+            if (typeof(message) == 'string') {
+              setDialogMsg(message);
+            }
+          }
+          console.log(message);
+          setDialogOpen2(true);
+        }));
+      }
+      }, [dispatch]);
     
 
     const [height, setHeight] = useState('383px');
