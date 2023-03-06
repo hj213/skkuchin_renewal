@@ -89,10 +89,10 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                  System.out.println("통과");
              }
 
-//             else if(accessor.getCommand().equals(StompCommand.DISCONNECT)){
-//                 String sessionId = (String) message.getHeaders().get("simpSessionId");
-//                chatSessionService.deleteSession(sessionId);
-//             }
+             else if(accessor.getCommand().equals(StompCommand.DISCONNECT)){
+                 String sessionId = (String) message.getHeaders().get("simpSessionId");
+                chatSessionService.deleteSession(sessionId);
+             }
 
              return message;
             }
