@@ -54,9 +54,9 @@ public class ChatService {
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
         ChatRoom chatRoom = dto.toEntity(user);
         String id = UUID.randomUUID().toString();
-        AppUser user1 = userRepo.findByUsername(dto.getUserName());
+        AppUser user2 = userRepo.findByUsername(dto.getUsername());
         chatRoom.setRoomId(id);
-        chatRoom.setUser2(user1);
+        chatRoom.setUser2(user2);
         chatRoomRepo.save(chatRoom);
     }
 
