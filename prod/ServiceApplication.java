@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import skkuchin.service.api.dto.UserDto;
 import skkuchin.service.domain.User.Profile;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Role;

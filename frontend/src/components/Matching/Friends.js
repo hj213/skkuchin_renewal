@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
 import { displayMBTI } from './MBTIList';
 import { load_candidate } from '../../actions/candidate/candidate'
+import { request_chat } from '../../actions/chat/chatRoom';
 const Friends = () => {
     const dispatch = useDispatch();
 
@@ -31,10 +32,14 @@ const Friends = () => {
 
     // 밥약 신청하기 버튼
     const [open, setOpen] = useState(false);
-    const handleSubmit = () => {
+    const handleOpen = () => {
         setOpen(true);
     }
     const handleClose = () => {
+        setOpen(false);
+    }
+    const handleSubmit = (username) => {
+        dispatch(request_chat(username));
         setOpen(false);
     }
 
@@ -55,7 +60,7 @@ const Friends = () => {
         { candidate ? 
         candidate.map((person, index) => (
         <Card key={index} variant="outlined" sx={{height: height, width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
-             <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
+            <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
                 {displayMBTI(person.mbti)}
                 <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{person !== null && person.nickname}</Typography>
                 <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
@@ -80,7 +85,7 @@ const Friends = () => {
                 <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
                     <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                 </Grid> 
-                <Button onClick={handleSubmit} sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                <Button onClick={handleOpen} sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
                     밥약 신청하기
                 </Button>
                 <Dialog
@@ -88,17 +93,17 @@ const Friends = () => {
                     onClose={handleClose}
                     PaperProps={{
                         style: { 
-                          borderRadius: '10px', 
-                          boxShadow: 'none', 
-                          maxWidth: '100vw', 
-                          maxHeight: '100vh'
+                            borderRadius: '10px', 
+                            boxShadow: 'none', 
+                            maxWidth: '100vw', 
+                            maxHeight: '100vh'
                         }
                     }}
-                      BackdropProps={{
+                    BackdropProps={{
                         sx: {
-                          backgroundColor: 'rgba(50, 50, 50, 0.25)',
-                          maxWidth: '100vw',
-                          maxHeight: '100vh'
+                            backgroundColor: 'rgba(50, 50, 50, 0.25)',
+                            maxWidth: '100vw',
+                            maxHeight: '100vh'
                         }
                     }}
                 >
@@ -111,7 +116,7 @@ const Friends = () => {
                     <DialogActions sx={{p:'0'}}>
                         <div style={{width: '100%', paddingBottom: '16px'}}>
                             <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
-                            <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleSubmit}>신청</Button>
+                            <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleSubmit(person.username)}>신청</Button>
                         </div>
                     </DialogActions>
                 </Dialog>

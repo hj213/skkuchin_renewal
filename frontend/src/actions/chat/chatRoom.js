@@ -18,7 +18,7 @@ import {
 }
     from './types';
 
-export const request_chat = async (username, callback) => {
+export const request_chat = (username, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -65,7 +65,7 @@ export const request_chat = async (username, callback) => {
     }
 };
 
-export const reply_chat_request = async (reaction, room_id, callback) => {
+export const reply_chat_request = (reaction, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -112,7 +112,7 @@ export const reply_chat_request = async (reaction, room_id, callback) => {
     }
 };
 
-export const set_user_block = async (reaction, room_id, callback) => {
+export const set_user_block = (reaction, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -159,7 +159,7 @@ export const set_user_block = async (reaction, room_id, callback) => {
     }
 };
 
-export const set_chat_room_alarm = async (reaction, room_id, callback) => {
+export const set_chat_room_alarm = (reaction, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -206,7 +206,7 @@ export const set_chat_room_alarm = async (reaction, room_id, callback) => {
     }
 };
 
-export const exit_room = async (room_id, callback) => {
+export const exit_room = (room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -246,6 +246,32 @@ export const exit_room = async (room_id, callback) => {
     }
 };
 
-export const get_realtime_chat_room = async () => {
-    
+export const get_realtime_chat_room = (username, stompClient) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const subscription = stompClient.subscribe(`/exchange/chat.exchange/room.${username}.chatRoomList`,(content) => {
+        const data = JSON.parse(content.body);
+        
+        dispatch({
+            type: GET_REALTIME_ROOM_SUCCESS,
+            payload: data
+        })
+
+    },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
+        pushToken : access
+        }
+    );
+    stompClient.send('/app/chat.list');
+    return subscription;
 };

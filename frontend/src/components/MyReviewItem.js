@@ -1,10 +1,9 @@
 import { useDispatch, useSelector} from "react-redux";
-import { useEffect, useState, useRef } from "react"; 
-import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
-import theme from '../theme/theme';
+import {useState} from "react"; 
+import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, CardContent, Typography, Grid, Container, Stack, Hidden,} from '@mui/material';
 import Image from 'next/image';
 import more from '../image/more_vert.png';
-import { displayReviewTag, reviewsTags } from "./TagList";
+import {reviewsTags } from "./TagList";
 import Link from 'next/link';
 
 // MyReviewItem 컴포넌트 추출
@@ -12,13 +11,13 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
     const allPlaces = useSelector(state => state.place.allplaces);
 
     const [anchorEl, setAnchorEl] = useState(null);
-  
+
     const handleMoreClick = (event) => {
-      setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget);
     };
-  
+
     const handleMenuClose = () => {
-      setAnchorEl(null);
+        setAnchorEl(null);
     };
       // 밥약 신청하기 버튼
     const [open, setOpen] = useState(false);
@@ -28,8 +27,7 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
     const handleClose = () => {
         setOpen(false);
     }
-  
-  
+
     return (
         <Container key={index} sx={{listStyle: 'none', pl: '35px'}}>
             <Grid container>
@@ -96,7 +94,7 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
                                     </Dialog>
                                 </Grid>
                             </Grid>
-                            <Grid style={{display:'flex'}}>
+                            <Grid style={{display:'flex', marginTop:'-2px'}}>
                                 <Rating name="read-only" size="small" value={review.rate} readOnly precision={1} />
                                 <Typography sx={{fontSize: '12px', fontWeight: '500', lineHeight: '180%', paddingLeft:'5px'}} color="#a1a1a1" component="div" align="center">
                                     | {review.create_date.slice(0,10)}
@@ -104,8 +102,8 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
                             </Grid>
                         </Stack>
                     </Grid>
-                    <Grid container style={{margin:'10px 0px 0px', justifyContent:'left'}}>
-                        <Card style={{
+                    <Grid container style={{margin:'7px 0px 0px', justifyContent:'left'}}>
+                        <Card elevation={0} style={{
                             borderRadius: '0px 15px 15px 15px',
                             backgroundColor:'#FFE885'
                         }}>
@@ -127,20 +125,22 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
                             </Grid>
                         ))}
                     </Grid>
-                    <Grid container style={{margin:'15px 0px 0px', justifyContent:'left'}}>
+                    <Grid container style={{margin:'5px 0px 0px', justifyContent:'left'}}>
                         {review.images && review.images.length > 0 ? (
                             <div style={{ display: 'flex', overflow: 'auto' }}>
                                 {review.images.map((image, index) => (
                                     <div key={index} style={{ marginRight: '10px' }}>
-            <Image
-                width={150}
-                height={150}
-                src={image}
-                alt={`image-${index}`}
-                placeholder="blur" 
-                blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
-                layout='fixed'
-            />
+                                    <Image
+                                        width={150}
+                                        height={150}
+                                        src={image}
+                                        alt={`image-${index}`}
+                                        placeholder="blur" 
+                                        blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                        layout='fixed'
+                                        objectFit='cover'
+                                        style={{borderRadius:'10px'}}
+                                    />
                                     </div>
                                 ))}
                             </div>

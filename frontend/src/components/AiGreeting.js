@@ -66,7 +66,7 @@ const AiGreeting = () => {
         INTJ:INTJ,
         ISFJ:ISFJ,
         ESFP:ESFP,
-      }
+    }
     
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {

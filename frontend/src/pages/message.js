@@ -1,20 +1,9 @@
-import { useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react"; 
-
-import { load_reviews } from "../actions/review/review";
-import { load_review} from "../actions/review/review"
-import { load_favorite } from "../actions/favorite/favorite";
-import { load_menu }  from "../actions/menu/menu";
-
-import { styled } from '@mui/material/styles';
 import { Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconButton, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
-import more from '../image/more_vert.png'
-import profile from '../image/profile.png'
-import { reviewsTags } from "../components/TagList";
 import MessageTab from "../components/MessageTab";
 
 const MessagePage = () => {
@@ -25,33 +14,11 @@ const MessagePage = () => {
     };  
 
     const router = useRouter();
-    const { id } = router.query;
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
-
-    useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            setPlaceId(id);
-            dispatch(load_reviews(place_id));
-        }
-    }, [dispatch, id]);
-
-    // place, 가게 정보 (place API)
-    const dispatch = useDispatch();
-    const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const places = useSelector(state => state.place.place);
-
-    // 리뷰정보 (review API)
-    const reviews = useSelector(state => state.review.review);
-
-    const user = useSelector(state => state.auth.user);
-
-    // 이미지
-    const images = useSelector(state => state.review.review)
-
 
 
     return(

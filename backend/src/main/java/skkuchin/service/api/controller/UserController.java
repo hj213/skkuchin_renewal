@@ -23,7 +23,6 @@ import skkuchin.service.dto.UserDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.UserService;
-
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

@@ -22,27 +22,29 @@ public class AppointmentService {
     private final ChatRoomRepo chatRoomRepo;
 
     @Transactional
-    public AppointmentDto.Response getAppointment(Long appointmentId) {
-        Appointment appointment = appointmentRepo.findById(appointmentId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 약속입니다"));
+    public AppointmentDto.Response getAppointment(String roomId) {
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+        Appointment appointment = appointmentRepo.findByChatRoom(chatRoom);
         return new AppointmentDto.Response(appointment);
     }
 
     @Transactional
-    public void makeAppointment(AppointmentDto.Request dto) {
+    public void makeAppointment(String roomId, AppointmentDto.Request dto) {
         if (dto.getPlace() == null && dto.getDateTime() == null) {
             throw new CustomRuntimeException("장소나 시간이 정해지지 않았습니다");
         }
-        ChatRoom chatRoom = chatRoomRepo.findById(dto.getChatRoomId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 채팅방입니다"));
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         Appointment appointment = dto.toEntity(chatRoom);
         appointmentRepo.save(appointment);
     }
 
     @Transactional
-    public void changeAppointment(Long appointmentId, AppointmentDto.Request dto) {
-        Appointment existingAppointment = appointmentRepo.findById(appointmentId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 약속입니다"));
+    public void changeAppointment(String roomId, AppointmentDto.Request dto) {
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+        Appointment existingAppointment = appointmentRepo.findByChatRoom(chatRoom);
 
         if (dto.getPlace() == null && dto.getDateTime() == null) {
-            cancelAppointment(appointmentId);
+            cancelAppointment(roomId);
         } else {
             existingAppointment.setDateTime(dto.getDateTime());
             existingAppointment.setPlace(dto.getPlace());
@@ -51,7 +53,8 @@ public class AppointmentService {
     }
 
     @Transactional
-    public void cancelAppointment(Long appointmentId) {
-        appointmentRepo.deleteById(appointmentId);
+    public void cancelAppointment(String roomId) {
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+        appointmentRepo.deleteByChatRoom(chatRoom);
     }
 }

@@ -14,7 +14,7 @@ import {
 }
     from './types';
 
-export const send_message = async (message, room_id, callback) => {
+export const send_message = (message, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -61,14 +61,95 @@ export const send_message = async (message, room_id, callback) => {
     }
 };
 
-export const get_realtime_otherUser = async (message, room_id) => {
+export const get_realtime_otherUser = (room_id, user_number, stompClient) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
 
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const subscription = stompClient.subscribe(`/exchange/chat.exchange/user.${room_id}${user_number}`,(content) => {
+        const data = JSON.parse(content.body);
+        
+        dispatch({
+            type: GET_REALTIME_USER_SUCCESS,
+            payload: data
+        })
+
+    },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
+        pushToken : access
+        }
+    );
+    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+
+    return subscription;
 };
 
-export const get_realtime_block = async (message, room_id) => {
-    
+export const get_realtime_block = (room_id, user_number, stompClient) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const subscription = stompClient.subscribe(`/exchange/chat.exchange/block.${room_id}${user_number}`,(content) => {
+        const data = JSON.parse(content.body);
+        
+        dispatch({
+            type: GET_REALTIME_BLOCK_SUCCESS,
+            payload: data
+        })
+
+    },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
+        pushToken : access
+        }
+    );
+    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+
+    return subscription;
 };
 
-export const get_realtime_message = async (message, room_id) => {
-    
+export const get_realtime_message = (room_id, user_number, stompClient)  => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const subscription = stompClient.subscribe(`/exchange/chat.exchange/chat.${room_id}${user_number}`,(content) => {
+        const data = JSON.parse(content.body);
+        
+        dispatch({
+            type: GET_REALTIME_MESSAGE_SUCCESS,
+            payload: data
+        })
+
+    },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
+        pushToken : access
+        }
+    );
+    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+
+    return subscription;
 };

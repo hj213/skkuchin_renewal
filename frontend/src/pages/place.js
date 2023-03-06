@@ -12,7 +12,7 @@ import line from '../image/Line1.png';
 import bookmarkAdd from '../image/bookmark_add.png';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
-import expand from '../image/expand_more.png'
+import expand from '../image/expand_more2.png'
 import back from '../image/arrow_back_ios.png'
 import ReviewStar from '../components/ReviewStar'
 import TagList from "../components/TagList";
@@ -488,7 +488,7 @@ const PlacePage = () => {
                                                 <Grid container style={{marginTop: '7.5px', flexDirection: 'column'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px', flexDirection: 'row'}}>
                                                         <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        영업시간  <Image src={expand} width={10.7} height={6.5} style={{margin: '0px 6.65px'}} placeholder="blur" layout='fixed' ></Image>                                          
+                                                        영업시간  <Image src={expand} width={10} height={6.5}  placeholder="blur" layout='fixed' />                                          
                                                         </Typography>          
                                                     </Grid>
                                                     <Grid>
@@ -532,7 +532,7 @@ const PlacePage = () => {
                         </Container>
                         }
                         { selectedPlace && 
-                            <li key={selectedPlace.id} style={{listStyleType:"none"}} onClick={handleReviewClick} >
+                            <li key={selectedPlace.id} style={{listStyleType:"none", height:'100%'}} onClick={handleReviewClick} >
                                 <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
                                     <div>
                                     <ReviewStar rating={rating} handleTouch={handleTouch}/>
@@ -542,21 +542,21 @@ const PlacePage = () => {
                         }
                         </div>
                         {/* 이미지 */}
-                        <Grid container style={{margin:'15px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
+                        <Grid container style={{margin:'-85px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
                         {allImages && allImages.length > 5 ? (
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignContent:'center', textAlign:'center' }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignContent:'center', textAlign:'center'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
-                                <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '0px', position: 'relative',}}>
+                                <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '0px', position: 'relative',alignContent:'center', textAlign:'center'}}>
                                     <Image
-                                    width={120}
-                                    height={120}
+                                    width={115}
+                                    height={115}
                                     src={image}
                                     alt={`image-${index}`}
                                     blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
                                     layout='fixed'
                                     objectFit='cover'
-                                    style={{borderRadius:'5px'}}
+                                    style={{borderRadius:'5px', margin:'0 auto'}}
                                     />
                                     {index === 5 && (
                                     <div 
@@ -565,18 +565,18 @@ const PlacePage = () => {
                                         query: { id: place_id }
                                     })}
                                     style={{
-                                        position: 'absolute',
-                                        left: '0px',
-                                        top: '0px',
-                                        width: '100%',
-                                        maxWidth: '150px',
-                                        height: 'calc(100% - 7px)',
+                                        width:'115px',
+                                        height:'115px',
+                                        position:'relative',
+                                        top: -121,
                                         backgroundColor: 'rgba(0,0,0,0.6)',
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        borderRadius:'5px'
+                                        borderRadius:'5px',
+                                        textAlign:'center',
+                                        margin:'0 auto -110px auto',
                                     }}>
                                         <Image src={morePic} width={23} height={23}></Image>
                                         <Typography sx={{color: '#FFCE00', fontSize: '9px', fontWeight: '500'}}>사진 더보기</Typography>

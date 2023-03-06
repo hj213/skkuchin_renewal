@@ -193,7 +193,7 @@ export const load_user_callback = (callback) => async dispatch => {
     }
 }
 
-export const load_user = () => async dispatch => {
+export const load_user = (callback) => async dispatch => {
     await dispatch(request_refresh());
 
     const access = Cookies.get('access') ?? null;
@@ -222,11 +222,13 @@ export const load_user = () => async dispatch => {
                 payload: apiRes.data
             });
             dispatch(load_favorite());
+            if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
                 type: LOAD_USER_FAIL,
                 payload: apiRes.data
             });
+            if (callback) callback([false, apiRes.message]);
         }
 
     } catch (error) {
@@ -234,6 +236,7 @@ export const load_user = () => async dispatch => {
         dispatch({
             type: LOAD_USER_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 
