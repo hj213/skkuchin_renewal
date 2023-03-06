@@ -13,6 +13,7 @@ const Layout = ({title, content, children}) => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
     const router = useRouter();
+    const [show, setShow] = useState(false);
 
     const Stomp = require("stompjs/lib/stomp.js").Stomp
     const sockJS = new SockJS(`${API_URL}/ws/chat`);
@@ -36,6 +37,12 @@ const Layout = ({title, content, children}) => {
         //dispatch(load_user())
     }, []);
 
+    useEffect(() => {
+        setTimeout(() => {
+            setShow(true);
+        }, 2000);
+    }, [])
+
     return ( 
             <>
                 <Head>
@@ -43,9 +50,9 @@ const Layout = ({title, content, children}) => {
                     <meta name="description" content={content} ></meta>
                 </Head>
                 
-                <div>
+                {show && <div>
                     {children}
-                </div>
+                </div>}
             </>
         )
 };
