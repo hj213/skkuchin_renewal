@@ -14,10 +14,10 @@ const Friends = () => {
             dispatch(load_candidate(([result, message]) => {
                 if (!result) {
                     if (typeof(message) == 'string') {
-                    setDialogMsg(message);
+                        setDialogMsg(message);
                     }
                 }
-            setDialogOpen2(true);
+                setDialogOpen2(true);
             }));
         }
     }, []);
