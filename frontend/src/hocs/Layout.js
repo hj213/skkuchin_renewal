@@ -2,19 +2,27 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const Layout = ({title, content, children}) => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
+    const router = useRouter();
 
     useEffect(() => {
+        /*
         if (!isAuthenticated) {
             console.log("load")
             dispatch(load_user());
-        }
-    }, []);
+            router.push('/splash');
+        }*/
 
+        console.log("load");
+        router.push('/splash')
+        //dispatch(load_user())
+    }, []);
 
     return ( 
             <>
