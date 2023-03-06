@@ -142,16 +142,18 @@ public class ChatRoomDto {
 
 
     @Getter
+    @Setter
     public static class DebeziumDto{
         private Long id;
         private String expire_date;
-        private String is_user1_blocked;
-        private String is_user2_blocked;
+        private Boolean is_user1_blocked;
+        private Boolean is_user2_blocked;
+        private Boolean is_user1_alarm_on;
+        private Boolean is_user2_alarm_on;
         private String room_id;
         private String response;
-        private String room_name;
-        private Long sender_id;
-        private Long receiver_id;
+        private Long user1_id;
+        private Long user2_id;
     }
 
 

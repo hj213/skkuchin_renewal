@@ -26,11 +26,11 @@ public class ChatRoom {
     private String roomId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user1")
+    @JoinColumn(name = "user1_id")
     private AppUser user1;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user2")
+    @JoinColumn(name = "user2_id")
     private AppUser user2;
 
     @Enumerated(EnumType.STRING)

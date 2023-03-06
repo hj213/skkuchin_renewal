@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.service.ChatMessageService;
+import skkuchin.service.service.ChatRoomService;
 import skkuchin.service.service.ChatSessionService;
 
 
@@ -26,23 +27,18 @@ import java.util.List;
 public class AlarmController {
 
     private final RabbitTemplate template;
-    private final ChatMessageService chatMessageService;
+    private final ChatRoomService chatRoomService;
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
 
     @MessageMapping("chat.alarm")
     public void newMatching(Message<?> message){
-        System.out.println("안녕8");
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String sessionId = accessor.getSessionId();
-        System.out.println(sessionId);
         ChatSession chatSession = chatSessionService.findSession(sessionId);
-        System.out.println(chatSession);
         String username = chatSession.getUsername();
-        System.out.println(username);
-        List<ChatRoomDto.userResponse> alarmList = chatMessageService.getAlarmList(username);
-        System.out.println(alarmList);
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+username,alarmList);
+        List<ChatRoomDto.userResponse> alarmList = chatRoomService.getAlarmList(username);
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+username, alarmList);
     }
 }

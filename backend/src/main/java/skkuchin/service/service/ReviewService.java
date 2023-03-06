@@ -68,9 +68,6 @@ public class ReviewService {
     public void write(AppUser user, ReviewDto.PostRequest dto) {
         List<ReviewImage> reviewImages = new ArrayList<>();
 
-//        List<Review> myReview = reviewRepo.findByUserIdAndPlaceId(user.getId(), dto.getPlaceId());
-//        if (myReview.size() > 0) throw new CustomRuntimeException("리뷰 작성 실패", "이미 리뷰를 작성했습니다.");
-
         Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
         Review review = dto.toEntity(user, place);
         reviewRepo.save(review);
