@@ -257,7 +257,7 @@ export const get_realtime_chat_room = (username, stompClient) => async dispatch 
         });
     }
 
-    const subscription = stompClient.subscribe(`/exchange/chat.exchange/room.${username}.chatRoomList`,(content) => {
+    const subscription = stompClient.subscribe(`/exchange/chat.exchange/room.${username}chatRoomList`,(content) => {
         const data = JSON.parse(content.body);
         
         dispatch({
@@ -272,6 +272,6 @@ export const get_realtime_chat_room = (username, stompClient) => async dispatch 
         pushToken : access
         }
     );
-    stompClient.send('/app/chat.list');
+    stompClient.send('/app/chat.list', {"pushToken" : access});
     return subscription;
 };

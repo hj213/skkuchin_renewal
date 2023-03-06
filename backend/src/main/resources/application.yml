@@ -3,18 +3,18 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/service?characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: Master00!@
+    password: 1234
 
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: my-group
-      auto-offset-reset: earliest
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#  kafka:
+#    bootstrap-servers: localhost:9092
+#    consumer:
+#      bootstrap-servers: localhost:9092
+#      group-id: my-group
+#      auto-offset-reset: earliest
+#    producer:
+#      bootstrap-servers: localhost:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
   jpa:
     hibernate:

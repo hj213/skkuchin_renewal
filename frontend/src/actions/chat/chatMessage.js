@@ -87,7 +87,7 @@ export const get_realtime_otherUser = (room_id, user_number, stompClient) => asy
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };
@@ -118,7 +118,7 @@ export const get_realtime_block = (room_id, user_number, stompClient) => async d
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };
@@ -149,7 +149,7 @@ export const get_realtime_message = (room_id, user_number, stompClient)  => asyn
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };

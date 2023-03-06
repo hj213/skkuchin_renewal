@@ -6,6 +6,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.StompSubProtocolErrorHandler;
+import skkuchin.service.exception.CustomRuntimeException;
 
 import java.nio.charset.StandardCharsets;
 
@@ -18,6 +19,7 @@ public class ChatErrorHandler extends StompSubProtocolErrorHandler {
 /*
         System.out.println("ex.getCause().getMessage() = " + ex.getCause().getMessage());
 */
+        System.out.println("안녕1");
         if(!ex.getCause().getMessage().isEmpty()){
             if(ex.getCause().getMessage() == "차단된 유저입니다."){
                 return blockException();
@@ -29,15 +31,19 @@ public class ChatErrorHandler extends StompSubProtocolErrorHandler {
 
         }
 
-        return super.handleClientMessageProcessingError(clientMessage, ex);
+        throw new CustomRuntimeException("오류" + ex);
+//        return super.handleClientMessageProcessingError(clientMessage, ex);
     }
 
 
     private Message<byte[]> handleJwtException(){
 
+        System.out.println("안녕2");
+
         return prepareErrorMessage(JwtErrorCode.ACCESS_TOKEN_EXPIRATION);
     }
     private Message<byte[]> blockException(){
+        System.out.println("안녕3");
 
         return prepareErrorMessage(JwtErrorCode.BLOCKED_USER);
     }

@@ -22,27 +22,19 @@ public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String roomId;
 
-
-    @OneToMany(mappedBy = "chatRoom")
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "chatRoom")
-    private List<ChatSession> chatSessions = new ArrayList<>();
-
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "user1")
     private AppUser user1;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id")
+    @JoinColumn(name = "user2")
     private AppUser user2;
 
     @Enumerated(EnumType.STRING)
     private ResponseType response;
-
 
     private LocalDateTime expireDate;
 
@@ -63,10 +55,10 @@ public class ChatRoom {
     public void setDate() {
         LocalDateTime now = LocalDateTime.now();
         this.expireDate = now.plusDays(2);
-        /*this.expireDate = now.plusMinutes(1);*/
     }
 
-    // 신고 관련 매핑입니다 지우지 마세요
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();

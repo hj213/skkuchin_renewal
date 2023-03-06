@@ -14,8 +14,7 @@ import {
 } from '../actions/chat/types'
 
 const initialState = {
-    userInfo: null,
-    chatMessages: null,
+    chatMessages: null
 };
 
 const chatRoomReducer = (state= initialState, action) => {
@@ -57,7 +56,6 @@ const chatRoomReducer = (state= initialState, action) => {
         case EXIT_CHAT_ROOM_SUCCESS:
             return {
                 ...state,
-                userInfo: null,
                 chatMessages: null
             }
         case EXIT_CHAT_ROOM_FAIL:
@@ -67,13 +65,11 @@ const chatRoomReducer = (state= initialState, action) => {
         case GET_REALTIME_ROOM_SUCCESS:
             return {
                 ...state,
-                userInfo: payload.userInfo,
-                chatMessages: payload.chatMessages
+                chatMessages: payload
             }
         case GET_REALTIME_ROOM_FAIL:
             return {
                 ...state,
-                userInfo: null,
                 chatMessages: null
             }
         default:
