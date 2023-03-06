@@ -91,7 +91,7 @@ const Friends = () => {
                     <DialogActions sx={{p:'0'}}>
                         <div style={{width: '100%', paddingBottom: '16px'}}>
                             <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
-                            <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleSubmit(person.username)}>신청</Button>
+                            <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleSubmit}>신청</Button>
                         </div>
                     </DialogActions>
                 </Dialog>
