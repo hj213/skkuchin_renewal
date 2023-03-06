@@ -11,16 +11,16 @@ const Friends = () => {
 
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-                dispatch(load_candidate(([result, message]) => {
-            if (!result) {
-                if (typeof(message) == 'string') {
-                setDialogMsg(message);
+            dispatch(load_candidate(([result, message]) => {
+                if (!result) {
+                    if (typeof(message) == 'string') {
+                    setDialogMsg(message);
+                    }
                 }
-            }
             setDialogOpen2(true);
             }));
         }
-        }, []);
+    }, []);
     
 
     const [height, setHeight] = useState('383px');
