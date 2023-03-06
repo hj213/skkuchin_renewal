@@ -170,6 +170,15 @@ export default function list(){
     
     },[numOfLi])
 
+    useEffect(()=>{
+        setHeight('0')
+        setKeyword('');
+        setTags([]);
+        setFilteredPlace(null);
+        setIsTall(false);
+        dispatch(clear_search_results());
+    },[user?.toggle])
+
     // 카드 리셋 
     const handleReset = () => {
         setCardStyle({cardVisibility:'hidden'});
@@ -339,6 +348,7 @@ export default function list(){
             // dispatch(clear_search_results());
         }
     }
+
 
     return(
     <ThemeProvider theme={theme}>
