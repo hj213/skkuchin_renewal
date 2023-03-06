@@ -59,14 +59,13 @@ const LoginPage = () => {
                             pathname: '/register', 
                             query: {src: '이메일', username: username}
                         })
-                    } else if (message == '') {
-                        /*
+                    } else if (typeof(message) == 'string' && message.includes('@')) {
                         router.push({
                             pathname: '/register',
-                            query: {}
-                        })*/
+                            query: {src: '인증', username: username, email: message}
+                        })
                     }
-                    if (typeof(message) == 'string') {
+                    else if (typeof(message) == 'string') {
                         setError(message);
                     }
                 }
