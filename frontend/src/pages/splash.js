@@ -73,8 +73,8 @@ export default function splash(){
                 <div style={{ width:'100%', height:'100%', textAlign:'center', position:'absolute', display:'block', justifyContent:'center', marginTop:height}}>
                     <Image src={logo} width={169} height={185}/>
                 </div>
-                <div style={{width:'100%', textAlign:'center', position:'absolute', bottom:35}}>
-                    <Image src={loadingImages[loadingIndex] }width={133} height={56} layout='fixed' />
+                <div style={{width:'100%', textAlign:'center', position:'absolute', bottom:55}}>
+                    <Image src={loadingImages[loadingIndex] }width={133} height={30} layout='fixed' />
                 </div>
             </Container>
         </ThemeProvider>

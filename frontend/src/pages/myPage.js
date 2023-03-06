@@ -112,7 +112,7 @@ export default function myPage() {
                     <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname} 님</Typography>
                     {/* 캠퍼스, 학과, 학번 */}
                     <div style={{display: 'flex'}}>
-                        <Typography sx={{height: '16px', border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}} color={theme.palette.fontColor.main}>{user.campus}</Typography>
+                        <Typography sx={{height: '16px', border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px', marginTop:"-1px"}} color={theme.palette.fontColor.main}>{user.campus}</Typography>
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
                     </div>
                 </div>
@@ -134,7 +134,7 @@ export default function myPage() {
                     {/* <Image width={48.58} height={45} src={toggle_off} onClick={arrowClick} style={{alignSelf: 'start'}}/> */}
                     {/* 토글 스위치 */}
                     <FormControlLabel
-                        style={{paddingTop:"2px"}}
+                        style={{paddingTop:"2px", marginTop:'-5px'}}
                         control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} />}
                     />
                 </div>
@@ -143,7 +143,7 @@ export default function myPage() {
                     <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>스꾸친 공지/이벤트 알림</Typography>
                     {/* 토글 스위치 */}
                     <FormControlLabel
-                        style={{paddingTop:"2px"}}
+                        style={{paddingTop:"2px", marginTop:'-5px'}}
                         control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} />}
                     />
                 </div>
