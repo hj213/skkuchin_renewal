@@ -8,17 +8,13 @@ import skkuchin.service.domain.Chat.ChatRoom;
 
 import java.util.List;
 
-public interface ChatRepo extends JpaRepository<ChatMessage,Long> {
+public interface ChatMessageRepo extends JpaRepository<ChatMessage,Long> {
     List<ChatMessage> findByChatRoom(ChatRoom chatRoom);
 
-
     @Query("SELECT a FROM ChatMessage a WHERE a.chatRoom.roomId = :roomId ORDER BY a.date DESC")
-    List<ChatMessage> findByLatestMessageTime(@Param("roomId") String roomId);
+    List<ChatMessage> findByLatestTime(@Param("roomId") String roomId);
 
-    @Query("SELECT a FROM ChatMessage a WHERE a.chatRoom.roomId = :roomId AND a.readStatus = false " +
-            "AND a.sender <> :sender")
-    List<ChatMessage> findByReadStatus(@Param("roomId") String roomId,
-                                       @Param("sender") String sender);
-
-
+    @Query("SELECT COUNT(a) FROM ChatMessage a WHERE a.chatRoom.roomId = :roomId AND a.readStatus = false " +
+            "AND a.sender <> :username")
+    int countByReadStatus(@Param("roomId") String roomId, @Param("username") String username);
 }

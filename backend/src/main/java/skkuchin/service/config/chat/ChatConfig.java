@@ -54,7 +54,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 
-        //registry.enableSimpleBroker("/queue", "/topic");
         registry.setPathMatcher(new AntPathMatcher("."));
         registry.setApplicationDestinationPrefixes("/app");
         registry.setPreservePublishOrder(true);
@@ -76,33 +75,26 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
              StompHeaderAccessor accessor =
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-             if(accessor.getCommand().equals(StompCommand.SUBSCRIBE)){
-                    String sessionId = accessor.getSessionId();
-                    String roomId = accessor.getDestination().substring(29);
-                    String token = accessor.getFirstNativeHeader("token");
-                    String sender = getUserNameFromJwt(token);
-                    ChatRoom chatRoom = chatRoomService.findChatroom(roomId);
+             if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
+                 System.out.println("안녕하세요");
+                String sessionId = accessor.getSessionId();
+                 System.out.println(sessionId);
+                String token = accessor.getFirstNativeHeader("pushToken");
+                 System.out.println(token);
+                String username = getUserNameFromJwt(token);
+                 System.out.println(username);
+                 if (chatSessionService.findSession(sessionId) == null) {
+                     chatSessionService.setSessionId(sessionId, username);
+                 }
+                 System.out.println("통과");
+             }
 
-                    if(roomId.contains("user1") && roomId.length()>36){
-                        roomId = roomId.replace("user1","");
-                    }
-                    else if(roomId.contains("user2")&& roomId.length()>36){
-                        roomId = roomId.replace("user2","");
-                    }
+//             else if(accessor.getCommand().equals(StompCommand.DISCONNECT)){
+//                 String sessionId = (String) message.getHeaders().get("simpSessionId");
+//                chatSessionService.deleteSession(sessionId);
+//             }
 
-
-
-                    chatSessionService.setSessionId(chatRoom,sessionId,sender);
-                    chatRoomService.updateReadStatus(chatRoom,sender);
-                }
-
-
-
-             else if(accessor.getCommand().equals(StompCommand.DISCONNECT)){
-                    String sessionId = (String) message.getHeaders().get("simpSessionId");
-                    chatSessionService.deleteSession(sessionId);
-                }
-                return message;
+             return message;
             }
         });
     }

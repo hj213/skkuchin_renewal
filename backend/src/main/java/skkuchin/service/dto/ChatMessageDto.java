@@ -10,6 +10,8 @@ import net.bytebuddy.asm.Advice;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
+
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class ChatMessageDto {
@@ -30,10 +32,11 @@ public class ChatMessageDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static  class Request{
-
+        @NotBlank
         private String message;
 
         @JsonProperty
+        @NotBlank
         private String roomId;
 
 
@@ -55,8 +58,6 @@ public class ChatMessageDto {
         private String message;
         @JsonProperty
         private String roomId;
-
-        @JsonProperty
         private LocalDateTime date;
         public Response(ChatMessage chatMessage, ChatRoom chatRoom){
             this.sender= chatMessage.getSender();

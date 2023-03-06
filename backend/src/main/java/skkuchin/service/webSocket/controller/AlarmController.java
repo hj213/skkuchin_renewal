@@ -30,15 +30,19 @@ public class AlarmController {
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
 
-
     @MessageMapping("chat.alarm")
     public void newMatching(Message<?> message){
+        System.out.println("안녕8");
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String sessionId = accessor.getSessionId();
+        System.out.println(sessionId);
         ChatSession chatSession = chatSessionService.findSession(sessionId);
-        String username = chatSession.getSender();
+        System.out.println(chatSession);
+        String username = chatSession.getUsername();
+        System.out.println(username);
         List<ChatRoomDto.userResponse> alarmList = chatMessageService.getAlarmList(username);
+        System.out.println(alarmList);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+username,alarmList);
     }
 }

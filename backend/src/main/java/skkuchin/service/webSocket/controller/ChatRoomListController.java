@@ -14,6 +14,7 @@ import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.dto.DebeziumDto;
 import skkuchin.service.dto.UserDto;
 import skkuchin.service.service.ChatMessageService;
+import skkuchin.service.service.ChatRoomService;
 import skkuchin.service.service.ChatSessionService;
 import skkuchin.service.service.UserService;
 
@@ -25,6 +26,7 @@ import java.util.List;
 @Log4j2
 public class ChatRoomListController {
     private final RabbitTemplate template;
+    private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final UserService userService;
@@ -32,16 +34,16 @@ public class ChatRoomListController {
 
     @MessageMapping("chat.list")
     public void myChatList(Message<?> message){
+        System.out.println("안녕7");
+
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String sessionId = accessor.getSessionId();
         ChatSession chatSession = chatSessionService.findSession(sessionId);
-        String username = chatSession.getSender();
+        String username = chatSession.getUsername();
 
-        UserDto.chatRoomResponse userInfo = userService.getChatRoomUser(username);
         List<ChatRoomDto.Response> chatMessages = chatMessageService.getChatList(username);
-        DebeziumDto.UserChatInfo userChatInfo = new DebeziumDto.UserChatInfo(userInfo,chatMessages);
         template.convertAndSend(CHAT_EXCHANGE_NAME,
-                "room."+username+"chatRoomList",userChatInfo);
+                "room."+username+"chatRoomList", chatMessages);
     }
 }
