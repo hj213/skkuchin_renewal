@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import skkuchin.service.dto.ChatMessageDto;
+
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.DebeziumDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -23,20 +25,16 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ChatService {
+public class ChatRoomService {
     private final ChatRoomRepo chatRoomRepo;
     private final ChatRepo chatRepo;
     private final UserRepo userRepo;
     private final ChatMessageService chatMessageService;
+    private final UserService userService;
 
 
     //채팅방의 메시지들 조회
-    public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
-        return chatRepo.findByChatRoom(chatRoom)
-                .stream()
-                .map(message -> new ChatMessageDto.Response(message,chatRoom))
-                .collect(Collectors.toList());
-    }
+
 
 
     public void updateReadStatus(ChatRoom chatRoom, String sender){
@@ -176,14 +174,6 @@ public class ChatService {
     }
 
 
-    @Transactional
-    public List<ChatMessageDto.Response> getLatestMessage(ChatRoom chatRoom){
-        return chatRepo.findByLatestMessageTime(chatRoom.getRoomId())
-                .stream()
-                .map(message -> new ChatMessageDto.Response(message,chatRoom))
-                .collect(Collectors.toList());
-    }
-
 
     public ChatRoomDto.blockResponse getRoomDto(ChatRoom chatRoom){
         return new ChatRoomDto.blockResponse(chatRoom);
@@ -206,6 +196,15 @@ public class ChatService {
         AppUser user = userRepo.findById(chatRoom.getUser2().getId()).orElseThrow();
         return user;
     }
+
+    public DebeziumDto.UserChatInfo getUserChatInfo(String username){
+        UserDto.chatRoomResponse userInfo = userService.getChatRoomUser(username);
+        List<ChatRoomDto.Response> userChatMessages = chatMessageService.getChatList(username);
+        DebeziumDto.UserChatInfo userChatInfo = new DebeziumDto.UserChatInfo(userInfo,userChatMessages);
+        return userChatInfo;
+    }
+
+
 
 
 

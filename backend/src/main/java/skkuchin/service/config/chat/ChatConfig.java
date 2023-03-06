@@ -5,12 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -21,17 +19,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
-import skkuchin.service.domain.Chat.ChatSession;
-import skkuchin.service.repo.ChatRepo;
-import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.repo.ChatSessionRepo;
-import skkuchin.service.service.ChatService;
+import skkuchin.service.service.ChatRoomService;
 import skkuchin.service.service.ChatSessionService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Configuration
@@ -41,7 +31,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
 
     private final ChatErrorHandler chatErrorHandler;
-    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
     private final ChatSessionService chatSessionService;
 
     @Value("${rabbitmq.host}")
@@ -91,7 +81,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                     String roomId = accessor.getDestination().substring(29);
                     String token = accessor.getFirstNativeHeader("token");
                     String sender = getUserNameFromJwt(token);
-                    ChatRoom chatRoom = chatService.findChatroom(roomId);
+                    ChatRoom chatRoom = chatRoomService.findChatroom(roomId);
 
                     if(roomId.contains("user1") && roomId.length()>36){
                         roomId = roomId.replace("user1","");
@@ -103,7 +93,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
 
                     chatSessionService.setSessionId(chatRoom,sessionId,sender);
-                    chatService.updateReadStatus(chatRoom,sender);
+                    chatRoomService.updateReadStatus(chatRoom,sender);
                 }
 
 
