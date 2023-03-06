@@ -3,8 +3,8 @@ import {
     SEND_CHAT_MESSAGE_FAIL,
     GET_REALTIME_USER_SUCCESS,
     GET_REALTIME_USER_FAIL,
-    GET_REALTIME_BLOCK_SUCCESS,
-    GET_REALTIME_BLOCK_FAIL,
+    GET_REALTIME_BLOCK_ALARM_SUCCESS,
+    GET_REALTIME_BLOCK_ALARM_FAIL,
     GET_REALTIME_MESSAGE_SUCCESS,
     GET_REALTIME_MESSAGE_FAIL,
 } from '../actions/chat/types'
@@ -14,6 +14,8 @@ const initialState = {
     otherUser: null,
     isUser1Blocked: null,
     isUser2Blocked: null,
+    isUser1AlarmOn: null,
+    isUser2AlarmOn: null
 };
 
 const chatMessageReducer = (state= initialState, action) => {
@@ -48,17 +50,21 @@ const chatMessageReducer = (state= initialState, action) => {
                 ...state,
                 messages: null
             }
-        case GET_REALTIME_BLOCK_SUCCESS:
+        case GET_REALTIME_BLOCK_ALARM_SUCCESS:
             return {
                 ...state,
                 isUser1Blocked: payload.isUser1Blocked,
                 isUser2Blocked: payload.isUser2Blocked,
+                isUser1AlarmOn: payload.isUser1AlarmOn,
+                isUser2AlarmOn: payload.isUser2AlarmOn
             }
-        case GET_REALTIME_BLOCK_FAIL:
+        case GET_REALTIME_BLOCK_ALARM_FAIL:
             return {
                 ...state,
                 isUser1Blocked: null,
                 isUser2Blocked: null,
+                isUser1AlarmOn: null,
+                isUser2AlarmOn: null
             }
         default:
             return state;

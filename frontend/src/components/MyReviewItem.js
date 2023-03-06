@@ -150,7 +150,7 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
             </Grid>
         </Container>  
     );
-  }
+}
   
 
 export default MyReviewItem;

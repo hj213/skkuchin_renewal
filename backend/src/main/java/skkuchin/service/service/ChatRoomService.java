@@ -139,32 +139,20 @@ public class ChatRoomService {
         }
     }
 
-    public ChatRoomDto.blockResponse getBlockResponseDto(ChatRoom chatRoom){
-        return new ChatRoomDto.blockResponse(chatRoom);
+    public ChatRoomDto.settingResponse getSettingResponse(ChatRoom chatRoom){
+        return new ChatRoomDto.settingResponse(chatRoom);
     }
 
     public ChatRoomDto.userResponse getUserRoomDto(ChatRoom chatRoom){
         return new ChatRoomDto.userResponse(chatRoom);
     }
 
-    @Transactional
-    public AppUser findUser1(ChatRoom chatRoom){
-        AppUser user = userRepo.findById(chatRoom.getUser1().getId()).orElseThrow();
-        return user;
-    }
-
-    @Transactional
-    public AppUser findUser2(ChatRoom chatRoom){
-        AppUser user = userRepo.findById(chatRoom.getUser2().getId()).orElseThrow();
-        return user;
-    }
-
-    public DebeziumDto.UserChatInfo getUserChatInfo(String username){
-        UserDto.chatRoomResponse userInfo = userService.getChatRoomUser(username);
-        List<ChatRoomDto.Response> userChatMessages = chatMessageService.getChatList(username);
-        DebeziumDto.UserChatInfo userChatInfo = new DebeziumDto.UserChatInfo(userInfo,userChatMessages);
-        return userChatInfo;
-    }
+//    public DebeziumDto.UserChatInfo getUserChatInfo(String username){
+//        UserDto.chatRoomResponse userInfo = userService.getChatRoomUser(username);
+//        List<ChatRoomDto.Response> userChatMessages = chatMessageService.getChatList(username);
+//        DebeziumDto.UserChatInfo userChatInfo = new DebeziumDto.UserChatInfo(userInfo,userChatMessages);
+//        return userChatInfo;
+//    }
 
 }
 

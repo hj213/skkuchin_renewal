@@ -52,17 +52,18 @@ public class MessageController {
         AppUser user2 = chatRoom.getUser2();
         UserDto.Response user1Dto= new UserDto.Response(user1);
         UserDto.Response user2Dto = new UserDto.Response(user2);
-        ChatRoomDto.blockResponse blockResponse = chatRoomService.getBlockResponseDto(chatRoom);
+
+        ChatRoomDto.settingResponse settingResponse = chatRoomService.getSettingResponse(chatRoom);
         List<ChatMessageDto.Response> chatMessages = chatMessageService.getAllMessage(chatRoom);
 
        if(chatRoom.getUser1().getUsername().equals(username)){
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user1",blockResponse);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+chatRoomId +"user1",settingResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user1",chatMessages);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",user2Dto);
 
        }
        else {
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user2",blockResponse);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+chatRoomId +"user2",settingResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user2",chatMessages);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",user1Dto);
 
