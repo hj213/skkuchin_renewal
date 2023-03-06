@@ -11,8 +11,21 @@ const Friends = () => {
     const candidate = useSelector(state => state.candidate.candidate);
 
     useEffect(() => {
-        dispatch(load_candidate());
-    }, []);
+        //dispatch(load_candidate());
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+        dispatch(load_candidate(([result, message]) => {
+          if (result) {
+
+          } else {
+            if (typeof(message) == 'string') {
+              setDialogMsg(message);
+            }
+          }
+          console.log(message);
+          setDialogOpen2(true);
+        }));
+      }
+      }, [dispatch]);
     
 
     const [height, setHeight] = useState('383px');
@@ -28,6 +41,17 @@ const Friends = () => {
     const handleSubmit = (username) => {
         dispatch(request_chat(username));
         setOpen(false);
+    }
+
+    // 매칭 활성화 유저 100명 미만 시 경고
+    const [dialogOpen2, setDialogOpen2] = useState(false);
+    const [dialogMsg, setDialogMsg] = useState('');
+    const handleDialogOpen2 = () => {
+        if(dialogOpen2){
+            setDialogOpen2(false);
+        } else{
+            setDialogOpen2(true);
+        }
     }
 
 
@@ -98,7 +122,29 @@ const Friends = () => {
                 </Dialog>
              </Grid>
         </Card> ))
-        : null }
+        : dialogMsg ? 
+            <Dialog open={dialogOpen2} onClose={handleDialogOpen2} PaperProps={{ style: { borderRadius: '10px' } }}>
+                <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight='700'>
+                      
+                      {(dialogMsg||'').split('\n').length > 1 ? 
+                      <>
+                      {dialogMsg.split('\n')[0]}<br/>
+                      {dialogMsg.split('\n')[1]}
+                      </>
+                      : dialogMsg}
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center'}}>
+                    
+                        <Button onClick={e => setDialogOpen2(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:'#505050'}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#505050', marginBottom:'10px'}}>
+                                확인
+                            </Typography>
+                        </Button>
+
+                </DialogActions>
+        </Dialog> : null }
         </Grid>
     )
 }

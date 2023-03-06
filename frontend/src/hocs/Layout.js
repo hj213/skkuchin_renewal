@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { set_stomp_client } from '../actions/stompClient/stompClient';
 import SockJS from 'sockjs-client';
 import { API_URL } from '../config';
@@ -10,6 +12,8 @@ const Layout = ({title, content, children}) => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
+    const router = useRouter();
+    const [show, setShow] = useState(false);
 
     const Stomp = require("stompjs/lib/stomp.js").Stomp
     const sockJS = new SockJS(`${API_URL}/ws/chat`);
@@ -22,11 +26,22 @@ const Layout = ({title, content, children}) => {
     useEffect(() => {
         stompClient.connect('guest', 'guest');
         dispatch(set_stomp_client(stompClient));
-
+        /*
         if (!isAuthenticated) {
             dispatch(load_user());
-        }
+            router.push('/splash');
+        }*/
+
+        console.log("load");
+        router.push('/splash')
+        //dispatch(load_user())
     }, []);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShow(true);
+        }, 2000);
+    }, [])
 
     return ( 
             <>
@@ -35,9 +50,9 @@ const Layout = ({title, content, children}) => {
                     <meta name="description" content={content} ></meta>
                 </Head>
                 
-                <div>
+                {show && <div>
                     {children}
-                </div>
+                </div>}
             </>
         )
 };
