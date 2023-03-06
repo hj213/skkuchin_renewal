@@ -11,19 +11,21 @@ import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.service.ChatService;
+import skkuchin.service.service.ChatRoomService;
+
+
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/chat/room")
 public class ChatRoomController {
-    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
     private final ChatRoomRepo chatRoomRepo;
 
     @PostMapping("")
     public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.RoomRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
          AppUser user = principalDetails.getUser();
-         chatService.makeRoom(user,dto);
+         chatRoomService.makeRoom(user,dto);
          return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
      }
 
@@ -33,7 +35,7 @@ public class ChatRoomController {
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId,  @RequestBody ChatRoomDto.ReactionRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.user2Accept(chatRoom,user,dto.getReaction());
+        chatRoomService.user2Accept(chatRoom,user,dto.getReaction());
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭", null), HttpStatus.OK);
     }
 
@@ -44,7 +46,15 @@ public class ChatRoomController {
                                        @RequestBody ChatRoomDto.BooleanRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.blockUser(chatRoom,user,dto.getReaction());
+
+        if(dto.getReaction().equals(true)){
+            chatRoomService.blockUser(chatRoom,user,dto.getReaction());
+        }
+        else if(dto.getReaction().equals(false)){
+            chatRoomService.blockUser(chatRoom,user,dto.getReaction());
+        }
+
+
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.OK);
     }
 
@@ -53,14 +63,21 @@ public class ChatRoomController {
                                        @RequestBody ChatRoomDto.BooleanRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         AppUser user = principalDetails.getUser();
-        chatService.setAlarm(chatRoom,user,dto.getReaction());
+        if(dto.getReaction().equals(true)){
+            chatRoomService.setAlarm(chatRoom,user,dto.getReaction());
+        }
+        else if(dto.getReaction().equals(false)){
+            chatRoomService.setAlarm(chatRoom,user,dto.getReaction());
+        }
+
+
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 알람 설정", null), HttpStatus.OK);
     }
 
     @DeleteMapping("/exit/{roomId}")
     public ResponseEntity<?> exitRoom(@PathVariable String roomId,@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        chatService.exitRoom(roomId,user);
+        chatRoomService.exitRoom(roomId,user);
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 나가기 완료", null), HttpStatus.OK);
     }
 
