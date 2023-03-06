@@ -2,19 +2,31 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../actions/auth/auth";
 import Head from "next/head";
+import { set_stomp_client } from '../actions/stompClient/stompClient';
+import SockJS from 'sockjs-client';
+import { API_URL } from '../config';
 
 const Layout = ({title, content, children}) => {
     
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
 
+    const Stomp = require("stompjs/lib/stomp.js").Stomp
+    const sockJS = new SockJS(`${API_URL}/ws/chat`);
+    const stompClient = Stomp.over(sockJS);
+
+    stompClient.heartbeat.outgoing = 0;
+    stompClient.heartbeat.incoming = 0;
+    // stompClient.debug = null;
+
     useEffect(() => {
+        stompClient.connect('guest', 'guest');
+        dispatch(set_stomp_client(stompClient));
+
         if (!isAuthenticated) {
-            console.log("load")
             dispatch(load_user());
         }
     }, []);
-
 
     return ( 
             <>

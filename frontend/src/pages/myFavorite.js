@@ -2,7 +2,7 @@ import { CssBaseline, Grid,ThemeProvider, MenuItem, Menu, Select, useMediaQuery,
 import { useDispatch, useSelector, } from "react-redux";
 import { useState, useEffect, useRef, } from 'react';
 import { useRouter } from "next/router";
-import { load_favorite, delete_favorite } from '../actions/favorite/favorite';
+import { delete_favorite } from '../actions/favorite/favorite';
 import Link from 'next/link';
 import Image from 'next/image';
 import bookmarkOn from '../image/bookmark-1.png';
@@ -27,12 +27,6 @@ export default function myFavorite(){
     if(typeof window !== 'undefined' && !isAuthenticated){
         router.push('/login');
     }
-
-    useEffect(()=>{
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_favorite());
-        }
-    }, []);
     
     const favorites = useSelector(state => state.favorite.favorite);
 

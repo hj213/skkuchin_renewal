@@ -3,30 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
-    <style>
-        .chats{
-            display: flex;
-            flex-direction: column;
-
-            gap: 10px;
-        }
-        .mine{
-            background: #e9e9e9;
-            border-radius: 5px;
-        }
-        .yours{
-            background: #efef87;
-            border-radius: 5px;
-        }
-        .sender{
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .message{
-            font-size: 14px;
-        }
-    </style>
 </head>
 <body>
 
@@ -44,10 +20,6 @@
 
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
 
 </body>
 </html>
@@ -102,7 +74,7 @@
             //auto-delete : Consumer가 없으면 스스로 삭제되는 Queue
             //durable : 서버와 연결이 끊겨도 메세지를 저장하고 있음
             //exclusive : 동일한 이름의 Queue 생길 수 있음
-        },{'auto-delete':true, 'durable':false, 'exclusive':false,pushToken : header});
+        },{'auto-delete':true, 'durable':false, 'exclusive':false, pushToken : header});
 
         //입장 메세지 전송
         stomp.send(`/app/chat.enter.${chatRoomId}`, {"pushToken" : header}, JSON.stringify({

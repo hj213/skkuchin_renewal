@@ -12,7 +12,6 @@ import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
-import ReviewItem from "../components/ReviewItem";
 import close from '../image/close.png';
 
 const MorePhotos = () => {
@@ -33,14 +32,11 @@ const MorePhotos = () => {
     // place, 가게 정보 (place API)
     
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
-    const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
 
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
             setPlaceId(id);
-            dispatch(load_reviews(place_id));
-            dispatch(load_place(place_id));
         }
     }, [id]);
 
@@ -68,7 +64,7 @@ const MorePhotos = () => {
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
                         <Card elevation={0}
                         style={{
-                            position: 'absolute',
+                            position: 'fixed',
                             top: '0px',
                             width: '100%',
                             height: '80px',
@@ -79,11 +75,10 @@ const MorePhotos = () => {
                             <Grid style={{padding: '0px 10px 0px 0px'}}>
                                 <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
                             </Grid>
-
                                 <Grid>
                                     { selectedPlace &&
                                     <Grid style={{flexDirection: 'row'}}>
-                                        <Typography sx={{fontSize: '26px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
+                                        <Typography sx={{fontSize: '23px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
                                             {selectedPlace.name}
                                         </Typography>
                                         <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
@@ -104,12 +99,13 @@ const MorePhotos = () => {
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {allImages.map((image, index) => (
-                                <div key={index} onClick={()=>handleImageClick(image)} style={{ width: 'calc(100% / 3 - 10px)', margin: '5px', position: 'relative' }}>
+                                <div key={index} onClick={()=>handleImageClick(image)} style={{ width: 'calc(100% / 3 - 10px)', margin: ' 1px 5px', position: 'relative' }}>
                                     <Image
-                                    width={150}
-                                    height={150}
-                                    src={image}
-                                    alt={`image-${index}`}
+                                        width={150}
+                                        height={150}
+                                        src={image}
+                                        alt={`image-${index}`}
+                                        objectFit='cover'
                                     />
                                 </div>
                             ))}

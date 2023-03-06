@@ -3,7 +3,7 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.FavoriteDto;
+import skkuchin.service.dto.FavoriteDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.CustomRuntimeException;

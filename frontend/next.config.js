@@ -5,6 +5,7 @@ const withPWA = require('next-pwa')({
 	dest: 'public',
 	disable: process.env.NODE_ENV !== 'production',
 	sw: 'service-worker.js',
+	dynamicStartUrl: true,
 	dynamicStartUrlRedirect: '/splash'
 })
 
@@ -25,7 +26,7 @@ const nextConfig = withPWA({
         ignoreBuildErrors: true,
     },
 	images: {
-		imageSizes: [64, 96, 128, 256],
+		imageSizes: [40, 64, 96, 128],
 		deviceSizes: [640, 750, 828, 1080],
 		remotePatterns: [
 			{

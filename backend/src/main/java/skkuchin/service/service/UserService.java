@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Matching.*;
 import skkuchin.service.domain.User.*;
@@ -72,6 +72,7 @@ public class UserService {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
             appUser.emailVerifiedSuccess();
+            appUser.setEmail("admin@example.com");
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_ADMIN")).build();
             userRepo.save(appUser);
             userRoleRepo.save(userRole);
@@ -84,6 +85,7 @@ public class UserService {
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
             appUser.emailVerifiedSuccess();
+            appUser.setEmail("test@example.com");
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_USER")).build();
             userRepo.save(appUser);
             userRoleRepo.save(userRole);
@@ -224,6 +226,7 @@ public class UserService {
             );
             signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
             AppUser appUser = signUpForm.toEntity();
+            appUser.setEmail("test"+i+"@example.com");
             appUser.emailVerifiedSuccess();
             UserRole userRole = UserRole.builder().user(appUser).role(roleRepo.findByName("ROLE_USER")).build();
             userRepo.save(appUser);

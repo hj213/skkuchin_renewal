@@ -12,7 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import skkuchin.service.api.dto.CMRespDto;
+import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.UserRepo;
 import skkuchin.service.config.auth.PrincipalDetails;
@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

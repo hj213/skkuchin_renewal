@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import { API_URL } from '../../config';
+import { load_favorite } from '../favorite/favorite';
 import { modify_token } from '../pushToken/pushToken';
 import { 
     REGISTER_SUCCESS,
@@ -143,7 +144,7 @@ export const logout = () => async dispatch => {
     }
 }
 
-export const load_user = () => async dispatch => {
+export const load_user = (callback) => async dispatch => {
     await dispatch(request_refresh());
 
     const access = Cookies.get('access') ?? null;
@@ -167,15 +168,18 @@ export const load_user = () => async dispatch => {
         const apiRes = await res.json();
 
         if (res.status === 200) {
-            dispatch({
+            await dispatch({
                 type: LOAD_USER_SUCCESS,
                 payload: apiRes.data
             });
+            dispatch(load_favorite());
+            if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
                 type: LOAD_USER_FAIL,
                 payload: apiRes.data
             });
+            if (callback) callback([false, apiRes.message]);
         }
 
     } catch (error) {
@@ -183,6 +187,7 @@ export const load_user = () => async dispatch => {
         dispatch({
             type: LOAD_USER_FAIL
         });
+        if (callback) callback([false, error]);
     }
 }
 

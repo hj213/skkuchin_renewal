@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.ChatMessageDto;
-import skkuchin.service.api.dto.ChatRoomDto;
-import skkuchin.service.api.dto.DebeziumDto;
-import skkuchin.service.api.dto.UserDto;
+
+import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.DebeziumDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.repo.ChatRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -52,9 +52,9 @@ public class ChatRoomService {
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
         ChatRoom chatRoom = dto.toEntity(user);
         String id = UUID.randomUUID().toString();
-        AppUser user1 = userRepo.findByUsername(dto.getUserName());
+        AppUser user2 = userRepo.findByUsername(dto.getUsername());
         chatRoom.setRoomId(id);
-        chatRoom.setUser2(user1);
+        chatRoom.setUser2(user2);
         chatRoomRepo.save(chatRoom);
     }
 

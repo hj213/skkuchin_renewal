@@ -1,4 +1,4 @@
-package skkuchin.service.api.dto;
+package skkuchin.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +23,7 @@ public class ChatRoomDto {
     public static  class RoomRequest{
 
         @JsonProperty
-        private String userName;
+        private String username;
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()

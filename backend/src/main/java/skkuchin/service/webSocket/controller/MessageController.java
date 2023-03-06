@@ -10,9 +10,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import skkuchin.service.api.dto.ChatMessageDto;
-import skkuchin.service.api.dto.ChatRoomDto;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.ChatMessageDto;
+import skkuchin.service.dto.ChatRoomDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.domain.User.AppUser;
@@ -35,7 +35,6 @@ public class MessageController {
     private final ChatMessageService chatMessageService;
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
-    private final static String CHAT_QUEUE_NAME = "chat.queue";
 
 
     @MessageMapping("chat.chatMessage.{chatRoomId}")
@@ -56,13 +55,14 @@ public class MessageController {
        if(chatRoomService.findUser1(chatRoom).getUsername().equals(username)){
            template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user1",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user1",chatMessages);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",user2Dto);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",user1Dto);
 
        }
        else{
            template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user2",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user2",chatMessages);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",user1Dto);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",user2Dto);
+
         }
     }
 

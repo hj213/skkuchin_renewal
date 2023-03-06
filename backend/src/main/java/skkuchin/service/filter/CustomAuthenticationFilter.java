@@ -14,9 +14,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StreamUtils;
-import skkuchin.service.api.dto.CMRespDto;
+import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.config.auth.PrincipalDetails;
-import skkuchin.service.domain.User.AppUser;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -29,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -78,7 +76,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         PrincipalDetails user = (PrincipalDetails) authentication.getPrincipal();
 
-        if (!user.getUser().getEmailAuth()) {
+        if (user.getUser().getEmail() == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, "이메일 등록이 필요한 유저입니다", null));
+        } else if (!user.getUser().getEmailAuth()) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, "인증이 필요한 유저입니다", null));

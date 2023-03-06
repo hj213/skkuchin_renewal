@@ -10,10 +10,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import skkuchin.service.api.dto.ChatRoomDto;
+
+
 import skkuchin.service.domain.Chat.ChatSession;
+import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.ChatSessionService;
+
 
 import java.util.List;
 
@@ -37,6 +40,5 @@ public class AlarmController {
         String username = chatSession.getSender();
         List<ChatRoomDto.userResponse> alarmList = chatMessageService.getAlarmList(username);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+username,alarmList);
-
     }
 }

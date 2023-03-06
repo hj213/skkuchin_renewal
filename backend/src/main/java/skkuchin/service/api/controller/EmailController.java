@@ -3,15 +3,12 @@ package skkuchin.service.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import skkuchin.service.api.dto.CMRespDto;
-import skkuchin.service.api.dto.EmailAuthRequestDto;
-import skkuchin.service.api.dto.UserDto;
-import skkuchin.service.config.auth.PrincipalDetails;
+import skkuchin.service.dto.CMRespDto;
+import skkuchin.service.dto.EmailAuthRequestDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.service.EmailService;
 
@@ -46,12 +43,9 @@ public class EmailController {
         }
     }
 
-    @PostMapping("/confirm/signup")
-    //public ResponseEntity<?> signupConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
-    public ResponseEntity<?> signupConfirm(@RequestBody EmailAuthRequestDto requestDto) {
-        //return ResponseEntity.ok().body(emailService.confirmSignup(requestDto));
-        emailService.confirmSignup(requestDto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "회원가입 이메일 인증 완료", null), HttpStatus.OK);
+    @GetMapping("/confirm/signup")
+    public ResponseEntity<String> signupConfirm(@ModelAttribute EmailAuthRequestDto requestDto) {
+        return ResponseEntity.ok().body(emailService.confirmSignup(requestDto));
     }
 
     @PostMapping("/signup/check")

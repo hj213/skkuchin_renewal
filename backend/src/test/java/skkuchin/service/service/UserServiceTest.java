@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;

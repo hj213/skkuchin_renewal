@@ -8,8 +8,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import skkuchin.service.api.dto.EmailAuthRequestDto;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.EmailAuthRequestDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.EmailAuth;
 import skkuchin.service.domain.User.EmailType;
@@ -37,8 +37,6 @@ public class EmailService {
 
     @Value("${mail.host}")
     private String host;
-    @Value("${mail.page}")
-    private String page;
     @Value("${admin-mail.id}")
     private String address;
     private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
@@ -80,20 +78,14 @@ public class EmailService {
     }
 
     @Transactional
-    public void confirmSignup(EmailAuthRequestDto requestDto) {
+    public String confirmSignup(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
-                //.orElseThrow(() -> new EmailAuthNumNotFoundException());
-                .orElseThrow(() -> new CustomRuntimeException("인증에 실패하였습니다"));
+                .orElseThrow(() -> new EmailAuthNumNotFoundException());
         AppUser user = userRepo.findByEmail(requestDto.getEmail());
-        if (user == null) {
-            throw new CustomRuntimeException("회원이 아닙니다");
-        }
         emailAuth.setIsAuth(true);
         user.emailVerifiedSuccess();
-        UserRole userRole = UserRole.builder().user(user).role(roleRepo.findByName("ROLE_USER")).build();
-        userRoleRepo.save(userRole);
-        /*
+
         String content = "<div style='margin-left: 40px'>" +
                 "<div style='width: 100%; height: 3px; background-color: #FFCE00; margin-bottom: 60px; margin-top: 100px'></div>" +
                 "<div style='color: #BABABA; font-size: 24px; margin-bottom: 16px'>SKKUCHIN</div>" +
@@ -105,7 +97,7 @@ public class EmailService {
                 "<div style='margin-bottom: 14px'>앱으로 돌아가 회원가입을 완료해주세요.</div>" +
                 "</div>" +
                 "</div>";
-        return content;*/
+        return content;
     }
 
     //회원가입 - 이메일 인증 완료한 유저인지 확인
@@ -145,8 +137,9 @@ public class EmailService {
     public String confirmPassword(EmailAuthRequestDto requestDto) {
         EmailAuth emailAuth = emailAuthRepo.findByEmailAndAuthNumAndExpireDateAfter(
                         requestDto.getEmail(), requestDto.getAuthNum(), LocalDateTime.now())
-                .orElseThrow(() -> new EmailAuthNumNotFoundException());
+                .orElseThrow(() -> new CustomRuntimeException("인증에 실패하였습니다"));
         emailAuth.setIsAuth(true);
+
 
         String content = "<div style='margin-left: 40px'>" +
                 "<div style='width: 100%; height: 3px; background-color: #FFCE00; margin-bottom: 60px; margin-top: 100px'></div>" +
@@ -232,31 +225,10 @@ public class EmailService {
                     emailType + s + " 완료해주세요.</div>" +
                     "<div>감사합니다.</div>" +
                     "</div>" +
+                    /*
                     "<a href='" +
                     page +
-                    "/register?src=emailDone&email=" + email + "&authNum=" + authNum + "' target='_blank'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +
-            /*"<a href='" +
-            host +
-            "/api/email/confirm/" +
-            type.name().toLowerCase() +
-            "?email=" + email + "&authNum=" + authNum + "' target='_blank'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +*/
-                    "</div>";
-        } else {
-            mailContent = "<div style='margin-left: 20px'>" +
-                    "<div style='width: 100%; height: 2px; background-color: #FFCE00; margin-bottom: 30px; margin-top: 25px'></div>" +
-                    "<div style='color: #BABABA; font-size: 12px; margin-bottom: 8px'>SKKUCHIN</div>" +
-                    "<div style='font-size: 24px; margin-bottom: 21px'>" +
-                    "<span style='color: #FFCE00; font-weight: bold; margin-right: 5px;'>메일인증</span>" +
-                    "<span>안내입니다.</span>" +
-                    "</div>" +
-                    "<img src='https://skkuchin2023-bucket.s3.ap-northeast-2.amazonaws.com/prod/mail/email_enhang.png' alt='' style='margin-bottom: 31px; width: 84px; height: 66px' />" +
-                    "<div style='margin-bottom: 23px; font-size: 12px'>" +
-                    "<div style='margin-bottom: 7px'>안녕하세요.</div>" +
-                    "<div style='margin-bottom: 7px'>스꾸친을 이용해 주셔서 진심으로 감사드립니다.</div>" +
-                    "<div style='margin-bottom: 7px'>아래 <span style='color: #FFCE00; font-weight: bold; margin-right: 3px;'>'메일 인증'</span>버튼을 클릭하여 " +
-                    emailType + s + " 완료해주세요.</div>" +
-                    "<div>감사합니다.</div>" +
-                    "</div>" +
+                    "/register?src=emailDone&email=" + email + "&authNum=" + authNum + "' target='_blank'><button style='margin-bottom: 38px; width: 180px; height: 40px; font-size: 10px; background-color: #FFCE00; color: #fff; font-weight: bold; border-radius: 10px; border: none;'>메일 인증</button></a>" +*/
             "<a href='" +
             host +
             "/api/email/confirm/" +

@@ -10,7 +10,7 @@ import theme from '../theme/theme';
 import logo from '../image/main_logo.png'
 import check from '../image/check_circle.png';
 import uncheck from '../image/uncheck.png';
-import { string } from 'prop-types';
+import { load_favorite } from '../actions/favorite/favorite';
 
 
 const LoginPage = () => {
@@ -54,11 +54,17 @@ const LoginPage = () => {
                     }
                 } else {
                     //alert(message)
-                    if (message == '인증이 필요한 유저입니다') {
+                    if (message == '이메일 등록이 필요한 유저입니다') {
                         router.push({
                             pathname: '/register', 
                             query: {src: '이메일', username: username}
                         })
+                    } else if (message == '') {
+                        /*
+                        router.push({
+                            pathname: '/register',
+                            query: {}
+                        })*/
                     }
                     if (typeof(message) == 'string') {
                         setError(message);

@@ -10,12 +10,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import skkuchin.service.api.dto.CMRespDto;
-import skkuchin.service.api.dto.FavoriteDto;
+import skkuchin.service.dto.CMRespDto;
+import skkuchin.service.dto.FavoriteDto;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.CustomValidationApiException;
-import skkuchin.service.repo.FavoriteRepo;
-import skkuchin.service.repo.UserRepo;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.service.FavoriteService;
 

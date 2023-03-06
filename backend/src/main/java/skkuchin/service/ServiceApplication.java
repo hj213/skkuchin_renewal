@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import skkuchin.service.api.dto.UserDto;
+import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.User.Profile;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Role;
@@ -52,7 +52,7 @@ public class ServiceApplication {
 				menuService.insertData(path);
 				keywordService.insertData(path);
 				reviewService.insertData(path);
-				userService.saveTestMatchingUsers(100);
+				userService.saveTestMatchingUsers(600);
 			} catch (Exception e) {
 				System.out.println(e);
 			}

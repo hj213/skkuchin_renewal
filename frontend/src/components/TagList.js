@@ -1,7 +1,7 @@
 import theme from "../theme/theme";
 import Image from 'next/image';
 import {Grid, CssBaseline, ThemeProvider} from '@mui/material';
-
+import styled from "@emotion/styled";
 // map tags
 import mapTag1 from '../image/tags/map_off/top_dc.png';
 import mapTag2 from '../image/tags/map_off/top_special.png';
@@ -57,6 +57,17 @@ import reviewTagOff4 from '../image/tags/reviews/two.png';
 import reviewTagOff5 from '../image/tags/reviews/clean.png';
 import reviewTagOff6 from '../image/tags/reviews/simple.png';
 import reviewTagOff7 from '../image/tags/reviews/mood.png'
+
+const TagListContainer = styled.div`
+  /* 데스크톱에서 스크롤 바를 숨김 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  /* 모바일에서 스크롤 바를 숨김 */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export const displayTagImage = (tags) => {
     const displayTags = tags.slice(0,2);
@@ -166,12 +177,12 @@ export const reviewsTags = (keyword) => {
 
 const TagList = ({keyword, onTagClick}) => {
     return (
+        <TagListContainer>
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             {/* tags 목록 */}
             <Grid container 
-            style={{  position: 'absolute', top: '0px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', 
-            scrollbarWidth: 'none', msOverflowStyle: 'none', "&::WebkitScrollbar": { display: "none"}, padding: "0 20px"}}
+            style={{  position: 'absolute', top: '0px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', padding: "0 20px"}}
                 onClick={(e) => {
                     e.preventDefault();
                     let target = e.target;
@@ -240,6 +251,7 @@ const TagList = ({keyword, onTagClick}) => {
                     </Grid>
             </Grid>
         </ThemeProvider>
+        </TagListContainer>
     )
 }
 

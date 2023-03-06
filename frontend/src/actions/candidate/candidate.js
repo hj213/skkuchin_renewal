@@ -5,7 +5,7 @@ import { request_refresh } from '../auth/auth';
 import { 
     LOAD_CANDIDATE_SUCCESS,
     LOAD_CANDIDATE_FAIL
-} 
+}
     from './types';
 
 export const load_candidate = (callback) => async dispatch => {

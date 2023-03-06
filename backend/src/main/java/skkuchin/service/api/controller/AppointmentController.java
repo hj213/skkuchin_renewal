@@ -9,9 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import skkuchin.service.api.dto.AppointmentDto;
-import skkuchin.service.api.dto.CMRespDto;
-import skkuchin.service.domain.Chat.Appointment;
+import skkuchin.service.dto.AppointmentDto;
+import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.service.AppointmentService;
 
@@ -26,16 +25,16 @@ import java.util.Map;
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
-    @GetMapping("/{appointmentId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getDetail(@PathVariable Long appointmentId) {
-        AppointmentDto.Response appointment = appointmentService.getAppointment(appointmentId);
+    @GetMapping("/room/{roomId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getDetail(@PathVariable String roomId) {
+        AppointmentDto.Response appointment = appointmentService.getAppointment(roomId);
         return new ResponseEntity<>(new CMRespDto<>(1, "약속이 조회되었습니다", appointment), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping("/room/{roomId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> add(@Valid @RequestBody AppointmentDto.Request dto, BindingResult bindingResult) {
+    public ResponseEntity<?> add(@PathVariable String roomId, @Valid @RequestBody AppointmentDto.Request dto, BindingResult bindingResult) {
         Map<String, String> errorMap = new HashMap<>();
         try {
             if (bindingResult.hasErrors()) {
@@ -44,16 +43,16 @@ public class AppointmentController {
                 }
                 throw new CustomValidationApiException("채팅방 아이디가 없습니다", errorMap);
             }
-            appointmentService.makeAppointment(dto);
+            appointmentService.makeAppointment(roomId, dto);
             return new ResponseEntity<>(new CMRespDto<>(1, "약속이 성사되었습니다", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             throw new CustomValidationApiException("약속은 한 방당 하나만 가능합니다");
         }
     }
 
-    @PutMapping ("/{appointmentId}")
+    @PutMapping ("/room/{roomId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> update(@PathVariable Long appointmentId, @Valid @RequestBody AppointmentDto.Request dto, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable String roomId, @Valid @RequestBody AppointmentDto.Request dto, BindingResult bindingResult) {
         Map<String, String> errorMap = new HashMap<>();
         try {
             if (bindingResult.hasErrors()) {
@@ -62,17 +61,17 @@ public class AppointmentController {
                 }
                 throw new CustomValidationApiException("채팅방 아이디가 없습니다", errorMap);
             }
-            appointmentService.changeAppointment(appointmentId, dto);
+            appointmentService.changeAppointment(roomId, dto);
             return new ResponseEntity<>(new CMRespDto<>(1, "약속이 변경되었습니다", null), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new CustomValidationApiException("약속은 한 방당 하나만 가능합니다");
         }
     }
 
-    @DeleteMapping("/{appointmentId}")
+    @DeleteMapping("/room/{roomId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> delete(@PathVariable Long appointmentId) {
-        appointmentService.cancelAppointment(appointmentId);
+    public ResponseEntity<?> delete(@PathVariable String roomId) {
+        appointmentService.cancelAppointment(roomId);
         return new ResponseEntity<>(new CMRespDto<>(1, "약속이 삭제되었습니다", null), HttpStatus.OK);
     }
 }

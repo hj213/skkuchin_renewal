@@ -3,7 +3,7 @@ package skkuchin.service.service;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import skkuchin.service.api.dto.PlaceDto;
+import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.common.MockTest;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.repo.ImageRepo;

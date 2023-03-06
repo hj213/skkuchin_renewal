@@ -19,6 +19,9 @@ import notiOff from '../image/chat/notifications_off.png'
 
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
+import { get_realtime_otherUser } from '../actions/chat/chatMessage';
+import { get_realtime_block } from '../actions/chat/chatMessage';
+import { get_realtime_message } from '../actions/chat/chatMessage';
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -27,20 +30,56 @@ function calculateRows() {
     const textLength = input.value.length;
     const rows = Math.ceil(textLength * fontSize / inputWidth);
     return rows;
-  }
+}
 
 const chatPage = () => {
-
-
     const router = useRouter();
 
-    const user = useSelector(state => state.auth.user); 
+    const room_id = router.query.room_id;
+    const user_number = router.query.user_number;
+    const dispatch = useDispatch();
+
+    const user = useSelector(state => state.auth.user);
+    const messages = useSelector(state => state.chatMessage.messages);
+    const otherUser = useSelector(state => state.chatMessage.otherUser);
+    const isUser1Blocked = useSelector(state => state.chatMessage.isUser1Blocked);
+    const isUser2Blocked = useSelector(state => state.chatMessage.isUser2Blocked); 
+    const stompClient = useSelector(state => state.stompClient.stompClient);
     
+
+    const [subscriptionOtherUser, setSubscriptionOtherUser] = useState(null);
+    const [subscriptionBlock, setSubscriptionBlock] = useState(null);
+    const [subscriptionMessage, setSubscriptionMessage] = useState(null);
+
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
             router.back();
         } 
-    };  
+    };
+
+    useEffect(() => {
+        if (stompClient && room_id && user_number) {
+            const subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number));
+            const subBlock = dispatch(get_realtime_block(room_id, user_number));
+            const subMessage = dispatch(get_realtime_message(room_id, user_number))
+
+            setSubscriptionOtherUser(subOtherUser);
+            setSubscriptionBlock(subBlock);
+            setSubscriptionMessage(subMessage);
+        }
+    
+        return () => {
+            if (subscriptionOtherUser) {
+                stompClient.unsubscribe(subscriptionOtherUser);
+            }
+            if (subscriptionBlock) {
+                stompClient.unsubscribe(subscriptionBlock);
+            }
+            if (subscriptionMessage) {
+                stompClient.unsubscribe(subscriptionMessage);
+            }
+        }
+    }, [stompClient, room_id, user_number])
 
     // 프로필 보기
     const handleProfile = ()=>{
@@ -51,29 +90,29 @@ const chatPage = () => {
     const [openBlockDialog, setBlockDialog] = useState(false);
 
     const handleBlockUser = () => {
-      setBlockDialog(true);
+        setBlockDialog(true);
     };
   
     const handleCloseDialog = () => {
-      setBlockDialog(false);
-      setExitDialog(false);
+        setBlockDialog(false);
+        setExitDialog(false);
     };
-  
+
     const handleConfirmBlockUser = () => {
       // Code to leave the chat room
-      setBlockDialog(false);
+        setBlockDialog(false);
     };
 
     // 채팅방 나가기 Dialog
     const [openExitDialog, setExitDialog] = useState(false);
 
     const handleExit = () => {
-      setExitDialog(true);
+        setExitDialog(true);
     };
   
     const handleConfirmExit = () => {
       // Code to leave the chat room
-      setExitDialog(false);
+        setExitDialog(false);
     };
 
     // 신고하기
@@ -116,6 +155,8 @@ const chatPage = () => {
                             height: '90px',
                             zIndex: '4',
                             borderRadius:'0',
+                            boxShadow:'none',
+                            borderBottom: '1.5px solid #BABABA',
                             }}>
                     <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>

@@ -123,7 +123,7 @@ export default function myPage() {
             <Container style={{display: 'grid', borderBottom: '1px solid #DDDDDD', padding: '0 15px', marginTop: '30px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>사용자 설정</Typography>
                 <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start', zIndex: '-1'}}>비밀번호 변경</Button></div>
-                <div><Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start', zIndex: '-1'}}>차단 유저 관리</Button></div>
+                <div onClick={()=> router.push('/blockUser')}><Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start', zIndex: '-1'}}>차단 유저 관리</Button></div>
             </Container>
 
             {/* 알림 설정 */}
