@@ -147,12 +147,12 @@ public class ChatRoomService {
         return new ChatRoomDto.userResponse(chatRoom);
     }
 
-    public DebeziumDto.UserChatInfo getUserChatInfo(String username){
-        UserDto.chatRoomResponse userInfo = userService.getChatRoomUser(username);
-        List<ChatRoomDto.Response> userChatMessages = chatMessageService.getChatList(username);
-        DebeziumDto.UserChatInfo userChatInfo = new DebeziumDto.UserChatInfo(userInfo,userChatMessages);
-        return userChatInfo;
-    }
+//    public DebeziumDto.UserChatInfo getUserChatInfo(String username){
+//        UserDto.chatRoomResponse userInfo = userService.getChatRoomUser(username);
+//        List<ChatRoomDto.Response> userChatMessages = chatMessageService.getChatList(username);
+//        DebeziumDto.UserChatInfo userChatInfo = new DebeziumDto.UserChatInfo(userInfo,userChatMessages);
+//        return userChatInfo;
+//    }
 
 }
 
