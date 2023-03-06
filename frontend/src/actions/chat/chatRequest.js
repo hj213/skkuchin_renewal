@@ -18,19 +18,20 @@ export const get_realtime_chat_request = (username, stompClient) => async dispat
         });
     }
     const subscription = stompClient.subscribe(`/exchange/chat.exchange/alarm.${username}`,(content) => {
+        console.log(content)
         const data = JSON.parse(content.body);
         
         dispatch({
             type: GET_REALTIME_REQUEST_SUCCESS,
             payload: data
         })
-
     },{
         'auto-delete':true, 
         'durable':false, 
         'exclusive':false,
         pushToken : access
     });
-    stompClient.send(`/app/chat.alarm`);
+    stompClient.send('/app/chat.alarm');
+    console.log(subscription);
     return subscription;
 };

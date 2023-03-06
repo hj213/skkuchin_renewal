@@ -23,7 +23,7 @@ public class ChatRoomDto {
     public static  class RoomRequest{
 
         @JsonProperty
-        private String userName;
+        private String username;
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
