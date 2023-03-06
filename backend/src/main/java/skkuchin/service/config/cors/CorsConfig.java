@@ -15,8 +15,8 @@ public class CorsConfig {
             public void addCorsMappings(final CorsRegistry registry) {
                 registry
                         .addMapping("/**")
-                        .allowedMethods("*")
-                        .allowedHeaders("*");
+                        .allowedOrigins("https://skkuchin.com")
+                        .allowedMethods("PUT", "POST", "GET", "DELETE", "OPTIONS");
             }
         };
     }
