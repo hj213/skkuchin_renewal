@@ -15,28 +15,28 @@ import { displayProfile } from '../components/MyPage/ProfileList';
 // ReviewItem 컴포넌트 추출
 const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
     const [anchorEl, setAnchorEl] = useState(null);
-  
+
     const handleMoreClick = (event) => {
-      setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget);
     };
-  
+
     const handleMenuClose = () => {
-      setAnchorEl(null);
+        setAnchorEl(null);
     };
-  
+
     const StyledBadge = styled(Badge)(({ theme }) => ({
         '& .MuiBadge-badge': {
-          right: 3,
-          top: 33,
-          border: `2px solid ${theme.palette.background.paper}`,
-          padding: '1px 3px 0',
-          backgroundColor:'#FFCE00',
-          color:'white',
-          fontSize:'10px',
-          fontWeight:'700',
-          marginRight:'2px'
+            right: 3,
+            top: 33,
+            border: `2px solid ${theme.palette.background.paper}`,
+            padding: '1px 3px 0',
+            backgroundColor:'#FFCE00',
+            color:'white',
+            fontSize:'10px',
+            fontWeight:'700',
+            marginRight:'2px'
         },
-      }));
+    }));
 
       // 밥약 신청하기 버튼
     const [open, setOpen] = useState(false);
@@ -256,9 +256,9 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                     </div>
                 ) : null}
             </Grid>
-      </Grid>
+        </Grid>
     );
-  }
-  
+}
+
 
 export default ReviewItem;

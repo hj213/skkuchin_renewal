@@ -43,7 +43,6 @@ public class ChatRoomListController {
         String username = chatSession.getUsername();
 
         List<ChatRoomDto.Response> chatMessages = chatMessageService.getChatList(username);
-        template.convertAndSend(CHAT_EXCHANGE_NAME,
-                "room."+username+"chatRoomList", chatMessages);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+username+"chatRoomList", chatMessages);
     }
 }

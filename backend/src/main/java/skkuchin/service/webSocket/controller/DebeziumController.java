@@ -43,8 +43,8 @@
 //        DebeziumDto.ChatMessageRequest dto= objectMapper.readValue(message, DebeziumDto.ChatMessageRequest.class);
 //
 //        ChatRoom chatRoom = chatRoomService.findChatById(dto.getPayload().getAfter().getChat_room_id());
-//        AppUser user1 = chatRoomService.findUser1(chatRoom);
-//        AppUser user2 = chatRoomService.findUser2(chatRoom);
+//        AppUser user1 = chatRoom.getUser1();
+//        AppUser user2 = chatRoom.getUser2();
 //
 //        String roomId = chatRoom.getRoomId();
 //
@@ -86,7 +86,6 @@
 //        template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList",user2ChatInfo);
 //        template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList",user1ChatInfo);
 //        System.out.println("Duration.between(LocalDateTime.now(),start) = " + Duration.between(LocalDateTime.now(),start));
-//
 //    }
 //
 //

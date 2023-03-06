@@ -101,16 +101,21 @@ public class ChatRoomDto {
 
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class blockResponse{
+    public static class settingResponse{
         @JsonProperty
         private boolean isUser1Blocked;
-
         @JsonProperty
         private boolean isUser2Blocked;
+        @JsonProperty
+        private boolean isUser1AlarmOn;
+        @JsonProperty
+        private boolean isUser2AlarmOn;
 
-        public blockResponse(ChatRoom chatRoom){
+        public settingResponse(ChatRoom chatRoom){
             this.isUser1Blocked = chatRoom.isUser1Blocked();
             this.isUser2Blocked = chatRoom.isUser2Blocked();
+            this.isUser1AlarmOn = chatRoom.isUser1AlarmOn();
+            this.isUser2AlarmOn = chatRoom.isUSer2AlarmOn();
         }
     }
 
@@ -122,12 +127,15 @@ public class ChatRoomDto {
         @JsonProperty
         private Long user2Id;
         @JsonProperty
+        private String roomId;
+        @JsonProperty
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdDate;
 
         public userResponse(ChatRoom chatRoom){
             this.user1Id = chatRoom.getUser1().getId();
             this.user2Id = chatRoom.getUser2().getId();
+            this.roomId = chatRoom.getRoomId();
             this.createdDate = chatRoom.getExpireDate().minusDays(2);
         }
     }
