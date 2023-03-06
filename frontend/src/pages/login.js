@@ -104,9 +104,9 @@ const LoginPage = () => {
                         alignItems: 'center',
                         textAlign: 'center'
                         }}
-                        style={{marginTop: `calc(${remainHeight} * 0.55)`}}
+                        style={{marginTop: `calc(${remainHeight} * 0.54)`}}
                     >
-                    <Image width={169} height={185} src={logo} placeholder="blur" layout='fixed' />
+                    <Image width={145} height={160} src={logo} placeholder="blur" layout='fixed' />
                     <div style={{ display: 'flex', width: '100%' }}>
                         <form onSubmit={onSubmit} style={{ width: '100%' }}>
                             <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.22)` }}>

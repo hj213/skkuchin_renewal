@@ -96,7 +96,7 @@ export default function editProfile() {
                                 <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick}  placeholder="blur" layout='fixed'/>
                             </Grid>
                             <Grid item style={{marginLeft:'30%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>프로필 수정</Typography>
+                                <Typography style={{margin:'0px 0px 0px 10px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>프로필 수정</Typography>
                             </Grid>
                         </Grid>
         </Container>}
