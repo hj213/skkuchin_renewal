@@ -26,7 +26,6 @@ import java.util.List;
 @Log4j2
 public class ChatRoomListController {
     private final RabbitTemplate template;
-    private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final UserService userService;
@@ -42,7 +41,7 @@ public class ChatRoomListController {
         ChatSession chatSession = chatSessionService.findSession(sessionId);
         String username = chatSession.getUsername();
 
-        List<ChatRoomDto.Response> chatMessages = chatMessageService.getChatList(username);
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+username+"chatRoomList", chatMessages);
+        List<ChatRoomDto.Response> chatRooms = chatMessageService.getChatList(username);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+username+"chatRoomList", chatRooms);
     }
 }
