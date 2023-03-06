@@ -38,8 +38,7 @@ const Friends = () => {
     const handleClose = () => {
         setOpen(false);
     }
-    const handleSubmit = (username) => {
-        dispatch(request_chat(username));
+    const handleSubmit = () => {
         setOpen(false);
     }
 
