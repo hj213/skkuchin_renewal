@@ -17,11 +17,11 @@ const Layout = ({title, content, children}) => {
         }
     }, []);
 
-    useEffect(() => {
-        if (user !== null) {
-            dispatch(get_realtime_chat_request(user.username));
-        }
-    }, [user]);
+    // useEffect(() => {
+    //     if (user !== null) {
+    //         dispatch(get_realtime_chat_request(user.username));
+    //     }
+    // }, [user]);
 
 
     return ( 
