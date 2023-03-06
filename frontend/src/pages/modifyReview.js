@@ -165,7 +165,7 @@ const ModifyReview = () => {
         
         dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
             if(result){
-                alert("PUT 요청 result: " + result)
+                // alert("PUT 요청 result: " + result)
                 dispatch(clear_my_review());
                 router.push({
                     pathname: '/reviews',
@@ -389,7 +389,8 @@ const ModifyReview = () => {
                                     <Box
                                     component="form"
                                     noValidate
-                                    sx={{'& .MuiTextField-root': { m: 1, width: '80vw' }, justifyContent:'center', alignItems:'center'}}>
+                                    
+                                    sx={{'& .MuiTextField-root': { m: 1, width: '80vw' }, justifyContent:'center', alignItems:'center',}}>
                                         <TextField
                                         id="outlined-multiline-statiic"
                                         multiline

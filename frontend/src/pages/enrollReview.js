@@ -145,12 +145,14 @@ const EnrollReview = () => {
         
         dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
             if(result){
-                alert("POST 요청 result: " + message)
+                // alert 삭제
+                // alert ("POST 요청 result: " + message)
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }
                 });                  
             } else {
+                // alert 틀 바꿔야함
                 alert("실패!: " +message);
             }
         }));
@@ -365,7 +367,7 @@ const EnrollReview = () => {
                                     <Box
                                     component="form"
                                     noValidate
-                                    sx={{'& .MuiTextField-root': { m: 1, width: '34ch' }, justifyContent:'center', alignItems:'center'}}>
+                                    sx={{'& .MuiTextField-root': { m: 1, width: '80vw' }, justifyContent:'center', alignItems:'center'}}>
                                         <TextField
                                         id="outlined-multiline-statiic"
                                         multiline
