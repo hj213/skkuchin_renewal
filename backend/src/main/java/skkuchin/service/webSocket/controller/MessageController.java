@@ -46,21 +46,23 @@ public class MessageController {
         String sessionId = accessor.getSessionId();
         ChatSession chatSession = chatSessionService.findSession(sessionId);
         String username = chatSession.getSender();
-        AppUser user = userRepo.findByUsername(username);
-        UserDto.Response userDto= new UserDto.Response(user);
+        AppUser user1 = userRepo.findByUsername(username);
+        AppUser user2 = chatRoomService.findUser2(chatRoom);
+        UserDto.Response user1Dto= new UserDto.Response(user1);
+        UserDto.Response user2Dto = new UserDto.Response(user2);
         ChatRoomDto.blockResponse blockResponse = chatRoomService.getRoomDto(chatRoom);
         List<ChatMessageDto.Response> chatMessages = chatMessageService.getAllMessage(chatRoom);
 
        if(chatRoomService.findUser1(chatRoom).getUsername().equals(username)){
            template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user1",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user1",chatMessages);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",userDto);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",user2Dto);
 
        }
        else{
            template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user2",blockResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user2",chatMessages);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",userDto);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",user1Dto);
         }
     }
 

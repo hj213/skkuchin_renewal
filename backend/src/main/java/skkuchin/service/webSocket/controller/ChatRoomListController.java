@@ -23,14 +23,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class ChatRoomListController {
-
     private final RabbitTemplate template;
     private final ChatMessageService chatMessageService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final UserService userService;
     private final ChatSessionService chatSessionService;
 
-    @MessageMapping("chat.list.{chatRoomId}")
+    @MessageMapping("chat.list")
     public void myChatList(Message<?> message){
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);

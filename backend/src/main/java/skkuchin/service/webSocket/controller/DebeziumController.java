@@ -99,7 +99,7 @@ public class DebeziumController {
 
         String roomId = dto.getPayload().getAfter().getRoom_id();
         ChatRoom chatRoom = chatRoomService.findChatroom(roomId);
-        ChatRoomDto.userResponse chatRoomBlockInfo = chatRoomService.getUserRoomDto(chatRoom);
+        ChatRoomDto.blockResponse chatRoomBlockInfo = chatRoomService.getRoomDto(chatRoom);
 
         AppUser user1 = chatRoomService.findUser1(chatRoom);
         AppUser user2 = chatRoomService.findUser2(chatRoom);
@@ -109,6 +109,9 @@ public class DebeziumController {
 
         DebeziumDto.UserChatInfo user1ChatInfo = chatRoomService.getUserChatInfo(userName1);
         DebeziumDto.UserChatInfo user2ChatInfo = chatRoomService.getUserChatInfo(userName2);
+
+        System.out.println("chatRoomBlockInfo.getUser2Id = " + chatRoomBlockInfo.isUser1Blocked());
+        System.out.println("chatRoomBlockInfo.getUser1Id = " + chatRoomBlockInfo.isUser2Blocked());
 
         template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user1", chatRoomBlockInfo);
         template.convertAndSend(CHAT_EXCHANGE_NAME, "block." +roomId+"user2", chatRoomBlockInfo);
@@ -120,6 +123,11 @@ public class DebeziumController {
         if(dto.getPayload().getOp().equals("c")){
             String username = user2.getUsername();
             List<ChatRoomDto.userResponse> alarmList = chatMessageService.getAlarmList(username);
+            for (int i = 0; i <alarmList.size(); i++) {
+                System.out.println("alarmList - user1 = " + alarmList.get(i).getUser1Id());
+                System.out.println("alarmList - user2= " + alarmList.get(i).getUser2Id());
+                System.out.println("alarmList - date= " + alarmList.get(i).getCreatedDate());
+            }
             template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+ username,alarmList);
         }
     }
