@@ -24,6 +24,7 @@ public class ChatMessageDto {
         private String message;
         private String sender;
         private Long chat_room_id;
+        private boolean readStatus;
     }
 
 

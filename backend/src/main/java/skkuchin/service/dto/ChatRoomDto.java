@@ -152,7 +152,6 @@ public class ChatRoomDto {
         private Boolean is_user2_alarm_on;
         private String room_id;
         private String response;
-        private String room_name;
         private Long user1_id;
         private Long user2_id;
     }

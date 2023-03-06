@@ -16,10 +16,7 @@ public class ChatErrorHandler extends StompSubProtocolErrorHandler {
     @Override
     public Message<byte[]> handleClientMessageProcessingError(Message<byte[]>clientMessage, Throwable ex)
     {
-/*
-        System.out.println("ex.getCause().getMessage() = " + ex.getCause().getMessage());
-*/
-        System.out.println("안녕1");
+
         if(!ex.getCause().getMessage().isEmpty()){
             if(ex.getCause().getMessage() == "차단된 유저입니다."){
                 return blockException();
@@ -28,23 +25,16 @@ public class ChatErrorHandler extends StompSubProtocolErrorHandler {
                 System.out.println("ex.getCause().getMessage() = " + ex.getCause().getMessage());
                 return handleJwtException();
             }
-
         }
 
         throw new CustomRuntimeException("오류" + ex);
-//        return super.handleClientMessageProcessingError(clientMessage, ex);
     }
 
 
     private Message<byte[]> handleJwtException(){
-
-        System.out.println("안녕2");
-
         return prepareErrorMessage(JwtErrorCode.ACCESS_TOKEN_EXPIRATION);
     }
     private Message<byte[]> blockException(){
-        System.out.println("안녕3");
-
         return prepareErrorMessage(JwtErrorCode.BLOCKED_USER);
     }
 
@@ -59,8 +49,5 @@ public class ChatErrorHandler extends StompSubProtocolErrorHandler {
         accessor.setMessage(String.valueOf(responseCode.getCode()));
         accessor.setLeaveMutable(true);
         return MessageBuilder.createMessage(code.getBytes(StandardCharsets.UTF_8), accessor.getMessageHeaders());
-
     }
-
-
 }

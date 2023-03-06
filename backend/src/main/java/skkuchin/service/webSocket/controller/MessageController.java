@@ -31,7 +31,6 @@ public class MessageController {
 
     private final RabbitTemplate template;
     private final ChatRoomService chatRoomService;
-    private final UserRepo userRepo;
     private final ChatMessageService chatMessageService;
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
@@ -56,17 +55,14 @@ public class MessageController {
         ChatRoomDto.settingResponse settingResponse = chatRoomService.getSettingResponse(chatRoom);
         List<ChatMessageDto.Response> chatMessages = chatMessageService.getAllMessage(chatRoom);
 
-       if(chatRoom.getUser1().getUsername().equals(username)){
+       if (chatRoom.getUser1().getUsername().equals(username)) {
            template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+chatRoomId +"user1",settingResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user1",chatMessages);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",user2Dto);
-
-       }
-       else {
+       } else {
            template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+chatRoomId +"user2",settingResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user2",chatMessages);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",user1Dto);
-
         }
     }
 
