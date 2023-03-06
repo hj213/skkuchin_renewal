@@ -32,6 +32,5 @@ export const get_realtime_chat_request = (username, stompClient) => async dispat
         pushToken : access
     });
     stompClient.send('/app/chat.alarm');
-    console.log(subscription);
     return subscription;
 };

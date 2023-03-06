@@ -52,7 +52,7 @@ public class ServiceApplication {
 				menuService.insertData(path);
 				keywordService.insertData(path);
 				reviewService.insertData(path);
-				userService.saveTestMatchingUsers(600);
+				userService.saveTestMatchingUsers(100);
 			} catch (Exception e) {
 				System.out.println(e);
 			}
