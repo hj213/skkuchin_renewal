@@ -359,7 +359,7 @@ const EnrollReview = () => {
                                                 }} />
                                         </Grid>
                                     ))}
-                                </Grid>
+                                </Grid>s
                             </Grid>
 
                             <Grid container style={{margin:'10px auto 0px', justifyContent:'center'}}>
