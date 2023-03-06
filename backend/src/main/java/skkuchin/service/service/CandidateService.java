@@ -40,8 +40,12 @@ public class CandidateService {
 
     @Transactional
     public List<CandidateDto.Response> getCandidate(AppUser user) {
-        if (!user.getMatching()) {
+        if (user.getMatching() != true) {
             throw new CustomRuntimeException("매칭 활성화가 꺼져있습니다");
+        }
+
+        if (userRepo.findAll().stream().filter(appUser -> appUser.getMatching() == true).collect(Collectors.toList()).size() < 100) {
+            throw new CustomRuntimeException("매칭을 활성화한 사용자가 100명이 되면\n 스꾸친 AI 매칭이 시작됩니다");
         }
 
         List<Candidate> candidates = candidateRepo.findByUserId(user.getId());

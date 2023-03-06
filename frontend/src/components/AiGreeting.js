@@ -66,7 +66,7 @@ const AiGreeting = () => {
         INTJ:INTJ,
         ISFJ:ISFJ,
         ESFP:ESFP,
-      }
+    }
     
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -303,7 +303,7 @@ const AiGreeting = () => {
                         {userInfo.mbti}
                         </Typography>
                             {(userInfo.keywords) != null?
-                                ((userInfo.keywords).slice(0,2).map((interest, index)=>(
+                                ((userInfo.keywords).slice(0,2).map((interest =>
                                     <Typography style={{
                                         color:"white", 
                                         background:"#BABABA",

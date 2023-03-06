@@ -2,8 +2,6 @@ import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
 import {
     REQUEST_CHAT_SUCCESS,
     REQUEST_CHAT_FAIL,
@@ -248,7 +246,7 @@ export const exit_room = (room_id, callback) => async dispatch => {
     }
 };
 
-export const get_realtime_chat_room = (username) => async dispatch => {
+export const get_realtime_chat_room = (username, stompClient) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -259,32 +257,21 @@ export const get_realtime_chat_room = (username) => async dispatch => {
         });
     }
 
-    const sockJS = new SockJS("/ws/chat");
-    const stomp = Stomp.over(sockJS);
-
-    stomp.connect('guest', 'guest', (frame) => {
-        stomp.subscribe(`/exchange/chat.exchange/room.${username}.chatRoomList`,(content) => {
-            const data = JSON.parse(content.body);
-            
-            dispatch({
-                type: GET_REALTIME_ROOM_SUCCESS,
-                payload: data
-            })
-
-        },{
-            'auto-delete':true, 
-            'durable':false, 
-            'exclusive':false,
-            pushToken : access
-            }
-        );
-        stomp.send('/app/chat.list');
-    }, onError, '/');
-
-    const onError = (e) => {
-        console.log(e);
+    const subscription = stompClient.subscribe(`/exchange/chat.exchange/room.${username}chatRoomList`,(content) => {
+        const data = JSON.parse(content.body);
+        
         dispatch({
-            type: GET_REALTIME_ROOM_FAIL
+            type: GET_REALTIME_ROOM_SUCCESS,
+            payload: data
         })
-    }
+
+    },{
+        'auto-delete':true, 
+        'durable':false, 
+        'exclusive':false,
+        pushToken : access
+        }
+    );
+    stompClient.send('/app/chat.list', {"pushToken" : access});
+    return subscription;
 };

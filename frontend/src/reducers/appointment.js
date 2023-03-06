@@ -5,7 +5,7 @@ import {
     ENROLL_APPOINTMENT_FAIL,
     MODIFY_APPOINTMENT_SUCCESS,
     MODIFY_APPOINTMENT_FAIL
-} from '../actions/pushToken/types'
+} from '../actions/appointment/types'
 
 const initialState = {
     appointment: null,

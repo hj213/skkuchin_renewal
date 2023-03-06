@@ -12,11 +12,13 @@ import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.exception.CustomRuntimeException;
+import skkuchin.service.repo.ChatMessageRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 public class ChatMessageService {
 
     private final ChatRoomRepo chatRoomRepo;
-    private final ChatRepo chatRepo;
+    private final ChatMessageRepo chatMessageRepo;
     private final UserRepo userRepo;
 
 
@@ -36,53 +38,61 @@ public class ChatMessageService {
     public void write(AppUser user, ChatMessageDto.Request dto){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(dto.getRoomId());
         ChatMessage chatMessage = dto.toEntity(chatRoom,user);
-        chatRepo.save(chatMessage);
+        chatMessageRepo.save(chatMessage);
     }
 
-
-
-
-
     @Transactional
-    public List<ChatRoomDto.Response> getChatList(String sender){
+    public List<ChatRoomDto.Response> getChatList(String username){
 
-        AppUser user = userRepo.findByUsername(sender);
+        AppUser user = userRepo.findByUsername(username);
         List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(user.getId());
-        List<ChatRoomDto.Response> chatRoomsFindByUserId = chatRooms
-                .stream()
-                .map(chatRoom -> new ChatRoomDto.Response(chatRoom,getLatestMessage(chatRoom),
-                        unReadMessage(chatRoom.getRoomId(),sender)))
-                .collect(Collectors.toList());
-        Collections.sort(chatRoomsFindByUserId,new DateComparator().reversed());
 
-        return chatRoomsFindByUserId;
+        if (chatRooms.size() > 0) {
+            List<ChatRoomDto.Response> chatRoomDtos = chatRooms
+                    .stream()
+                    .map(chatRoom -> new ChatRoomDto.Response(
+                            chatRoom,
+                            getLatestMessage(chatRoom),
+                            unReadMessage(chatRoom.getRoomId(), username),
+                            getOtherUser(chatRoom, username)
+                    ))
+                    .collect(Collectors.toList());
+            Collections.sort(chatRoomDtos,new DateComparator().reversed());
+
+            return chatRoomDtos;
+        }
+        List<ChatRoomDto.Response> chatRoomDto = new ArrayList<>();
+        return chatRoomDto;
     }
 
     @Transactional
-    public List<ChatRoomDto.userResponse> getAlarmList(String sender){
+    public List<ChatRoomDto.userResponse> getAlarmList(String username){
 
-        AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepo.findByUser2Id(user.getId());
-        List<ChatRoomDto.userResponse> chatRoom = chatRooms
+        AppUser user = userRepo.findByUsername(username);
+        List<ChatRoom> chatRooms = chatRoomRepo.findRequestByUserId(user.getId());
+
+
+        List<ChatRoomDto.userResponse> chatRoomDto = chatRooms
                 .stream()
-                .map(message -> new ChatRoomDto.userResponse(message))
+                .map(chatRoom -> new ChatRoomDto.userResponse(chatRoom))
                 .collect(Collectors.toList());
-        Collections.sort(chatRoom,new AlarmListDateComparator().reversed());
+        Collections.sort(chatRoomDto,new AlarmListDateComparator().reversed());
 
-        return chatRoom;
+        return chatRoomDto;
     }
 
 
 
     @Transactional
-    public int unReadMessage(String roomId, String sender){
-        List<ChatMessage> chatMessages = chatRepo.findByReadStatus(roomId, sender);
-        return chatMessages.size();
+    public int unReadMessage(String roomId, String username){
+        return chatMessageRepo.countByReadStatus(roomId, username);
     }
 
-
-
-
+    @Transactional
+    public AppUser getOtherUser(ChatRoom chatRoom, String username){
+        AppUser user = userRepo.findByUsername(username);
+        return chatRoomRepo.findOtherUser(chatRoom, user.getId());
+    }
 
     public String getUserNameFromJwt(String jwt){
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -92,18 +102,22 @@ public class ChatMessageService {
         return username;
     }
 
-
-
+    @Transactional
+    public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
+        List<ChatMessageDto.Response> messages = chatMessageRepo.findByChatRoom(chatRoom)
+                .stream()
+                .map(message -> new ChatMessageDto.Response(message,chatRoom))
+                .collect(Collectors.toList());
+        Collections.sort(messages,new MessageDateComparator().reversed());
+        return messages;
+    }
 
     private ChatMessage getLatestMessage(ChatRoom chatRoom){
-        ChatMessage chatMessage = new ChatMessage() ;
-        if(chatRepo.findByLatestMessageTime(chatRoom.getRoomId()).size() == 0){
-            chatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
+        List<ChatMessage> chatMessages = chatMessageRepo.findByLatestTime(chatRoom.getRoomId());
+        if(chatMessages.size() == 0) {
+            throw new CustomRuntimeException("새로운 채팅방이 개설되었습니다");
         }
-        else{
-            chatMessage = chatRepo.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
-
-        }
+        ChatMessage chatMessage = chatMessages.get(0);
         return chatMessage;
     }
 
@@ -122,6 +136,17 @@ public class ChatMessageService {
         @Override
         public int compare(ChatRoomDto.userResponse f1, ChatRoomDto.userResponse f2) {
             if (f1.getCreatedDate().isAfter(f2.getCreatedDate()) ) {
+                return 1;
+            } else  {
+                return -1;
+            }
+        }
+    }
+
+    private class MessageDateComparator implements Comparator<ChatMessageDto.Response> {
+        @Override
+        public int compare(ChatMessageDto.Response f1, ChatMessageDto.Response f2) {
+            if (f1.getDate().isAfter(f2.getDate()) ) {
                 return 1;
             } else  {
                 return -1;

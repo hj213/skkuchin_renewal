@@ -5,12 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -21,17 +19,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
-import skkuchin.service.domain.Chat.ChatSession;
-import skkuchin.service.repo.ChatRepo;
-import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.repo.ChatSessionRepo;
-import skkuchin.service.service.ChatService;
+import skkuchin.service.service.ChatRoomService;
 import skkuchin.service.service.ChatSessionService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Configuration
@@ -41,7 +31,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
 
     private final ChatErrorHandler chatErrorHandler;
-    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
     private final ChatSessionService chatSessionService;
 
     @Value("${rabbitmq.host}")
@@ -64,7 +54,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 
-        //registry.enableSimpleBroker("/queue", "/topic");
         registry.setPathMatcher(new AntPathMatcher("."));
         registry.setApplicationDestinationPrefixes("/app");
         registry.setPreservePublishOrder(true);
@@ -86,33 +75,26 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
              StompHeaderAccessor accessor =
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-             if(accessor.getCommand().equals(StompCommand.SUBSCRIBE)){
-                    String sessionId = accessor.getSessionId();
-                    String roomId = accessor.getDestination().substring(29);
-                    String token = accessor.getFirstNativeHeader("token");
-                    String sender = getUserNameFromJwt(token);
-                    ChatRoom chatRoom = chatService.findChatroom(roomId);
-
-                    if(roomId.contains("user1") && roomId.length()>36){
-                        roomId = roomId.replace("user1","");
-                    }
-                    else if(roomId.contains("user2")&& roomId.length()>36){
-                        roomId = roomId.replace("user2","");
-                    }
-
-
-
-                    chatSessionService.setSessionId(chatRoom,sessionId,sender);
-                    chatService.updateReadStatus(chatRoom,sender);
-                }
-
-
+             if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
+                 System.out.println("안녕하세요");
+                String sessionId = accessor.getSessionId();
+                 System.out.println(sessionId);
+                String token = accessor.getFirstNativeHeader("pushToken");
+                 System.out.println(token);
+                String username = getUserNameFromJwt(token);
+                 System.out.println(username);
+                 if (chatSessionService.findSession(sessionId) == null) {
+                     chatSessionService.setSessionId(sessionId, username);
+                 }
+                 System.out.println("통과");
+             }
 
              else if(accessor.getCommand().equals(StompCommand.DISCONNECT)){
-                    String sessionId = (String) message.getHeaders().get("simpSessionId");
-                    chatSessionService.deleteSession(sessionId);
-                }
-                return message;
+                 String sessionId = (String) message.getHeaders().get("simpSessionId");
+                chatSessionService.deleteSession(sessionId);
+             }
+
+             return message;
             }
         });
     }

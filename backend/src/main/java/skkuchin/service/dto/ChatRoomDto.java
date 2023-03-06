@@ -10,7 +10,11 @@ import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Major;
+import skkuchin.service.domain.User.Profile;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -20,10 +24,11 @@ public class ChatRoomDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static  class RoomRequest{
+    public static  class RoomRequest {
 
         @JsonProperty
-        private String userName;
+        @NotBlank
+        private String username;
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
@@ -39,21 +44,17 @@ public class ChatRoomDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static  class ReactionRequest{
-
+        @NotNull
         private ResponseType reaction;
-
     }
 
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static  class BooleanRequest{
-
+        @NotNull
         private Boolean reaction;
-
     }
-
-
 
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -62,6 +63,10 @@ public class ChatRoomDto {
         private String roomId;
 
         private String message;
+        private Major major;
+        private String nickname;
+        private Profile image;
+
         @JsonProperty
         private Long user1Id;
         @JsonProperty
@@ -78,7 +83,7 @@ public class ChatRoomDto {
         private LocalDateTime messageTime;
         @JsonProperty
         private int messageCount;
-        public Response(ChatRoom chatroom, ChatMessage chatMessage,int messageCount) {
+        public Response(ChatRoom chatroom, ChatMessage chatMessage, int messageCount, AppUser otherUser) {
             this.messageTime = chatMessage.getDate();
             this.message = chatMessage.getMessage();
             this.roomId = chatroom.getRoomId();
@@ -87,6 +92,9 @@ public class ChatRoomDto {
             this.messageCount = messageCount;
             this.isUser1AlarmOn = chatroom.isUser1AlarmOn();
             this.isUser2AlarmOn = chatroom.isUSer2AlarmOn();
+            this.major = otherUser.getMajor();
+            this.nickname = otherUser.getNickname();
+            this.image = otherUser.getImage();
         }
 
     }

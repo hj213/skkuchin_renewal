@@ -35,23 +35,51 @@ function calculateRows() {
 const chatPage = () => {
     const router = useRouter();
 
+    const room_id = router.query.room_id;
+    const user_number = router.query.user_number;
+    const dispatch = useDispatch();
+
     const user = useSelector(state => state.auth.user);
     const messages = useSelector(state => state.chatMessage.messages);
     const otherUser = useSelector(state => state.chatMessage.otherUser);
     const isUser1Blocked = useSelector(state => state.chatMessage.isUser1Blocked);
     const isUser2Blocked = useSelector(state => state.chatMessage.isUser2Blocked); 
+    const stompClient = useSelector(state => state.stompClient.stompClient);
     
+
+    const [subscriptionOtherUser, setSubscriptionOtherUser] = useState(null);
+    const [subscriptionBlock, setSubscriptionBlock] = useState(null);
+    const [subscriptionMessage, setSubscriptionMessage] = useState(null);
+
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
             router.back();
         } 
-    };  
+    };
 
     useEffect(() => {
-        dispatch(get_realtime_otherUser(room_id, user_number));
-        dispatch(get_realtime_block(room_id, user_number));
-        dispatch(get_realtime_message(room_id, user_number));
-    }, [])
+        if (stompClient && room_id && user_number) {
+            const subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number));
+            const subBlock = dispatch(get_realtime_block(room_id, user_number));
+            const subMessage = dispatch(get_realtime_message(room_id, user_number))
+
+            setSubscriptionOtherUser(subOtherUser);
+            setSubscriptionBlock(subBlock);
+            setSubscriptionMessage(subMessage);
+        }
+    
+        return () => {
+            if (subscriptionOtherUser) {
+                stompClient.unsubscribe(subscriptionOtherUser);
+            }
+            if (subscriptionBlock) {
+                stompClient.unsubscribe(subscriptionBlock);
+            }
+            if (subscriptionMessage) {
+                stompClient.unsubscribe(subscriptionMessage);
+            }
+        }
+    }, [stompClient, room_id, user_number])
 
     // 프로필 보기
     const handleProfile = ()=>{
