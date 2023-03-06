@@ -650,7 +650,7 @@ const PlacePage = () => {
                             { selectedPlace && 
                                 <li key={selectedPlace.id} style={{listStyleType:"none", marginBottom:'100px'}} onClick={handleReviewClick} >
                                         <Link href={`reviews?id=${selectedPlace.id}`} key={selectedPlace.id}>
-                                            <Typography sx={{fontWeight:'700',marginTop:'0px',textAlign:'right', p: '0 20px 40px', color: '#505050', fontSize: '16px'}}>
+                                            <Typography sx={{fontWeight:'400',marginTop:'0px',textAlign:'right', p: '0 20px 40px', color: '#505050', fontSize: '16px'}}>
                                                 후기 더보기 &gt;
                                             </Typography>
                                         </Link>

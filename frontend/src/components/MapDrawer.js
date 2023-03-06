@@ -12,6 +12,7 @@ import ymr from '../image/MR_off.png'; //캠퍼스 율전
 import myj from '../image/YJ_off.png'; //캠퍼스 명륜
 import mmr from '../image/MR_on.png'; //캠퍼스 명륜
 import { change_toggle, load_user } from '../actions/auth/auth';
+import { clear_search_results, search_places } from '../actions/place/place';
 import theme from '../theme/theme';
 
 //mbti 프로필
