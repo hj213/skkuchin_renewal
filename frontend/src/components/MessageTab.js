@@ -6,7 +6,8 @@ import profile from '../image/profile.png';
 import notiOff from '../image/chat/notifications_off.png';
 import Image from 'next/image';
 import character from '../image/mainCharacterY.png';
-
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { get_realtime_chat_room } from '../actions/chat/chatRoom';
 import { get_realtime_chat_request } from '../actions/chat/chatRequest';
