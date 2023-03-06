@@ -122,14 +122,16 @@ export default function list(){
                 // 키워드 확인
                 dispatch(clear_search_results());
                 dispatch(search_places(keyword));
+                
                 if((open.bool) == false) {
                     if( router.query.length == 1 || filteredPlace?.length == 1){
                         setHeight(187)
                     } 
                     else if( filteredPlace?.length == 0 ){
+                        console.log('hi')
                         setHeight(0);
-                        setAlertOpen(true);
-                        setAlertMessage('검색 결과가 없습니다.');
+                        // setAlertOpen(true);
+                        // setAlertMessage('검색 결과가 없습니다.');
                     }
                     else if(WINDOW_HEIGHT < 750){
                         setHeight(187)
@@ -145,7 +147,6 @@ export default function list(){
                 }
             }
         }
-       
     }, [keyword]);
 
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
@@ -178,6 +179,15 @@ export default function list(){
         setIsTall(false);
         dispatch(clear_search_results());
     },[user?.toggle])
+
+    // useEffect(()=>{
+    //     setAlertOpen(false);
+    //     setAlertMessage('');
+    //     if(keyword && filteredPlace?.length == 0){
+    //         setAlertOpen(true);
+    //         setAlertMessage('검색 결과가 없습니다.');
+    //     }
+    // },[keyword]);
 
     // 카드 리셋 
     const handleReset = () => {
@@ -366,7 +376,7 @@ export default function list(){
             
              {/* 태그 목록 */}
              
-            <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
+            {/* <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/> */}
              
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
             
