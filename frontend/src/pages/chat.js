@@ -37,6 +37,7 @@ const chatPage = () => {
 
     const room_id = router.query.room_id;
     const user_number = router.query.user_number;
+    const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
     const messages = useSelector(state => state.chatMessage.messages);
