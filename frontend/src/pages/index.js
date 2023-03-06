@@ -128,7 +128,6 @@ export default function list(){
                         setHeight(187)
                     } 
                     else if( filteredPlace?.length == 0 ){
-                        console.log('hi')
                         setHeight(0);
                         // setAlertOpen(true);
                         // setAlertMessage('검색 결과가 없습니다.');
@@ -179,15 +178,6 @@ export default function list(){
         setIsTall(false);
         dispatch(clear_search_results());
     },[user?.toggle])
-
-    // useEffect(()=>{
-    //     setAlertOpen(false);
-    //     setAlertMessage('');
-    //     if(keyword && filteredPlace?.length == 0){
-    //         setAlertOpen(true);
-    //         setAlertMessage('검색 결과가 없습니다.');
-    //     }
-    // },[keyword]);
 
     // 카드 리셋 
     const handleReset = () => {
