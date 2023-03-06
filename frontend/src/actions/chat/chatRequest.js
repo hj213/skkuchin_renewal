@@ -2,8 +2,7 @@ import Cookies from 'js-cookie';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 import {
-    GET_REALTIME_REQUEST_SUCCESS,
-    GET_REALTIME_REQUEST_FAIL
+    GET_REALTIME_REQUEST_SUCCESS
 }
     from './types';
 

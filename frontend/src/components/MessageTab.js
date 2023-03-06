@@ -51,7 +51,6 @@ export default function MessageTab() {
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const user = useSelector(state => state.auth.user);
-  const userInfo = useSelector(state => state.chatRoom.userInfo);
   const chatMessages = useSelector(state => state.chatRoom.chatMessages);
   const chatRequests = useSelector(state => state.chatRequest.chatRequest);
   const stompClient = useSelector(state => state.stompClient.stompClient);
@@ -107,24 +106,24 @@ export default function MessageTab() {
                       }}>
                         <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
                             <Grid xs={2}>
-                                <Avatar alt="" src={ userInfo.image } style={{ width: '55px', height: '55px' }}/>
+                                <Avatar alt="" src={ chatMessage.image } style={{ width: '55px', height: '55px' }}/>
                             </Grid>
                             <Grid xs={8}>
                                 <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
                                     <div style={{display:'flex'}}>
                                       <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
-                                        {userInfo.nickname}
+                                        {chatMessage.nickname}
                                       </Typography>
                                       <Typography sx={{color:"#BABABA",paddingLeft:'5px',fontSize: '9px', fontWeight:'500', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                                        {userInfo.major}
+                                        {chatMessage.major}
                                       </Typography>
                                       {/* 알림끄기 연결 시 조건문으로 수정 */}
                                       <Box sx={{paddingLeft:'5px', lineHeight: '120%'}}>
                                       <Image
                                         src={
-                                          userInfo.user1_id === user.id
-                                            ? !userInfo.is_user1_alarm_on && notiOff
-                                            : !userInfo.is_user2_alarm_on && notiOff
+                                          chatMessage.user1_id === user.id
+                                            ? !chatMessage.is_user1_alarm_on && notiOff
+                                            : !chatMessage.is_user2_alarm_on && notiOff
                                         }
                                         width="12px"
                                         height="12px"
@@ -194,7 +193,7 @@ export default function MessageTab() {
               <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
                 { chatRequests.map((chatRequest, index)=>(
                   <li >
-                    <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
+                    <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
                         <Grid xs={2}>
                             <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
                         </Grid>

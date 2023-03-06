@@ -81,8 +81,6 @@ public class ChatMessageService {
         return chatRoomDto;
     }
 
-
-
     @Transactional
     public int unReadMessage(String roomId, String username){
         return chatMessageRepo.countByReadStatus(roomId, username);

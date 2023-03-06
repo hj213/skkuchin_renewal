@@ -48,13 +48,4 @@ public class DebeziumDto {
 
         }
     }
-
-
-    @Setter
-    @Getter
-    @AllArgsConstructor
-    public static class UserChatInfo {
-        private UserDto.chatRoomResponse userInfo;
-        private List<ChatRoomDto.Response> chatMessages;
-    }
 }
