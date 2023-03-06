@@ -31,7 +31,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
 
     private final ChatErrorHandler chatErrorHandler;
-    private final ChatRoomService chatRoomService;
     private final ChatSessionService chatSessionService;
 
     @Value("${rabbitmq.host}")
@@ -76,20 +75,16 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
              if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
-                 System.out.println("안녕하세요");
                 String sessionId = accessor.getSessionId();
-                 System.out.println(sessionId);
                 String token = accessor.getFirstNativeHeader("pushToken");
-                 System.out.println(token);
                 String username = getUserNameFromJwt(token);
-                 System.out.println(username);
+
                  if (chatSessionService.findSession(sessionId) == null) {
                      chatSessionService.setSessionId(sessionId, username);
                  }
-                 System.out.println("통과");
              }
 
-             else if(accessor.getCommand().equals(StompCommand.DISCONNECT)){
+             else if (accessor.getCommand().equals(StompCommand.DISCONNECT)) {
                  String sessionId = (String) message.getHeaders().get("simpSessionId");
                 chatSessionService.deleteSession(sessionId);
              }
