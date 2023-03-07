@@ -70,8 +70,11 @@ export default function editProfile() {
 
     const handleNextStep = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            if (major == '화학공학/고분자공학부') setMajor('화학공학_고분자공학부');
-            dispatch(change_user(nickname, major, image, studentId.slice(0, 2), ([result, message]) => {
+            let finalMajor = major;
+            if (major == '화학공학/고분자공학부') {
+                finalMajor = '화학공학_고분자공학부'
+            }
+            dispatch(change_user(nickname, finalMajor, image, studentId.slice(0, 2), ([result, message]) => {
                 if (result) {
                     router.push('/myPage');
                 }

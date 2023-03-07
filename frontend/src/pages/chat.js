@@ -36,16 +36,22 @@ const chatPage = () => {
     const router = useRouter();
 
     const room_id = router.query.room_id;
-    const user_number = router.query.user_number;
+    const user_number = router.query.user_number; // user1,2(내가 1인지 2인지) 구분
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
+    // 
     const messages = useSelector(state => state.chatMessage.messages);
+    // 상대방 정보
     const otherUser = useSelector(state => state.chatMessage.otherUser);
+    // isUser1Blocked 참이면 채팅사용 X (내가 차단된 상황)
+    // isUser2Blocked 참이면 내가 차단한 상황
     const isUser1Blocked = useSelector(state => state.chatMessage.isUser1Blocked);
     const isUser2Blocked = useSelector(state => state.chatMessage.isUser2Blocked);
+    // 알람표시
     const isUser1AlarmOn = useSelector(state => state.chatMessage.isUser1AlarmOn);
     const isUser2AlarmOn = useSelector(state => state.chatMessage.isUser2AlarmOn); 
+
     const stompClient = useSelector(state => state.stompClient.stompClient);
     
 
@@ -83,7 +89,7 @@ const chatPage = () => {
         }
     }, [stompClient, room_id, user_number])
 
-    // 프로필 보기
+    // 프로필 보기 (load_matchingUser )
     const handleProfile = ()=>{
         router.push('/clickProfile')
     }
