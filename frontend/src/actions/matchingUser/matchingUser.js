@@ -284,8 +284,6 @@ export const change_matching_info = (gender, keywords, introduction, mbti, callb
             type: CHANGE_MATCHING_INFO_FAIL
         })
         
-        if (callback) callback([false, error]);
-        
-        
+        if (callback) callback([false, error]);  
     }
 }
