@@ -17,7 +17,6 @@ export const get_realtime_chat_request = (username, stompClient) => async dispat
         });
     }
     const subscription = stompClient.subscribe(`/exchange/chat.exchange/alarm.${username}`,(content) => {
-        console.log(content)
         const data = JSON.parse(content.body);
         
         dispatch({

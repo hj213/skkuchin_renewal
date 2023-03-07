@@ -12,7 +12,7 @@ export default function NoInfo(){
             setOpen(true);
         }
     }
-    console.log(open);
+    
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>

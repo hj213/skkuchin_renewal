@@ -70,7 +70,7 @@ export default function chatTime(){
     const handleSubmit = (e) => {
         // router.back();
         const dateInfo = dayjs(date).format('YYYY-MM-DD')+"'T'"+changedtime+':00'
-        console.log(dateInfo);
+        // console.log(dateInfo);
 
         // dispatch(enroll_appointment())
     }

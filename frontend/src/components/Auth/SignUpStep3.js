@@ -105,10 +105,10 @@ export default function SignUpStep3(props) {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(register(props.data, ([result, message]) => {
             if (result) {
-                console.log(result);
+                
                 props.handleNextStep();
             } else {
-                console.log(message);
+                
                 //setDialogMsg(message);
                 //setDialogOpen(true);
             }
