@@ -5,7 +5,7 @@ import { Profile, Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Butt
 import profile from '../image/profile.png';
 import notiOff from '../image/chat/notifications_off.png';
 import Image from 'next/image';
-import character from '../image/mainCharacterY.png';
+import character from '../image/skkuchinFind.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -167,7 +167,7 @@ export default function MessageTab() {
             :
             <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Grid item>
-                  <Image src={character} width={138} height={100} style={{ opacity: '0.6' }} />
+                  <Image src={character} width={138} height={100}/>
               </Grid>
               <Grid item>
                 <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
@@ -223,7 +223,7 @@ export default function MessageTab() {
               :
               <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid item>
-                    <Image src={character} width={138} height={100} style={{ opacity: '0.6' }} />
+                    <Image src={character} width={138} height={100} />
                 </Grid>
                 <Grid item>
                     <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
