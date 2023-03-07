@@ -545,9 +545,9 @@ const PlacePage = () => {
                         }
                         </div>
                         {/* 이미지 */}
-                        <Grid container style={{margin:'-85px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
+                        <Grid container style={{margin:'-85px 0px 0px 0',  justifyContent: 'center'}}>
                         {allImages && allImages.length > 5 ? (
-                            <div style={{ display: 'flex', flexDirection: 'column', alignContent:'center', textAlign:'center' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignContent:'center', textAlign:'center', borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignContent:'center', textAlign:'center'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
                                 <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '0px', position: 'relative',alignContent:'center', textAlign:'center'}}>
