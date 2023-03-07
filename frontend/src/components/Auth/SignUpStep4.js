@@ -78,7 +78,7 @@ const SignUpStep4 = (props) => {
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>이메일 인증</Typography>
         </header> */}
         <div style={{ width: '100%', textAlign: 'center' }}>
-            <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
+            <Image width={141} height={101} src={logo} placeholder="blur" layout='fixed' />
             <Typography sx={{fontSize: '25px', fontWeight: '500', mb: '37px'}}>성균관대학교 인증</Typography>
             <Typography sx={{fontSize: '12px', fontWeight: '500', mb: '55px', lineHeight: '25px', color: '#505050'}}>스꾸친(SKKU_CHIN)은 <br/>
                         <u>성균관대학교 기반 매칭 서비스</u>를 제공합니다 <br/>
