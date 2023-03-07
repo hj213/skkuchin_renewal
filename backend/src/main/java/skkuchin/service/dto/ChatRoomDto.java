@@ -23,10 +23,7 @@ public class ChatRoomDto {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static  class RoomRequest {
-
-        @JsonProperty
         @NotBlank
         private String username;
 
@@ -34,8 +31,6 @@ public class ChatRoomDto {
             return ChatRoom.builder()
                     .user1(user)
                     .build();
-
-
         }
     }
 

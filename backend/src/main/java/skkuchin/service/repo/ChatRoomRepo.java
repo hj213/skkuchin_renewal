@@ -20,7 +20,4 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
     List<ChatRoom> findRequestByUserId(Long userId);
 
     List<ChatRoom> findByExpireDateBefore(LocalDateTime now);
-
-    @Query("SELECT CASE WHEN c.user1.id = :userId THEN c.user2 ELSE c.user1 END FROM ChatRoom c WHERE c = :chatRoom")
-    AppUser findOtherUser(@Param("chatRoom") ChatRoom chatRoom, @Param("userId") Long userId);
 }

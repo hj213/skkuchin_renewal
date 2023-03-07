@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { load_user } from "../actions/auth/auth";
+import { useDispatch } from "react-redux";
 import Head from "next/head";
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -14,18 +13,27 @@ const Layout = ({title, content, children}) => {
     const router = useRouter();
     const [show, setShow] = useState(false);
 
+    let stompClient = null;
     const Stomp = require("stompjs/lib/stomp.js").Stomp
     const sockJS = new SockJS(`${API_URL}/ws/chat`);
-    const stompClient = Stomp.over(sockJS);
-
+    stompClient = Stomp.over(sockJS);
     stompClient.heartbeat.outgoing = 0;
     stompClient.heartbeat.incoming = 0;
     stompClient.debug = null;
 
+    const onError = (e) => {
+        connectStompClient();
+    }
+
+    const connectStompClient = () => {
+        stompClient.connect('guest', 'guest', () => {
+            dispatch(set_stomp_client(stompClient));
+        }, onError);
+    };
+
     useEffect(() => {
-        stompClient.connect('guest', 'guest');
-        dispatch(set_stomp_client(stompClient));
-        router.push('/splash')
+        connectStompClient();
+        router.push('/splash');
     }, []);
 
     useEffect(() => {
@@ -35,9 +43,9 @@ const Layout = ({title, content, children}) => {
     }, [])
 
     sockJS.addEventListener('close', () => {
-        // console.log("WebSocket disconnected, attempting to reconnect...");
-        stompClient.connect('guest', 'guest');
-        dispatch(set_stomp_client(stompClient));
+        setTimeout(() => {
+            connectStompClient();
+        }, 5000);
     });
 
     return ( 
