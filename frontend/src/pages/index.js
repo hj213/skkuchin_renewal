@@ -357,6 +357,16 @@ export default function list(){
     //dialog
     const [openDialog, setOpenDialog] = useState(false);
 
+    useEffect(() => {
+        let app = localStorage.getItem("app");
+        if (app != "true") {
+            localStorage.setItem("app", "true");
+            setOpenDialog(true);
+        } else {
+            setOpenDialog(false);
+        }
+    }, [])
+
     const handleClickOpen = () => {
       setOpenDialog(true);
     };
