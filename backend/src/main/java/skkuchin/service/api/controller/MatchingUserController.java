@@ -90,18 +90,18 @@ public class MatchingUserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "다른 사용자 매칭 관련 정보 조회 완료", info), HttpStatus.OK);
     }
 
-    @PutMapping("/user/{matching}")
+    @PutMapping("/user/status")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> updateMatchingStatus(@PathVariable Boolean matching, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> updateMatchingStatus(@Valid @RequestBody MatchingUserDto.StatusRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        matchingUserService.updateMatchingStatus(user.getId(), matching);
+        matchingUserService.updateMatchingStatus(user.getId(), dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "매칭중 여부 수정 완료", null), HttpStatus.OK);
     }
 
-    @PutMapping("/user/{userId}/{matching}")
+    @PutMapping("/user/status/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateUserMatchingStatus(@PathVariable Long userId, @PathVariable Boolean matching) {
-        matchingUserService.updateMatchingStatus(userId, matching);
+    public ResponseEntity<?> updateUserMatchingStatus(@PathVariable Long userId, @Valid @RequestBody MatchingUserDto.StatusRequest dto) {
+        matchingUserService.updateMatchingStatus(userId, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "다른 사용자 매칭중 여부 수정 완료", null), HttpStatus.OK);
     }
 
