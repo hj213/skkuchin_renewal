@@ -14,12 +14,26 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     const [selectedLevel, setSelectedLevel] = useState(5);
     const [mapCenter, setMapCenter] = useState(null);
 
-    const removePreviousMap = () => {
-        const container = mapContainerRef.current;
-        while (container.hasChildNodes()) {
-          container.removeChild(container.firstChild);
+    // ver1 잔상 해결
+    // const removePreviousMap = () => {
+    //     const container = mapContainerRef.current;
+    //     while (container.hasChildNodes()) {
+    //       container.removeChild(container.firstChild);
+    //     }
+    // };
+    // ver2 번쩍 해결
+    function removePreviousMap() {
+        const mapContainer = document.getElementById("map-container");
+        if (mapContainer) {
+          // 기존 지도의 마커와 이벤트 리스너를 모두 삭제합니다.
+          markers.forEach(marker => {
+            window.kakao.maps.event.removeListener(marker, "click");
+            marker.setMap(null);
+        });
+          // 기존 지도의 내용을 삭제합니다.
+        mapContainer.innerHTML = "";
         }
-    };
+      }
 
     useEffect(() => {
         const mapScript = document.createElement("script");
@@ -55,14 +69,6 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             zoomControl: true
                         };
                     }
-                    // else if(selectedId){
-                    //       options = {
-                    //         center : new window.kakao.maps.LatLng(selectedPlace.ycoordinate, selectedPlace.xcoordinate),
-                    //         level: 5,
-                    //         preventDraggable: true,
-                    //         zoomControl: true,
-                    //       };
-                    // } 
                     else {
                         options = {
                           center : new window.kakao.maps.LatLng(latitude, longitude),
@@ -79,7 +85,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                   
                     let maxMarker = 30; // maximum number of markers to show
                     const markers = [];
-                    
+
                     { places  &&
                     places.forEach((place,index) => {
                         if (index < maxMarker) {
@@ -211,7 +217,6 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         
                     });
                 }
-                    
                 }
             });
             

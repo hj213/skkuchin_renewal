@@ -316,9 +316,12 @@ const PlacePage = () => {
                         <TagList keyword={keyword} onTagClick={onTagClick} />  
                     </div>
                 </Container> 
-                {filteredPlace != null ?
+                {/* {filteredPlace != null ?
                     <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} selectedId={id}/>                  
                     : <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace}/>                  
+                } */}
+                { selectedPlace &&
+                    <Map latitude={selectedPlace.ycoordinate} longitude={selectedPlace.xcoordinate} places={filteredPlace} selectedId={id}/>  
                 }
     
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
@@ -542,10 +545,9 @@ const PlacePage = () => {
                         }
                         </div>
                         {/* 이미지 */}
-                        
+                        <Grid container style={{margin:'-85px 0px 0px 0',  justifyContent: 'center'}}>
                         {allImages && allImages.length > 5 ? (
-                            <Grid container style={{margin:'20px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignContent:'center', textAlign:'center' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignContent:'center', textAlign:'center', borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignContent:'center', textAlign:'center'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
                                 <div key={index} style={{ width: 'calc(100% / 3 - 10px)', margin: '0px', position: 'relative',alignContent:'center', textAlign:'center'}}>
@@ -587,8 +589,8 @@ const PlacePage = () => {
                                 ))}
                             </div>
                             </div>
-                            </Grid>
                         ) : null}
+                        </Grid>
                         
 
                         {/* Content */}
