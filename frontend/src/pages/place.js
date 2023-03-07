@@ -514,7 +514,7 @@ const PlacePage = () => {
                                                     </Typography>
                                                 </Grid>
                                                 { menus ? menus.map((menu, index) => (
-                                                    <Grid container key={index}>
+                                                    <Grid container key={index} style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
                                                         <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
                                                             <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
                                                             {menu.name}  ({addComma(menu.price)}원)
@@ -542,9 +542,8 @@ const PlacePage = () => {
                         }
                         </div>
                         {/* 이미지 */}
-                        
+                        <Grid container style={{margin:'-85px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
                         {allImages && allImages.length > 5 ? (
-                            <Grid container style={{margin:'20px 0px 0px 0',  justifyContent: 'center',borderBottom: '4px solid rgba(217, 217, 217, 0.54)', paddingBottom:'5px'}}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignContent:'center', textAlign:'center' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignContent:'center', textAlign:'center'}}>
                                 {allImages.slice(0, 6).map((image, index) => (
@@ -587,13 +586,12 @@ const PlacePage = () => {
                                 ))}
                             </div>
                             </div>
-                            </Grid>
                         ) : null}
-                        
+                        </Grid>
 
                         {/* Content */}
-                        { selectedPlace && selectedPlace.review_count > 0 ?
-                        <Container component="main" style={{listStyleType: "none", marginTop:'0', pt: '0'}}>
+                        { selectedPlace && selectedPlace.review_count > 0 && 
+                        <Container component="main" style={{listStyleType: "none", mt: '0', pt: '0'}}>
                             <Grid container sx={{pt: '18px'}} style={{justifyContent:'center'}} >
                                 <Grid style={{width:'100%'}}>
                                     <CardContent>
@@ -659,10 +657,7 @@ const PlacePage = () => {
                                 </li>
                                 }
                         </Container>
-                        :
-                        <Grid style={{marginBottom:'100px'}}>
-
-                        </Grid>
+                        
                         }
 
                     </Card>
