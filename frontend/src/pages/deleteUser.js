@@ -78,7 +78,7 @@ export default function deleteUser() {
                 {/* <input type="checkbox" checked={agreement} onChange={() => setAgreement(!agreement)}/> */}
                 {agreement ? <Image width={16} height={16} src={checkbox} onClick={() => setAgreement(false)} />
                 : <Image width={16} height={16} src={checkbox_empty} onClick={() => setAgreement(true)} />}
-                <label style={{fontSize: '9px', paddingLeft: '5px'}}>유의사항을 모두 확인하였으며, 회원탈퇴 시 ~~~에 동의합니다.</label>
+                <label style={{fontSize: '9px', paddingLeft: '5px'}}>유의사항을 모두 확인하였으며, 회원탈퇴 시 모든 활동 정보 삭제에 동의합니다.</label>
                 </div>
 
                 <div style={{margin: '53px 18px 12px'}}>
