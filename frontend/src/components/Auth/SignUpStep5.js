@@ -29,7 +29,7 @@ const SignUpStep5 = (props) => {
               setDialogMsg(message);
             }
           }
-          console.log(message);
+          // console.log(message);
           setDialogOpen(true);
         }));
       }
