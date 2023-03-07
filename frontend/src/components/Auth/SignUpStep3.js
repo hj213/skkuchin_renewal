@@ -103,12 +103,13 @@ export default function SignUpStep3(props) {
 
     const handleNextStep = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
+            if (props.data.major == '화학공학/고분자공학부') props.setData({...props.data, major: '화학공학_고분자공학부'})
             dispatch(register(props.data, ([result, message]) => {
             if (result) {
-                console.log(result);
+                
                 props.handleNextStep();
             } else {
-                console.log(message);
+                
                 //setDialogMsg(message);
                 //setDialogOpen(true);
             }

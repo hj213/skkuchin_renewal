@@ -9,6 +9,7 @@ import back from '../image/arrow_back_ios.png';
 export default function userAgreement() {
     const router = useRouter();
     const prevPage = router.query.page;
+    const pathUsername = router.query.pathUsername;
     const content = `
   제 1 조 (목적)
 
@@ -288,7 +289,14 @@ export default function userAgreement() {
   }, [])
 
   const backClick = () => {
-    router.push(`/${prevPage}`);
+    if (prevPage == 'register') {
+      router.push({
+        pathname: '/register',
+        query: {src: 'agreement', username: pathUsername}
+    })
+    } else {
+      router.push(`/${prevPage}`);
+    }
   }
     return (
     <ThemeProvider theme={theme}>

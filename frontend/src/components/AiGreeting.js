@@ -85,7 +85,7 @@ const AiGreeting = () => {
 
     useEffect(() => {
         if (userInfo) {
-            setStatus(userInfo.status);
+            setStatus(userInfo.matching);
         }
     }, [userInfo])
     
@@ -110,7 +110,7 @@ const AiGreeting = () => {
                 } else {
 
                 }
-                console.log(result, message);
+                // console.log(result, message);
             }))
         }
         setStatus(!status);
@@ -369,15 +369,11 @@ const AiGreeting = () => {
                     </Typography>
                 </DialogContent>
                 <DialogActions style={{justifyContent:'center'}}>
-                    
-                  
                     <Button style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>
                         <Typography style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}} onClick={handleMoveProfile}>
                             매칭 프로필 설정하기
                         </Typography>
                     </Button> 
-                   
-
                 </DialogActions>
             </Dialog>
         </ThemeProvider>

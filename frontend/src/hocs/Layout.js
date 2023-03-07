@@ -20,7 +20,7 @@ const Layout = ({title, content, children}) => {
 
     stompClient.heartbeat.outgoing = 0;
     stompClient.heartbeat.incoming = 0;
-    // stompClient.debug = null;
+    stompClient.debug = null;
 
     useEffect(() => {
         stompClient.connect('guest', 'guest');
@@ -35,7 +35,7 @@ const Layout = ({title, content, children}) => {
     }, [])
 
     sockJS.addEventListener('close', () => {
-        console.log("WebSocket disconnected, attempting to reconnect...");
+        // console.log("WebSocket disconnected, attempting to reconnect...");
         stompClient.connect('guest', 'guest');
         dispatch(set_stomp_client(stompClient));
     });

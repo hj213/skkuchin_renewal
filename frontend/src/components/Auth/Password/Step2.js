@@ -19,8 +19,8 @@ const Step2 = (props) => {
 
     const handleResend = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            console.log(props.email)
-            console.log("test")
+            // console.log(props.email)
+            // console.log("test")
             dispatch(password_email_send(props.email, ([result, message]) => {
                 if (result) {
                     setDialogMsg("이메일을 재전송했습니다.");
