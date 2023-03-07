@@ -94,8 +94,9 @@ const SignUpStep5 = (props) => {
                         아래 확인 버튼을 눌러주세요
             </Typography>
             <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '97px', lineHeight: '25px', color: '#505050'}}>
-                        모바일인 경우 <br/>
-                        [킹고M 어플&gt;메뉴&gt;킹고포털&gt;G-Mail]에서 확인 가능합니다
+                        {/* 모바일인 경우 <br/>
+                        [킹고M 어플&gt;메뉴&gt;킹고포털&gt;G-Mail]에서 확인 가능합니다 */}
+                        [성균관대 홈페이지 로그인 {'>'} 우측 상단 Google 메일]에서 확인 가능합니다
             </Typography>
             <Link component="button" variant="body2" color="#BABABA" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
