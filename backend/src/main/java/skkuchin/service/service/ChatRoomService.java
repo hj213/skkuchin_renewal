@@ -42,6 +42,9 @@ public class ChatRoomService {
 
     @Transactional
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
+        if (user.getUsername().equals(dto.getUsername())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
         ChatRoom chatRoom = dto.toEntity(user);
         String id = UUID.randomUUID().toString();
         AppUser user2 = userRepo.findByUsername(dto.getUsername());
@@ -54,7 +57,7 @@ public class ChatRoomService {
     @Transactional
     public void user2Accept(String roomId,AppUser user, ResponseType responseType){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (!chatRoom.getUser2().equals(user)) {
+        if (chatRoom.getUser2().getId() != user.getId()) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
@@ -64,7 +67,6 @@ public class ChatRoomService {
 
     @Transactional
     public List<ChatRoomDto.Response> getChatRoomList(String username){
-
         AppUser user = userRepo.findByUsername(username);
         List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(user.getId());
 
@@ -98,10 +100,13 @@ public class ChatRoomService {
         return chatRoomDto;
     }
 
-    @Transactional
-    public AppUser getOtherUser(ChatRoom chatRoom, String username){
+    private AppUser getOtherUser(ChatRoom chatRoom, String username){
         AppUser user = userRepo.findByUsername(username);
-        return chatRoomRepo.findOtherUser(chatRoom, user.getId());
+        if (chatRoom.getUser1().equals(user)) {
+            return chatRoom.getUser2();
+        } else {
+            return chatRoom.getUser1();
+        }
     }
 
     private int unReadMessage(String roomId, String username){
@@ -110,10 +115,13 @@ public class ChatRoomService {
 
     private ChatMessage getLatestMessage(ChatRoom chatRoom){
         List<ChatMessage> chatMessages = chatMessageRepo.findByLatestTime(chatRoom.getRoomId());
-        if(chatMessages.size() == 0) {
-            throw new CustomRuntimeException("새로운 채팅방이 개설되었습니다");
+        ChatMessage chatMessage = new ChatMessage();
+        if (chatMessages.size() == 0) {
+            chatMessage.setMessage("새로운 채팅방이 개설되었습니다");
+            chatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
+            return chatMessage;
         }
-        ChatMessage chatMessage = chatMessages.get(0);
+        chatMessage = chatMessages.get(0);
         return chatMessage;
     }
 

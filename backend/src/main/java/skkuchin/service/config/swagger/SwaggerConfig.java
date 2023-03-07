@@ -198,7 +198,7 @@ public class SwaggerConfig {
             .select()
             .apis(RequestHandlerSelectors.
                     basePackage("skkuchin.service.api.controller"))
-            .paths(PathSelectors.ant("/chat/**")).build();
+            .paths(PathSelectors.ant("/api/chat/**")).build();
     }
 
     @Bean

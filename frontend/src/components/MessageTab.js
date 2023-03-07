@@ -154,7 +154,7 @@ export default function MessageTab() {
                                 }}
                               >
                                 <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
-                                  { chatRoom.message_count === 0 ? NEW : chatRoom.message_count }
+                                  { chatRoom.message_count === 0 ? "NEW" : chatRoom.message_count }
                                 </Typography>
                               </div>
                             </Stack>
