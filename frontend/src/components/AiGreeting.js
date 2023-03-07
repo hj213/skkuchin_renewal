@@ -254,7 +254,7 @@ const AiGreeting = () => {
                 {/* 토글 스위치 */}
                 <FormControlLabel
                     style={{paddingTop:"2px"}}
-                    onClick={(e) => console.log(e)}
+                    // onClick={(e) => console.log(e)}
                     control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} defaultChecked />}
                 />
 
