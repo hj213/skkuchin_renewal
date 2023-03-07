@@ -192,7 +192,8 @@ export const change_status_info = (status, callback) => async dispatch => {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Authorization' : `Bearer ${access}`,
+                'Content-Type': 'application/json'
             },
             body: body
         });
