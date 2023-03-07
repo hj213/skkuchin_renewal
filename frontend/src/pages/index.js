@@ -355,7 +355,7 @@ export default function list(){
     }
 
     //dialog
-    const [openDialog, setOpenDialog] = useState(true);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleClickOpen = () => {
       setOpenDialog(true);
