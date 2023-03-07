@@ -169,9 +169,9 @@ export default function makeProfile(){
 
             dispatch(load_matching_info(([result, message]) => {
                 if (result) {
-                    alert(message);
+                    // alert(message);
                 } else {
-                    alert(message);
+                    // alert(message);
                 }
             }));
 
@@ -598,10 +598,10 @@ export default function makeProfile(){
         
         dispatch(change_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
-                    alert(message);
+                    // alert(message);
                     router.back();
                 } else {
-                    alert(message);
+                    // alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
                 }

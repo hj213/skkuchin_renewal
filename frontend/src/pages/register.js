@@ -18,6 +18,7 @@ const RegisterPage = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const src = router.query.src;
     const pathUsername = router.query.username;
+    const pathEmail = router.query.email;
 
     const [step, setStep] = useState(1);
     const [data, setData] = useState({
@@ -51,6 +52,9 @@ const RegisterPage = () => {
             setStep(4);
         } else if (src == 'emailDone') {
             setStep(6);
+        } else if (src == '인증') {
+            setData({...data, username: pathUsername, email: pathEmail})
+            setStep(5);
         }
     }, [src])
     

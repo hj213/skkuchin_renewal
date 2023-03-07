@@ -26,7 +26,7 @@ export default function editProfile() {
     const [editImage, setEditImage] = useState(false);
 
     const majorList = [
-        '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공',
+        '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공', '소비자학과',
         '글로벌경제학과', '통계학과', '건설환경공학부', '건축학과', '기계공학부',
         '나노공학과', '시스템경영공학과', '신소재공학부', '화학공학/고분자공학부', '국어국문학과', '독어독문학과',
         '러시아어문학과', '문헌정보학과', '사학과', '영어영문학과', '중어중문학과',
@@ -96,7 +96,7 @@ export default function editProfile() {
                                 <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick}  placeholder="blur" layout='fixed'/>
                             </Grid>
                             <Grid item style={{marginLeft:'30%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>프로필 수정</Typography>
+                                <Typography style={{margin:'0px 0px 0px 10px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>프로필 수정</Typography>
                             </Grid>
                         </Grid>
         </Container>}

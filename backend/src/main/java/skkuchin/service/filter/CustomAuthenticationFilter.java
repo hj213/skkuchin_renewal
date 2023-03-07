@@ -83,7 +83,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         } else if (!user.getUser().getEmailAuth()) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, "인증이 필요한 유저입니다", null));
+            new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, user.getUser().getEmail(), null));
         }
 
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());

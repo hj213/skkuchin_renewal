@@ -31,7 +31,6 @@ public class MessageController {
 
     private final RabbitTemplate template;
     private final ChatRoomService chatRoomService;
-    private final UserRepo userRepo;
     private final ChatMessageService chatMessageService;
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
@@ -39,30 +38,31 @@ public class MessageController {
 
     @MessageMapping("chat.chatMessage.{chatRoomId}")
     public void chatMessage(@DestinationVariable String chatRoomId, Message<?> message){
-        ChatRoom chatRoom = chatRoomService.findChatroom(chatRoomId);
+        ChatRoom chatRoom = chatRoomService.findChatRoom(chatRoomId);
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String sessionId = accessor.getSessionId();
         ChatSession chatSession = chatSessionService.findSession(sessionId);
-        String username = chatSession.getSender();
-        AppUser user1 = userRepo.findByUsername(username);
-        AppUser user2 = chatRoomService.findUser2(chatRoom);
+        String username = chatSession.getUsername();
+
+        chatRoomService.updateReadStatus(chatRoom, username);
+
+        AppUser user1 = chatRoom.getUser1();
+        AppUser user2 = chatRoom.getUser2();
         UserDto.Response user1Dto= new UserDto.Response(user1);
         UserDto.Response user2Dto = new UserDto.Response(user2);
-        ChatRoomDto.blockResponse blockResponse = chatRoomService.getRoomDto(chatRoom);
+
+        ChatRoomDto.settingResponse settingResponse = chatRoomService.getSettingResponse(chatRoom);
         List<ChatMessageDto.Response> chatMessages = chatMessageService.getAllMessage(chatRoom);
 
-       if(chatRoomService.findUser1(chatRoom).getUsername().equals(username)){
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user1",blockResponse);
+       if (chatRoom.getUser1().getUsername().equals(username)) {
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+chatRoomId +"user1",settingResponse);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user1",chatMessages);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",user1Dto);
-
-       }
-       else{
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"block."+chatRoomId +"user2",blockResponse);
-           template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user2",chatMessages);
            template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user1",user2Dto);
-
+       } else {
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+chatRoomId +"user2",settingResponse);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"chat."+chatRoomId +"user2",chatMessages);
+           template.convertAndSend(CHAT_EXCHANGE_NAME,"user."+chatRoomId +"user2",user1Dto);
         }
     }
 

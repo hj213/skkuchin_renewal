@@ -6,11 +6,8 @@ import {
     SEND_CHAT_MESSAGE_SUCCESS,
     SEND_CHAT_MESSAGE_FAIL,
     GET_REALTIME_MESSAGE_SUCCESS,
-    GET_REALTIME_MESSAGE_FAIL,
-    GET_REALTIME_BLOCK_SUCCESS,
-    GET_REALTIME_BLOCK_FAIL,
+    GET_REALTIME_BLOCK_ALARM_SUCCESS,
     GET_REALTIME_USER_SUCCESS,
-    GET_REALTIME_USER_FAIL
 }
     from './types';
 
@@ -87,12 +84,12 @@ export const get_realtime_otherUser = (room_id, user_number, stompClient) => asy
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };
 
-export const get_realtime_block = (room_id, user_number, stompClient) => async dispatch => {
+export const get_realtime_block_alarm = (room_id, user_number, stompClient) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -103,11 +100,11 @@ export const get_realtime_block = (room_id, user_number, stompClient) => async d
         });
     }
 
-    const subscription = stompClient.subscribe(`/exchange/chat.exchange/block.${room_id}${user_number}`,(content) => {
+    const subscription = stompClient.subscribe(`/exchange/chat.exchange/setting.${room_id}${user_number}`,(content) => {
         const data = JSON.parse(content.body);
         
         dispatch({
-            type: GET_REALTIME_BLOCK_SUCCESS,
+            type: GET_REALTIME_BLOCK_ALARM_SUCCESS,
             payload: data
         })
 
@@ -118,7 +115,7 @@ export const get_realtime_block = (room_id, user_number, stompClient) => async d
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };
@@ -149,7 +146,7 @@ export const get_realtime_message = (room_id, user_number, stompClient)  => asyn
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`);
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };

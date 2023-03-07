@@ -6,7 +6,7 @@ import { search_places } from "../actions/place/place";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -59,7 +59,9 @@ export default function list(){
     const [startY, setStartY] = useState(0);
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
-
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [changed, setChanged] = useState(false);
     const [tagsId, setTagsId] = useState([
         {id: '학생 할인', exclusiveGroup: null},
         {id: '스페셜', exclusiveGroup: null},
@@ -115,15 +117,22 @@ export default function list(){
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
                 setFilteredPlace(null);
+                setHeight(0);
             } else {
                 // 키워드 확인
+                dispatch(clear_search_results());
                 dispatch(search_places(keyword));
+                
                 if((open.bool) == false) {
-                    if(keyword==''){
-                        setHeight(0);
-                    } else if( router.query.length == 1 || filteredPlace?.length == 1){
+                    if( router.query.length == 1 || filteredPlace?.length == 1){
                         setHeight(187)
-                    } else if(WINDOW_HEIGHT < 750){
+                    } 
+                    else if( filteredPlace?.length == 0 ){
+                        setHeight(0);
+                        // setAlertOpen(true);
+                        // setAlertMessage('검색 결과가 없습니다.');
+                    }
+                    else if(WINDOW_HEIGHT < 750){
                         setHeight(187)
                     } else {
                         setHeight(345)
@@ -133,15 +142,14 @@ export default function list(){
                         cardVisibility: 'visible',
                         iconVisibility: 'visible'
                     });
+                    
                 }
             }
         }
     }, [keyword]);
 
-
     //li 개수를 반환: (li 개수 * 높이)를 계산하여, 리스트 개수가 적을 경우 계속 스크롤 하여 여백이 생기지 않도록 설정하기 위함
     useEffect(() => {
-
         if(filteredPlace) {
             setNumOfLi(filteredPlace.length);
         }
@@ -150,10 +158,26 @@ export default function list(){
     useEffect(()=>{
         if(numOfLi == 1){
             setHeight(187)
+        } else if( numOfLi == 0) {
+            setHeight(0)
         } else {
-            return
+            if(WINDOW_HEIGHT < 750){
+                setHeight(187)
+            } else {
+                setHeight(345)
+            }
         }
+    
     },[numOfLi])
+
+    useEffect(()=>{
+        setHeight('0')
+        setKeyword('');
+        setTags([]);
+        setFilteredPlace(null);
+        setIsTall(false);
+        dispatch(clear_search_results());
+    },[user?.toggle])
 
     // 카드 리셋 
     const handleReset = () => {
@@ -163,6 +187,8 @@ export default function list(){
         setHeight('0');
         setPreventScroll('');
         setIsTall(false);
+        setAlertOpen(false);
+        setAlertMessage('');
     }
 
     const handleTouchStart = (event) => {
@@ -323,6 +349,7 @@ export default function list(){
         }
     }
 
+
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -339,7 +366,7 @@ export default function list(){
             
              {/* 태그 목록 */}
              
-            <AlertMessage/>
+            {/* <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/> */}
              
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
             

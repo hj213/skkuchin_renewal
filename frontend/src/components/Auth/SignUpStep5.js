@@ -113,13 +113,7 @@ const SignUpStep5 = (props) => {
         <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
                 <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
-                      {/* {dialogMsg.includes('\n') == true ? 
-                      <>
-                      {dialogMsg.split('\n')[0]}<br/>
-                      {dialogMsg.split('\n')[1]}
-                      </>
-                      :
-                      {dialogMsg}} */}
+                      
                       {(dialogMsg||'').split('\n').length > 1 ? 
                       <>
                       {dialogMsg.split('\n')[0]}<br/>

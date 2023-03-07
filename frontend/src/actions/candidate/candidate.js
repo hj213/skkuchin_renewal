@@ -1,12 +1,13 @@
 import Cookies from 'js-cookie';
 import { AUTHENTICATED_FAIL } from '../auth/types';
-import { API_URL } from '../../config/index';
+import { API_URL } from '../../config';
 import { request_refresh } from '../auth/auth';
 import { 
     LOAD_CANDIDATE_SUCCESS,
     LOAD_CANDIDATE_FAIL
 }
     from './types';
+
 
 export const load_candidate = (callback) => async dispatch => {
     await dispatch(request_refresh());
@@ -39,7 +40,7 @@ export const load_candidate = (callback) => async dispatch => {
             if (callback) callback([true, apiRes.message]);
             
             
-        }else {
+        } else {
             dispatch({
                 type: LOAD_CANDIDATE_FAIL
             })

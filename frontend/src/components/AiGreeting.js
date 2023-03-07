@@ -5,7 +5,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
 import { useState, useEffect } from 'react';
 import {Container} from '@mui/material';
-import { load_matching_info } from '../actions/matchingUser/matchingUser';
+import { change_status_info, load_matching_info } from '../actions/matchingUser/matchingUser';
 
 // 스위치
 import { styled } from '@mui/material/styles';
@@ -46,6 +46,7 @@ const AiGreeting = () => {
     const user = useSelector(state => state.auth.user);
     const userInfo = useSelector(state => state.matchingUser.matchingUser);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const [matching, setMatching] = useState(false);
 
     const src ={
         DEFAULT1: profile1,
@@ -81,6 +82,12 @@ const AiGreeting = () => {
             }));
         }
     }, [dispatch]);
+
+    useEffect(() => {
+        if (userInfo) {
+            setMatching(userInfo.matching);
+        }
+    }, [userInfo])
     
     //매칭프로필 정보 받아오기
     const [load, setLoad] = useState('');
@@ -95,8 +102,22 @@ const AiGreeting = () => {
         }
     }
 
+    const handleMatching = () => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(change_status_info(!matching, ([result, message]) => {
+                if (result) {
+
+                } else {
+
+                }
+                console.log(result, message);
+            }))
+        }
+        setMatching(!matching);
+    }
+
     const IOSSwitch = styled((props) => (
-        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onClick={handleMatching} checked={matching} />
         ))(({ theme }) => ({
             width: 40,
             height: 22,
@@ -233,6 +254,7 @@ const AiGreeting = () => {
                 {/* 토글 스위치 */}
                 <FormControlLabel
                     style={{paddingTop:"2px"}}
+                    onClick={(e) => console.log(e)}
                     control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} defaultChecked />}
                 />
 
@@ -303,7 +325,7 @@ const AiGreeting = () => {
                         {userInfo.mbti}
                         </Typography>
                             {(userInfo.keywords) != null?
-                                ((userInfo.keywords).slice(0,2).map((interest, index)=>(
+                                ((userInfo.keywords).slice(0,2).map((interest =>
                                     <Typography style={{
                                         color:"white", 
                                         background:"#BABABA",

@@ -35,7 +35,7 @@ const SignUpStep6 = (props) => {
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} placeholder="blur" layout='fixed' />
+                                {/* <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} placeholder="blur" layout='fixed' /> */}
                             </Grid>
                             <Grid item style={{marginLeft:'35%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}></Typography>
@@ -55,7 +55,7 @@ const SignUpStep6 = (props) => {
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>이메일 인증</Typography>
         </header> */}
         <div style={{ width: '100%', textAlign: 'center', marginTop: `calc(${remainHeight} * 0.45)` }}>
-            <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
+            <Image width={131} height={101} src={logo} placeholder="blur" layout='fixed' />
             <Typography sx={{fontSize: '25px', fontWeight: '400', mb: '37px'}}>인증 완료!</Typography>
         </div>
 

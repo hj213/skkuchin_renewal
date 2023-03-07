@@ -10,7 +10,11 @@ import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.domain.User.Major;
+import skkuchin.service.domain.User.Profile;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -20,9 +24,10 @@ public class ChatRoomDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static  class RoomRequest{
+    public static  class RoomRequest {
 
         @JsonProperty
+        @NotBlank
         private String username;
 
         public ChatRoom toEntity(AppUser user){
@@ -39,21 +44,17 @@ public class ChatRoomDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static  class ReactionRequest{
-
+        @NotNull
         private ResponseType reaction;
-
     }
 
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static  class BooleanRequest{
-
+        @NotNull
         private Boolean reaction;
-
     }
-
-
 
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -62,6 +63,10 @@ public class ChatRoomDto {
         private String roomId;
 
         private String message;
+        private Major major;
+        private String nickname;
+        private Profile image;
+
         @JsonProperty
         private Long user1Id;
         @JsonProperty
@@ -78,7 +83,7 @@ public class ChatRoomDto {
         private LocalDateTime messageTime;
         @JsonProperty
         private int messageCount;
-        public Response(ChatRoom chatroom, ChatMessage chatMessage,int messageCount) {
+        public Response(ChatRoom chatroom, ChatMessage chatMessage, int messageCount, AppUser otherUser) {
             this.messageTime = chatMessage.getDate();
             this.message = chatMessage.getMessage();
             this.roomId = chatroom.getRoomId();
@@ -87,22 +92,30 @@ public class ChatRoomDto {
             this.messageCount = messageCount;
             this.isUser1AlarmOn = chatroom.isUser1AlarmOn();
             this.isUser2AlarmOn = chatroom.isUSer2AlarmOn();
+            this.major = otherUser.getMajor();
+            this.nickname = otherUser.getNickname();
+            this.image = otherUser.getImage();
         }
 
     }
 
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class blockResponse{
+    public static class settingResponse{
         @JsonProperty
         private boolean isUser1Blocked;
-
         @JsonProperty
         private boolean isUser2Blocked;
+        @JsonProperty
+        private boolean isUser1AlarmOn;
+        @JsonProperty
+        private boolean isUser2AlarmOn;
 
-        public blockResponse(ChatRoom chatRoom){
+        public settingResponse(ChatRoom chatRoom){
             this.isUser1Blocked = chatRoom.isUser1Blocked();
             this.isUser2Blocked = chatRoom.isUser2Blocked();
+            this.isUser1AlarmOn = chatRoom.isUser1AlarmOn();
+            this.isUser2AlarmOn = chatRoom.isUSer2AlarmOn();
         }
     }
 
@@ -114,28 +127,33 @@ public class ChatRoomDto {
         @JsonProperty
         private Long user2Id;
         @JsonProperty
+        private String roomId;
+        @JsonProperty
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdDate;
 
         public userResponse(ChatRoom chatRoom){
             this.user1Id = chatRoom.getUser1().getId();
             this.user2Id = chatRoom.getUser2().getId();
+            this.roomId = chatRoom.getRoomId();
             this.createdDate = chatRoom.getExpireDate().minusDays(2);
         }
     }
 
 
     @Getter
+    @Setter
     public static class DebeziumDto{
         private Long id;
         private String expire_date;
-        private String is_user1_blocked;
-        private String is_user2_blocked;
+        private Boolean is_user1_blocked;
+        private Boolean is_user2_blocked;
+        private Boolean is_user1_alarm_on;
+        private Boolean is_user2_alarm_on;
         private String room_id;
         private String response;
-        private String room_name;
-        private Long sender_id;
-        private Long receiver_id;
+        private Long user1_id;
+        private Long user2_id;
     }
 
 

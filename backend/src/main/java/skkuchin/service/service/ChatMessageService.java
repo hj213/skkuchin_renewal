@@ -1,20 +1,14 @@
 package skkuchin.service.service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.dto.ChatMessageDto;
-import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.ChatRepo;
+import skkuchin.service.repo.ChatMessageRepo;
 import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
@@ -26,116 +20,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ChatMessageService {
-
     private final ChatRoomRepo chatRoomRepo;
-    private final ChatRepo chatRepo;
-    private final UserRepo userRepo;
-
+    private final ChatMessageRepo chatMessageRepo;
 
     @Transactional
     public void write(AppUser user, ChatMessageDto.Request dto){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(dto.getRoomId());
         ChatMessage chatMessage = dto.toEntity(chatRoom,user);
-        chatRepo.save(chatMessage);
-    }
-
-
-
-
-
-    @Transactional
-    public List<ChatRoomDto.Response> getChatList(String sender){
-
-        AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(user.getId());
-        List<ChatRoomDto.Response> chatRoomsFindByUserId = chatRooms
-                .stream()
-                .map(chatRoom -> new ChatRoomDto.Response(chatRoom,getLatestMessage(chatRoom),
-                        unReadMessage(chatRoom.getRoomId(),sender)))
-                .collect(Collectors.toList());
-        Collections.sort(chatRoomsFindByUserId,new DateComparator().reversed());
-
-        return chatRoomsFindByUserId;
+        chatMessageRepo.save(chatMessage);
     }
 
     @Transactional
-    public List<ChatRoomDto.userResponse> getAlarmList(String sender){
-
-        AppUser user = userRepo.findByUsername(sender);
-        List<ChatRoom> chatRooms = chatRoomRepo.findByUser2Id(user.getId());
-        List<ChatRoomDto.userResponse> chatRoom = chatRooms
-                .stream()
-                .map(message -> new ChatRoomDto.userResponse(message))
-                .collect(Collectors.toList());
-        Collections.sort(chatRoom,new AlarmListDateComparator().reversed());
-
-        return chatRoom;
-    }
-
-
-
-    @Transactional
-    public int unReadMessage(String roomId, String sender){
-        List<ChatMessage> chatMessages = chatRepo.findByReadStatus(roomId, sender);
-        return chatMessages.size();
-    }
-
-
-
-
-
-    public String getUserNameFromJwt(String jwt){
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-        JWTVerifier verifier = JWT.require(algorithm).build();
-        DecodedJWT decodedJWT = verifier.verify(jwt);
-        String username = decodedJWT.getSubject();
-        return username;
-    }
-
     public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
-        List<ChatMessageDto.Response> messages = chatRepo.findByChatRoom(chatRoom)
+        List<ChatMessageDto.Response> messages = chatMessageRepo.findByChatRoom(chatRoom)
                 .stream()
                 .map(message -> new ChatMessageDto.Response(message,chatRoom))
                 .collect(Collectors.toList());
-        Collections.sort(messages,new MessageDateComparator().reversed());
+        Collections.sort(messages, new MessageDateComparator().reversed());
         return messages;
-    }
-
-
-
-
-    private ChatMessage getLatestMessage(ChatRoom chatRoom){
-        ChatMessage chatMessage = new ChatMessage() ;
-        if(chatRepo.findByLatestMessageTime(chatRoom.getRoomId()).size() == 0){
-            chatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
-        }
-        else{
-            chatMessage = chatRepo.findByLatestMessageTime(chatRoom.getRoomId()).get(0);
-
-        }
-        return chatMessage;
-    }
-
-    private class DateComparator implements Comparator<ChatRoomDto.Response> {
-        @Override
-        public int compare(ChatRoomDto.Response f1, ChatRoomDto.Response f2) {
-            if (f1.getMessageTime().isAfter(f2.getMessageTime()) ) {
-                return 1;
-            } else  {
-                return -1;
-            }
-        }
-    }
-
-    private class AlarmListDateComparator implements Comparator<ChatRoomDto.userResponse> {
-        @Override
-        public int compare(ChatRoomDto.userResponse f1, ChatRoomDto.userResponse f2) {
-            if (f1.getCreatedDate().isAfter(f2.getCreatedDate()) ) {
-                return 1;
-            } else  {
-                return -1;
-            }
-        }
     }
 
     private class MessageDateComparator implements Comparator<ChatMessageDto.Response> {

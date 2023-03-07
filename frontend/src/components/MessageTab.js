@@ -51,8 +51,7 @@ export default function MessageTab() {
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const user = useSelector(state => state.auth.user);
-  const userInfo = useSelector(state => state.chatRoom.userInfo);
-  const chatMessages = useSelector(state => state.chatRoom.chatMessages);
+  const chatRooms = useSelector(state => state.chatRoom.chatRooms);
   const chatRequests = useSelector(state => state.chatRequest.chatRequest);
   const stompClient = useSelector(state => state.stompClient.stompClient);
 
@@ -92,39 +91,39 @@ export default function MessageTab() {
       </Box>
       <TabPanel value={value} index={0}>
         {
-          chatMessages &&
+          chatRooms &&
           <>
-            { chatMessages.length > 0 ?
+            { chatRooms.length > 0 ?
               <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
-                { chatMessages.map((chatMessage, index)=>(
+                { chatRooms.map((chatRoom, index)=>(
                     <li key={index}>
                       <Link href={{
                         pathname: '/chat',
                         query: {
-                          room_id: chatMessage.room_id,
-                          user_number: chatMessage.user1_id === user.id ? 'user1' : 'user2'
+                          room_id: chatRoom.room_id,
+                          user_number: chatRoom.user1_id === user.id ? 'user1' : 'user2'
                         }
                       }}>
                         <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
                             <Grid xs={2}>
-                                <Avatar alt="" src={ userInfo.image } style={{ width: '55px', height: '55px' }}/>
+                                <Avatar alt="" src={ chatRoom.image } style={{ width: '55px', height: '55px' }}/>
                             </Grid>
                             <Grid xs={8}>
                                 <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
                                     <div style={{display:'flex'}}>
                                       <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
-                                        {userInfo.nickname}
+                                        {chatRoom.nickname}
                                       </Typography>
                                       <Typography sx={{color:"#BABABA",paddingLeft:'5px',fontSize: '9px', fontWeight:'500', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                                        {userInfo.major}
+                                        {chatRoom.major}
                                       </Typography>
                                       {/* 알림끄기 연결 시 조건문으로 수정 */}
                                       <Box sx={{paddingLeft:'5px', lineHeight: '120%'}}>
                                       <Image
                                         src={
-                                          userInfo.user1_id === user.id
-                                            ? !userInfo.is_user1_alarm_on && notiOff
-                                            : !userInfo.is_user2_alarm_on && notiOff
+                                          chatRoom.user1_id === user.id
+                                            ? !chatRoom.is_user1_alarm_on && notiOff
+                                            : !chatRoom.is_user2_alarm_on && notiOff
                                         }
                                         width="12px"
                                         height="12px"
@@ -133,14 +132,14 @@ export default function MessageTab() {
                                     </div>
                                     <Typography sx={{paddingTop:"5px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
                                         {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
-                                        {chatMessage.message}
+                                        {chatRoom.message}
                                     </Typography>
                                 </Stack>
                             </Grid>
                             <Grid xs={2}>
                             <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                               <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                                {chatMessage.message_time}
+                                {chatRoom.message_time}
                               </Typography>
                               <div
                                 style={{
@@ -155,7 +154,7 @@ export default function MessageTab() {
                                 }}
                               >
                                 <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
-                                  { chatMessage.message_count === 0 ? NEW : chatMessage.message_count }
+                                  { chatRoom.message_count === 0 ? NEW : chatRoom.message_count }
                                 </Typography>
                               </div>
                             </Stack>
@@ -194,7 +193,7 @@ export default function MessageTab() {
               <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
                 { chatRequests.map((chatRequest, index)=>(
                   <li >
-                    <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
+                    <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
                         <Grid xs={2}>
                             <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
                         </Grid>

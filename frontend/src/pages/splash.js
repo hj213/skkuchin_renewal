@@ -8,7 +8,8 @@ import loading0 from '../image/loading0.png';
 import loading1 from '../image/loading1.png';
 import loading2 from '../image/loading2.png';
 import loading3 from '../image/loading3.png';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { load_user_callback } from '../actions/auth/auth';
 
 const loadingImages = [loading0, loading1, loading2, loading3];
 
@@ -17,8 +18,10 @@ export default function splash(){
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const [loadingIndex, setLoadingIndex] = useState(0);
     const router = useRouter();
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        /*
         setTimeout(() => {
             if (typeof window !== 'undefined') {
                 if (isAuthenticated) {
@@ -27,7 +30,30 @@ export default function splash(){
                     router.push('/nextSplash');
                 }
             }
-        }, 10000);
+        }, 10000);*/
+
+        setTimeout(() => {
+            if (dispatch && dispatch !== null && dispatch !== undefined) {
+                dispatch(load_user_callback(([result, message]) => {
+                    if (result) {
+                        router.push('/');
+                    } else {
+                        if (message == 'authenticated_fail') {
+                            let isUser = localStorage.getItem("user");
+                            if (isUser == "true") {
+                                router.push('/login')
+                            } else {
+                                localStorage.setItem("user", "true")
+                                router.push('/nextSplash')
+                            }
+                        } else {
+                            router.push('/')
+                        }
+                    }
+                }))
+            }
+        }, 3000);
+
     }, []);
 
     useEffect(() => {
@@ -47,8 +73,8 @@ export default function splash(){
                 <div style={{ width:'100%', height:'100%', textAlign:'center', position:'absolute', display:'block', justifyContent:'center', marginTop:height}}>
                     <Image src={logo} width={169} height={185}/>
                 </div>
-                <div style={{width:'100%', textAlign:'center', position:'absolute', bottom:35}}>
-                    <Image src={loadingImages[loadingIndex] }width={133} height={56} layout='fixed' />
+                <div style={{width:'100%', textAlign:'center', position:'absolute', bottom:55}}>
+                    <Image src={loadingImages[loadingIndex] }width={133} height={30} layout='fixed' />
                 </div>
             </Container>
         </ThemeProvider>

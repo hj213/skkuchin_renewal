@@ -59,14 +59,13 @@ const LoginPage = () => {
                             pathname: '/register', 
                             query: {src: '이메일', username: username}
                         })
-                    } else if (message == '') {
-                        /*
+                    } else if (typeof(message) == 'string' && message.includes('@')) {
                         router.push({
                             pathname: '/register',
-                            query: {}
-                        })*/
+                            query: {src: '인증', username: username, email: message}
+                        })
                     }
-                    if (typeof(message) == 'string') {
+                    else if (typeof(message) == 'string') {
                         setError(message);
                     }
                 }
@@ -105,9 +104,9 @@ const LoginPage = () => {
                         alignItems: 'center',
                         textAlign: 'center'
                         }}
-                        style={{marginTop: `calc(${remainHeight} * 0.55)`}}
+                        style={{marginTop: `calc(${remainHeight} * 0.54)`}}
                     >
-                    <Image width={169} height={185} src={logo} placeholder="blur" layout='fixed' />
+                    <Image width={145} height={160} src={logo} placeholder="blur" layout='fixed' />
                     <div style={{ display: 'flex', width: '100%' }}>
                         <form onSubmit={onSubmit} style={{ width: '100%' }}>
                             <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.22)` }}>
@@ -145,10 +144,10 @@ const LoginPage = () => {
                                 )
                             }
                             <div style={{display: 'flex', marginTop: '10px', marginLeft: '24px'}}>
-                                {autoLogin ? 
+                                {/* {autoLogin ? 
                                     <Image onClick={() => setAutoLogin(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' /> : 
                                     <Image onClick={() => setAutoLogin(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' />}
-                                <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>자동로그인</span>
+                                <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>자동로그인</span> */}
                                 {rememberUsername ? 
                                     <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' /> : 
                                     <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' />}

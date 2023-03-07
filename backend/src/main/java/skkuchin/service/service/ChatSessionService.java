@@ -16,25 +16,16 @@ public class ChatSessionService {
     public ChatSession findSession(String senderSessionId){
         ChatSession chatSession = chatSessionRepo.findBySessionId(senderSessionId);
         return chatSession;
-
     }
 
-
-    public void setSessionId(ChatRoom chatRoom,String sessionId, String sender){
-
-        ChatSession chatSession = new ChatSession() ;
+    public void setSessionId(String sessionId, String username){
+        ChatSession chatSession = new ChatSession();
         chatSession.setSessionId(sessionId);
-        chatSession.setChatRoom(chatRoom);
-        chatSession.setSender(sender);
+        chatSession.setUsername(username);
         chatSessionRepo.save(chatSession);
-
-
-
-
     }
 
     public void deleteSession(String sessionId){
-
         ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId) ;
         chatSessionRepo.delete(chatSession);
     }

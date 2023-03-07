@@ -43,7 +43,9 @@ const chatPage = () => {
     const messages = useSelector(state => state.chatMessage.messages);
     const otherUser = useSelector(state => state.chatMessage.otherUser);
     const isUser1Blocked = useSelector(state => state.chatMessage.isUser1Blocked);
-    const isUser2Blocked = useSelector(state => state.chatMessage.isUser2Blocked); 
+    const isUser2Blocked = useSelector(state => state.chatMessage.isUser2Blocked);
+    const isUser1AlarmOn = useSelector(state => state.chatMessage.isUser1AlarmOn);
+    const isUser2AlarmOn = useSelector(state => state.chatMessage.isUser2AlarmOn); 
     const stompClient = useSelector(state => state.stompClient.stompClient);
     
 
@@ -144,7 +146,6 @@ const chatPage = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Layout>
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
                 <Card style={{
@@ -506,7 +507,6 @@ const chatPage = () => {
                         <Image src={send} width={41} height={41} layout="fixed"/>
                     </Grid>
                 </Grid>
-            </Layout>
         </ThemeProvider>
     )
 }
