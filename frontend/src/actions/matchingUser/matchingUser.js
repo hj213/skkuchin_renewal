@@ -201,9 +201,10 @@ export const change_status_info = (status, callback) => async dispatch => {
         const apiRes = await res.json();
 
         if(res.status === 200){
-            dispatch({
+            await dispatch({
                 type: CHANGE_MATCHING_STATUS_SUCCESS
             })
+            dispatch(load_matching_info());
             
             if (callback) callback([true, apiRes.message]);
             
@@ -259,9 +260,10 @@ export const change_matching_info = (gender, keywords, introduction, mbti, callb
         const apiRes = await res.json();
 
         if(res.status === 200){
-            dispatch({
+            await dispatch({
                 type: CHANGE_MATCHING_INFO_SUCCESS
             })
+            dispatch(load_matching_info());
             
             if (callback) callback([true, apiRes.message]);
             
