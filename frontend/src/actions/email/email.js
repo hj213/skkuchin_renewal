@@ -75,7 +75,6 @@ export const signup_email_confirm = (email, authNum, callback) => async dispatch
         });
 
         const apiRes = await res.json();
-        console.log(apiRes);
         
         if (res.status === 200) {
             dispatch({
@@ -261,7 +260,6 @@ export const password_email_confirm = (email, authNum, callback) => async dispat
         });
 
         const apiRes = await res.json();
-        console.log(apiRes);
         
         if (res.status === 200) {
             dispatch({

@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 export default function policy() {
     const router = useRouter();
     const prevPage = router.query.page;
+    const pathUsername = router.query.pathUsername;
     const content = `
   스꾸친은 개인정보 보호법에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
 
@@ -112,7 +113,14 @@ export default function policy() {
   const contentArr = content.split("\n")
 
     const backClick = () => {
-        router.push(`/${prevPage}`);
+        if (prevPage == 'register') {
+            router.push({
+              pathname: '/register',
+              query: {src: 'agreement', username: pathUsername}
+          })
+          } else {
+            router.push(`/${prevPage}`);
+          }
     }
     return (
     <ThemeProvider theme={theme}>

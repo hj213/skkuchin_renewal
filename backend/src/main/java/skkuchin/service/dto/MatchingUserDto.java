@@ -46,6 +46,12 @@ public class MatchingUserDto {
     }
 
     @Getter
+    public static class StatusRequest {
+        @NotNull
+        private Boolean status;
+    }
+
+    @Getter
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {

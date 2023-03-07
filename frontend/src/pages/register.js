@@ -55,6 +55,9 @@ const RegisterPage = () => {
         } else if (src == '인증') {
             setData({...data, username: pathUsername, email: pathEmail})
             setStep(5);
+        } else if (src == 'agreement') {
+            setData({...data, username: pathUsername})
+            setStep(4);
         }
     }, [src])
     

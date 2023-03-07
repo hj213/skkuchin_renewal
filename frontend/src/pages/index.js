@@ -18,6 +18,8 @@ import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
+import CircularProgress from '@mui/material/CircularProgress';
+
 // 상단바
 import UpperBar from "../components/UpperBar"
 import AlertMessage from "../components/Alert";
@@ -106,7 +108,7 @@ export default function list(){
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
-
+            
             if(tagName.includes(router.query.keyword))
                 tags.push(router.query.keyword);
             router.query.keyword = '';
@@ -551,7 +553,11 @@ export default function list(){
                                     </Grid>
                                     </Link>
                                 </li>
-                        )) : null }
+                        )) : 
+                            <div style={{textAlign:'center', marginTop: '25%', color:"#FFE885"}}>
+                                <CircularProgress color="inherit"/>
+                            </div>
+                         }
                         </ul>
                     </div>
                 </Card>

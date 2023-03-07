@@ -9,11 +9,14 @@ import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
 import { register } from "../../actions/auth/auth";
 import { signup_email_send } from '../../actions/email/email';
+import { useRouter } from 'next/router';
 
 const SignUpStep4 = (props) => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const [emailId, setEmailId] = useState('');
     const [domain, setDomain] = useState('@g.skku.edu');
+    const src = router.query.src;
 
     const [checkState, setCheckState] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -78,7 +81,7 @@ const SignUpStep4 = (props) => {
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>이메일 인증</Typography>
         </header> */}
         <div style={{ width: '100%', textAlign: 'center' }}>
-            <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
+            <Image width={141} height={101} src={logo} placeholder="blur" layout='fixed' />
             <Typography sx={{fontSize: '25px', fontWeight: '500', mb: '37px'}}>성균관대학교 인증</Typography>
             <Typography sx={{fontSize: '12px', fontWeight: '500', mb: '55px', lineHeight: '25px', color: '#505050'}}>스꾸친(SKKU_CHIN)은 <br/>
                         <u>성균관대학교 기반 매칭 서비스</u>를 제공합니다 <br/>
@@ -123,7 +126,7 @@ const SignUpStep4 = (props) => {
               :  
                 <Image src={uncheck} onClick={handleCheck} width={15.83} height={15.83} placeholder="blur" layout='fixed' />
             }
-          <Typography sx={{fontSize: '10px', fontWeight: '500', ml: '5.58px'}}>개인정보처리방침 및 이용약관에 동의합니다</Typography>
+          <Typography sx={{fontSize: '10px', fontWeight: '500', ml: '5.58px'}}><span onClick={() => router.push({pathname: '/policy', query: {page: 'register', pathUsername: props.data.username}})} style={{textDecoration: 'underline'}}>개인정보처리방침</span> 및 <span onClick={() => router.push({pathname: '/userAgreement', query: {page: 'register', pathUsername: props.data.username}})} style={{textDecoration: 'underline'}}>이용약관</span>에 동의합니다</Typography>
         </div>
         <div style={{display: 'grid', width: '90%', alignItems: 'center', justifyItems: 'center'}}>
           {emailId != '' && checkState ?

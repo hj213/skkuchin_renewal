@@ -5,7 +5,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
 import { useState, useEffect } from 'react';
 import {Container} from '@mui/material';
-import { load_matching_info } from '../actions/matchingUser/matchingUser';
+import { change_status_info, load_matching_info } from '../actions/matchingUser/matchingUser';
 
 // 스위치
 import { styled } from '@mui/material/styles';
@@ -46,6 +46,7 @@ const AiGreeting = () => {
     const user = useSelector(state => state.auth.user);
     const userInfo = useSelector(state => state.matchingUser.matchingUser);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const [status, setStatus] = useState(false);
 
     const src ={
         DEFAULT1: profile1,
@@ -81,6 +82,12 @@ const AiGreeting = () => {
             }));
         }
     }, [dispatch]);
+
+    useEffect(() => {
+        if (userInfo) {
+            setStatus(userInfo.matching);
+        }
+    }, [userInfo])
     
     //매칭프로필 정보 받아오기
     const [load, setLoad] = useState('');
@@ -95,8 +102,22 @@ const AiGreeting = () => {
         }
     }
 
+    const handleMatching = () => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(change_status_info(!status, ([result, message]) => {
+                if (result) {
+
+                } else {
+
+                }
+                // console.log(result, message);
+            }))
+        }
+        setStatus(!status);
+    }
+
     const IOSSwitch = styled((props) => (
-        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onClick={handleMatching} checked={status} />
         ))(({ theme }) => ({
             width: 40,
             height: 22,
@@ -233,6 +254,7 @@ const AiGreeting = () => {
                 {/* 토글 스위치 */}
                 <FormControlLabel
                     style={{paddingTop:"2px"}}
+                    onClick={(e) => console.log(e)}
                     control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} defaultChecked />}
                 />
 
@@ -347,15 +369,11 @@ const AiGreeting = () => {
                     </Typography>
                 </DialogContent>
                 <DialogActions style={{justifyContent:'center'}}>
-                    
-                  
                     <Button style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>
                         <Typography style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}} onClick={handleMoveProfile}>
                             매칭 프로필 설정하기
                         </Typography>
                     </Button> 
-                   
-
                 </DialogActions>
             </Dialog>
         </ThemeProvider>

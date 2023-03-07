@@ -75,14 +75,13 @@ function TabPanel(props) {
                         </div>
                         <Typography sx={{paddingTop:"10px",fontSize: '13px', fontWeight:'700', lineHeight: '0%', verticalAlign: 'top',}} align="left">
                             {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
-                                스꾸맵 리뷰 작성 방법 안내
+                                스꾸친이 새로이 출시되었습니다!
                         </Typography>
                     </Stack>
                 </Grid>
                 <Grid xs={2}>
                 <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                     <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                        10분전
                     </Typography>
                     <div
                         style={{
@@ -104,7 +103,7 @@ function TabPanel(props) {
                 </Grid>
             </Grid>
             </li>
-            <li>
+            {/* <li>
             <Link href='/chat'>
             <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
                     <Grid xs={1} style={{marginTop:'13px', paddingLeft:'5px'}}>
@@ -118,7 +117,7 @@ function TabPanel(props) {
                             </Typography>
                         </div>
                         <Typography sx={{paddingTop:"10px",fontSize: '13px', fontWeight:'700', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                            {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
+                            텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨
                                 스꾸친 이용 가이드 및 주의사항
                         </Typography>
                     </Stack>
@@ -148,7 +147,7 @@ function TabPanel(props) {
                 </Grid>
             </Grid>
             </Link>
-            </li>
+            </li> */}
             
             </ul>
         </TabPanel>
@@ -170,14 +169,13 @@ function TabPanel(props) {
                         </div>
                         <Typography sx={{paddingTop:"10px",fontSize: '13px', fontWeight:'700', lineHeight: '0%', verticalAlign: 'top',}} align="left">
                             {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
-                                스꾸맵 리뷰 작성 이벤트 안내 ~3월 22일까지
+                                스꾸친 이벤트가 곧 시작됩니다!
                         </Typography>
                     </Stack>
                 </Grid>
                 <Grid xs={2}>
                 <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                     <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                        10분전
                     </Typography>
                     <div
                         style={{
@@ -199,7 +197,7 @@ function TabPanel(props) {
                 </Grid>
             </Grid>
             </li>
-            <li>
+            {/* <li>
             <Link href='/chat'>
             <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
                 <Grid xs={1} style={{marginTop:'13px', paddingLeft:'5px'}}>
@@ -213,7 +211,7 @@ function TabPanel(props) {
                             </Typography>
                         </div>
                         <Typography sx={{paddingTop:"10px",fontSize: '13px', fontWeight:'700', lineHeight: '0%', verticalAlign: 'top',}} align="left">
-                            {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
+                            텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨
                                 스꾸친 회원가입 이벤트 안내
                         </Typography>
                     </Stack>
@@ -243,7 +241,7 @@ function TabPanel(props) {
                 </Grid>
             </Grid>
             </Link>
-            </li>
+            </li> */}
             </ul>
         </TabPanel>
         </Box>
