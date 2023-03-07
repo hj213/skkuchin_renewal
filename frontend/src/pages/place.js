@@ -589,8 +589,8 @@ const PlacePage = () => {
                                 ))}
                             </div>
                             </div>
-                            </Grid>
                         ) : null}
+                        </Grid>
                         
 
                         {/* Content */}
