@@ -18,6 +18,8 @@ import SearchBox from "../components/SearchBox";
 import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
+import CircularProgress from '@mui/material/CircularProgress';
+
 // 상단바
 import UpperBar from "../components/UpperBar"
 import AlertMessage from "../components/Alert";
@@ -106,7 +108,7 @@ export default function list(){
         // 0-2 검색 결과 목록 -> 1 목록보기
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
-
+            
             if(tagName.includes(router.query.keyword))
                 tags.push(router.query.keyword);
             router.query.keyword = '';
@@ -437,7 +439,7 @@ export default function list(){
                     : null
                     }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} ref={listRef} >
-                        {filteredPlace? filteredPlace.map((item) => (
+                        {filteredPlace ? filteredPlace.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
                                     <Grid container style={{margin: '15px 0px 0px 0px'}}>
@@ -551,7 +553,11 @@ export default function list(){
                                     </Grid>
                                     </Link>
                                 </li>
-                        )) : null }
+                        )) : 
+                            <div style={{textAlign:'center', marginTop: '25%'}}>
+                                <CircularProgress />
+                            </div>
+                         }
                         </ul>
                     </div>
                 </Card>
