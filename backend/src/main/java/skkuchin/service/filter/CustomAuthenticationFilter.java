@@ -80,7 +80,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, "이메일 등록이 필요한 유저입니다", null));
-        } else if (!user.getUser().getEmailAuth()) {
+        } else if (!user.getUser().getEmailAuth() || user.getUser().getUserRoles().size() == 0) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), new CMRespDto<>(-1, user.getUser().getEmail(), null));
