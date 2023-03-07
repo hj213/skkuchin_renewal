@@ -10,22 +10,22 @@ const Friends = () => {
     const user = useSelector(state => state.auth.user); 
     const candidate = useSelector(state => state.candidate.candidate);
 
-    useEffect(() => {
-        //dispatch(load_candidate());
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-        dispatch(load_candidate(([result, message]) => {
-          if (result) {
+    // useEffect(() => {
+    //     //dispatch(load_candidate());
+    //     if (dispatch && dispatch !== null && dispatch !== undefined) {
+    //     dispatch(load_candidate(([result, message]) => {
+    //       if (result) {
 
-          } else {
-            if (typeof(message) == 'string') {
-              setDialogMsg(message);
-            }
-          }
-        //   console.log(message);
-          setDialogOpen2(true);
-        }));
-      }
-      }, [dispatch]);
+    //       } else {
+    //         if (typeof(message) == 'string') {
+    //           setDialogMsg(message);
+    //         }
+    //       }
+    //     //   console.log(message);
+    //       setDialogOpen2(true);
+    //     }));
+    //   }
+    //   }, [dispatch]);
     
 
     const [height, setHeight] = useState('383px');
