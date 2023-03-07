@@ -4,10 +4,6 @@ import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, Di
 import { displayMBTI } from './MBTIList';
 import { load_candidate } from '../../actions/candidate/candidate'
 import { request_chat } from '../../actions/chat/chatRoom';
-import fireIcon from '../../image/fire.png'
-
-import Image from 'next/image'
-
 const Friends = () => {
     const dispatch = useDispatch();
 
@@ -60,27 +56,9 @@ const Friends = () => {
 
     return (
         <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
-            {/* 0307 */}
-            <Grid style={{position:'absolute', zIndex:'99', backgroundColor: 'rgba(255, 255, 255, 0.85)', width:'95%', marginTop:'-20px', textAlign:'center',height:"100%", paddingTop:'140px'}}>
-                    <div style={{display:'flex', textAlign:'center', justifyContent: 'center', alignItems: 'center' }}>
-                    <Typography style={{fontWeight:'700', fontSize:'20px',marginRight:'5px'}}>
-                        COMING SOON
-                    </Typography>
-                    <Image src={fireIcon} width={25} height={25}/>
-                    </div>
-                    <br />
-                    <Typography style={{fontWeight:'700', fontSize:'18px'}}>
-                        AI 매칭 서비스는 프로필 설정 인원이
-                        <br>
-                        </br>
-                        100명 이상일 경우 활성화 됩니다!
-                    </Typography>
-                </Grid>
         { candidate ? 
         candidate.map((person, index) => (
-            
         <Card key={index} variant="outlined" sx={{height: height, width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
-            
             <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
                 {displayMBTI(person.mbti)}
                 <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{person !== null && person.nickname}</Typography>
@@ -141,7 +119,6 @@ const Friends = () => {
                         </div>
                     </DialogActions>
                 </Dialog>
-                
              </Grid>
         </Card> ))
         : dialogMsg ? 

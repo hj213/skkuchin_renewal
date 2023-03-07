@@ -6,11 +6,9 @@ import { load_matching_info } from '../actions/matchingUser/matchingUser';
 
 import Friends from '../components/Matching/Friends';
 
-import Image from 'next/image'
 import UpperBar from '../components/UpperBar';
 import AiGreeting from '../components/AiGreeting'
 import { useRouter } from 'next/router';
-import fireIcon from '../image/fire.png'
 
 const MatchPage = () => {
     const router = useRouter();
@@ -28,7 +26,7 @@ const MatchPage = () => {
             <UpperBar />
             <AiGreeting />
             
-            <Container sx={{p: '0 15px', mt: '0', position:'relative'}}>
+            <Container sx={{p: '0 15px', mt: '0'}}>
                 {/* 상대 프로필 */}
                 <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
                     <Grid item>
@@ -37,7 +35,7 @@ const MatchPage = () => {
                 </Grid>
             </Container>
 
-            <Grid style={{marginLeft:'15px', marginRight:'15px', position:'relative'}}>
+            <Grid style={{marginLeft:'15px', marginRight:'15px'}}>
                 <Typography style={{fontSize:'18px', fontWeight:'700'}}>
                     더 많은 사람들과 만나고 싶다면?
                 </Typography>
@@ -131,7 +129,6 @@ const MatchPage = () => {
                         </div>
                     </Grid>
                 </Grid>
-
             </Grid>
         </ThemeProvider>
     )
