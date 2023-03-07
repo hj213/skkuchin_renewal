@@ -21,7 +21,7 @@ const Friends = () => {
               setDialogMsg(message);
             }
           }
-          console.log(message);
+        //   console.log(message);
           setDialogOpen2(true);
         }));
       }

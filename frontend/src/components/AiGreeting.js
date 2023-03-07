@@ -110,7 +110,7 @@ const AiGreeting = () => {
                 } else {
 
                 }
-                console.log(result, message);
+                // console.log(result, message);
             }))
         }
         setStatus(!status);

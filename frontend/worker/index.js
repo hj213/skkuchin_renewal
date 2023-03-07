@@ -9,7 +9,7 @@ self.addEventListener('message', async event => {
         caches.open('others').then(cache =>
             cache.match(event.source.url).then(res => {
                 if (res === undefined) {
-                    console.log(event.source.url+" 페이지가 캐싱되었습니다")
+                    // console.log(event.source.url+" 페이지가 캐싱되었습니다")
                     return cache.add(event.source.url)
                 }
             })

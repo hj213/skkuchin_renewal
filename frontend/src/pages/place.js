@@ -176,7 +176,7 @@ const PlacePage = () => {
                 iconVisibility:'visible'
             });
         } 
-        console.log(scroll);
+        // console.log(scroll);
     };
 
 

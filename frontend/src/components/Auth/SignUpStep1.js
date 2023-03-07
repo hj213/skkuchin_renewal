@@ -34,7 +34,6 @@ const SignUpStep1 = (props) => {
             if (typeof(message) == 'string') {
                 setUsernameMsg(message);
             }
-            console.log(message);
             //setUsernameMsg(message);
         }))
     }
