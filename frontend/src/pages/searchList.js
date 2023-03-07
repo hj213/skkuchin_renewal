@@ -99,12 +99,12 @@ export default function searchList(){
         if(event.target.id == 'map' ){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             
-            dispatch(search_places('!'));
+            dispatch(clear_search_results());
             router.push({
                 pathname: '/',
                 query: { keyword : passValue, length: filteredPlace.length }
               })
-            
+          
         } else{
             setPassValue('')
             dispatch(search_places('!')); //초기화위해서
