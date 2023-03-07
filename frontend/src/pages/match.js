@@ -6,9 +6,12 @@ import { load_matching_info } from '../actions/matchingUser/matchingUser';
 
 import Friends from '../components/Matching/Friends';
 
+import fireIcon from '../image/fire.png'
+import Image from 'next/image'
 import UpperBar from '../components/UpperBar';
 import AiGreeting from '../components/AiGreeting'
 import { useRouter } from 'next/router';
+import { displayMBTI } from "../components/Matching/MBTIList";
 
 const MatchPage = () => {
     const router = useRouter();
@@ -29,10 +32,59 @@ const MatchPage = () => {
             <Container sx={{p: '0 15px', mt: '0'}}>
                 {/* 상대 프로필 */}
                 <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
+                <Grid style={{position:'absolute', zIndex:'99', backgroundColor: 'rgba(255, 255, 255, 0.85)', width:'95%', marginTop:'-20px', textAlign:'center',height:"430px",}}>
+                        <div style={{display:'flex', textAlign:'center', justifyContent: 'center', alignItems: 'center', marginTop:'140px' }}>
+                        <Typography style={{fontWeight:'700', fontSize:'20px',marginRight:'5px'}}>
+                            COMING SOON
+                        </Typography>
+                        <Image src={fireIcon} width={25} height={25}/>
+                        </div>
+                        <br />
+                        <Typography style={{fontWeight:'700', fontSize:'18px'}}>
+                            AI 매칭 서비스는 프로필 설정 인원이
+                            <br>
+                            </br>
+                            100명 이상일 경우 활성화 됩니다!
+                        </Typography>
+                    </Grid>
                     <Grid item>
-                        <Friends />
+                        {/* <Friends /> */}
+                        <Card variant="outlined" sx={{ width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
+            <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
+                {displayMBTI('ENFP')}
+                <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}> 김꾸친 </Typography>
+                <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
+                    <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>율전</Typography>&nbsp;
+                    경영학과 &nbsp;/&nbsp; 
+                    23 학번 &nbsp;/&nbsp; 
+                    남
+                </Grid>
+                
+                <Grid item sx={{display: 'flex'}}>
+                    <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
+                        ENFP
+                    </Grid>
+                    <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
+                        축구
+                    </Grid>
+                    <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
+                        영화
+                    </Grid>
+                </Grid >
+                <Grid item sx={{width: '185px', height: '48px',textAlign: 'center', pb: '8px'}}>
+                    <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>
+                        AI 매칭은 매칭 프로필이 100명 이상 등록되었을 때 활성화 됩니다!
+                        <br/>
+                    </Typography>
+                </Grid> 
+                <Button sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                    밥약 신청하기
+                </Button>
+             </Grid>
+        </Card>
                     </Grid>
                 </Grid>
+
             </Container>
 
             <Grid style={{marginLeft:'15px', marginRight:'15px'}}>
