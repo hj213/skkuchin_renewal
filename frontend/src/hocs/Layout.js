@@ -10,7 +10,6 @@ import { API_URL } from '../config';
 
 const Layout = ({title, content, children}) => {
     
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
     const router = useRouter();
     const [show, setShow] = useState(false);
@@ -26,15 +25,7 @@ const Layout = ({title, content, children}) => {
     useEffect(() => {
         stompClient.connect('guest', 'guest');
         dispatch(set_stomp_client(stompClient));
-        /*
-        if (!isAuthenticated) {
-            dispatch(load_user());
-            router.push('/splash');
-        }*/
-
-        console.log("load");
         router.push('/splash')
-        //dispatch(load_user())
     }, []);
 
     useEffect(() => {
@@ -42,6 +33,12 @@ const Layout = ({title, content, children}) => {
             setShow(true);
         }, 2000);
     }, [])
+
+    sockJS.addEventListener('close', () => {
+        console.log("WebSocket disconnected, attempting to reconnect...");
+        stompClient.connect('guest', 'guest');
+        dispatch(set_stomp_client(stompClient));
+    });
 
     return ( 
             <>
