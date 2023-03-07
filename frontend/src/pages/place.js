@@ -316,9 +316,12 @@ const PlacePage = () => {
                         <TagList keyword={keyword} onTagClick={onTagClick} />  
                     </div>
                 </Container> 
-                {filteredPlace != null ?
+                {/* {filteredPlace != null ?
                     <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} selectedId={id}/>                  
                     : <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace}/>                  
+                } */}
+                { selectedPlace &&
+                    <Map latitude={selectedPlace.ycoordinate} longitude={selectedPlace.xcoordinate} places={filteredPlace} selectedId={id}/>  
                 }
     
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
