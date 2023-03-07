@@ -6,7 +6,7 @@ import { search_places } from "../actions/place/place";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert } from '@mui/material';
+import { CssBaseline, styled,Button,Dialog,  ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogContentText, DialogContent } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -19,6 +19,9 @@ import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
+import downexplain from '../image/downexplain.jpg';
+import downebutton from '../image/downbutton.png';
+
 
 // 상단바
 import UpperBar from "../components/UpperBar"
@@ -351,11 +354,34 @@ export default function list(){
         }
     }
 
+    //dialog
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const handleClickOpen = () => {
+      setOpenDialog(true);
+    };
+  
+    const handleClose = () => {
+      setOpenDialog(false);
+    };
+    
+    const TransparentDialog = styled(Dialog)({
+        '& .MuiPaper-root': {
+          backgroundColor: 'transparent',
+          boxShadow:'none',
+          alignItems: 'center',
+        },
+      });
 
     return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
-            
+            <TransparentDialog  open={openDialog} onClose={handleClose}>
+                    <Image src={downexplain} style={{borderRadius:"10px"}}/>
+                    <Typography onClick={handleClose} style={{fontSize:'12px', fontWeight:'500', width:'100px', marginTop:'15px', backgroundColor:'transparent', color:'white', borderBottom:'1px solid white', textAlign: 'center'}}>
+                        모바일 웹에서 볼게요
+                    </Typography>
+            </TransparentDialog>
             <UpperBar />
             <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'600px', overflow: 'hidden'}}>
                 
@@ -447,7 +473,7 @@ export default function list(){
                                             <CardContent style={{padding:'0px'}}>
                                                 <Grid container spacing={2} style={{margin:'0px',}}>
                                                     {isSmallScreen ?
-                                                        <Grid item style={{marginTop:'15px',  padding:'0px 0px 0px 0px'}}>
+                                                        <Grid item style={{marginTop:'15px',  padding:'0px 6px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '16px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                                 {item.name}
                                                             </Typography>
@@ -471,7 +497,7 @@ export default function list(){
                                                         }
                                                         <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
                                                     </Grid> */}
-                                                    <Grid item style={{padding:'0px 0px 0px 8px'}}>
+                                                    <Grid item style={{padding:'0px 0px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                                 {item.detail_category}
                                                             </Typography>
@@ -561,6 +587,7 @@ export default function list(){
                         </ul>
                     </div>
                 </Card>
+                
             </Container> 
             </div>
     </ThemeProvider>
