@@ -39,7 +39,7 @@ public class EmailService {
     private String host;
     @Value("${admin-mail.id}")
     private String address;
-    private static final Long MAX_EXPIRE_TIME = 5L; //authNum 생성 5분 후 만료
+    private static final Long MAX_EXPIRE_TIME = 1L; //authNum 생성 5분 후 만료
     @Autowired
     JavaMailSenderImpl emailSender;
     private final EmailAuthRepo emailAuthRepo;
@@ -254,7 +254,7 @@ public class EmailService {
                     .authNum(authNum)
                     .type(type)
                     .isAuth(false)
-                    .expireDate(LocalDateTime.now().plusMinutes(MAX_EXPIRE_TIME))
+                    .expireDate(LocalDateTime.now().plusMonths(MAX_EXPIRE_TIME))
                     .build());
         emailSender.send(emailForm);
     }

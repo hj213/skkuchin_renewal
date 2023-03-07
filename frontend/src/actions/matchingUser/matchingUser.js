@@ -266,18 +266,12 @@ export const change_matching_info = (gender, keywords, introduction, mbti, callb
             dispatch(load_matching_info());
             
             if (callback) callback([true, apiRes.message]);
-            
-            
-        }else {
+        } else {
             dispatch({
                 type: CHANGE_MATCHING_INFO_FAIL
-            })
-            
-            if (callback) callback([false, apiRes.message]);
-            
-            
+            }) 
+            if (callback) callback([false, apiRes.message]); 
         }
-
     } catch (error) {
         console.log(error);
         dispatch({
