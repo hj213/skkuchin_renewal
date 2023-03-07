@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
 import { displayMBTI } from './MBTIList';
 import { load_candidate } from '../../actions/candidate/candidate'
-// import { request_chat } from '../../actions/chat/chatRoom';
+import { request_chat } from '../../actions/chat/chatRoom';
 const Friends = () => {
     const dispatch = useDispatch();
 
