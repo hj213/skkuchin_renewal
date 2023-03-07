@@ -7,8 +7,8 @@ import theme from '../theme/theme';
 import { useState } from 'react';
 import {Container} from '@mui/material';
 import mainLogo from '../image/upperBar/mainLogo.png'
-import messageIcon from '../image/upperBar/message.png'
-import notiIcon from '../image/upperBar/notification.png'
+import messageIcon from '../image/upperBar/message_X.png'
+import notiIcon from '../image/upperBar/notification_X.png'
 import Image from 'next/image'
 import { useEffect } from "react";
 
