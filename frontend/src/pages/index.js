@@ -439,7 +439,7 @@ export default function list(){
                     : null
                     }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} ref={listRef} >
-                        {filteredPlace ? filteredPlace.map((item) => (
+                        {filteredPlace == null ? filteredPlace?.map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
                                     <Grid container style={{margin: '15px 0px 0px 0px'}}>
@@ -554,8 +554,8 @@ export default function list(){
                                     </Link>
                                 </li>
                         )) : 
-                            <div style={{textAlign:'center', marginTop: '25%'}}>
-                                <CircularProgress />
+                            <div style={{textAlign:'center', marginTop: '25%', color:"#FFE885"}}>
+                                <CircularProgress color="inherit"/>
                             </div>
                          }
                         </ul>
