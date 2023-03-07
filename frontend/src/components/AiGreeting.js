@@ -85,7 +85,7 @@ const AiGreeting = () => {
 
     useEffect(() => {
         if (userInfo) {
-            setStatus(userInfo.status);
+            setStatus(userInfo.matching);
         }
     }, [userInfo])
     
