@@ -82,9 +82,9 @@ public class MatchingUserService {
     }
 
     @Transactional
-    public void updateMatchingStatus(Long userId, Boolean matching) {
+    public void updateMatchingStatus(Long userId, MatchingUserDto.StatusRequest dto) {
         AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
-        user.setMatching(matching);
+        user.setMatching(dto.getStatus());
         userRepo.save(user);
     }
 
