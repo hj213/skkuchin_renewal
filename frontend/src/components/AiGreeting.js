@@ -69,19 +69,19 @@ const AiGreeting = () => {
         ESFP:ESFP,
     }
     
-    // useEffect(() => {
-    //     if (dispatch && dispatch !== null && dispatch !== undefined) {
-    //         dispatch(load_matching_info(([result, message]) => {
-    //             if (result) {
-    //                 // alert(message);
-    //                 setLoad(true);
-    //             } else {
-    //                 // alert(message);
-    //                 setLoad(false);
-    //             }
-    //         }));
-    //     }
-    // }, [dispatch]);
+    useEffect(() => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_matching_info(([result, message]) => {
+                if (result) {
+                    // alert(message);
+                    setLoad(true);
+                } else {
+                    // alert(message);
+                    setLoad(false);
+                }
+            }));
+        }
+    }, [dispatch]);
 
     useEffect(() => {
         if (userInfo) {
