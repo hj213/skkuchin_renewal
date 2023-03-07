@@ -172,7 +172,7 @@ export const load_matching_info = (callback) => async dispatch => {
     }
 }
 
-export const change_status_info = (matching, callback) => async dispatch => {
+export const change_status_info = (status, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -182,14 +182,19 @@ export const change_status_info = (matching, callback) => async dispatch => {
             type: AUTHENTICATED_FAIL
         });
     }
+
+    const body = JSON.stringify({
+        status
+    });
     
     try {
-        const res = await fetch(`${API_URL}/api/matching/user/${matching}`,{
+        const res = await fetch(`${API_URL}/api/matching/user/status`,{
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Authorization' : `Bearer ${access}`
-            }
+            },
+            body: body
         });
 
         const apiRes = await res.json();

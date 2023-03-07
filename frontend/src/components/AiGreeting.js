@@ -46,7 +46,7 @@ const AiGreeting = () => {
     const user = useSelector(state => state.auth.user);
     const userInfo = useSelector(state => state.matchingUser.matchingUser);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const [matching, setMatching] = useState(false);
+    const [status, setStatus] = useState(false);
 
     const src ={
         DEFAULT1: profile1,
@@ -85,7 +85,7 @@ const AiGreeting = () => {
 
     useEffect(() => {
         if (userInfo) {
-            setMatching(userInfo.matching);
+            setStatus(userInfo.status);
         }
     }, [userInfo])
     
@@ -104,7 +104,7 @@ const AiGreeting = () => {
 
     const handleMatching = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(change_status_info(!matching, ([result, message]) => {
+            dispatch(change_status_info(!status, ([result, message]) => {
                 if (result) {
 
                 } else {
@@ -113,11 +113,11 @@ const AiGreeting = () => {
                 console.log(result, message);
             }))
         }
-        setMatching(!matching);
+        setStatus(!status);
     }
 
     const IOSSwitch = styled((props) => (
-        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onClick={handleMatching} checked={matching} />
+        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onClick={handleMatching} checked={status} />
         ))(({ theme }) => ({
             width: 40,
             height: 22,
