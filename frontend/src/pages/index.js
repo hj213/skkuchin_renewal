@@ -355,7 +355,7 @@ export default function list(){
     }
 
     //dialog
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openDialog, setOpenDialog] = useState(true);
 
     const handleClickOpen = () => {
       setOpenDialog(true);
@@ -377,8 +377,8 @@ export default function list(){
     <ThemeProvider theme={theme}>
       <CssBaseline />
             <TransparentDialog  open={openDialog} onClose={handleClose}>
-                    <Image src={downexplain} style={{borderRadius:"20px"}}/>
-                    <Typography style={{fontSize:'12px', fontWeight:'500', width:'100px', marginTop:'5px', backgroundColor:'transparent', color:'white', borderBottom:'1px solid white', textAlign: 'center'}}>
+                    <Image src={downexplain} style={{borderRadius:"10px"}}/>
+                    <Typography onClick={handleClose} style={{fontSize:'12px', fontWeight:'500', width:'100px', marginTop:'15px', backgroundColor:'transparent', color:'white', borderBottom:'1px solid white', textAlign: 'center'}}>
                         모바일 웹에서 볼게요
                     </Typography>
             </TransparentDialog>
@@ -473,7 +473,7 @@ export default function list(){
                                             <CardContent style={{padding:'0px'}}>
                                                 <Grid container spacing={2} style={{margin:'0px',}}>
                                                     {isSmallScreen ?
-                                                        <Grid item style={{marginTop:'15px',  padding:'0px 0px 0px 0px'}}>
+                                                        <Grid item style={{marginTop:'15px',  padding:'0px 6px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '16px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                                 {item.name}
                                                             </Typography>
@@ -497,7 +497,7 @@ export default function list(){
                                                         }
                                                         <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
                                                     </Grid> */}
-                                                    <Grid item style={{padding:'0px 0px 0px 8px'}}>
+                                                    <Grid item style={{padding:'0px 0px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                                 {item.detail_category}
                                                             </Typography>
