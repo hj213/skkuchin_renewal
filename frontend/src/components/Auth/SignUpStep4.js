@@ -9,11 +9,14 @@ import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
 import { register } from "../../actions/auth/auth";
 import { signup_email_send } from '../../actions/email/email';
+import { useRouter } from 'next/router';
 
 const SignUpStep4 = (props) => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const [emailId, setEmailId] = useState('');
     const [domain, setDomain] = useState('@g.skku.edu');
+    const src = router.query.src;
 
     const [checkState, setCheckState] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -123,7 +126,7 @@ const SignUpStep4 = (props) => {
               :  
                 <Image src={uncheck} onClick={handleCheck} width={15.83} height={15.83} placeholder="blur" layout='fixed' />
             }
-          <Typography sx={{fontSize: '10px', fontWeight: '500', ml: '5.58px'}}>개인정보처리방침 및 이용약관에 동의합니다</Typography>
+          <Typography sx={{fontSize: '10px', fontWeight: '500', ml: '5.58px'}}><span onClick={() => router.push({pathname: '/policy', query: {page: 'register', pathUsername: props.data.username}})} style={{textDecoration: 'underline'}}>개인정보처리방침</span> 및 <span onClick={() => router.push({pathname: '/userAgreement', query: {page: 'register', pathUsername: props.data.username}})} style={{textDecoration: 'underline'}}>이용약관</span>에 동의합니다</Typography>
         </div>
         <div style={{display: 'grid', width: '90%', alignItems: 'center', justifyItems: 'center'}}>
           {emailId != '' && checkState ?
