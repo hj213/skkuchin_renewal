@@ -2,17 +2,25 @@ package skkuchin.service.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.ChatRoomService;
 
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -21,9 +29,25 @@ import skkuchin.service.service.ChatRoomService;
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
+    @GetMapping("/request")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getRequestUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        List<Long> requestedId = chatRoomService.getRequestUser(user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "요청 보낸 유저 조회 완료", requestedId), HttpStatus.OK);
+    }
+
     @PostMapping("")
-    public ResponseEntity<?> makeRoom(@RequestBody ChatRoomDto.RoomRequest dto,
+    public ResponseEntity<?> makeRoom(@Valid @RequestBody ChatRoomDto.RoomRequest dto,
+                                      BindingResult bindingResult,
                                       @AuthenticationPrincipal PrincipalDetails principalDetails){
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("상대방 아이디를 입력해주시기 바랍니다", errorMap);
+        }
          AppUser user = principalDetails.getUser();
          chatRoomService.makeRoom(user,dto);
          return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
@@ -31,8 +55,16 @@ public class ChatRoomController {
 
     @PutMapping("/request/{roomId}")
     public ResponseEntity<?> receiverReaction(@PathVariable String roomId,
-                                              @RequestBody ChatRoomDto.ReactionRequest dto,
+                                              @Valid @RequestBody ChatRoomDto.ReactionRequest dto,
+                                              BindingResult bindingResult,
                                               @AuthenticationPrincipal PrincipalDetails principalDetails){
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("수락 혹은 거부를 선택해주시기 바랍니다", errorMap);
+        }
         AppUser user = principalDetails.getUser();
         chatRoomService.user2Accept(roomId, user,dto.getReaction());
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭", null), HttpStatus.OK);
@@ -40,8 +72,16 @@ public class ChatRoomController {
 
     @PutMapping("/block/{roomId}")
     public ResponseEntity<?> blockUser(@PathVariable String roomId,
-                                       @RequestBody ChatRoomDto.BooleanRequest dto,
+                                       @Valid @RequestBody ChatRoomDto.BooleanRequest dto,
+                                       BindingResult bindingResult,
                                        @AuthenticationPrincipal PrincipalDetails principalDetails){
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("행동을 선택해주시기 바랍니다", errorMap);
+        }
         AppUser user = principalDetails.getUser();
         chatRoomService.blockUser(roomId,user,dto.getReaction());
         return new ResponseEntity<>(new CMRespDto<>(1, "상대방 채팅 차단", null), HttpStatus.OK);
@@ -49,8 +89,16 @@ public class ChatRoomController {
 
     @PutMapping("/alarm/{roomId}")
     public ResponseEntity<?> roomAlarm(@PathVariable String roomId,
-                                       @RequestBody ChatRoomDto.BooleanRequest dto,
-                                       @AuthenticationPrincipal PrincipalDetails principalDetails){
+                                       @Valid @RequestBody ChatRoomDto.BooleanRequest dto,
+                                       BindingResult bindingResult,
+                                       @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("행동을 선택해주시기 바랍니다", errorMap);
+        }
         AppUser user = principalDetails.getUser();
         chatRoomService.setAlarm(roomId, user, dto.getReaction());
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 알람 설정", null), HttpStatus.OK);

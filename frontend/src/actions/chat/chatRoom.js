@@ -3,6 +3,8 @@ import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 import {
+    GET_REQUEST_ID_SUCCESS,
+    GET_REQUEST_ID_FAIL,
     REQUEST_CHAT_SUCCESS,
     REQUEST_CHAT_FAIL,
     REPLY_CHAT_REQUEST_SUCCESS,
@@ -17,7 +19,48 @@ import {
 }
     from './types';
 
-export const request_chat = (username, callback) => async dispatch => {
+export const load_request_id = (callback) => async dispatch => {
+        await dispatch(request_refresh());
+        const access = Cookies.get('access') ?? null;
+    
+        if (access === null) {
+            console.log('access 토큰이 존재하지 않습니다')
+            return dispatch({
+                type: AUTHENTICATED_FAIL
+            });
+        }
+    
+        try {
+            const res = await fetch(`${API_URL}/api/chat/room/request`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization' : `Bearer ${access}`
+                }
+            });
+    
+            const apiRes = await res.json();
+    
+            if (res.status === 200) {
+                dispatch({
+                    type: GET_REQUEST_ID_SUCCESS
+                })
+                if (callback) callback([true, apiRes.message]);
+            } else {
+                dispatch({
+                    type: GET_REQUEST_ID_FAIL
+                })
+                if (callback) callback([false, apiRes.message]);
+            }
+        } catch(error) {
+            dispatch({
+                type: GET_REQUEST_ID_FAIL
+            })
+            if (callback) callback([false, error]);
+        }
+    };
+
+export const request_chat = (id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -29,7 +72,7 @@ export const request_chat = (username, callback) => async dispatch => {
     }
 
     const body = JSON.stringify({
-        username
+        id
     });
 
     try {
@@ -46,9 +89,11 @@ export const request_chat = (username, callback) => async dispatch => {
         const apiRes = await res.json();
 
         if (res.status === 201) {
-            dispatch({
+            await dispatch({
                 type: REQUEST_CHAT_SUCCESS
             })
+            dispatch(load_request_id());
+
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({

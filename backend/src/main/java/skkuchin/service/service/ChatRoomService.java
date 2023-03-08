@@ -2,6 +2,7 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,19 +44,29 @@ public class ChatRoomService {
 
     @Transactional
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
+        if (user.getUsername().equals(dto.getId())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
         ChatRoom chatRoom = dto.toEntity(user);
-        String id = UUID.randomUUID().toString();
+        String roomId = UUID.randomUUID().toString();
         AppUser user2 = userRepo.findByUsername(dto.getUsername());
-        chatRoom.setRoomId(id);
+        chatRoom.setRoomId(roomId);
         chatRoom.setUser2(user2);
         chatRoom.setResponse(ResponseType.HOLD);
+        chatRoom.setUser1Alarm(true);
+        chatRoom.setUser2Alarm(true);
         chatRoomRepo.save(chatRoom);
     }
 
     @Transactional
-    public void user2Accept(String roomId,AppUser user, ResponseType responseType){
+    public void user2Accept(String roomId, AppUser user, ResponseType responseType){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (!chatRoom.getUser2().equals(user)) {
+
+        if (!chatRoom.getResponse().equals(ResponseType.HOLD)) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+
+        if (!Objects.equals(chatRoom.getUser2().getId(), user.getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
@@ -63,8 +75,12 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public List<ChatRoomDto.Response> getChatRoomList(String username){
+    public List<Long> getRequestUser(AppUser user) {
+        return chatRoomRepo.findMyRequest(user.getId());
+    }
 
+    @Transactional
+    public List<ChatRoomDto.Response> getChatRoomList(String username){
         AppUser user = userRepo.findByUsername(username);
         List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(user.getId());
 
@@ -98,10 +114,13 @@ public class ChatRoomService {
         return chatRoomDto;
     }
 
-    @Transactional
-    public AppUser getOtherUser(ChatRoom chatRoom, String username){
+    private AppUser getOtherUser(ChatRoom chatRoom, String username){
         AppUser user = userRepo.findByUsername(username);
-        return chatRoomRepo.findOtherUser(chatRoom, user.getId());
+        if (chatRoom.getUser1().equals(user)) {
+            return chatRoom.getUser2();
+        } else {
+            return chatRoom.getUser1();
+        }
     }
 
     private int unReadMessage(String roomId, String username){
@@ -110,10 +129,13 @@ public class ChatRoomService {
 
     private ChatMessage getLatestMessage(ChatRoom chatRoom){
         List<ChatMessage> chatMessages = chatMessageRepo.findByLatestTime(chatRoom.getRoomId());
-        if(chatMessages.size() == 0) {
-            throw new CustomRuntimeException("새로운 채팅방이 개설되었습니다");
+        ChatMessage chatMessage = new ChatMessage();
+        if (chatMessages.size() == 0) {
+            chatMessage.setMessage("새로운 채팅방이 개설되었습니다");
+            chatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
+            return chatMessage;
         }
-        ChatMessage chatMessage = chatMessages.get(0);
+        chatMessage = chatMessages.get(0);
         return chatMessage;
     }
 
@@ -129,7 +151,7 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void blockUser(String roomId, AppUser appUser, Boolean isTrue){
+    public void blockUser(String roomId, AppUser appUser, Boolean status){
 
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
@@ -138,30 +160,28 @@ public class ChatRoomService {
         }
 
         if(appUser.getId().equals(chatRoom.getUser1().getId())){
-            chatRoom.setUser2Blocked(isTrue);
+            chatRoom.setUser2Blocked(status);
             chatRoomRepo.save(chatRoom);
         }
         else {
-            chatRoom.setUser1Blocked(isTrue);
+            chatRoom.setUser1Blocked(status);
             chatRoomRepo.save(chatRoom);
         }
     }
 
     @Transactional
-    public void setAlarm(String roomId, AppUser appUser, Boolean isTrue){
+    public void setAlarm(String roomId, AppUser appUser, Boolean status){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
         if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
-        if(appUser.getId().equals(chatRoom.getUser1().getId())){
-            chatRoom.setUser1AlarmOn(isTrue);
+        if (appUser.getId().equals(chatRoom.getUser1().getId())) {
+            chatRoom.setUser1Alarm(status);
             chatRoomRepo.save(chatRoom);
-        }
-
-        else  {
-            chatRoom.setUSer2AlarmOn(isTrue);
+        } else  {
+            chatRoom.setUser2Alarm(status);
             chatRoomRepo.save(chatRoom);
         }
     }
@@ -169,6 +189,11 @@ public class ChatRoomService {
     @Transactional
     public void exitRoom(String roomId, AppUser appUser){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+
+        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+
         if(appUser.getId().equals(chatRoom.getUser1().getId())){
             chatRoom.setUser1(null);
             chatRoomRepo.save(chatRoom);
@@ -216,6 +241,29 @@ public class ChatRoomService {
                 return -1;
             }
         }
+    }
+
+    public void insertData() throws IOException, ParseException {
+        AppUser adminUser = userRepo.findById(1L).orElseThrow();
+        AppUser testUser = userRepo.findById(2L).orElseThrow();
+        AppUser test1USer = userRepo.findById(3L).orElseThrow();
+        AppUser test2USer = userRepo.findById(4L).orElseThrow();
+        AppUser test3USer = userRepo.findById(5L).orElseThrow();
+        AppUser test4USer = userRepo.findById(6L).orElseThrow();
+        ChatRoomDto.RoomRequest dto = new ChatRoomDto.RoomRequest(2L);
+        makeRoom(adminUser, dto);
+        makeRoom(test1USer, dto);
+        makeRoom(test2USer, dto);
+        makeRoom(test3USer, dto);
+        makeRoom(test4USer, dto);
+
+        List<ChatRoom> chatRooms = chatRoomRepo.findRequestByUserId(2L);
+
+        for (int i = 0; i < 3; i++) {
+            user2Accept(chatRooms.get(i).getRoomId() ,testUser, ResponseType.ACCEPT);
+        }
+        setAlarm(chatRooms.get(0).getRoomId() ,testUser, true);
+        setAlarm(chatRooms.get(1).getRoomId() ,testUser, true);
     }
 
 }

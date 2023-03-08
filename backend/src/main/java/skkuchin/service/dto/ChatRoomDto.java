@@ -23,19 +23,14 @@ public class ChatRoomDto {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static  class RoomRequest {
-
-        @JsonProperty
         @NotBlank
-        private String username;
+        private Long id;
 
         public ChatRoom toEntity(AppUser user){
             return ChatRoom.builder()
                     .user1(user)
                     .build();
-
-
         }
     }
 
@@ -73,10 +68,10 @@ public class ChatRoomDto {
         private Long user2Id;
 
         @JsonProperty
-        private boolean isUser1AlarmOn;
+        private boolean user1Alarm;
 
         @JsonProperty
-        private boolean isUser2AlarmOn;
+        private boolean user2Alarm;
 
         @JsonProperty
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
@@ -90,8 +85,8 @@ public class ChatRoomDto {
             this.user1Id = chatroom.getUser1().getId();
             this.user2Id = chatroom.getUser2().getId();
             this.messageCount = messageCount;
-            this.isUser1AlarmOn = chatroom.isUser1AlarmOn();
-            this.isUser2AlarmOn = chatroom.isUSer2AlarmOn();
+            this.user1Alarm = chatroom.isUser1Alarm();
+            this.user2Alarm = chatroom.isUser2Alarm();
             this.major = otherUser.getMajor();
             this.nickname = otherUser.getNickname();
             this.image = otherUser.getImage();
@@ -103,19 +98,19 @@ public class ChatRoomDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class settingResponse{
         @JsonProperty
-        private boolean isUser1Blocked;
+        private boolean user1Blocked;
         @JsonProperty
-        private boolean isUser2Blocked;
+        private boolean user2Blocked;
         @JsonProperty
-        private boolean isUser1AlarmOn;
+        private boolean user1Alarm;
         @JsonProperty
-        private boolean isUser2AlarmOn;
+        private boolean user2Alarm;
 
         public settingResponse(ChatRoom chatRoom){
-            this.isUser1Blocked = chatRoom.isUser1Blocked();
-            this.isUser2Blocked = chatRoom.isUser2Blocked();
-            this.isUser1AlarmOn = chatRoom.isUser1AlarmOn();
-            this.isUser2AlarmOn = chatRoom.isUSer2AlarmOn();
+            this.user1Blocked = chatRoom.isUser1Blocked();
+            this.user2Blocked = chatRoom.isUser2Blocked();
+            this.user1Alarm = chatRoom.isUser1Alarm();
+            this.user2Alarm = chatRoom.isUser2Alarm();
         }
     }
 

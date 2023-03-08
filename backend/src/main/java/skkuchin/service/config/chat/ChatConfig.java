@@ -73,11 +73,12 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
              StompHeaderAccessor accessor =
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+                System.out.println(accessor);
 
              if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
                 String sessionId = accessor.getSessionId();
                 String token = accessor.getFirstNativeHeader("pushToken");
-                String username = getUserNameFromJwt(token);
+                 String username = getUserNameFromJwt(token);
 
                  if (chatSessionService.findSession(sessionId) == null) {
                      chatSessionService.setSessionId(sessionId, username);
@@ -86,7 +87,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
              else if (accessor.getCommand().equals(StompCommand.DISCONNECT)) {
                  String sessionId = (String) message.getHeaders().get("simpSessionId");
-                chatSessionService.deleteSession(sessionId);
+                 chatSessionService.deleteSession(sessionId);
              }
 
              return message;

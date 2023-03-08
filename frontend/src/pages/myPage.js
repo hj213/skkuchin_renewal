@@ -28,8 +28,9 @@ export default function myPage() {
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
-
+    
     const [dialogOpen, setDialogOpen] = useState(false);
+    
 
     const arrowClick = () => {
         router.push('/editProfile')

@@ -130,8 +130,8 @@ export default function MessageTab() {
                                       <Image
                                         src={
                                           chatRoom.user1_id === user.id
-                                            ? !chatRoom.is_user1_alarm_on && notiOff
-                                            : !chatRoom.is_user2_alarm_on && notiOff
+                                            ? !chatRoom.user1_alarm && notiOff
+                                            : !chatRoom.user2_alarm && notiOff
                                         }
                                         width="12px"
                                         height="12px"
@@ -162,7 +162,7 @@ export default function MessageTab() {
                                 }}
                               >
                                 <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
-                                  { chatRoom.message_count === 0 ? NEW : chatRoom.message_count }
+                                  { chatRoom.message_count === 0 ? "NEW" : chatRoom.message_count }
                                 </Typography>
                               </div>
                             </Stack>

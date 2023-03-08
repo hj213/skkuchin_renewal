@@ -1,4 +1,6 @@
 import {
+    GET_REQUEST_ID_SUCCESS,
+    GET_REQUEST_ID_FAIL,
     REQUEST_CHAT_SUCCESS,
     REQUEST_CHAT_FAIL,
     REPLY_CHAT_REQUEST_SUCCESS,
@@ -14,6 +16,7 @@ import {
 } from '../actions/chat/types'
 
 const initialState = {
+    requestId: null,
     chatRooms: null
 };
 
@@ -21,6 +24,16 @@ const chatRoomReducer = (state= initialState, action) => {
     const { type, payload } = action;
 
     switch(type){
+        case GET_REQUEST_ID_SUCCESS:
+            return {
+                ...state,
+                requestId: payload
+            }
+        case GET_REQUEST_ID_FAIL:
+            return {
+                ...state,
+                requestId: null
+            }
         case REQUEST_CHAT_SUCCESS:
             return {
                 ...state

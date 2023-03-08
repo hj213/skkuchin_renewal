@@ -36,7 +36,7 @@ services:
       - database
     container_name: skkuchin-backend
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useUnicode=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
       - RABBITMQ_HOST=rabbitmq

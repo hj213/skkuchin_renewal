@@ -3,39 +3,36 @@ import { useEffect, useState } from "react";
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
 import { displayMBTI } from './MBTIList';
 import { load_candidate } from '../../actions/candidate/candidate'
-import { request_chat } from '../../actions/chat/chatRoom';
+import { load_request_id, request_chat } from '../../actions/chat/chatRoom';
 const Friends = () => {
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user); 
     const candidate = useSelector(state => state.candidate.candidate);
-    // dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
-    //     if(result){
-    //         // alert("PUT 요청 result: " + result)
-    //         dispatch(clear_my_review());
-    //         router.push({
-    //             pathname: '/reviews',
-    //             query: { id: place_id }
-    //         });                  
-    //     } else {
-    //         alert("PUT 실패!: " +message);
-    //     }
-    // }));
+    const requestId = useSelector(state => state.chatRoom.requestId);
+
+
     useEffect(() => {
-        //dispatch(load_candidate());
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-        dispatch(load_candidate(([result, message]) => {
-          if (result) {
-            alert('load_candidate 성공! ' + result)
-          } else {
-            if (typeof(message) == 'string') {
-              setDialogMsg(message);
-            }
-          }
-          setDialogOpen2(true);
-        }));
-      }
-      }, [dispatch]);
+            dispatch(load_request_id(([result, message]) => {
+                if (result) {
+                    dispatch(load_candidate(([result, message]) => {
+                        if (result) {
+                            alert('load_candidate 성공! ' + result);
+                        } else {
+                            if (typeof(message) == 'string') {
+                            setDialogMsg(message);
+                            }
+                        }
+                    setDialogOpen2(true);
+                    }));
+                } else {
+
+                }
+                
+            }))
+        }
+    }, []);
     
 
     const [height, setHeight] = useState('383px');
@@ -63,7 +60,6 @@ const Friends = () => {
         }));
     }
     
-
     // 매칭 활성화 유저 100명 미만 시 경고
     const [dialogOpen2, setDialogOpen2] = useState(false);
     const [dialogMsg, setDialogMsg] = useState('');
@@ -74,7 +70,6 @@ const Friends = () => {
             setDialogOpen2(true);
         }
     }
-
 
     return (
         <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
