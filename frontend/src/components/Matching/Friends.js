@@ -9,29 +9,40 @@ const Friends = () => {
 
     const user = useSelector(state => state.auth.user); 
     const candidate = useSelector(state => state.candidate.candidate);
-
-    // useEffect(() => {
-    //     //dispatch(load_candidate());
-    //     if (dispatch && dispatch !== null && dispatch !== undefined) {
-    //     dispatch(load_candidate(([result, message]) => {
-    //       if (result) {
-
-    //       } else {
-    //         if (typeof(message) == 'string') {
-    //           setDialogMsg(message);
-    //         }
-    //       }
-    //     //   console.log(message);
-    //       setDialogOpen2(true);
-    //     }));
-    //   }
-    //   }, [dispatch]);
+    // dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
+    //     if(result){
+    //         // alert("PUT 요청 result: " + result)
+    //         dispatch(clear_my_review());
+    //         router.push({
+    //             pathname: '/reviews',
+    //             query: { id: place_id }
+    //         });                  
+    //     } else {
+    //         alert("PUT 실패!: " +message);
+    //     }
+    // }));
+    useEffect(() => {
+        //dispatch(load_candidate());
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+        dispatch(load_candidate(([result, message]) => {
+          if (result) {
+            alert('load_candidate 성공! ' + result)
+          } else {
+            if (typeof(message) == 'string') {
+              setDialogMsg(message);
+            }
+          }
+          setDialogOpen2(true);
+        }));
+      }
+      }, [dispatch]);
     
 
     const [height, setHeight] = useState('383px');
 
     // 밥약 신청하기 버튼
     const [open, setOpen] = useState(false);
+
     const handleOpen = () => {
         setOpen(true);
     }
@@ -40,7 +51,18 @@ const Friends = () => {
     }
     const handleSubmit = () => {
         setOpen(false);
+        dispatch(request_chat(user.username, ([result, message])=>{
+            if (result) {
+                alert('request_chat 성공! ' + result)
+            } else {
+              if (typeof(message) == 'string') {
+                setDialogMsg(message);
+              }
+            }
+            setDialogOpen2(true);
+        }));
     }
+    
 
     // 매칭 활성화 유저 100명 미만 시 경고
     const [dialogOpen2, setDialogOpen2] = useState(false);
@@ -84,7 +106,7 @@ const Friends = () => {
                 <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
                     <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                 </Grid> 
-                <Button onClick={handleOpen} sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                <Button onClick={handleOpen}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
                     밥약 신청하기
                 </Button>
                 <Dialog

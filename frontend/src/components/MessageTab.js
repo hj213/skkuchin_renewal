@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { get_realtime_chat_room } from '../actions/chat/chatRoom';
 import { get_realtime_chat_request } from '../actions/chat/chatRequest';
+import NewPromise from './Chat/NewPromise';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -80,6 +81,13 @@ export default function MessageTab() {
       }
     }
   }, [user, stompClient])
+
+  const [open, setOpen] = useState(false);
+
+
+  const handleRequest = () => {
+    setOpen(true);
+  }
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -161,6 +169,9 @@ export default function MessageTab() {
                             </Grid>
                         </Grid>
                       </Link>
+                      {
+                        open && <NewPromise open={open} onClose={()=> setOpen(false)}/> 
+                      }
                     </li>
                 ))}
               </ul>
@@ -193,7 +204,7 @@ export default function MessageTab() {
               <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
                 { chatRequests.map((chatRequest, index)=>(
                   <li >
-                    <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
+                    <Grid onClick={()=>handleRequest()} container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
                         <Grid xs={2}>
                             <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
                         </Grid>
