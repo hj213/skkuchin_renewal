@@ -1,7 +1,12 @@
 package skkuchin.service.service;
 
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +15,16 @@ import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.repo.ChatMessageRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,11 +60,13 @@ public class ChatRoomService {
         chatRoom.setRoomId(id);
         chatRoom.setUser2(user2);
         chatRoom.setResponse(ResponseType.HOLD);
+        chatRoom.setUser1AlarmOn(true);
+        chatRoom.setUSer2AlarmOn(true);
         chatRoomRepo.save(chatRoom);
     }
 
     @Transactional
-    public void user2Accept(String roomId,AppUser user, ResponseType responseType){
+    public void user2Accept(String roomId, AppUser user, ResponseType responseType){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         if (chatRoom.getUser2().getId() != user.getId()) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
@@ -224,6 +235,29 @@ public class ChatRoomService {
                 return -1;
             }
         }
+    }
+
+    public void insertData() throws IOException, ParseException {
+        AppUser adminUser = userRepo.findById(1L).orElseThrow();
+        AppUser testUser = userRepo.findById(2L).orElseThrow();
+        AppUser test1USer = userRepo.findById(3L).orElseThrow();
+        AppUser test2USer = userRepo.findById(4L).orElseThrow();
+        AppUser test3USer = userRepo.findById(5L).orElseThrow();
+        AppUser test4USer = userRepo.findById(6L).orElseThrow();
+        ChatRoomDto.RoomRequest dto = new ChatRoomDto.RoomRequest("test");
+        makeRoom(adminUser, dto);
+        makeRoom(test1USer, dto);
+        makeRoom(test2USer, dto);
+        makeRoom(test3USer, dto);
+        makeRoom(test4USer, dto);
+
+        List<ChatRoom> chatRooms = chatRoomRepo.findRequestByUserId(2L);
+
+        for (int i = 0; i < 3; i++) {
+            user2Accept(chatRooms.get(i).getRoomId() ,testUser, ResponseType.ACCEPT);
+        }
+        setAlarm(chatRooms.get(0).getRoomId() ,testUser, true);
+        setAlarm(chatRooms.get(1).getRoomId() ,testUser, true);
     }
 
 }
