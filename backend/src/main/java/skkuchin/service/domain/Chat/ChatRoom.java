@@ -41,7 +41,6 @@ public class ChatRoom {
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isUser1Blocked;
 
-
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isUser2Blocked;
 
