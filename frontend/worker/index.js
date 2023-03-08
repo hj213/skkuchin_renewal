@@ -26,11 +26,21 @@ self.addEventListener('notificationclick', function (event) {
                     }
                 }
                 return client.focus()
-            }
+            }   
             return clients.openWindow('/')
         })
     )
 })
+
+// self.addEventListener('pushsubscriptionchange', function(event) {
+//     event.waitUntil(
+//         Promise.all([
+//             Promise.resolve(event.oldSubscription ? deleteSubscription(event.oldSubscription) : true),
+//             Promise.resolve(event.newSubscription ? event.newSubscription : subscribePush(registration))
+//             .then(function(sub) { return saveSubscription(sub) })
+//         ])
+//     )
+// })
 
 self.addEventListener('message', async event => {
     if (event.data && event.data.action === 'CACHE_NEW_ROUTE') {

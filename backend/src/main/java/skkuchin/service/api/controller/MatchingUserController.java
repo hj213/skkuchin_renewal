@@ -84,7 +84,7 @@ public class MatchingUserController {
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
         MatchingUserDto.Response info = matchingUserService.getUserInfo(userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "다른 사용자 매칭 관련 정보 조회 완료", info), HttpStatus.OK);
