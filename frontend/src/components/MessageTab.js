@@ -83,11 +83,12 @@ export default function MessageTab() {
   }, [user, stompClient])
 
   const [open, setOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
-
-  const handleRequest = () => {
+  const handleOpen = (request) => {
     setOpen(true);
-  }
+    setSelectedRequest(request);
+}
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -169,9 +170,6 @@ export default function MessageTab() {
                             </Grid>
                         </Grid>
                       </Link>
-                      {
-                        open && <NewPromise open={open} onClose={()=> setOpen(false)}/> 
-                      }
                     </li>
                 ))}
               </ul>
@@ -204,7 +202,7 @@ export default function MessageTab() {
               <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
                 { chatRequests.map((chatRequest, index)=>(
                   <li >
-                    <Grid onClick={()=>handleRequest()} container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
+                    <Grid onClick={()=>handleOpen(chatRequest)} container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
                         <Grid xs={2}>
                             <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
                         </Grid>
@@ -228,6 +226,9 @@ export default function MessageTab() {
                             </Stack>
                         </Grid>
                     </Grid>
+                      {
+                        open && <NewPromise open={open} onClose={()=> setOpen(false)} request={selectedRequest}/> 
+                      }
                   </li>
                 ))}
               </ul>

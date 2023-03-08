@@ -2,31 +2,61 @@ import { ThemeProvider } from '@emotion/react';
 import { Button, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
 import { displayMBTI } from '../Matching/MBTIList';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 
 // 스위치
 import Image from 'next/image';
 import closeIcon from '../../image/close.png';
+import { useEffect } from 'react';
+import { reply_chat_request } from '../../actions/chat/chatRoom';
 
-const NewPromise = ({ onClose, open }) => {
+const NewPromise = ({ onClose, open, request }) => {
+
+    useEffect(()=> {
+        alert('상대방 Id ' + request.user1_id === user.id ? request.user2_id : request.user1_id);
+        alert(request.room_id);
+    },[])
+    const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
+    const userId = request && useState(request.user1_id === user.id ? request.user2_id : request.user1_id);
 
-    const keywords = ["ENTP", "스포츠", "양식"];
+    const keywords = ["ESFP", "축구", "영화"];
     const introduction = "엔팁 좋아하시는 분 여기여기 모여라 랄라라라랄랄ㄹㄹㄹ";  
     
     // 밥약 신청하기 버튼
+    // const [open, setOpen] = useState(false);
     const [submit, setSubmit] = useState(false);
-    const handleSubmit = () => {
+    const handleOpen = () => {
         setSubmit(true);
     }
-    const handleClose = () => {
+    const handleClose= () => {
+        setSubmit(false);
+    }
+    const handleRefuse = () => {
+        alert("신청 거절"+ request.room_id);
+        dispatch(reply_chat_request('REFUSE', request.room_id, ([result, message])=>{
+            if (result) {
+                alert('reply_chat_request 거절 성공! ' + result)
+            } else {
+              alert(message);
+            }
+        }));
         setSubmit(false);
     }
 
     const handleAccept = () => {
-        alert('신청 수락');
+        alert("신청 수락"+ request.room_id);
+
+        dispatch(reply_chat_request("ACCEPT", request.room_id, ([result, message])=>{
+            if (result) {
+                alert('reply_chat_request 수락 성공! ' + result)
+            } else {
+              alert(message);
+            }
+        }));
+        setSubmit(false);
     }
 
     return (
@@ -59,14 +89,15 @@ const NewPromise = ({ onClose, open }) => {
                     />
                     </div>
                 </div>
+                {/* user 전부 userId로.. */}
                 <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
-                    {displayMBTI("ENTP")}
+                    {displayMBTI("ESFP")}
                     <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{user !== null && user.nickname}</Typography>
                     <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
                         <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>{user !== null && user.campus}</Typography>&nbsp;
                         {user.major} &nbsp;/&nbsp; 
                         {user.student_id} 학번 /&nbsp; 
-                        {"남"}
+                        {(user.gender).charAt(0)}
                     </Grid>
                     
                     <Grid item sx={{display: 'flex'}}>
@@ -82,7 +113,7 @@ const NewPromise = ({ onClose, open }) => {
                         <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{introduction}"</Typography>
                     </Grid> 
                     <Grid style={{justifyContent: 'center'}}>
-                        <Button onClick={handleSubmit} sx={{backgroundColor: '#BABABA', borderRadius: '34px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 16px', m: '30px 15px'}}>
+                        <Button onClick={handleOpen} sx={{backgroundColor: '#BABABA', borderRadius: '34px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 16px', m: '30px 15px'}}>
                             거절하기
                         </Button>
                         <Button onClick={handleAccept} sx={{backgroundColor: '#FFCE00', borderRadius: '34px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 16px', m: '30px 15px'}}>
@@ -116,7 +147,7 @@ const NewPromise = ({ onClose, open }) => {
                         <DialogActions sx={{p:'0'}}>
                             <div style={{width: '100%', paddingBottom: '16px'}}>
                                 <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
-                                <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleClose}>거절</Button>
+                                <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleRefuse}>거절</Button>
                             </div>
                         </DialogActions>
                     </Dialog>
