@@ -18,6 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
+@Table(
+        name="chat_room",
+        uniqueConstraints={
+                @UniqueConstraint(
+                        columnNames={"user1_id", "user2_id"}
+                )
+        }
+)
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

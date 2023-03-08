@@ -1,5 +1,6 @@
 package skkuchin.service.api.controller;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,15 +43,19 @@ public class ChatRoomController {
                                       BindingResult bindingResult,
                                       @AuthenticationPrincipal PrincipalDetails principalDetails){
         Map<String, String> errorMap = new HashMap<>();
-        if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
+        try {
+            if (bindingResult.hasErrors()) {
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+                }
+                throw new CustomValidationApiException("상대방 아이디를 입력해주시기 바랍니다", errorMap);
             }
-            throw new CustomValidationApiException("상대방 아이디를 입력해주시기 바랍니다", errorMap);
+            AppUser user = principalDetails.getUser();
+            chatRoomService.makeRoom(user,dto);
+            return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomValidationApiException("이미 요청하셨습니다");
         }
-         AppUser user = principalDetails.getUser();
-         chatRoomService.makeRoom(user,dto);
-         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
      }
 
     @PutMapping("/request/{roomId}")
