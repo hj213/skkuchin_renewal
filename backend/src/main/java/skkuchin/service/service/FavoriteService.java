@@ -74,7 +74,11 @@ public class FavoriteService {
     }
 
     public void isMyFavorite(Long favoriteUserId, Long userId) {
-        if (favoriteUserId != userId) throw new CustomRuntimeException("내 즐겨찾기가 아닙니다.");
+        System.out.println(favoriteUserId);
+        System.out.println(userId);
+        if (favoriteUserId != userId) {
+            throw new CustomRuntimeException("내 즐겨찾기가 아닙니다.");
+        }
     }
 }
 

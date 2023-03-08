@@ -28,11 +28,6 @@ export default function myPage() {
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
-    useEffect(() => {
-        if (user) {
-            dispatch(load_user())
-        }
-    }, [user])
     
     const [dialogOpen, setDialogOpen] = useState(false);
     
