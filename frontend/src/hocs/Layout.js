@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { set_stomp_client } from '../actions/stompClient/stompClient';
 import SockJS from 'sockjs-client';
 import { API_URL } from '../config';
+import { WEB_PUSH_PUBLIC_KEY } from '../config';
 
 const base64ToUint8Array = base64 => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4)
@@ -24,32 +25,32 @@ const Layout = ({title, content, children}) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const [show, setShow] = useState(false);
-    // const [subscription, setSubscription] = useState(null)
-    // const [registration, setRegistration] = useState(null)
 
-    // useEffect(() => {
-    //     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
-    //         // run only in browser
-    //         navigator.serviceWorker.ready.then(reg => {
-    //             reg.pushManager.getSubscription().then(sub => {
-    //                 if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
-    //                     setSubscription(sub);
-    //                 }
-    //             })
-    //             setRegistration(reg)
-    //         })
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
+            // run only in browser
+            navigator.serviceWorker.ready.then(reg => {
+                reg.pushManager.getSubscription().then(sub => {
+                    if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
+                        console.log("통과"+sub)
+                    } else {
+                        subscribe(reg);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            })
+        }
+    }, [])
 
-    // const subscribe = async (reg) => {
-    //     const sub = await reg.pushManager.subscribe({
-    //         userVisibleOnly: true,
-    //         applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY)
-    //     })
-    //     // TODO: you should call your API to save subscription data on server in order to send web push notification from server
-    //     setSubscription(sub);
-    //     setIsSubscribed(true);
-    // }
+    const subscribe = async (reg) => {
+        const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: base64ToUint8Array(WEB_PUSH_PUBLIC_KEY)
+        })
+        log(sub);
+    }
 
     let stompClient = null;
     const Stomp = require("stompjs/lib/stomp.js").Stomp

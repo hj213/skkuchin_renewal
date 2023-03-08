@@ -48,6 +48,7 @@ public class ChatRoomService {
         if (user.getId().equals(dto.getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
+
         ChatRoom chatRoom = dto.toEntity(user);
         String roomId = UUID.randomUUID().toString();
         AppUser user2 = userRepo.findById(dto.getId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
