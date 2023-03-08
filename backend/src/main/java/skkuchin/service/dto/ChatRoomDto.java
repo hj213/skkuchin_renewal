@@ -24,7 +24,7 @@ public class ChatRoomDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static  class RoomRequest {
-        @NotBlank
+        @NotNull
         private Long id;
 
         public ChatRoom toEntity(AppUser user){

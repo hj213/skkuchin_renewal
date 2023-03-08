@@ -32,5 +32,4 @@ public class ChatMessage {
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean readStatus;
-
 }
