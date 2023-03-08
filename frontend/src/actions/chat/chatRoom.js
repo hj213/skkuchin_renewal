@@ -43,7 +43,8 @@ export const load_request_id = (callback) => async dispatch => {
     
             if (res.status === 200) {
                 dispatch({
-                    type: GET_REQUEST_ID_SUCCESS
+                    type: GET_REQUEST_ID_SUCCESS,
+                    payload: apiRes.data
                 })
                 if (callback) callback([true, apiRes.message]);
             } else {
