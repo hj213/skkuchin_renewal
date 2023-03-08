@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +36,7 @@ public class ChatMessageService {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
-        if (chatRoom.getUser1().getId() != user.getId() && chatRoom.getUser2().getId() != user.getId()) {
+        if (!Objects.equals(chatRoom.getUser1().getId(), user.getId()) && !Objects.equals(chatRoom.getUser2().getId(), user.getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         ChatMessage chatMessage = dto.toEntity(chatRoom,user);

@@ -66,7 +66,7 @@ public class ChatRoomService {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
-        if (chatRoom.getUser2().getId() != user.getId()) {
+        if (!Objects.equals(chatRoom.getUser2().getId(), user.getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
