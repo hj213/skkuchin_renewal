@@ -44,10 +44,8 @@ public class ChatRoom {
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean isUser2Blocked;
 
-    @Column(columnDefinition = "BIT DEFAULT TRUE")
     private boolean isUser1AlarmOn;
 
-    @Column(columnDefinition = "BIT DEFAULT TRUE")
     private boolean isUSer2AlarmOn;
 
     @PrePersist
