@@ -35,7 +35,6 @@ public class MessageController {
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
 
-
     @MessageMapping("chat.chatMessage.{chatRoomId}")
     public void chatMessage(@DestinationVariable String chatRoomId, Message<?> message){
         ChatRoom chatRoom = chatRoomService.findChatRoom(chatRoomId);

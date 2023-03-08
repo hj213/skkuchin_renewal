@@ -21,6 +21,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private LocalDateTime dateTime;
 
     private String place;
