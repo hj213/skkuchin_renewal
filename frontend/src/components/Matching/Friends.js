@@ -39,22 +39,26 @@ const Friends = () => {
 
     // 밥약 신청하기 버튼
     const [open, setOpen] = useState(false);
+    const [selectedPersonId, setSelectedPersonId] = useState(null);
 
-    const handleOpen = () => {
+    const handleOpen = (id) => {
         setOpen(true);
+        setSelectedPersonId(id);
     }
     const handleClose = () => {
         setOpen(false);
     }
-    const handleSubmit = () => {
+    const handleSubmit = (id) => {
+        alert('상대방 id ' +id);
         setOpen(false);
-        dispatch(request_chat(user.username, ([result, message])=>{
+        dispatch(request_chat(id, ([result, message])=>{
             if (result) {
                 alert('request_chat 성공! ' + result)
             } else {
               if (typeof(message) == 'string') {
                 setDialogMsg(message);
               }
+              alert(message);
             }
             setDialogOpen2(true);
         }));
@@ -101,10 +105,11 @@ const Friends = () => {
                 <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
                     <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                 </Grid> 
-                <Button onClick={handleOpen}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                    밥약 신청하기
+                <Button key={index} onClick={()=>handleOpen(person.id)}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                    밥약 신청하기 {person.id}
                 </Button>
                 <Dialog
+                    key={person.id}
                     open={open}
                     onClose={handleClose}
                     PaperProps={{
@@ -132,12 +137,13 @@ const Friends = () => {
                     <DialogActions sx={{p:'0'}}>
                         <div style={{width: '100%', paddingBottom: '16px'}}>
                             <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
-                            <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleSubmit}>신청</Button>
+                            <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={() => handleSubmit(selectedPersonId)}>신청</Button>
                         </div>
                     </DialogActions>
                 </Dialog>
              </Grid>
-        </Card> ))
+        </Card> 
+        )) 
         : dialogMsg ? 
             <Dialog open={dialogOpen2} onClose={handleDialogOpen2} PaperProps={{ style: { borderRadius: '10px' } }}>
                 <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
