@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
-import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.dto.ChatMessageDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.dto.ChatRoomDto;
+import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.repo.ChatMessageRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -32,6 +31,13 @@ public class ChatMessageService {
     @Transactional
     public void write(AppUser user, ChatMessageDto.Request dto){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(dto.getRoomId());
+        if (chatRoom == null) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+
+        if (chatRoom.getUser1().getId() != user.getId() && chatRoom.getUser2().getId() != user.getId()) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
         ChatMessage chatMessage = dto.toEntity(chatRoom,user);
         chatMessageRepo.save(chatMessage);
     }
