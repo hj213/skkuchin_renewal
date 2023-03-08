@@ -44,7 +44,7 @@ public class ChatRoomService {
 
     @Transactional
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
-        if (user.getUsername().equals(dto.getUsername())) {
+        if (user.getUsername().equals(dto.getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         ChatRoom chatRoom = dto.toEntity(user);
@@ -53,8 +53,8 @@ public class ChatRoomService {
         chatRoom.setRoomId(roomId);
         chatRoom.setUser2(user2);
         chatRoom.setResponse(ResponseType.HOLD);
-        chatRoom.setUser1AlarmOn(true);
-        chatRoom.setUSer2AlarmOn(true);
+        chatRoom.setUser1Alarm(true);
+        chatRoom.setUser2Alarm(true);
         chatRoomRepo.save(chatRoom);
     }
 
@@ -72,6 +72,11 @@ public class ChatRoomService {
 
         chatRoom.setResponse(responseType);
         chatRoomRepo.save(chatRoom);
+    }
+
+    @Transactional
+    public List<Long> getRequestUser(AppUser user) {
+        return chatRoomRepo.findMyRequest(user.getId());
     }
 
     @Transactional
@@ -173,10 +178,10 @@ public class ChatRoomService {
         }
 
         if (appUser.getId().equals(chatRoom.getUser1().getId())) {
-            chatRoom.setUser1AlarmOn(status);
+            chatRoom.setUser1Alarm(status);
             chatRoomRepo.save(chatRoom);
         } else  {
-            chatRoom.setUSer2AlarmOn(status);
+            chatRoom.setUser2Alarm(status);
             chatRoomRepo.save(chatRoom);
         }
     }
@@ -245,7 +250,7 @@ public class ChatRoomService {
         AppUser test2USer = userRepo.findById(4L).orElseThrow();
         AppUser test3USer = userRepo.findById(5L).orElseThrow();
         AppUser test4USer = userRepo.findById(6L).orElseThrow();
-        ChatRoomDto.RoomRequest dto = new ChatRoomDto.RoomRequest("test");
+        ChatRoomDto.RoomRequest dto = new ChatRoomDto.RoomRequest(2L);
         makeRoom(adminUser, dto);
         makeRoom(test1USer, dto);
         makeRoom(test2USer, dto);

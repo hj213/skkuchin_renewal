@@ -12,10 +12,10 @@ import {
 const initialState = {
     messages: null,
     otherUser: null,
-    isUser1Blocked: null,
-    isUser2Blocked: null,
-    isUser1AlarmOn: null,
-    isUser2AlarmOn: null
+    user1Blocked: null,
+    user2Blocked: null,
+    user1Alarm: null,
+    user2Alarm: null
 };
 
 const chatMessageReducer = (state= initialState, action) => {
@@ -53,10 +53,10 @@ const chatMessageReducer = (state= initialState, action) => {
         case GET_REALTIME_BLOCK_ALARM_SUCCESS:
             return {
                 ...state,
-                isUser1Blocked: payload.isUser1Blocked,
-                isUser2Blocked: payload.isUser2Blocked,
-                isUser1AlarmOn: payload.isUser1AlarmOn,
-                isUser2AlarmOn: payload.isUser2AlarmOn
+                user1Blocked: payload.user1_blocked,
+                user2Blocked: payload.user2_blocked,
+                user1Alarm: payload.user1_alarm,
+                user2Alarm: payload.user2_alarm
             }
         case GET_REALTIME_BLOCK_ALARM_FAIL:
             return {

@@ -122,8 +122,8 @@ export default function MessageTab() {
                                       <Image
                                         src={
                                           chatRoom.user1_id === user.id
-                                            ? !chatRoom.is_user1_alarm_on && notiOff
-                                            : !chatRoom.is_user2_alarm_on && notiOff
+                                            ? !chatRoom.user1_alarm && notiOff
+                                            : !chatRoom.user2_alarm && notiOff
                                         }
                                         width="12px"
                                         height="12px"

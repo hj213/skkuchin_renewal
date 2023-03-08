@@ -2,6 +2,7 @@ package skkuchin.service.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import skkuchin.service.service.ChatRoomService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,6 +28,14 @@ import java.util.Map;
 @RequestMapping("/api/chat/room")
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
+
+    @GetMapping("/request")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getRequestUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        List<Long> requestedId = chatRoomService.getRequestUser(user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "요청 보낸 유저 조회 완료", requestedId), HttpStatus.OK);
+    }
 
     @PostMapping("")
     public ResponseEntity<?> makeRoom(@Valid @RequestBody ChatRoomDto.RoomRequest dto,

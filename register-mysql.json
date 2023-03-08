@@ -11,14 +11,14 @@
         "topic.prefix": "dbserver",
         "database.include.list": "service",
         "database.allowPublicKeyRetrieval": "true",
-        "schema.history.internal.kafka.bootstrap.servers": "ec2-54-180-85-85.ap-northeast-2.compute.amazonaws.com:9092",
+        "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
         "schema.history.internal.kafka.topic": "schema-changes.service",
         "key.converter": "io.apicurio.registry.utils.converter.ExtJsonConverter",
-        "key.converter.apicurio.registry.url": "http://ec2-54-180-85-85.ap-northeast-2.compute.amazonaws.com:8080/apis/registry/v2",
+        "key.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
         "key.converter.apicurio.registry.auto-register": "true",
         "key.converter.apicurio.registry.find-latest": "true",
         "value.converter": "io.apicurio.registry.utils.converter.ExtJsonConverter",
-        "value.converter.apicurio.registry.url": "http://ec2-54-180-85-85.ap-northeast-2.compute.amazonaws.com:8080/apis/registry/v2",
+        "value.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
         "value.converter.apicurio.registry.auto-register": "true",
         "value.converter.apicurio.registry.find-latest": "true"
     }

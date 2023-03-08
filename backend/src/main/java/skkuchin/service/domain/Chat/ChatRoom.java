@@ -39,14 +39,18 @@ public class ChatRoom {
     private LocalDateTime expireDate;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isUser1Blocked;
+    @JoinColumn(name = "user1_blocked")
+    private boolean user1Blocked;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isUser2Blocked;
+    @JoinColumn(name = "user2_blocked")
+    private boolean user2Blocked;
 
-    private boolean isUser1AlarmOn;
+    @JoinColumn(name = "user1_alarm")
+    private boolean user1Alarm;
 
-    private boolean isUSer2AlarmOn;
+    @JoinColumn(name = "user2_alarm")
+    private boolean user2Alarm;
 
     @PrePersist
     public void setDate() {

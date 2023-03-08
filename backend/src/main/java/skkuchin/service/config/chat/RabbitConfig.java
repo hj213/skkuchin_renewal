@@ -88,6 +88,7 @@ public class RabbitConfig {
     public Jackson2JsonMessageConverter jsonMessageConverter(){
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
         objectMapper.registerModule(dateTimeModule());
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter(objectMapper);
