@@ -84,11 +84,16 @@ export default function MessageTab() {
 
   const [open, setOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleOpen = (request) => {
     setOpen(true);
     setSelectedRequest(request);
-}
+    setSelectedUser(request.user1_id === user.id ? request.user2_id : request.user1_id);
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -110,7 +115,7 @@ export default function MessageTab() {
                         pathname: '/chat',
                         query: {
                           room_id: chatRoom.room_id,
-                          user_number: chatRoom.user1_id === user.id ? 'user1' : 'user2'
+                          user_number: chatRoom.user1_id == user.id ? 'user1' : 'user2'
                         }
                       }}>
                         <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
@@ -227,7 +232,7 @@ export default function MessageTab() {
                         </Grid>
                     </Grid>
                       {
-                        open && <NewPromise open={open} onClose={()=> setOpen(false)} request={selectedRequest}/> 
+                        open && <NewPromise open={open} onClose={handleClose} request={selectedRequest} selectedUser={selectedUser}/> 
                       }
                   </li>
                 ))}

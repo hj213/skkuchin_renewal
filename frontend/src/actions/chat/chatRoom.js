@@ -126,7 +126,7 @@ export const reply_chat_request = (reaction, room_id, callback) => async dispatc
     });
 
     try {
-        const res = await fetch(`${API_URL}/api/chat/room/requset/${room_id}`, {
+        const res = await fetch(`${API_URL}/api/chat/room/request/${room_id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

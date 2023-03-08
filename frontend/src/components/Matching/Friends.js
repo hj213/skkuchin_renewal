@@ -11,7 +11,6 @@ const Friends = () => {
     const candidate = useSelector(state => state.candidate.candidate);
     const requestId = useSelector(state => state.chatRoom.requestId);
 
-
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_request_id(([result, message]) => {
