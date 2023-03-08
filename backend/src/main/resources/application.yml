@@ -5,16 +5,16 @@ spring:
     username: root
     password: 1234
 
-#  kafka:
-#    bootstrap-servers: localhost:9092
-#    consumer:
-#      bootstrap-servers: localhost:9092
-#      group-id: my-group
-#      auto-offset-reset: earliest
-#    producer:
-#      bootstrap-servers: localhost:9092
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: my-group
+      auto-offset-reset: earliest
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
   jpa:
     hibernate:

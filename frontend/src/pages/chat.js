@@ -44,13 +44,14 @@ const chatPage = () => {
     const messages = useSelector(state => state.chatMessage.messages);
     // 상대방 정보
     const otherUser = useSelector(state => state.chatMessage.otherUser);
-    // isUser1Blocked 참이면 채팅사용 X (내가 차단된 상황)
-    // isUser2Blocked 참이면 내가 차단한 상황
-    const isUser1Blocked = useSelector(state => state.chatMessage.isUser1Blocked);
-    const isUser2Blocked = useSelector(state => state.chatMessage.isUser2Blocked);
+    // user1이 나일 때
+    // user1Blocked 참이면 채팅사용 X (내가 차단된 상황)
+    // user2Blocked 참이면 내가 차단한 상황
+    const user1Blocked = useSelector(state => state.chatMessage.user1Blocked);
+    const user2Blocked = useSelector(state => state.chatMessage.user2Blocked);
     // 알람표시
-    const isUser1AlarmOn = useSelector(state => state.chatMessage.isUser1AlarmOn);
-    const isUser2AlarmOn = useSelector(state => state.chatMessage.isUser2AlarmOn); 
+    const user1Alarm = useSelector(state => state.chatMessage.user1Alarm);
+    const user2Alarm = useSelector(state => state.chatMessage.user2Alarm); 
 
     const stompClient = useSelector(state => state.stompClient.stompClient);
     
@@ -100,7 +101,7 @@ const chatPage = () => {
     const handleBlockUser = () => {
         setBlockDialog(true);
     };
-  
+
     const handleCloseDialog = () => {
         setBlockDialog(false);
         setExitDialog(false);
@@ -117,7 +118,7 @@ const chatPage = () => {
     const handleExit = () => {
         setExitDialog(true);
     };
-  
+
     const handleConfirmExit = () => {
       // Code to leave the chat room
         setExitDialog(false);

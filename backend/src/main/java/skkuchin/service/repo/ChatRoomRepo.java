@@ -16,6 +16,10 @@ public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
             "AND a.response = 'ACCEPT'")
     List<ChatRoom> findMyRoomList(Long userId);
 
+    @Query("SELECT a.user2.id FROM ChatRoom a where a.user1.id = :userId " +
+            "AND a.response = 'HOLD'")
+    List<Long> findMyRequest(Long userId);
+
     @Query("SELECT a FROM ChatRoom a WHERE a.user2.id = :userId AND a.response = 'HOLD'")
     List<ChatRoom> findRequestByUserId(Long userId);
 

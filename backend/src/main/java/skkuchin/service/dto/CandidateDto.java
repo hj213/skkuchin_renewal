@@ -46,9 +46,14 @@ public class CandidateDto {
 
     @Getter
     @AllArgsConstructor
+    public static class IdResponse {
+        private Long id;
+    }
+
+    @Getter
+    @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
-        @JsonProperty
         private Long id;
         private String nickname;
         private Profile image;
