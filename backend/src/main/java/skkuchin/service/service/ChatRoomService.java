@@ -12,6 +12,7 @@ import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.CustomRuntimeException;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.ChatMessageRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -49,7 +50,7 @@ public class ChatRoomService {
         }
         ChatRoom chatRoom = dto.toEntity(user);
         String roomId = UUID.randomUUID().toString();
-        AppUser user2 = userRepo.findByUsername(dto.getUsername());
+        AppUser user2 = userRepo.findById(dto.getId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
         chatRoom.setRoomId(roomId);
         chatRoom.setUser2(user2);
         chatRoom.setResponse(ResponseType.HOLD);
