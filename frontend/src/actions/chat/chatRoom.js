@@ -60,7 +60,7 @@ export const load_request_id = (callback) => async dispatch => {
         }
     };
 
-export const request_chat = (username, callback) => async dispatch => {
+export const request_chat = (id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -72,7 +72,7 @@ export const request_chat = (username, callback) => async dispatch => {
     }
 
     const body = JSON.stringify({
-        username
+        id
     });
 
     try {
