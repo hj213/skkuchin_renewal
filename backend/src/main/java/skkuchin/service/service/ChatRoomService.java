@@ -45,7 +45,7 @@ public class ChatRoomService {
 
     @Transactional
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
-        if (user.getUsername().equals(dto.getId())) {
+        if (user.getId().equals(dto.getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         ChatRoom chatRoom = dto.toEntity(user);
