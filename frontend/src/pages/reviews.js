@@ -82,13 +82,12 @@ const ReviewsPage = () => {
     }
 
     const handleDelete = (reviewId) =>{
-        alert("다음을 삭제할 것. "+ reviewId);
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
-                alert("Delete 요청 result: " + result);     
+                // alert("Delete 요청 result: " + result);     
                 dispatch(load_reviews(place_id));
             } else {
-                alert("실패!: " +message);
+                console.log("실패!: " +message);
             }
         }));
     } 
