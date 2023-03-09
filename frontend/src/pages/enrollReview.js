@@ -153,7 +153,7 @@ const EnrollReview = () => {
                 });                  
             } else {
                 // alert 틀 바꿔야함
-                alert("실패!: " +message);
+                console.log("실패!: " +message);
             }
         }));
     }
