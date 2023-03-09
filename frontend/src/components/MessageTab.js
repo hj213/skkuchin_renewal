@@ -89,7 +89,7 @@ export default function MessageTab() {
   const handleOpen = (request) => {
     setOpen(true);
     setSelectedRequest(request);
-    setSelectedUser(request.user1_id === user.id ? request.user2_id : request.user1_id);
+    setSelectedUser(request.user1_id);
   }
   const handleClose = () => {
     setOpen(false);
