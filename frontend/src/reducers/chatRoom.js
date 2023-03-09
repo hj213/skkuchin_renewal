@@ -9,6 +9,14 @@ import {
     SET_USER_BLOCK_FAIL,
     SET_CHAT_ALARM_SUCCESS,
     SET_CHAT_ALARM_FAIL,
+    SET_MEET_TIME_SUCCESS,
+    SET_MEET_TIME_FAIL,
+    SET_MEET_PLACE_SUCCESS,
+    SET_MEET_PLACE_FAIL,
+    DELETE_MEET_TIME_SUCCESS,
+    DELETE_MEET_TIME_FAIL,
+    DELETE_MEET_PLACE_SUCCESS,
+    DELETE_MEET_PLACE_FAIL,
     EXIT_CHAT_ROOM_SUCCESS,
     EXIT_CHAT_ROOM_FAIL,
     GET_REALTIME_ROOM_SUCCESS,
@@ -63,6 +71,38 @@ const chatRoomReducer = (state= initialState, action) => {
                 ...state
             }
         case SET_CHAT_ALARM_FAIL:
+            return {
+                ...state
+            }
+        case SET_MEET_PLACE_SUCCESS:
+            return {
+                ...state
+            }
+        case SET_MEET_PLACE_FAIL:
+            return {
+                ...state
+            }
+        case SET_MEET_TIME_SUCCESS:
+            return {
+                ...state
+            }
+        case SET_MEET_TIME_FAIL:
+            return {
+                ...state
+            }
+        case DELETE_MEET_TIME_SUCCESS:
+            return {
+                ...state
+            }
+        case DELETE_MEET_TIME_FAIL:
+            return {
+                ...state
+            }
+        case DELETE_MEET_PLACE_SUCCESS:
+            return {
+                ...state
+            }
+        case DELETE_MEET_PLACE_FAIL:
             return {
                 ...state
             }

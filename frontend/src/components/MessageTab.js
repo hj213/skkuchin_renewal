@@ -153,7 +153,7 @@ export default function MessageTab() {
                             <Grid xs={2}>
                             <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                               <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                                {chatRoom.message_time}
+                                {chatRoom.display_time}
                               </Typography>
                               <div
                                 style={{
@@ -167,9 +167,21 @@ export default function MessageTab() {
                                   justifyContent: 'center'
                                 }}
                               >
-                                <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
-                                  { chatRoom.message_count === 0 ? "NEW" : chatRoom.message_count }
-                                </Typography>
+                                { 
+                                  chatRoom.message_count === 0 
+                                  ? 
+                                    chatRoom.message === "새로운 채팅방이 개설되었습니다"
+                                    ? 
+                                    <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
+                                      NEW
+                                    </Typography>
+                                    :
+                                    null
+                                  :
+                                  <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
+                                    {chatRoom.message_count}
+                                  </Typography>
+                                }
                               </div>
                             </Stack>
                             </Grid>
@@ -226,7 +238,7 @@ export default function MessageTab() {
                         <Grid xs={2}>
                           <Stack direction="column" spacing={1} sx={{margin:"5px 0 7px 7px",height:'20px',}}>
                               <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                                  {chatRequest.created_date}
+                                  {chatRequest.display_time}
                               </Typography>
                             </Stack>
                         </Grid>

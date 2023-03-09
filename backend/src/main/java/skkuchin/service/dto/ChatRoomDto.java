@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import skkuchin.service.config.chat.ResponseCode;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ResponseType;
@@ -13,9 +12,11 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Major;
 import skkuchin.service.domain.User.Profile;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 
 public class ChatRoomDto {
@@ -33,7 +34,6 @@ public class ChatRoomDto {
                     .build();
         }
     }
-
 
     @Getter
     @RequiredArgsConstructor
@@ -56,30 +56,28 @@ public class ChatRoomDto {
     public static class Response {
         @JsonProperty
         private String roomId;
-
         private String message;
         private Major major;
         private String nickname;
         private Profile image;
-
         @JsonProperty
         private Long user1Id;
         @JsonProperty
         private Long user2Id;
-
         @JsonProperty
         private boolean user1Alarm;
-
         @JsonProperty
         private boolean user2Alarm;
-
         @JsonProperty
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime messageTime;
         @JsonProperty
+        private String displayTime;
+        @JsonProperty
         private int messageCount;
+
         public Response(ChatRoom chatroom, ChatMessage chatMessage, int messageCount, AppUser otherUser) {
             this.messageTime = chatMessage.getDate();
+            this.displayTime = formatDate(chatMessage.getDate());
             this.message = chatMessage.getMessage();
             this.roomId = chatroom.getRoomId();
             this.user1Id = chatroom.getUser1().getId();
@@ -92,6 +90,23 @@ public class ChatRoomDto {
             this.image = otherUser.getImage();
         }
 
+        private String formatDate(LocalDateTime date) {
+            LocalDateTime now = LocalDateTime.now();
+            long diff = ChronoUnit.MINUTES.between(date, now);
+            if (diff < 1) {
+                return "방금 전";
+            } else if (diff < 60) {
+                return diff + "분 전";
+            } else if (diff < 1440) {
+                return (diff / 60) + "시간 전";
+            } else if (diff < 2880) {
+                return "어제";
+            } else if (date.getYear() == now.getYear()) {
+                return date.format(DateTimeFormatter.ofPattern("M월 d일"));
+            } else {
+                return date.format(DateTimeFormatter.ofPattern("yyyy. M. d."));
+            }
+        }
     }
 
     @Getter
@@ -105,12 +120,19 @@ public class ChatRoomDto {
         private boolean user1Alarm;
         @JsonProperty
         private boolean user2Alarm;
+        @JsonProperty
+        private String meetPlace;
+        @JsonProperty
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd (E) HH:mm", timezone = "Asia/Seoul", locale = "ko-KR")
+        private LocalDateTime meetTime;
 
         public settingResponse(ChatRoom chatRoom){
             this.user1Blocked = chatRoom.isUser1Blocked();
             this.user2Blocked = chatRoom.isUser2Blocked();
             this.user1Alarm = chatRoom.isUser1Alarm();
             this.user2Alarm = chatRoom.isUser2Alarm();
+            this.meetPlace = chatRoom.getMeetPlace();
+            this.meetTime = chatRoom.getMeetTime();
         }
     }
 
@@ -124,37 +146,73 @@ public class ChatRoomDto {
         @JsonProperty
         private String roomId;
         @JsonProperty
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdDate;
+        @JsonProperty
+        private String displayTime;
 
         public userResponse(ChatRoom chatRoom){
             this.user1Id = chatRoom.getUser1().getId();
             this.user2Id = chatRoom.getUser2().getId();
             this.roomId = chatRoom.getRoomId();
             this.createdDate = chatRoom.getExpireDate().minusDays(2);
+            this.displayTime = formatDate(chatRoom.getExpireDate().minusDays(2));
+        }
+
+        private String formatDate(LocalDateTime date) {
+            LocalDateTime now = LocalDateTime.now();
+            long diff = ChronoUnit.MINUTES.between(date, now);
+            if (diff < 1) {
+                return "방금 전";
+            } else if (diff < 60) {
+                return diff + "분 전";
+            } else if (diff < 1440) {
+                return (diff / 60) + "시간 전";
+            } else if (diff < 2880) {
+                return "어제";
+            } else if (date.getYear() == now.getYear()) {
+                return date.format(DateTimeFormatter.ofPattern("M월 d일"));
+            } else {
+                return date.format(DateTimeFormatter.ofPattern("yyyy. M. d."));
+            }
         }
     }
 
-
     @Getter
     @Setter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class DebeziumDto{
         private Long id;
-        private String expire_date;
-        private Boolean is_user1_blocked;
-        private Boolean is_user2_blocked;
-        private Boolean is_user1_alarm_on;
-        private Boolean is_user2_alarm_on;
-        private String room_id;
-        private String response;
-        private Long user1_id;
-        private Long user2_id;
+
+        @JsonProperty
+        private String roomId;
+
+        @JsonProperty
+        private Long user1Id;
+
+        @JsonProperty
+        private Long user2Id;
+
+        private ResponseType response;
+
+        @JsonProperty
+        private Timestamp expireDate;
+
+        @JsonProperty
+        private Boolean user1Block;
+
+        @JsonProperty
+        private Boolean user2Block;
+
+        @JsonProperty
+        private Boolean user1Alarm;
+
+        @JsonProperty
+        private Boolean user2Alarm;
+
+        @JsonProperty
+        private String meetPlace;
+
+        @JsonProperty
+        private Timestamp meetTime;
     }
-
-
-
-
-
-
-
 }

@@ -1,8 +1,5 @@
 package skkuchin.service.domain.User;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Major {
     경영학과,
     글로벌경영학과,

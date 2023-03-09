@@ -13,11 +13,20 @@ import {
     SET_USER_BLOCK_FAIL,
     SET_CHAT_ALARM_SUCCESS,
     SET_CHAT_ALARM_FAIL,
+    SET_MEET_TIME_SUCCESS,
+    SET_MEET_TIME_FAIL,
+    SET_MEET_PLACE_SUCCESS,
+    SET_MEET_PLACE_FAIL,
+    DELETE_MEET_TIME_SUCCESS,
+    DELETE_MEET_TIME_FAIL,
+    DELETE_MEET_PLACE_SUCCESS,
+    DELETE_MEET_PLACE_FAIL,
     EXIT_CHAT_ROOM_SUCCESS,
     EXIT_CHAT_ROOM_FAIL,
     GET_REALTIME_ROOM_SUCCESS
 }
     from './types';
+import { send_message } from './chatMessage';
 
 export const load_request_id = (callback) => async dispatch => {
         await dispatch(request_refresh());
@@ -246,6 +255,180 @@ export const set_chat_room_alarm = (reaction, room_id, callback) => async dispat
     } catch(error) {
         dispatch({
             type: SET_CHAT_ALARM_FAIL
+        })
+        if (callback) callback([false, error]);
+    }
+};
+
+export const set_meet_time = (time, room_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const body = JSON.stringify({
+        time
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/chat/room/meet/time/${room_id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SET_MEET_TIME_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: SET_MEET_TIME_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: SET_MEET_TIME_FAIL
+        })
+        if (callback) callback([false, error]);
+    }
+};
+
+export const set_meet_place = (place, room_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const body = JSON.stringify({
+        place
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/chat/room/meet/place/${room_id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SET_MEET_PLACE_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: SET_MEET_PLACE_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: SET_MEET_PLACE_FAIL
+        })
+        if (callback) callback([false, error]);
+    }
+};
+
+export const delete_meet_time = (room_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/chat/room/meet/time/${room_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: DELETE_MEET_TIME_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: DELETE_MEET_TIME_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: DELETE_MEET_TIME_FAIL
+        })
+        if (callback) callback([false, error]);
+    }
+};
+
+export const delete_meet_place = (room_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/chat/room/meet/place/${room_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: DELETE_MEET_PLACE_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: DELETE_MEET_PLACE_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: DELETE_MEET_PLACE_FAIL
         })
         if (callback) callback([false, error]);
     }

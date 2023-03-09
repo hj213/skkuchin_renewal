@@ -6,6 +6,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import skkuchin.service.dto.ChatMessageDto;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
@@ -20,6 +21,7 @@ import skkuchin.service.repo.UserRepo;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,20 +30,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ChatRoomService {
+    private final ChatMessageService chatMessageService;
     private final ChatRoomRepo chatRoomRepo;
     private final ChatMessageRepo chatMessageRepo;
     private final UserRepo userRepo;
-
-    @Transactional
-    public void updateReadStatus(ChatRoom chatRoom, String sender){
-        List<ChatMessage> chatMessages = chatMessageRepo.findByChatRoom(chatRoom);
-        for (ChatMessage chatMessage : chatMessages) {
-            if(chatMessage.isReadStatus() == false && !chatMessage.getSender().equals(sender)){
-                chatMessage.setReadStatus(true);
-            }
-        }
-        chatMessageRepo.saveAll(chatMessages);
-    }
 
     @Transactional
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
@@ -189,6 +181,79 @@ public class ChatRoomService {
     }
 
     @Transactional
+    public void setMeetTime(String roomId, AppUser appUser, LocalDateTime time){
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+        chatRoom.setMeetTime(time);
+        chatRoomRepo.save(chatRoom);
+
+        AppUser admin = userRepo.findByUsername("admin");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm");
+        String timeStr = time.format(formatter);
+
+        String message = timeStr + "에\n" +
+                "약속을 만들었어요. 약속을 꼭 지켜주세요!";
+
+        ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
+        chatMessageService.write(admin, dto);
+    }
+
+    @Transactional
+    public void setMeetPlace(String roomId, AppUser appUser, String place){
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+        chatRoom.setMeetPlace(place);
+        chatRoomRepo.save(chatRoom);
+
+        AppUser admin = userRepo.findByUsername("admin");
+        String message = "우리 ‘" + place + "’에서 만나요!";
+        ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
+        chatMessageService.write(admin, dto);
+    }
+
+    @Transactional
+    public void deleteMeetTime(String roomId, AppUser appUser){
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+        LocalDateTime time = chatRoom.getMeetTime();
+
+        chatRoom.setMeetTime(null);
+        chatRoomRepo.save(chatRoom);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm");
+        String timeStr = time.format(formatter);
+
+        AppUser admin = userRepo.findByUsername("admin");
+        String message = timeStr + " 약속이 취소되었습니다";
+        ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
+        chatMessageService.write(admin, dto);
+    }
+
+    @Transactional
+    public void deleteMeetPlace(String roomId, AppUser appUser){
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
+        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+        String place = chatRoom.getMeetPlace();
+
+        chatRoom.setMeetPlace(null);
+        chatRoomRepo.save(chatRoom);
+
+        AppUser admin = userRepo.findByUsername("admin");
+        String message = place + " 약속이 취소되었습니다";
+        ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
+        chatMessageService.write(admin, dto);
+    }
+
+    @Transactional
     public void exitRoom(String roomId, AppUser appUser){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
@@ -264,8 +329,6 @@ public class ChatRoomService {
         for (int i = 0; i < 3; i++) {
             user2Accept(chatRooms.get(i).getRoomId() ,testUser, ResponseType.ACCEPT);
         }
-        setAlarm(chatRooms.get(0).getRoomId() ,testUser, true);
-        setAlarm(chatRooms.get(1).getRoomId() ,testUser, true);
     }
 
 }
