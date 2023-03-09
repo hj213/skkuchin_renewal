@@ -183,7 +183,7 @@ public class ChatRoomService {
     @Transactional
     public void setMeetTime(String roomId, AppUser appUser, LocalDateTime time){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         chatRoom.setMeetTime(time);
@@ -191,7 +191,7 @@ public class ChatRoomService {
 
         AppUser admin = userRepo.findByUsername("admin");
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm", Locale.KOREAN);
         String timeStr = time.format(formatter);
 
         String message = timeStr + "에\n" +
@@ -204,7 +204,7 @@ public class ChatRoomService {
     @Transactional
     public void setMeetPlace(String roomId, AppUser appUser, String place){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         chatRoom.setMeetPlace(place);

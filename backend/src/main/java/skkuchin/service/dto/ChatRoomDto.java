@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 
 public class ChatRoomDto {
@@ -123,8 +124,7 @@ public class ChatRoomDto {
         @JsonProperty
         private String meetPlace;
         @JsonProperty
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd (E) HH:mm", timezone = "Asia/Seoul", locale = "ko-KR")
-        private LocalDateTime meetTime;
+        private String meetTime;
 
         public settingResponse(ChatRoom chatRoom){
             this.user1Blocked = chatRoom.isUser1Blocked();
@@ -132,7 +132,15 @@ public class ChatRoomDto {
             this.user1Alarm = chatRoom.isUser1Alarm();
             this.user2Alarm = chatRoom.isUser2Alarm();
             this.meetPlace = chatRoom.getMeetPlace();
-            this.meetTime = chatRoom.getMeetTime();
+            this.meetTime = formatDate(chatRoom.getMeetTime());
+        }
+
+        private String formatDate(LocalDateTime date) {
+            if (date != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm", Locale.KOREAN);
+                return date.format(formatter);
+            }
+            return null;
         }
     }
 

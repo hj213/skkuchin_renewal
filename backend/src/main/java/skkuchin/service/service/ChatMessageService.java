@@ -48,14 +48,14 @@ public class ChatMessageService {
     }
 
     @Transactional
-    public void readMessage(Long messageId, AppUser user, Boolean read) {
+    public void readMessage(Long messageId, AppUser user, ChatMessageDto.BooleanRequest dto) {
         ChatMessage chatMessage = chatMessageRepo.findById(messageId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 메시지입니다"));
 
-        if (!Objects.equals(user, chatMessage.getChatRoom().getUser1()) && !Objects.equals(user, chatMessage.getChatRoom().getUser2())) {
-            throw new CustomRuntimeException("올바르지 않은 접근입니다");
-        }
+//        if (!Objects.equals(user, chatMessage.getChatRoom().getUser1()) && !Objects.equals(user, chatMessage.getChatRoom().getUser2())) {
+//            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+//        }
 
-        chatMessage.setReadStatus(read);
+        chatMessage.setReadStatus(dto.getRead());
         chatMessageRepo.save(chatMessage);
     }
 
@@ -83,7 +83,7 @@ public class ChatMessageService {
     private class MessageDateComparator implements Comparator<ChatMessageDto.Response> {
         @Override
         public int compare(ChatMessageDto.Response f1, ChatMessageDto.Response f2) {
-            if (f1.getDate().isAfter(f2.getDate()) ) {
+            if (f1.getTime().isAfter(f2.getTime()) ) {
                 return 1;
             } else  {
                 return -1;
