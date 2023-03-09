@@ -45,10 +45,18 @@ public class ChatMessageController {
     @PutMapping("/read/{messageId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> readMessage(@PathVariable Long messageId,
-                                          @RequestBody Map<String, Boolean> messageMap,
+                                          @Valid @RequestBody ChatMessageDto.BooleanRequest dto,
+                                         BindingResult bindingResult,
                                           @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+        }
         AppUser user = principalDetails.getUser();
-        chatMessageService.readMessage(messageId, user, messageMap.get("read"));
+        chatMessageService.readMessage(messageId, user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "메시지 읽음", null), HttpStatus.OK);
     }
 }
