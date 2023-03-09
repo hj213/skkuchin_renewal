@@ -154,7 +154,7 @@ public class ChatRoomService {
 
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
-        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
@@ -172,7 +172,7 @@ public class ChatRoomService {
     public void setAlarm(String roomId, AppUser appUser, Boolean status){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
-        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
@@ -224,7 +224,7 @@ public class ChatRoomService {
     @Transactional
     public void deleteMeetTime(String roomId, AppUser appUser){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         LocalDateTime time = chatRoom.getMeetTime();
@@ -244,7 +244,7 @@ public class ChatRoomService {
     @Transactional
     public void deleteMeetPlace(String roomId, AppUser appUser){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         String place = chatRoom.getMeetPlace();
