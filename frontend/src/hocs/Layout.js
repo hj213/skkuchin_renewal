@@ -7,6 +7,7 @@ import { set_stomp_client } from '../actions/stompClient/stompClient';
 import SockJS from 'sockjs-client';
 import { API_URL } from '../config';
 import { WEB_PUSH_PUBLIC_KEY } from '../config';
+import { enroll_token } from '../actions/pushToken/pushToken';
 
 const base64ToUint8Array = base64 => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4)
@@ -26,30 +27,32 @@ const Layout = ({title, content, children}) => {
     const router = useRouter();
     const [show, setShow] = useState(false);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
-            // run only in browser
-            navigator.serviceWorker.ready.then(reg => {
-                reg.pushManager.getSubscription().then(sub => {
-                    if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
-                        console.log("통과"+sub)
-                    } else {
-                        subscribe(reg);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
+        navigator.serviceWorker.ready.then(reg => {
+            reg.pushManager.getSubscription().then(sub => {
+                if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
+                    console.log("통과"+sub)
+                } else {
+                    subscribe(reg);
+                }
             })
-        }
-    }, [])
+            .catch((err) => {
+                console.log(err);
+            })
+        })
+    }
 
     const subscribe = async (reg) => {
-        const sub = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: base64ToUint8Array(WEB_PUSH_PUBLIC_KEY)
-        })
-        log(sub);
+        try {
+            const sub = await reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: base64ToUint8Array(WEB_PUSH_PUBLIC_KEY)
+            });
+            log(sub);
+            dispatch(enroll_token(sub));
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     let stompClient = null;

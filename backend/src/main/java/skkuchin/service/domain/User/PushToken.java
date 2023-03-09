@@ -15,13 +15,18 @@ public class PushToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String token;
+    @Column(nullable = false)
+    private String endpoint;
 
-    @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isInfoAlarmOn;
+    @Column(nullable = false)
+    private String auth;
 
-    @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isChatAlarmOn;
+    @Column(nullable = false)
+    private String p256dh;
+
+    private boolean infoAlarm;
+
+    private boolean ChatAlarm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

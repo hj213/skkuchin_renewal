@@ -27,20 +27,21 @@ public class PushTokenService {
     }
 
     @Transactional
-    public void upload(AppUser user, PushTokenDto.Request dto) {
+    public void upload(AppUser user, PushTokenDto.PostRequest dto) {
         PushToken pushToken = dto.toEntity(user);
+        pushToken.setInfoAlarm(true);
+        pushToken.setChatAlarm(true);
         pushTokenRepo.save(pushToken);
     }
 
     @Transactional
-    public void update(AppUser user, PushTokenDto.Request dto) {
+    public void update(AppUser user, PushTokenDto.PutRequest dto) {
         PushToken existingToken = pushTokenRepo.findByUser(user);
-        existingToken.setToken(dto.getToken());
-        if (dto.getIsInfoAlarmOn() != null) {
-            existingToken.setChatAlarmOn(dto.getIsChatAlarmOn());
+        if (dto.getInfoAlarm() != null) {
+            existingToken.setChatAlarm(dto.getChatAlarm());
         }
-        if (dto.getIsChatAlarmOn() != null) {
-            existingToken.setInfoAlarmOn(dto.getIsInfoAlarmOn());
+        if (dto.getChatAlarm() != null) {
+            existingToken.setInfoAlarm(dto.getInfoAlarm());
         }
         pushTokenRepo.save(existingToken);
     }

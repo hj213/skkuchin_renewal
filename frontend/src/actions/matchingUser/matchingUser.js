@@ -199,18 +199,12 @@ export const load_other_matching_info = (id, callback) => async dispatch => {
                 type: LOAD_MATCHING_INFO_SUCCESS,
                 payload: apiRes.data
             })
-            
             if (callback) callback([true, apiRes.message]);
-            
-            
         }else {
             dispatch({
                 type: LOAD_MATCHING_INFO_FAIL
             })
-            
             if (callback) callback([false, apiRes.message]);
-            
-            
         }
 
     } catch (error) {
