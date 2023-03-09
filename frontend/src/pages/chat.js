@@ -19,7 +19,7 @@ import notiOff from '../image/chat/notifications_off.png'
 
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
-import { get_realtime_chat_infos, get_realtime_otherUser, get_realtime_setting, get_realtime_message } from '../actions/chat/chatMessage';
+import { get_realtime_chat_infos, get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message } from '../actions/chat/chatMessage';
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -130,7 +130,6 @@ const chatPage = () => {
         router.push('/reportUser')
     }
 
-
     // more 버튼
     const options = [
         {label: '프로필 보기', onClick: handleProfile},
@@ -150,6 +149,20 @@ const chatPage = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const [inputMessage, setInputMessage] = useState('');
+
+    const handleSubmit = (message) => {
+        dispatch(send_message(message, room_id, ([result, message])=>{
+            if(result){
+                alert('send 성공!');           
+            } else {
+                alert("send 실패 " +message);
+            }
+        }));
+        setInputMessage('');
+    }
+    
     
     return(
         <ThemeProvider theme={theme}>
@@ -176,7 +189,7 @@ const chatPage = () => {
                         <Grid>
                             <div style={{display:'flex'}}>
                                 <Typography sx={{paddingLeft:'12px',fontSize: '18px', fontWeight:'500', lineHeight: '28px', pr: '4px'}} color="#000000"  component="span">
-                                    상대방 닉네임
+                                    {otherUser && otherUser.nickname}
                                 </Typography>
                                 {/* 알림 끄기 표시 */}
                                 <Box sx={{paddingLeft:'3px', paddingTop:'4px'}}>
@@ -249,11 +262,11 @@ const chatPage = () => {
                             marginRight:"3px",
                             padding:"1px 3px 0 3px",
                             width:"28px"}}>
-                            명율
+                            {otherUser && otherUser.campus}
                         </Typography>
-                        경영학과 /&nbsp;
-                        21 학번 /&nbsp;
-                        남
+                        {otherUser && otherUser.major} /&nbsp;
+                        {otherUser && otherUser.student_id} /&nbsp;
+                        {otherUser && (otherUser.gender).charAt(0)}
                     </Grid>
                 </div>
                 </Card>
@@ -332,15 +345,101 @@ const chatPage = () => {
                     </Grid>
                 </div>
 
+                { messages && messages.slice().reverse().map((message, index) => {
+                    // 이어서 메시지를 보냈는지 확인
+                    const prevMessage = messages.slice().reverse()[index - 1];
+                    const isContinuedMessage = prevMessage && ((prevMessage.sender === message.sender && prevMessage.sender === user.username) || (prevMessage.sender === message.sender && prevMessage.sender !== user.username));
+                    let topMargin = isContinuedMessage ? 10 : 22;
+                    // 보낸 시간 체크, 1분 미만인 경우
+                    let displayAvatar = true;
+                    // 이전 메시지와 현재 메시지의 시간 비교
+                    if (prevMessage && prevMessage.date === message.date) {
+                        displayAvatar = false;
+                        // displayTime = false; 
+                    }
+                    return (
+                        (message.sender === user.username) ? (
+                        <Grid key={message.id} style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
+                            <Grid item sx={{pr:"7px"}}>
+                            <Stack direction="column" spacing={1}>
+                                <Grid style={{display:'flex'}}>
+                                <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
+                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                        {message.date}
+                                    </Typography>
+          
+                                    <Card elevation="none" sx={{
+                                        borderRadius: '15px 0px 15px 15px',
+                                        backgroundColor:'#FFE885',
+                                        maxWidth:'80%',
+                                    }}>
+                                    <Typography style={{
+                                        padding:'10px 10px 6px 10px',
+                                        fontSize: '14px',
+                                        maxWidth:'100%',
+                                    }}>
+                                        {message.message}
+                                    </Typography>
+                                    </Card>
+                                </Grid>
+                                </Grid>
+                            </Stack>
+                            </Grid>
+                        </Grid>
+                        ) : (
+                        <Grid key={message.id} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
+                            {displayAvatar && (
+                                <Grid item>
+                                    <Avatar alt="" />
+                                </Grid>
+                            )}
+                            <Grid item sx={{pl:"7px", ml : displayAvatar ? 0 : '40px'}}>
+                                <Stack direction="column" spacing={1}>
+                                    {displayAvatar && 
+                                        <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top'}} align="left">
+                                            {otherUser && otherUser.nickname}
+                                        </Typography>
+                                    }
+                                    <Grid style={{display:'flex'}}>
+                                        <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
+                                            <Card elevation="none" style={{
+                                                borderRadius: '0px 15px 15px 15px',
+                                                backgroundColor:'white',
+                                                border:'1px solid #FFCE00',
+                                                maxWidth:'75%'
+                                            }}>
+                                                <Typography
+                                                    style={{
+                                                    padding:'8px 10px 6px 10px',
+                                                    fontSize: '14px',
+                                                    maxWidth:'100%'
+                                                    }}>
+                                                    {message.message}
+                                                </Typography>
+                                            </Card>
+                                            <Grid>
+                                            <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                                {message.date} 
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Stack>
+                        </Grid>
+                    </Grid> 
+                    ))
+                })}
+                
+                
                 {/* 상대방 카톡 틀 1(첫 메세지, 내 메세지 이후 첫 메시지) */}
-                <Grid container style={{width:"100%",margin:'22px 0px 0px 0px', paddingLeft:'15px', justifyContent:'left'}}>
+                {/* <Grid container style={{width:"100%",margin:'22px 0px 0px 0px', paddingLeft:'15px', justifyContent:'left'}}>
                     <Grid item>
                         <Avatar alt=""/>
                     </Grid>
                     <Grid item style={{paddingLeft:"7px"}}>
                         <Stack direction="column" spacing={1}>
                             <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top',}} align="left">
-                                상대방 닉네임
+                                {otherUser && otherUser.nickname}
                             </Typography>
                             <Grid style={{display:'flex'}}>
                             <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
@@ -366,10 +465,10 @@ const chatPage = () => {
                             </Grid>
                         </Stack>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
                 {/* 상대방 카톡 틀 2(상대방의 연속된 메시지) */}
-                <Grid container style={{width:"100%",margin:'10px 0px 0px 0px', paddingLeft:'15px', justifyContent:'left'}}>
+                {/* <Grid container style={{width:"100%",margin:'10px 0px 0px 0px', paddingLeft:'15px', justifyContent:'left'}}>
                     <Grid item style={{paddingLeft:"7px", marginLeft:"40px"}}>
                         <Stack direction="column" spacing={1}>
                             <Grid style={{display:'flex'}}>
@@ -396,11 +495,10 @@ const chatPage = () => {
                             </Grid>
                         </Stack>
                     </Grid>
-                </Grid>
-
+                </Grid> */}
 
                 {/* 내 카톡 틀 1 (내 첫 메시지) */}
-                <Grid container style={{width:"100%", margin:'22px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
+                {/* <Grid container style={{width:"100%", margin:'22px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
                     <Grid item style={{paddingRight:"7px"}}>
                         <Stack direction="column" spacing={1}>
                             <Grid style={{display:'flex'}}>
@@ -426,10 +524,10 @@ const chatPage = () => {
                             </Grid>
                         </Stack>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
                 {/* 내 카톡 틀 2 (내 연속 메시지) */}
-                <Grid container style={{width:"100%", margin:'10px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
+                {/* <Grid container style={{width:"100%", margin:'10px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
                     <Grid item style={{paddingRight:"7px"}}>
                         <Stack direction="column" spacing={1}>
                             <Grid style={{display:'flex'}}>
@@ -455,7 +553,7 @@ const chatPage = () => {
                             </Grid>
                         </Stack>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
                 {/* 약속 확인 메시지 */}
                 <Grid
@@ -510,8 +608,10 @@ const chatPage = () => {
                         required
                         style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle'}}
                         rows={calculateRows}
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
                     />
-                    <Grid sx={{ marginLeft: '10px', paddingTop:'5px' }}>
+                    <Grid onClick={()=>handleSubmit(inputMessage)} sx={{ marginLeft: '10px', paddingTop:'5px' }}>
                         <Image src={send} width={41} height={41} layout="fixed"/>
                     </Grid>
                 </Grid>
