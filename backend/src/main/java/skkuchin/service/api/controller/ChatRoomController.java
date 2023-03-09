@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.config.auth.PrincipalDetails;
-import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.CustomValidationApiException;
-import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.ChatRoomService;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +38,7 @@ public class ChatRoomController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> makeRoom(@Valid @RequestBody ChatRoomDto.RoomRequest dto,
                                       BindingResult bindingResult,
                                       @AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -59,7 +59,8 @@ public class ChatRoomController {
      }
 
     @PutMapping("/request/{roomId}")
-    public ResponseEntity<?> receiverReaction(@PathVariable String roomId,
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> setReceiverReaction(@PathVariable String roomId,
                                               @Valid @RequestBody ChatRoomDto.ReactionRequest dto,
                                               BindingResult bindingResult,
                                               @AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -76,7 +77,8 @@ public class ChatRoomController {
     }
 
     @PutMapping("/block/{roomId}")
-    public ResponseEntity<?> blockUser(@PathVariable String roomId,
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> setBlock(@PathVariable String roomId,
                                        @Valid @RequestBody ChatRoomDto.BooleanRequest dto,
                                        BindingResult bindingResult,
                                        @AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -93,7 +95,8 @@ public class ChatRoomController {
     }
 
     @PutMapping("/alarm/{roomId}")
-    public ResponseEntity<?> roomAlarm(@PathVariable String roomId,
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> setAlarm(@PathVariable String roomId,
                                        @Valid @RequestBody ChatRoomDto.BooleanRequest dto,
                                        BindingResult bindingResult,
                                        @AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -109,7 +112,46 @@ public class ChatRoomController {
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 알람 설정", null), HttpStatus.OK);
     }
 
+    @PutMapping("/meet/time/{roomId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> setMeetTime(@PathVariable String roomId,
+                                          @RequestBody Map<String, LocalDateTime> timeMap,
+                                       @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        chatRoomService.setMeetTime(roomId, user, timeMap.get("time"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 만남 장소 설정", null), HttpStatus.OK);
+    }
+
+    @PutMapping("/meet/place/{roomId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> setMeetPlace(@PathVariable String roomId,
+                                          @RequestBody Map<String, String> placeMap,
+                                          @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        chatRoomService.setMeetPlace(roomId, user, placeMap.get("place"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 만남 시간 설정", null), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/meet/time/{roomId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> deleteMeetTime(@PathVariable String roomId,
+                                      @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        chatRoomService.deleteMeetPlace(roomId, user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 만남 장소 삭제 완료", null), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/meet/place/{roomId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> deleteMeetPlace(@PathVariable String roomId,
+                                      @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        chatRoomService.deleteMeetTime(roomId, user);
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 만남 시간 삭제 완료", null), HttpStatus.OK);
+    }
+
     @DeleteMapping("/exit/{roomId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> exitRoom(@PathVariable String roomId,
                                       @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();

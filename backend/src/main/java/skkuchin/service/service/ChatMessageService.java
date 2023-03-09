@@ -9,6 +9,7 @@ import skkuchin.service.domain.Chat.ChatMessage;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.exception.CustomRuntimeException;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.ChatMessageRepo;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.UserRepo;
@@ -36,11 +37,37 @@ public class ChatMessageService {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
-        if (!Objects.equals(chatRoom.getUser1().getId(), user.getId()) && !Objects.equals(chatRoom.getUser2().getId(), user.getId())) {
+        if (!Objects.equals(chatRoom.getUser1().getId(), user.getId()) &&
+            !Objects.equals(chatRoom.getUser2().getId(), user.getId()) &&
+            !Objects.equals(user.getUsername(), "admin")
+        ) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
-        ChatMessage chatMessage = dto.toEntity(chatRoom,user);
+        ChatMessage chatMessage = dto.toEntity(chatRoom, user);
         chatMessageRepo.save(chatMessage);
+    }
+
+    @Transactional
+    public void readMessage(Long messageId, AppUser user, Boolean read) {
+        ChatMessage chatMessage = chatMessageRepo.findById(messageId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 메시지입니다"));
+
+        if (!Objects.equals(user, chatMessage.getChatRoom().getUser1()) && !Objects.equals(user, chatMessage.getChatRoom().getUser2())) {
+            throw new CustomRuntimeException("올바르지 않은 접근입니다");
+        }
+
+        chatMessage.setReadStatus(read);
+        chatMessageRepo.save(chatMessage);
+    }
+
+    @Transactional
+    public void updateReadStatus(ChatRoom chatRoom, String sender){
+        List<ChatMessage> chatMessages = chatMessageRepo.findByChatRoom(chatRoom);
+        for (ChatMessage chatMessage : chatMessages) {
+            if(chatMessage.isReadStatus() == false && !chatMessage.getSender().equals(sender)){
+                chatMessage.setReadStatus(true);
+            }
+        }
+        chatMessageRepo.saveAll(chatMessages);
     }
 
     @Transactional

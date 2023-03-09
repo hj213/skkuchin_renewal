@@ -79,6 +79,7 @@ dependencies {
 
 	//kafka
 	implementation 'org.springframework.kafka:spring-kafka:2.8.1'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
 
 	//Debezium Connector for MySQL
 	implementation 'io.debezium:debezium-connector-mysql:1.6.1.Final'

@@ -19,9 +19,7 @@ import notiOff from '../image/chat/notifications_off.png'
 
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
-import { get_realtime_chat_infos, get_realtime_otherUser } from '../actions/chat/chatMessage';
-import { get_realtime_block_alarm } from '../actions/chat/chatMessage';
-import { get_realtime_message } from '../actions/chat/chatMessage';
+import { get_realtime_chat_infos, get_realtime_otherUser, get_realtime_setting, get_realtime_message } from '../actions/chat/chatMessage';
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -47,13 +45,13 @@ const chatPage = () => {
     // user1이 나일 때
     // user1Blocked 참이면 채팅사용 X (내가 차단된 상황)
     // user2Blocked 참이면 내가 차단한 상황
-    const blockAlarm = useSelector(state => state.chatMessage.blockAlarm);
+    const setting = useSelector(state => state.chatMessage.setting);
 
     const stompClient = useSelector(state => state.stompClient.stompClient);
     
 
     const [subscriptionOtherUser, setSubscriptionOtherUser] = useState(null);
-    const [subscriptionBlockAlarm, setSubscriptionBlockAlarm] = useState(null);
+    const [subscriptionSetting, setSubscriptionSetting] = useState(null);
     const [subscriptionMessage, setSubscriptionMessage] = useState(null);
 
     const handleOnclick = (event) =>{
@@ -64,16 +62,16 @@ const chatPage = () => {
 
     const get_info = async () => {
         const subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
-        const subBlockAlarm = dispatch(get_realtime_block_alarm(room_id, user_number, stompClient));
-        const subMessage = dispatch(get_realtime_message(room_id, user_number, stompClient));
+        const subMessage = dispatch(get_realtime_message(room_id, user_number, user.username, stompClient));
+        const subSetting = dispatch(get_realtime_setting(room_id, user_number, stompClient));
 
         setSubscriptionOtherUser(subOtherUser);
-        setSubscriptionBlockAlarm(subBlockAlarm);
         setSubscriptionMessage(subMessage);
+        setSubscriptionSetting(subSetting);
     }
 
     useEffect(() => {
-        if (stompClient && room_id && user_number) {
+        if (stompClient && room_id && user_number && user && user.username) {
             get_info()
             .then(() => {
                 dispatch(get_realtime_chat_infos(room_id, stompClient));
@@ -84,14 +82,14 @@ const chatPage = () => {
             if (subscriptionOtherUser) {
                 stompClient.unsubscribe(subscriptionOtherUser);
             }
-            if (subscriptionBlockAlarm) {
-                stompClient.unsubscribe(subscriptionBlockAlarm);
+            if (subscriptionSetting) {
+                stompClient.unsubscribe(subscriptionSetting);
             }
             if (subscriptionMessage) {
                 stompClient.unsubscribe(subscriptionMessage);
             }
         }
-    }, [stompClient, room_id, user_number])
+    }, [stompClient, room_id, user_number, user])
 
     // 프로필 보기 (load_matchingUser )
     const handleProfile = ()=>{

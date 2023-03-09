@@ -5,7 +5,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
@@ -17,7 +16,6 @@ import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.ChatRoomService;
 import skkuchin.service.service.ChatSessionService;
@@ -47,7 +45,7 @@ public class MessageController {
 
         String username = chatSession.getUsername();
 
-        chatRoomService.updateReadStatus(chatRoom, username);
+        chatMessageService.updateReadStatus(chatRoom, username);
 
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();

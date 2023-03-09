@@ -199,7 +199,8 @@ public class UserDto {
 
     @Getter
     @Setter
-    public static class DebeziumUserResponse {
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class DebeziumDto {
         private Long id;
         private String nickname;
         private String username;

@@ -1,6 +1,7 @@
 package skkuchin.service.webSocket.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -34,19 +35,17 @@ public class DebeziumController {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DebeziumDto.ChatMessageRequest dto= objectMapper.readValue(message, DebeziumDto.ChatMessageRequest.class);
-        ChatRoom chatRoom = chatRoomService.findChatById(dto.getPayload().getAfter().getChat_room_id());
-        System.out.println(chatRoom.getRoomId());
+        DebeziumDto.ChatMessageRequest dto= objectMapper.registerModule(new JavaTimeModule()).readValue(message, DebeziumDto.ChatMessageRequest.class);
+        ChatRoom chatRoom = chatRoomService.findChatById(dto.getPayload().getAfter().getChatRoomId());
+
         AppUser user1 = chatRoom.getUser1();
-        System.out.println(user1.getUsername());
         AppUser user2 = chatRoom.getUser2();
-        System.out.println(user2.getUsername());
+
         String roomId = chatRoom.getRoomId();
-        System.out.println(roomId);
+
         String user1Name = user1.getUsername();
-        System.out.println(user1Name);
         String user2Name = user2.getUsername();
-        System.out.println(user2Name);
+
 
         List<ChatMessageDto.Response> chatMessages = chatMessageService.getAllMessage(chatRoom);
 
@@ -67,9 +66,9 @@ public class DebeziumController {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DebeziumDto.ChatRoomRequest dto= objectMapper.readValue(message, DebeziumDto.ChatRoomRequest.class);
+        DebeziumDto.ChatRoomRequest dto= objectMapper.registerModule(new JavaTimeModule()).readValue(message, DebeziumDto.ChatRoomRequest.class);
 
-        String roomId = dto.getPayload().getAfter().getRoom_id();
+        String roomId = dto.getPayload().getAfter().getRoomId();
         ChatRoom chatRoom = chatRoomService.findChatRoom(roomId);
 
         AppUser user1 = chatRoom.getUser1();

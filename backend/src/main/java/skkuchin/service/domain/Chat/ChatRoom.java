@@ -46,17 +46,19 @@ public class ChatRoom {
 
     private LocalDateTime expireDate;
 
-    @Column(columnDefinition = "BIT DEFAULT FALSE", name = "user1_blocked")
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean user1Blocked;
 
-    @Column(columnDefinition = "BIT DEFAULT FALSE", name = "user2_blocked")
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean user2Blocked;
 
-    @Column(name = "user1_alarm")
     private boolean user1Alarm;
 
-    @Column(name = "user2_alarm")
     private boolean user2Alarm;
+
+    private String meetPlace;
+
+    private LocalDateTime meetTime;
 
     @PrePersist
     public void setDate() {
@@ -69,7 +71,4 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();
-
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<Appointment> appointments = new ArrayList<>();
 }
