@@ -25,10 +25,10 @@ export default function clickProfile(){
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_matching_info(([result, message]) => {
                 if (result) {
-                    alert(message);
+                    // alert(message);
                     setLoad(true);
                 } else {
-                    alert(message);
+                    // alert(message);
                     setLoad(false);
                 }
             }));
