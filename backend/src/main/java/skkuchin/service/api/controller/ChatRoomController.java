@@ -137,7 +137,7 @@ public class ChatRoomController {
     public ResponseEntity<?> deleteMeetTime(@PathVariable String roomId,
                                       @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        chatRoomService.deleteMeetPlace(roomId, user);
+        chatRoomService.deleteMeetTime(roomId, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 만남 장소 삭제 완료", null), HttpStatus.OK);
     }
 
@@ -146,7 +146,7 @@ public class ChatRoomController {
     public ResponseEntity<?> deleteMeetPlace(@PathVariable String roomId,
                                       @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        chatRoomService.deleteMeetTime(roomId, user);
+        chatRoomService.deleteMeetPlace(roomId, user);
         return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 만남 시간 삭제 완료", null), HttpStatus.OK);
     }
 

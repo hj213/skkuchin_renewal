@@ -222,40 +222,45 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void deleteMeetTime(String roomId, AppUser appUser){
+    public void deleteMeetTime(String roomId, AppUser appUser) {
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         LocalDateTime time = chatRoom.getMeetTime();
 
-        chatRoom.setMeetTime(null);
-        chatRoomRepo.save(chatRoom);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm");
         String timeStr = time.format(formatter);
 
         AppUser admin = userRepo.findByUsername("admin");
         String message = timeStr + " 약속이 취소되었습니다";
+
         ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
         chatMessageService.write(admin, dto);
+
+        chatRoom.setMeetTime(null);
+        chatRoomRepo.save(chatRoom);
     }
 
     @Transactional
-    public void deleteMeetPlace(String roomId, AppUser appUser){
+    public void deleteMeetPlace(String roomId, AppUser appUser) {
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
         if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
+        if (chatRoom == null) {
+            throw new CustomRuntimeException("존재하지 않는 채팅방입니다");
+        }
         String place = chatRoom.getMeetPlace();
-
-        chatRoom.setMeetPlace(null);
-        chatRoomRepo.save(chatRoom);
 
         AppUser admin = userRepo.findByUsername("admin");
         String message = place + " 약속이 취소되었습니다";
+
         ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
         chatMessageService.write(admin, dto);
+
+        chatRoom.setMeetPlace(null);
+        chatRoomRepo.save(chatRoom);
     }
 
     @Transactional
