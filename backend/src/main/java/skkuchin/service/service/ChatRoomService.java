@@ -248,9 +248,6 @@ public class ChatRoomService {
         if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
-        if (chatRoom == null) {
-            throw new CustomRuntimeException("존재하지 않는 채팅방입니다");
-        }
         String place = chatRoom.getMeetPlace();
 
         AppUser admin = userRepo.findByUsername("admin");
