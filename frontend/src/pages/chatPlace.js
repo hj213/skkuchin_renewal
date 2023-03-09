@@ -157,7 +157,7 @@ export default function chatPlace(){
                         </div>
                         }
                         <div>
-                            <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 시간 삭제하기</Button>
+                            <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 장소 삭제하기</Button>
                         </div>
                     </Container>
                     <Container style={{justifyContent:'center', position: "absolute", bottom: 0}}>

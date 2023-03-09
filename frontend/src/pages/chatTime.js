@@ -16,12 +16,13 @@ import { styled } from '@mui/material/styles';
 import {TimePicker }from 'antd';
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
-// import { enroll_appointment } from "../actions/appointment/appointment"; 
-
+import { set_meet_time, delete_meet_time } from "../actions/chat/chatRoom";
 export default function chatTime(){
 
     const router = useRouter();
     const dispatch =useDispatch();
+
+    const chatRoom = useSelector(state => state.chatRoom.chatRooms);
 
     const now = new Date();
     const format = 'HH:mm';
@@ -32,6 +33,7 @@ export default function chatTime(){
     const [DialogOpen, setDialogOpen] = useState(false);
     const [changedtime, setChangedTime] = useState(defaultValue);
     const [timeOpen, setTimeOpen] = useState('hidden');
+    const [isUp, setIsUp] = useState(false);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -43,36 +45,45 @@ export default function chatTime(){
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
-        return `${year}.${month}.${day}(${dayOfWeek})`;
+        return `${year}.${month}.${day} (${dayOfWeek})`;
       };
     
       
-    const handleBack = (e) => {
+    const handleBack = () => {
         router.back();
     }
 
-    const handleDownClick = (e) => {
+    const handleDownClick = () => {
         if(calendarOpen){
             setCalendarOpen(false);
         } else{
             setCalendarOpen(true);
         }
+        setIsUp((prevIsUp) => !prevIsUp);
     };
-    const handleDialogOpen = (e) => {
+    const handleDialogOpen = () => {
         setDialogOpen(true);
     };
     const handleDialogClose = () => {
         setDialogOpen(false);
     }
-    const handleDelete = (e) => {
+    const handleDelete = () => {
         router.back();
     };
-    const handleSubmit = (e) => {
-        // router.back();
+    const handleSubmit = () => {
+        alert('버튼 클릭!');
         const dateInfo = dayjs(date).format('YYYY-MM-DD')+"'T'"+changedtime+':00'
-        // console.log(dateInfo);
-
-        // dispatch(enroll_appointment())
+        dispatch(set_meet_time(dateInfo, chatRoom.room_id, ([result, message]) => {
+            if (result) {
+                alert('set_meet_time 성공! ' + result);
+            } else {
+                alert('set_meet_time 실패! ' + message);
+                // if (typeof(message) == 'string') {
+                // setDialogMsg(message);
+                // }
+            }
+        }));
+        router.back();
     }
     const handleOpenTime = () => {
         if(timeOpen=='hidden'){
@@ -120,7 +131,7 @@ export default function chatTime(){
                                 </div>
                             </Grid>
                             <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'40px'}}>
-                                <Image src={down} width={25} height={25} onClick={handleDownClick} placeholder="blur" layout='fixed' />
+                                <Image src={down} width={25} height={25} onClick={handleDownClick} placeholder="blur" layout='fixed' style={{ transform: `rotate(${isUp ? "180deg" : "0deg"})` }} />
                             </Grid>
                         </Grid>
                         <div>
@@ -146,22 +157,12 @@ export default function chatTime(){
                                         />
                                     </CalendarContainer>
             
-                                    {/* <Button onClick={handleOpenTime}>{time}</Button> */}
-                                    {/* <div style={{visibility: timeOpen, positon:'relative'}}>
-                                        <Card style={{position:'absolute', zIndex:'4', bottom:0, right:0, height:'200px'}}>
-                                            
-                                        </Card>
-                                    </div> */}
                                     <Grid container style={{width:'100%'}}>
                                         <Grid item style={{margin: '10px 0px 0px 35px'}}>
                                             <Typography style={{fontWeight:'500', fontSize:'15px'}}>시간</Typography>
                                         </Grid>
-                                        <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
-                                            
-                                            
+                                        <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>     
                                             <TimePicker defaultValue={dayjs(defaultValue,format)} format={format} placeholder={defaultValue} onChange={handleOnChange}  popupStyle={{ fontWeight: '500' }} style={{border:'none', backgroundColor:'#EEEEF0', width:'80px'}}/>
-                                            
-                                            
                                         </Grid>
                                     </Grid>
                                     
@@ -173,8 +174,8 @@ export default function chatTime(){
                         </div>
                                         
                     <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px'}}>
-                        <div style={{ textAlign:'center', marginBottom:'53px'}}>
-                            <Image src={check} width={300} height={56} onClick={handleSubmit} placeholder="blur" layout='fixed' />
+                        <div onClick={handleSubmit} style={{ textAlign:'center', marginBottom:'53px', cursor: 'pointer'}}>
+                            <Image  src={check} width={300} height={56} placeholder="blur" layout='fixed' />
                         </div>
                     </Container>
                 </Container>
