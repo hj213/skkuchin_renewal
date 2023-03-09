@@ -24,16 +24,18 @@ export default function chatTime(){
 
     const chatRoom = useSelector(state => state.chatRoom.chatRooms);
     const otherUser = useSelector(state => state.chatMessage.otherUser);
+    
+    const setting = useSelector(state => state.chatMessage.setting);
 
     const roomId = chatRoom && chatRoom.find(room => room.nickname === otherUser.nickname)?.room_id;
     const now = new Date();
     const format = 'HH:mm';
     const defaultValue = dayjs().format(format);
 
-    const [date, setDate] = useState(now);
+    const [date, setDate] = useState(setting && setting.meet_time ? new Date(setting.meet_time.replace(/\./g, '/')) : now);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
-    const [changedtime, setChangedTime] = useState(defaultValue);
+    const [changedtime, setChangedTime] = useState(setting && setting.meet_time ? setting.meet_time.slice(-5) : defaultValue);
     const [timeOpen, setTimeOpen] = useState('hidden');
     const [isUp, setIsUp] = useState(false);
 
@@ -56,6 +58,7 @@ export default function chatTime(){
     }
 
     const handleDownClick = () => {
+        console.log(now);
         if(calendarOpen){
             setCalendarOpen(false);
         } else{
@@ -70,6 +73,13 @@ export default function chatTime(){
         setDialogOpen(false);
     }
     const handleDelete = () => {
+        dispatch(delete_meet_time(roomId, ([result, message]) => {
+            if (result) {
+                alert('delete_meet_time 성공! ' + result);
+            } else {
+                alert('delete_meet_time 성공! ' + message);
+            }
+        }));
         router.back();
     };
     const handleSubmit = () => {
@@ -82,12 +92,9 @@ export default function chatTime(){
                 alert('set_meet_time 성공! ' + result);
             } else {
                 alert('set_meet_time 실패! ' + message);
-                // if (typeof(message) == 'string') {
-                // setDialogMsg(message);
-                // }
             }
         }));
-        // router.back();
+        router.back();
     }
     const handleOpenTime = () => {
         if(timeOpen=='hidden'){

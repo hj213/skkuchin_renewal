@@ -21,6 +21,8 @@ export default function chatPlace(){
     const chatRoom = useSelector(state => state.chatRoom.chatRooms);
     const otherUser = useSelector(state => state.chatMessage.otherUser);
 
+    const setting = useSelector(state => state.chatMessage.setting);
+
     const roomId = chatRoom && chatRoom.find(room => room.nickname === otherUser.nickname)?.room_id;
 
     const [calendarOpen, setCalendarOpen] = useState('hidden');
@@ -86,6 +88,13 @@ export default function chatPlace(){
         setDialogOpen(false);
     }
     const handleDelete = () => {
+        dispatch(delete_meet_place(roomId, ([result, message]) => {
+            if (result) {
+                alert('delete_meet_place 성공! ' + result);
+            } else {
+                alert('delete_meet_place 실패! ' +message);
+            }
+        }));
         router.back();
     };
     const handleSubmit = () => {
@@ -100,7 +109,7 @@ export default function chatPlace(){
                 // }
             }
         }));
-        // router.back();
+        router.back();
     }
 
     return(
@@ -135,7 +144,7 @@ export default function chatPlace(){
                             <Grid item style={{width:'100%'}}> 
                                 <Input 
                                 style={{fontSize:'16px', padding:'0px 0px 5px 40px',width:'90%', fontWeight:'500'}} 
-                                placeholder='식당 이름을 검색해주세요.'
+                                placeholder= {setting && setting.meet_place? setting.meet_place :'식당 이름을 검색해주세요.'}
                                 value={value}
                                 onChange={handleValue}
                                 />
