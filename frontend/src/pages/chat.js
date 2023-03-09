@@ -19,8 +19,8 @@ import notiOff from '../image/chat/notifications_off.png'
 
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
-import { get_realtime_otherUser } from '../actions/chat/chatMessage';
-import { get_realtime_block } from '../actions/chat/chatMessage';
+import { get_realtime_chat_infos, get_realtime_otherUser } from '../actions/chat/chatMessage';
+import { get_realtime_block_alarm } from '../actions/chat/chatMessage';
 import { get_realtime_message } from '../actions/chat/chatMessage';
 
 function calculateRows() {
@@ -47,17 +47,13 @@ const chatPage = () => {
     // user1이 나일 때
     // user1Blocked 참이면 채팅사용 X (내가 차단된 상황)
     // user2Blocked 참이면 내가 차단한 상황
-    const user1Blocked = useSelector(state => state.chatMessage.user1Blocked);
-    const user2Blocked = useSelector(state => state.chatMessage.user2Blocked);
-    // 알람표시
-    const user1Alarm = useSelector(state => state.chatMessage.user1Alarm);
-    const user2Alarm = useSelector(state => state.chatMessage.user2Alarm); 
+    const blockAlarm = useSelector(state => state.chatMessage.blockAlarm);
 
     const stompClient = useSelector(state => state.stompClient.stompClient);
     
 
     const [subscriptionOtherUser, setSubscriptionOtherUser] = useState(null);
-    const [subscriptionBlock, setSubscriptionBlock] = useState(null);
+    const [subscriptionBlockAlarm, setSubscriptionBlockAlarm] = useState(null);
     const [subscriptionMessage, setSubscriptionMessage] = useState(null);
 
     const handleOnclick = (event) =>{
@@ -66,23 +62,30 @@ const chatPage = () => {
         } 
     };
 
+    const get_info = async () => {
+        const subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
+        const subBlockAlarm = dispatch(get_realtime_block_alarm(room_id, user_number, stompClient));
+        const subMessage = dispatch(get_realtime_message(room_id, user_number, stompClient));
+
+        setSubscriptionOtherUser(subOtherUser);
+        setSubscriptionBlockAlarm(subBlockAlarm);
+        setSubscriptionMessage(subMessage);
+    }
+
     useEffect(() => {
         if (stompClient && room_id && user_number) {
-            const subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number));
-            const subBlock = dispatch(get_realtime_block(room_id, user_number));
-            const subMessage = dispatch(get_realtime_message(room_id, user_number));
-
-            setSubscriptionOtherUser(subOtherUser);
-            setSubscriptionBlock(subBlock);
-            setSubscriptionMessage(subMessage);
+            get_info()
+            .then(() => {
+                dispatch(get_realtime_chat_infos(room_id, stompClient));
+            })
         }
     
         return () => {
             if (subscriptionOtherUser) {
                 stompClient.unsubscribe(subscriptionOtherUser);
             }
-            if (subscriptionBlock) {
-                stompClient.unsubscribe(subscriptionBlock);
+            if (subscriptionBlockAlarm) {
+                stompClient.unsubscribe(subscriptionBlockAlarm);
             }
             if (subscriptionMessage) {
                 stompClient.unsubscribe(subscriptionMessage);

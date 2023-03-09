@@ -12,23 +12,19 @@ import { useEffect } from 'react';
 import { reply_chat_request } from '../../actions/chat/chatRoom';
 import { load_other_matching_info } from '../../actions/matchingUser/matchingUser';
 
-const NewPromise = ({open, onClose, request, selectedUser }) => {
+const NewPromise = ({ open, onClose, request, selectedUser }) => {
 
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const user = useSelector(state => state.auth.user);
     const userInfo = useSelector(state => state.matchingUser.matchingUser);
-    
-    const keywords = ["ESFP", "축구", "영화"];
-    const introduction = "엔팁 좋아하시는 분 여기여기 모여라 랄라라라랄랄ㄹㄹㄹ";  
     
     useEffect(()=> {
         dispatch(load_other_matching_info(selectedUser, ([result, message])=>{
             if (result) {
                 // alert('load_other_matching_info 성공! ' + result)
             } else {
-              alert(message);
+                alert(message);
             }
         }));
     },[])
@@ -48,7 +44,7 @@ const NewPromise = ({open, onClose, request, selectedUser }) => {
             if (result) {
                 alert('reply_chat_request 거절 성공! ' + result)
             } else {
-              alert(message);
+                alert(message);
             }
         }));
         setSubmit(false);
@@ -63,12 +59,12 @@ const NewPromise = ({open, onClose, request, selectedUser }) => {
                 router.push({
                     pathname: '/chat',
                     query: {
-                      room_id: request.room_id,
-                      user_number: request.user1_id === user.id ? 'user1' : 'user2'
+                        room_id: request.room_id,
+                        user_number: 'user2'
                     }
                 });
             } else {
-              alert(message);
+                alert(message);
             }
         }));
         onClose();
@@ -124,7 +120,7 @@ const NewPromise = ({open, onClose, request, selectedUser }) => {
                         : null}
                     </Grid >
                     <Grid item sx={{width: '169px', textAlign: 'center'}}>
-                        <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{introduction}"</Typography>
+                        <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{userInfo && userInfo.introduction}"</Typography>
                     </Grid> 
                     <Grid style={{justifyContent: 'center'}}>
                         <Button onClick={handleOpen} sx={{backgroundColor: '#BABABA', borderRadius: '34px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 16px', m: '30px 15px'}}>

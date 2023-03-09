@@ -12,6 +12,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 
+import org.springframework.transaction.annotation.Transactional;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.service.ChatMessageService;
@@ -31,6 +32,7 @@ public class AlarmController {
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
 
+    @Transactional
     @MessageMapping("chat.alarm")
     public void newMatching(Message<?> message){
         StompHeaderAccessor accessor =

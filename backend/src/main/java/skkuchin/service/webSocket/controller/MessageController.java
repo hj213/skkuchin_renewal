@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import skkuchin.service.dto.ChatMessageDto;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.dto.UserDto;
@@ -35,6 +36,7 @@ public class MessageController {
     private final ChatSessionService chatSessionService;
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
 
+    @Transactional
     @MessageMapping("chat.chatMessage.{chatRoomId}")
     public void chatMessage(@DestinationVariable String chatRoomId, Message<?> message){
         ChatRoom chatRoom = chatRoomService.findChatRoom(chatRoomId);
@@ -42,6 +44,7 @@ public class MessageController {
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String sessionId = accessor.getSessionId();
         ChatSession chatSession = chatSessionService.findSession(sessionId);
+
         String username = chatSession.getUsername();
 
         chatRoomService.updateReadStatus(chatRoom, username);

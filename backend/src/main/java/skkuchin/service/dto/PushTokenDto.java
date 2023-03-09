@@ -4,44 +4,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
+import lombok.Setter;
 import skkuchin.service.domain.User.*;
 
 public class PushTokenDto {
     @Getter
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class Request {
-        private String token;
-        @JsonProperty
-        private Boolean isChatAlarmOn;
-        @JsonProperty
-        private Boolean isInfoAlarmOn;
+    public static class PostRequest {
+        private String endpoint;
+        private Keys keys;
+
+        @Getter
+        public static class Keys {
+            private String p256dh;
+            private String auth;
+        }
 
         public PushToken toEntity(AppUser user) {
             return PushToken.builder()
-                    .token(this.token)
-                    .isChatAlarmOn(this.isChatAlarmOn)
-                    .isInfoAlarmOn(this.isInfoAlarmOn)
+                    .endpoint(this.endpoint)
+                    .p256dh(this.keys.p256dh)
+                    .auth(this.keys.auth)
                     .user(user)
                     .build();
         }
     }
 
     @Getter
+    public static class PutRequest {
+        private Boolean chatAlarm;
+        private Boolean infoAlarm;
+    }
+
+    @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
         @JsonProperty
-        private Long tokenId;
-        private String token;
+        private Boolean chatAlarm;
         @JsonProperty
-        private Boolean isChatAlarmOn;
-        @JsonProperty
-        private Boolean isInfoAlarmOn;
+        private Boolean infoAlarm;
 
         public Response(PushToken pushToken) {
-            this.tokenId = pushToken.getId();
-            this.token = pushToken.getToken() ;
-            this.isChatAlarmOn = pushToken.isChatAlarmOn();
-            this.isInfoAlarmOn =  pushToken.isInfoAlarmOn();
+            this.chatAlarm = pushToken.isChatAlarm();
+            this.infoAlarm =  pushToken.isInfoAlarm();
         }
     }
 }

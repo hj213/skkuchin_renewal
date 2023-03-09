@@ -7,7 +7,6 @@ import { load_request_id, request_chat } from '../../actions/chat/chatRoom';
 const Friends = () => {
     const dispatch = useDispatch();
 
-    const user = useSelector(state => state.auth.user); 
     const candidate = useSelector(state => state.candidate.candidate);
     const requestId = useSelector(state => state.chatRoom.requestId);
 
@@ -23,10 +22,10 @@ const Friends = () => {
                             setDialogMsg(message);
                             }
                         }
-                    setDialogOpen2(true);
+                        setDialogOpen2(true);
                     }));
                 } else {
-
+                    alert(message);
                 }
                 
             }))
@@ -54,12 +53,8 @@ const Friends = () => {
             if (result) {
                 alert('request_chat 성공! ' + result)
             } else {
-              if (typeof(message) == 'string') {
-                setDialogMsg(message);
-              }
-              alert(message);
+                alert(message);
             }
-            setDialogOpen2(true);
         }));
     }
     
@@ -104,9 +99,17 @@ const Friends = () => {
                 <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
                     <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                 </Grid> 
-                <Button key={index} onClick={()=>handleOpen(person.id)}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                    밥약 신청하기 
-                </Button>
+                { 
+                    requestId.includes(person.id) ?
+                    <Button key={index} sx={{backgroundColor: '#505050', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                        신청 완료
+                    </Button>
+                    : 
+                    <Button key={index} onClick={()=>handleOpen(person.id)}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                        밥약 신청하기
+                    </Button>
+                    }
+
                 <Dialog
                     key={person.id}
                     open={open}
@@ -140,20 +143,20 @@ const Friends = () => {
                         </div>
                     </DialogActions>
                 </Dialog>
-             </Grid>
+            </Grid>
         </Card> 
         )) 
         : dialogMsg ? 
             <Dialog open={dialogOpen2} onClose={handleDialogOpen2} PaperProps={{ style: { borderRadius: '10px' } }}>
                 <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight='700'>
-                      
-                      {(dialogMsg||'').split('\n').length > 1 ? 
-                      <>
-                      {dialogMsg.split('\n')[0]}<br/>
-                      {dialogMsg.split('\n')[1]}
-                      </>
-                      : dialogMsg}
+                        
+                        {(dialogMsg||'').split('\n').length > 1 ? 
+                        <>
+                        {dialogMsg.split('\n')[0]}<br/>
+                        {dialogMsg.split('\n')[1]}
+                        </>
+                        : dialogMsg}
                     </Typography>
                 </DialogContent>
                 <DialogActions style={{justifyContent:'center'}}>

@@ -13,6 +13,7 @@ import {
     CHANGE_MATCHING_INFO_FAIL
 } 
     from './types';
+import { load_candidate } from '../candidate/candidate';
 
 export const add_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
     await dispatch(request_refresh());
@@ -199,18 +200,12 @@ export const load_other_matching_info = (id, callback) => async dispatch => {
                 type: LOAD_MATCHING_INFO_SUCCESS,
                 payload: apiRes.data
             })
-            
             if (callback) callback([true, apiRes.message]);
-            
-            
         }else {
             dispatch({
                 type: LOAD_MATCHING_INFO_FAIL
             })
-            
             if (callback) callback([false, apiRes.message]);
-            
-            
         }
 
     } catch (error) {
@@ -257,7 +252,8 @@ export const change_status_info = (status, callback) => async dispatch => {
             await dispatch({
                 type: CHANGE_MATCHING_STATUS_SUCCESS
             })
-            dispatch(load_matching_info());
+            await dispatch(load_matching_info());
+            dispatch(load_candidate());
             
             if (callback) callback([true, apiRes.message]);
             

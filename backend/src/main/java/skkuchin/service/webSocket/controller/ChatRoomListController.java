@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.service.ChatRoomService;
@@ -25,6 +26,7 @@ public class ChatRoomListController {
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final ChatSessionService chatSessionService;
 
+    @Transactional
     @MessageMapping("chat.list")
     public void myChatList(Message<?> message){
         StompHeaderAccessor accessor =

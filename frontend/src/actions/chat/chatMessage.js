@@ -84,7 +84,6 @@ export const get_realtime_otherUser = (room_id, user_number, stompClient) => asy
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };
@@ -115,7 +114,6 @@ export const get_realtime_block_alarm = (room_id, user_number, stompClient) => a
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
 };
@@ -146,7 +144,20 @@ export const get_realtime_message = (room_id, user_number, stompClient)  => asyn
         pushToken : access
         }
     );
-    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 
     return subscription;
+};
+
+export const get_realtime_chat_infos = (room_id, stompClient)  => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
 };

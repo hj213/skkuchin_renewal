@@ -32,6 +32,19 @@ self.addEventListener('notificationclick', function (event) {
     )
 })
 
+// self.addEventListener('pushsubscriptionchange', async () => {
+//     const permissionResult = await Notification.requestPermission();
+//     if (permissionResult !== 'granted') {
+//         throw new Error('Permission not granted for Notification');
+//     }
+//     const reg = await self.registration;
+//     const sub = await reg.pushManager.subscribe({
+//         userVisibleOnly: true,
+//         applicationServerKey: base64ToUint8Array("BJkNh3LjryGnKrmWZCY_fAebZqGPhtuzBZCBBoB7lPh54M1raOJGfATpy0X7BpVahZJXk6Iq6XFTxM4STBMSFTY")
+//     });
+//     console.log('Subscribed to web push:', sub.endpoint);
+// });
+
 // self.addEventListener('pushsubscriptionchange', function(event) {
 //     event.waitUntil(
 //         Promise.all([
