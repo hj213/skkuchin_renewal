@@ -23,7 +23,9 @@ export default function chatTime(){
     const dispatch =useDispatch();
 
     const chatRoom = useSelector(state => state.chatRoom.chatRooms);
+    const otherUser = useSelector(state => state.chatMessage.otherUser);
 
+    const roomId = chatRoom && chatRoom.find(room => room.nickname === otherUser.nickname)?.room_id;
     const now = new Date();
     const format = 'HH:mm';
     const defaultValue = dayjs().format(format);
@@ -72,8 +74,10 @@ export default function chatTime(){
     };
     const handleSubmit = () => {
         alert('버튼 클릭!');
-        const dateInfo = dayjs(date).format('YYYY-MM-DD')+"'T'"+changedtime+':00'
-        dispatch(set_meet_time(dateInfo, chatRoom.room_id, ([result, message]) => {
+        const dateInfo = dayjs(date).format('YYYY-MM-DD')+"T"+changedtime+':00';
+        alert(dateInfo);
+        alert(roomId);
+        dispatch(set_meet_time(dateInfo, roomId, ([result, message]) => {
             if (result) {
                 alert('set_meet_time 성공! ' + result);
             } else {
@@ -83,7 +87,7 @@ export default function chatTime(){
                 // }
             }
         }));
-        router.back();
+        // router.back();
     }
     const handleOpenTime = () => {
         if(timeOpen=='hidden'){
@@ -130,7 +134,7 @@ export default function chatTime(){
                                     <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{formatDate(date)}  {changedtime}</Typography>
                                 </div>
                             </Grid>
-                            <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'40px'}}>
+                            <Grid item style={{ right:'0',position:'absolute', zIndex:'5', marginRight:'40px'}}>
                                 <Image src={down} width={25} height={25} onClick={handleDownClick} placeholder="blur" layout='fixed' style={{ transform: `rotate(${isUp ? "180deg" : "0deg"})` }} />
                             </Grid>
                         </Grid>
@@ -141,10 +145,10 @@ export default function chatTime(){
                     </Container>
             
                     
-                    <div style={{ position:'absolute',width:'100%', maxWidth:'600px',margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
+                    <div style={{ position:'fixed',width:'100%', maxWidth:'600px',margin:'0px 0px 0px 0px'}}>
                         <Slide direction="up" in={calendarOpen} timeout={200} >
-                            <Container style={{padding:'0px', width:'100%', position:'relative'}}>
-                                <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
+                            <Container style={{padding:'0px', width:'100%', position:'relative', zIndex: 1}}>
+                                <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px', bottom: '0'}}>
                                     <CalendarContainer>
                                         <Calendar onChange={setDate} value={date} formatDay={(locale, date) =>
                                             date.toLocaleString('en', { day: 'numeric' })
@@ -170,14 +174,12 @@ export default function chatTime(){
                                 
                             </Container>
                         </Slide>
-                        
-                        </div>
-                                        
-                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px'}}>
-                        <div onClick={handleSubmit} style={{ textAlign:'center', marginBottom:'53px', cursor: 'pointer'}}>
-                            <Image  src={check} width={300} height={56} placeholder="blur" layout='fixed' />
-                        </div>
-                    </Container>
+                        <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px', zIndex: calendarOpen ? 0 : 2}}>
+                            <div onClick={handleSubmit} style={{ textAlign:'center', marginBottom:'53px', cursor: 'pointer'}}>
+                                <Image src={check} width={300} height={56} placeholder="blur" layout='fixed' />
+                            </div>
+                        </Container>   
+                        </div>         
                 </Container>
                 <Dialog
                     open={DialogOpen}

@@ -353,7 +353,7 @@ const chatPage = () => {
                     // 보낸 시간 체크, 1분 미만인 경우
                     let displayAvatar = true;
                     // 이전 메시지와 현재 메시지의 시간 비교
-                    if (prevMessage && prevMessage.date === message.date) {
+                    if (prevMessage && prevMessage.time === message.time && isContinuedMessage) {
                         displayAvatar = false;
                         // displayTime = false; 
                     }
@@ -365,7 +365,7 @@ const chatPage = () => {
                                 <Grid style={{display:'flex'}}>
                                 <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
                                     <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                        {message.date}
+                                        {message.time}
                                     </Typography>
           
                                     <Card elevation="none" sx={{
@@ -419,7 +419,7 @@ const chatPage = () => {
                                             </Card>
                                             <Grid>
                                             <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                                {message.date} 
+                                                {message.time} 
                                             </Typography>
                                         </Grid>
                                     </Grid>
