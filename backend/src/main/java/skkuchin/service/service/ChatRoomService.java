@@ -123,14 +123,19 @@ public class ChatRoomService {
 
     private ChatMessage getLatestMessage(ChatRoom chatRoom){
         List<ChatMessage> chatMessages = chatMessageRepo.findByLatestTime(chatRoom.getRoomId());
-        ChatMessage chatMessage = new ChatMessage();
+        ChatMessage latestChatMessage = new ChatMessage();
         if (chatMessages.size() == 0) {
-            chatMessage.setMessage("새로운 채팅방이 개설되었습니다");
-            chatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
-            return chatMessage;
+            latestChatMessage.setMessage("새로운 채팅방이 개설되었습니다");
+            latestChatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
+            return latestChatMessage;
         }
-        chatMessage = chatMessages.get(0);
-        return chatMessage;
+        for (ChatMessage chatMessage : chatMessages) {
+            if (!"admin".equals(chatMessage.getSender())) {
+                latestChatMessage = chatMessage;
+                break;
+            }
+        }
+        return latestChatMessage;
     }
 
 
