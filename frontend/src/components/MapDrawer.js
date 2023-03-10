@@ -73,6 +73,7 @@ export default function MapDrawer(openID){
       
     },[user])
 
+
     //뒤로가기 시 드로워 열리도록
     useEffect(()=>{
       if(openID.open){

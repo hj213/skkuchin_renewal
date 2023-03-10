@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState,  } from "react"; 
+import { useEffect, useState, useRef } from "react"; 
 import { search_places, load_places, clear_search_results } from "../actions/place/place";
 import Image from 'next/image';
 import Link from 'next/link';
@@ -50,6 +50,7 @@ export default function searchList(){
     //api 받아오기
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(clear_search_results());
             dispatch(search_places(keyword));
         }
     }, [keyword]);
@@ -104,12 +105,12 @@ export default function searchList(){
         if(event.target.id == 'map' ){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             
-            dispatch(search_places('!'));
+            dispatch(clear_search_results());
             router.push(`/?keyword=${passValue}`);
             
         } else{
             setPassValue('')
-            dispatch(search_places('!')); //초기화위해서
+            dispatch(clear_search_results()); //초기화위해서
             router.push('/');
         }
     };
@@ -138,26 +139,35 @@ export default function searchList(){
         setValue('')
         setAuto([]);
     }
-    const handleInputOnFocus = () => {
+    const autoRef= useRef(null);
+    const handleInputOnFocus = (e) => {
         setAutoBox(true);
+
     }
 
     const handleInputOnBlur = (e) => { 
         setAutoBox(false);
     }
-    const noScroll = styled.div`
+    const NoScroll = styled.div`
     /* 모바일에서 스크롤 바를 숨김 */
     *::-webkit-scrollbar {
         display: none;
     }
     `
+    // useEffect(()=>{
+    //     if(autoBox && autoRef.current){
+    //         autoRef.current.scrollTo({top:0});
+    //         console.log(autoRef.current.scrollTop)
+    //     }
+    // },[autoBox, autoRef.current])
+
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <div style={{position:'absolute', zIndex:'2'}}>
+            <div style={{position:'absolute', zIndex:'9'}}>
                 <UpperBar/>
             </div>
-           <noScroll>
+           {/* <NoScroll> */}
             <div style={{position:'relative', width:'100%', height:'100%', marginTop:'80px', }}>
                 <div style={{position: 'absolute',}}>
                     <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '85px'}}>
@@ -190,10 +200,10 @@ export default function searchList(){
                     </Container>
                 </div>
                 { autoBox && value ? (
-                <div onMouseDown={handleContainerMouseDown} style={{height:'100%'}}>
+                <div onMouseDown={handleContainerMouseDown} style={{height:'100%'}} >
                     <Paper style={{position:'relative',height:'100vh', width:'100%', top:'60px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px', zIndex:'2'}}> 
-                        <Container style={{padding:'0px', marginTop:'0px'}}>
+                        <Container style={{padding:'0px', marginTop:'0px'}} >
                             {auto.length > 0 ?
                             <ul style={{padding:'0px 20px 0px 20px', listStyleType: "none",}}>
                                 {auto.map((autoList) => (
@@ -230,7 +240,7 @@ export default function searchList(){
                     </Paper>
                 </div>
                 ) :
-                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }}>
+                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }} >
                     <Card style={{overflowY:'auto', marginTop:'80px', border: "0px solid transparent", boxShadow:'none', borderRadius: '0px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                             {filteredPlace ? filteredPlace.length > 0 ? filteredPlace.map((item) => (
@@ -354,7 +364,7 @@ export default function searchList(){
                     </Card>
                 </Container> }
             </div> 
-            </noScroll>
+            {/* </NoScroll> */}
         </ThemeProvider>
     )
 }
