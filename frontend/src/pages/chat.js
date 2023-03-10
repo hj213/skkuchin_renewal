@@ -19,7 +19,8 @@ import notiOff from '../image/chat/notifications_off.png'
 
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
-import { get_realtime_chat_infos, get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message } from '../actions/chat/chatMessage';
+import { get_realtime_chat_infos, get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message} from '../actions/chat/chatMessage';
+import { set_user_block, set_chat_room_alarm, exit_room } from "../actions/chat/chatRoom";
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -38,13 +39,8 @@ const chatPage = () => {
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
-    // 
     const messages = useSelector(state => state.chatMessage.messages);
-    // 상대방 정보
     const otherUser = useSelector(state => state.chatMessage.otherUser);
-    // user1이 나일 때
-    // user1Blocked 참이면 채팅사용 X (내가 차단된 상황)
-    // user2Blocked 참이면 내가 차단한 상황
     const setting = useSelector(state => state.chatMessage.setting);
 
     const stompClient = useSelector(state => state.stompClient.stompClient);
@@ -98,6 +94,24 @@ const chatPage = () => {
 
     // 차단하기 Dialog
     const [openBlockDialog, setBlockDialog] = useState(false);
+    const isUser1Blocked = setting && setting.user1_blocked;
+    const isUser2Blocked = setting && setting.user2_blocked;
+    const [friendBlocked, setFriendBlocked] = useState(() => {
+    if (setting) {
+        if (user_number === "user1") {
+        return setting.user2_blocked;
+        } else {
+        return setting.user1_blocked;
+        }
+    } else {
+        return false;
+    }
+    });
+    const [isBlocked, setBlocked] = useState(isUser1Blocked || isUser2Blocked);
+
+    useEffect(() => {
+        setBlocked(isUser1Blocked || isUser2Blocked);
+    }, [isUser1Blocked, isUser2Blocked]);
 
     const handleBlockUser = () => {
         setBlockDialog(true);
@@ -109,10 +123,20 @@ const chatPage = () => {
     };
 
     const handleConfirmBlockUser = () => {
-      // Code to leave the chat room
+        alert(isBlocked);
+        dispatch(
+          set_user_block(!isBlocked, room_id, ([result, message]) => {
+            if (result) {
+              setBlocked(isUser1Blocked || isUser2Blocked || !isBlocked);
+              alert("set_user_block 성공!");
+            } else {
+              alert("set_user_block 실패 " + message);
+            }
+          })
+        );
         setBlockDialog(false);
-    };
-
+      };
+    
     // 채팅방 나가기 Dialog
     const [openExitDialog, setExitDialog] = useState(false);
 
@@ -121,7 +145,14 @@ const chatPage = () => {
     };
 
     const handleConfirmExit = () => {
-      // Code to leave the chat room
+        alert(room_id);
+        dispatch(exit_room(room_id, ([result, message])=>{
+            if(result){
+                alert('exit_room 성공!');           
+            } else {
+                alert("exit_room 실패 " +message);
+            }
+        }));
         setExitDialog(false);
     };
 
@@ -130,14 +161,26 @@ const chatPage = () => {
         router.push('/reportUser')
     }
 
-    // more 버튼
-    const options = [
-        {label: '프로필 보기', onClick: handleProfile},
-        {label: '알림끄기'},
-        {label: '차단하기', onClick: handleBlockUser},
-        {label: '신고하기', onClick: handleReportUser},
-        {label: '채팅방 나가기', onClick: handleExit},
-    ];
+    const [isAlarmOn, setIsAlarmOn] = useState(
+        setting
+          ? user_number === 'user1'
+            ? setting.user1_alarm
+            : setting.user2_alarm
+          : false
+      );
+      
+      const handleAlarm = () => {
+        alert(isAlarmOn);
+        dispatch(set_chat_room_alarm(!isAlarmOn, room_id, ([result, message]) => {
+          if(result) {
+            alert('set_chat_room_alarm 성공!');
+            setIsAlarmOn(!isAlarmOn);
+          } else {
+            alert('set_chat_room_alarm ' + message);
+          }
+        }));
+      };
+
     
     const ITEM_HEIGHT = 50;
 
@@ -163,9 +206,14 @@ const chatPage = () => {
         setInputMessage('');
     }
 
-    // const [meetTime, setMeetTime] = useState(setting && setting.meet_time ? setting.meet_time : '시간 정하기');
-    // const [location, setLocation] = useState(setting && setting.meet_place ? setting.meet_place : '장소 정하기');
-
+        // more 버튼
+        const options = [
+            {label: '프로필 보기', onClick: handleProfile},
+            {label:  isAlarmOn ? '알림끄기' : '알림켜기' , onClick: handleAlarm},
+            {label: friendBlocked ? "차단해제" : "차단하기", onClick: handleBlockUser},
+            {label: '신고하기', onClick: handleReportUser},
+            {label: '채팅방 나가기', onClick: handleExit},
+        ];
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -194,9 +242,11 @@ const chatPage = () => {
                                     {otherUser && otherUser.nickname}
                                 </Typography>
                                 {/* 알림 끄기 표시 */}
+                                { !isAlarmOn &&
                                 <Box sx={{paddingLeft:'3px', paddingTop:'4px'}}>
                                     <Image src={notiOff} width="12px" height="12px"/>
                                 </Box>
+                                }
                             </div>
                         </Grid>
                         <Grid style={{paddingTop:'0', paddingLeft:'0'}}>
@@ -279,14 +329,14 @@ const chatPage = () => {
                 <DialogContent sx={{p: '20px 24px 13px'}}>
                     <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
                         <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 15px 5px', m: '0'}}>
-                            차단 시 해당 채팅방은 자동으로 나가지며 상대는 더 이상 매칭에서 노출되지 않아요. 차단하시겠어요?
+                            차단 시 해당 채팅방의 상대와는 더 이상 채팅이 불가하며 상대는 더 이상 매칭에서 노출되지 않아요. 차단하시겠어요?
                         </DialogTitle>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{p:'0'}}>
                     <div style={{width: '100%', paddingBottom: '20px'}}>
                         <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleCloseDialog}>취소</Button>
-                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}}>차단</Button>
+                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}} onClick={handleConfirmBlockUser}>차단</Button>
                     </div>
                 </DialogActions>
             </Dialog>
@@ -305,7 +355,7 @@ const chatPage = () => {
                 <DialogActions sx={{p:'0'}}>
                     <div style={{width: '100%', paddingBottom: '20px'}}>
                         <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleCloseDialog}>취소</Button>
-                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}}>나가기</Button>
+                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}} onClick={handleConfirmExit}>나가기</Button>
                     </div>
                 </DialogActions>
             </Dialog>
@@ -454,208 +504,19 @@ const chatPage = () => {
                     </Grid> 
                     ))
                 })}
-                
-                {/* : (message.sender === 'admin') ? (
-                        <Grid
-                            sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            margin:"22px 0 0 0"
-                            }}
-                        >
-                            <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-                                <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
-                                    <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
-                                        <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                            00님과
-                                            <span style={{fontWeight:"700"}}>2월 12일 일 19:50시</span>에
-                                            <br/>
-                                            약속을 만들었어요. 약속을 꼭 지켜주세요!
-                                        </Typography>
-                                    </Grid>
-                                </div>
-                            </Grid>
-                        </Grid>
-                        ) :  */}
-                {/* 상대방 카톡 틀 1(첫 메세지, 내 메세지 이후 첫 메시지) */}
-                {/* <Grid container style={{width:"100%",margin:'22px 0px 0px 0px', paddingLeft:'15px', justifyContent:'left'}}>
-                    <Grid item>
-                        <Avatar alt=""/>
-                    </Grid>
-                    <Grid item style={{paddingLeft:"7px"}}>
-                        <Stack direction="column" spacing={1}>
-                            <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top',}} align="left">
-                                {otherUser && otherUser.nickname}
-                            </Typography>
-                            <Grid style={{display:'flex'}}>
-                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
-                                <Card elevation="none" style={{
-                                borderRadius: '0px 15px 15px 15px',
-                                backgroundColor:'white',
-                                border:'1px solid #FFCE00',
-                                maxWidth:'75%'
-                                }}>
-                                <Typography
-                                    style={{
-                                    padding:'8px 10px 6px 10px',
-                                    fontSize: '14px',
-                                    maxWidth:'100%'
-                                    }}>
-                                    상대 1, 첫 chat 
-                                </Typography>
-                                </Card>
-                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                    오후 10:30
-                                </Typography>
-                            </Grid>
-                            </Grid>
-                        </Stack>
-                    </Grid>
-                </Grid> */}
-
-                {/* 상대방 카톡 틀 2(상대방의 연속된 메시지) */}
-                {/* <Grid container style={{width:"100%",margin:'10px 0px 0px 0px', paddingLeft:'15px', justifyContent:'left'}}>
-                    <Grid item style={{paddingLeft:"7px", marginLeft:"40px"}}>
-                        <Stack direction="column" spacing={1}>
-                            <Grid style={{display:'flex'}}>
-                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
-                                <Card elevation="none" style={{
-                                borderRadius: '0px 15px 15px 15px',
-                                backgroundColor: 'white',
-                                border:'1px solid #FFCE00',
-                                maxWidth:'75%'
-                                }}>
-                                <Typography
-                                    style={{
-                                    padding:'8px 10px 6px 10px',
-                                    fontSize: '14px',
-                                    maxWidth:'100%'
-                                    }}>
-                                    상대 2, 연속된 chat 상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat상대 2, 연속된 chat
-                                </Typography>
-                                </Card>
-                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                오후 10:30
-                                </Typography>
-                            </Grid>
-                            </Grid>
-                        </Stack>
-                    </Grid>
-                </Grid> */}
-
-                {/* 내 카톡 틀 1 (내 첫 메시지) */}
-                {/* <Grid container style={{width:"100%", margin:'22px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
-                    <Grid item style={{paddingRight:"7px"}}>
-                        <Stack direction="column" spacing={1}>
-                            <Grid style={{display:'flex'}}>
-                                <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
-                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                        오후 10:30
-                                    </Typography>
-                                    <Card elevation="none"  sx={{
-                                        borderRadius: '15px 0px 15px 15px',
-                                        backgroundColor:'#FFE885',
-                                        maxWidth:'80%'
-                                    }}>
-                                    <Typography
-                                        style={{
-                                            padding:'10px 10px 6px 10px',
-                                            fontSize: '14px',
-                                            maxWidth:'100%',
-                                        }}>
-                                        나 1. 이 메시지는 영국에서부터 시작되어 상단 마진이 22px로 설정되어 있습니다. 상대방의 메시지 이후 내가 보내는 첫 메시지입니다.
-                                    </Typography>
-                                </Card>
-                                </Grid>
-                            </Grid>
-                        </Stack>
-                    </Grid>
-                </Grid> */}
-
-                {/* 내 카톡 틀 2 (내 연속 메시지) */}
-                {/* <Grid container style={{width:"100%", margin:'10px 0px 0px 0px', paddingRight:'15px', justifyContent:'flex-end'}}>
-                    <Grid item style={{paddingRight:"7px"}}>
-                        <Stack direction="column" spacing={1}>
-                            <Grid style={{display:'flex'}}>
-                                <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
-                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                        오후 10:30
-                                    </Typography>
-                                    <Card elevation="none"  sx={{
-                                        borderRadius: '15px 0px 15px 15px',
-                                        backgroundColor:'#FFE885',
-                                        maxWidth:'80%'
-                                    }}>
-                                    <Typography
-                                        style={{
-                                            padding:'10px 10px 6px 10px',
-                                            fontSize: '14px',
-                                            maxWidth:'100%',
-                                        }}>
-                                        나 2, 상단 마진이 10px로 설정되어 있습니다. 내가 보낸 메시지 이후 연속적으로 보내는 메시지입니다.
-                                    </Typography>
-                                </Card>
-                                </Grid>
-                            </Grid>
-                        </Stack>
-                    </Grid>
-                </Grid> */}
-
-                {/* 약속 확인 메시지 */}
-                {/* <Grid
-                    sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    margin:"22px 0 0 0"
-                    }}
-                >
-                    <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-                        <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
-                            <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
-                                <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                    00님과
-                                    <span style={{fontWeight:"700"}}>2월 12일 일 19:50시</span>에
-                                    <br/>
-                                    약속을 만들었어요. 약속을 꼭 지켜주세요!
-                                </Typography>
-                            </Grid>
-                        </div>
-                    </Grid>
-                </Grid> */}
-
-                {/* 약속 취소 메시지 */}
-                {/* <Grid
-                    sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    margin:"22px 0 0 0"
-                    }}
-                >
-                    <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-                        <div style={{backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
-                            <Grid item sx={{display: 'flex', height: 'fit-content',textAlign:"center"}}>
-                                <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                    <span style={{fontWeight:"700"}}>2월 12일 일 19:50시 </span>
-                                    
-                                    약속이 취소되었습니다.
-                                </Typography>
-                            </Grid>
-                        </div>
-                    </Grid>
-                </Grid> */}
-
                 </Grid>
 
                 {/* 텍스트 인풋 필드 & 버튼 */}
                 <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px 10px 20px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
                     <textarea 
                         name='chat' 
-                        placeholder='메세지를 입력하세요.'
+                        placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메세지를 입력하세요.'}
                         required
-                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle'}}
+                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: isBlocked? 'rgba(186, 186, 186, 0.5)' : '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle'}}
                         rows={calculateRows}
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
+                        disabled={isBlocked}
                     />
                     <Grid onClick={()=>handleSubmit(inputMessage)} sx={{ marginLeft: '10px', paddingTop:'5px' }}>
                         <Image src={send} width={41} height={41} layout="fixed"/>
