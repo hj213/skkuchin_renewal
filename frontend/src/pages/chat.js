@@ -162,8 +162,10 @@ const chatPage = () => {
         }));
         setInputMessage('');
     }
-    
-    
+
+    // const [meetTime, setMeetTime] = useState(setting && setting.meet_time ? setting.meet_time : '시간 정하기');
+    // const [location, setLocation] = useState(setting && setting.meet_place ? setting.meet_place : '장소 정하기');
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -353,7 +355,7 @@ const chatPage = () => {
                     // 보낸 시간 체크, 1분 미만인 경우
                     let displayAvatar = true;
                     // 이전 메시지와 현재 메시지의 시간 비교
-                    if (prevMessage && prevMessage.date === message.date) {
+                    if (prevMessage && prevMessage.time === message.time && isContinuedMessage) {
                         displayAvatar = false;
                         // displayTime = false; 
                     }
@@ -365,7 +367,7 @@ const chatPage = () => {
                                 <Grid style={{display:'flex'}}>
                                 <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
                                     <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                        {message.date}
+                                        {message.time}
                                     </Typography>
           
                                     <Card elevation="none" sx={{
@@ -386,6 +388,29 @@ const chatPage = () => {
                             </Stack>
                             </Grid>
                         </Grid>
+                        )  : (message.sender === 'admin') ? (
+                            <Grid
+                                sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                margin:"22px 0 0 0"
+                                }}
+                            >
+                                <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
+                                    <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
+                                        <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
+                                            <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                                {/* {otherUser && otherUser.nickname} 님과  */}
+                                                {message.message.split('요.').map((text, index, arr) => (
+                                                    <React.Fragment key={index}>
+                                                    {text}{index !== arr.length - 1 && '요.'}<br />
+                                                    </React.Fragment>
+                                                ))}
+                                            </Typography>
+                                        </Grid>
+                                    </div>
+                                </Grid>
+                            </Grid>
                         ) : (
                         <Grid key={message.id} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
                             {displayAvatar && (
@@ -419,7 +444,7 @@ const chatPage = () => {
                                             </Card>
                                             <Grid>
                                             <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                                {message.date} 
+                                                {message.time} 
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -430,7 +455,28 @@ const chatPage = () => {
                     ))
                 })}
                 
-                
+                {/* : (message.sender === 'admin') ? (
+                        <Grid
+                            sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            margin:"22px 0 0 0"
+                            }}
+                        >
+                            <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
+                                <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
+                                    <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
+                                        <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                            00님과
+                                            <span style={{fontWeight:"700"}}>2월 12일 일 19:50시</span>에
+                                            <br/>
+                                            약속을 만들었어요. 약속을 꼭 지켜주세요!
+                                        </Typography>
+                                    </Grid>
+                                </div>
+                            </Grid>
+                        </Grid>
+                        ) :  */}
                 {/* 상대방 카톡 틀 1(첫 메세지, 내 메세지 이후 첫 메시지) */}
                 {/* <Grid container style={{width:"100%",margin:'22px 0px 0px 0px', paddingLeft:'15px', justifyContent:'left'}}>
                     <Grid item>
@@ -556,7 +602,7 @@ const chatPage = () => {
                 </Grid> */}
 
                 {/* 약속 확인 메시지 */}
-                <Grid
+                {/* <Grid
                     sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -575,10 +621,10 @@ const chatPage = () => {
                             </Grid>
                         </div>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
                 {/* 약속 취소 메시지 */}
-                <Grid
+                {/* <Grid
                     sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -596,7 +642,7 @@ const chatPage = () => {
                             </Grid>
                         </div>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
                 </Grid>
 
