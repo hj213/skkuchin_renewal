@@ -28,21 +28,34 @@ public class PushTokenService {
 
     @Transactional
     public void upload(AppUser user, PushTokenDto.PostRequest dto) {
+        PushToken existingToken = pushTokenRepo.findByUser(user);
         PushToken pushToken = dto.toEntity(user);
-        pushToken.setInfoAlarm(true);
-        pushToken.setChatAlarm(true);
+        if (existingToken != null) {
+            pushTokenRepo.delete(existingToken);
+        } else {
+            pushToken.setInfoAlarm(true);
+            pushToken.setChatAlarm(true);
+        }
         pushTokenRepo.save(pushToken);
     }
 
     @Transactional
-    public void update(AppUser user, PushTokenDto.PutRequest dto) {
+    public void updateChatAlarm(AppUser user, Boolean status) {
         PushToken existingToken = pushTokenRepo.findByUser(user);
-        if (dto.getInfoAlarm() != null) {
-            existingToken.setChatAlarm(dto.getChatAlarm());
+        if (existingToken == null) {
+            throw new CustomRuntimeException("토큰이 존재하지 않습니다");
         }
-        if (dto.getChatAlarm() != null) {
-            existingToken.setInfoAlarm(dto.getInfoAlarm());
+        existingToken.setChatAlarm(status);
+        pushTokenRepo.save(existingToken);
+    }
+
+    @Transactional
+    public void updateChatInfo(AppUser user, Boolean status) {
+        PushToken existingToken = pushTokenRepo.findByUser(user);
+        if (existingToken == null) {
+            throw new CustomRuntimeException("토큰이 존재하지 않습니다");
         }
+        existingToken.setInfoAlarm(status);
         pushTokenRepo.save(existingToken);
     }
 }

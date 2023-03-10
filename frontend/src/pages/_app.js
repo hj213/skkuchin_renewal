@@ -37,10 +37,6 @@ const App = ({ Component, pageProps }) => {
       })
     }
   }, [isOnline, router.route])
-/*
-  useEffect(() => {
-    router.push('/splash')
-  }, [])*/
 
   return (
       <Provider store={store}>
