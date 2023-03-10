@@ -580,6 +580,7 @@ export default function list(){
                                     </Link>
                                 </li>
                         )) : 
+                        
                             <div style={{textAlign:'center', marginTop: '25%', color:"#FFE885"}}>
                                 <CircularProgress color="inherit"/>
                             </div>
