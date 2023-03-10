@@ -54,7 +54,7 @@ export const load_token = async (callback) => {
     }
 };
 
-export const enroll_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback) => {
+export const enroll_token = async (subscription, callback) => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -66,7 +66,7 @@ export const enroll_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback
     }
 
     const body = JSON.stringify({
-        token, isInfoAlarmOn, isChatAlarmOn
+        subscription
     });
 
     try {
@@ -83,9 +83,10 @@ export const enroll_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback
         const apiRes = await res.json();
 
         if (res.status === 201) {
-            dispatch({
+            await dispatch({
                 type: ENROLL_PUSHTOKEN_SUCCESS
             });
+            dispatch(load_token());
 
             if (callback) callback([true, apiRes.message]);
         } else {
@@ -104,7 +105,7 @@ export const enroll_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback
     }
 };
 
-export const modify_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback) => {
+export const modify_token = async (subscription, isInfoAlarmOn, isChatAlarmOn, callback) => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -116,7 +117,7 @@ export const modify_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback
     }
 
     const body = JSON.stringify({
-        token, isInfoAlarmOn, isChatAlarmOn
+        subscription, isInfoAlarmOn, isChatAlarmOn
     });
 
     try {
@@ -133,10 +134,10 @@ export const modify_token = async (token, isInfoAlarmOn, isChatAlarmOn, callback
         const apiRes = await res.json();
 
         if (res.status === 200) {
-            dispatch({
+            await dispatch({
                 type: MODIFY_PUSHTOKEN_SUCCESS
             });
-
+            dispatch(load_token());
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({

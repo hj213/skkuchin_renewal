@@ -18,6 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
+@Table(
+        name="chat_room",
+        uniqueConstraints={
+                @UniqueConstraint(
+                        columnNames={"user1_id", "user2_id"}
+                )
+        }
+)
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,17 +47,18 @@ public class ChatRoom {
     private LocalDateTime expireDate;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isUser1Blocked;
-
+    private boolean user1Blocked;
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
-    private boolean isUser2Blocked;
+    private boolean user2Blocked;
 
-    @Column(columnDefinition = "BIT DEFAULT TRUE")
-    private boolean isUser1AlarmOn;
+    private boolean user1Alarm;
 
-    @Column(columnDefinition = "BIT DEFAULT TRUE")
-    private boolean isUSer2AlarmOn;
+    private boolean user2Alarm;
+
+    private String meetPlace;
+
+    private LocalDateTime meetTime;
 
     @PrePersist
     public void setDate() {
@@ -62,7 +71,4 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports = new ArrayList<>();
-
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<Appointment> appointments = new ArrayList<>();
 }

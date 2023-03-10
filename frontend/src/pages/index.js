@@ -78,6 +78,7 @@ export default function list(){
         {id: '간단한 한 끼', exclusiveGroup: null},
         {id: '분위기 좋은', exclusiveGroup: null},
         {id: '맛집', exclusiveGroup: null},
+        {id: '술집', exclusiveGroup: 'cuisine'},
         {id: '친절', exclusiveGroup: null},
         {id: '가성비', exclusiveGroup: null},
         {id: '청결도', exclusiveGroup: null},
@@ -100,7 +101,7 @@ export default function list(){
 
     //캠퍼스 필터링
     useEffect(() => {
-        if (searchplace && keyword != '' && user.toggle != null) {
+        if (searchplace && keyword != '' && user && user.toggle != null) {
           setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
@@ -356,6 +357,16 @@ export default function list(){
 
     //dialog
     const [openDialog, setOpenDialog] = useState(false);
+
+    useEffect(() => {
+        let app = localStorage.getItem("app");
+        if (app != "true") {
+            localStorage.setItem("app", "true");
+            setOpenDialog(true);
+        } else {
+            setOpenDialog(false);
+        }
+    }, [])
 
     const handleClickOpen = () => {
       setOpenDialog(true);

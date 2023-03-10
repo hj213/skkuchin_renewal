@@ -11,10 +11,7 @@ import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.*;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,7 +71,9 @@ public class FavoriteService {
     }
 
     public void isMyFavorite(Long favoriteUserId, Long userId) {
-        if (favoriteUserId != userId) throw new CustomRuntimeException("내 즐겨찾기가 아닙니다.");
+        if (!Objects.equals(favoriteUserId, userId)) {
+            throw new CustomRuntimeException("내 즐겨찾기가 아닙니다.");
+        }
     }
 }
 

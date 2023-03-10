@@ -11,13 +11,20 @@ import check from '../image/check_3.png';
 import search from '../image/search.png';
 import { load_places } from "../actions/place/place";
 import { load_user } from "../actions/auth/auth";
+import { set_meet_place, delete_meet_place } from "../actions/chat/chatRoom";
 
 export default function chatPlace(){
 
     const router = useRouter();
     const dispatch = useDispatch();
+    
+    const chatRoom = useSelector(state => state.chatRoom.chatRooms);
+    const otherUser = useSelector(state => state.chatMessage.otherUser);
 
-    const [date, setDate] = useState(new Date());
+    const setting = useSelector(state => state.chatMessage.setting);
+
+    const roomId = chatRoom && chatRoom.find(room => room.nickname === otherUser.nickname)?.room_id;
+
     const [calendarOpen, setCalendarOpen] = useState('hidden');
     const [DialogOpen, setDialogOpen] = useState(false);
     const [auto, setAuto] = useState([]);
@@ -55,7 +62,6 @@ export default function chatPlace(){
         } else{
             const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
             setAuto(newAuto);
-            
         }
     }
 
@@ -81,11 +87,29 @@ export default function chatPlace(){
     const handleDialogClose = () => {
         setDialogOpen(false);
     }
-    const handleDelete = (e) => {
+    const handleDelete = () => {
+        dispatch(delete_meet_place(roomId, ([result, message]) => {
+            if (result) {
+                alert('delete_meet_place 성공! ' + result);
+            } else {
+                alert('delete_meet_place 실패! ' +message);
+            }
+        }));
         router.back();
     };
-    const handleSubmit = (e) => {
-        // router.back();
+    const handleSubmit = () => {
+        alert(value);
+        dispatch(set_meet_place(value, roomId, ([result, message]) => {
+            if (result) {
+                alert('set_meet_place 성공! ' + result);
+            } else {
+                alert('set_meet_place 실패! ' + message);
+                // if (typeof(message) == 'string') {
+                // setDialogMsg(message);
+                // }
+            }
+        }));
+        router.back();
     }
 
     return(
@@ -114,15 +138,13 @@ export default function chatPlace(){
                     </Container>
                     <Container style={{padding:'0px', margin:'30px 0px 0px 20px'}}>
                         <Grid container justify="space-around" >
-                            
                             <Grid item style={{ margin:'6px 10px 0px 5px', position:'absolute', zIndex:'2'}}>
                                 <Image src={search} width={20} height={20} onClick={handleDownClick} placeholder="blur" layout='fixed' />
                             </Grid>
                             <Grid item style={{width:'100%'}}> 
-                                
                                 <Input 
                                 style={{fontSize:'16px', padding:'0px 0px 5px 40px',width:'90%', fontWeight:'500'}} 
-                                placeholder='식당 이름을 검색해주세요.'
+                                placeholder= {setting && setting.meet_place? setting.meet_place :'식당 이름을 검색해주세요.'}
                                 value={value}
                                 onChange={handleValue}
                                 />
@@ -157,14 +179,14 @@ export default function chatPlace(){
                         </div>
                         }
                         <div>
-                            <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 시간 삭제하기</Button>
+                            <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 장소 삭제하기</Button>
                         </div>
                     </Container>
-                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0}}>
-                        <div style={{ textAlign:'center', marginBottom:'53px'}}>
-                            <Image src={check} width={300} height={56} onClick={handleSubmit} placeholder="blur" layout='fixed' />
+                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px', zIndex: calendarOpen ? 0 : 2}}>
+                        <div onClick={handleSubmit} style={{ textAlign:'center', marginBottom:'53px', cursor: 'pointer'}}>
+                            <Image src={check} width={300} height={56} placeholder="blur" layout='fixed' />
                         </div>
-                    </Container>
+                    </Container>   
                 </Container>
                 <Dialog
                     open={DialogOpen}

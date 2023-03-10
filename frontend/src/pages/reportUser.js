@@ -230,9 +230,9 @@ export default function reportUser(){
                     </Grid>
 
                     </Container>
-                    <Container style={{justifyContent:'center', position: "relative", bottom: 0}}>
+                    <Container style={{justifyContent:'center', position: "relative", bottom: 0, zIndex: '5'}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>
-                            <Image src={check} width={300} height={56} onClick={handleSubmit}/>
+                            <Image src={check} width={300} height={56} onClick={handleSubmit}  placeholder="blur" layout='fixed'/>
                         </div>
                     </Container>
                 </Container>

@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { get_realtime_chat_room } from '../actions/chat/chatRoom';
 import { get_realtime_chat_request } from '../actions/chat/chatRequest';
+import NewPromise from './Chat/NewPromise';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -81,6 +82,19 @@ export default function MessageTab() {
     }
   }, [user, stompClient])
 
+  const [open, setOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleOpen = (request) => {
+    setOpen(true);
+    setSelectedRequest(request);
+    setSelectedUser(request.user1_id);
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', position:'fixed', width:'100%', backgroundColor:'white',maxWidth:'600px'}}>
@@ -101,7 +115,7 @@ export default function MessageTab() {
                         pathname: '/chat',
                         query: {
                           room_id: chatRoom.room_id,
-                          user_number: chatRoom.user1_id === user.id ? 'user1' : 'user2'
+                          user_number: chatRoom.user1_id == user.id ? 'user1' : 'user2'
                         }
                       }}>
                         <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
@@ -122,8 +136,8 @@ export default function MessageTab() {
                                       <Image
                                         src={
                                           chatRoom.user1_id === user.id
-                                            ? !chatRoom.is_user1_alarm_on && notiOff
-                                            : !chatRoom.is_user2_alarm_on && notiOff
+                                            ? !chatRoom.user1_alarm && notiOff
+                                            : !chatRoom.user2_alarm && notiOff
                                         }
                                         width="12px"
                                         height="12px"
@@ -139,7 +153,7 @@ export default function MessageTab() {
                             <Grid xs={2}>
                             <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                               <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                                {chatRoom.message_time}
+                                {chatRoom.display_time}
                               </Typography>
                               <div
                                 style={{
@@ -153,9 +167,21 @@ export default function MessageTab() {
                                   justifyContent: 'center'
                                 }}
                               >
-                                <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
-                                  { chatRoom.message_count === 0 ? NEW : chatRoom.message_count }
-                                </Typography>
+                                { 
+                                  chatRoom.message_count === 0 
+                                  ? 
+                                    chatRoom.message === "새로운 채팅방이 개설되었습니다"
+                                    ? 
+                                    <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
+                                      NEW
+                                    </Typography>
+                                    :
+                                    null
+                                  :
+                                  <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
+                                    {chatRoom.message_count}
+                                  </Typography>
+                                }
                               </div>
                             </Stack>
                             </Grid>
@@ -193,7 +219,7 @@ export default function MessageTab() {
               <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
                 { chatRequests.map((chatRequest, index)=>(
                   <li >
-                    <Grid container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
+                    <Grid onClick={()=>handleOpen(chatRequest)} container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
                         <Grid xs={2}>
                             <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
                         </Grid>
@@ -212,11 +238,14 @@ export default function MessageTab() {
                         <Grid xs={2}>
                           <Stack direction="column" spacing={1} sx={{margin:"5px 0 7px 7px",height:'20px',}}>
                               <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
-                                  {chatRequest.created_date}
+                                  {chatRequest.display_time}
                               </Typography>
                             </Stack>
                         </Grid>
                     </Grid>
+                      {
+                        open && <NewPromise open={open} onClose={handleClose} request={selectedRequest} selectedUser={selectedUser}/> 
+                      }
                   </li>
                 ))}
               </ul>

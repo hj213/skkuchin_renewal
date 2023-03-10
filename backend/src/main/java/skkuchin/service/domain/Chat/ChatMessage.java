@@ -1,7 +1,5 @@
 package skkuchin.service.domain.Chat;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -32,5 +30,4 @@ public class ChatMessage {
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean readStatus;
-
 }

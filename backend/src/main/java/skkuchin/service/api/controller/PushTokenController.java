@@ -37,7 +37,7 @@ public class PushTokenController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> upload(@Valid @RequestBody PushTokenDto.Request dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> upload(@Valid @RequestBody PushTokenDto.PostRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> errorMap = new HashMap<>();
         if (bindingResult.hasErrors()) {
             for (FieldError error : bindingResult.getFieldErrors()) {
@@ -52,7 +52,7 @@ public class PushTokenController {
 
     @PutMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> update(@Valid @RequestBody PushTokenDto.Request dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<?> update(@Valid @RequestBody PushTokenDto.PutRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Map<String, String> errorMap = new HashMap<>();
         if (bindingResult.hasErrors()) {
             for (FieldError error : bindingResult.getFieldErrors()) {

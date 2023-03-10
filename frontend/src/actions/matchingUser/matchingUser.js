@@ -13,6 +13,7 @@ import {
     CHANGE_MATCHING_INFO_FAIL
 } 
     from './types';
+import { load_candidate } from '../candidate/candidate';
 
 export const add_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
     await dispatch(request_refresh());
@@ -172,6 +173,53 @@ export const load_matching_info = (callback) => async dispatch => {
     }
 }
 
+export const load_other_matching_info = (id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+    
+    try {
+        const res = await fetch(`${API_URL}/api/matching/user/${id}`,{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if(res.status === 200){
+            dispatch({
+                type: LOAD_MATCHING_INFO_SUCCESS,
+                payload: apiRes.data
+            })
+            if (callback) callback([true, apiRes.message]);
+        }else {
+            dispatch({
+                type: LOAD_MATCHING_INFO_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: LOAD_MATCHING_INFO_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+        
+        
+    }
+}
+
 export const change_status_info = (status, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
@@ -204,7 +252,8 @@ export const change_status_info = (status, callback) => async dispatch => {
             await dispatch({
                 type: CHANGE_MATCHING_STATUS_SUCCESS
             })
-            dispatch(load_matching_info());
+            await dispatch(load_matching_info());
+            dispatch(load_candidate());
             
             if (callback) callback([true, apiRes.message]);
             

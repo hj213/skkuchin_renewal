@@ -1,8 +1,6 @@
 package skkuchin.service.dto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +14,7 @@ public class DebeziumDto {
         @Getter
         @Setter
         public static class Payload {
-            private UserDto.DebeziumUserResponse after;
+            private UserDto.DebeziumDto after;
             private String op;
 
         }
