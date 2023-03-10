@@ -16,22 +16,28 @@ import { styled } from '@mui/material/styles';
 import {TimePicker }from 'antd';
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
-// import { enroll_appointment } from "../actions/appointment/appointment"; 
-
+import { set_meet_time, delete_meet_time } from "../actions/chat/chatRoom";
 export default function chatTime(){
 
     const router = useRouter();
     const dispatch =useDispatch();
 
+    const chatRoom = useSelector(state => state.chatRoom.chatRooms);
+    const otherUser = useSelector(state => state.chatMessage.otherUser);
+    
+    const setting = useSelector(state => state.chatMessage.setting);
+
+    const roomId = chatRoom && chatRoom.find(room => room.nickname === otherUser.nickname)?.room_id;
     const now = new Date();
     const format = 'HH:mm';
     const defaultValue = dayjs().format(format);
 
-    const [date, setDate] = useState(now);
+    const [date, setDate] = useState(setting && setting.meet_time ? new Date(setting.meet_time.replace(/\./g, '/')) : now);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
-    const [changedtime, setChangedTime] = useState(defaultValue);
+    const [changedtime, setChangedTime] = useState(setting && setting.meet_time ? setting.meet_time.slice(-5) : defaultValue);
     const [timeOpen, setTimeOpen] = useState('hidden');
+    const [isUp, setIsUp] = useState(false);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -43,36 +49,52 @@ export default function chatTime(){
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
-        return `${year}.${month}.${day}(${dayOfWeek})`;
+        return `${year}.${month}.${day} (${dayOfWeek})`;
       };
     
       
-    const handleBack = (e) => {
+    const handleBack = () => {
         router.back();
     }
 
-    const handleDownClick = (e) => {
+    const handleDownClick = () => {
+        console.log(now);
         if(calendarOpen){
             setCalendarOpen(false);
         } else{
             setCalendarOpen(true);
         }
+        setIsUp((prevIsUp) => !prevIsUp);
     };
-    const handleDialogOpen = (e) => {
+    const handleDialogOpen = () => {
         setDialogOpen(true);
     };
     const handleDialogClose = () => {
         setDialogOpen(false);
     }
-    const handleDelete = (e) => {
+    const handleDelete = () => {
+        dispatch(delete_meet_time(roomId, ([result, message]) => {
+            if (result) {
+                alert('delete_meet_time 성공! ' + result);
+            } else {
+                alert('delete_meet_time 성공! ' + message);
+            }
+        }));
         router.back();
     };
-    const handleSubmit = (e) => {
-        // router.back();
-        const dateInfo = dayjs(date).format('YYYY-MM-DD')+"'T'"+changedtime+':00'
-        // console.log(dateInfo);
-
-        // dispatch(enroll_appointment())
+    const handleSubmit = () => {
+        alert('버튼 클릭!');
+        const dateInfo = dayjs(date).format('YYYY-MM-DD')+"T"+changedtime+':00';
+        alert(dateInfo);
+        alert(roomId);
+        dispatch(set_meet_time(dateInfo, roomId, ([result, message]) => {
+            if (result) {
+                alert('set_meet_time 성공! ' + result);
+            } else {
+                alert('set_meet_time 실패! ' + message);
+            }
+        }));
+        router.back();
     }
     const handleOpenTime = () => {
         if(timeOpen=='hidden'){
@@ -119,8 +141,8 @@ export default function chatTime(){
                                     <Typography style={{fontSize:'16px', }} fontWeight={theme.typography.h2}>{formatDate(date)}  {changedtime}</Typography>
                                 </div>
                             </Grid>
-                            <Grid item style={{ right:'0',position:'absolute', zIndex:'2', marginRight:'40px'}}>
-                                <Image src={down} width={25} height={25} onClick={handleDownClick} placeholder="blur" layout='fixed' />
+                            <Grid item style={{ right:'0',position:'absolute', zIndex:'5', marginRight:'40px'}}>
+                                <Image src={down} width={25} height={25} onClick={handleDownClick} placeholder="blur" layout='fixed' style={{ transform: `rotate(${isUp ? "180deg" : "0deg"})` }} />
                             </Grid>
                         </Grid>
                         <div>
@@ -130,10 +152,10 @@ export default function chatTime(){
                     </Container>
             
                     
-                    <div style={{ position:'absolute',width:'100%', maxWidth:'600px',margin:'0px 0px 0px 0px',zIndex:'2',bottom:0}}>
+                    <div style={{ position:'fixed',width:'100%', maxWidth:'600px',margin:'0px 0px 0px 0px'}}>
                         <Slide direction="up" in={calendarOpen} timeout={200} >
-                            <Container style={{padding:'0px', width:'100%', position:'relative'}}>
-                                <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px'}}>
+                            <Container style={{padding:'0px', width:'100%', position:'relative', zIndex: 1}}>
+                                <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px', bottom: '0'}}>
                                     <CalendarContainer>
                                         <Calendar onChange={setDate} value={date} formatDay={(locale, date) =>
                                             date.toLocaleString('en', { day: 'numeric' })
@@ -146,22 +168,12 @@ export default function chatTime(){
                                         />
                                     </CalendarContainer>
             
-                                    {/* <Button onClick={handleOpenTime}>{time}</Button> */}
-                                    {/* <div style={{visibility: timeOpen, positon:'relative'}}>
-                                        <Card style={{position:'absolute', zIndex:'4', bottom:0, right:0, height:'200px'}}>
-                                            
-                                        </Card>
-                                    </div> */}
                                     <Grid container style={{width:'100%'}}>
                                         <Grid item style={{margin: '10px 0px 0px 35px'}}>
                                             <Typography style={{fontWeight:'500', fontSize:'15px'}}>시간</Typography>
                                         </Grid>
-                                        <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>
-                                            
-                                            
+                                        <Grid item style={{right:0, position:'absolute', marginTop:'5px', marginRight:'35px'}}>     
                                             <TimePicker defaultValue={dayjs(defaultValue,format)} format={format} placeholder={defaultValue} onChange={handleOnChange}  popupStyle={{ fontWeight: '500' }} style={{border:'none', backgroundColor:'#EEEEF0', width:'80px'}}/>
-                                            
-                                            
                                         </Grid>
                                     </Grid>
                                     
@@ -169,14 +181,12 @@ export default function chatTime(){
                                 
                             </Container>
                         </Slide>
-                        
-                        </div>
-                                        
-                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px'}}>
-                        <div style={{ textAlign:'center', marginBottom:'53px'}}>
-                            <Image src={check} width={300} height={56} onClick={handleSubmit} placeholder="blur" layout='fixed' />
-                        </div>
-                    </Container>
+                        <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px', zIndex: calendarOpen ? 0 : 2}}>
+                            <div onClick={handleSubmit} style={{ textAlign:'center', marginBottom:'53px', cursor: 'pointer'}}>
+                                <Image src={check} width={300} height={56} placeholder="blur" layout='fixed' />
+                            </div>
+                        </Container>   
+                        </div>         
                 </Container>
                 <Dialog
                     open={DialogOpen}

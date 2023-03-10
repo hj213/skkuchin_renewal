@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { useRouter } from "next/router";
-import { load_matching_info } from '../actions/matchingUser/matchingUser';
+import { load_other_matching_info } from '../actions/matchingUser/matchingUser';
 import { CssBaseline, Typography, Grid, Container,ThemeProvider,  } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
@@ -13,8 +13,8 @@ export default function clickProfile(){
     const dispatch = useDispatch();
     const router = useRouter();
 
+    const otherUser = useSelector(state => state.chatMessage.otherUser);
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
-    const user = useSelector(state => state.auth.user);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -23,7 +23,7 @@ export default function clickProfile(){
     
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_matching_info(([result, message]) => {
+            dispatch(load_other_matching_info(otherUser.id,([result, message]) => {
                 if (result) {
                     // alert(message);
                     setLoad(true);
@@ -64,7 +64,7 @@ export default function clickProfile(){
                 {matchingUser !== null ?
                     <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
                         <Grid sx={{pt: '39px'}}>{displayMBTI(matchingUser.mbti)}</Grid>
-                        <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{user !== null && matchingUser.nickname}</Typography>
+                        <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{ matchingUser.nickname}</Typography>
                         <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
                             <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>{matchingUser.campus}</Typography>&nbsp;
                             {matchingUser.major} &nbsp;/&nbsp; 
