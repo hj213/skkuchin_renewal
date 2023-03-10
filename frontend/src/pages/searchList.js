@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState,  } from "react"; 
+import { useEffect, useState, useRef } from "react"; 
 import { search_places, load_places, clear_search_results } from "../actions/place/place";
 import Image from 'next/image';
 import Link from 'next/link';
 import theme from "../theme/theme";
-import {CssBaseline, Box,InputBase, ThemeProvider, useMediaQuery, Paper,  Card, CardContent, Typography, Grid, Container, Stack, stepConnectorClasses} from '@mui/material';
+import {CssBaseline, Box,InputBase, CircularProgress, ThemeProvider, useMediaQuery, Paper,  Card, CardContent, Typography, Grid, Container, Stack, stepConnectorClasses} from '@mui/material';
 import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import food from '../image/food.png';
@@ -19,7 +19,7 @@ import Layout from "../hocs/Layout";
 import noAuto from '../image/noinfo_enheng.png';
 import Hangul from "hangul-js";
 import marker from '../image/location.png';
-
+import styled from "@emotion/styled";
 
 export default function searchList(){
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -55,6 +55,12 @@ export default function searchList(){
         }
     }, [keyword]);
 
+    useEffect(() => {
+        if (!allplaces || allplaces.length === 0) {
+          dispatch(load_places());
+        }
+      }, [allplaces]);
+
     //캠퍼스 필터링
     useEffect(() => {
         if (searchplace && allplaces && user) {
@@ -65,7 +71,7 @@ export default function searchList(){
             setFilteredAllPlace([]);
         }
     }, [searchplace, user, allplaces]);
-
+  
     const handleValue = (e) => {
         setValue(e.target.value);
 
@@ -100,14 +106,11 @@ export default function searchList(){
             // 0-2 [검색 결과 목록] -> 1 [목록보기]로 이동
             
             dispatch(clear_search_results());
-            router.push({
-                pathname: '/',
-                query: { keyword : passValue, length: filteredPlace.length }
-              })
-          
+            router.push(`/?keyword=${passValue}`);
+            
         } else{
             setPassValue('')
-            dispatch(search_places('!')); //초기화위해서
+            dispatch(clear_search_results()); //초기화위해서
             router.push('/');
         }
     };
@@ -136,21 +139,35 @@ export default function searchList(){
         setValue('')
         setAuto([]);
     }
-    const handleInputOnFocus = () => {
+    const autoRef= useRef(null);
+    const handleInputOnFocus = (e) => {
         setAutoBox(true);
+
     }
 
     const handleInputOnBlur = (e) => { 
         setAutoBox(false);
     }
-   
+    const NoScroll = styled.div`
+    /* 모바일에서 스크롤 바를 숨김 */
+    *::-webkit-scrollbar {
+        display: none;
+    }
+    `
+    // useEffect(()=>{
+    //     if(autoBox && autoRef.current){
+    //         autoRef.current.scrollTo({top:0});
+    //         console.log(autoRef.current.scrollTop)
+    //     }
+    // },[autoBox, autoRef.current])
+
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline/>
-            <div style={{position:'absolute', zIndex:'2'}}>
+            <div style={{position:'absolute', zIndex:'9'}}>
                 <UpperBar/>
             </div>
-           
+           {/* <NoScroll> */}
             <div style={{position:'relative', width:'100%', height:'100%', marginTop:'80px', }}>
                 <div style={{position: 'absolute',}}>
                     <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '85px'}}>
@@ -183,10 +200,10 @@ export default function searchList(){
                     </Container>
                 </div>
                 { autoBox && value ? (
-                <div onMouseDown={handleContainerMouseDown} style={{height:'100%'}}>
+                <div onMouseDown={handleContainerMouseDown} style={{height:'100%'}} >
                     <Paper style={{position:'relative',height:'100vh', width:'100%', top:'60px', overflowY:'scroll', border: '1px solid transparent',
                     borderRadius: '0px', zIndex:'2'}}> 
-                        <Container style={{padding:'0px', marginTop:'0px'}}>
+                        <Container style={{padding:'0px', marginTop:'0px'}} >
                             {auto.length > 0 ?
                             <ul style={{padding:'0px 20px 0px 20px', listStyleType: "none",}}>
                                 {auto.map((autoList) => (
@@ -223,32 +240,22 @@ export default function searchList(){
                     </Paper>
                 </div>
                 ) :
-                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }}>
+                <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }} >
                     <Card style={{overflowY:'auto', marginTop:'80px', border: "0px solid transparent", boxShadow:'none', borderRadius: '0px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                            {filteredPlace? filteredPlace.map((item) => (
+                            {filteredPlace ? filteredPlace.length > 0 ? filteredPlace.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                         <Link href={`/place?id=${item.id}`} key={item.id}>
                                         <Grid container style={{margin: '10px 0px 0px 0px'}}>
                                             <Grid item xs >
                                                 <CardContent style={{padding:'0px'}}>
                                                     <Grid container spacing={2} style={{margin:'0px',}}>
-                                                       
-                                                        {isSmallScreen ? 
-                                                        <Grid item style={{marginTop:'15px',  padding:'0px 0px 0px 0px'}}>
-                                                            <Typography sx={{fontSize: '16px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
-                                                                {item.name}
-                                                            </Typography>
-                                                        </Grid>
-                                                        : 
                                                         <Grid item style={{marginTop:'15px',  padding:'0px 8px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '18px', fontWeight:'500', lineHeight: '28px'}} color="#000000">
                                                                 {item.name}
                                                             </Typography>
                                                         </Grid>
-                                                        }
-                                                        
-                                                        {/* <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
+                                                        <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
                                                             {isSmallScreen && (item.name.length >=13)?
                                                                 <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
                                                                     {item.detail_category}
@@ -259,16 +266,16 @@ export default function searchList(){
                                                                 </Typography>
                                                             }
                                                             <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
-                                                        </Grid> */}
+                                                        </Grid>
                                                         {/* 화면 너비에 따라 detail_category 이미지 뒤로 씹히거나, 줄바꿈이 필요한 경우를 처리하기 위해 위처럼 수정했습니다 */}
-                                                        <Grid item style={{padding:'0px 0px 0px 8px'}}>
+                                                        {/* <Grid item style={{padding:'0px 0px 0px 8px'}}>
                                                             <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                                 {item.detail_category}
                                                             </Typography>
                                                         </Grid>
                                                         <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
                                                             {isFavorite(item.id)}
-                                                        </Grid>
+                                                        </Grid> */}
                                                     </Grid>
                                                     <Grid item container style={{marginTop: '10px'}}>
                                                         <Grid >
@@ -347,12 +354,17 @@ export default function searchList(){
                                     <Image src={noAuto} width={129} height={108} placeholder="blur" layout='fixed' />
                                     <Typography color={theme.palette.fontColor.light} fontWeight={theme.typography.h2} style={{fontSize:'14px'}} >검색결과가 없습니다.</Typography>
                                 </div>
-                            )}
+                            )
+                        :(
+                            <div style={{textAlign:'center', marginTop: '25%', color:"#FFE885"}}>
+                                <CircularProgress color="inherit"/>
+                            </div>
+                        )}
                         </ul>
                     </Card>
                 </Container> }
             </div> 
-            
+            {/* </NoScroll> */}
         </ThemeProvider>
     )
 }

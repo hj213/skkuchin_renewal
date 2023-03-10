@@ -99,6 +99,7 @@ export default function list(){
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
 
+
     //캠퍼스 필터링
     useEffect(() => {
         if (searchplace && keyword != '' && user && user.toggle != null) {
@@ -107,6 +108,16 @@ export default function list(){
             if(tags != null) setFilteredPlace(null);
         }
     }, [searchplace, user]);
+
+
+    useEffect(()=>{
+        setKeyword('');
+        setTags([]);
+        setFilteredPlace(null);
+        setIsTall(false);
+        dispatch(clear_search_results());
+    },[user?.toggle])
+
 
     useEffect(() => {
         // 0-2 검색 결과 목록 -> 1 목록보기
@@ -120,6 +131,7 @@ export default function list(){
     }, [router.query.keyword, tags])
 
     useEffect(() => {
+        
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             if(keyword == '') {
                 setFilteredPlace(null);
@@ -128,7 +140,7 @@ export default function list(){
                 // 키워드 확인
                 dispatch(clear_search_results());
                 dispatch(search_places(keyword));
-                
+
                 if((open.bool) == false) {
                     if( router.query.length == 1 || filteredPlace?.length == 1){
                         setHeight(187)
@@ -172,18 +184,19 @@ export default function list(){
             } else {
                 setHeight(345)
             }
+            setIsTall(false);
+            setPreventScroll("");
+            setOpen({
+                bool: false,
+                visibility: "hidden"
+            });
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility:'visible'
+            });
         }
     
     },[numOfLi])
-
-    useEffect(()=>{
-        setHeight('0')
-        setKeyword('');
-        setTags([]);
-        setFilteredPlace(null);
-        setIsTall(false);
-        dispatch(clear_search_results());
-    },[user?.toggle])
 
     // 카드 리셋 
     const handleReset = () => {
@@ -211,6 +224,9 @@ export default function list(){
     const handleTouchMove = (event) => {
         const touchY = event.touches[0].clientY;
         const deltaY = touchY - startY;
+        if(!filteredPlace){
+            return
+        }
     
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
@@ -311,7 +327,7 @@ export default function list(){
         
         const exclusiveGroup = selectedTag.exclusiveGroup;
         let newTags;
-      
+
         if (tags.includes(id)) {
           newTags = tags.filter(tag => tag !== id);
         } else {
@@ -334,14 +350,14 @@ export default function list(){
             }
           }
         }
-      
+     
         setTags(newTags);
         setKeyword(newTags.join(', '));
         if(newTags.length == 0) handleReset();
         setIsTall(false);
       }
       
-    
+
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         setFocus(bool);
@@ -591,6 +607,7 @@ export default function list(){
                                     </Link>
                                 </li>
                         )) : 
+                        
                             <div style={{textAlign:'center', marginTop: '25%', color:"#FFE885"}}>
                                 <CircularProgress color="inherit"/>
                             </div>
