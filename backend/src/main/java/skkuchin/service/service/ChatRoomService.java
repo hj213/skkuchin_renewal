@@ -154,7 +154,7 @@ public class ChatRoomService {
 
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
@@ -172,7 +172,7 @@ public class ChatRoomService {
     public void setAlarm(String roomId, AppUser appUser, Boolean status){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
@@ -188,7 +188,7 @@ public class ChatRoomService {
     @Transactional
     public void setMeetTime(String roomId, AppUser appUser, LocalDateTime time){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         chatRoom.setMeetTime(time);
@@ -209,7 +209,7 @@ public class ChatRoomService {
     @Transactional
     public void setMeetPlace(String roomId, AppUser appUser, String place){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         chatRoom.setMeetPlace(place);

@@ -40,3 +40,4 @@ spring:
       - aws.yml
       - email.yml
       - chat.yml
+      - push.yml

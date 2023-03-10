@@ -64,17 +64,6 @@ public class ChatMessageService {
     }
 
     @Transactional
-    public void updateReadStatus(ChatRoom chatRoom, String sender){
-        List<ChatMessage> chatMessages = chatMessageRepo.findByChatRoom(chatRoom);
-        for (ChatMessage chatMessage : chatMessages) {
-            if(chatMessage.isReadStatus() == false && !chatMessage.getSender().equals(sender)){
-                chatMessage.setReadStatus(true);
-            }
-        }
-        chatMessageRepo.saveAll(chatMessages);
-    }
-
-    @Transactional
     public List<ChatMessageDto.Response> getAllMessage(ChatRoom chatRoom){
         List<ChatMessageDto.Response> messages = chatMessageRepo.findByChatRoom(chatRoom)
                 .stream()
