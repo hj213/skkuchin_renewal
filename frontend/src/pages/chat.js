@@ -20,6 +20,7 @@ import notiOff from '../image/chat/notifications_off.png'
 import Layout from "../hocs/Layout";
 import Link from 'next/link'
 import { get_realtime_chat_infos, get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat } from '../actions/chat/chatMessage';
+import { set_user_block, set_chat_room_alarm, exit_room } from "../actions/chat/chatRoom";
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -38,11 +39,8 @@ const chatPage = () => {
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
-
     const messages = useSelector(state => state.chatMessage.messages);
-
     const otherUser = useSelector(state => state.chatMessage.otherUser);
-
     const setting = useSelector(state => state.chatMessage.setting);
 
     const stompClient = useSelector(state => state.stompClient.stompClient);
@@ -97,6 +95,24 @@ const chatPage = () => {
 
     // 차단하기 Dialog
     const [openBlockDialog, setBlockDialog] = useState(false);
+    const isUser1Blocked = setting && setting.user1_blocked;
+    const isUser2Blocked = setting && setting.user2_blocked;
+    const [friendBlocked, setFriendBlocked] = useState(() => {
+    if (setting) {
+        if (user_number === "user1") {
+        return setting.user2_blocked;
+        } else {
+        return setting.user1_blocked;
+        }
+    } else {
+        return false;
+    }
+    });
+    const [isBlocked, setBlocked] = useState(isUser1Blocked || isUser2Blocked);
+
+    useEffect(() => {
+        setBlocked(isUser1Blocked || isUser2Blocked);
+    }, [isUser1Blocked, isUser2Blocked]);
 
     const handleBlockUser = () => {
         setBlockDialog(true);
@@ -108,10 +124,20 @@ const chatPage = () => {
     };
 
     const handleConfirmBlockUser = () => {
-      // Code to leave the chat room
+        alert(isBlocked);
+        dispatch(
+          set_user_block(!isBlocked, room_id, ([result, message]) => {
+            if (result) {
+              setBlocked(isUser1Blocked || isUser2Blocked || !isBlocked);
+              alert("set_user_block 성공!");
+            } else {
+              alert("set_user_block 실패 " + message);
+            }
+          })
+        );
         setBlockDialog(false);
-    };
-
+      };
+    
     // 채팅방 나가기 Dialog
     const [openExitDialog, setExitDialog] = useState(false);
 
@@ -120,7 +146,14 @@ const chatPage = () => {
     };
 
     const handleConfirmExit = () => {
-      // Code to leave the chat room
+        alert(room_id);
+        dispatch(exit_room(room_id, ([result, message])=>{
+            if(result){
+                alert('exit_room 성공!');           
+            } else {
+                alert("exit_room 실패 " +message);
+            }
+        }));
         setExitDialog(false);
     };
 
@@ -129,14 +162,26 @@ const chatPage = () => {
         router.push('/reportUser')
     }
 
-    // more 버튼
-    const options = [
-        {label: '프로필 보기', onClick: handleProfile},
-        {label: '알림끄기'},
-        {label: '차단하기', onClick: handleBlockUser},
-        {label: '신고하기', onClick: handleReportUser},
-        {label: '채팅방 나가기', onClick: handleExit},
-    ];
+    const [isAlarmOn, setIsAlarmOn] = useState(
+        setting
+          ? user_number === 'user1'
+            ? setting.user1_alarm
+            : setting.user2_alarm
+          : false
+      );
+      
+      const handleAlarm = () => {
+        alert(isAlarmOn);
+        dispatch(set_chat_room_alarm(!isAlarmOn, room_id, ([result, message]) => {
+          if(result) {
+            alert('set_chat_room_alarm 성공!');
+            setIsAlarmOn(!isAlarmOn);
+          } else {
+            alert('set_chat_room_alarm ' + message);
+          }
+        }));
+      };
+
     
     const ITEM_HEIGHT = 50;
 
@@ -162,9 +207,14 @@ const chatPage = () => {
         setInputMessage('');
     }
 
-    // const [meetTime, setMeetTime] = useState(setting && setting.meet_time ? setting.meet_time : '시간 정하기');
-    // const [location, setLocation] = useState(setting && setting.meet_place ? setting.meet_place : '장소 정하기');
-
+        // more 버튼
+        const options = [
+            {label: '프로필 보기', onClick: handleProfile},
+            {label:  isAlarmOn ? '알림끄기' : '알림켜기' , onClick: handleAlarm},
+            {label: friendBlocked ? "차단해제" : "차단하기", onClick: handleBlockUser},
+            {label: '신고하기', onClick: handleReportUser},
+            {label: '채팅방 나가기', onClick: handleExit},
+        ];
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -193,9 +243,11 @@ const chatPage = () => {
                                     {otherUser && otherUser.nickname}
                                 </Typography>
                                 {/* 알림 끄기 표시 */}
+                                { !isAlarmOn &&
                                 <Box sx={{paddingLeft:'3px', paddingTop:'4px'}}>
                                     <Image src={notiOff} width="12px" height="12px"/>
                                 </Box>
+                                }
                             </div>
                         </Grid>
                         <Grid style={{paddingTop:'0', paddingLeft:'0'}}>
@@ -278,14 +330,14 @@ const chatPage = () => {
                 <DialogContent sx={{p: '20px 24px 13px'}}>
                     <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
                         <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 15px 5px', m: '0'}}>
-                            차단 시 해당 채팅방은 자동으로 나가지며 상대는 더 이상 매칭에서 노출되지 않아요. 차단하시겠어요?
+                            차단 시 해당 채팅방의 상대와는 더 이상 채팅이 불가하며 상대는 더 이상 매칭에서 노출되지 않아요. 차단하시겠어요?
                         </DialogTitle>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{p:'0'}}>
                     <div style={{width: '100%', paddingBottom: '20px'}}>
                         <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleCloseDialog}>취소</Button>
-                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}}>차단</Button>
+                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}} onClick={handleConfirmBlockUser}>차단</Button>
                     </div>
                 </DialogActions>
             </Dialog>
@@ -304,7 +356,7 @@ const chatPage = () => {
                 <DialogActions sx={{p:'0'}}>
                     <div style={{width: '100%', paddingBottom: '20px'}}>
                         <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleCloseDialog}>취소</Button>
-                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}}>나가기</Button>
+                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}} onClick={handleConfirmExit}>나가기</Button>
                     </div>
                 </DialogActions>
             </Dialog>
@@ -458,12 +510,13 @@ const chatPage = () => {
                 <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px 10px 20px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
                     <textarea 
                         name='chat' 
-                        placeholder='메세지를 입력하세요.'
+                        placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메세지를 입력하세요.'}
                         required
-                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle'}}
+                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: isBlocked? 'rgba(186, 186, 186, 0.5)' : '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle'}}
                         rows={calculateRows}
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
+                        disabled={isBlocked}
                     />
                     <Grid onClick={()=>handleSubmit(inputMessage)} sx={{ marginLeft: '10px', paddingTop:'5px' }}>
                         <Image src={send} width={41} height={41} layout="fixed"/>

@@ -58,7 +58,6 @@ export default function chatTime(){
     }
 
     const handleDownClick = () => {
-        console.log(now);
         if(calendarOpen){
             setCalendarOpen(false);
         } else{
@@ -77,13 +76,12 @@ export default function chatTime(){
             if (result) {
                 alert('delete_meet_time 성공! ' + result);
             } else {
-                alert('delete_meet_time 성공! ' + message);
+                alert('delete_meet_time 실패! ' + message);
             }
         }));
         router.back();
     };
     const handleSubmit = () => {
-        alert('버튼 클릭!');
         const dateInfo = dayjs(date).format('YYYY-MM-DD')+"T"+changedtime+':00';
         alert(dateInfo);
         alert(roomId);
