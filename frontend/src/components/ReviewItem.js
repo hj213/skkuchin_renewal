@@ -1,19 +1,17 @@
 import { useEffect, useState, useRef } from "react"; 
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
+import { useRouter } from "next/router";
 import Image from 'next/image';
 import more from '../image/more_vert.png';
 import { displayReviewTag, reviewsTags } from "./TagList";
-
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-
 import { displayProfile } from '../components/MyPage/ProfileList';
-
-
 
 // ReviewItem 컴포넌트 추출
 const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
+    const router = useRouter();
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleMoreClick = (event) => {
@@ -23,6 +21,13 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
+    const handleReport = (id) => {
+        router.push({
+            pathname: '/reportReivew',
+            query: { reviewId : id }
+        })
+    }
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
         '& .MuiBadge-badge': {
@@ -46,6 +51,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
     const handleClose = () => {
         setOpen(false);
     }
+
 
     return (
         <Grid container key={index} style={{margin:"-10px 0 40px 0"}}>
@@ -174,7 +180,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                                 <DialogActions sx={{p:'0'}}>
                                     <div style={{width: '100%', paddingBottom: '16px'}}>
                                         <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
-                                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={()=> {handleDelete(review.id); handleClose(); handleMenuClose();}}>신고</Button>
+                                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={()=> {handleReport(review.id); handleClose(); handleMenuClose();}}>신고</Button>
                                     </div>
                                 </DialogActions>
                             </Dialog>

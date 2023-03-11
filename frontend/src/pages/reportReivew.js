@@ -11,73 +11,63 @@ import { load_user } from "../actions/auth/auth";
 
 import blank from '../image/chat/check_box_outline_blank.png';
 import checked from '../image/chat/check_box.png'
+import { enroll_report } from "../actions/report/report";
 
-export default function reportUser(){
+export default function reportReview(){
 
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const reviewId = router.query.reviewId;
+
+    const reviews = useSelector(state => state.review.review);
+    const reportReview = reviews && reviews.find(review => review.id == reviewId);
+
+    useEffect(()=>{
+        console.log(reportReview);
+    },[])
     const handleBack = (e) => {
         router.back();
     }
 
-    const handleSubmit = (e) => {
-        // router.back();
-    }
-
     // 신고 선택
-    const [tagList, setTagList] = useState();
     const [tagChoose, setTagChoose] = useState({
-        '약속':false,
-        '욕설':false,
-        '음란':false,
-        '영리':false,
-        '정치':false,
-        '사칭':false,
+        '관련_없는_주제_허위사실':false,
+        '욕설_비하':false,
+        '음란_선정성':false,
+        '영리목적_홍보성':false,
+        '정당_정치인_비하_및_선거운동':false,
         '기타':false,
     })
 
-    useEffect(()=>{
-        const newTags = [tagChoose];
-        const allTags = newTags.reduce((acc, current)=>{
-            return acc.concat(Object.entries(current));
-        }, [])
-            .filter(([, value]) => value)
-            .map(([key]) => key);
-
-        if(allTags.length <= 1){
-            setTagList(allTags);
-        }
-    }, [tagChoose]);
-    
-    // 태그 클릭 시
-    const handleTagClick =(event)=>{
-        if(tagList.length == 1){
-            setTagChoose({
-                ...tagChoose
-            })
-            if(tagChoose[event.target.id]){
-                setTagChoose({
-                    ...tagChoose,
-                    [event.target.id]:false
-                })
+    const handleTagClick = (event) => {
+        const tagId = event.target.id;
+        setTagChoose(prevState => {
+          const newTagChoose = {...prevState};
+          for (const tag in newTagChoose) {
+            if (tag !== tagId) {
+              newTagChoose[tag] = false;
             }
-        }
-        else if(tagChoose[event.target.id]){
-            setTagChoose({
-                ...tagChoose,
-                [event.target.id]:false
-            })
-        } else{
-            setTagChoose({
-                ...tagChoose,
-                [event.target.id]:true
-            })
-        }
-    }
+          }
+          newTagChoose[tagId] = !prevState[tagId];
+          return newTagChoose;
+        });
+    };
 
     const [showInputBox, setShowInputBox] = useState(false);
+    const [content, setContent] = useState(null);
 
+    const handleSubmit = () => {
+        const selectedTag = Object.keys(tagChoose).find(tag => tagChoose[tag]);
+        console.log(selectedTag, content, reviewId);
+        dispatch(enroll_report(selectedTag, content, reviewId, null, ([result, message])=>{
+            if(result){
+                alert("enroll_report 요청 성공: " + result);     
+            } else {
+                console.log("실패!: " +message);
+            }
+        }));
+    }
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -126,25 +116,25 @@ export default function reportUser(){
                             <Grid container style={{margin: '0 0px 11px 0px',  justifyContent: 'left', maxWidth:'350px'}}>
                                 <Grid style={{display: 'flex', margin:'25px 15px 0 15px', width:'100%'}}>
                                     <Image
-                                        src={tagChoose['약속'] ? checked : blank}
+                                        src={tagChoose['관련_없는_주제_허위사실'] ? checked : blank}
                                         width= {27.6}
                                         height= {27.6}
                                         alt="tag1"
                                         onClick={handleTagClick}
-                                        id='약속'
+                                        id='관련_없는_주제_허위사실'
                                     />
                                     <Typography style={{fontSize:'16px', marginLeft:"8px", paddingTop:'2px'}}>
-                                        약속을 지키지 않아요
+                                        관련 없는 주제/허위사실이에요
                                     </Typography>
                                 </Grid>
                                 <Grid style={{display: 'flex', margin:'25px 15px 0 15px', width:'100%'}}>
                                     <Image
-                                        src={tagChoose['욕설'] ? checked : blank}
+                                        src={tagChoose['욕설_비하'] ? checked : blank}
                                         width= {27.6}
                                         height= {27.6}
                                         alt="tag2"
                                         onClick={handleTagClick}
-                                        id='욕설'
+                                        id='욕설_비하'
                                     />
                                     <Typography style={{fontSize:'16px', marginLeft:"8px", paddingTop:'2px'}}>
                                         욕설/비하를 해요
@@ -152,12 +142,12 @@ export default function reportUser(){
                                 </Grid>
                                 <Grid style={{display: 'flex', margin:'25px 15px 0 15px', width:'100%'}}>
                                     <Image
-                                        src={tagChoose['음란'] ? checked : blank}
+                                        src={tagChoose['음란_선정성'] ? checked : blank}
                                         width= {27.6}
                                         height= {27.6}
                                         alt="tag3"
                                         onClick={handleTagClick}
-                                        id='음란'
+                                        id='음란_선정성'
                                     />
                                     <Typography style={{fontSize:'16px', marginLeft:"8px", paddingTop:'2px'}}>
                                         음란/선정적인 이야기를 해요
@@ -165,12 +155,12 @@ export default function reportUser(){
                                 </Grid>
                                 <Grid style={{display: 'flex', margin:'25px 15px 0 15px', width:'100%'}}>
                                     <Image
-                                        src={tagChoose['영리'] ? checked : blank}
+                                        src={tagChoose['영리목적_홍보성'] ? checked : blank}
                                         width= {27.6}
                                         height= {27.6}
                                         alt="tag4"
                                         onClick={handleTagClick}
-                                        id='영리'
+                                        id='영리목적_홍보성'
                                     />
                                     <Typography style={{fontSize:'16px', marginLeft:"8px", paddingTop:'2px'}}>
                                         영리/홍보 목적의 이야기를 해요
@@ -178,28 +168,15 @@ export default function reportUser(){
                                 </Grid>
                                 <Grid style={{display: 'flex', margin:'25px 15px 0 15px', width:'100%'}}>
                                     <Image
-                                        src={tagChoose['정치'] ? checked : blank}
+                                        src={tagChoose['정당_정치인_비하_및_선거운동'] ? checked : blank}
                                         width= {27.6}
                                         height= {27.6}
                                         alt="tag5"
                                         onClick={handleTagClick}
-                                        id='정치'
+                                        id='정당_정치인_비하_및_선거운동'
                                     />
                                     <Typography style={{fontSize:'16px', marginLeft:"8px", paddingTop:'2px'}}>
                                         정치/종교적 대화를 시도해요
-                                    </Typography>
-                                </Grid>
-                                <Grid style={{display: 'flex', margin:'25px 15px 0 15px', width:'100%'}}>
-                                    <Image
-                                        src={tagChoose['사칭'] ? checked : blank}
-                                        width= {27.6}
-                                        height= {27.6}
-                                        alt="tag6"
-                                        onClick={handleTagClick}
-                                        id='사칭'
-                                    />
-                                    <Typography style={{fontSize:'16px', marginLeft:"8px", paddingTop:'2px'}}>
-                                        사칭/사기를 당했어요
                                     </Typography>
                                 </Grid>
                                 <Grid style={{display: 'flex', margin:'25px 15px 0 15px', width:'100%',}}>
@@ -221,7 +198,13 @@ export default function reportUser(){
                                 <Box sx={{width:1300, maxWidth:'90%', margin:'0 auto 20px auto'}}>
                                     {showInputBox &&
                                         <div style={{margin: '10px auto 10px auto'}}>
-                                            <TextField sx={{fontSize:12}} fullWidth placeholder="기타 신고 사유를 입력해주세요." />
+                                            <TextField 
+                                                sx={{fontSize:12}} 
+                                                fullWidth 
+                                                placeholder="기타 신고 사유를 입력해주세요." 
+                                                value={content}
+                                                onChange={(event) => setContent(event.target.value)} 
+                                            />
                                         </div>
                                     }
                                 </Box>
@@ -232,7 +215,7 @@ export default function reportUser(){
                     </Container>
                     <Container style={{justifyContent:'center', position: "relative", bottom: 0, zIndex: '5'}}>
                         <div style={{ textAlign:'center', marginBottom:'53px'}}>
-                            <Image src={check} width={300} height={56} onClick={handleSubmit}  placeholder="blur" layout='fixed'/>
+                            <Image src={check} width={300} height={56} onClick={handleSubmit} placeholder="blur" layout='fixed'/>
                         </div>
                     </Container>
                 </Container>

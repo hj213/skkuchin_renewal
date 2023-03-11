@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 import { load_reviews, delete_review, modify_review } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
+import { enroll_report } from "../actions/report/report";
 
 import { makeStyles, IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
@@ -69,7 +70,6 @@ const ReviewsPage = () => {
 
     // 유저정보
     const user = useSelector(state => state.auth.user);
-
 
     const handleEdit = (reviewId) => {
         const review = reviews.find(item => item.id == reviewId);
