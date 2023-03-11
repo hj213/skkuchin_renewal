@@ -342,7 +342,7 @@ const EnrollReview = () => {
                             <Grid container style={{position:'relative', width:'100%'}}>
                                 <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', marginTop:'20px'}}>
                                     <div style={{ position: 'relative', overflow: 'hidden', display: 'inline-block', borderRadius: '5px', backgroundColor: '#eee', color: '#333', fontSize: '16px', fontWeight: 'bold', marginRight:'5px'}}>
-                                        <input onChange={e => onChangeImages(e)} style={{position: 'absolute', fontSize: '100px', left: '0', top: '0', opacity: '0' }} type="file" name="images" accept="image/*" multiple />
+                                        <input onChange={e => onChangeImages(e)} style={{position: 'absolute', fontSize: '100px', left: '0', top: '0', opacity: '0', zIndex: '5' }} type="file" name="images" accept="image/*" multiple />
                                         <label style={{width:'150px', height:'150px', textAlign:'center', display: 'inline-block', cursor: 'pointer',borderRadius:'10px', backgroundColor:'white', border:'1px solid grey', padding:'55px 0 0 7px'}} htmlFor="images">
                                             <Image src={morePhoto} width={40} height={40}/>
                                         </label>
