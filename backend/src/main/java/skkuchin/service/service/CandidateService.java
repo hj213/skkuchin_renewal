@@ -56,7 +56,7 @@ public class CandidateService {
 
         if (candidates.size() > 0) {
             recentCandidate = candidates.get(candidates.size() - 1);
-            LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(14);
+            LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(2);
             Duration duration = Duration.between(createDate, LocalDateTime.now());
             differenceTime = duration.toDays();
         } else {
