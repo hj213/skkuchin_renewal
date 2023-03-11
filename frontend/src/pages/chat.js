@@ -545,7 +545,7 @@ const chatPage = () => {
                         name='chat' 
                         placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메세지를 입력하세요.'}
                         required
-                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: isBlocked? 'rgba(186, 186, 186, 0.5)' : '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle'}}
+                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: isBlocked? 'rgba(186, 186, 186, 0.5)' : '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle', overflow: 'hidden'}}
                         rows={calculateRows}
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
