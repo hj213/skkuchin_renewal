@@ -37,31 +37,25 @@ public class PushTokenController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> upload(@Valid @RequestBody PushTokenDto.PostRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Map<String, String> errorMap = new HashMap<>();
-        if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            throw new CustomValidationApiException("데이터가 올바르지 않습니다", errorMap);
-        }
+    public ResponseEntity<?> upload(@Valid @RequestBody PushTokenDto.PostRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         pushTokenService.upload(user, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "토큰 업로드 완료", null), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping("/chat")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> update(@Valid @RequestBody PushTokenDto.PutRequest dto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Map<String, String> errorMap = new HashMap<>();
-        if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            throw new CustomValidationApiException("데이터가 올바르지 않습니다", errorMap);
-        }
+    public ResponseEntity<?> updateChatAlarm(@RequestBody Map<String, Boolean> alarmMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
-        pushTokenService.update(user, dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "토큰 업데이트 완료", null), HttpStatus.OK);
+        pushTokenService.updateChatAlarm(user, alarmMap.get("chat"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "채팅 푸시 알림 업데이트 완료", null), HttpStatus.OK);
+    }
+
+    @PutMapping("/info")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> updateChatInfo(@RequestBody Map<String, Boolean> alarmMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        pushTokenService.updateChatInfo(user, alarmMap.get("info"));
+        return new ResponseEntity<>(new CMRespDto<>(1, "공지 푸시 알림 업데이트 완료", null), HttpStatus.OK);
     }
 }

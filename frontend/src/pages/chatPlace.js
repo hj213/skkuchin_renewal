@@ -23,7 +23,7 @@ export default function chatPlace(){
 
     const setting = useSelector(state => state.chatMessage.setting);
 
-    const roomId = chatRoom && chatRoom.find(room => room.nickname === otherUser.nickname)?.room_id;
+    const roomId = chatRoom && chatRoom.find(room => room.user1_id === otherUser.id || room.user2_id === otherUser.id)?.room_id;
 
     const [calendarOpen, setCalendarOpen] = useState('hidden');
     const [DialogOpen, setDialogOpen] = useState(false);
@@ -42,9 +42,9 @@ export default function chatPlace(){
 
     useEffect(() => {
         if (!allPlaces || allPlaces.length === 0) {
-          dispatch(load_places());
+            dispatch(load_places());
         }
-      }, []);
+    }, []);
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -90,20 +90,20 @@ export default function chatPlace(){
     const handleDelete = () => {
         dispatch(delete_meet_place(roomId, ([result, message]) => {
             if (result) {
-                alert('delete_meet_place 성공! ' + result);
+                // alert('delete_meet_place 성공! ' + result);
             } else {
-                alert('delete_meet_place 실패! ' +message);
+                // alert('delete_meet_place 실패! ' +message);
             }
         }));
         router.back();
     };
     const handleSubmit = () => {
-        alert(value);
+        // alert(value);
         dispatch(set_meet_place(value, roomId, ([result, message]) => {
             if (result) {
-                alert('set_meet_place 성공! ' + result);
+                // alert('set_meet_place 성공! ' + result);
             } else {
-                alert('set_meet_place 실패! ' + message);
+                // alert('set_meet_place 실패! ' + message);
                 // if (typeof(message) == 'string') {
                 // setDialogMsg(message);
                 // }

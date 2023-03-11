@@ -2,6 +2,12 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.martijndwars.webpush.Notification;
+import nl.martijndwars.webpush.PushService;
+import nl.martijndwars.webpush.Subscription;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.jose4j.lang.JoseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import skkuchin.service.dto.PushTokenDto;
 import skkuchin.service.domain.User.AppUser;
@@ -9,13 +15,43 @@ import skkuchin.service.domain.User.PushToken;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.repo.PushTokenRepo;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.Security;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PushTokenService {
+    @Value("${vapid.public.key}")
+    private String publicKey;
+    @Value("${vapid.private.key}")
+    private String privateKey;
+
     private final PushTokenRepo pushTokenRepo;
+    private PushService pushService;
+
+    @PostConstruct
+    private void init() {
+        try {
+            Security.addProvider(new BouncyCastleProvider());
+            pushService = new PushService(publicKey, privateKey);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendNotification(Subscription subscription, String messageJson) {
+        try {
+            pushService.send(new Notification(subscription, messageJson));
+        } catch (GeneralSecurityException | IOException | JoseException | ExecutionException
+                 | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Transactional
     public PushTokenDto.Response get(AppUser user) {
@@ -28,21 +64,34 @@ public class PushTokenService {
 
     @Transactional
     public void upload(AppUser user, PushTokenDto.PostRequest dto) {
+        PushToken existingToken = pushTokenRepo.findByUser(user);
         PushToken pushToken = dto.toEntity(user);
-        pushToken.setInfoAlarm(true);
-        pushToken.setChatAlarm(true);
+        if (existingToken != null) {
+            pushTokenRepo.delete(existingToken);
+        } else {
+            pushToken.setInfoAlarm(true);
+            pushToken.setChatAlarm(true);
+        }
         pushTokenRepo.save(pushToken);
     }
 
     @Transactional
-    public void update(AppUser user, PushTokenDto.PutRequest dto) {
+    public void updateChatAlarm(AppUser user, Boolean status) {
         PushToken existingToken = pushTokenRepo.findByUser(user);
-        if (dto.getInfoAlarm() != null) {
-            existingToken.setChatAlarm(dto.getChatAlarm());
+        if (existingToken == null) {
+            throw new CustomRuntimeException("토큰이 존재하지 않습니다");
         }
-        if (dto.getChatAlarm() != null) {
-            existingToken.setInfoAlarm(dto.getInfoAlarm());
+        existingToken.setChatAlarm(status);
+        pushTokenRepo.save(existingToken);
+    }
+
+    @Transactional
+    public void updateChatInfo(AppUser user, Boolean status) {
+        PushToken existingToken = pushTokenRepo.findByUser(user);
+        if (existingToken == null) {
+            throw new CustomRuntimeException("토큰이 존재하지 않습니다");
         }
+        existingToken.setInfoAlarm(status);
         pushTokenRepo.save(existingToken);
     }
 }

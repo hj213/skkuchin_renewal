@@ -486,12 +486,26 @@ export const get_realtime_chat_room = (username, stompClient) => async dispatch 
     }
 
     const subscription = stompClient.subscribe(`/exchange/chat.exchange/room.${username}chatRoomList`,(content) => {
-        const data = JSON.parse(content.body);
-        
-        dispatch({
-            type: GET_REALTIME_ROOM_SUCCESS,
-            payload: data
-        })
+        const datas = JSON.parse(content.body);
+        const updatedRoom = [];
+        try {
+            datas.map((room) => {
+                if (room.user1_id !== null && room.user2_id !== null) {
+                    updatedRoom.push(room);
+                }
+            });
+
+            dispatch({
+                type: GET_REALTIME_ROOM_SUCCESS,
+                payload: updatedRoom
+            })
+
+        } catch(err) {
+            console.log(err);
+            dispatch({
+                type: GET_REALTIME_ROOM_FAIL
+            })
+        }
 
     },{
         'auto-delete':true, 

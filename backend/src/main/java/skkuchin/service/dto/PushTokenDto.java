@@ -9,11 +9,13 @@ import skkuchin.service.domain.User.*;
 
 public class PushTokenDto {
     @Getter
+    @Setter
     public static class PostRequest {
         private String endpoint;
         private Keys keys;
 
         @Getter
+        @Setter
         public static class Keys {
             private String p256dh;
             private String auth;
@@ -30,6 +32,7 @@ public class PushTokenDto {
     }
 
     @Getter
+    @Setter
     public static class PutRequest {
         private Boolean chatAlarm;
         private Boolean infoAlarm;

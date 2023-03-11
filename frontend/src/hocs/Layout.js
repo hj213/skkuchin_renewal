@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -26,20 +26,41 @@ const Layout = ({title, content, children}) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const [show, setShow] = useState(false);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
-        navigator.serviceWorker.ready.then(reg => {
-            reg.pushManager.getSubscription().then(sub => {
-                if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
-                    console.log("통과"+sub)
-                } else {
-                    subscribe(reg);
+    const notify = async () => {
+        if (!("Notification" in window)) {
+            console.log("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            getSubscription();
+        } else if (Notification.permission === "default") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    getSubscription();
                 }
+            });
+        }
+    }
+    
+    const getSubscription = () => {
+        if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
+            navigator.serviceWorker.ready.then(reg => {
+                console.log(reg)
+                reg.pushManager.getSubscription().then(sub => {
+                    if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
+                        console.log(sub)
+                    } else {
+                        subscribe(reg);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
             })
             .catch((err) => {
                 console.log(err);
             })
-        })
+        }
     }
 
     const subscribe = async (reg) => {
@@ -48,12 +69,17 @@ const Layout = ({title, content, children}) => {
                 userVisibleOnly: true,
                 applicationServerKey: base64ToUint8Array(WEB_PUSH_PUBLIC_KEY)
             });
-            log(sub);
-            dispatch(enroll_token(sub));
+            // dispatch(enroll_token(sub));
         } catch (error) {
             console.log(error)
         }
     }
+
+    // useEffect(() => {
+    //     if (isAuthenticated) {
+    //         notify();
+    //     }
+    // }, [isAuthenticated]);
 
     let stompClient = null;
     const Stomp = require("stompjs/lib/stomp.js").Stomp

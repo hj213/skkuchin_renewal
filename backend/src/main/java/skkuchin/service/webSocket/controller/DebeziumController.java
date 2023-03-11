@@ -32,7 +32,6 @@ public class DebeziumController {
     @KafkaListener(topics = "dbserver.service.chat_message")
     public void listenChatMessage(@Payload(required = false) String message) throws Exception {
         System.out.println("kafka consume test topic : "  + message);
-
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         DebeziumDto.ChatMessageRequest dto= objectMapper.registerModule(new JavaTimeModule()).readValue(message, DebeziumDto.ChatMessageRequest.class);

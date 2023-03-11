@@ -27,7 +27,7 @@ export default function chatTime(){
     
     const setting = useSelector(state => state.chatMessage.setting);
 
-    const roomId = chatRoom && chatRoom.find(room => room.nickname === otherUser.nickname)?.room_id;
+    const roomId = chatRoom && chatRoom.find(room => room.user1_id === otherUser.id || room.user2_id === otherUser.id)?.room_id;
     const now = new Date();
     const format = 'HH:mm';
     const defaultValue = dayjs().format(format);
@@ -43,16 +43,16 @@ export default function chatTime(){
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
-   
+
     const formatDate = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
         return `${year}.${month}.${day} (${dayOfWeek})`;
-      };
+    };
     
-      
+
     const handleBack = () => {
         router.back();
     }
@@ -74,22 +74,22 @@ export default function chatTime(){
     const handleDelete = () => {
         dispatch(delete_meet_time(roomId, ([result, message]) => {
             if (result) {
-                alert('delete_meet_time 성공! ' + result);
+                // alert('delete_meet_time 성공! ' + result);
             } else {
-                alert('delete_meet_time 실패! ' + message);
+                // alert('delete_meet_time 실패! ' + message);
             }
         }));
         router.back();
     };
     const handleSubmit = () => {
         const dateInfo = dayjs(date).format('YYYY-MM-DD')+"T"+changedtime+':00';
-        alert(dateInfo);
-        alert(roomId);
+        // alert(dateInfo);
+        // alert(roomId);
         dispatch(set_meet_time(dateInfo, roomId, ([result, message]) => {
             if (result) {
-                alert('set_meet_time 성공! ' + result);
+                // alert('set_meet_time 성공! ' + result);
             } else {
-                alert('set_meet_time 실패! ' + message);
+                // alert('set_meet_time 실패! ' + message);
             }
         }));
         router.back();

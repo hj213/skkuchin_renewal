@@ -11,6 +11,8 @@ import {
     GET_REALTIME_SETTING_SUCCESS,
     GET_REALTIME_USER_SUCCESS,
     GET_REALTIME_MESSAGE_FAIL,
+    CLEAR_CHAT_SUCCESS,
+    CLEAR_CHAT_FAIL,
 }
     from './types';
 
@@ -224,4 +226,17 @@ export const get_realtime_chat_infos = (room_id, stompClient)  => async dispatch
     }
 
     stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
+};
+
+export const clear_chat = ()  => async dispatch => {
+    try {
+        dispatch({
+            type: CLEAR_CHAT_SUCCESS
+        });
+    } catch (error) {
+        dispatch({
+            type: CLEAR_CHAT_FAIL
+        });
+    }
+
 };
