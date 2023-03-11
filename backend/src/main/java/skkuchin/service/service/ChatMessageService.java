@@ -85,21 +85,21 @@ public class ChatMessageService {
     }
 
     public void insertData() throws IOException, ParseException {
-        AppUser adminUser = userRepo.findById(1L).orElseThrow();
         AppUser testUser = userRepo.findById(2L).orElseThrow();
+        AppUser test1User = userRepo.findById(3L).orElseThrow();
         List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(2L);
         String chatRoomId1 = chatRooms.get(0).getRoomId();
 
         ChatMessageDto.Request dto = new ChatMessageDto.Request("하이요", chatRoomId1);
-        write(adminUser, dto);
+        write(test1User, dto);
         ChatMessageDto.Request dto1 = new ChatMessageDto.Request("ㅎㅇ", chatRoomId1);
         write(testUser, dto1);
         ChatMessageDto.Request dto2 = new ChatMessageDto.Request("뭐해", chatRoomId1);
-        write(adminUser, dto2);
+        write(test1User, dto2);
         ChatMessageDto.Request dto3 = new ChatMessageDto.Request("코딩", chatRoomId1);
         write(testUser, dto3);
         ChatMessageDto.Request dto4 = new ChatMessageDto.Request("그렇구나", chatRoomId1);
-        write(adminUser, dto4);
+        write(test1User, dto4);
         ChatMessageDto.Request dto5 = new ChatMessageDto.Request("응", chatRoomId1);
         write(testUser, dto5);
     }

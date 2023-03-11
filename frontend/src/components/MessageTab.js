@@ -12,6 +12,8 @@ import Link from 'next/link';
 import { get_realtime_chat_room } from '../actions/chat/chatRoom';
 import { get_realtime_chat_request } from '../actions/chat/chatRequest';
 import NewPromise from './Chat/NewPromise';
+import { request_refresh } from '../actions/auth/auth';
+import { clear_matching } from '../actions/matchingUser/matchingUser';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,31 +58,37 @@ export default function MessageTab() {
   const chatRequests = useSelector(state => state.chatRequest.chatRequest);
   const stompClient = useSelector(state => state.stompClient.stompClient);
 
-  const [subscriptionChatRoom, setSubscriptionChatRoom] = useState(null);
-  const [subscriptionChatRequest, setSubscriptionChatRequest] = useState(null);
+  let subChatRoom = null;
+  let subChatRequest = null;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const get_info = async () => {
+    dispatch(request_refresh())
+    .then(() => {
+      subChatRoom = dispatch(get_realtime_chat_room(user.username, stompClient));
+      subChatRequest = dispatch(get_realtime_chat_request(user.username, stompClient));
+    })
+}
+
   useEffect(() => {
     if (user && stompClient) {
-      const subChatRoom = dispatch(get_realtime_chat_room(user.username, stompClient));
-      const subChatRequest = dispatch(get_realtime_chat_request(user.username, stompClient));
-
-      setSubscriptionChatRoom(subChatRoom);
-      setSubscriptionChatRequest(subChatRequest);
-    }
-
-    return () => {
-      if (subscriptionChatRoom) {
-        stompClient.unsubscribe(subscriptionChatRoom);
-      }
-      if (subscriptionChatRequest) {
-        stompClient.unsubscribe(subscriptionChatRequest);
-      }
+      get_info();
     }
   }, [user, stompClient])
+
+  useEffect(() => {
+    return () => {
+      if (subChatRoom && subChatRoom.id) {
+        subChatRoom.unsubscribe();
+      }
+      if (subChatRequest && subChatRequest.id) {
+        subChatRequest.unsubscribe();
+      }
+    }
+  }, [])
 
   const [open, setOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -92,6 +100,7 @@ export default function MessageTab() {
     setSelectedUser(request.user1_id);
   }
   const handleClose = () => {
+    dispatch(clear_matching());
     setOpen(false);
   };
 

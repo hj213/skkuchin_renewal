@@ -22,20 +22,18 @@ export default function chatTime(){
     const router = useRouter();
     const dispatch =useDispatch();
 
-    const chatRoom = useSelector(state => state.chatRoom.chatRooms);
-    const otherUser = useSelector(state => state.chatMessage.otherUser);
-    
-    const setting = useSelector(state => state.chatMessage.setting);
+    const room_id = router.query.room_id;
+    // const meetTime = router.query.meetTime;
+    const meetTime = null;
 
-    const roomId = chatRoom && chatRoom.find(room => room.user1_id === otherUser.id || room.user2_id === otherUser.id)?.room_id;
     const now = new Date();
     const format = 'HH:mm';
     const defaultValue = dayjs().format(format);
 
-    const [date, setDate] = useState(setting && setting.meet_time ? new Date(setting.meet_time.replace(/\./g, '/')) : now);
+    const [date, setDate] = useState(meetTime ? new Date(meetTime.replace(/\./g, '/')) : now);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [DialogOpen, setDialogOpen] = useState(false);
-    const [changedtime, setChangedTime] = useState(setting && setting.meet_time ? setting.meet_time.slice(-5) : defaultValue);
+    const [changedtime, setChangedTime] = useState(meetTime ? meetTime.slice(-5) : defaultValue);
     const [timeOpen, setTimeOpen] = useState('hidden');
     const [isUp, setIsUp] = useState(false);
 
@@ -72,7 +70,7 @@ export default function chatTime(){
         setDialogOpen(false);
     }
     const handleDelete = () => {
-        dispatch(delete_meet_time(roomId, ([result, message]) => {
+        dispatch(delete_meet_time(room_id, ([result, message]) => {
             if (result) {
                 // alert('delete_meet_time 성공! ' + result);
             } else {
@@ -84,8 +82,8 @@ export default function chatTime(){
     const handleSubmit = () => {
         const dateInfo = dayjs(date).format('YYYY-MM-DD')+"T"+changedtime+':00';
         // alert(dateInfo);
-        // alert(roomId);
-        dispatch(set_meet_time(dateInfo, roomId, ([result, message]) => {
+        // alert(room_id);
+        dispatch(set_meet_time(dateInfo, room_id, ([result, message]) => {
             if (result) {
                 // alert('set_meet_time 성공! ' + result);
             } else {

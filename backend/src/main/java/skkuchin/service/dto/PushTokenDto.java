@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.Setter;
+import nl.martijndwars.webpush.Subscription;
 import skkuchin.service.domain.User.*;
 
 public class PushTokenDto {
@@ -28,6 +29,11 @@ public class PushTokenDto {
                     .auth(this.keys.auth)
                     .user(user)
                     .build();
+        }
+
+        public Subscription toSubscription(AppUser user) {
+            Subscription.Keys keys = new Subscription.Keys(this.keys.p256dh, this.keys.auth);
+            return new Subscription(this.endpoint, keys);
         }
     }
 

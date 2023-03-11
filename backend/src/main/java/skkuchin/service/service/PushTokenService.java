@@ -1,5 +1,6 @@
 package skkuchin.service.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.martijndwars.webpush.Notification;
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Security;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -44,12 +46,15 @@ public class PushTokenService {
         }
     }
 
-    public void sendNotification(Subscription subscription, String messageJson) {
+    @Transactional
+    public void sendNotification(Subscription subscription, String title, String body) {
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String messageJson = objectMapper.writeValueAsString(Map.of("title", title, "body", body));
             pushService.send(new Notification(subscription, messageJson));
         } catch (GeneralSecurityException | IOException | JoseException | ExecutionException
                  | InterruptedException e) {
-            e.printStackTrace();
+            throw new CustomRuntimeException("푸시 알림 중 오류가 발생했습니다", e.getMessage());
         }
     }
 

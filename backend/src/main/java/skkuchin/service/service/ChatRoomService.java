@@ -200,7 +200,7 @@ public class ChatRoomService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm", Locale.KOREAN);
         String timeStr = time.format(formatter);
 
-        String message = timeStr + "에\n" +
+        String message = timeStr + "\n" +
                 "약속을 만들었어요. 약속을 꼭 지켜주세요!";
 
         ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
@@ -225,7 +225,7 @@ public class ChatRoomService {
     @Transactional
     public void deleteMeetTime(String roomId, AppUser appUser) {
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         LocalDateTime time = chatRoom.getMeetTime();
@@ -246,7 +246,7 @@ public class ChatRoomService {
     @Transactional
     public void deleteMeetPlace(String roomId, AppUser appUser) {
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         String place = chatRoom.getMeetPlace();
@@ -319,18 +319,18 @@ public class ChatRoomService {
     }
 
     public void insertData() throws IOException, ParseException {
-        AppUser adminUser = userRepo.findById(1L).orElseThrow();
         AppUser testUser = userRepo.findById(2L).orElseThrow();
         AppUser test1USer = userRepo.findById(3L).orElseThrow();
         AppUser test2USer = userRepo.findById(4L).orElseThrow();
         AppUser test3USer = userRepo.findById(5L).orElseThrow();
         AppUser test4USer = userRepo.findById(6L).orElseThrow();
+        AppUser test5USer = userRepo.findById(6L).orElseThrow();
         ChatRoomDto.RoomRequest dto = new ChatRoomDto.RoomRequest(2L);
-        makeRoom(adminUser, dto);
         makeRoom(test1USer, dto);
         makeRoom(test2USer, dto);
         makeRoom(test3USer, dto);
         makeRoom(test4USer, dto);
+        makeRoom(test5USer, dto);
 
         List<ChatRoom> chatRooms = chatRoomRepo.findRequestByUserId(2L);
 

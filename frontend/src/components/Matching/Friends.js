@@ -19,7 +19,7 @@ const Friends = () => {
     //                         // alert('load_candidate 성공! ' + result);
     //                     } else {
     //                         if (typeof(message) == 'string') {
-    //                         setDialogMsg(message);
+    //                             setDialogMsg(message);
     //                         }
     //                     }
     //                     setDialogOpen2(true);

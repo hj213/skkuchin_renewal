@@ -18,19 +18,16 @@ export default function chatPlace(){
     const router = useRouter();
     const dispatch = useDispatch();
     
-    const chatRoom = useSelector(state => state.chatRoom.chatRooms);
-    const otherUser = useSelector(state => state.chatMessage.otherUser);
-
-    const setting = useSelector(state => state.chatMessage.setting);
-
-    const roomId = chatRoom && chatRoom.find(room => room.user1_id === otherUser.id || room.user2_id === otherUser.id)?.room_id;
+    const room_id = router.query.room_id;
+    const meetPlace = router.query.meetPlace;
+    console.log(meetPlace)
 
     const [calendarOpen, setCalendarOpen] = useState('hidden');
     const [DialogOpen, setDialogOpen] = useState(false);
     const [auto, setAuto] = useState([]);
     const [autoBox, setAutoBox] = useState(false);
     const [value, setValue] = useState('');
-    const [filteredPlace, setFilteredPlace] =useState([]);
+    // const [filteredPlace, setFilteredPlace] =useState([]);
 
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
@@ -46,21 +43,21 @@ export default function chatPlace(){
         }
     }, []);
 
-    //캠퍼스 필터링
-    useEffect(() => {
-        if (allPlaces && user) {
-            setFilteredPlace(allPlaces.filter((item) => item.campus === user.toggle));
-        } else {
-            setFilteredPlace([]);
-        }
-    }, [allPlaces, user]);
+    // //캠퍼스 필터링
+    // useEffect(() => {
+    //     if (allPlaces && user) {
+    //         setFilteredPlace(allPlaces.filter((item) => item.campus === user.toggle));
+    //     } else {
+    //         setFilteredPlace([]);
+    //     }
+    // }, [allPlaces, user]);
 
     const handleValue = (e) => {
         setValue(e.target.value);
         if(e.target.value == ''){
             setAuto([]);
         } else{
-            const newAuto = filteredPlace.filter((item) => item.name.includes(e.target.value));
+            const newAuto = allPlaces.filter((item) => item.name.includes(e.target.value));
             setAuto(newAuto);
         }
     }
@@ -88,7 +85,7 @@ export default function chatPlace(){
         setDialogOpen(false);
     }
     const handleDelete = () => {
-        dispatch(delete_meet_place(roomId, ([result, message]) => {
+        dispatch(delete_meet_place(room_id, ([result, message]) => {
             if (result) {
                 // alert('delete_meet_place 성공! ' + result);
             } else {
@@ -99,7 +96,7 @@ export default function chatPlace(){
     };
     const handleSubmit = () => {
         // alert(value);
-        dispatch(set_meet_place(value, roomId, ([result, message]) => {
+        dispatch(set_meet_place(value, room_id, ([result, message]) => {
             if (result) {
                 // alert('set_meet_place 성공! ' + result);
             } else {
@@ -144,7 +141,7 @@ export default function chatPlace(){
                             <Grid item style={{width:'100%'}}> 
                                 <Input 
                                 style={{fontSize:'16px', padding:'0px 0px 5px 40px',width:'90%', fontWeight:'500'}} 
-                                placeholder= {setting && setting.meet_place? setting.meet_place :'식당 이름을 검색해주세요.'}
+                                placeholder= {meetPlace? meetPlace :'식당 이름을 검색해주세요.'}
                                 value={value}
                                 onChange={handleValue}
                                 />

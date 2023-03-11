@@ -3,7 +3,7 @@
 const withPWA = require('next-pwa')({
 	maximumFileSizeToCacheInBytes: 3145728,
 	dest: 'public',
-	// disable: process.env.NODE_ENV !== 'production',
+	disable: process.env.NODE_ENV !== 'production',
 	sw: 'service-worker.js',
 	dynamicStartUrl: true,
 	dynamicStartUrlRedirect: '/splash'

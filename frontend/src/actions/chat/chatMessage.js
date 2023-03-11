@@ -110,8 +110,7 @@ export const read_message = (message_id, callback) => async dispatch => {
     }
 };
 
-export const get_realtime_otherUser = (room_id, user_number, stompClient) => async dispatch => {
-    await dispatch(request_refresh());
+export const get_realtime_otherUser = (room_id, user_number, stompClient) => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -136,12 +135,11 @@ export const get_realtime_otherUser = (room_id, user_number, stompClient) => asy
         pushToken : access
         }
     );
-
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
     return subscription;
 };
 
-export const get_realtime_setting = (room_id, user_number, stompClient) => async dispatch => {
-    await dispatch(request_refresh());
+export const get_realtime_setting = (room_id, user_number, stompClient) => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -166,12 +164,11 @@ export const get_realtime_setting = (room_id, user_number, stompClient) => async
         pushToken : access
         }
     );
-
+    stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
     return subscription;
 };
 
-export const get_realtime_message = (room_id, user_number, username, stompClient)  => async dispatch => {
-    await dispatch(request_refresh());
+export const get_realtime_message = (room_id, user_number, username, stompClient)  => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
@@ -210,22 +207,8 @@ export const get_realtime_message = (room_id, user_number, username, stompClient
         pushToken : access
         }
     );
-
-    return subscription;
-};
-
-export const get_realtime_chat_infos = (room_id, stompClient)  => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
-
     stompClient.send(`/app/chat.chatMessage.${room_id}`, {"pushToken" : access});
+    return subscription;
 };
 
 export const clear_chat = ()  => async dispatch => {
@@ -238,5 +221,4 @@ export const clear_chat = ()  => async dispatch => {
             type: CLEAR_CHAT_FAIL
         });
     }
-
 };

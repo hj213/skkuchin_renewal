@@ -48,6 +48,7 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
             }
         }));
         setSubmit(false);
+        onClose();
     }
 
     const handleAccept = () => {

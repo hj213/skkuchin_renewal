@@ -1,13 +1,11 @@
 import Cookies from 'js-cookie';
 import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
 import {
     GET_REALTIME_REQUEST_SUCCESS
 }
     from './types';
 
-export const get_realtime_chat_request = (username, stompClient) => async dispatch => {
-    await dispatch(request_refresh());
+export const get_realtime_chat_request = (username, stompClient) => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {

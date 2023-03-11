@@ -86,7 +86,9 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
              }
 
              else if (accessor.getCommand().equals(StompCommand.DISCONNECT)) {
+                 System.out.println(accessor.getCommand());
                  String sessionId = (String) message.getHeaders().get("simpSessionId");
+                 System.out.println("sessionId: " + sessionId);
                  chatSessionService.deleteSession(sessionId);
              }
 

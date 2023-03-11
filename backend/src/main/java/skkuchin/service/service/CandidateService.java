@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CandidateService {
     private final CandidateRepo candidateRepo;
-    private final ChatRoomRepo chatRoomRepo;
     private final UserKeywordRepo userKeywordRepo;
     private final UserRepo userRepo;
 
@@ -43,7 +42,7 @@ public class CandidateService {
 
     @Transactional
     public List<CandidateDto.Response> getCandidate(AppUser user) {
-        if (user.getMatching() != true) {
+        if (user.getMatching() == null || !user.getMatching()) {
             throw new CustomRuntimeException("매칭 활성화가 꺼져있습니다");
         }
 
@@ -78,7 +77,6 @@ public class CandidateService {
                             userKeywordRepo.findByUser(candidate).stream().collect(Collectors.toList())
                     ))
                     .collect(Collectors.toList());
-
         } else {
             List<AppUser> returnUsers = findReturnUsers(user);
 
