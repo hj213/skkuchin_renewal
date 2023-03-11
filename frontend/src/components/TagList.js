@@ -185,7 +185,7 @@ const TagList = ({keyword, onTagClick}) => {
             <CssBaseline/>
             {/* tags 목록 */}
             <Grid container 
-            style={{  position: 'absolute', top: '0px', zIndex: '2', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', padding: "0 20px"}}
+            style={{  position: 'absolute', top: '0px', zIndex: '11', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', padding: "0 20px"}}
                 onClick={(e) => {
                     e.preventDefault();
                     let target = e.target;

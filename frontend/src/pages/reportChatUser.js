@@ -12,7 +12,7 @@ import { load_user } from "../actions/auth/auth";
 import blank from '../image/chat/check_box_outline_blank.png';
 import checked from '../image/chat/check_box.png'
 
-export default function reportUser(){
+export default function reportChatUser(){
 
     const router = useRouter();
     const dispatch = useDispatch();

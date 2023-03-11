@@ -122,13 +122,18 @@ const PlacePage = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
+            if(WINDOW_HEIGHT < 750){
+                setHeight(270)
+            } else {
+                setHeight(435)
+            }
             dispatch(load_place(id, ([result, message]) => {
                 dispatch(load_menu(id, ([result, message]) => {
                     dispatch(load_reviews(id));
                 }));
             }));
         }
-    }, [id]);
+    }, [id, click]);
 
         
     const handleTouchStart = (event) => {
@@ -252,13 +257,14 @@ const PlacePage = () => {
     const handleFocus= (bool) => {
         setClick(bool);
         if(click) {
-            alert(bool +' ' + click);
-            setKeyword('');
-            setTags(null);
+            // setKeyword('');
+            // setTags(null);
+            setHeight('0');
             setIsTall(false);
-            setClick(!click);
+            // setFilteredPlace(null);
+            setClick(!bool);
+            // dispatch(clear_search_results());
         }
-        
     }
 // 별점 관리
     const [rating, setRating] = useState(0);

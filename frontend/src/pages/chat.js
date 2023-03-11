@@ -160,7 +160,7 @@ const chatPage = () => {
 
     // 신고하기
     const handleReportUser = () => {
-        router.push('/reportUser')
+        router.push('/reportChatUser')
     }
 
     const handleAlarm = () => {

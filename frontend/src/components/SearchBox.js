@@ -98,7 +98,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
             <CssBaseline/>
             <div onFocus={handleOnFocus} onBlur={handleInputOnBlur}>
                 <div style={{marginTop:'5px'}} >
-                    <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'3', alignItems: 'center'}} >
+                    <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'10', alignItems: 'center'}} >
                         <Grid item name="mapdrawer">
                             <MapDrawer open={openID} />
                         </Grid>
@@ -116,14 +116,14 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                         
                         </Grid>
                     </Grid>
-                    <div style={{position: 'relative', padding:'0px 16px', zIndex:'2'}}>
+                    <div style={{position: 'relative', padding:'0px 16px', zIndex:'9'}}>
                         <Image src={searchBox} layout="responsive" placeholder='blur' priority />
                     </div>
                 </div>
                 { autoBox && value && (
                 <div onMouseDown={handleContainerMouseDown}>
                     <Paper style={{position:'absolute',height:'100vh', width:'100%', top:'0px', overflowY:'scroll', border: '1px solid transparent',
-                    borderRadius: '0px'}}> 
+                    borderRadius: '0px', zIndex: '8'}}> 
                         <Container style={{padding:'0px', marginTop:'110px'}}>
                             {auto.length > 0 ?
                             <ul style={{padding:'0px 25px 0px 25px', listStyleType: "none",}}>
