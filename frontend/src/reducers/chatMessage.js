@@ -9,6 +9,8 @@ import {
     GET_REALTIME_SETTING_FAIL,
     GET_REALTIME_MESSAGE_SUCCESS,
     GET_REALTIME_MESSAGE_FAIL,
+    GET_CHAT_INFO_SUCCESS,
+    GET_CHAT_INFO_FAIL,
     CLEAR_CHAT_SUCCESS,
     CLEAR_CHAT_FAIL
 } from '../actions/chat/types'
@@ -68,6 +70,14 @@ const chatMessageReducer = (state= initialState, action) => {
             return {
                 ...state,
                 setting: null
+            }
+        case GET_CHAT_INFO_SUCCESS:
+            return {
+                ...state,
+            }
+        case GET_CHAT_INFO_FAIL:
+            return {
+                ...state
             }
         case CLEAR_CHAT_SUCCESS:
             return {

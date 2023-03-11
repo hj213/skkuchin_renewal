@@ -20,7 +20,9 @@ import {
     EXIT_CHAT_ROOM_SUCCESS,
     EXIT_CHAT_ROOM_FAIL,
     GET_REALTIME_ROOM_SUCCESS,
-    GET_REALTIME_ROOM_FAIL
+    GET_REALTIME_ROOM_FAIL,
+    GET_CHAT_ROOM_INFO_SUCCESS,
+    GET_CHAT_ROOM_INFO_FAIL
 } from '../actions/chat/types'
 
 const initialState = {
@@ -124,6 +126,14 @@ const chatRoomReducer = (state= initialState, action) => {
             return {
                 ...state,
                 chatRooms: null
+            }
+        case GET_CHAT_ROOM_INFO_SUCCESS:
+            return {
+                ...state
+            }
+        case GET_CHAT_ROOM_INFO_FAIL:
+            return {
+                ...state
             }
         default:
             return state;
