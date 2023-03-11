@@ -324,7 +324,7 @@ public class ChatRoomService {
         AppUser test2USer = userRepo.findById(4L).orElseThrow();
         AppUser test3USer = userRepo.findById(5L).orElseThrow();
         AppUser test4USer = userRepo.findById(6L).orElseThrow();
-        AppUser test5USer = userRepo.findById(6L).orElseThrow();
+        AppUser test5USer = userRepo.findById(7L).orElseThrow();
         ChatRoomDto.RoomRequest dto = new ChatRoomDto.RoomRequest(2L);
         makeRoom(test1USer, dto);
         makeRoom(test2USer, dto);

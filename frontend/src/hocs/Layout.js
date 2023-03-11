@@ -75,11 +75,11 @@ const Layout = ({title, content, children}) => {
         }
     }
 
-    // useEffect(() => {
-    //     if (isAuthenticated) {
-    //         notify();
-    //     }
-    // }, [isAuthenticated]);
+    useEffect(() => {
+        if (isAuthenticated) {
+            notify();
+        }
+    }, [isAuthenticated]);
 
     let stompClient = null;
     const Stomp = require("stompjs/lib/stomp.js").Stomp
