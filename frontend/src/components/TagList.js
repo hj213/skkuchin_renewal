@@ -178,6 +178,7 @@ export const reviewsTags = (keyword) => {
 }
 
 const TagList = ({keyword, onTagClick}) => {
+    
     return (
         <TagListContainer>
         <ThemeProvider theme={theme}>
