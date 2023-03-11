@@ -21,6 +21,7 @@ import Link from 'next/link'
 import { get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat, get_chat_info } from '../actions/chat/chatMessage';
 import { set_user_block, set_chat_room_alarm, exit_room } from "../actions/chat/chatRoom";
 import { request_refresh } from '../actions/auth/auth';
+import { displayProfile } from "../components/MyPage/ProfileList";
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -218,6 +219,12 @@ const chatPage = () => {
         if (lastMessageRef.current) {
             lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
         }
+    }, []);
+
+    useEffect(()  => {
+        if (lastMessageRef.current) {
+            lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+        }
     }, [messages]);
 
     return(
@@ -384,8 +391,8 @@ const chatPage = () => {
                     flexDirection: 'column',
                     }}
                 >
-                    <Grid container style={{justifyContent: 'center', width: '100%', height:'40px', alignItems: 'center'}}>
-                        <div style={{position:"fixed",width: '210px', height:'28px', backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'15px'}}>
+                    <Grid container style={{justifyContent: 'center', width: '100%', height:'40px', alignItems: 'center', zIndex: '9'}}>
+                        <div style={{position:"fixed",width: 'max-content', height:'28px', backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'15px', padding: '0 10px'}}>
                             <Link href={{
                                 pathname: '/chatTime',
                                 query: {
@@ -407,7 +414,7 @@ const chatPage = () => {
                                     meetPlace: meetPlace
                                 }
                             }}>
-                                <Grid item sx={{display: 'flex', height: 'fit-content',paddingTop:"6px"}}>
+                                <Grid item sx={{display: 'flex', height: 'fit-content',pt:"6px"}}>
                                     <Image width={10.5} height={14.6} src={place} />
                                     <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
                                         { setting && setting.meet_place ? setting.meet_place : "장소 정하기" }
@@ -446,7 +453,7 @@ const chatPage = () => {
                             <Stack direction="column" spacing={1}>
                                 <Grid style={{display:'flex'}}>
                                 <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
-                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
                                         {
                                             (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
                                         }
@@ -457,7 +464,7 @@ const chatPage = () => {
                                         maxWidth:'80%',
                                     }}>
                                     <Typography style={{
-                                        padding:'10px 10px 6px 10px',
+                                        padding:'5px 10px 6px 10px',
                                         fontSize: '14px',
                                         maxWidth:'100%',
                                     }}>
@@ -496,10 +503,10 @@ const chatPage = () => {
                         <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
                             {displayAvatar && (
                                 <Grid item>
-                                    <Avatar alt="" />
+                                    {otherUser && displayProfile(otherUser.image, 40, 40)}
                                 </Grid>
                             )}
-                                <Grid item sx={{pl:"7px", ml : displayAvatar ? 0 : '40px'}}>
+                                <Grid item sx={{pl:"7px", pt: '3px', ml : displayAvatar ? 0 : '40px'}}>
                                     <Stack direction="column" spacing={1}>
                                         {displayAvatar && 
                                             <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top'}} align="left">
@@ -516,7 +523,7 @@ const chatPage = () => {
                                                 }}>
                                                     <Typography
                                                         style={{
-                                                        padding:'8px 10px 6px 10px',
+                                                        padding:'5px 10px 6px 10px',
                                                         fontSize: '14px',
                                                         maxWidth:'100%'
                                                         }}>
@@ -524,7 +531,7 @@ const chatPage = () => {
                                                     </Typography>
                                                 </Card>
                                                 <Grid>
-                                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
                                                     {
                                                         (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
                                                     }
