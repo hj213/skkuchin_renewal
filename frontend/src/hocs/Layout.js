@@ -87,7 +87,7 @@ const Layout = ({title, content, children}) => {
     stompClient = Stomp.over(sockJS);
     stompClient.heartbeat.outgoing = 0;
     stompClient.heartbeat.incoming = 0;
-    // stompClient.debug = null;
+    stompClient.debug = null;
 
     const onError = (e) => {
         connectStompClient();
