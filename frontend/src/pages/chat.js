@@ -18,7 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import notiOff from '../image/chat/notifications_off.png'
 
 import Link from 'next/link'
-import { get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat } from '../actions/chat/chatMessage';
+import { get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat, get_chat_info } from '../actions/chat/chatMessage';
 import { set_user_block, set_chat_room_alarm, exit_room } from "../actions/chat/chatRoom";
 import { request_refresh } from '../actions/auth/auth';
 
@@ -48,9 +48,7 @@ const chatPage = () => {
     const [meetTime, setMeetTime] = useState(null);
     const [meetPlace, setMeetPlace] = useState(null);
 
-    let subOtherUser = null;
-    let subMessage = null;
-    let subSetting = null;
+    const [subscriptions, setSubscriptions] = useState(null);
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
@@ -59,34 +57,32 @@ const chatPage = () => {
     };
 
     const get_info = async () => {
-        dispatch(request_refresh())
-        .then(() => {
-            subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
-            subMessage = dispatch(get_realtime_message(room_id, user_number, user.username, stompClient));
-            subSetting = dispatch(get_realtime_setting(room_id, user_number, stompClient));
-        })
-    }
+        dispatch(request_refresh()).then(() => {
+            const subs = {};
+            subs.otherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
+            subs.message = dispatch(get_realtime_message(room_id, user_number, user.username, stompClient));
+            subs.setting = dispatch(get_realtime_setting(room_id, user_number, stompClient));
+        
+            Promise.all(Object.values(subs)).then(() => {
+                dispatch(get_chat_info(stompClient, room_id));
+            });
+            setSubscriptions(subs);
+        });
+    };
 
     useEffect(() => {
         if (stompClient && room_id && user_number && user && user.username) {
             get_info();
         }
-    }, [stompClient, room_id, user_number, user])
-
-    useEffect(() => {
         return () => {
-            dispatch(clear_chat());
-            if (subOtherUser && subOtherUser.id) {
-                subOtherUser.unsubscribe();
+            dispatch(clear_chat())
+            if (subscriptions) {
+                Object.values(subscriptions).forEach(subscription => {
+                    subscription.unsubscribe();
+                });
             }
-            if (subMessage  && subMessage.id) {
-                subMessage.unsubscribe();
-            }
-            if (subSetting && subSetting.id) {
-                subSetting.unsubscribe();
-            }
-        }
-    }, [])
+    }
+    }, [stompClient, room_id, user_number, user]);
 
     useEffect(() => {
         if (setting) {

@@ -9,8 +9,8 @@ import character from '../image/skkuchinFind.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { get_realtime_chat_room } from '../actions/chat/chatRoom';
-import { get_realtime_chat_request } from '../actions/chat/chatRequest';
+import { get_chat_room_info, get_realtime_chat_room } from '../actions/chat/chatRoom';
+import { get_chat_request_info, get_realtime_chat_request } from '../actions/chat/chatRequest';
 import NewPromise from './Chat/NewPromise';
 import { request_refresh } from '../actions/auth/auth';
 import { clear_matching } from '../actions/matchingUser/matchingUser';
@@ -50,7 +50,6 @@ function a11yProps(index) {
 
 export default function MessageTab() {
 
-
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const user = useSelector(state => state.auth.user);
@@ -58,37 +57,40 @@ export default function MessageTab() {
   const chatRequests = useSelector(state => state.chatRequest.chatRequest);
   const stompClient = useSelector(state => state.stompClient.stompClient);
 
-  let subChatRoom = null;
-  let subChatRequest = null;
+  const [subscriptions, setSubscriptions] = useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const get_info = async () => {
-    dispatch(request_refresh())
-    .then(() => {
-      subChatRoom = dispatch(get_realtime_chat_room(user.username, stompClient));
-      subChatRequest = dispatch(get_realtime_chat_request(user.username, stompClient));
-    })
-}
+    dispatch(request_refresh()).then(() => {
+        const subs = {};
+        subs.chatRooms = dispatch(get_realtime_chat_room(user.username, stompClient));
+        subs.chatRequests = dispatch(get_realtime_chat_request(user.username, stompClient));
+    
+        Promise.all(Object.values(subs)).then(() => {
+          dispatch(get_chat_room_info(stompClient));
+          dispatch(get_chat_request_info(stompClient));
+        });
+        setSubscriptions(subs);
+    });
+  };
 
   useEffect(() => {
-    if (user && stompClient) {
+    if (stompClient && user && user.username) {
       get_info();
     }
-  }, [user, stompClient])
-
-  useEffect(() => {
     return () => {
-      if (subChatRoom && subChatRoom.id) {
-        subChatRoom.unsubscribe();
-      }
-      if (subChatRequest && subChatRequest.id) {
-        subChatRequest.unsubscribe();
+      if (subscriptions) {
+          Object.values(subscriptions).forEach(subscription => {
+              subscription.unsubscribe();
+          });
       }
     }
-  }, [])
+  }, [stompClient, user]);
+
+
 
   const [open, setOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
