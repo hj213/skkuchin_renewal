@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { styled, alpha } from '@mui/material/styles';
 import * as React from 'react';
 import { useRouter } from "next/router";
@@ -216,6 +216,14 @@ const chatPage = () => {
             {label: '신고하기', onClick: handleReportUser},
             {label: '채팅방 나가기', onClick: handleExit},
         ];
+    const lastMessageRef = useRef(null);
+
+    useLayoutEffect(()  => {
+        if (lastMessageRef.current) {
+            lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -437,7 +445,7 @@ const chatPage = () => {
                     }
                     return (
                         (message.sender === user.username) ? (
-                        <Grid key={message.id} style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
+                        <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
                             <Grid item sx={{pr:"7px"}}>
                             <Stack direction="column" spacing={1}>
                                 <Grid style={{display:'flex'}}>
@@ -489,7 +497,7 @@ const chatPage = () => {
                             </Grid>
                         </Grid>
                         ) : (
-                        <Grid key={message.id} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
+                        <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
                             {displayAvatar && (
                                 <Grid item>
                                     <Avatar alt="" />

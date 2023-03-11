@@ -7,7 +7,6 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import check from '../image/check_3.png';
-import { load_user } from "../actions/auth/auth";
 
 import blank from '../image/chat/check_box_outline_blank.png';
 import checked from '../image/chat/check_box.png'
@@ -62,7 +61,8 @@ export default function reportReview(){
         console.log(selectedTag, content, reviewId);
         dispatch(enroll_report(selectedTag, content, reviewId, null, ([result, message])=>{
             if(result){
-                alert("enroll_report 요청 성공: " + result);     
+                alert("enroll_report 요청 성공: " + result);    
+                router.back();
             } else {
                 console.log("실패!: " +message);
             }
