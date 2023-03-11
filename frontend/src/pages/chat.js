@@ -399,7 +399,7 @@ const chatPage = () => {
                                     meetTime: meetTime
                                 }
                             }}>
-                                <Grid item sx={{display: 'flex', height: 'fit-content', paddingRight:"38px", paddingTop:"6px"}}>
+                                <Grid item sx={{display: 'flex', height: 'fit-content', pr:"8px", pt:"6px"}}>
                                     <Image width={13} height={15} src={time} />
                                     <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
                                         { setting && setting.meet_time ? setting.meet_time : "시간 정하기" }
@@ -413,7 +413,7 @@ const chatPage = () => {
                                     meetPlace: meetPlace
                                 }
                             }}>
-                                <Grid item sx={{display: 'flex', height: 'fit-content',pt:"6px"}}>
+                                <Grid item sx={{display: 'flex', height: 'fit-content', pl: '8px', pt:"6px"}}>
                                     <Image width={10.5} height={14.6} src={place} />
                                     <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
                                         { setting && setting.meet_place ? setting.meet_place : "장소 정하기" }
