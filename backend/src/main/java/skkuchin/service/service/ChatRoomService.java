@@ -200,7 +200,7 @@ public class ChatRoomService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm", Locale.KOREAN);
         String timeStr = time.format(formatter);
 
-        String message = timeStr + "에\n" +
+        String message = timeStr + "\n" +
                 "약속을 만들었어요. 약속을 꼭 지켜주세요!";
 
         ChatMessageDto.Request dto = new ChatMessageDto.Request(message, roomId);
@@ -225,7 +225,7 @@ public class ChatRoomService {
     @Transactional
     public void deleteMeetTime(String roomId, AppUser appUser) {
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         LocalDateTime time = chatRoom.getMeetTime();
@@ -246,7 +246,7 @@ public class ChatRoomService {
     @Transactional
     public void deleteMeetPlace(String roomId, AppUser appUser) {
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
-        if (appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
         String place = chatRoom.getMeetPlace();

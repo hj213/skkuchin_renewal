@@ -11,7 +11,7 @@ import {
     MODIFY_PUSHTOKEN_SUCCESS
 } from './types'
 
-export const load_token = async (callback) => {
+export const load_token = (callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -54,7 +54,7 @@ export const load_token = async (callback) => {
     }
 };
 
-export const enroll_token = async (subscription, callback) => {
+export const enroll_token = (subscription, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -105,7 +105,7 @@ export const enroll_token = async (subscription, callback) => {
     }
 };
 
-export const modify_token = async (subscription, isInfoAlarmOn, isChatAlarmOn, callback) => {
+export const modify_token = (subscription, isInfoAlarmOn, isChatAlarmOn, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 

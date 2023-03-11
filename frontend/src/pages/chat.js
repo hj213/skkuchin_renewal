@@ -17,10 +17,10 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import notiOff from '../image/chat/notifications_off.png'
 
-import Layout from "../hocs/Layout";
 import Link from 'next/link'
-import { get_realtime_chat_infos, get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat } from '../actions/chat/chatMessage';
+import { get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat } from '../actions/chat/chatMessage';
 import { set_user_block, set_chat_room_alarm, exit_room } from "../actions/chat/chatRoom";
+import { request_refresh } from '../actions/auth/auth';
 
 function calculateRows() {
     const input = document.getElementsByName('chat')[0];
@@ -44,11 +44,13 @@ const chatPage = () => {
     const setting = useSelector(state => state.chatMessage.setting);
 
     const stompClient = useSelector(state => state.stompClient.stompClient);
-    
 
-    const [subscriptionOtherUser, setSubscriptionOtherUser] = useState(null);
-    const [subscriptionSetting, setSubscriptionSetting] = useState(null);
-    const [subscriptionMessage, setSubscriptionMessage] = useState(null);
+    const [meetTime, setMeetTime] = useState(null);
+    const [meetPlace, setMeetPlace] = useState(null);
+
+    let subOtherUser = null;
+    let subMessage = null;
+    let subSetting = null;
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
@@ -57,36 +59,41 @@ const chatPage = () => {
     };
 
     const get_info = async () => {
-        const subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
-        const subMessage = dispatch(get_realtime_message(room_id, user_number, user.username, stompClient));
-        const subSetting = dispatch(get_realtime_setting(room_id, user_number, stompClient));
-
-        setSubscriptionOtherUser(subOtherUser);
-        setSubscriptionMessage(subMessage);
-        setSubscriptionSetting(subSetting);
+        dispatch(request_refresh())
+        .then(() => {
+            subOtherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
+            subMessage = dispatch(get_realtime_message(room_id, user_number, user.username, stompClient));
+            subSetting = dispatch(get_realtime_setting(room_id, user_number, stompClient));
+        })
     }
 
     useEffect(() => {
         if (stompClient && room_id && user_number && user && user.username) {
-            get_info()
-            .then(() => {
-                dispatch(get_realtime_chat_infos(room_id, stompClient));
-            })
-        }
-    
-        return () => {
-            dispatch(clear_chat());
-            if (subscriptionOtherUser) {
-                stompClient.unsubscribe(subscriptionOtherUser);
-            }
-            if (subscriptionSetting) {
-                stompClient.unsubscribe(subscriptionSetting);
-            }
-            if (subscriptionMessage) {
-                stompClient.unsubscribe(subscriptionMessage);
-            }
+            get_info();
         }
     }, [stompClient, room_id, user_number, user])
+
+    useEffect(() => {
+        return () => {
+            dispatch(clear_chat());
+            if (subOtherUser && subOtherUser.id) {
+                subOtherUser.unsubscribe();
+            }
+            if (subMessage  && subMessage.id) {
+                subMessage.unsubscribe();
+            }
+            if (subSetting && subSetting.id) {
+                subSetting.unsubscribe();
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        if (setting) {
+            setMeetTime(setting.meet_time);
+            setMeetPlace(setting.meet_place)
+        }
+    }, [setting])
 
     // 프로필 보기 (load_matchingUser )
     const handleProfile = ()=>{
@@ -164,7 +171,6 @@ const chatPage = () => {
     }
 
     const handleAlarm = () => {
-        alert(isAlarmOn);
         dispatch(set_chat_room_alarm(!isAlarmOn, room_id, ([result, message]) => {
             if(result) {
                 // alert('set_chat_room_alarm 성공!');
@@ -321,9 +327,17 @@ const chatPage = () => {
             <Dialog open={openBlockDialog} onClose={handleCloseDialog}>
                 <DialogContent sx={{p: '20px 24px 13px'}}>
                     <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
-                        <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 15px 5px', m: '0'}}>
-                            차단 시 해당 채팅방의 상대와는 더 이상 채팅이 불가하며 상대는 더 이상 매칭에서 노출되지 않아요. 차단하시겠어요?
-                        </DialogTitle>
+                        {
+                            friendBlocked ? 
+                            <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 15px 5px', m: '0'}}>
+                                차단 해제 시 해당 채팅방의 상대와 채팅이 가능합니다. 차단을 해제하시겠어요?
+                            </DialogTitle>
+                            :
+                            <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 15px 5px', m: '0'}}>
+                                차단 시 해당 채팅방의 상대와는 더 이상 채팅이 불가하며 상대는 더 이상 매칭에서 노출되지 않아요. 차단하시겠어요?
+                            </DialogTitle>
+                        }
+
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{p:'0'}}>
@@ -365,19 +379,31 @@ const chatPage = () => {
                 >
                     <Grid container style={{justifyContent: 'center', width: '100%', height:'40px', alignItems: 'center'}}>
                         <div style={{position:"fixed",width: '210px', height:'28px', backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'15px'}}>
-                            <Link href="/chatTime">
+                            <Link href={{
+                                pathname: '/chatTime',
+                                query: {
+                                    room_id: room_id,
+                                    meetTime: meetTime
+                                }
+                            }}>
                                 <Grid item sx={{display: 'flex', height: 'fit-content', paddingRight:"38px", paddingTop:"6px"}}>
                                     <Image width={13} height={15} src={time} />
                                     <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                        { setting && setting.time ? setting.time : "시간 정하기" }
+                                        { setting && setting.meet_time ? setting.meet_time : "시간 정하기" }
                                     </Typography>
                                 </Grid>
                             </Link>
-                            <Link href="/chatPlace">
+                            <Link href={{
+                                pathname: '/chatPlace',
+                                query: {
+                                    room_id: room_id,
+                                    meetPlace: meetPlace
+                                }
+                            }}>
                                 <Grid item sx={{display: 'flex', height: 'fit-content',paddingTop:"6px"}}>
                                     <Image width={10.5} height={14.6} src={place} />
                                     <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                        { setting && setting.place ? setting.place : "장소 정하기" }
+                                        { setting && setting.meet_place ? setting.meet_place : "장소 정하기" }
                                     </Typography>
                                 </Grid>
                             </Link>

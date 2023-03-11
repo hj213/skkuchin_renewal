@@ -3,7 +3,7 @@ import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 
-export const enroll_report = async (report_type, content, review_id, chat_room_id, callback) => {
+export const enroll_report = (report_type, content, review_id, chat_room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 

@@ -6,7 +6,9 @@ import {
     CHANGE_MATCHING_STATUS_SUCCESS,
     CHANGE_MATCHING_STATUS_FAIL,
     CHANGE_MATCHING_INFO_SUCCESS,
-    CHANGE_MATCHING_INFO_FAIL
+    CHANGE_MATCHING_INFO_FAIL,
+    CLEAR_MATCHING_SUCCESS,
+    CLEAR_MATCHING_FAIL
 } from '../actions/matchingUser/types';
 
 const initialState = {
@@ -48,6 +50,15 @@ const matchingUserReducer = (state = initialState, action) => {
                 ...state
             }
         case CHANGE_MATCHING_INFO_FAIL:
+            return {
+                ...state
+            }
+        case CLEAR_MATCHING_SUCCESS:
+            return {
+                ...state,
+                matchingUser: null
+            }
+        case CLEAR_MATCHING_FAIL:
             return {
                 ...state
             }

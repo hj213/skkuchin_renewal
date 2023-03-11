@@ -10,7 +10,9 @@ import {
     CHANGE_MATCHING_STATUS_SUCCESS,
     CHANGE_MATCHING_STATUS_FAIL,
     CHANGE_MATCHING_INFO_SUCCESS,
-    CHANGE_MATCHING_INFO_FAIL
+    CHANGE_MATCHING_INFO_FAIL,
+    CLEAR_MATCHING_SUCCESS,
+    CLEAR_MATCHING_FAIL
 } 
     from './types';
 import { load_candidate } from '../candidate/candidate';
@@ -330,3 +332,15 @@ export const change_matching_info = (gender, keywords, introduction, mbti, callb
         if (callback) callback([false, error]);  
     }
 }
+
+export const clear_matching = ()  => async dispatch => {
+    try {
+        dispatch({
+            type: CLEAR_MATCHING_SUCCESS
+        });
+    } catch (error) {
+        dispatch({
+            type: CLEAR_MATCHING_FAIL
+        });
+    }
+};

@@ -474,8 +474,7 @@ export const exit_room = (room_id, callback) => async dispatch => {
     }
 };
 
-export const get_realtime_chat_room = (username, stompClient) => async dispatch => {
-    await dispatch(request_refresh());
+export const get_realtime_chat_room = (username, stompClient) => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
