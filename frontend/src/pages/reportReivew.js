@@ -58,7 +58,8 @@ export default function reportReview(){
     const [content, setContent] = useState(null);
 
     const handleSubmit = () => {
-        const selectedTag = Object.keys(tagChoose).filter(tag => tagChoose[tag]);
+        const selectedTag = Object.keys(tagChoose).find(tag => tagChoose[tag]);
+        console.log(selectedTag, content, reviewId);
         dispatch(enroll_report(selectedTag, content, reviewId, null, ([result, message])=>{
             if(result){
                 alert("enroll_report 요청 성공: " + result);     

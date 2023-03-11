@@ -3,9 +3,8 @@ import { API_URL } from '../../config';
 import { AUTHENTICATED_FAIL } from '../auth/types';
 import { request_refresh } from '../auth/auth';
 
-export const enroll_report = (report_type, content, review_id, chat_room_id, callback) => {
-    return async (dispatch) => {
-        console.log(report_type, content, review_id, chat_room_id);
+export const enroll_report = (report_type, content, review_id, chat_room_id, callback) => async (dispatch) => {
+        
         await dispatch(request_refresh());
         const access = Cookies.get('access') ?? null;
 
@@ -20,6 +19,7 @@ export const enroll_report = (report_type, content, review_id, chat_room_id, cal
             report_type, content, review_id, chat_room_id
         });
 
+        console.log(body);
         try {
             const res = await fetch(`${API_URL}/api/report`, {
                 method: 'POST',
@@ -41,5 +41,5 @@ export const enroll_report = (report_type, content, review_id, chat_room_id, cal
         } catch(error) {
             if (callback) callback([false, error]);
         }
-    }
+
 };

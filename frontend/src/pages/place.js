@@ -256,14 +256,10 @@ const PlacePage = () => {
     const [click, setClick] = useState(true);
     const handleFocus= (bool) => {
         setClick(bool);
-        if(click) {
-            // setKeyword('');
-            // setTags(null);
+        if(bool) {
             setHeight('0');
             setIsTall(false);
-            // setFilteredPlace(null);
-            setClick(!bool);
-            // dispatch(clear_search_results());
+            setClick(!click);
         }
     }
 // 별점 관리
