@@ -167,7 +167,10 @@ const chatPage = () => {
 
     // 신고하기
     const handleReportUser = () => {
-        router.push('/reportUser')
+        router.push({
+            pathname: '/reportChatUser',
+            query: { roomId : room_id }
+        })
     }
 
     const handleAlarm = () => {
@@ -210,7 +213,7 @@ const chatPage = () => {
             {label: '프로필 보기', onClick: handleProfile},
             {label: isAlarmOn ? '알림끄기' : '알림켜기' , onClick: handleAlarm},
             {label: friendBlocked ? "차단해제" : "차단하기", onClick: handleBlockUser},
-            // {label: '신고하기', onClick: handleReportUser},
+            {label: '신고하기', onClick: handleReportUser},
             {label: '채팅방 나가기', onClick: handleExit},
         ];
     return(
