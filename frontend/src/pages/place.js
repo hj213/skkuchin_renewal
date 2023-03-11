@@ -252,14 +252,13 @@ const PlacePage = () => {
     const handleFocus= (bool) => {
         setClick(bool);
         if(click) {
+            alert(bool +' ' + click);
             setKeyword('');
             setTags(null);
-            setHeight('0');
             setIsTall(false);
-            setFilteredPlace(null);
-            setClick(!bool);
-            dispatch(clear_search_results());
+            setClick(!click);
         }
+        
     }
 // 별점 관리
     const [rating, setRating] = useState(0);
