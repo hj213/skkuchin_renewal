@@ -72,7 +72,9 @@ const chatMessageReducer = (state= initialState, action) => {
         case CLEAR_CHAT_SUCCESS:
             return {
                 ...state,
-                initialState
+                messages: null,
+                otherUser: null,
+                setting: null
             }
         case CLEAR_CHAT_FAIL:
             return {

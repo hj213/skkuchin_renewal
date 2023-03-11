@@ -172,7 +172,7 @@ const ModifyReview = () => {
                     query: { id: place_id }
                 });                  
             } else {
-                alert("수정사항을 다시 확인해주세요! : " +message);
+                // alert("수정사항을 다시 확인해주세요! : " +message);
             }
         }));
     }

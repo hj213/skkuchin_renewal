@@ -97,18 +97,20 @@ const chatPage = () => {
     const [openBlockDialog, setBlockDialog] = useState(false);
     const isUser1Blocked = setting && setting.user1_blocked;
     const isUser2Blocked = setting && setting.user2_blocked;
-    const [friendBlocked, setFriendBlocked] = useState(() => {
-    if (setting) {
-        if (user_number === "user1") {
-        return setting.user2_blocked;
-        } else {
-        return setting.user1_blocked;
-        }
-    } else {
-        return false;
-    }
-    });
     const [isBlocked, setBlocked] = useState(isUser1Blocked || isUser2Blocked);
+
+    let isAlarmOn = null;
+    let friendBlocked = null;
+
+    if (setting) {
+        if (user_number === 'user1') {
+            isAlarmOn = setting.user1_alarm;
+            friendBlocked = setting.user2_blocked;
+        } else {
+            isAlarmOn = setting.user2_alarm;
+            friendBlocked = setting.user1_blocked;
+        }
+    }
 
     useEffect(() => {
         setBlocked(isUser1Blocked || isUser2Blocked);
@@ -124,19 +126,18 @@ const chatPage = () => {
     };
 
     const handleConfirmBlockUser = () => {
-        alert(isBlocked);
+        // alert(isBlocked);
         dispatch(
-          set_user_block(!isBlocked, room_id, ([result, message]) => {
-            if (result) {
-              setBlocked(isUser1Blocked || isUser2Blocked || !isBlocked);
-              alert("set_user_block 성공!");
-            } else {
-              alert("set_user_block 실패 " + message);
-            }
-          })
+            set_user_block(!friendBlocked, room_id, ([result, message]) => {
+                if (result) {
+                    // alert("set_user_block 성공!");
+                } else {
+                    // alert("set_user_block 실패 " + message);
+                }
+            })
         );
         setBlockDialog(false);
-      };
+    };
     
     // 채팅방 나가기 Dialog
     const [openExitDialog, setExitDialog] = useState(false);
@@ -149,9 +150,9 @@ const chatPage = () => {
         alert(room_id);
         dispatch(exit_room(room_id, ([result, message])=>{
             if(result){
-                alert('exit_room 성공!');           
+                router.push('/message');
             } else {
-                alert("exit_room 실패 " +message);
+                // alert("exit_room 실패 " +message);
             }
         }));
         setExitDialog(false);
@@ -162,25 +163,16 @@ const chatPage = () => {
         router.push('/reportUser')
     }
 
-    const [isAlarmOn, setIsAlarmOn] = useState(
-        setting
-          ? user_number === 'user1'
-            ? setting.user1_alarm
-            : setting.user2_alarm
-          : false
-      );
-      
-      const handleAlarm = () => {
+    const handleAlarm = () => {
         alert(isAlarmOn);
         dispatch(set_chat_room_alarm(!isAlarmOn, room_id, ([result, message]) => {
-          if(result) {
-            alert('set_chat_room_alarm 성공!');
-            setIsAlarmOn(!isAlarmOn);
-          } else {
-            alert('set_chat_room_alarm ' + message);
-          }
+            if(result) {
+                // alert('set_chat_room_alarm 성공!');
+            } else {
+                // alert('set_chat_room_alarm ' + message);
+            }
         }));
-      };
+    };
 
     
     const ITEM_HEIGHT = 50;
@@ -210,9 +202,9 @@ const chatPage = () => {
         // more 버튼
         const options = [
             {label: '프로필 보기', onClick: handleProfile},
-            {label:  isAlarmOn ? '알림끄기' : '알림켜기' , onClick: handleAlarm},
+            {label: isAlarmOn ? '알림끄기' : '알림켜기' , onClick: handleAlarm},
             {label: friendBlocked ? "차단해제" : "차단하기", onClick: handleBlockUser},
-            {label: '신고하기', onClick: handleReportUser},
+            // {label: '신고하기', onClick: handleReportUser},
             {label: '채팅방 나가기', onClick: handleExit},
         ];
     return(
@@ -376,13 +368,17 @@ const chatPage = () => {
                             <Link href="/chatTime">
                                 <Grid item sx={{display: 'flex', height: 'fit-content', paddingRight:"38px", paddingTop:"6px"}}>
                                     <Image width={13} height={15} src={time} />
-                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>시간 정하기</Typography>
+                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                        { setting && setting.time ? setting.time : "시간 정하기" }
+                                    </Typography>
                                 </Grid>
                             </Link>
                             <Link href="/chatPlace">
                                 <Grid item sx={{display: 'flex', height: 'fit-content',paddingTop:"6px"}}>
                                     <Image width={10.5} height={14.6} src={place} />
-                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>장소 정하기</Typography>
+                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                        { setting && setting.place ? setting.place : "장소 정하기" }
+                                    </Typography>
                                 </Grid>
                             </Link>
                         </div>
@@ -390,13 +386,13 @@ const chatPage = () => {
                 </Grid>
 
                 {/* 날짜 정보 */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Grid>
                         <Typography sx={{fontSize:'12px', color:'#A1A1A1'}}>
-                            2023년 1월 7일 월요일
+                            {message.data}
                         </Typography>
                     </Grid>
-                </div>
+                </div> */}
 
                 { messages && messages.slice().reverse().map((message, index) => {
                     // 이어서 메시지를 보냈는지 확인
@@ -418,7 +414,9 @@ const chatPage = () => {
                                 <Grid style={{display:'flex'}}>
                                 <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
                                     <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                        {message.time}
+                                        {
+                                            (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
+                                        }
                                     </Typography>
                                     <Card elevation="none" sx={{
                                         borderRadius: '15px 0px 15px 15px',
@@ -439,28 +437,28 @@ const chatPage = () => {
                             </Grid>
                         </Grid>
                         )  : (message.sender === 'admin') ? (
-                            <Grid
-                                sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                margin:"22px 0 0 0"
-                                }}
-                            >
-                                <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-                                    <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
-                                        <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
-                                            <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                                {/* {otherUser && otherUser.nickname} 님과  */}
-                                                {message.message.split('요.').map((text, index, arr) => (
-                                                    <React.Fragment key={index}>
-                                                    {text}{index !== arr.length - 1 && '요.'}<br />
-                                                    </React.Fragment>
-                                                ))}
-                                            </Typography>
-                                        </Grid>
-                                    </div>
-                                </Grid>
+                        <Grid
+                            sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            margin:"22px 0 0 0"
+                            }}
+                        >
+                            <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
+                                <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
+                                    <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
+                                        <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                            {/* {otherUser && otherUser.nickname} 님과  */}
+                                            {message.message.split('요.').map((text, index, arr) => (
+                                                <React.Fragment key={index}>
+                                                {text}{index !== arr.length - 1 && '요.'}<br />
+                                                </React.Fragment>
+                                            ))}
+                                        </Typography>
+                                    </Grid>
+                                </div>
                             </Grid>
+                        </Grid>
                         ) : (
                         <Grid key={message.id} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
                             {displayAvatar && (
@@ -468,40 +466,42 @@ const chatPage = () => {
                                     <Avatar alt="" />
                                 </Grid>
                             )}
-                            <Grid item sx={{pl:"7px", ml : displayAvatar ? 0 : '40px'}}>
-                                <Stack direction="column" spacing={1}>
-                                    {displayAvatar && 
-                                        <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top'}} align="left">
-                                            {otherUser && otherUser.nickname}
-                                        </Typography>
-                                    }
-                                    <Grid style={{display:'flex'}}>
-                                        <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
-                                            <Card elevation="none" style={{
-                                                borderRadius: '0px 15px 15px 15px',
-                                                backgroundColor:'white',
-                                                border:'1px solid #FFCE00',
-                                                maxWidth:'75%'
-                                            }}>
-                                                <Typography
-                                                    style={{
-                                                    padding:'8px 10px 6px 10px',
-                                                    fontSize: '14px',
-                                                    maxWidth:'100%'
-                                                    }}>
-                                                    {message.message}
-                                                </Typography>
-                                            </Card>
-                                            <Grid>
-                                            <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                                {message.time} 
+                                <Grid item sx={{pl:"7px", ml : displayAvatar ? 0 : '40px'}}>
+                                    <Stack direction="column" spacing={1}>
+                                        {displayAvatar && 
+                                            <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top'}} align="left">
+                                                {otherUser && otherUser.nickname}
                                             </Typography>
+                                        }
+                                        <Grid style={{display:'flex'}}>
+                                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
+                                                <Card elevation="none" style={{
+                                                    borderRadius: '0px 15px 15px 15px',
+                                                    backgroundColor:'white',
+                                                    border:'1px solid #FFCE00',
+                                                    maxWidth:'75%'
+                                                }}>
+                                                    <Typography
+                                                        style={{
+                                                        padding:'8px 10px 6px 10px',
+                                                        fontSize: '14px',
+                                                        maxWidth:'100%'
+                                                        }}>
+                                                        {message.message}
+                                                    </Typography>
+                                                </Card>
+                                                <Grid>
+                                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'5px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                                    {
+                                                        (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
+                                                    }
+                                                </Typography>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
-                                </Grid>
-                            </Stack>
+                                </Stack>
+                            </Grid>
                         </Grid>
-                    </Grid> 
                     ))
                 })}
                 </Grid>

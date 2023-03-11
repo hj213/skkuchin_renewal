@@ -10,27 +10,27 @@ const Friends = () => {
     const candidate = useSelector(state => state.candidate.candidate);
     const requestId = useSelector(state => state.chatRoom.requestId);
 
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_request_id(([result, message]) => {
-                if (result) {
-                    dispatch(load_candidate(([result, message]) => {
-                        if (result) {
-                            alert('load_candidate 성공! ' + result);
-                        } else {
-                            if (typeof(message) == 'string') {
-                            setDialogMsg(message);
-                            }
-                        }
-                        setDialogOpen2(true);
-                    }));
-                } else {
-                    alert(message);
-                }
+    // useEffect(() => {
+    //     if (dispatch && dispatch !== null && dispatch !== undefined) {
+    //         dispatch(load_request_id(([result, message]) => {
+    //             if (result) {
+    //                 dispatch(load_candidate(([result, message]) => {
+    //                     if (result) {
+    //                         // alert('load_candidate 성공! ' + result);
+    //                     } else {
+    //                         if (typeof(message) == 'string') {
+    //                         setDialogMsg(message);
+    //                         }
+    //                     }
+    //                     setDialogOpen2(true);
+    //                 }));
+    //             } else {
+    //                 // alert(message);
+    //             }
                 
-            }))
-        }
-    }, []);
+    //         }))
+    //     }
+    // }, []);
     
 
     const [height, setHeight] = useState('383px');
@@ -47,13 +47,13 @@ const Friends = () => {
         setOpen(false);
     }
     const handleSubmit = (id) => {
-        alert('상대방 id ' +id);
+        // alert('상대방 id ' +id);
         setOpen(false);
         dispatch(request_chat(id, ([result, message])=>{
             if (result) {
-                alert('request_chat 성공! ' + result)
+                // alert('request_chat 성공! ' + result)
             } else {
-                alert(message);
+                // alert(message);
             }
         }));
     }

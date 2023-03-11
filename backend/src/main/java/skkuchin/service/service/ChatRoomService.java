@@ -64,6 +64,7 @@ public class ChatRoomService {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
+        chatRoom.setExpireDate(LocalDateTime.now().plusDays(2));
         chatRoom.setResponse(responseType);
         chatRoomRepo.save(chatRoom);
     }
@@ -110,7 +111,7 @@ public class ChatRoomService {
 
     private AppUser getOtherUser(ChatRoom chatRoom, String username){
         AppUser user = userRepo.findByUsername(username);
-        if (chatRoom.getUser1().equals(user)) {
+        if (chatRoom.getUser1().getId().equals(user.getId())) {
             return chatRoom.getUser2();
         } else {
             return chatRoom.getUser1();
@@ -264,7 +265,7 @@ public class ChatRoomService {
     public void exitRoom(String roomId, AppUser appUser){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
-        if (!appUser.equals(chatRoom.getUser1()) && !appUser.equals(chatRoom.getUser2())) {
+        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
