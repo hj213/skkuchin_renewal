@@ -49,7 +49,7 @@ const chatPage = () => {
     const [meetTime, setMeetTime] = useState(null);
     const [meetPlace, setMeetPlace] = useState(null);
 
-    const [subscriptions, setSubscriptions] = useState(null);
+    const subscriptions = {};
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
@@ -59,15 +59,14 @@ const chatPage = () => {
 
     const get_info = async () => {
         dispatch(request_refresh()).then(() => {
-            const subs = {};
-            subs.otherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
-            subs.message = dispatch(get_realtime_message(room_id, user_number, user.username, stompClient));
-            subs.setting = dispatch(get_realtime_setting(room_id, user_number, stompClient));
+
+            subscriptions.otherUser = dispatch(get_realtime_otherUser(room_id, user_number, stompClient));
+            subscriptions.message = dispatch(get_realtime_message(room_id, user_number, user.username, stompClient));
+            subscriptions.setting = dispatch(get_realtime_setting(room_id, user_number, stompClient));
         
-            Promise.all(Object.values(subs)).then(() => {
+            Promise.all(Object.values(subscriptions)).then(() => {
                 dispatch(get_chat_info(stompClient, room_id));
             });
-            setSubscriptions(subs);
         });
     };
 
@@ -76,7 +75,7 @@ const chatPage = () => {
             get_info();
         }
         return () => {
-            dispatch(clear_chat())
+            dispatch(clear_chat());
             if (subscriptions) {
                 Object.values(subscriptions).forEach(subscription => {
                     subscription.unsubscribe();

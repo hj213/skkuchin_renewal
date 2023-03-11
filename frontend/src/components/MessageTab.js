@@ -57,7 +57,7 @@ export default function MessageTab() {
   const chatRequests = useSelector(state => state.chatRequest.chatRequest);
   const stompClient = useSelector(state => state.stompClient.stompClient);
 
-  const [subscriptions, setSubscriptions] = useState(null);
+  const subscriptions = {};
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -65,15 +65,13 @@ export default function MessageTab() {
 
   const get_info = async () => {
     dispatch(request_refresh()).then(() => {
-        const subs = {};
-        subs.chatRooms = dispatch(get_realtime_chat_room(user.username, stompClient));
-        subs.chatRequests = dispatch(get_realtime_chat_request(user.username, stompClient));
+      subscriptions.chatRooms = dispatch(get_realtime_chat_room(user.username, stompClient));
+      subscriptions.chatRequests = dispatch(get_realtime_chat_request(user.username, stompClient));
     
-        Promise.all(Object.values(subs)).then(() => {
-          dispatch(get_chat_room_info(stompClient));
-          dispatch(get_chat_request_info(stompClient));
-        });
-        setSubscriptions(subs);
+      Promise.all(Object.values(subscriptions)).then(() => {
+        dispatch(get_chat_room_info(stompClient));
+        dispatch(get_chat_request_info(stompClient));
+      });
     });
   };
 
@@ -89,8 +87,6 @@ export default function MessageTab() {
       }
     }
   }, [stompClient, user]);
-
-
 
   const [open, setOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
