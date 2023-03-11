@@ -23,7 +23,9 @@ import {
     DELETE_MEET_PLACE_FAIL,
     EXIT_CHAT_ROOM_SUCCESS,
     EXIT_CHAT_ROOM_FAIL,
-    GET_REALTIME_ROOM_SUCCESS
+    GET_REALTIME_ROOM_SUCCESS,
+    GET_CHAT_ROOM_INFO_SUCCESS,
+    GET_CHAT_ROOM_INFO_FAIL
 }
     from './types';
 import { send_message } from './chatMessage';
@@ -513,6 +515,28 @@ export const get_realtime_chat_room = (username, stompClient) => dispatch => {
         pushToken : access
         }
     );
-    stompClient.send('/app/chat.list', {"pushToken" : access});
     return subscription;
+};
+
+export const get_chat_room_info = (stompClient) => dispatch => {
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        stompClient.send('/app/chat.list', {"pushToken" : access});
+        dispatch({
+            type: GET_CHAT_ROOM_INFO_SUCCESS
+        });
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: GET_CHAT_ROOM_INFO_FAIL
+        });
+    }
 };
