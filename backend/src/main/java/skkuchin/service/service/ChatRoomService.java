@@ -319,18 +319,18 @@ public class ChatRoomService {
     }
 
     public void insertData() throws IOException, ParseException {
-        AppUser adminUser = userRepo.findById(1L).orElseThrow();
         AppUser testUser = userRepo.findById(2L).orElseThrow();
         AppUser test1USer = userRepo.findById(3L).orElseThrow();
         AppUser test2USer = userRepo.findById(4L).orElseThrow();
         AppUser test3USer = userRepo.findById(5L).orElseThrow();
         AppUser test4USer = userRepo.findById(6L).orElseThrow();
+        AppUser test5USer = userRepo.findById(6L).orElseThrow();
         ChatRoomDto.RoomRequest dto = new ChatRoomDto.RoomRequest(2L);
-        makeRoom(adminUser, dto);
         makeRoom(test1USer, dto);
         makeRoom(test2USer, dto);
         makeRoom(test3USer, dto);
         makeRoom(test4USer, dto);
+        makeRoom(test5USer, dto);
 
         List<ChatRoom> chatRooms = chatRoomRepo.findRequestByUserId(2L);
 
