@@ -17,10 +17,22 @@ export default function reportChatUser(){
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const roomId = router.query.roomId;
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
+    const room_id = router.query.room_id;
+    const user_number = router.query.user_number;
 
     const handleBack = (e) => {
-        router.back();
+        router.push({
+            pathname: '/chat',
+            query: { 
+                room_id : room_id,
+                user_number: user_number
+            }
+        })
     }
 
     // 신고 선택
@@ -37,14 +49,14 @@ export default function reportChatUser(){
     const handleTagClick = (event) => {
         const tagId = event.target.id;
         setTagChoose(prevState => {
-          const newTagChoose = {...prevState};
-          for (const tag in newTagChoose) {
-            if (tag !== tagId) {
-              newTagChoose[tag] = false;
+            const newTagChoose = {...prevState};
+            for (const tag in newTagChoose) {
+                if (tag !== tagId) {
+                newTagChoose[tag] = false;
             }
-          }
-          newTagChoose[tagId] = !prevState[tagId];
-          return newTagChoose;
+            }
+            newTagChoose[tagId] = !prevState[tagId];
+            return newTagChoose;
         });
     };
 

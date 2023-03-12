@@ -23,7 +23,8 @@ export default function chatTime(){
     const dispatch =useDispatch();
 
     const room_id = router.query.room_id;
-    // const meetTime = router.query.meetTime;
+    const user_number = router.query.user_number;
+    
     const meetTime = null;
 
     const now = new Date();
@@ -52,7 +53,13 @@ export default function chatTime(){
     
 
     const handleBack = () => {
-        router.back();
+        router.push({
+            pathname: '/chat',
+            query: { 
+                roomId : room_id,
+                user_number: user_number
+            }
+        })
     }
 
     const handleDownClick = () => {
@@ -75,7 +82,13 @@ export default function chatTime(){
             } else {
             }
         }));
-        router.back();
+        router.push({
+            pathname: '/chat',
+            query: { 
+                roomId : room_id,
+                user_number: user_number
+            }
+        })
     };
     const handleSubmit = () => {
         const dateInfo = dayjs(date).format('YYYY-MM-DD')+"T"+changedtime+':00';
@@ -85,7 +98,13 @@ export default function chatTime(){
             } else {
             }
         }));
-        router.back();
+        router.push({
+            pathname: '/chat',
+            query: { 
+                roomId : room_id,
+                user_number: user_number
+            }
+        })
     }
     const handleOpenTime = () => {
         if(timeOpen=='hidden'){

@@ -17,6 +17,12 @@ import close from '../image/close.png';
 const MorePhotos = () => {
 
     const dispatch = useDispatch();
+    const router = useRouter();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     // 뒤로가기
     const handleOnclick = (event) =>{
@@ -26,7 +32,7 @@ const MorePhotos = () => {
         });
     };  
 
-    const router = useRouter();
+
     const { id } = router.query;
 
     // place, 가게 정보 (place API)
@@ -51,7 +57,7 @@ const MorePhotos = () => {
             pathname: '/detailPhotos',
             query: { id: place_id, img: image }
         })
-      }
+    }
 
     return(
         <ThemeProvider theme={theme}>

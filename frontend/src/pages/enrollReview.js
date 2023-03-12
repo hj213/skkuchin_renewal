@@ -135,9 +135,9 @@ const EnrollReview = () => {
         
             const imagePreviews = fileArray.map((file) => URL.createObjectURL(file));
             setPreviewImages(imagePreviews);
-          };
+        };
         
-          const [previewImages, setPreviewImages] = useState([]);
+        const [previewImages, setPreviewImages] = useState([]);
 
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{

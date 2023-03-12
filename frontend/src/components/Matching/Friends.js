@@ -95,7 +95,7 @@ const Friends = () => {
                     <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{person.introduction}"</Typography>
                 </Grid> 
                 { 
-                    requestId.includes(person.id) ?
+                    requestId && requestId.includes(person.id) ?
                     <Button key={index} sx={{backgroundColor: '#505050', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
                         신청 완료
                     </Button>
@@ -103,7 +103,7 @@ const Friends = () => {
                     <Button key={index} onClick={()=>handleOpen(person.id)}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
                         밥약 신청하기
                     </Button>
-                    }
+                }
 
                 <Dialog
                     key={person.id}

@@ -22,6 +22,11 @@ const MorePhotos = () => {
 
     const dispatch = useDispatch();
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
     // 뒤로가기
     const handleOnclick = (event) =>{
         router.push({
