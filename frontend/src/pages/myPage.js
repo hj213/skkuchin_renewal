@@ -18,12 +18,17 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
+import { load_token, set_chat_push, set_info_push } from '../actions/pushToken/pushToken';
 
 export default function myPage() {
     const dispatch = useDispatch();
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const pushToken = useSelector(state => state.pushToken.pushToken);
+
+    const [chatAlarm, setChatAlarm] = useState(false);
+    const [infoAlarm, setInfoAlarm] = useState(false);
     
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
@@ -49,8 +54,90 @@ export default function myPage() {
         setDialogOpen(false);
     }
 
+    const handleChatToggle = (e) => {
+        if (pushToken) {
+            dispatch(set_chat_push(!chatAlarm))
+        }
+    }
+
+    const handleNoticeToggle = (e) => {
+        if (pushToken) {
+            dispatch(set_info_push(!infoAlarm))
+        }
+    }
+
+    useEffect(() => {
+        if(dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_token(([result, message]) => {
+                if (result) {
+                    
+                } else {
+                    console.log(message);
+                }
+            }));
+        }
+    }, [])
+
+    useEffect(() => {
+        if (pushToken) {
+            setChatAlarm(pushToken.chatAlarm);
+            setInfoAlarm(pushToken.infoAlarm);
+        }
+    }, [pushToken])
+
     const IOSSwitch = styled((props) => (
-        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} checked={chatAlarm} />
+        ))(({ theme }) => ({
+            width: 40,
+            height: 22,
+            padding: 0,
+
+            '& .MuiSwitch-switchBase': {
+            padding: 1,
+            margin: 3,
+            transitionDuration: '300ms',
+            '&.Mui-checked': {
+                transform: 'translateX(16px)',
+                color: '#fff',
+                '& + .MuiSwitch-track': {
+                backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#FFCE00',
+                opacity: 1,
+                border: 0,
+                },
+                '&.Mui-disabled + .MuiSwitch-track': {
+                opacity: 0.5,
+                },
+            },
+            '&.Mui-focusVisible .MuiSwitch-thumb': {
+                color: '#FFCE00',
+                border: '6px solid #fff',
+            },
+            '&.Mui-disabled .MuiSwitch-thumb': {
+                color:
+                theme.palette.mode === 'light'
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[600],
+            },
+            '&.Mui-disabled + .MuiSwitch-track': {
+                opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+            },
+            },
+            '& .MuiSwitch-thumb': {
+            boxSizing: 'border-box',
+            width: 15,
+            height: 15,
+            },
+            '& .MuiSwitch-track': {
+            borderRadius: 26 / 2,
+            backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+            opacity: 1,
+            transition: theme.transitions.create(['background-color'], {
+                duration: 500,
+            }),
+            },
+    }));
+    const IOSSwitch2 = styled((props) => (
+        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} checked={infoAlarm} />
         ))(({ theme }) => ({
             width: 40,
             height: 22,
@@ -135,7 +222,7 @@ export default function myPage() {
                     {/* 토글 스위치 */}
                     <FormControlLabel
                         style={{paddingTop:"2px", marginTop:'-5px'}}
-                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} />}
+                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} onClick={handleChatToggle} />}
                     />
                 </div>
                 
@@ -144,7 +231,7 @@ export default function myPage() {
                     {/* 토글 스위치 */}
                     <FormControlLabel
                         style={{paddingTop:"2px", marginTop:'-5px'}}
-                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} />}
+                        control={<IOSSwitch2 sx={{ m: 1, marginLeft:"20px" }} onClick={handleNoticeToggle} />}
                     />
                 </div>
             </Container>
