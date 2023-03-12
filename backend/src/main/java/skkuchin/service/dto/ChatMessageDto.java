@@ -61,9 +61,10 @@ public class ChatMessageDto {
         @JsonProperty
         private String roomId;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "a hh:mm", locale = "ko-KR", timezone = "Asia/Seoul")
-        private LocalDateTime time;
-        @JsonProperty
+        private String time;
         private String date;
+        @JsonProperty
+        private LocalDateTime localDateTime;
 
         public Response(ChatMessage chatMessage, ChatRoom chatRoom){
             this.id= chatMessage.getId();
@@ -71,12 +72,18 @@ public class ChatMessageDto {
             this.message = chatMessage.getMessage();
             this.readStatus = chatMessage.isReadStatus();
             this.roomId = chatRoom.getRoomId();
-            this.time = chatMessage.getDate();
+            this.time = formatTime(chatMessage.getDate());
             this.date = formatDate(chatMessage.getDate());
+            this.localDateTime = chatMessage.getDate();
         }
 
         private String formatDate(LocalDateTime date) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 EEEE", Locale.KOREAN);
+            return date.format(formatter);
+        }
+
+        private String formatTime(LocalDateTime date) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.KOREAN);
             return date.format(formatter);
         }
     }

@@ -76,7 +76,7 @@ public class ChatMessageService {
     private class MessageDateComparator implements Comparator<ChatMessageDto.Response> {
         @Override
         public int compare(ChatMessageDto.Response f1, ChatMessageDto.Response f2) {
-            if (f1.getTime().isAfter(f2.getTime()) ) {
+            if (f1.getLocalDateTime().isAfter(f2.getLocalDateTime()) ) {
                 return 1;
             } else  {
                 return -1;

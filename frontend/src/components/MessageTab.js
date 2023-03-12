@@ -141,15 +141,21 @@ export default function MessageTab() {
                                       </Typography>
                                       {/* 알림끄기 연결 시 조건문으로 수정 */}
                                       <Box sx={{paddingLeft:'5px', lineHeight: '120%'}}>
-                                      <Image
-                                        src={
-                                          chatRoom.user1_id === user.id
-                                            ? !chatRoom.user1_alarm && notiOff
-                                            : !chatRoom.user2_alarm && notiOff
-                                        }
-                                        width="12px"
-                                        height="12px"
-                                      />
+                                      {
+                                        chatRoom.user1_id === user.id
+                                          ? !chatRoom.user1_alarm && 
+                                          <Image
+                                            src={notiOff}
+                                            width="12px"
+                                            height="12px"
+                                          />
+                                          : !chatRoom.user2_alarm &&
+                                          <Image
+                                            src={notiOff}
+                                            width="12px"
+                                            height="12px"
+                                          />
+                                      }
                                       </Box>
                                     </div>
                                     <Typography sx={{paddingTop:"5px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
