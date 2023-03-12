@@ -16,10 +16,7 @@ import skkuchin.service.repo.UserRepo;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +53,7 @@ public class CandidateService {
 
         if (candidates.size() > 0) {
             recentCandidate = candidates.get(candidates.size() - 1);
-            LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(14);
+            LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(2);
             Duration duration = Duration.between(createDate, LocalDateTime.now());
             differenceTime = duration.toDays();
         } else {
@@ -133,7 +130,13 @@ public class CandidateService {
         }
 
         if (returnUsers.size() < 3) return returnUsers;
-        else return returnUsers.subList(0, 3);
+        //else return returnUsers.subList(0, 3);
+        else if (returnUsers.size() < 10) {
+            Collections.shuffle(returnUsers);
+        } else {
+            Collections.shuffle(returnUsers.subList(0, 10));
+        }
+        return returnUsers.subList(0, 3);
     }
     public List<AppUser> orderByKeyword(AppUser user, List<Long> excludeIds) {
         //유저의 키워드 리스트
