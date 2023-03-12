@@ -331,12 +331,12 @@ const chatPage = () => {
                             border:"1px solid #BABABA", 
                             display:"inline-block", 
                             marginRight:"3px",
-                            padding:"1px 3px 0 3px",
-                            width:"28px"}}>
+                            padding:"1px 6.5px",
+                            width:"34px"}}>
                             {otherUser && otherUser.campus}
                         </Typography>
                         {otherUser && otherUser.major} /&nbsp;
-                        {otherUser && otherUser.student_id} /&nbsp;
+                        {otherUser && otherUser.student_id}학번 /&nbsp;
                         {otherUser && otherUser.gender && (otherUser.gender).charAt(0)}
                     </Grid>
                 </div>
@@ -508,7 +508,7 @@ const chatPage = () => {
                                         ref={messages.length - 1 === index ? lastMessageRef : null} 
                                     >
                                         <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-                                            <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"7px 15px"}}>
+                                            <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"8px 18px"}}>
                                                 <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
                                                     <Typography sx={{fontSize: '10px'}}>
                                                         {message.message.startsWith('우리') ? 

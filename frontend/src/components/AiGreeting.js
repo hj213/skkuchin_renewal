@@ -295,8 +295,8 @@ const AiGreeting = () => {
                             border:"1px solid #BABABA", 
                             display:"inline-block", 
                             marginRight:"3px",
-                            padding:"1px 3px 0 3px",
-                            width:"28px"}}>
+                            padding:"1px 6.5px",
+                            width:"34px"}}>
                         {user.campus}
                         </Typography>
                         {user.major} /&nbsp;

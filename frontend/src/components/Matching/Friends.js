@@ -73,9 +73,9 @@ const Friends = () => {
                 {displayMBTI(person.mbti)}
                 <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{person !== null && person.nickname}</Typography>
                 <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
-                    <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>{person !== null && person.campus}</Typography>&nbsp;
+                    <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '1px 6.5px', borderRadius: '17px'}}>{person !== null && person.campus}</Typography>&nbsp;
                     {person.major} &nbsp;/&nbsp; 
-                    {person.student_id} 학번 &nbsp;/&nbsp; 
+                    {person.student_id}학번 &nbsp;/&nbsp; 
                     {(person.gender).charAt(0)}
                 </Grid>
                 
