@@ -124,7 +124,7 @@ public class DebeziumController {
 
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user1",settingResponse);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user2",settingResponse);
-        
+
         if (dto.getPayload().getOp().equals("c")) {
             String pushTitle = "스꾸친";
             String pushMessage = "새로운 밥약 신청이 도착했습니다!";

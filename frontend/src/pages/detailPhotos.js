@@ -147,7 +147,7 @@ const MorePhotos = () => {
                                 }
                                 </Grid>
                                 <Grid>
-                                    <Image src={close} width={37} height={37} name='close' onClick={handleOnExitclick}/>
+                                    <Image src={close} width={37} height={37} layout='fixed' name='close' onClick={handleOnExitclick}/>
                                 </Grid> 
                             </Grid>
                         </Card>

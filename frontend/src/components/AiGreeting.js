@@ -261,7 +261,6 @@ const AiGreeting = () => {
                                 width="35px"
                                 height="35px"
                                 onClick={handleClose}
-                                placeholder="blur"
                                 layout='fixed'
                                 />
                     </div>

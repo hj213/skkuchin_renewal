@@ -123,7 +123,7 @@ export default function MapDrawer(openID){
                 <ListItem disablePadding >
                     <Grid container style={{fontSize:'20px', fontWeight:'400', lineHeight: '28px'}} >
                         <Grid item style={{marginRight:'9px'}}>
-                            <Image src={bookmark} alt='즐겨찾기' width={16} height={16} placeholder="blur" layout='fixed' />
+                            <Image src={bookmark} alt='즐겨찾기' width={16} height={16} layout='fixed' />
                         </Grid>
                         <Grid item>
                             <ListItemText primary="즐겨찾기 장소" style={{marginTop:'1px'}} onClick={handleMove} />  
@@ -133,7 +133,7 @@ export default function MapDrawer(openID){
                 <ListItem disablePadding>
                     <Grid container style={{marginTop:'37px', fontSize: '20px', fontWeight:'400', lineHeight: '28px'}}>
                         <Grid item style={{marginRight:'9px',}}>
-                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}} placeholder="blur" layout='fixed' />
+                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}} layout='fixed' />
                         </Grid>
                         <Grid item>
                             <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMyReview}/>
@@ -167,7 +167,7 @@ export default function MapDrawer(openID){
     
     return(
         <ThemeProvider theme={theme}>
-            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} placeholder="blur" layout='fixed' />
+            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} layout='fixed' />
             <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
               <Grid container style={{position:'relative'}}>
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>

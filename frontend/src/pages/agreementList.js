@@ -57,7 +57,7 @@ export default function agreementList() {
         {list.map(elem => 
             <div style={{display: 'grid', gridTemplateColumns: '1fr 38px', alignItems: 'center', marginBottom: '32px', width: '100%'}} id={elem} onClick={handleClick}>
                 <Typography id={elem} style={{fontSize: '16px'}}>{elem}</Typography>
-                <Image width={38} height={38} src={next} id={elem}/>
+                <Image width={38} height={38} src={next} layout='fixed' id={elem}/>
             </div>    
         )}
         </Box>

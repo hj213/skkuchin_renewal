@@ -194,7 +194,7 @@ const ModifyReview = () => {
                     <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
-                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} placeholder="blur" layout='fixed' />
+                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} layout='fixed' />
                             </a>
                         </Grid>
                     
@@ -369,7 +369,7 @@ const ModifyReview = () => {
                                                 borderRadius:'10px'
                                                 }} />
                                             <Button type="button" onClick={() => handleImageRemove(index)} style={{ position: 'absolute', top: '0', right: '3px', padding: '10px', justifyContent: 'right' }}>
-                                                <Image src={removeBtn} width={25} height={25} 
+                                                <Image src={removeBtn} width={25} height={25} layout='fixed'
                                                     style={{ 
                                                         backgroundColor:'white',
                                                         borderRadius:'20px'
