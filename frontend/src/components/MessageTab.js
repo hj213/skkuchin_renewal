@@ -270,7 +270,7 @@ export default function MessageTab() {
               :
               <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid item>
-                    <Image src={character} width={138} height={120} />
+                    <Image src={character} width={138} height={110} />
                 </Grid>
                 <Grid item>
                     <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
