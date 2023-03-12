@@ -102,7 +102,7 @@ public class PushTokenService {
     public Subscription toSubscription(AppUser user) {
         PushToken pushToken = pushTokenRepo.findByUser(user);
 
-        if (pushToken == null) {
+        if (pushToken == null || !pushToken.isChatAlarm()) {
             return null;
         }
         Subscription.Keys keys = new Subscription.Keys(pushToken.getP256dh(), pushToken.getAuth());

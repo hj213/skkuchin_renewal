@@ -50,5 +50,4 @@ public class NoticeService {
     public void delete(Long noticeId) {
         noticeRepo.deleteById(noticeId);
     }
-
 }

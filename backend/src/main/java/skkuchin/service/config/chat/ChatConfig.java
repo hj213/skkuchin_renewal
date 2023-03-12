@@ -19,8 +19,6 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import skkuchin.service.domain.Chat.ChatRoom;
-import skkuchin.service.service.ChatRoomService;
 import skkuchin.service.service.ChatSessionService;
 
 
@@ -28,8 +26,6 @@ import skkuchin.service.service.ChatSessionService;
 @RequiredArgsConstructor
 @EnableWebSocketMessageBroker
 public class ChatConfig implements WebSocketMessageBrokerConfigurer {
-
-
     private final ChatErrorHandler chatErrorHandler;
     private final ChatSessionService chatSessionService;
 
@@ -42,7 +38,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${rabbitmq.password}")
     private String password;
 
-
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/chat").setAllowedOriginPatterns("*").withSockJS();
@@ -52,7 +47,6 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-
         registry.setPathMatcher(new AntPathMatcher("."));
         registry.setApplicationDestinationPrefixes("/app");
         registry.setPreservePublishOrder(true);
@@ -61,9 +55,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 .setRelayPort(port)
                 .setClientLogin(username)
                 .setClientPasscode(password);
-
     }
-
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
@@ -76,6 +68,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 System.out.println(accessor);
 
              if (accessor.getCommand().equals(StompCommand.SUBSCRIBE)) {
+                 System.out.println(accessor.getCommand());
                 String sessionId = accessor.getSessionId();
                 String token = accessor.getFirstNativeHeader("pushToken");
                  String username = getUserNameFromJwt(token);
@@ -94,12 +87,10 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                      chatSessionService.deleteSession(sessionId);
                  }
              }
-
              return message;
             }
         });
     }
-
 
     public String getUserNameFromJwt(String jwt){
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());

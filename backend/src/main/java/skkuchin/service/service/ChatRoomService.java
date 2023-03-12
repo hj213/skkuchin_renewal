@@ -53,6 +53,21 @@ public class ChatRoomService {
     }
 
     @Transactional
+    public void makeAdminRoom(ChatRoomDto.AdminRoomRequest dto){
+        AppUser user1 = userRepo.findById(dto.getUser1Id()).orElseThrow();
+        AppUser user2 = userRepo.findById(dto.getUser2Id()).orElseThrow();
+
+        ChatRoom chatRoom = dto.toEntity(user1, user2);
+        String roomId = UUID.randomUUID().toString();
+
+        chatRoom.setRoomId(roomId);
+        chatRoom.setResponse(ResponseType.ACCEPT);
+        chatRoom.setUser1Alarm(true);
+        chatRoom.setUser2Alarm(true);
+        chatRoomRepo.save(chatRoom);
+    }
+
+    @Transactional
     public void user2Accept(String roomId, AppUser user, ResponseType responseType){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
@@ -230,7 +245,7 @@ public class ChatRoomService {
         }
         LocalDateTime time = chatRoom.getMeetTime();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 (E) HH:mm", Locale.KOREAN);
         String timeStr = time.format(formatter);
 
         AppUser admin = userRepo.findByUsername("admin");

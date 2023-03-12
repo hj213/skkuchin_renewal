@@ -60,7 +60,7 @@ public class ChatMessageDto {
         private boolean readStatus;
         @JsonProperty
         private String roomId;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "a hh:mm", locale = "ko-KR")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "a hh:mm", locale = "ko-KR", timezone = "Asia/Seoul")
         private LocalDateTime time;
         @JsonProperty
         private String date;
