@@ -18,7 +18,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
-import { load_token } from '../actions/pushToken/pushToken';
+import { load_token, set_chat_push } from '../actions/pushToken/pushToken';
 
 export default function myPage() {
     const dispatch = useDispatch();
@@ -26,6 +26,9 @@ export default function myPage() {
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const pushToken = useSelector(state => state.pushToken.pushToken);
+
+    const [chatAlarm, setChatAlarm] = useState(false);
+    const [infoAlarm, setInfoAlarm] = useState(false);
     
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
@@ -51,21 +54,38 @@ export default function myPage() {
         setDialogOpen(false);
     }
 
-    const handleChatToggle = () => {
+    const handleChatToggle = (e) => {
         if (pushToken) {
-            console.log(pushToken);
+            
         }
         console.log("clicked");
     }
 
+    const handleNoticeToggle = (e) => {
+        console.log("notice clicked")
+    }
+
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_token());
+            dispatch(load_token(([result, message]) => {
+                if (result) {
+                    
+                } else {
+                    console.log(message);
+                }
+            }));
         }
     }, [])
 
+    useEffect(() => {
+        if (pushToken) {
+            setChatAlarm(pushToken.chatAlarm);
+            setInfoAlarm(pushToken.infoAlarm);
+        }
+    }, [pushToken])
+
     const IOSSwitch = styled((props) => (
-        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onChange={handleChatToggle} />
+        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} checked={chatAlarm} />
         ))(({ theme }) => ({
             width: 40,
             height: 22,
@@ -150,7 +170,7 @@ export default function myPage() {
                     {/* 토글 스위치 */}
                     <FormControlLabel
                         style={{paddingTop:"2px", marginTop:'-5px'}}
-                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} />}
+                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} onClick={handleChatToggle} />}
                     />
                 </div>
                 
@@ -159,7 +179,7 @@ export default function myPage() {
                     {/* 토글 스위치 */}
                     <FormControlLabel
                         style={{paddingTop:"2px", marginTop:'-5px'}}
-                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} />}
+                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} onChange={handleNoticeToggle} />}
                     />
                 </div>
             </Container>
