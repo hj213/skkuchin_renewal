@@ -18,12 +18,14 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
+import { load_token } from '../actions/pushToken/pushToken';
 
 export default function myPage() {
     const dispatch = useDispatch();
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const pushToken = useSelector(state => state.pushToken.pushToken);
     
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
@@ -49,8 +51,21 @@ export default function myPage() {
         setDialogOpen(false);
     }
 
+    const handleChatToggle = () => {
+        if (pushToken) {
+            console.log(pushToken);
+        }
+        console.log("clicked");
+    }
+
+    useEffect(() => {
+        if(dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(load_token());
+        }
+    }, [])
+
     const IOSSwitch = styled((props) => (
-        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+        <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onChange={handleChatToggle} />
         ))(({ theme }) => ({
             width: 40,
             height: 22,
