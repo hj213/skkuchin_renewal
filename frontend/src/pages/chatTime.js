@@ -30,6 +30,11 @@ export default function chatTime(){
     const now = new Date();
     const format = 'HH:mm';
     const defaultValue = dayjs().format(format);
+    const innerHeight = window.innerHeight;
+    const height = (window.innerHeight - 550) / 2;
+    const height2 = (window.innerHeight - 500) / 2;
+    const height3 = (window.innerHeight - 400) / 2;
+
 
     const [date, setDate] = useState(meetTime ? new Date(meetTime.replace(/\./g, '/')) : now);
     const [calendarOpen, setCalendarOpen] = useState(false);
@@ -159,7 +164,7 @@ export default function chatTime(){
                     </Container>
             
                     
-                    <div style={{ position:'fixed',width:'100%', maxWidth:'600px',margin:'0px 0px 0px 0px'}}>
+                    <div style={{ position:'fixed',width:'100%', maxWidth:'600px', marginTop: innerHeight <= 700 ? height : innerHeight <= 800 ? height2 : height3}}>
                         <Slide direction="up" in={calendarOpen} timeout={200} >
                             <Container style={{padding:'0px', width:'100%', position:'relative', zIndex: 1}}>
                                 <Card style={{ position: 'relative', borderRadius:'20px', width:'100%', height:"380px", boxShadow:'0px -10px 20px -5px rgb(0,0,0, 0.1)', paddingTop:'10px', bottom: '0'}}>
@@ -188,7 +193,7 @@ export default function chatTime(){
                                 
                             </Container>
                         </Slide>
-                        <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px', zIndex: calendarOpen ? 0 : 2}}>
+                        <Container style={{justifyContent:'center', position:'absolute',bottom: 0, width:'100%', maxWidth:'600px', zIndex: calendarOpen ? 0 : 2}}>
                             <div onClick={handleSubmit} style={{ textAlign:'center', marginBottom:'53px', cursor: 'pointer'}}>
                                 <Image src={check} width={300} height={56} placeholder="blur" layout='fixed' />
                             </div>
