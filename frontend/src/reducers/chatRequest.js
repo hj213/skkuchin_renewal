@@ -1,6 +1,8 @@
 import {
     GET_REALTIME_REQUEST_SUCCESS,
-    GET_REALTIME_REQUEST_FAIL
+    GET_REALTIME_REQUEST_FAIL,
+    GET_CHAT_REQUEST_INFO_SUCCESS,
+    GET_CHAT_REQUEST_INFO_FAIL
 } from '../actions/chat/types'
 
 const initialState = {
@@ -20,6 +22,14 @@ const chatRequestReducer = (state= initialState, action) => {
             return {
                 ...state,
                 chatRequest: null
+            }
+        case GET_CHAT_REQUEST_INFO_SUCCESS:
+            return {
+                ...state
+            }
+        case GET_CHAT_REQUEST_INFO_FAIL:
+            return {
+                ...state
             }
         default:
             return state;
