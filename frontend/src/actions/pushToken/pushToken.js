@@ -89,7 +89,6 @@ export const enroll_token = (subscription, callback) => async dispatch => {
             await dispatch({
                 type: ENROLL_PUSHTOKEN_SUCCESS
             });
-            dispatch(load_token());
 
             if (callback) callback([true, apiRes.message]);
         } else {
