@@ -181,7 +181,6 @@ const PlacePage = () => {
                 iconVisibility:'visible'
             });
         } 
-        // console.log(scroll);
     };
 
 

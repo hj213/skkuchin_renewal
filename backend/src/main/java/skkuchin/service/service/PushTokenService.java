@@ -32,7 +32,6 @@ public class PushTokenService {
     private String publicKey;
     @Value("${vapid.private.key}")
     private String privateKey;
-
     private final PushTokenRepo pushTokenRepo;
     private PushService pushService;
 
@@ -47,10 +46,10 @@ public class PushTokenService {
     }
 
     @Transactional
-    public void sendNotification(Subscription subscription, String title, String body) {
+    public void sendNotification(Subscription subscription, String title, String message) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String messageJson = objectMapper.writeValueAsString(Map.of("title", title, "body", body));
+            String messageJson = objectMapper.writeValueAsString(Map.of("title", title, "message", message));
             pushService.send(new Notification(subscription, messageJson));
         } catch (GeneralSecurityException | IOException | JoseException | ExecutionException
                  | InterruptedException e) {
@@ -72,12 +71,12 @@ public class PushTokenService {
         PushToken existingToken = pushTokenRepo.findByUser(user);
         PushToken pushToken = dto.toEntity(user);
         if (existingToken != null) {
+            pushToken.setInfoAlarm(existingToken.isInfoAlarm());
+            pushToken.setChatAlarm(existingToken.isChatAlarm());
             pushTokenRepo.delete(existingToken);
-        } else {
-            pushToken.setInfoAlarm(true);
-            pushToken.setChatAlarm(true);
         }
         pushTokenRepo.save(pushToken);
+        sendNotification(dto.getSubscription(), "저장 완료", "히히");
     }
 
     @Transactional
@@ -98,5 +97,17 @@ public class PushTokenService {
         }
         existingToken.setInfoAlarm(status);
         pushTokenRepo.save(existingToken);
+    }
+
+    @Transactional
+    public Subscription toSubscription(AppUser user) {
+        PushToken pushToken = pushTokenRepo.findByUser(user);
+
+        if (pushToken == null) {
+            return null;
+        }
+        Subscription.Keys keys = new Subscription.Keys(pushToken.getP256dh(), pushToken.getAuth());
+        Subscription subscription = new Subscription(pushToken.getEndpoint(), keys);
+        return subscription;
     }
 }

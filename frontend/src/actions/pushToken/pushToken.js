@@ -7,15 +7,17 @@ import {
     LOAD_PUSHTOKEN_SUCCESS,
     ENROLL_PUSHTOKEN_FAIL,
     ENROLL_PUSHTOKEN_SUCCESS,
-    MODIFY_PUSHTOKEN_FAIL,
-    MODIFY_PUSHTOKEN_SUCCESS
+    SET_CHAT_PUSH_SUCCESS,
+    SET_CHAT_PUSH_FAIL,
+    SET_INFO_PUSH_SUCCESS,
+    SET_INFO_PUSH_FAIL
 } from './types'
 
 export const load_token = (callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
-    if (access === nuwll) {
+    if (access === null) {
         console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
@@ -27,6 +29,7 @@ export const load_token = (callback) => async dispatch => {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
             }
         });
 
@@ -105,7 +108,7 @@ export const enroll_token = (subscription, callback) => async dispatch => {
     }
 };
 
-export const modify_token = (subscription, isInfoAlarmOn, isChatAlarmOn, callback) => async dispatch => {
+export const set_chat_push = (chat, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -117,7 +120,57 @@ export const modify_token = (subscription, isInfoAlarmOn, isChatAlarmOn, callbac
     }
 
     const body = JSON.stringify({
-        subscription, isInfoAlarmOn, isChatAlarmOn
+        chat
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/push/chat`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            await dispatch({
+                type: SET_CHAT_PUSH_SUCCESS
+            });
+            dispatch(load_token());
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: SET_CHAT_PUSH_FAIL
+            });
+
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: SET_CHAT_PUSH_FAIL
+        });
+
+        if (callback) callback([false, error]);
+    }
+};
+
+export const set_info_push = (info) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const body = JSON.stringify({
+        info
     });
 
     try {
@@ -135,20 +188,20 @@ export const modify_token = (subscription, isInfoAlarmOn, isChatAlarmOn, callbac
 
         if (res.status === 200) {
             await dispatch({
-                type: MODIFY_PUSHTOKEN_SUCCESS
+                type: SET_INFO_PUSH_SUCCESS
             });
             dispatch(load_token());
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
-                type: MODIFY_PUSHTOKEN_FAIL
+                type: SET_INFO_PUSH_FAIL
             });
 
             if (callback) callback([false, apiRes.message]);
         }
     } catch(error) {
         dispatch({
-            type: MODIFY_PUSHTOKEN_FAIL
+            type: SET_INFO_PUSH_FAIL
         });
 
         if (callback) callback([false, error]);

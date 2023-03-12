@@ -92,10 +92,8 @@ const MyReviewPage = () => {
         const review = reviews.find(item => item.id == reviewId);
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
-                // alert("Delete 요청 result: " + result);    
                 dispatch(load_review());
             } else {
-                // alert("실패!: " +message);
             }
         }));
     } 

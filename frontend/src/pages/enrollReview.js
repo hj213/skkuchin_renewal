@@ -145,14 +145,11 @@ const EnrollReview = () => {
         
         dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
             if(result){
-                // alert 삭제
-                // alert ("POST 요청 result: " + message)
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }
                 });                  
             } else {
-                // alert 틀 바꿔야함
                 console.log("실패!: " +message);
             }
         }));

@@ -232,7 +232,7 @@ export default function MessageTab() {
                   <li >
                     <Grid onClick={()=>handleOpen(chatRequest)} container style={{width:"100%",padding:"13.5px 0 13.5px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} on>
                         <Grid xs={2}>
-                            <Avatar alt="" src={profile} style={{ width: '55px', height: '55px' }}/>
+                            <Avatar alt="" style={{ width: '55px', height: '55px' }}/>
                         </Grid>
                         <Grid xs={8}>
                             <Stack direction="column" spacing={1} sx={{margin:"4px 0 0 8px"}}>

@@ -12,28 +12,17 @@ public class PushTokenDto {
     @Getter
     @Setter
     public static class PostRequest {
-        private String endpoint;
-        private Keys keys;
-
-        @Getter
-        @Setter
-        public static class Keys {
-            private String p256dh;
-            private String auth;
-        }
+        private Subscription subscription;
 
         public PushToken toEntity(AppUser user) {
             return PushToken.builder()
-                    .endpoint(this.endpoint)
-                    .p256dh(this.keys.p256dh)
-                    .auth(this.keys.auth)
+                    .endpoint(this.subscription.endpoint)
+                    .p256dh(this.subscription.keys.p256dh)
+                    .auth(this.subscription.keys.auth)
                     .user(user)
+                    .ChatAlarm(true)
+                    .infoAlarm(true)
                     .build();
-        }
-
-        public Subscription toSubscription(AppUser user) {
-            Subscription.Keys keys = new Subscription.Keys(this.keys.p256dh, this.keys.auth);
-            return new Subscription(this.endpoint, keys);
         }
     }
 

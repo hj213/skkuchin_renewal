@@ -18,7 +18,6 @@ export default function resetPassword() {
     const [email, setEmail] = useState("");
 
     const handleNextStep = () => {
-        // console.log("zz");
         setStep(step + 1);
     }
     

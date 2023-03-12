@@ -84,7 +84,6 @@ const ReviewsPage = () => {
     const handleDelete = (reviewId) =>{
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
-                // alert("Delete 요청 result: " + result);     
                 dispatch(load_reviews(place_id));
             } else {
                 console.log("실패!: " +message);

@@ -129,13 +129,10 @@ const chatPage = () => {
     };
 
     const handleConfirmBlockUser = () => {
-        // alert(isBlocked);
         dispatch(
             set_user_block(!friendBlocked, room_id, ([result, message]) => {
                 if (result) {
-                    // alert("set_user_block 성공!");
                 } else {
-                    // alert("set_user_block 실패 " + message);
                 }
             })
         );
@@ -150,12 +147,10 @@ const chatPage = () => {
     };
 
     const handleConfirmExit = () => {
-        alert(room_id);
         dispatch(exit_room(room_id, ([result, message])=>{
             if(result){
                 router.push('/message');
             } else {
-                // alert("exit_room 실패 " +message);
             }
         }));
         setExitDialog(false);
@@ -172,9 +167,7 @@ const chatPage = () => {
     const handleAlarm = () => {
         dispatch(set_chat_room_alarm(!isAlarmOn, room_id, ([result, message]) => {
             if(result) {
-                // alert('set_chat_room_alarm 성공!');
             } else {
-                // alert('set_chat_room_alarm ' + message);
             }
         }));
     };
@@ -195,10 +188,8 @@ const chatPage = () => {
 
     const handleSubmit = (message) => {
         dispatch(send_message(message, room_id, ([result, message])=>{
-            if(result){
-                // alert('send 성공!');           
+            if(result){     
             } else {
-                // alert("send 실패 " +message);
             }
         }));
         setInputMessage('');
@@ -446,102 +437,120 @@ const chatPage = () => {
                         // displayTime = false; 
                     }
                     return (
-                        (message.sender === user.username) ? (
-                        <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
-                            <Grid item sx={{pr:"7px"}}>
-                            <Stack direction="column" spacing={1}>
-                                <Grid style={{display:'flex'}}>
-                                <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
-                                    <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                        {
-                                            (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
-                                        }
-                                    </Typography>
-                                    <Card elevation="none" sx={{
-                                        borderRadius: '15px 0px 15px 15px',
-                                        backgroundColor:'#FFE885',
-                                        maxWidth:'80%',
-                                    }}>
-                                    <Typography style={{
-                                        padding:'5px 10px 6px 10px',
-                                        fontSize: '14px',
-                                        maxWidth:'100%',
-                                    }}>
-                                        {message.message}
-                                    </Typography>
-                                    </Card>
-                                </Grid>
-                                </Grid>
-                            </Stack>
-                            </Grid>
-                        </Grid>
-                        )  : (message.sender === 'admin') ? (
-                        <Grid
-                            sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            margin:"22px 0 0 0"
-                            }}
-                        >
-                            <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-                                <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
-                                    <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
-                                        <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                            {/* {otherUser && otherUser.nickname} 님과  */}
-                                            {message.message.split('요.').map((text, index, arr) => (
-                                                <React.Fragment key={index}>
-                                                {text}{index !== arr.length - 1 && '요.'}<br />
-                                                </React.Fragment>
-                                            ))}
+                        <div>
+                            {
+                                (!prevMessage || (prevMessage.date !== message.date))
+                                ?
+                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <Grid>
+                                        <Typography sx={{fontSize:'12px', color:'#A1A1A1'}}>
+                                            {message.date}
                                         </Typography>
                                     </Grid>
                                 </div>
-                            </Grid>
-                        </Grid>
-                        ) : (
-                        <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
-                            {displayAvatar && (
-                                <Grid item>
-                                    {otherUser && displayProfile(otherUser.image, 40, 40)}
-                                </Grid>
-                            )}
-                                <Grid item sx={{pl:"7px", pt: '3px', ml : displayAvatar ? 0 : '40px'}}>
-                                    <Stack direction="column" spacing={1}>
-                                        {displayAvatar && 
-                                            <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top'}} align="left">
-                                                {otherUser && otherUser.nickname}
-                                            </Typography>
-                                        }
-                                        <Grid style={{display:'flex'}}>
-                                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
-                                                <Card elevation="none" style={{
-                                                    borderRadius: '0px 15px 15px 15px',
-                                                    backgroundColor:'white',
-                                                    border:'1px solid #FFCE00',
-                                                    maxWidth:'75%'
-                                                }}>
-                                                    <Typography
-                                                        style={{
-                                                        padding:'5px 10px 6px 10px',
-                                                        fontSize: '14px',
-                                                        maxWidth:'100%'
-                                                        }}>
-                                                        {message.message}
-                                                    </Typography>
-                                                </Card>
-                                                <Grid>
-                                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                : 
+                                null
+                            }
+                            {
+                                (message.sender === user.username) ? (
+                                    <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
+                                        <Grid item sx={{pr:"7px"}}>
+                                        <Stack direction="column" spacing={1}>
+                                            <Grid style={{display:'flex'}}>
+                                            <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
+                                                <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
                                                     {
                                                         (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
                                                     }
                                                 </Typography>
+                                                <Card elevation={0} sx={{
+                                                    borderRadius: '15px 0px 15px 15px',
+                                                    backgroundColor:'#FFE885',
+                                                    maxWidth:'80%',
+                                                }}>
+                                                <Typography style={{
+                                                    padding:'5px 10px 6px 10px',
+                                                    fontSize: '14px',
+                                                    maxWidth:'100%',
+                                                }}>
+                                                    {message.message}
+                                                </Typography>
+                                                </Card>
                                             </Grid>
+                                            </Grid>
+                                        </Stack>
                                         </Grid>
                                     </Grid>
-                                </Stack>
-                            </Grid>
-                        </Grid>
-                    ))
+                                    )  : (message.sender === 'admin') ? (
+                                    <Grid
+                                        sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        margin:"22px 0 0 0"
+                                        }}
+                                    >
+                                        <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
+                                            <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
+                                                <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
+                                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                                        {/* {otherUser && otherUser.nickname} 님과  */}
+                                                        {message.message.split('요.').map((text, index, arr) => (
+                                                            <React.Fragment key={index}>
+                                                            {text}{index !== arr.length - 1 && '요.'}<br />
+                                                            </React.Fragment>
+                                                        ))}
+                                                    </Typography>
+                                                </Grid>
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                    ) : (
+                                    <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
+                                        {displayAvatar && (
+                                            <Grid item>
+                                                {otherUser && displayProfile(otherUser.image, 40, 40)}
+                                            </Grid>
+                                        )}
+                                            <Grid item sx={{pl:"7px", pt: '3px', ml : displayAvatar ? 0 : '40px'}}>
+                                                <Stack direction="column" spacing={1}>
+                                                    {displayAvatar && 
+                                                        <Typography sx={{fontSize: '12px', fontWeight:'700', verticalAlign: 'top'}} align="left">
+                                                            {otherUser && otherUser.nickname}
+                                                        </Typography>
+                                                    }
+                                                    <Grid style={{display:'flex'}}>
+                                                        <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
+                                                            <Card elevation={0} style={{
+                                                                borderRadius: '0px 15px 15px 15px',
+                                                                backgroundColor:'white',
+                                                                border:'1px solid #FFCE00',
+                                                                maxWidth:'75%'
+                                                            }}>
+                                                                <Typography
+                                                                    style={{
+                                                                    padding:'5px 10px 6px 10px',
+                                                                    fontSize: '14px',
+                                                                    maxWidth:'100%'
+                                                                    }}>
+                                                                    {message.message}
+                                                                </Typography>
+                                                            </Card>
+                                                            <Grid>
+                                                            <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
+                                                                {
+                                                                    (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
+                                                                }
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </Stack>
+                                        </Grid>
+                                    </Grid>
+                                )
+                            }
+                        </div>
+                    )
                 })}
                 </Grid>
 

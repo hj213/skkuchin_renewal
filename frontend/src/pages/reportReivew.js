@@ -22,9 +22,6 @@ export default function reportReview(){
     const reviews = useSelector(state => state.review.review);
     const reportReview = reviews && reviews.find(review => review.id == reviewId);
 
-    useEffect(()=>{
-        console.log(reportReview);
-    },[])
     const handleBack = (e) => {
         router.back();
     }
@@ -58,10 +55,9 @@ export default function reportReview(){
 
     const handleSubmit = () => {
         const selectedTag = Object.keys(tagChoose).find(tag => tagChoose[tag]);
-        console.log(selectedTag, content, reviewId);
+        
         dispatch(enroll_report(selectedTag, content, reviewId, null, ([result, message])=>{
             if(result){
-                alert("enroll_report 요청 성공: " + result);    
                 router.back();
             } else {
                 console.log("실패!: " +message);

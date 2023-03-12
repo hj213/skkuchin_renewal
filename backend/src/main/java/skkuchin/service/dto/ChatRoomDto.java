@@ -137,7 +137,7 @@ public class ChatRoomDto {
 
         private String formatDate(LocalDateTime date) {
             if (date != null) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm", Locale.KOREAN);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd (E) HH:mm", Locale.KOREAN);
                 return date.format(formatter);
             }
             return null;
