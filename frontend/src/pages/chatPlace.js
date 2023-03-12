@@ -68,13 +68,12 @@ export default function chatPlace(){
     }
 
     const handleBack = (e) => {
-        router.push({
-            pathname: '/chat',
+        router.back({ 
             query: { 
-                roomId : room_id,
+                room_id : room_id,
                 user_number: user_number
             }
-        })
+        });
     }
 
     const handleDownClick = (e) => {
@@ -96,13 +95,12 @@ export default function chatPlace(){
             } else {
             }
         }));
-        router.push({
-            pathname: '/chat',
+        router.back({ 
             query: { 
-                roomId : room_id,
+                room_id : room_id,
                 user_number: user_number
             }
-        })
+        });
     };
     const handleSubmit = () => {
         dispatch(set_meet_place(value, room_id, ([result, message]) => {
@@ -110,13 +108,12 @@ export default function chatPlace(){
             } else {
             }
         }));
-        router.push({
-            pathname: '/chat',
+        router.back({ 
             query: { 
-                roomId : room_id,
+                room_id : room_id,
                 user_number: user_number
             }
-        })
+        });
     }
 
     return(

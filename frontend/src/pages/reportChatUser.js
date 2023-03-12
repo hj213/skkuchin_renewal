@@ -26,8 +26,7 @@ export default function reportChatUser(){
     const user_number = router.query.user_number;
 
     const handleBack = (e) => {
-        router.push({
-            pathname: '/chat',
+        router.back({ 
             query: { 
                 room_id : room_id,
                 user_number: user_number
@@ -66,9 +65,14 @@ export default function reportChatUser(){
     const handleSubmit = () => {
         const selectedTag = Object.keys(tagChoose).find(tag => tagChoose[tag]);
         
-        dispatch(enroll_report(selectedTag, content, null, roomId, ([result, message])=>{
+        dispatch(enroll_report(selectedTag, content, null, room_id, ([result, message])=>{
             if(result){
-                router.back();
+                router.back({ 
+                    query: { 
+                        room_id : room_id,
+                        user_number: user_number
+                    }
+                })
             } else {
                 console.log("실패!: " +message);
             }

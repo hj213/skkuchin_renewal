@@ -53,10 +53,9 @@ export default function chatTime(){
     
 
     const handleBack = () => {
-        router.push({
-            pathname: '/chat',
+        router.back({ 
             query: { 
-                roomId : room_id,
+                room_id : room_id,
                 user_number: user_number
             }
         })
@@ -82,10 +81,9 @@ export default function chatTime(){
             } else {
             }
         }));
-        router.push({
-            pathname: '/chat',
+        router.back({ 
             query: { 
-                roomId : room_id,
+                room_id : room_id,
                 user_number: user_number
             }
         })
@@ -98,10 +96,9 @@ export default function chatTime(){
             } else {
             }
         }));
-        router.push({
-            pathname: '/chat',
+        router.back({ 
             query: { 
-                roomId : room_id,
+                room_id : room_id,
                 user_number: user_number
             }
         })

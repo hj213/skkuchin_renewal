@@ -10,25 +10,25 @@ const Friends = () => {
     const candidate = useSelector(state => state.candidate.candidate);
     const requestId = useSelector(state => state.chatRoom.requestId);
 
-    useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_request_id(([result, message]) => {
-                if (result) {
-                    dispatch(load_candidate(([result, message]) => {
-                        if (result) {
-                        } else {
-                            if (typeof(message) == 'string') {
-                                setDialogMsg(message);
-                            }
-                        }
-                        setDialogOpen2(true);
-                    }));
-                } else {
-                }
+    // useEffect(() => {
+    //     if (dispatch && dispatch !== null && dispatch !== undefined) {
+    //         dispatch(load_request_id(([result, message]) => {
+    //             if (result) {
+    //                 dispatch(load_candidate(([result, message]) => {
+    //                     if (result) {
+    //                     } else {
+    //                         if (typeof(message) == 'string') {
+    //                             setDialogMsg(message);
+    //                         }
+    //                     }
+    //                     setDialogOpen2(true);
+    //                 }));
+    //             } else {
+    //             }
                 
-            }))
-        }
-    }, []);
+    //         }))
+    //     }
+    // }, []);
     
 
     const [height, setHeight] = useState('383px');

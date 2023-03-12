@@ -111,7 +111,6 @@ export const enroll_token = (subscription, callback) => async dispatch => {
 export const set_chat_push = (chat, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
-    console.log(access);
 
     if (access === null) {
         console.log('access 토큰이 존재하지 않습니다')
@@ -136,7 +135,6 @@ export const set_chat_push = (chat, callback) => async dispatch => {
         });
 
         const apiRes = await res.json();
-        console.log(apiRes);
 
         if (res.status === 200) {
             await dispatch({
@@ -160,7 +158,7 @@ export const set_chat_push = (chat, callback) => async dispatch => {
     }
 };
 
-export const set_info_push = (info) => async dispatch => {
+export const set_info_push = (info, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -176,7 +174,7 @@ export const set_info_push = (info) => async dispatch => {
     });
 
     try {
-        const res = await fetch(`${API_URL}/api/push`, {
+        const res = await fetch(`${API_URL}/api/push/info`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

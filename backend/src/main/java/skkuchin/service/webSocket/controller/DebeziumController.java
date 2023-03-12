@@ -9,6 +9,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
+import skkuchin.service.domain.Chat.ResponseType;
 import skkuchin.service.dto.ChatMessageDto;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.dto.DebeziumDto;
@@ -123,17 +124,30 @@ public class DebeziumController {
 
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user1",settingResponse);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user2",settingResponse);
-
+        
         if (dto.getPayload().getOp().equals("c")) {
-            AppUser user = chatRoom.getUser2();
-
             String pushTitle = "스꾸친";
             String pushMessage = "새로운 밥약 신청이 도착했습니다!";
 
-            Subscription subscription = pushTokenService.toSubscription(user);
+            Subscription subscription = pushTokenService.toSubscription(user2);
 
             if (subscription != null) {
                 pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+            }
+        } else if (dto.getPayload().getOp().equals("u")) {
+            if (
+                dto.getPayload().getBefore().getResponse() == ResponseType.HOLD
+                &&
+                dto.getPayload().getAfter().getResponse() == ResponseType.ACCEPT
+            ) {
+                String pushTitle = "스꾸친";
+                String pushMessage = "밥약이 성사되었습니다!";
+
+                Subscription subscription = pushTokenService.toSubscription(user1);
+
+                if (subscription != null) {
+                    pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+                }
             }
         }
     }

@@ -66,13 +66,14 @@ export default function myPage() {
         }
     }
 
+    
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_token(([result, message]) => {
                 if (result) {
-                    
                 } else {
-                    console.log(message);
+                    setChatAlarm(false);
+                    setInfoAlarm(false);
                 }
             }));
         }
@@ -80,8 +81,8 @@ export default function myPage() {
 
     useEffect(() => {
         if (pushToken) {
-            setChatAlarm(pushToken.chatAlarm);
-            setInfoAlarm(pushToken.infoAlarm);
+            setChatAlarm(pushToken.chat_alarm);
+            setInfoAlarm(pushToken.info_alarm);
         }
     }, [pushToken])
 
