@@ -500,13 +500,6 @@ const chatPage = () => {
                                         <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
                                             <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
                                                 <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
-                                                    {/* <Typography sx={{fontSize: '10px'}}>
-                                                        {message.message.split('요.').map((text, idx, arr) => (
-                                                            <React.Fragment key={idx}>
-                                                            {text}{idx !== arr.length - 1 && '요.'}<br />
-                                                            </React.Fragment>
-                                                        ))}
-                                                    </Typography> */}
                                                     <Typography sx={{fontSize: '10px'}}>
                                                         {message.message.startsWith('우리') ? 
                                                         <>
