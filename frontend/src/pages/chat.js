@@ -126,6 +126,7 @@ const chatPage = () => {
     const handleCloseDialog = () => {
         setBlockDialog(false);
         setExitDialog(false);
+        handleClose();
     };
 
     const handleConfirmBlockUser = () => {
@@ -136,6 +137,7 @@ const chatPage = () => {
                 }
             })
         );
+        handleClose();
         setBlockDialog(false);
     };
     
@@ -170,6 +172,7 @@ const chatPage = () => {
             } else {
             }
         }));
+        handleClose();
     };
 
     
@@ -203,19 +206,22 @@ const chatPage = () => {
             {label: '신고하기', onClick: handleReportUser},
             {label: '채팅방 나가기', onClick: handleExit},
         ];
+    
     const lastMessageRef = useRef(null);
 
-    useLayoutEffect(()  => {
+    useEffect(() => {
         if (lastMessageRef.current) {
-            lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+            lastMessageRef.current.scrollTo({bottom: '0px'});
         }
     }, []);
 
-    useEffect(()  => {
-        if (lastMessageRef.current) {
-            lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-        }
+        
+    useEffect(() => {
+    if (lastMessageRef.current && messages.length > 0) {
+        lastMessageRef.current.scrollIntoView({bottom: '0px'});
+    }
     }, [messages]);
+
 
     return(
         <ThemeProvider theme={theme}>
@@ -347,7 +353,7 @@ const chatPage = () => {
                 <DialogActions sx={{p:'0'}}>
                     <div style={{width: '100%', paddingBottom: '20px'}}>
                         <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleCloseDialog}>취소</Button>
-                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}} onClick={handleConfirmBlockUser}>차단</Button>
+                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0'}} onClick={handleConfirmBlockUser}>{friendBlocked ? '차단 해제' : '차단'}</Button>
                     </div>
                 </DialogActions>
             </Dialog>
@@ -437,7 +443,7 @@ const chatPage = () => {
                         // displayTime = false; 
                     }
                     return (
-                        <div>
+                        <div key={message.id}>
                             {
                                 (!prevMessage || (prevMessage.date !== message.date))
                                 ?
@@ -453,7 +459,9 @@ const chatPage = () => {
                             }
                             {
                                 (message.sender === user.username) ? (
-                                    <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
+                                    <Grid
+                                    ref={messages.length - 1 === index ? lastMessageRef : null} 
+                                    style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
                                         <Grid item sx={{pr:"7px"}}>
                                         <Stack direction="column" spacing={1}>
                                             <Grid style={{display:'flex'}}>
@@ -469,8 +477,9 @@ const chatPage = () => {
                                                 <Typography style={{
                                                     padding:'5px 10px 6px 10px',
                                                     fontSize: '14px',
-                                                    maxWidth:'100%',
-                                                }}>
+                                                    maxWidth:'100%',                                                    
+                                                }}
+                                                >
                                                     {message.message}
                                                 </Typography>
                                                 </Card>
@@ -486,24 +495,61 @@ const chatPage = () => {
                                         flexDirection: 'column',
                                         margin:"22px 0 0 0"
                                         }}
+                                        ref={messages.length - 1 === index ? lastMessageRef : null} 
                                     >
                                         <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
                                             <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
                                                 <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
-                                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
-                                                        {/* {otherUser && otherUser.nickname} 님과  */}
-                                                        {message.message.split('요.').map((text, index, arr) => (
-                                                            <React.Fragment key={index}>
-                                                            {text}{index !== arr.length - 1 && '요.'}<br />
+                                                    {/* <Typography sx={{fontSize: '10px'}}>
+                                                        {message.message.split('요.').map((text, idx, arr) => (
+                                                            <React.Fragment key={idx}>
+                                                            {text}{idx !== arr.length - 1 && '요.'}<br />
                                                             </React.Fragment>
                                                         ))}
+                                                    </Typography> */}
+                                                    <Typography sx={{fontSize: '10px'}}>
+                                                        {message.message.startsWith('우리') ? 
+                                                        <>
+                                                            {'우리 '}
+                                                            <b>
+                                                            {message.message.substring(
+                                                                message.message.indexOf('우리 ') + 3,
+                                                                message.message.indexOf('에서')
+                                                            )}
+                                                            </b>
+                                                            {message.message.substring(
+                                                                message.message.indexOf('에서')
+                                                            )}
+                                                        </>
+                                                          : message.message.includes('약속을 만들었어요.') ? (
+                                                        <>
+                                                            <span style={{ fontWeight: 'bold' }}>
+                                                            {message.message.split('약속을 만들었어요.')[0] }
+                                                            </span>
+                                                            약속을 만들었어요.
+                                                            <br />
+                                                            {message.message.split('약속을 만들었어요.')[1]}
+                                                        </>
+                                                        ) : message.message.includes('약속이 취소되었습니다') ? (
+                                                            <>
+                                                                <span style={{ fontWeight: 'bold' }}>
+                                                                {message.message.split('약속이 취소되었습니다')[0] }
+                                                                </span>
+                                                                약속이 취소되었습니다.
+                                                            </>
+                                                        ) : <>
+                                                            {message.message}
+                                                        </>
+                                                        }
                                                     </Typography>
                                                 </Grid>
                                             </div>
                                         </Grid>
                                     </Grid>
                                     ) : (
-                                    <Grid key={message.id} ref={messages.length - 1 === index ? lastMessageRef : null} container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
+                                    <Grid 
+                                    ref={messages.length - 1 === index ? lastMessageRef : null} 
+                                    container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
                                         {displayAvatar && (
                                             <Grid item>
                                                 {otherUser && displayProfile(otherUser.image, 40, 40)}
@@ -528,7 +574,7 @@ const chatPage = () => {
                                                                     style={{
                                                                     padding:'5px 10px 6px 10px',
                                                                     fontSize: '14px',
-                                                                    maxWidth:'100%'
+                                                                    maxWidth:'100%',
                                                                     }}>
                                                                     {message.message}
                                                                 </Typography>
@@ -551,7 +597,7 @@ const chatPage = () => {
                 </Grid>
 
                 {/* 텍스트 인풋 필드 & 버튼 */}
-                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px 10px 20px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
+                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '4px 10px 15px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
                     <textarea 
                         name='chat' 
                         placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메세지를 입력하세요.'}
