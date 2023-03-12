@@ -218,7 +218,7 @@ const ModifyReview = () => {
                             zIndex: '4',
                             border: 'none',
                             }}>
-                    <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Grid container style={{padding:'50px 17px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
                             <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} layout='fixed' />
@@ -255,7 +255,7 @@ const ModifyReview = () => {
                             </Grid>
                         }
 
-                            <Grid sx={{width: '100%'}}>
+                            <Grid sx={{width: '100%', marginTop:'10px'}}>
                                 <Grid>
                                 <div style={{ textAlign: "center", margin: '-20px -20px 0', padding: '13px 0px 5px 0px', borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
                                     {[1, 2, 3, 4, 5].map((item, index) => {
