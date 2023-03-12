@@ -22,9 +22,7 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
     useEffect(()=> {
         dispatch(load_other_matching_info(selectedUser, ([result, message])=>{
             if (result) {
-                // alert('load_other_matching_info 성공! ' + result)
             } else {
-                // alert(message);
             }
         }));
     },[])
@@ -39,12 +37,9 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
         onClose();
     }
     const handleRefuse = () => {
-        // alert("신청 거절"+ request.room_id);
         dispatch(reply_chat_request('REFUSE', request.room_id, ([result, message])=>{
             if (result) {
-                // alert('reply_chat_request 거절 성공! ' + result)
             } else {
-                // alert(message);
             }
         }));
         setSubmit(false);
@@ -52,11 +47,9 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
     }
 
     const handleAccept = () => {
-        // alert("신청 수락"+ request.room_id);
 
         dispatch(reply_chat_request("ACCEPT", request.room_id, ([result, message])=>{
             if (result) {
-                // alert('reply_chat_request 수락 성공! ' + result)
                 router.push({
                     pathname: '/chat',
                     query: {
@@ -65,7 +58,6 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
                     }
                 });
             } else {
-                // alert(message);
             }
         }));
         onClose();

@@ -38,14 +38,16 @@ const Layout = ({title, content, children}) => {
                 if (permission === "granted") {
                     getSubscription();
                 }
-            });
+            })
+            .catch((err) => {
+                console.log(err);
+            })
         }
     }
     
     const getSubscription = () => {
         if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
             navigator.serviceWorker.ready.then(reg => {
-                console.log(reg)
                 reg.pushManager.getSubscription().then(sub => {
                     if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
                         console.log(sub)
@@ -69,25 +71,25 @@ const Layout = ({title, content, children}) => {
                 userVisibleOnly: true,
                 applicationServerKey: base64ToUint8Array(WEB_PUSH_PUBLIC_KEY)
             });
-            // dispatch(enroll_token(sub));
+            dispatch(enroll_token(sub));
         } catch (error) {
             console.log(error)
         }
     }
 
-    // useEffect(() => {
-    //     if (isAuthenticated) {
-    //         notify();
-    //     }
-    // }, [isAuthenticated]);
+    useEffect(() => {
+        if (isAuthenticated) {
+            notify();
+        }
+    }, [isAuthenticated]);
 
     let stompClient = null;
-    const Stomp = require("stompjs/lib/stomp.js").Stomp
+    const Stomp = require("stompjs/lib/stomp.js").Stomp;
     const sockJS = new SockJS(`${API_URL}/ws/chat`);
     stompClient = Stomp.over(sockJS);
     stompClient.heartbeat.outgoing = 0;
     stompClient.heartbeat.incoming = 0;
-    // stompClient.debug = null;
+    stompClient.debug = null;
 
     const onError = (e) => {
         connectStompClient();

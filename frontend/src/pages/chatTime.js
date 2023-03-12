@@ -72,22 +72,17 @@ export default function chatTime(){
     const handleDelete = () => {
         dispatch(delete_meet_time(room_id, ([result, message]) => {
             if (result) {
-                // alert('delete_meet_time 성공! ' + result);
             } else {
-                // alert('delete_meet_time 실패! ' + message);
             }
         }));
         router.back();
     };
     const handleSubmit = () => {
         const dateInfo = dayjs(date).format('YYYY-MM-DD')+"T"+changedtime+':00';
-        // alert(dateInfo);
-        // alert(room_id);
+        
         dispatch(set_meet_time(dateInfo, room_id, ([result, message]) => {
             if (result) {
-                // alert('set_meet_time 성공! ' + result);
             } else {
-                // alert('set_meet_time 실패! ' + message);
             }
         }));
         router.back();

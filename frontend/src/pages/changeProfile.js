@@ -169,9 +169,7 @@ export default function makeProfile(){
 
             dispatch(load_matching_info(([result, message]) => {
                 if (result) {
-                    // alert(message);
                 } else {
-                    // alert(message);
                 }
             }));
 
@@ -598,10 +596,8 @@ export default function makeProfile(){
         
         dispatch(change_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
-                    // alert(message);
                     router.back();
                 } else {
-                    // alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
                 }
@@ -650,8 +646,6 @@ export default function makeProfile(){
             setCondition(false);
         }
     }, [gender, keyword, introduction, mbti]);
-
-    // console.log(gender, keyword, introduction, mbti);
    
     return(
         <ThemeProvider theme={theme}>

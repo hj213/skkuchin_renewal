@@ -3,8 +3,10 @@ import {
     LOAD_PUSHTOKEN_FAIL,
     ENROLL_PUSHTOKEN_SUCCESS,
     ENROLL_PUSHTOKEN_FAIL,
-    MODIFY_PUSHTOKEN_SUCCESS,
-    MODIFY_PUSHTOKEN_FAIL
+    SET_CHAT_PUSH_SUCCESS,
+    SET_CHAT_PUSH_FAIL,
+    SET_INFO_PUSH_SUCCESS,
+    SET_INFO_PUSH_FAIL
 } from '../actions/pushToken/types'
 
 const initialState = {
@@ -33,11 +35,19 @@ const pushTokenReducer = (state= initialState, action) => {
             return {
                 ...state
             }
-        case MODIFY_PUSHTOKEN_SUCCESS:
+        case SET_CHAT_PUSH_SUCCESS:
             return {
                 ...state
             }
-        case MODIFY_PUSHTOKEN_FAIL:
+        case SET_CHAT_PUSH_FAIL:
+            return {
+                ...state
+            }
+        case SET_INFO_PUSH_SUCCESS:
+            return {
+                ...state
+            }
+        case SET_INFO_PUSH_FAIL:
             return {
                 ...state
             }

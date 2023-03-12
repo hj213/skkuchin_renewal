@@ -3,11 +3,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import nl.martijndwars.webpush.Subscription;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
+import skkuchin.service.domain.User.PushToken;
 import skkuchin.service.dto.ChatMessageDto;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.dto.DebeziumDto;
@@ -15,9 +17,14 @@ import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
+import skkuchin.service.repo.PushTokenRepo;
+import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.ChatRoomService;
+import skkuchin.service.service.PushTokenService;
+
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +34,7 @@ public class DebeziumController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final ChatRoomRepo chatRoomRepo;
+    private final PushTokenService pushTokenService;
 
     @Transactional
     @KafkaListener(topics = "dbserver.service.chat_message")
@@ -34,8 +42,31 @@ public class DebeziumController {
         System.out.println("kafka consume test topic : "  + message);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DebeziumDto.ChatMessageRequest dto= objectMapper.registerModule(new JavaTimeModule()).readValue(message, DebeziumDto.ChatMessageRequest.class);
+        DebeziumDto.ChatMessageRequest dto = objectMapper.registerModule(new JavaTimeModule()).readValue(message, DebeziumDto.ChatMessageRequest.class);
+
         ChatRoom chatRoom = chatRoomService.findChatById(dto.getPayload().getAfter().getChatRoomId());
+
+        if (dto.getPayload().getOp().equals("c") && !Objects.equals(dto.getPayload().getAfter().getSender(), "admin")) {
+            String sender = dto.getPayload().getAfter().getSender();
+            AppUser user = null;
+
+            String pushTitle = null;
+            String pushMessage = dto.getPayload().getAfter().getMessage();
+
+            if (Objects.equals(chatRoom.getUser1().getUsername(), sender)) {
+                user = chatRoom.getUser2();
+                pushTitle = chatRoom.getUser1().getNickname();
+            } else {
+                user = chatRoom.getUser1();
+                pushTitle = chatRoom.getUser2().getNickname();
+            }
+
+            Subscription subscription = pushTokenService.toSubscription(user);
+
+            if (subscription != null) {
+                pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+            }
+        }
 
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();
@@ -69,6 +100,19 @@ public class DebeziumController {
 
         String roomId = dto.getPayload().getAfter().getRoomId();
         ChatRoom chatRoom = chatRoomService.findChatRoom(roomId);
+
+        if (dto.getPayload().getOp().equals("c")) {
+            AppUser user = chatRoom.getUser2();
+
+            String pushTitle = "스꾸친";
+            String pushMessage = "새로운 밥약 신청이 도착했습니다!";
+
+            Subscription subscription = pushTokenService.toSubscription(user);
+
+            if (subscription != null) {
+                pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+            }
+        }
 
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();

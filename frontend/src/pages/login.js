@@ -46,14 +46,12 @@ const LoginPage = () => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(login(username, password, ([result, message]) => {
                 if (result) {
-                    //alert(message)
                     if (rememberUsername) {
                         localStorage.setItem("username", username);
                     } else {
                         localStorage.removeItem("username");
                     }
                 } else {
-                    //alert(message)
                     if (message == '이메일 등록이 필요한 유저입니다') {
                         router.push({
                             pathname: '/register', 

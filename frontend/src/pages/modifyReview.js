@@ -165,14 +165,12 @@ const ModifyReview = () => {
         
         dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
             if(result){
-                // alert("PUT 요청 result: " + result)
                 dispatch(clear_my_review());
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }
                 });                  
             } else {
-                // alert("수정사항을 다시 확인해주세요! : " +message);
             }
         }));
     }

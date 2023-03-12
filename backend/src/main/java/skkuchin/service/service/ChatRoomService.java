@@ -126,7 +126,7 @@ public class ChatRoomService {
         List<ChatMessage> chatMessages = chatMessageRepo.findByLatestTime(chatRoom.getRoomId());
         ChatMessage latestChatMessage = new ChatMessage();
         if (chatMessages.size() == 0) {
-            latestChatMessage.setMessage("새로운 채팅방이 개설되었습니다");
+            latestChatMessage.setMessage("채팅방이 개설되었습니다");
             latestChatMessage.setDate(chatRoom.getExpireDate().minusDays(2));
             return latestChatMessage;
         }

@@ -284,10 +284,6 @@ export default function userAgreement() {
   `
   const contentArr = content.split("\n");
 
-  useEffect(() => {
-    console.log(contentArr.slice(0, 5));
-  }, [])
-
   const backClick = () => {
     if (prevPage == 'register') {
       router.push({

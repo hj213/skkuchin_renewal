@@ -53,10 +53,9 @@ export default function reportChatUser(){
 
     const handleSubmit = () => {
         const selectedTag = Object.keys(tagChoose).find(tag => tagChoose[tag]);
-        console.log(selectedTag, content, roomId);
+        
         dispatch(enroll_report(selectedTag, content, null, roomId, ([result, message])=>{
             if(result){
-                alert("enroll_report 요청 성공: " + result);     
                 router.back();
             } else {
                 console.log("실패!: " +message);

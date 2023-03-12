@@ -25,10 +25,8 @@ export default function clickProfile(){
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_other_matching_info(otherUser.id,([result, message]) => {
                 if (result) {
-                    // alert(message);
                     setLoad(true);
                 } else {
-                    // alert(message);
                     setLoad(false);
                 }
             }));

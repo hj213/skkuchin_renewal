@@ -547,13 +547,11 @@ export default function makeProfile(){
         if (src == '매칭프로필설정') {
         dispatch(add_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
-                    // alert(message);
                     router.push({
                         pathname: '/completeProfile',
                         query: { src : src, }
                       })
                 } else {
-                    // alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
                 }
@@ -564,13 +562,11 @@ export default function makeProfile(){
         else if (src == '회원가입') {
             dispatch(add_new_matching_info(username, gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
-                    // alert(message);
                     router.push({
                         pathname: '/completeProfile',
                         query: { src : src, }
                     })
                 } else {
-                    //alert(message);
                     setAlertOpen(true);
                     setAlertMessage(message);
                 }

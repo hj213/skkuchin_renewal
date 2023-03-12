@@ -20,7 +20,6 @@ export default function chatPlace(){
     
     const room_id = router.query.room_id;
     const meetPlace = router.query.meetPlace;
-    console.log(meetPlace)
 
     const [calendarOpen, setCalendarOpen] = useState('hidden');
     const [DialogOpen, setDialogOpen] = useState(false);
@@ -87,23 +86,15 @@ export default function chatPlace(){
     const handleDelete = () => {
         dispatch(delete_meet_place(room_id, ([result, message]) => {
             if (result) {
-                // alert('delete_meet_place 성공! ' + result);
             } else {
-                // alert('delete_meet_place 실패! ' +message);
             }
         }));
         router.back();
     };
     const handleSubmit = () => {
-        // alert(value);
         dispatch(set_meet_place(value, room_id, ([result, message]) => {
             if (result) {
-                // alert('set_meet_place 성공! ' + result);
             } else {
-                // alert('set_meet_place 실패! ' + message);
-                // if (typeof(message) == 'string') {
-                // setDialogMsg(message);
-                // }
             }
         }));
         router.back();
