@@ -76,7 +76,6 @@ public class PushTokenService {
             pushTokenRepo.delete(existingToken);
         }
         pushTokenRepo.save(pushToken);
-        sendNotification(dto.getSubscription(), "저장 완료", "히히");
     }
 
     @Transactional
