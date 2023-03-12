@@ -44,10 +44,7 @@ export const load_candidate = (callback) => async dispatch => {
             dispatch({
                 type: LOAD_CANDIDATE_FAIL
             })
-            
             if (callback) callback([false, apiRes.message]);
-            
-            
         }
 
     } catch (error) {

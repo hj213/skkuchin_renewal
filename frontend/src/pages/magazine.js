@@ -7,9 +7,17 @@ import UpperBar from '../components/UpperBar';
 
 import markerY from '../image/marker.png'
 import booked from '../image/bookmark-1.png'
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 
 const Magazine = () => {
+    const router = useRouter();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     return(
         <ThemeProvider theme={theme}>

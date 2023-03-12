@@ -116,9 +116,9 @@ export const displayTagImage = (tags) => {
 export const displayReviewTag = (keyword) => {
     switch(keyword) {
         case "맛집":
-            return <Image id={"맛집"} src={reviewTag01} width={45} height={20} placeholder="blur" layout='fixed' />
+            return <Image id={"맛집"} src={reviewTag01} width={45} height={20} layout='fixed' />
         case "가성비":
-            return <Image id={"가성비"} src={reviewTag02} width={52} height={20} placeholder="blur" layout='fixed' />
+            return <Image id={"가성비"} src={reviewTag02} width={52} height={20} layout='fixed' />
         case "친절":
             return <Image id={"친절"} src={reviewTag03} width={45} height={20} placeholder="blur" layout='fixed' />
         case "둘이 가요":
@@ -126,9 +126,9 @@ export const displayReviewTag = (keyword) => {
         case "청결도":
             return <Image id={"청결도"} src={reviewTag05} width={52} height={20} placeholder="blur" layout='fixed' />
         case "간단한 한 끼":
-            return <Image id={"간단한 한 끼"} src={reviewTag06} width={76} height={20} placeholder="blur" layout='fixed' />
+            return <Image id={"간단한 한 끼"} src={reviewTag06} width={76} height={20} layout='fixed' />
         case "분위기 좋은":
-            return <Image id={"분위기 좋은"} src={reviewTag07} width={76} height={20} placeholder="blur" layout='fixed' />
+            return <Image id={"분위기 좋은"} src={reviewTag07} width={76} height={20} layout='fixed' />
         default:
             return null;
     }
@@ -210,7 +210,7 @@ const TagList = ({keyword, onTagClick}) => {
                     </Grid> */}
                     <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
                         { keyword.includes("한식") ? <Image id={"한식"} src={mapTagOn3} width={64} height={36} placeholder="blur" layout='fixed' />
-                        : <Image id={"한식"} src={mapTag3} width={64} height={36} placeholder="blur" layout='fixed' /> }
+                        : <Image id={"한식"} src={mapTag3} width={64} height={36} layout='fixed' /> }
                     </Grid>
                     <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block' ,flexShrink: 0, paddingRight: '5px' }}>
                         { keyword.includes("중식") ? <Image id={"중식"} src={mapTagOn4} width={64} height={36} placeholder="blur" layout='fixed' />

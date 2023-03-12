@@ -19,8 +19,10 @@ export default function reportReview(){
 
     const reviewId = router.query.reviewId;
 
-    const reviews = useSelector(state => state.review.review);
-    const reportReview = reviews && reviews.find(review => review.id == reviewId);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
 
     const handleBack = (e) => {
         router.back();
@@ -39,15 +41,15 @@ export default function reportReview(){
     const handleTagClick = (event) => {
         const tagId = event.target.id;
         setTagChoose(prevState => {
-          const newTagChoose = {...prevState};
-          for (const tag in newTagChoose) {
-            if (tag !== tagId) {
-              newTagChoose[tag] = false;
+            const newTagChoose = {...prevState};
+            for (const tag in newTagChoose) {
+                if (tag !== tagId) {
+                    newTagChoose[tag] = false;
+                }
             }
-          }
-          newTagChoose[tagId] = !prevState[tagId];
-          return newTagChoose;
-        });
+            newTagChoose[tagId] = !prevState[tagId];
+            return newTagChoose;
+            });
     };
 
     const [showInputBox, setShowInputBox] = useState(false);

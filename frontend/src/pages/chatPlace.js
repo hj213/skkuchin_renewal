@@ -19,6 +19,7 @@ export default function chatPlace(){
     const dispatch = useDispatch();
     
     const room_id = router.query.room_id;
+    const user_number = router.query.user_number;
     const meetPlace = router.query.meetPlace;
 
     const [calendarOpen, setCalendarOpen] = useState('hidden');
@@ -67,7 +68,12 @@ export default function chatPlace(){
     }
 
     const handleBack = (e) => {
-        router.back();
+        router.back({ 
+            query: { 
+                room_id : room_id,
+                user_number: user_number
+            }
+        });
     }
 
     const handleDownClick = (e) => {
@@ -89,7 +95,12 @@ export default function chatPlace(){
             } else {
             }
         }));
-        router.back();
+        router.back({ 
+            query: { 
+                room_id : room_id,
+                user_number: user_number
+            }
+        });
     };
     const handleSubmit = () => {
         dispatch(set_meet_place(value, room_id, ([result, message]) => {
@@ -97,7 +108,12 @@ export default function chatPlace(){
             } else {
             }
         }));
-        router.back();
+        router.back({ 
+            query: { 
+                room_id : room_id,
+                user_number: user_number
+            }
+        });
     }
 
     return(

@@ -129,7 +129,7 @@ const MyReviewPage = () => {
                                 </Grid>
                             </Grid>
                             <Grid >
-                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
+                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                         </Grid>
                     </Card>

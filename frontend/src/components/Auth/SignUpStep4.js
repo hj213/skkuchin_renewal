@@ -124,7 +124,7 @@ const SignUpStep4 = (props) => {
               checkState ?
                 <Image src={check} onClick={handleCheck} width={15.83} height={15.83} placeholder="blur" layout='fixed' />
               :  
-                <Image src={uncheck} onClick={handleCheck} width={15.83} height={15.83} placeholder="blur" layout='fixed' />
+                <Image src={uncheck} onClick={handleCheck} width={15.83} height={15.83} layout='fixed' />
             }
           <Typography sx={{fontSize: '10px', fontWeight: '500', ml: '5.58px'}}><span onClick={() => router.push({pathname: '/policy', query: {page: 'register', pathUsername: props.data.username}})} style={{textDecoration: 'underline'}}>개인정보처리방침</span> 및 <span onClick={() => router.push({pathname: '/userAgreement', query: {page: 'register', pathUsername: props.data.username}})} style={{textDecoration: 'underline'}}>이용약관</span>에 동의합니다</Typography>
         </div>

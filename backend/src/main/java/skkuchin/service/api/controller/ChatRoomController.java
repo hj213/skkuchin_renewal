@@ -52,7 +52,7 @@ public class ChatRoomController {
             }
             AppUser user = principalDetails.getUser();
             chatRoomService.makeRoom(user,dto);
-            return new ResponseEntity<>(new CMRespDto<>(1, "채팅방 개설 완료", null), HttpStatus.CREATED);
+            return new ResponseEntity<>(new CMRespDto<>(1, "밥약 신청 완료", null), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             throw new CustomValidationApiException("이미 요청하셨습니다");
         }
@@ -82,7 +82,7 @@ public class ChatRoomController {
         }
         AppUser user = principalDetails.getUser();
         chatRoomService.user2Accept(roomId, user,dto.getReaction());
-        return new ResponseEntity<>(new CMRespDto<>(1, "상대방 매칭", null), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "상대방이 밥약에 응답했습니다", null), HttpStatus.OK);
     }
 
     @PutMapping("/block/{roomId}")

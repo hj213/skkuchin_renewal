@@ -25,7 +25,7 @@ const ReviewStar = ({rating, handleTouch}) => {
           starImage = filledStar;
         }
         return (
-            <Image key={index} width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' placeholder="blur" layout='fixed' />
+            <Image key={index} width={30} height={30} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' layout='fixed' />
         );
       })}
       </div>

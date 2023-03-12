@@ -35,8 +35,13 @@ function calculateRows() {
 const chatPage = () => {
     const router = useRouter();
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
     const room_id = router.query.room_id;
-    const user_number = router.query.user_number; // user1,2(내가 1인지 2인지) 구분
+    const user_number = router.query.user_number;
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
@@ -172,7 +177,10 @@ const chatPage = () => {
     const handleReportUser = () => {
         router.push({
             pathname: '/reportChatUser',
-            query: { roomId : room_id }
+            query: { 
+                room_id : room_id,
+                user_number: user_number
+            }
         })
     }
 
@@ -403,6 +411,7 @@ const chatPage = () => {
                                 pathname: '/chatTime',
                                 query: {
                                     room_id: room_id,
+                                    user_number: user_number,
                                     meetTime: meetTime
                                 }
                             }}>
@@ -417,6 +426,7 @@ const chatPage = () => {
                                 pathname: '/chatPlace',
                                 query: {
                                     room_id: room_id,
+                                    user_number: user_number,
                                     meetPlace: meetPlace
                                 }
                             }}>

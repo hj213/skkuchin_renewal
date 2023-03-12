@@ -50,7 +50,6 @@ const Layout = ({title, content, children}) => {
             navigator.serviceWorker.ready.then(reg => {
                 reg.pushManager.getSubscription().then(sub => {
                     if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
-                        console.log(sub);
                         dispatch(enroll_token(sub));
                     } else {
                         subscribe(reg);

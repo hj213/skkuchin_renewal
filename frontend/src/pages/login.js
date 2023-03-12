@@ -148,7 +148,7 @@ const LoginPage = () => {
                                 <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>자동로그인</span> */}
                                 {rememberUsername ? 
                                     <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' /> : 
-                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} placeholder="blur" layout='fixed' />}
+                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' />}
                                 <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>아이디 기억하기</span>
                             </div>
                         </form>
