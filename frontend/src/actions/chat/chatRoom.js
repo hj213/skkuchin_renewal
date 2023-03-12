@@ -25,7 +25,9 @@ import {
     EXIT_CHAT_ROOM_FAIL,
     GET_REALTIME_ROOM_SUCCESS,
     GET_CHAT_ROOM_INFO_SUCCESS,
-    GET_CHAT_ROOM_INFO_FAIL
+    GET_CHAT_ROOM_INFO_FAIL,
+    CLEAR_ROOM_LIST_SUCCESS,
+    CLEAR_ROOM_LIST_FAIL
 }
     from './types';
 import { send_message } from './chatMessage';
@@ -537,6 +539,19 @@ export const get_chat_room_info = (stompClient) => dispatch => {
         console.log(error)
         dispatch({
             type: GET_CHAT_ROOM_INFO_FAIL
+        });
+    }
+};
+
+export const clear_room_list = () => dispatch => {
+    try {
+        dispatch({
+            type: CLEAR_ROOM_LIST_SUCCESS
+        });
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: CLEAR_ROOM_LIST_FAIL
         });
     }
 };

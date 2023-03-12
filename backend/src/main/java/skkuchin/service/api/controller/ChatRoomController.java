@@ -58,7 +58,7 @@ public class ChatRoomController {
         }
      }
 
-    @PostMapping("")
+    @PostMapping("/admin")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> makeAdminRoom(@Valid @RequestBody ChatRoomDto.AdminRoomRequest dto,
                                       @AuthenticationPrincipal PrincipalDetails principalDetails){
