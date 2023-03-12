@@ -9,7 +9,7 @@ import character from '../image/skkuchinFind.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { get_chat_room_info, get_realtime_chat_room } from '../actions/chat/chatRoom';
+import { clear_room_list, get_chat_room_info, get_realtime_chat_room } from '../actions/chat/chatRoom';
 import { get_chat_request_info, get_realtime_chat_request } from '../actions/chat/chatRequest';
 import NewPromise from './Chat/NewPromise';
 import { request_refresh } from '../actions/auth/auth';
@@ -80,6 +80,7 @@ export default function MessageTab() {
       get_info();
     }
     return () => {
+      dispatch(clear_room_list());
       if (subscriptions) {
           Object.values(subscriptions).forEach(subscription => {
               subscription.unsubscribe();

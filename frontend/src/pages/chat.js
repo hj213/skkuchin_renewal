@@ -81,7 +81,7 @@ const chatPage = () => {
                     subscription.unsubscribe();
                 });
             }
-    }
+        }
     }, [stompClient, room_id, user_number, user]);
 
     useEffect(() => {

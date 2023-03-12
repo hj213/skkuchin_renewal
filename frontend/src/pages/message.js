@@ -20,7 +20,6 @@ const MessagePage = () => {
         router.push('/login');
     }
 
-
     return(
         <ThemeProvider theme={theme} >
             <CssBaseline />
