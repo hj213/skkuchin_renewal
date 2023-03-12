@@ -115,6 +115,16 @@ const chatPage = () => {
         }
     }
 
+    // const [visibility, setVisibility]=useState('');
+
+    // useEffect(()=>{
+    //     if(!isAlarmOn){
+    //         setVisibility('visible')
+    //     } else{
+    //         setVisibility('hidden')
+    //     }
+    // }, [isAlarmOn])
+
     useEffect(() => {
         setBlocked(isUser1Blocked || isUser2Blocked);
     }, [isUser1Blocked, isUser2Blocked]);
@@ -234,7 +244,7 @@ const chatPage = () => {
                             borderBottom: '1.5px solid #BABABA',
                             }}>
                     <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Grid style={{padding: '0px 0px 0px 0px'}}>
+                        <Grid style={{padding: '5px 0px 0px 0px'}}>
                             <a>
                             <Image src={back} width={12} height={20} name='back' onClick={handleOnclick}/>
                             </a>
@@ -246,10 +256,10 @@ const chatPage = () => {
                                 </Typography>
                                 {/* 알림 끄기 표시 */}
                                 { !isAlarmOn &&
-                                <Box sx={{paddingLeft:'3px', paddingTop:'4px'}}>
+                                <Box sx={{paddingLeft:'3px', paddingTop:'2px'}}>
                                     <Image src={notiOff} width="12px" height="12px"/>
                                 </Box>
-                                }
+                                } 
                             </div>
                         </Grid>
                         <Grid style={{paddingTop:'0', paddingLeft:'0'}}>
@@ -307,7 +317,7 @@ const chatPage = () => {
                         </Grid> 
                     </Grid>
                     <div style={{textAlign:"center", marginTop:"5px"}}>
-                    <Grid style={{fontSize:"10px", color:"#BABABA", textAlign:"center"}}>
+                    <Grid style={{fontSize:"10px", color:"#BABABA", textAlign:"center", marginTop:'-5px'}}>
                         <Typography style={{
                             fontSize:"10px", 
                             color:"#BABABA", 
@@ -392,7 +402,7 @@ const chatPage = () => {
                             }}>
                                 <Grid item sx={{display: 'flex', height: 'fit-content', pr:"8px", pt:"6px"}}>
                                     <Image width={13} height={15} src={time} />
-                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px', paddingTop:'1px'}}>
                                         { setting && setting.meet_time ? setting.meet_time : "시간 정하기" }
                                     </Typography>
                                 </Grid>
@@ -406,7 +416,7 @@ const chatPage = () => {
                             }}>
                                 <Grid item sx={{display: 'flex', height: 'fit-content', pl: '8px', pt:"6px"}}>
                                     <Image width={10.5} height={14.6} src={place} />
-                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
+                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px', paddingTop:'1px'}}>
                                         { setting && setting.meet_place ? setting.meet_place : "장소 정하기" }
                                     </Typography>
                                 </Grid>
@@ -462,12 +472,12 @@ const chatPage = () => {
                                                     {message.time}
                                                 </Typography>
                                                 <Card elevation={0} sx={{
-                                                    borderRadius: '15px 0px 15px 15px',
+                                                    borderRadius: '10px 0px 10px 10px',
                                                     backgroundColor:'#FFE885',
                                                     maxWidth:'80%',
                                                 }}>
                                                 <Typography style={{
-                                                    padding:'5px 10px 6px 10px',
+                                                    padding:'6px 10px 6px 10px',
                                                     fontSize: '14px',
                                                     maxWidth:'100%',
                                                 }}>
@@ -488,7 +498,7 @@ const chatPage = () => {
                                         }}
                                     >
                                         <Grid container style={{justifyContent: 'center', width: '100%', alignItems: 'center'}}>
-                                            <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"5px 15px"}}>
+                                            <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"7px 15px"}}>
                                                 <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
                                                     <Typography sx={{fontSize: '10px', paddingLeft:'5px'}}>
                                                         {/* {otherUser && otherUser.nickname} 님과  */}
@@ -519,14 +529,14 @@ const chatPage = () => {
                                                     <Grid style={{display:'flex'}}>
                                                         <Grid container style={{margin:'0px 0px 0px', justifyContent:'left', display: 'flex', alignItems: 'flex-end'}}>
                                                             <Card elevation={0} style={{
-                                                                borderRadius: '0px 15px 15px 15px',
+                                                                borderRadius: '0px 10px 10px 10px',
                                                                 backgroundColor:'white',
                                                                 border:'1px solid #FFCE00',
                                                                 maxWidth:'75%'
                                                             }}>
                                                                 <Typography
                                                                     style={{
-                                                                    padding:'5px 10px 6px 10px',
+                                                                    padding:'6px 10px 6px 10px',
                                                                     fontSize: '14px',
                                                                     maxWidth:'100%'
                                                                     }}>
@@ -554,7 +564,7 @@ const chatPage = () => {
                 <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px 10px 20px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
                     <textarea 
                         name='chat' 
-                        placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메세지를 입력하세요.'}
+                        placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메시지를 입력하세요.'}
                         required
                         style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: isBlocked? 'rgba(186, 186, 186, 0.5)' : '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle', overflow: 'hidden'}}
                         rows={calculateRows}
