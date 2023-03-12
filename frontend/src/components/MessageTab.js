@@ -130,13 +130,13 @@ export default function MessageTab() {
                             <Grid xs={2} sx={{pt: '5px'}}>
                                 {displayProfile(chatRoom.image, 55, 55)}
                             </Grid>
-                            <Grid xs={8}>
+                            <Grid xs={8} style={{marginLeft:'8px'}}>
                                 <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
-                                    <div style={{display:'flex'}}>
-                                      <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top',}} align="left">
+                                    <div style={{display:'flex', }}>
+                                      <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top', paddingTop:'3px'}} align="left">
                                         {chatRoom.nickname}
                                       </Typography>
-                                      <Typography sx={{color:"#BABABA",paddingLeft:'5px',fontSize: '9px', fontWeight:'500', lineHeight: '200%', verticalAlign: 'top',}} align="left">
+                                      <Typography sx={{color:"#BABABA",paddingLeft:'5px',fontSize: '9px', fontWeight:'500', lineHeight: '200%', verticalAlign: 'top', }} align="left">
                                         {chatRoom.major}
                                       </Typography>
                                       {/* 알림끄기 연결 시 조건문으로 수정 */}
@@ -168,7 +168,7 @@ export default function MessageTab() {
                                     </Typography>
                                 </Stack>
                             </Grid>
-                            <Grid xs={2}>
+                            <Grid >
                             <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                               <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
                                 {chatRoom.display_time}
@@ -270,7 +270,7 @@ export default function MessageTab() {
               :
               <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid item>
-                    <Image src={character} width={138} height={100} />
+                    <Image src={character} width={138} height={110} />
                 </Grid>
                 <Grid item>
                     <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>

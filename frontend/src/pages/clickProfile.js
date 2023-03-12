@@ -64,7 +64,7 @@ export default function clickProfile(){
                         <Grid sx={{pt: '39px'}}>{displayMBTI(matchingUser.mbti)}</Grid>
                         <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>{ matchingUser.nickname}</Typography>
                         <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
-                            <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px'}}>{matchingUser.campus}</Typography>&nbsp;
+                            <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '1px 6.5px', borderRadius: '17px'}}>{matchingUser.campus}</Typography>&nbsp;
                             {matchingUser.major} &nbsp;/&nbsp; 
                             {matchingUser.student_id} 학번 /&nbsp; 
                             {matchingUser.gender}
