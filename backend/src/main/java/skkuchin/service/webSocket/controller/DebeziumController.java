@@ -46,28 +46,6 @@ public class DebeziumController {
 
         ChatRoom chatRoom = chatRoomService.findChatById(dto.getPayload().getAfter().getChatRoomId());
 
-        if (dto.getPayload().getOp().equals("c") && !Objects.equals(dto.getPayload().getAfter().getSender(), "admin")) {
-            String sender = dto.getPayload().getAfter().getSender();
-            AppUser user = null;
-
-            String pushTitle = null;
-            String pushMessage = dto.getPayload().getAfter().getMessage();
-
-            if (Objects.equals(chatRoom.getUser1().getUsername(), sender)) {
-                user = chatRoom.getUser2();
-                pushTitle = chatRoom.getUser1().getNickname();
-            } else {
-                user = chatRoom.getUser1();
-                pushTitle = chatRoom.getUser2().getNickname();
-            }
-
-            Subscription subscription = pushTokenService.toSubscription(user);
-
-            if (subscription != null) {
-                pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
-            }
-        }
-
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();
 
@@ -87,6 +65,27 @@ public class DebeziumController {
 
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList", chatRooms1);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList", chatRooms2);
+
+        if (dto.getPayload().getOp().equals("c") && !Objects.equals(dto.getPayload().getAfter().getSender(), "admin")) {
+            String sender = dto.getPayload().getAfter().getSender();
+            AppUser user = null;
+
+            String pushTitle = null;
+            String pushMessage = dto.getPayload().getAfter().getMessage();
+
+            if (Objects.equals(chatRoom.getUser1().getUsername(), sender)) {
+                user = chatRoom.getUser2();
+                pushTitle = chatRoom.getUser1().getNickname();
+            } else {
+                user = chatRoom.getUser1();
+                pushTitle = chatRoom.getUser2().getNickname();
+            }
+
+            Subscription subscription = pushTokenService.toSubscription(user);
+            if (subscription != null) {
+                pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+            }
+        }
     }
 
     @Transactional
