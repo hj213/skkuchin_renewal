@@ -81,7 +81,7 @@ const chatPage = () => {
                     subscription.unsubscribe();
                 });
             }
-    }
+        }
     }, [stompClient, room_id, user_number, user]);
 
     useEffect(() => {
@@ -459,9 +459,7 @@ const chatPage = () => {
                                             <Grid style={{display:'flex'}}>
                                             <Grid container style={{margin:'0px 0px 0px', justifyContent:'flex-end', display: 'flex', alignItems: 'flex-end'}}>
                                                 <Typography sx={{fontSize: '9px', fontWeight: '500', paddingRight:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                                    {
-                                                        (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
-                                                    }
+                                                    {message.time}
                                                 </Typography>
                                                 <Card elevation={0} sx={{
                                                     borderRadius: '15px 0px 15px 15px',
@@ -537,9 +535,7 @@ const chatPage = () => {
                                                             </Card>
                                                             <Grid>
                                                             <Typography sx={{fontSize: '9px', fontWeight: '500', paddingLeft:'7px', bottom:0}} color="#a1a1a1" component="div" align="center">
-                                                                {
-                                                                    (message.time).slice(0,2) === 'PM' ? '오후'+(message.time).slice(2) : '오전'+(message.time).slice(2)
-                                                                }
+                                                                {message.time}
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>

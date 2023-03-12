@@ -9,7 +9,7 @@ import character from '../image/skkuchinFind.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { get_chat_room_info, get_realtime_chat_room } from '../actions/chat/chatRoom';
+import { clear_room_list, get_chat_room_info, get_realtime_chat_room } from '../actions/chat/chatRoom';
 import { get_chat_request_info, get_realtime_chat_request } from '../actions/chat/chatRequest';
 import NewPromise from './Chat/NewPromise';
 import { request_refresh } from '../actions/auth/auth';
@@ -80,6 +80,7 @@ export default function MessageTab() {
       get_info();
     }
     return () => {
+      dispatch(clear_room_list());
       if (subscriptions) {
           Object.values(subscriptions).forEach(subscription => {
               subscription.unsubscribe();
@@ -140,15 +141,21 @@ export default function MessageTab() {
                                       </Typography>
                                       {/* 알림끄기 연결 시 조건문으로 수정 */}
                                       <Box sx={{paddingLeft:'5px', lineHeight: '120%'}}>
-                                      <Image
-                                        src={
-                                          chatRoom.user1_id === user.id
-                                            ? !chatRoom.user1_alarm && notiOff
-                                            : !chatRoom.user2_alarm && notiOff
-                                        }
-                                        width="12px"
-                                        height="12px"
-                                      />
+                                      {
+                                        chatRoom.user1_id === user.id
+                                          ? !chatRoom.user1_alarm && 
+                                          <Image
+                                            src={notiOff}
+                                            width="12px"
+                                            height="12px"
+                                          />
+                                          : !chatRoom.user2_alarm &&
+                                          <Image
+                                            src={notiOff}
+                                            width="12px"
+                                            height="12px"
+                                          />
+                                      }
                                       </Box>
                                     </div>
                                     <Typography sx={{paddingTop:"5px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
