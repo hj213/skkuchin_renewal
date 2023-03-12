@@ -66,13 +66,14 @@ export default function myPage() {
         }
     }
 
+    
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(load_token(([result, message]) => {
                 if (result) {
-                    
                 } else {
-                    console.log(message);
+                    setChatAlarm(false);
+                    setInfoAlarm(false);
                 }
             }));
         }
@@ -80,8 +81,8 @@ export default function myPage() {
 
     useEffect(() => {
         if (pushToken) {
-            setChatAlarm(pushToken.chatAlarm);
-            setInfoAlarm(pushToken.infoAlarm);
+            setChatAlarm(pushToken.chat_alarm);
+            setInfoAlarm(pushToken.info_alarm);
         }
     }, [pushToken])
 
@@ -204,7 +205,7 @@ export default function myPage() {
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
                     </div>
                 </div>
-                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' /></div>
+                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}} layout='fixed' /></div>
             </div>
             
             {/* 사용자 설정 */}

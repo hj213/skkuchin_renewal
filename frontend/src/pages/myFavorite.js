@@ -33,7 +33,7 @@ export default function myFavorite(){
     const isFavorite = (placeId) => {
         const favorite = favorites.some(favorite => favorite.place_id === placeId)
         if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
+            return <Image width={15} height={15} src={bookmarkOn} layout='fixed' />
         }
         return null;
     };
@@ -138,7 +138,7 @@ export default function myFavorite(){
                                 </Grid>
                             </Grid>
                             <Grid >
-                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
+                                <Image src={closeIcon} width={31} height={31} name='close' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                         </Grid>
                     </Card>
@@ -197,7 +197,7 @@ export default function myFavorite(){
                                                             </Typography>
                                                         </Grid>
                                                         <Grid style={{margin: '-3px 7px 0px 7px'}}>
-                                                            <Image width={10} height={10} src={star} placeholder="blur" layout='fixed' />
+                                                            <Image width={10} height={10} src={star} layout='fixed' />
                                                         </Grid>
                                                         <Grid >
                                                             <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color={theme.palette.fontColor.dark} component="div">

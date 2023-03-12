@@ -17,10 +17,21 @@ export default function reportChatUser(){
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const roomId = router.query.roomId;
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    if (typeof window !== 'undefined' && !isAuthenticated) {
+        router.push('/login');
+    }
+
+    const room_id = router.query.room_id;
+    const user_number = router.query.user_number;
 
     const handleBack = (e) => {
-        router.back();
+        router.back({ 
+            query: { 
+                room_id : room_id,
+                user_number: user_number
+            }
+        })
     }
 
     // 신고 선택
@@ -37,14 +48,14 @@ export default function reportChatUser(){
     const handleTagClick = (event) => {
         const tagId = event.target.id;
         setTagChoose(prevState => {
-          const newTagChoose = {...prevState};
-          for (const tag in newTagChoose) {
-            if (tag !== tagId) {
-              newTagChoose[tag] = false;
+            const newTagChoose = {...prevState};
+            for (const tag in newTagChoose) {
+                if (tag !== tagId) {
+                newTagChoose[tag] = false;
             }
-          }
-          newTagChoose[tagId] = !prevState[tagId];
-          return newTagChoose;
+            }
+            newTagChoose[tagId] = !prevState[tagId];
+            return newTagChoose;
         });
     };
 
@@ -54,9 +65,14 @@ export default function reportChatUser(){
     const handleSubmit = () => {
         const selectedTag = Object.keys(tagChoose).find(tag => tagChoose[tag]);
         
-        dispatch(enroll_report(selectedTag, content, null, roomId, ([result, message])=>{
+        dispatch(enroll_report(selectedTag, content, null, room_id, ([result, message])=>{
             if(result){
-                router.back();
+                router.back({ 
+                    query: { 
+                        room_id : room_id,
+                        user_number: user_number
+                    }
+                })
             } else {
                 console.log("실패!: " +message);
             }

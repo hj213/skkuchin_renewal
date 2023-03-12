@@ -6,7 +6,6 @@ self.__WB_DISABLE_DEV_LOGS = true;
 
 self.addEventListener('push', function (event) {
     const data = JSON.parse(event.data.text());
-    console.log(data)
     event.waitUntil(
         registration.showNotification(data.title, {
             body: data.message,

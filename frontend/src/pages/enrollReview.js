@@ -126,18 +126,18 @@ const EnrollReview = () => {
         }
     }
 
-        // 이미지 URL 배열화
-        const [images, setImages] = useState([]);
+    // 이미지 URL 배열화
+    const [images, setImages] = useState([]);
+
+    const onChangeImages = (e) => {
+        const fileArray = Array.from(e.target.files);
+        setImages(fileArray);
     
-        const onChangeImages = (e) => {
-            const fileArray = Array.from(e.target.files);
-            setImages(fileArray);
+        const imagePreviews = fileArray.map((file) => URL.createObjectURL(file));
+        setPreviewImages(imagePreviews);
+    };
         
-            const imagePreviews = fileArray.map((file) => URL.createObjectURL(file));
-            setPreviewImages(imagePreviews);
-          };
-        
-          const [previewImages, setPreviewImages] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
     
     const [visibility, setVisibility] = useState({
         enroll: 'visible',
@@ -207,7 +207,7 @@ const EnrollReview = () => {
                     <Grid container style={{padding:'50px 17px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
-                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} placeholder="blur" layout='fixed' />
+                            <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} layout='fixed' />
                             </a>
                         </Grid>
                     
@@ -250,7 +250,7 @@ const EnrollReview = () => {
                                         starImage = filledStar;
                                         }
                                         return (
-                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' placeholder="blur" layout='fixed' />
+                                            <Image key={index} width={40} height={40} src={starImage} onTouchStart={() => handleTouch(index)} alt='star' layout='fixed' />
                                         );
                                     })}
                                     <Typography sx={{fontSize: '18px', fontWeight: '700', color: '#FFCE00'}}>{`${rating}점`}</Typography>

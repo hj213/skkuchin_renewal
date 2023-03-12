@@ -94,7 +94,7 @@ export default function searchList(){
         const favorite = favorites || []; // favorites가 null 또는 undefined인 경우 빈 배열([])로 초기화
         const isFavorited = favorite.some(favorite => favorite.place_id === placeId);
         if (isFavorited) {
-        return <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />;
+        return <Image width={15} height={15} src={bookmarkOn} layout='fixed' />;
         } else {
             return null;
         }
@@ -182,7 +182,7 @@ export default function searchList(){
                                     
                                 }}>
                             <Grid container style={{position:'relative', marginTop:'20px',}}>
-                                <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36} id='map'/></Grid>
+                                <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2',  marginLeft:'3%', marginTop:'3%'}}><Image src={mapIcon} width={37} height={36} layout='fixed' id='map'/></Grid>
                                 <Grid item style={{position:'absolute', zIndex:'2', marginLeft:'16%', marginTop:'3.5%'}}>
                                     <InputBase 
                                     sx={{ ml: 1, width:'150%'}}
@@ -193,7 +193,7 @@ export default function searchList(){
                                     onFocus={handleInputOnFocus}
                                     />   
                                 </Grid>
-                                <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image src={closeIcon} width={37} height={36} id='close'/></Grid>
+                                <Grid item onClick={handleIconOnclick} style={{position:'absolute', zIndex:'2', marginLeft:'88%', marginTop:'3%'}}><Image src={closeIcon} width={37} height={36} layout='fixed' id='close'/></Grid>
                                 <Grid item  ><Image src={searchBox}/></Grid>
                             </Grid>
                         </Card>

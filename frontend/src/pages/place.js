@@ -358,7 +358,7 @@ const PlacePage = () => {
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
-                                    <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} placeholder="blur" layout='fixed' />
+                                    <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />
                                 </Grid> 
                             </Grid>
                         </Card>
