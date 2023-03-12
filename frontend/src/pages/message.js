@@ -39,7 +39,7 @@ const MessagePage = () => {
                     maxWidth:'600px'
                 }}>
                     <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Grid style={{padding: '0px 10px 0px 0px'}}>
+                        <Grid style={{padding: '5px 10px 0px 0px'}}>
                             <Image src={back} width={12} height={20} name='back' onClick={handleOnclick}/>
                         </Grid>
                 

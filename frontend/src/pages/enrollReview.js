@@ -144,24 +144,42 @@ const EnrollReview = () => {
         loading:'hidden'
     });
 
+    const [condition, setCondition] = useState(false); //확인버튼 조건 
+
+
+    //등록 조건 
+    useEffect(()=>{
+        if(rating && textReview !='' && images && tagList){
+            setCondition(true)
+        } else( 
+            setCondition(false)
+        )
+    },[rating, textReview, images, tagList])
+
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{
         event.preventDefault();
 
-        dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
-            if(result){
-                setVisibility({
-                    enroll: 'hidden',
-                    loading:'visible'
-                });
-                router.push({
-                    pathname: '/reviews',
-                    query: { id: place_id }
-                });                  
-            } else {
-                console.log("실패!: " +message);
-            }
-        }));
+        if(condition){
+            setVisibility({
+                enroll: 'hidden',
+                loading:'visible'
+            });
+            dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
+                if(result){
+                    
+                    router.push({
+                        pathname: '/reviews',
+                        query: { id: place_id }
+                    });                  
+                } else {
+                    console.log("실패!: " +message);
+                }
+            }));
+        } else {
+            return
+        }
+        
     }
 
 
@@ -194,7 +212,7 @@ const EnrollReview = () => {
                         </Grid>
                     
                         <Grid onClick={handleEnrollClick}>
-                            <Typography sx={{fontSize:'18px', fontWeight:'700'}} color="#FFCE00">
+                            <Typography sx={{fontSize:'18px', fontWeight:'700'}} color={condition? theme.palette.primary.main : theme.palette.fontColor.main }>
                                 등록
                             </Typography>
                         </Grid> 
@@ -223,7 +241,7 @@ const EnrollReview = () => {
                             </Grid>
                         }
 
-                            <Grid sx={{width: '100%'}}>
+                            <Grid sx={{width: '100%', marginTop:'10px'}}>
                                 <Grid>
                                 <div style={{ textAlign: "center", margin: '-20px -20px 0', padding: '13px 0px 5px 0px', borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
                                     {[1, 2, 3, 4, 5].map((item, index) => {
@@ -391,7 +409,7 @@ const EnrollReview = () => {
                 </Grid>
             </Container>
         </div>
-        <div style={{textAlign:'center', color:"#FFE885", visibility:visibility.loading, marginTop:'120px'}}>
+        <div style={{textAlign:'center', color:"#FFE885", visibility:visibility.loading,  }}>
                 <CircularProgress color="inherit"/>
         </div>
         </ThemeProvider>
