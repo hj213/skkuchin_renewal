@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 import { enroll_review } from "../actions/review/review";
 
-import { Button, CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { Button, CssBaseline, Box, ThemeProvider,CircularProgress, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
@@ -138,13 +138,22 @@ const EnrollReview = () => {
           };
         
           const [previewImages, setPreviewImages] = useState([]);
+    
+    const [visibility, setVisibility] = useState({
+        enroll: 'visible',
+        loading:'hidden'
+    });
 
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{
         event.preventDefault();
-        
+
         dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
             if(result){
+                setVisibility({
+                    enroll: 'hidden',
+                    loading:'visible'
+                });
                 router.push({
                     pathname: '/reviews',
                     query: { id: place_id }
@@ -164,7 +173,7 @@ const EnrollReview = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             {/* 전체 틀 */}
-            <div style={{ position: 'relative', width:'100%', height:'100%' }}>
+            <div style={{ position: 'relative', width:'100%', height:'100%', visibility: visibility.enroll }}>
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -177,7 +186,7 @@ const EnrollReview = () => {
                             zIndex: '4',
                             border: 'none',
                             }}>
-                    <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Grid container style={{padding:'50px 17px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
                             <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} placeholder="blur" layout='fixed' />
@@ -381,6 +390,9 @@ const EnrollReview = () => {
                     </Grid>
                 </Grid>
             </Container>
+        </div>
+        <div style={{textAlign:'center', color:"#FFE885", visibility:visibility.loading, marginTop:'120px'}}>
+                <CircularProgress color="inherit"/>
         </div>
         </ThemeProvider>
         

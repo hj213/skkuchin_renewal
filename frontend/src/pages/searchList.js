@@ -167,7 +167,7 @@ export default function searchList(){
             <div style={{position:'absolute', zIndex:'9'}}>
                 <UpperBar/>
             </div>
-           {/* <NoScroll> */}
+
             <div style={{position:'relative', width:'100%', height:'100%', marginTop:'80px', }}>
                 <div style={{position: 'absolute',}}>
                     <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '85px'}}>
@@ -243,7 +243,7 @@ export default function searchList(){
                 <Container style={{padding:'0px', marginTop:'0px', overflowY:'scroll', zIndex:'0', }} >
                     <Card style={{overflowY:'auto', marginTop:'80px', border: "0px solid transparent", boxShadow:'none', borderRadius: '0px'}}>
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
-                            {filteredPlace ? filteredPlace.length > 0 ? filteredPlace.map((item) => (
+                            {searchplace ? filteredPlace.length > 0 ? filteredPlace.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                         <Link href={`/place?id=${item.id}`} key={item.id}>
                                         <Grid container style={{margin: '10px 0px 0px 0px'}}>
@@ -359,12 +359,13 @@ export default function searchList(){
                             <div style={{textAlign:'center', marginTop: '25%', color:"#FFE885"}}>
                                 <CircularProgress color="inherit"/>
                             </div>
+                            
                         )}
                         </ul>
                     </Card>
                 </Container> }
             </div> 
-            {/* </NoScroll> */}
+
         </ThemeProvider>
     )
 }
