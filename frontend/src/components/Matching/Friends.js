@@ -85,7 +85,7 @@ const Friends = () => {
                     </Grid>
                     {(person.keywords) != null ?
                         ((person.keywords).slice(0, 2).map((interest, index)=> (
-                            <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
+                            <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
                                 {interest}
                             </Grid>
                         )))

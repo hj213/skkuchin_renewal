@@ -316,7 +316,7 @@ const AiGreeting = () => {
                             border:"1px solid #BABABA", 
                             display:"inline-block", 
                             marginRight:"5px",
-                            padding:"2px 7px 0 7px",
+                            padding:"4.5px 7px ",
                             }}>
                         {userInfo.mbti}
                         </Typography>
@@ -329,7 +329,7 @@ const AiGreeting = () => {
                                         border:"1px solid #BABABA", 
                                         display:"inline-block", 
                                         marginRight:"5px",
-                                        padding:"2px 7px 0 7px",
+                                        padding:"4.5px 7.5px",
                                         fontSize:'12px'}}>
                                     {interest}
                                     </Typography>
@@ -340,7 +340,7 @@ const AiGreeting = () => {
 
                 <div style={{width:"70%", margin:"40px auto"}}>
                     <Typography style={{textAlign:"center", fontSize:"13px"}}>
-                        {userInfo.introduction}
+                        "{userInfo.introduction}"
                     </Typography>
                 </div>
 

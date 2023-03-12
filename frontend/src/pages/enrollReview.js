@@ -141,7 +141,7 @@ const EnrollReview = () => {
     
     const [visibility, setVisibility] = useState({
         enroll: 'visible',
-        loading:'hidden'
+        loading:'none'
     });
 
     const [condition, setCondition] = useState(false); //확인버튼 조건 
@@ -163,11 +163,10 @@ const EnrollReview = () => {
         if(condition){
             setVisibility({
                 enroll: 'hidden',
-                loading:'visible'
+                loading:'flex'
             });
             dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
                 if(result){
-                    
                     router.push({
                         pathname: '/reviews',
                         query: { id: place_id }
@@ -184,12 +183,14 @@ const EnrollReview = () => {
 
 
 
-
     const user = useSelector(state => state.auth.user);
 
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+            <div style={{position:'fixed', textAlign:'center', color:"#FFE885", display:visibility.loading, marginTop: window.innerHeight /2.2, marginLeft: window.innerWidth/2.3}}>
+                <CircularProgress color="inherit" size={70}/>
+            </div>
             {/* 전체 틀 */}
             <div style={{ position: 'relative', width:'100%', height:'100%', visibility: visibility.enroll }}>
 
@@ -409,9 +410,7 @@ const EnrollReview = () => {
                 </Grid>
             </Container>
         </div>
-        <div style={{textAlign:'center', color:"#FFE885", visibility:visibility.loading,  }}>
-                <CircularProgress color="inherit"/>
-        </div>
+        
         </ThemeProvider>
         
     )
