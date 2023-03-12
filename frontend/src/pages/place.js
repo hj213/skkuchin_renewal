@@ -608,7 +608,7 @@ const PlacePage = () => {
                                                     {selectedPlace && selectedPlace.review_count}
                                                 </Typography>
                                             </Grid>
-                                            <Grid item > 
+                                            <Grid item style={{marginTop:'-3px'}}> 
                                                 <Select
                                                     xs={2}
                                                     sx={{ fontSize: '14px', lineHeight: '150%', width: 'wrapContent', border: 'none', padding:'0',

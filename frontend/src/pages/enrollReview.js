@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 import { enroll_review } from "../actions/review/review";
 
-import { Button, CssBaseline, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { Button, CssBaseline, Box, ThemeProvider,CircularProgress, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
@@ -138,21 +138,48 @@ const EnrollReview = () => {
           };
         
           const [previewImages, setPreviewImages] = useState([]);
+    
+    const [visibility, setVisibility] = useState({
+        enroll: 'visible',
+        loading:'hidden'
+    });
+
+    const [condition, setCondition] = useState(false); //확인버튼 조건 
+
+
+    //등록 조건 
+    useEffect(()=>{
+        if(rating && textReview !='' && images && tagList){
+            setCondition(true)
+        } else( 
+            setCondition(false)
+        )
+    },[rating, textReview, images, tagList])
 
     // 등록 클릭 시
     const handleEnrollClick = (event) =>{
         event.preventDefault();
+
+        if(condition){
+            setVisibility({
+                enroll: 'hidden',
+                loading:'visible'
+            });
+            dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
+                if(result){
+                    
+                    router.push({
+                        pathname: '/reviews',
+                        query: { id: place_id }
+                    });                  
+                } else {
+                    console.log("실패!: " +message);
+                }
+            }));
+        } else {
+            return
+        }
         
-        dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
-            if(result){
-                router.push({
-                    pathname: '/reviews',
-                    query: { id: place_id }
-                });                  
-            } else {
-                console.log("실패!: " +message);
-            }
-        }));
     }
 
 
@@ -164,7 +191,7 @@ const EnrollReview = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             {/* 전체 틀 */}
-            <div style={{ position: 'relative', width:'100%', height:'100%' }}>
+            <div style={{ position: 'relative', width:'100%', height:'100%', visibility: visibility.enroll }}>
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -177,7 +204,7 @@ const EnrollReview = () => {
                             zIndex: '4',
                             border: 'none',
                             }}>
-                    <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Grid container style={{padding:'50px 17px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
                             <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} placeholder="blur" layout='fixed' />
@@ -185,7 +212,7 @@ const EnrollReview = () => {
                         </Grid>
                     
                         <Grid onClick={handleEnrollClick}>
-                            <Typography sx={{fontSize:'18px', fontWeight:'700'}} color="#FFCE00">
+                            <Typography sx={{fontSize:'18px', fontWeight:'700'}} color={condition? theme.palette.primary.main : theme.palette.fontColor.main }>
                                 등록
                             </Typography>
                         </Grid> 
@@ -214,7 +241,7 @@ const EnrollReview = () => {
                             </Grid>
                         }
 
-                            <Grid sx={{width: '100%'}}>
+                            <Grid sx={{width: '100%', marginTop:'10px'}}>
                                 <Grid>
                                 <div style={{ textAlign: "center", margin: '-20px -20px 0', padding: '13px 0px 5px 0px', borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
                                     {[1, 2, 3, 4, 5].map((item, index) => {
@@ -381,6 +408,9 @@ const EnrollReview = () => {
                     </Grid>
                 </Grid>
             </Container>
+        </div>
+        <div style={{textAlign:'center', color:"#FFE885", visibility:visibility.loading,  }}>
+                <CircularProgress color="inherit"/>
         </div>
         </ThemeProvider>
         

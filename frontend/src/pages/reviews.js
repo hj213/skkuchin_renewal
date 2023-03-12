@@ -160,7 +160,7 @@ const ReviewsPage = () => {
                                         {reviews.length}
                                     </Typography>
                                 </Grid>
-                                <Grid item > 
+                                <Grid item style={{marginTop:'-4px'}}> 
                                     <Select
                                         xs={2}
                                         sx={{ fontSize: '14px', lineHeight: '200%', width: 'wrapContent', border: 'none',
@@ -178,7 +178,7 @@ const ReviewsPage = () => {
                                 </Grid>
                             </Grid>
                             </>
-                            <ul style={{listStyle:"none",paddingLeft:"0px"}}>
+                            <ul style={{listStyle:"none",paddingLeft:"0px",marginTop:'20px'}}>
                                 {/* {places ? places.filter(item => item.id == place_id).map((item, index) =>( */}
                                 { selectedPlace && 
                                      <>
