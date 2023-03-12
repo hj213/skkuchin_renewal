@@ -14,7 +14,7 @@ import { get_chat_request_info, get_realtime_chat_request } from '../actions/cha
 import NewPromise from './Chat/NewPromise';
 import { request_refresh } from '../actions/auth/auth';
 import { clear_matching } from '../actions/matchingUser/matchingUser';
-
+import { displayProfile } from './MyPage/ProfileList';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -126,8 +126,8 @@ export default function MessageTab() {
                         }
                       }}>
                         <Grid container style={{width:"100%",padding:"13px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
-                            <Grid xs={2}>
-                                <Avatar alt="" src={ chatRoom.image } style={{ width: '55px', height: '55px' }}/>
+                            <Grid xs={2} sx={{pt: '5px'}}>
+                                {displayProfile(chatRoom.image, 55, 55)}
                             </Grid>
                             <Grid xs={8}>
                                 <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
@@ -153,7 +153,11 @@ export default function MessageTab() {
                                     </div>
                                     <Typography sx={{paddingTop:"5px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
                                         {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
-                                        {chatRoom.message}
+                                        {chatRoom.message.length > 15 ? (
+                                          `${chatRoom.message.slice(0, 15)}...`
+                                        ) : (
+                                          chatRoom.message
+                                        )}
                                     </Typography>
                                 </Stack>
                             </Grid>
