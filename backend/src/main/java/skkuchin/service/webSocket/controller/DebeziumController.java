@@ -9,7 +9,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
-import skkuchin.service.domain.User.PushToken;
 import skkuchin.service.dto.ChatMessageDto;
 import skkuchin.service.dto.ChatRoomDto;
 import skkuchin.service.dto.DebeziumDto;
@@ -17,8 +16,6 @@ import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.repo.PushTokenRepo;
-import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ChatMessageService;
 import skkuchin.service.service.ChatRoomService;
 import skkuchin.service.service.PushTokenService;
@@ -46,28 +43,6 @@ public class DebeziumController {
 
         ChatRoom chatRoom = chatRoomService.findChatById(dto.getPayload().getAfter().getChatRoomId());
 
-        if (dto.getPayload().getOp().equals("c") && !Objects.equals(dto.getPayload().getAfter().getSender(), "admin")) {
-            String sender = dto.getPayload().getAfter().getSender();
-            AppUser user = null;
-
-            String pushTitle = null;
-            String pushMessage = dto.getPayload().getAfter().getMessage();
-
-            if (Objects.equals(chatRoom.getUser1().getUsername(), sender)) {
-                user = chatRoom.getUser2();
-                pushTitle = chatRoom.getUser1().getNickname();
-            } else {
-                user = chatRoom.getUser1();
-                pushTitle = chatRoom.getUser2().getNickname();
-            }
-
-            Subscription subscription = pushTokenService.toSubscription(user);
-
-            if (subscription != null) {
-                pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
-            }
-        }
-
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();
 
@@ -87,6 +62,33 @@ public class DebeziumController {
 
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList", chatRooms1);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList", chatRooms2);
+
+        if (dto.getPayload().getOp().equals("c") && !Objects.equals(dto.getPayload().getAfter().getSender(), "admin")) {
+            String sender = dto.getPayload().getAfter().getSender();
+            AppUser user = null;
+
+            String pushTitle = null;
+            String pushMessage = dto.getPayload().getAfter().getMessage();
+            Boolean chatPermit = null;
+
+            if (Objects.equals(chatRoom.getUser1().getUsername(), sender)) {
+                user = chatRoom.getUser2();
+                chatPermit = chatRoom.isUser2Alarm();
+                pushTitle = chatRoom.getUser1().getNickname();
+            } else {
+                user = chatRoom.getUser1();
+                chatPermit = chatRoom.isUser1Alarm();
+                pushTitle = chatRoom.getUser2().getNickname();
+            }
+
+            if (chatPermit) {
+                Subscription subscription = pushTokenService.toSubscription(user);
+
+                if (subscription != null) {
+                    pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+                }
+            }
+        }
     }
 
     @Transactional
@@ -100,19 +102,6 @@ public class DebeziumController {
 
         String roomId = dto.getPayload().getAfter().getRoomId();
         ChatRoom chatRoom = chatRoomService.findChatRoom(roomId);
-
-        if (dto.getPayload().getOp().equals("c")) {
-            AppUser user = chatRoom.getUser2();
-
-            String pushTitle = "스꾸친";
-            String pushMessage = "새로운 밥약 신청이 도착했습니다!";
-
-            Subscription subscription = pushTokenService.toSubscription(user);
-
-            if (subscription != null) {
-                pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
-            }
-        }
 
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();
@@ -134,6 +123,19 @@ public class DebeziumController {
 
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user1",settingResponse);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user2",settingResponse);
+
+        if (dto.getPayload().getOp().equals("c")) {
+            AppUser user = chatRoom.getUser2();
+
+            String pushTitle = "스꾸친";
+            String pushMessage = "새로운 밥약 신청이 도착했습니다!";
+
+            Subscription subscription = pushTokenService.toSubscription(user);
+
+            if (subscription != null) {
+                pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+            }
+        }
     }
 
     @Transactional

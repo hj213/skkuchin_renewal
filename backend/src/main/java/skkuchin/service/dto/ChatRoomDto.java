@@ -37,6 +37,24 @@ public class ChatRoomDto {
     }
 
     @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static  class AdminRoomRequest {
+        @NotNull
+        @JsonProperty
+        private Long user1Id;
+        @NotNull
+        @JsonProperty
+        private Long user2Id;
+
+        public ChatRoom toEntity(AppUser user1, AppUser user2){
+            return ChatRoom.builder()
+                    .user1(user1)
+                    .user2(user2)
+                    .build();
+        }
+    }
+
+    @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static  class ReactionRequest{
@@ -103,9 +121,9 @@ public class ChatRoomDto {
             } else if (diff < 2880) {
                 return "어제";
             } else if (date.getYear() == now.getYear()) {
-                return date.format(DateTimeFormatter.ofPattern("M월 d일"));
+                return date.format(DateTimeFormatter.ofPattern("M월 d일", Locale.KOREAN));
             } else {
-                return date.format(DateTimeFormatter.ofPattern("yyyy. M. d."));
+                return date.format(DateTimeFormatter.ofPattern("yyyy. M. d.", Locale.KOREAN));
             }
         }
     }
@@ -178,9 +196,9 @@ public class ChatRoomDto {
             } else if (diff < 2880) {
                 return "어제";
             } else if (date.getYear() == now.getYear()) {
-                return date.format(DateTimeFormatter.ofPattern("M월 d일"));
+                return date.format(DateTimeFormatter.ofPattern("M월 d일", Locale.KOREAN));
             } else {
-                return date.format(DateTimeFormatter.ofPattern("yyyy. M. d."));
+                return date.format(DateTimeFormatter.ofPattern("yyyy. M. d.", Locale.KOREAN));
             }
         }
     }

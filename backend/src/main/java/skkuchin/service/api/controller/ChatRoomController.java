@@ -58,6 +58,15 @@ public class ChatRoomController {
         }
      }
 
+    @PostMapping("")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> makeAdminRoom(@Valid @RequestBody ChatRoomDto.AdminRoomRequest dto,
+                                      @AuthenticationPrincipal PrincipalDetails principalDetails){
+        AppUser user = principalDetails.getUser();
+        chatRoomService.makeAdminRoom(dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "관리자 채팅방 개설 완료", null), HttpStatus.CREATED);
+    }
+
     @PutMapping("/request/{roomId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> setReceiverReaction(@PathVariable String roomId,
