@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.Map.Campus;
+import skkuchin.service.domain.User.Major;
 import skkuchin.service.dto.CandidateDto;
 import skkuchin.service.domain.Matching.Candidate;
 import skkuchin.service.domain.User.AppUser;
@@ -100,13 +102,15 @@ public class CandidateService {
         int remain = 3; //뽑아야 하는 인원
         List<AppUser> returnUsers = new ArrayList<>();
         List<Long> excludeIds = new ArrayList<>(); //제외 대상인 userId 리스트
+        Campus campus = findCampus(user.getMajor());
 
         /**
          * 1순위: 겹치는 키워드가 많은 순
          * 키워드 개수가 같으면 학과가 같은 유저가 우선
          */
         List<AppUser> usersOrderByKeyword = orderByKeyword(user, excludeIds);
-        returnUsers.addAll(usersOrderByKeyword);
+        List<AppUser> usersOrderByCampus = orderByCampus(usersOrderByKeyword, campus);
+        returnUsers.addAll(usersOrderByCampus);
         remain = remain - usersOrderByKeyword.size();
 
         if (remain > 0) {
@@ -116,7 +120,8 @@ public class CandidateService {
              * 카테고리 개수가 같으면 학과가 같은 유저 우선
              */
             List<AppUser> usersOrderByCategory = orderByCategory(user, excludeIds, usersOrderByKeyword);
-            returnUsers.addAll(usersOrderByCategory);
+            usersOrderByCampus = orderByCampus(usersOrderByCategory, campus);
+            returnUsers.addAll(usersOrderByCampus);
             remain = remain - usersOrderByCategory.size();
 
             if (remain > 0) {
@@ -125,7 +130,8 @@ public class CandidateService {
                  * 학과가 같은 유저 우선
                  */
                 List<AppUser> remainingUsers = findRemainingUsers(user, excludeIds, usersOrderByCategory);
-                returnUsers.addAll(remainingUsers);
+                usersOrderByCampus = orderByCampus(remainingUsers, campus);
+                returnUsers.addAll(usersOrderByCampus);
             }
         }
 
@@ -172,5 +178,32 @@ public class CandidateService {
     public void deleteExpiredData() {
         List<Candidate> candidates = candidateRepo.findByExpireDateBefore(LocalDateTime.now());
         candidateRepo.deleteAll(candidates);
+    }
+
+    public Campus findCampus(Major major) {
+        EnumSet<Major> majors = EnumSet.allOf(Major.class);
+        List<Major> majorList = new ArrayList<>();
+        majorList.addAll(majors);
+
+        if (majorList.indexOf(major) < majorList.indexOf(Major.건설환경공학부)) {
+            return Campus.명륜;
+        } else {
+            return Campus.율전;
+        }
+    }
+
+    public List<AppUser> orderByCampus(List<AppUser> userList, Campus campus) {
+        List<AppUser> result = new ArrayList<>();
+        List<AppUser> differentCampus = new ArrayList<>();
+
+        for (AppUser user : userList) {
+            if (findCampus(user.getMajor()).equals(campus)) {
+                result.add(user);
+            } else {
+                differentCampus.add(user);
+            }
+        }
+        result.addAll(differentCampus);
+        return result;
     }
 }
