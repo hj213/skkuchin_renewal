@@ -397,7 +397,7 @@ const chatPage = () => {
 
             {/* 시간정하기 & 장소정하기 버튼 */}
             {/* 하단 텍스트 입력 박스에 가려지는 메시지 패딩으로 끌어올리기 */}
-            <Grid sx={{paddingBottom:"90px"}}>
+            <Grid >
                 <Grid
                     sx={{
                     marginTop: '95px',
@@ -449,7 +449,7 @@ const chatPage = () => {
                         </Typography>
                     </Grid>
                 </div> */}
-
+                <Grid style={{ marginBottom: '90px'}}>
                 { messages && messages.slice().reverse().map((message, index) => {
                     // 이어서 메시지를 보냈는지 확인
                     const prevMessage = messages.slice().reverse()[index - 1];
@@ -463,11 +463,11 @@ const chatPage = () => {
                         // displayTime = false; 
                     }
                     return (
-                        <div key={message.id}>
+                        <div key={message.id} >
                             {
                                 (!prevMessage || (prevMessage.date !== message.date))
                                 ?
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                                     <Grid>
                                         <Typography sx={{fontSize:'12px', color:'#A1A1A1'}}>
                                             {message.date}
@@ -608,9 +608,10 @@ const chatPage = () => {
                     )
                 })}
                 </Grid>
+                </Grid>
 
                 {/* 텍스트 인풋 필드 & 버튼 */}
-                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '4px 10px 15px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
+                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '2px 10px 13px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
                     <textarea 
                         name='chat' 
                         placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메시지를 입력하세요.'}
