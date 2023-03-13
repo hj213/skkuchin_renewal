@@ -294,8 +294,8 @@ const AiGreeting = () => {
                             border:"1px solid #BABABA", 
                             display:"inline-block", 
                             marginRight:"3px",
-                            padding:"1px 3px 0 3px",
-                            width:"28px"}}>
+                            padding:"1px 6.5px",
+                            width:"34px"}}>
                         {user.campus}
                         </Typography>
                         {user.major} /&nbsp;
@@ -315,7 +315,7 @@ const AiGreeting = () => {
                             border:"1px solid #BABABA", 
                             display:"inline-block", 
                             marginRight:"5px",
-                            padding:"2px 7px 0 7px",
+                            padding:"4.5px 7px ",
                             }}>
                         {userInfo.mbti}
                         </Typography>
@@ -328,7 +328,7 @@ const AiGreeting = () => {
                                         border:"1px solid #BABABA", 
                                         display:"inline-block", 
                                         marginRight:"5px",
-                                        padding:"2px 7px 0 7px",
+                                        padding:"4.5px 7.5px",
                                         fontSize:'12px'}}>
                                     {interest}
                                     </Typography>
@@ -339,7 +339,7 @@ const AiGreeting = () => {
 
                 <div style={{width:"70%", margin:"40px auto"}}>
                     <Typography style={{textAlign:"center", fontSize:"13px"}}>
-                        {userInfo.introduction}
+                        "{userInfo.introduction}"
                     </Typography>
                 </div>
 

@@ -201,7 +201,7 @@ export default function myPage() {
                     <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname} 님</Typography>
                     {/* 캠퍼스, 학과, 학번 */}
                     <div style={{display: 'flex'}}>
-                        <Typography sx={{height: '16px', border: "1px solid #BABABA", fontSize: '10px', p: '0px 6.5px', borderRadius: '17px', marginTop:"-1px"}} color={theme.palette.fontColor.main}>{user.campus}</Typography>
+                        <Typography sx={{height: '18px', border: "1px solid #BABABA", fontSize: '10px', p: '1px 6.5px', borderRadius: '17px', marginTop:"-2px"}} color={theme.palette.fontColor.main}>{user.campus}</Typography>
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
                     </div>
                 </div>

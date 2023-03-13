@@ -10,6 +10,7 @@ import character from '../image/mainCharacterY.png';
 import Link from 'next/link';
 import bell from '../image/noti/bell.png';
 import hurray from '../image/noti/hurray.png'
+import { textAlign } from '@mui/system';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -63,7 +64,7 @@ function TabPanel(props) {
             <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
             <li>
             <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
-                <Grid xs={1} style={{marginTop:'13px', paddingLeft:'5px'}}>
+                <Grid xs={1} style={{marginTop:'11px', paddingLeft:'5px'}}>
                     <Image src={bell} width={15} height={15} />
                 </Grid>
                 <Grid xs={9}>
@@ -73,15 +74,20 @@ function TabPanel(props) {
                                 공지
                             </Typography>
                         </div>
-                        <Typography sx={{paddingTop:"10px",fontSize: '13px', fontWeight:'700', lineHeight: '0%', verticalAlign: 'top',}} align="left">
+                    
+                        <Typography sx={{padding:"10px 0px 10px 0px",fontSize: '13px', fontWeight:'700', lineHeight: '0%', verticalAlign: 'top',}} align="left">
                             {/* 텍스트 불러올 때 slice 활용해서 number of letters 제한해야 됨 */}
                                 스꾸친이 새로이 출시되었습니다!
                         </Typography>
+                            
+                           
+                        
                     </Stack>
                 </Grid>
                 <Grid xs={2}>
                 <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                     <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
+                    3월 7일
                     </Typography>
                     <div
                         style={{
@@ -99,6 +105,7 @@ function TabPanel(props) {
                         NEW
                         </Typography>
                     </div>
+                            
                     </Stack>
                 </Grid>
             </Grid>
@@ -157,7 +164,7 @@ function TabPanel(props) {
             <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
             <li>
             <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
-                <Grid xs={1} style={{marginTop:'13px', paddingLeft:'5px'}}>
+                <Grid xs={1} style={{marginTop:'11px', paddingLeft:'5px'}}>
                     <Image src={hurray} width={15} height={17} />
                 </Grid>
                 <Grid xs={9}>
@@ -176,6 +183,7 @@ function TabPanel(props) {
                 <Grid xs={2}>
                 <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
                     <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
+                        3월 7일
                     </Typography>
                     <div
                         style={{
