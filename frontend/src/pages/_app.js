@@ -6,8 +6,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Layout from '../hocs/Layout';
+import Script from 'next/script'
+import * as gtag from '../lib/gtag'
+import { useRouter } from 'next/router';
 
 const App = ({ Component, pageProps }) => {
+  const router = useRouter();
   const store = useStore(pageProps.initialReduxState);
 
   const [isOnline, setIsOnline] = useState(true);
@@ -28,7 +32,16 @@ const App = ({ Component, pageProps }) => {
     }
   }, [])
 
-  const router = useRouter()
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
+
   useEffect(() => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined && isOnline) {
       const wb = window.workbox
@@ -42,10 +55,27 @@ const App = ({ Component, pageProps }) => {
       <Provider store={store}>
         <Layout>
           <Container style={{padding:'0px', overflowY: 'hidden'}} maxWidth="sm">
-              <Head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
-                <title>스꾸친</title>
-              </Head>
+            <Head>
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${gtag.GA_TRACKING_ID}', {
+                      page_path: window.location.pathname,
+                    });
+                  `,
+                }}
+              />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+              <title>스꾸친</title>
+            </Head>
+            {/* Global Site Tag (gtag.js) - Google Analytics */}
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+            />
             <Component {...pageProps} />
           </Container>
         </Layout>
