@@ -130,7 +130,7 @@ export default function MessageTab() {
                             <Grid xs={2} sx={{pt: '5px'}}>
                                 {displayProfile(chatRoom.image, 55, 55)}
                             </Grid>
-                            <Grid xs={8} style={{marginLeft:'8px'}}>
+                            <Grid xs={8} style={{paddingLeft:'8px'}}>
                                 <Stack direction="column" spacing={1} sx={{margin:"11px 0 0 7px"}}>
                                     <div style={{display:'flex', }}>
                                       <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '100%', verticalAlign: 'top', paddingTop:'3px'}} align="left">
@@ -168,9 +168,9 @@ export default function MessageTab() {
                                     </Typography>
                                 </Stack>
                             </Grid>
-                            <Grid >
+                            <Grid xs={2}>
                             <Stack direction="column" spacing={1} sx={{margin:"7px 0 7px 7px"}}>
-                              <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
+                              <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1", }} align="right">
                                 {chatRoom.display_time}
                               </Typography>
                               <div

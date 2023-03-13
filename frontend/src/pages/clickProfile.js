@@ -73,7 +73,7 @@ export default function clickProfile(){
                         <Grid item sx={{display: 'flex'}}>
                             {(matchingUser.keywords) != null ?
                                 ((matchingUser.keywords).slice(0, 3).map((interest, index)=> (
-                                    <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 26px'}}>
+                                    <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 26px'}}>
                                         {interest}
                                     </Grid>
                                 )))

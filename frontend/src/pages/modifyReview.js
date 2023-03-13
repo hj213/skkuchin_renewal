@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 import { modify_review, clear_my_review, load_reviews } from "../actions/review/review";
 
-import { CssBaseline, Box, ThemeProvider, Button, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, Button, Card, CardContent, Typography, Grid, Container, CircularProgress  } from '@mui/material';
 import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
@@ -158,27 +158,54 @@ const ModifyReview = () => {
       newPreviewImages.splice(index, 1);
       setPreviewImages(newPreviewImages);
     };
+
+    const [visibility, setVisibility] = useState({
+        enroll: 'visible',
+        loading:'none'
+    });
+
+    const [condition, setCondition] = useState(false); //확인버튼 조건 
+
+    //등록 조건 
+    useEffect(()=>{
+        if(rating && textReview !='' && images && tagList){
+            setCondition(true)
+        } else( 
+            setCondition(false)
+        )
+    },[rating, textReview, images, tagList])
     
      // 등록 클릭 시
      const handleModifyClick = (event) =>{
         event.preventDefault();
         
-        dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
-            if(result){
-                dispatch(clear_my_review());
-                router.push({
-                    pathname: '/reviews',
-                    query: { id: place_id }
-                });                  
-            } else {
-            }
-        }));
+        if(condition){
+            setVisibility({
+                enroll: 'hidden',
+                loading:'flex'
+            });
+            dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
+                if(result){
+                    dispatch(clear_my_review());
+                    router.push({
+                        pathname: '/reviews',
+                        query: { id: place_id }
+                    });                  
+                } else {
+                }
+            }));
+        } else {
+            return
+        }
     }
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
+            <div style={{position:'fixed', textAlign:'center', color:"#FFE885", display:visibility.loading, marginTop: window.innerHeight /2.2, marginLeft: window.innerWidth/2.3}}>
+                <CircularProgress color="inherit" size={70}/>
+            </div>
             {/* 전체 틀 */}
-            <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
+            <div style={{ position: 'relative', width:'100%', height:'100%', visibility:visibility.enroll}}>  
 
             {/* 상단 헤더 */}
             <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
@@ -191,7 +218,7 @@ const ModifyReview = () => {
                             zIndex: '4',
                             border: 'none',
                             }}>
-                    <Grid container style={{padding:'50px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Grid container style={{padding:'50px 17px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 0px 0px 0px'}}>
                             <a>
                             <Image src={close} width={37} height={37} name='close' onClick={handleOnclick} layout='fixed' />
@@ -199,7 +226,7 @@ const ModifyReview = () => {
                         </Grid>
                     
                         <Grid onClick={handleModifyClick}>
-                            <Typography sx={{fontSize:'18px', fontWeight:'700'}} color="#FFCE00">
+                            <Typography sx={{fontSize:'18px', fontWeight:'700'}} color={condition? theme.palette.primary.main : theme.palette.fontColor.main }>
                                 수정
                             </Typography>
                         </Grid> 
@@ -228,7 +255,7 @@ const ModifyReview = () => {
                             </Grid>
                         }
 
-                            <Grid sx={{width: '100%'}}>
+                            <Grid sx={{width: '100%', marginTop:'10px'}}>
                                 <Grid>
                                 <div style={{ textAlign: "center", margin: '-20px -20px 0', padding: '13px 0px 5px 0px', borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
                                     {[1, 2, 3, 4, 5].map((item, index) => {
@@ -387,7 +414,6 @@ const ModifyReview = () => {
                                     <Box
                                     component="form"
                                     noValidate
-                                    ㄴ
                                     sx={{'& .MuiTextField-root': { m: 1, width: '80vw' }, justifyContent:'center', alignItems:'center',}}>
                                         <TextField
                                         id="outlined-multiline-statiic"
