@@ -255,9 +255,9 @@ export const change_status_info = (status, callback) => async dispatch => {
                 type: CHANGE_MATCHING_STATUS_SUCCESS
             })
             await dispatch(load_matching_info());
-            // if (status) {
-            //     dispatch(load_candidate());
-            // }
+            if (status) {
+                dispatch(load_candidate());
+            }
 
             
             if (callback) callback([true, apiRes.message]);
