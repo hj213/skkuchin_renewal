@@ -131,6 +131,7 @@ public class PlaceService {
             }
         }
 
+        // 태그 두 개
         if (tags.size() == 2) {
             for (Place place : places) {
                 List<Tag> placeTags = getTop3TagsByPlace(place);
@@ -139,6 +140,7 @@ public class PlaceService {
                     matchingPlaces.add(place);
                 }
             }
+            // 태그 한 개
         } else if (tags.size() == 1 && keywordsList.size() == 0) {
             for (Place place : places) {
                 List<Tag> placeTags = getTop3TagsByPlace(place);
@@ -147,6 +149,7 @@ public class PlaceService {
                     matchingPlaces.add(place);
                 }
             }
+            // 학생할인 + 카테고리
         } else if (tags.size() == 0 && keywordsList.size() == 2 && keywordsList.contains("학생 할인")) {
             keywordsList.remove("학생 할인");
             for (Place place : places) {
@@ -154,6 +157,7 @@ public class PlaceService {
                     matchingPlaces.add(place);
                 }
             }
+            // 태그 + 학생할인
         } else if (tags.size() == 1 && keywordsList.size() == 1 && keywordsList.contains("학생 할인")) {
             for (Place place : places) {
                 List<Tag> placeTags = getTop3TagsByPlace(place);
@@ -162,6 +166,7 @@ public class PlaceService {
                     matchingPlaces.add(place);
                 }
             }
+            // 태그 + 카테고리
         } else if (tags.size() == 1 && keywordsList.size() == 1 && !keywordsList.contains("학생 할인")) {
             for (Place place : places) {
                 List<Tag> placeTags = getTop3TagsByPlace(place);
@@ -170,12 +175,14 @@ public class PlaceService {
                     matchingPlaces.add(place);
                 }
             }
+            // 학생할인
         } else if (tags.size() == 0 && keywordsList.size() == 1 && keywordsList.contains("학생 할인")) {
             for (Place place : places) {
                 if (place.getDiscountAvailability()) {
                     matchingPlaces.add(place);
                 }
             }
+            // 검색어
         } else if (tags.size() == 0 && keywordsList.size() == 1 && !keywordsList.contains("학생 할인")) {
             for (Place place : places) {
                 if (
