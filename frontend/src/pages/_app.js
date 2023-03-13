@@ -8,7 +8,6 @@ import Head from 'next/head';
 import Layout from '../hocs/Layout';
 import Script from 'next/script'
 import * as gtag from '../lib/gtag'
-import { useRouter } from 'next/router';
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
