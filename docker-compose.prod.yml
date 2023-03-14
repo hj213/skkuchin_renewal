@@ -16,8 +16,3 @@ services:
     build:
       context: "./nginx"
       dockerfile: Dockerfile
-  redis:
-    image: redis
-    build:
-      context: "./redis"
-      dockerfile: Dockerfile
