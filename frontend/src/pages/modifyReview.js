@@ -192,6 +192,10 @@ const ModifyReview = () => {
                         query: { id: place_id }
                     });                  
                 } else {
+                    setVisibility({
+                        enroll: 'visible',
+                        loading:'none'
+                    });
                 }
             }));
         } else {

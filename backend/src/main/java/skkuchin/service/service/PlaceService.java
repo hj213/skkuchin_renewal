@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -196,14 +197,14 @@ public class PlaceService {
         }
 
         return matchingPlaces
-                .stream()
-                .map(place -> new PlaceDto.Response(
-                        place,
-                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        getTop3TagsByPlace(place)
-                ))
-                .collect(Collectors.toList());
+            .stream()
+            .map(place -> new PlaceDto.Response(
+                    place,
+                    imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                    reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                    getTop3TagsByPlace(place)
+            ))
+            .collect(Collectors.toList());
     }
 
     public void insertData(String path) throws IOException, ParseException {
@@ -214,13 +215,13 @@ public class PlaceService {
                FileInputStream ins = new FileInputStream(path + "place_" + campusName + ".json");
                JSONParser parser = new JSONParser();
                JSONObject jsonObject = (JSONObject)parser.parse(
-                       new InputStreamReader(ins, "UTF-8")
+                       new InputStreamReader(ins, StandardCharsets.UTF_8)
                );
                JSONArray jsonArray = (JSONArray) jsonObject.get("place");
                Gson gson = new Gson();
 
-               for (int i = 0; i < jsonArray.size(); i++) {
-                   JSONObject temp = (JSONObject) jsonArray.get(i);
+               for (Object o : jsonArray) {
+                   JSONObject temp = (JSONObject) o;
                    PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
                    placeRepo.save(dto.toEntity());
                }

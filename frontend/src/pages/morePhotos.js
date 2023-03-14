@@ -1,4 +1,4 @@
-import { useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
 
@@ -15,8 +15,6 @@ import back from '../image/arrow_back_ios.png';
 import close from '../image/close.png';
 
 const MorePhotos = () => {
-
-    const dispatch = useDispatch();
     const router = useRouter();
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -41,7 +39,7 @@ const MorePhotos = () => {
     const selectedPlace = useSelector(state => state.place.place);
 
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined && place_id!='' && id!='') {
+        if(place_id!='' && id!='') {
             setPlaceId(id);
         }
     }, [id]);
@@ -62,7 +60,6 @@ const MorePhotos = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout>
             {/* 전체 틀 */}
             <div style={{ position: 'relative', width:'100%', height:'100%'}}>  
 
@@ -119,8 +116,7 @@ const MorePhotos = () => {
                     </div>
                 )}
             </Grid>
-        </div>
-        </Layout>
+            </div>
         </ThemeProvider>
         
     )
