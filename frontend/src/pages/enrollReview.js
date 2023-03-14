@@ -172,6 +172,10 @@ const EnrollReview = () => {
                         query: { id: place_id }
                     });                  
                 } else {
+                    setVisibility({
+                        enroll: 'visible',
+                        loading:'none'
+                    });
                     console.log("실패!: " +message);
                 }
             }));

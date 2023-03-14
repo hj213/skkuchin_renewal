@@ -114,7 +114,6 @@ const MorePhotos = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout >
             {/* 전체 틀 */}
             <div style={{ width:'100%'}}>  
 
@@ -322,7 +321,6 @@ const MorePhotos = () => {
                 }
             </Grid>
         </div>
-        </Layout>
         </ThemeProvider>
         
     )
