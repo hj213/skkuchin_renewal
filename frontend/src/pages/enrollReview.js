@@ -141,7 +141,7 @@ const EnrollReview = () => {
     
     const [visibility, setVisibility] = useState({
         enroll: 'visible',
-        loading:'none'
+        loading:'hidden'
     });
 
     const [condition, setCondition] = useState(false); //확인버튼 조건 
@@ -149,7 +149,7 @@ const EnrollReview = () => {
 
     //등록 조건 
     useEffect(()=>{
-        if(rating && textReview !='' && images && tagList){
+        if(rating && textReview !='' && images && tagList.length > 0){
             setCondition(true)
         } else( 
             setCondition(false)
@@ -162,8 +162,8 @@ const EnrollReview = () => {
 
         if(condition){
             setVisibility({
-                enroll: 'hidden',
-                loading:'flex'
+                enroll: 'visible',
+                loading:'visible'
             });
             dispatch(enroll_review(parseInt(place_id, 10), rating, textReview, images, tagList, ([result, message]) => {
                 if(result){
@@ -192,7 +192,7 @@ const EnrollReview = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <div style={{position:'fixed', textAlign:'center', color:"#FFE885", display:visibility.loading, marginTop: window.innerHeight /2.2, marginLeft: window.innerWidth/2.3}}>
+            <div style={{position:'fixed', height: '100%', width:'100%',textAlign:'center', color:"#FFE885", visibility:visibility.loading, paddingTop: window.innerHeight /2.2,  zIndex:'6', background:'rgb(0,0,0, 0.4)'}}>
                 <CircularProgress color="inherit" size={70}/>
             </div>
             {/* 전체 틀 */}

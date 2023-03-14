@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Profile, Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconButton, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
+import { Tabs, Tab, CssBaseline, Box, CircularProgress , Typography, Grid, Stack,  Avatar, } from '@mui/material';
 
 import profile from '../image/profile.png';
 import notiOff from '../image/chat/notifications_off.png';
@@ -113,7 +113,8 @@ export default function MessageTab() {
       </Box>
       <TabPanel value={value} index={0}>
         {
-          chatRooms &&
+          chatRooms ?
+          
           <>
             { chatRooms.length > 0 ?
               <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
@@ -224,6 +225,11 @@ export default function MessageTab() {
             </Grid> 
             }
           </>
+          : (
+            <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', paddingTop: window.innerHeight/3,color:"#FFE885"}}>
+            <CircularProgress color="inherit" size={60}/>
+          </div>
+          )
         }
       </TabPanel>
 
