@@ -50,25 +50,32 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                 if (container) {
                     let selectedPlace;
                     if (selectedId) {
-                        selectedPlace = places.find(p => p.id == selectedId);
+                        selectedPlace = places && places.find(p => p.id == selectedId);
                     }
 
                     let options;
-
-                    if (selectedPlace && mapCenter) {
-                        options = {
-                            center: mapCenter,
-                            level: selectedLevel
-                        };
-                    } 
-                    else if(user && user.toggle == '율전') {
+                    if(user && user.toggle == '율전' && !selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(37.2965, 126.9717),
                             level: 5,
                             preventDraggable: true,
                             zoomControl: true
                         };
+                    } 
+                    else if(user && user.toggle == '명륜' && !selectedPlace) {
+                        options = {
+                            center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
+                            level: 5,
+                            preventDraggable: true,
+                            zoomControl: true
+                        };
                     }
+                    else if (selectedPlace && mapCenter) {
+                        options = {
+                            center: mapCenter,
+                            level: selectedLevel
+                        };
+                    } 
                     else {
                         options = {
                           center : new window.kakao.maps.LatLng(latitude, longitude),

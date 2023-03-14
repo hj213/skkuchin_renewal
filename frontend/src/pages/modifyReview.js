@@ -161,14 +161,14 @@ const ModifyReview = () => {
 
     const [visibility, setVisibility] = useState({
         enroll: 'visible',
-        loading:'none'
+        loading:'hidden'
     });
 
     const [condition, setCondition] = useState(false); //확인버튼 조건 
 
     //등록 조건 
     useEffect(()=>{
-        if(rating && textReview !='' && images && tagList){
+        if(rating && textReview !='' && images && tagList.length > 0){
             setCondition(true)
         } else( 
             setCondition(false)
@@ -181,8 +181,8 @@ const ModifyReview = () => {
         
         if(condition){
             setVisibility({
-                enroll: 'hidden',
-                loading:'flex'
+                enroll: 'visible',
+                loading:'visible'
             });
             dispatch(modify_review(review_id, rating, textReview, images, previewImages, tagList, ([result, message])=>{
                 if(result){
@@ -205,7 +205,7 @@ const ModifyReview = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <div style={{position:'fixed', textAlign:'center', color:"#FFE885", display:visibility.loading, marginTop: window.innerHeight /2.2, marginLeft: window.innerWidth/2.3}}>
+            <div style={{position:'fixed', height: '100%', width:'100%',textAlign:'center', color:"#FFE885", visibility:visibility.loading, paddingTop: window.innerHeight /2.2,  zIndex:'6', background:'rgb(0,0,0, 0.4)'}}>
                 <CircularProgress color="inherit" size={70}/>
             </div>
             {/* 전체 틀 */}
