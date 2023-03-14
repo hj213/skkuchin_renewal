@@ -30,7 +30,7 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory("ec2-13-125-81-159.ap-northeast-2.compute.amazonaws.com", port);
+        return new LettuceConnectionFactory("ec2-13-125-81-159.ap-northeast-2.compute.amazonaws.com", 6379);
     }
 
     @Bean
