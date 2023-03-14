@@ -43,7 +43,7 @@ services:
     networks:
       - skkuchin-network
 
-  cache:
+  redis:
     image: redis:alpine
     container_name: skkuchin-cache
     ports:
