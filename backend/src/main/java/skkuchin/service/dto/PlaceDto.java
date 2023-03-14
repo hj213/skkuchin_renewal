@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import skkuchin.service.domain.Map.*;
 
 import javax.validation.constraints.NotBlank;
@@ -62,6 +63,7 @@ public class PlaceDto {
     /* 리뷰 전체 조회, 리뷰 상세 조회 */
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @NoArgsConstructor
     public static class Response {
         private Long id;
         private String name;
