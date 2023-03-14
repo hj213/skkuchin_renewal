@@ -33,7 +33,7 @@ const App = ({ Component, pageProps }) => {
 
   useEffect(() => {
     const handleRouteChange = (url) => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
         gtag.pageview(url);
       }
     }

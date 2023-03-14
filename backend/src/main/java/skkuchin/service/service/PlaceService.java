@@ -8,6 +8,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.domain.Map.*;
@@ -35,6 +38,7 @@ public class PlaceService {
     private final S3Service s3Service;
 
     @Transactional
+    @Cacheable(value = "placeAll")
     public List<PlaceDto.Response> getAll() {
 
         return placeRepo.findAll()
@@ -49,6 +53,7 @@ public class PlaceService {
     }
 
     @Transactional
+    @Cacheable(value = "placeDetail", key = "#placeId")
     public PlaceDto.Response getDetail(Long placeId) {
         Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
 
@@ -64,18 +69,31 @@ public class PlaceService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void add(PlaceDto.Request dto) {
         Place place = dto.toEntity();
         placeRepo.save(place);
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void addAll(List<PlaceDto.Request> dto) {
         List<Place> places = dto.stream().map(placeDto -> placeDto.toEntity()).collect(Collectors.toList());
         placeRepo.saveAll(places);
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", key = "#placeId"),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void update(Long placeId, PlaceDto.Request dto) {
         Place existingPlace = placeRepo.findById(placeId).orElseThrow();
         BeanUtils.copyProperties(dto, existingPlace);
@@ -83,6 +101,11 @@ public class PlaceService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", key = "#placeId"),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void delete(Long placeId) {
         Place place = placeRepo.findById(placeId).orElseThrow();
 
@@ -96,6 +119,7 @@ public class PlaceService {
     }
 
     @Transactional
+    @Cacheable(value = "placeSearch", key = "#keywords.toString()")
     public List<PlaceDto.Response> search(List<String> keywords) {
         if (keywords.stream().anyMatch(String::isBlank)) {
             throw new CustomRuntimeException("검색어를 입력해주시기 바랍니다", "장소 검색 실패");

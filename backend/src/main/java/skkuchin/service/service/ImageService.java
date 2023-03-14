@@ -3,6 +3,8 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.dto.ImageDto;
@@ -47,6 +49,11 @@ public class ImageService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", key = "#dto.placeId"),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void upload(ImageDto.PostRequest dto) {
         checkFile(dto.getImage());
 
@@ -59,6 +66,11 @@ public class ImageService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", key = "#dtos.get(0).placeId"),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void uploadAll(List<ImageDto.PostRequest> dtos) {
         List<Image> images = new ArrayList<>();
 
@@ -78,6 +90,11 @@ public class ImageService {
 
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", allEntries = true),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void update(Long imageId, ImageDto.PutRequest dto) {
         checkFile(dto.getImage());
 
@@ -94,6 +111,11 @@ public class ImageService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", allEntries = true),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void delete(Long imageId) {
         Image existingImage = imageRepo.findById(imageId).orElseThrow();
         String url = existingImage.getUrl();
@@ -113,6 +135,11 @@ public class ImageService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", allEntries = true),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void deletePlaceImages(Long placeId) {
         Place place = placeRepo.findById(placeId).orElseThrow();
         List<Image> images =  imageRepo.findByPlace(place);

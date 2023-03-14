@@ -8,6 +8,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.dto.ReviewDto;
@@ -65,6 +67,11 @@ public class ReviewService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", key = "#dto.placeId"),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void write(AppUser user, ReviewDto.PostRequest dto) {
         List<ReviewImage> reviewImages = new ArrayList<>();
 
@@ -94,6 +101,11 @@ public class ReviewService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", allEntries = true),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void update(Long reviewId, ReviewDto.PutRequest dto, AppUser user) {
         Review existingReview = reviewRepo.findById(reviewId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         Place place = existingReview.getPlace();
@@ -146,6 +158,11 @@ public class ReviewService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", allEntries = true),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void delete(Long reviewId, AppUser user) {
         Review review = reviewRepo.findById(reviewId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
         canHandleReview(review.getUser(), user);
