@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -20,6 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 
 @Configuration
+@EnableCaching
 public class RedisConfig {
     private static final Long expire = 8L;
     @Value("${spring.redis.host}")
@@ -30,6 +32,9 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
+        System.out.println("redisConnectionFactory 통과");
+        System.out.println("redisConnectionFactory host: " + host);
+        System.out.println("redisConnectionFactory port: " + port);
         return new LettuceConnectionFactory(host, port);
     }
 
