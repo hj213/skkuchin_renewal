@@ -1,4 +1,4 @@
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconButton, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
@@ -7,7 +7,6 @@ import back from '../image/arrow_back_ios.png'
 import MessageTab from "../components/MessageTab";
 
 const MessagePage = () => {
-
     // 뒤로가기 버튼
     const handleOnclick = () =>{
         router.back();

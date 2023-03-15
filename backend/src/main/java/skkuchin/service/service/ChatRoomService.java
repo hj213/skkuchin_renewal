@@ -113,7 +113,7 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public List<ChatRoomDto.userResponse> getAlarmList(String username){
+    public List<ChatRoomDto.userResponse> getRequestList(String username){
         AppUser user = userRepo.findByUsername(username);
         List<ChatRoom> chatRooms = chatRoomRepo.findRequestByUserId(user.getId());
         List<ChatRoomDto.userResponse> chatRoomDto = chatRooms
@@ -122,6 +122,26 @@ public class ChatRoomService {
                 .collect(Collectors.toList());
         Collections.sort(chatRoomDto, new AlarmListDateComparator().reversed());
         return chatRoomDto;
+    }
+
+    @Transactional
+    public Boolean checkUnreadMessageOrRequest(String username){
+        AppUser user = userRepo.findByUsername(username);
+        List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(user.getId());
+
+        for (ChatRoom chatRoom : chatRooms) {
+            if (unReadMessage(chatRoom.getRoomId(), username) > 0) {
+                return true;
+            }
+        }
+
+        List<ChatRoom> requestedChatRooms = chatRoomRepo.findRequestByUserId(user.getId());
+
+        if (requestedChatRooms.size() > 0) {
+            return true;
+        }
+
+        return null;
     }
 
     private AppUser getOtherUser(ChatRoom chatRoom, String username){

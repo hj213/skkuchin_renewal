@@ -10,6 +10,7 @@ import pushTokenReducer from './pushToken'
 import chatMessageReducer from './chatMessage';
 import chatRoomReducer from './chatRoom';
 import chatRequestReducer from './chatRequest';
+import chatAlarmReducer from './chatAlarm';
 import stompClientReducer from './stompClient';
 
 export default combineReducers({
@@ -24,5 +25,6 @@ export default combineReducers({
     chatMessage: chatMessageReducer,
     chatRequest: chatRequestReducer,
     chatRoom: chatRoomReducer,
+    chatAlarm: chatAlarmReducer,
     stompClient: stompClientReducer
 });

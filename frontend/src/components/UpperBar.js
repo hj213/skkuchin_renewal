@@ -1,31 +1,28 @@
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
 import { useState } from 'react';
 import {Container} from '@mui/material';
 import mainLogo from '../image/upperBar/mainLogo.png'
 import messageIcon from '../image/upperBar/message_X.png'
 import notiIcon from '../image/upperBar/notification_X.png'
+import messageOnIcon from '../image/upperBar/message.png'
 import Image from 'next/image'
 import { useEffect } from "react";
+import { useSelector } from 'react-redux';
 
 const UpperBar = () => {
-
-    const dispatch = useDispatch();
-    const router = useRouter();
-
     const [selected, setSelected] = useState("스꾸맵");
+    const chatAlarm = useSelector(state => state.chatAlarm.chatAlarm);
 
     // 0226 myPage 적용 안되는 문제 수정 완료
     useEffect(() => {
         const currentPathname = window.location.pathname;
         if (currentPathname === "/match") {
-        setSelected("AI 매칭");
+            setSelected("AI 매칭");
         } else if (currentPathname === "/magazine"){
-        setSelected("매거진");
+            setSelected("매거진");
         } else if (currentPathname === "/myPage"){
             setSelected("마이페이지");
         } else {
@@ -52,7 +49,7 @@ const UpperBar = () => {
                     <div style={{marginRight:"18px"}}>
                         {/* message.js로 연결. 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
                         <Link href="/message">
-                            <Image src={messageIcon} width={24} height={24}/>
+                            <Image src={chatAlarm ? messageOnIcon : messageIcon} width={24} height={24}/>
                         </Link>
                     </div>
                     <div>

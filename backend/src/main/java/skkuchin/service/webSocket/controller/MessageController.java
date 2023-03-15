@@ -36,7 +36,7 @@ public class MessageController {
 
     @Transactional
     @MessageMapping("chat.chatMessage.{chatRoomId}")
-    public void chatMessage(@DestinationVariable String chatRoomId, Message<?> message){
+    public void getChatMessage(@DestinationVariable String chatRoomId, Message<?> message){
         ChatRoom chatRoom = chatRoomService.findChatRoom(chatRoomId);
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);

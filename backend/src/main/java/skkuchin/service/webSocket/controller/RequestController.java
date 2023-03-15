@@ -8,6 +8,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+
+
 import org.springframework.transaction.annotation.Transactional;
 import skkuchin.service.domain.Chat.ChatSession;
 import skkuchin.service.dto.ChatRoomDto;
@@ -20,22 +22,22 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class ChatRoomListController {
+public class RequestController {
+
     private final RabbitTemplate template;
     private final ChatRoomService chatRoomService;
-    private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final ChatSessionService chatSessionService;
+    private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
 
     @Transactional
-    @MessageMapping("chat.list")
-    public void GetChatRoomList(Message<?> message){
+    @MessageMapping("chat.request")
+    public void GetRequest(Message<?> message){
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String sessionId = accessor.getSessionId();
         ChatSession chatSession = chatSessionService.findSession(sessionId);
         String username = chatSession.getUsername();
-
-        List<ChatRoomDto.Response> chatRooms = chatRoomService.getChatRoomList(username);
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+username+"chatRoomList", chatRooms);
+        List<ChatRoomDto.userResponse> requestList = chatRoomService.getRequestList(username);
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"request."+username, requestList);
     }
 }

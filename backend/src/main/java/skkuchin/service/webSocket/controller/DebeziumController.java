@@ -64,6 +64,12 @@ public class DebeziumController {
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList", chatRooms1);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList", chatRooms2);
 
+        Boolean alarm1 = chatRoomService.checkUnreadMessageOrRequest(user1Name);
+        Boolean alarm2 = chatRoomService.checkUnreadMessageOrRequest(user2Name);
+
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+user1Name, alarm1);
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+user2Name, alarm2);
+
         if (dto.getPayload().getOp().equals("c") && !Objects.equals(dto.getPayload().getAfter().getSender(), "admin")) {
             String sender = dto.getPayload().getAfter().getSender();
             AppUser user = null;
@@ -115,15 +121,21 @@ public class DebeziumController {
 
         ChatRoomDto.settingResponse settingResponse = chatRoomService.getSettingResponse(chatRoom);
 
-        List<ChatRoomDto.userResponse> alarmList = chatRoomService.getAlarmList(userName2);
+        List<ChatRoomDto.userResponse> requestList = chatRoomService.getRequestList(userName2);
 
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+ userName2, alarmList);
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"request."+ userName2, requestList);
 
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+userName1+"chatRoomList", chatRooms1);
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+userName2+"chatRoomList", chatRooms2);
 
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user1",settingResponse);
         template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user2",settingResponse);
+
+        Boolean alarm1 = chatRoomService.checkUnreadMessageOrRequest(userName1);
+        Boolean alarm2 = chatRoomService.checkUnreadMessageOrRequest(userName2);
+
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+userName1, alarm1);
+        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+userName2, alarm2);
 
         if (dto.getPayload().getOp().equals("c")) {
             String pushTitle = "스꾸친";
@@ -134,6 +146,8 @@ public class DebeziumController {
             if (subscription != null) {
                 pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
             }
+
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "alarm." + userName2, true);
         } else if (dto.getPayload().getOp().equals("u")) {
             if (
                 dto.getPayload().getBefore().getResponse() == ResponseType.HOLD
@@ -148,6 +162,8 @@ public class DebeziumController {
                 if (subscription != null) {
                     pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
                 }
+
+                template.convertAndSend(CHAT_EXCHANGE_NAME, "alarm." + userName1, true);
             }
         }
     }
