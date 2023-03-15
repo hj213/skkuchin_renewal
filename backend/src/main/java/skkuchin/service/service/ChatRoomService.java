@@ -141,7 +141,7 @@ public class ChatRoomService {
             return true;
         }
 
-        return null;
+        return false;
     }
 
     private AppUser getOtherUser(ChatRoom chatRoom, String username){
