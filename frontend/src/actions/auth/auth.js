@@ -135,6 +135,22 @@ export const logout = () => async dispatch => {
         dispatch({
             type: LOGOUT_SUCCESS
         });
+
+        if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
+            navigator.serviceWorker.ready.then((reg) => {
+                reg.pushManager.getSubscription().then((subscription) => {
+                    subscription
+                    .unsubscribe()
+                    .then((successful) => {
+                    // You've successfully unsubscribed
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    });
+                });
+            });
+        }
+        
     } catch(error){
         console.log(error);
         dispatch({
