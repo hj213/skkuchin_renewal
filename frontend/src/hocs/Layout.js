@@ -8,6 +8,7 @@ import SockJS from 'sockjs-client';
 import { API_URL } from '../config';
 import { WEB_PUSH_PUBLIC_KEY } from '../config';
 import { enroll_token } from '../actions/pushToken/pushToken';
+import { get_realtime_chat_alarm, get_chat_alarm_info } from '../actions/chat/chatAlarm';
 
 const base64ToUint8Array = base64 => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4)
@@ -27,6 +28,9 @@ const Layout = ({title, content, children}) => {
     const router = useRouter();
     const [show, setShow] = useState(false);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const user = useSelector(state => state.auth.user);
+    const anotherStompClient = useSelector(state => state.stompClient.stompClient);
+    const subscriptions = {};
 
     const notify = async () => {
         if (!("Notification" in window)) {
@@ -80,8 +84,15 @@ const Layout = ({title, content, children}) => {
     useEffect(() => {
         if (isAuthenticated) {
             notify();
+            if (user && anotherStompClient) {
+                subscriptions.alarm = dispatch(get_realtime_chat_alarm(user.username, anotherStompClient));
+
+                Promise.all(Object.values(subscriptions)).then(() => {
+                    dispatch(get_chat_alarm_info(anotherStompClient));
+                });
+            }
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, anotherStompClient]);
 
     let stompClient = null;
     const Stomp = require("stompjs/lib/stomp.js").Stomp;

@@ -12,7 +12,6 @@ import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
-import ReviewItem from "../components/ReviewItem";
 import close from '../image/close.png';
 import next from '../image/photo_next.png';
 import prev from '../image/photo_prev.png';

@@ -26,6 +26,7 @@ export default function myPage() {
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const pushToken = useSelector(state => state.pushToken.pushToken);
+    const chatAlarmSubscription = useSelector(state => state.chatAlarm.chatAlarmSubscription);
 
     const [chatAlarm, setChatAlarm] = useState(false);
     const [infoAlarm, setInfoAlarm] = useState(false);
@@ -43,6 +44,9 @@ export default function myPage() {
 
     const handleLogout = () => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
+            if (chatAlarmSubscription) {
+                chatAlarmSubscription.unsubscribe();
+            }
             dispatch(logout());
             setDialogOpen(false);
         }
