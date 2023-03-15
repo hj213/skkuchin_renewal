@@ -130,7 +130,7 @@ const MorePhotos = () => {
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
-                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick}/>
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick} layout='fixed' />
                                 </Grid>
 
                                 <Grid>
@@ -167,22 +167,25 @@ const MorePhotos = () => {
                             justifyContent: 'center',
                         }}> 
                             <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                <Image onClick={handlePrevClick} src={prev} width={33} height={33}/>
+                                <Image onClick={handlePrevClick} src={prev} width={33} height={33} layout='fixed' />
                             </div>
                             <div style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                <Image onClick={handleNextClick} src={next} width={33} height={33}/>
+                                <Image onClick={handleNextClick} src={next} width={33} height={33} layout='fixed' />
                             </div>
                             <div style={{ position: 'absolute', bottom: '13px', right: '10px', zIndex: '10', display: 'flex', alignItems: 'center'}}>
                                 <Typography sx={{color: '#FFE885', fontSize: '13px', fontWeight: '700', pr: '7px'}}>{`${currentIndex+1}/${selectedPlace.images.length}`}</Typography>
-                                <Image src={morePic} width={22} height={22}/>
+                                <Image src={morePic} width={22} height={22} layout='fixed' />
                             </div>
                             <Image
+                                sizes='250px'
                                 width='100%'
                                 height={1900}
                                 src={selectedPlace.images[currentIndex]}
                                 alt={`image`}
                                 layout='fill'
                                 objectFit='contain'
+                                placeholder="blur" 
+                                blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
                             />
                         </div>
                     </div>
@@ -200,23 +203,26 @@ const MorePhotos = () => {
                                     justifyContent: 'center',
                                 }}> 
                                     <div style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                        <Image onClick={handlePrevClick} src={prev} width={33} height={33}/>
+                                        <Image onClick={handlePrevClick} src={prev} width={33} height={33} layout='fixed' />
                                     </div>
                                     <div style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', zIndex: '10' }}>
-                                        <Image onClick={handleNextClick} src={next} width={33} height={33}/>
+                                        <Image onClick={handleNextClick} src={next} width={33} height={33} layout='fixed' />
                                     </div>
                                     <div style={{ position: 'absolute', bottom: '13px', right: '10px', zIndex: '10', display: 'flex', alignItems: 'center'}}>
                                         <Typography sx={{color: '#FFE885', fontSize: '13px', fontWeight: '700', pr: '7px'}}>{`${currentIndex+1}/${review.images.length}`}</Typography>
                                         <Image src={morePic} width={22} height={22}/>
                                     </div>
                                     <Image
+                                        sizes='250px'
                                         width='100%'
                                         height={1900}
                                         src={review.images[currentIndex]}
                                         alt={`image`}
                                         layout='fill'
                                         objectFit='contain'
-                                        />
+                                        placeholder="blur" 
+                                        blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                    />
                                 </div>
                         </div>
                     </div>
