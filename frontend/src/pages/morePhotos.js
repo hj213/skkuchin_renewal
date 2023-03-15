@@ -76,7 +76,7 @@ const MorePhotos = () => {
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                             <Grid style={{padding: '0px 10px 0px 0px'}}>
-                                <Image src={back} width={15} height={26} name='back' onClick={handleOnclick}/>
+                                <Image src={back} width={15} height={26} name='back' onClick={handleOnclick} layout='fixed' />
                             </Grid>
                                 <Grid>
                                     { selectedPlace &&
@@ -109,6 +109,9 @@ const MorePhotos = () => {
                                         src={image}
                                         alt={`image-${index}`}
                                         objectFit='cover'
+                                        layout='fixed'
+                                        placeholder="blur" 
+                                        blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
                                     />
                                 </div>
                             ))}

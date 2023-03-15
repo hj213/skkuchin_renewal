@@ -65,7 +65,7 @@ public class ReviewService {
                 .stream().collect(Collectors.toList());
         return new ReviewDto.Response(review, reviewTags, reviewImages);
     }
-    
+
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "placeDetail", key = "#dto.placeId"),
