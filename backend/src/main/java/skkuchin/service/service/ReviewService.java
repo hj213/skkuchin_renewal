@@ -65,13 +65,13 @@ public class ReviewService {
                 .stream().collect(Collectors.toList());
         return new ReviewDto.Response(review, reviewTags, reviewImages);
     }
-
-//    @Caching(evict = {
-//            @CacheEvict(value = "placeDetail", key = "#dto.placeId"),
-//            @CacheEvict(value = "placeSearch", allEntries = true),
-//            @CacheEvict(value = "placeAll", allEntries = true)
-//    })
+    
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", key = "#dto.placeId"),
+            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
     public void write(AppUser user, ReviewDto.PostRequest dto) {
         List<ReviewImage> reviewImages = new ArrayList<>();
 
