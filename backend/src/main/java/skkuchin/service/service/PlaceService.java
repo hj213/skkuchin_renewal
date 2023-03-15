@@ -231,26 +231,104 @@ public class PlaceService {
             .collect(Collectors.toList());
     }
 
-    public void insertData(String path) throws IOException, ParseException {
-        if (placeRepo.count() < 1) { //db가 비어있을 때만 실행
-           String[] campusNames = {"명륜", "율전"};
+    @Transactional
+    @Cacheable(value = "placeSearchDiscount")
+    public List<PlaceDto.Response> searchDiscount() {
+        List<Place> places = placeRepo.findAll();
+        List<Place> matchingPlaces = new ArrayList<>();
 
-           for (String campusName : campusNames) {
-               FileInputStream ins = new FileInputStream(path + "place_" + campusName + ".json");
-               JSONParser parser = new JSONParser();
-               JSONObject jsonObject = (JSONObject)parser.parse(
-                       new InputStreamReader(ins, StandardCharsets.UTF_8)
-               );
-               JSONArray jsonArray = (JSONArray) jsonObject.get("place");
-               Gson gson = new Gson();
-
-               for (Object o : jsonArray) {
-                   JSONObject temp = (JSONObject) o;
-                   PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
-                   placeRepo.save(dto.toEntity());
-               }
-           }
+        for (Place place : places) {
+            if (place.getDiscountAvailability()) {
+                matchingPlaces.add(place);
+            }
         }
+
+        return matchingPlaces
+                .stream()
+                .map(place -> new PlaceDto.Response(
+                        place,
+                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        getTop3TagsByPlace(place)
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Cacheable(value = "placeSearchCategory", key = "#category")
+    public List<PlaceDto.Response> searchCategory(String category) {
+        List<Place> places = placeRepo.findAll();
+        List<Place> matchingPlaces = new ArrayList<>();
+
+        for (Place place : places) {
+            if (place.getCategory().name().equals(category)) {
+                matchingPlaces.add(place);
+            }
+        }
+
+        return matchingPlaces
+                .stream()
+                .map(place -> new PlaceDto.Response(
+                        place,
+                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        getTop3TagsByPlace(place)
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Cacheable(value = "placeSearchTag", key = "#tag")
+    public List<PlaceDto.Response> searchTag(String tag) {
+        List<Place> places = placeRepo.findAll();
+        List<Place> matchingPlaces = new ArrayList<>();
+        Tag realTag = tagRepo.findByName(tag);
+
+        for (Place place : places) {
+            List<Tag> placeTags = getTop3TagsByPlace(place);
+            Set<Tag> placeTagSet = new HashSet<>(placeTags);
+
+            if (placeTagSet.contains(realTag)) {
+                matchingPlaces.add(place);
+            }
+        }
+
+        return matchingPlaces
+                .stream()
+                .map(place -> new PlaceDto.Response(
+                        place,
+                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        getTop3TagsByPlace(place)
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Cacheable(value = "placeSearchKeyword", key = "#keyword")
+    public List<PlaceDto.Response> searchKeyword(String keyword) {
+        List<Place> places = placeRepo.findAll();
+        List<Place> matchingPlaces = new ArrayList<>();
+
+        for (Place place : places) {
+            if (
+                place.getCategory().name().contains(keyword)
+                        || (place.getDetailCategory() != null && place.getDetailCategory().contains(keyword)
+                        || (place.getGate() != null && place.getGate().name().contains(keyword))
+                        || place.getName().toLowerCase().contains(keyword.toLowerCase()))) {
+                matchingPlaces.add(place);
+            }
+        }
+
+        return matchingPlaces
+                .stream()
+                .map(place -> new PlaceDto.Response(
+                        place,
+                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        getTop3TagsByPlace(place)
+                ))
+                .collect(Collectors.toList());
     }
 
     private List<Tag> getTop3TagsByPlace(Place place) {
@@ -270,5 +348,27 @@ public class PlaceService {
                 .limit(3)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+    }
+
+    public void insertData(String path) throws IOException, ParseException {
+        if (placeRepo.count() < 1) { //db가 비어있을 때만 실행
+            String[] campusNames = {"명륜", "율전"};
+
+            for (String campusName : campusNames) {
+                FileInputStream ins = new FileInputStream(path + "place_" + campusName + ".json");
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject)parser.parse(
+                        new InputStreamReader(ins, StandardCharsets.UTF_8)
+                );
+                JSONArray jsonArray = (JSONArray) jsonObject.get("place");
+                Gson gson = new Gson();
+
+                for (Object o : jsonArray) {
+                    JSONObject temp = (JSONObject) o;
+                    PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
+                    placeRepo.save(dto.toEntity());
+                }
+            }
+        }
     }
 }

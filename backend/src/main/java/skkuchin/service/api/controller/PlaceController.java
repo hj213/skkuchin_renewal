@@ -69,4 +69,32 @@ public class PlaceController {
         List<PlaceDto.Response> places = placeService.search(keywords);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 검색 완료", places), HttpStatus.OK);
     }
+
+    @GetMapping("/search/discount")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> searchDiscount() {
+        List<PlaceDto.Response> places = placeService.searchDiscount();
+        return new ResponseEntity<>(new CMRespDto<>(1, "장소 학생 할인 검색 완료", places), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/category/{category}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> searchCategory(@PathVariable String category) {
+        List<PlaceDto.Response> places = placeService.searchCategory(category);
+        return new ResponseEntity<>(new CMRespDto<>(1, "장소 카태고리 검색 완료", places), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/tag/{tag}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> searchTag(@PathVariable String tag) {
+        List<PlaceDto.Response> places = placeService.searchTag(tag);
+        return new ResponseEntity<>(new CMRespDto<>(1, "장소 태그 검색 완료", places), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/keyword")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> searchKeyword(@RequestParam("q") String keyword) {
+        List<PlaceDto.Response> places = placeService.searchKeyword(keyword);
+        return new ResponseEntity<>(new CMRespDto<>(1, "장소 검색 완료", places), HttpStatus.OK);
+    }
 }

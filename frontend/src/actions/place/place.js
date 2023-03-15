@@ -166,6 +166,202 @@ export const search_places = (keyword, callback) => async dispatch => {
     };
 }
 
+export const search_places_discount = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/search/discount`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEARCH_PLACES_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+
+        } else {
+            dispatch({
+                type: SEARCH_PLACES_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch (error) {
+        dispatch({
+            type: SEARCH_PLACES_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    };
+}
+
+export const search_places_category = (category ,callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/search/category/${category}`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEARCH_PLACES_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+
+        } else {
+            dispatch({
+                type: SEARCH_PLACES_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch (error) {
+        dispatch({
+            type: SEARCH_PLACES_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    };
+}
+
+export const search_places_tag = (tag, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/search/tag/${tag}`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEARCH_PLACES_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+
+        } else {
+            dispatch({
+                type: SEARCH_PLACES_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch (error) {
+        dispatch({
+            type: SEARCH_PLACES_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    };
+}
+
+export const search_places_keyword = (keyword, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/search/keyword?q=${keyword}`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEARCH_PLACES_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+
+        } else {
+            dispatch({
+                type: SEARCH_PLACES_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch (error) {
+        dispatch({
+            type: SEARCH_PLACES_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    };
+}
+
 export const clear_search_results = () => ({
     type: CLEAR_SEARCH_RESULTS
 });
