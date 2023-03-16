@@ -25,6 +25,12 @@ public class ChatSessionService {
         chatSessionRepo.save(chatSession);
     }
 
+    public void updateSessionId(String sessionId, String username){
+        ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId);
+        chatSession.setUsername(username);
+        chatSessionRepo.save(chatSession);
+    }
+
     public void deleteSession(String sessionId){
         ChatSession chatSession = chatSessionRepo.findBySessionId(sessionId) ;
         chatSessionRepo.delete(chatSession);
