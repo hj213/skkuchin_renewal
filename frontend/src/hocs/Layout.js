@@ -95,18 +95,20 @@ const Layout = ({title, content, children}) => {
     }, [isAuthenticated, anotherStompClient]);
 
     let stompClient = null;
-    const Stomp = require("stompjs/lib/stomp.js").Stomp;
-    const sockJS = new SockJS(`${API_URL}/ws/chat`);
-    stompClient = Stomp.over(sockJS);
-    stompClient.heartbeat.outgoing = 0;
-    stompClient.heartbeat.incoming = 0;
-    stompClient.debug = null;
 
     const onError = (e) => {
+        console.log(e);
         connectStompClient();
     }
 
     const connectStompClient = () => {
+        const Stomp = require("stompjs/lib/stomp.js").Stomp;
+        const sockJS = new SockJS(`${API_URL}/ws/chat`);
+        stompClient = Stomp.over(sockJS);
+        stompClient.heartbeat.outgoing = 0;
+        stompClient.heartbeat.incoming = 0;
+        stompClient.debug = null;
+
         stompClient.connect('guest', 'guest', () => {
             dispatch(set_stomp_client(stompClient));
         }, onError);
@@ -123,24 +125,18 @@ const Layout = ({title, content, children}) => {
         }, 2000);
     }, [])
 
-    sockJS.addEventListener('close', () => {
-        setTimeout(() => {
-            connectStompClient();
-        }, 5000);
-    });
-
     return ( 
-            <>
-                <Head>
-                    <title>{title}</title>
-                    <meta name="description" content={content} ></meta>
-                </Head>
-                
-                {show && <div>
-                    {children}
-                </div>}
-            </>
-        )
+        <>
+            <Head>
+                <title>{title}</title>
+                <meta name="description" content={content} ></meta>
+            </Head>
+            
+            {show && <div>
+                {children}
+            </div>}
+        </>
+    )
 };
 
 Layout.defaultProps = {

@@ -73,7 +73,9 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
                 String token = accessor.getFirstNativeHeader("pushToken");
                  String username = getUserNameFromJwt(token);
 
-                 if (chatSessionService.findSession(sessionId) == null) {
+                 if (chatSessionService.findSession(sessionId) != null) {
+                     chatSessionService.updateSessionId(sessionId, username);
+                 } else {
                      chatSessionService.setSessionId(sessionId, username);
                  }
              }

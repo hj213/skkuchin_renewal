@@ -45,8 +45,6 @@ public class MessageController {
 
         String username = chatSession.getUsername();
 
-//        chatMessageService.updateReadStatus(chatRoom, username);
-
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();
         UserDto.Response user1Dto= new UserDto.Response(user1);
