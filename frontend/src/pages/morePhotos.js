@@ -26,7 +26,7 @@ const MorePhotos = () => {
     const handleOnclick = (event) =>{
         router.push({
             pathname: '/place',
-            query: { id: place_id }
+            query: { id: place_id, fullScreen: true  },
         });
     };  
 
