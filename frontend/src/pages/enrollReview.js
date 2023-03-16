@@ -43,7 +43,10 @@ const EnrollReview = () => {
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'close' ){
-            router.back();
+            router.push({
+                pathname: '/place',
+                query: { id: place_id, fullScreen: true  },
+            });
         } 
     };  
 

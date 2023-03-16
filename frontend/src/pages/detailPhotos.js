@@ -28,15 +28,15 @@ const MorePhotos = () => {
 
     // 뒤로가기
     const handleOnclick = (event) =>{
-        router.push({
-            pathname: '/place',
-            query: { id: place_id }
-        });
+        router.back();
     };  
 
     // 뒤로가기
     const handleOnExitclick = (event) =>{
-        router.back()
+        router.push({
+            pathname: '/place',
+            query: { id: place_id, fullScreen: true  },
+        });
     };  
 
     const router = useRouter();
@@ -47,7 +47,6 @@ const MorePhotos = () => {
     const [place_id, setPlaceId] = id != null ? useState(id) : useState('');
     const [image, setImage] = img != null? useState(img) : useState('');
 
-    const places = useSelector(state => state.place.searchplace);
     const selectedPlace = useSelector(state => state.place.place);
     const user = useSelector(state => state.auth.user);
 

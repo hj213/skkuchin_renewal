@@ -38,7 +38,7 @@ const PlacePage = () => {
     }
 
     // list.js 에서 전달 받은 id 값 받아오기
-    const { id } = router.query;
+    const { id, fullScreen } = router.query;
 
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
@@ -122,7 +122,19 @@ const PlacePage = () => {
     useEffect(() => {
         if(dispatch && dispatch !== null && dispatch !== undefined) {
             setPlaceId(id);
-            if(WINDOW_HEIGHT < 750){
+            if (fullScreen == 'true') {
+                setHeight(TARGET_HEIGHT);
+                setIsTall(true);
+                setScroll("scroll");
+                setCardStyle({
+                    radius:'0px',
+                    iconVisibility:'hidden'
+                });
+                setOpen({
+                    bool: true,
+                    visibility: 'visible'
+                });
+            } else if(WINDOW_HEIGHT < 750){
                 setHeight(270)
             } else {
                 setHeight(435)
@@ -316,10 +328,6 @@ const PlacePage = () => {
                         <TagList keyword={keyword} onTagClick={onTagClick} />  
                     </div>
                 </Container> 
-                {/* {filteredPlace != null ?
-                    <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} selectedId={id}/>                  
-                    : <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace}/>                  
-                } */}
                 { selectedPlace ?
                     <Map latitude={selectedPlace.ycoordinate} longitude={selectedPlace.xcoordinate} places={filteredPlace} selectedId={id}/>  
                     : <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace}/>            
