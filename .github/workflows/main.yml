@@ -29,7 +29,7 @@ jobs:
         run: |
           sed -i 's|export const API_URL = process.env.NEXT_PUBLIC_API_URL;|export const API_URL = "https://www.skkuchin.com";|' frontend/src/config/index.js
           sed -i 's|export const KAKAOMAP_APPKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY;|export const KAKAOMAP_APPKEY = "0d8f0e65047ebb4fce295a83614d7fae";|' frontend/src/config/index.js
-          sed -i 's|export const WEB_PUSH_PUBLIC_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY;|export const WEB_PUSH_PUBLIC_KEY = "BJkNh3LjryGnKrmWZCY_fAebZqGPhtuzBZCBBoB7lPh54M1raOJGfATpy0X7BpVahZJXk6Iq6XFTxM4STBMSFTY";|' frontend/src/config/index.js
+          sed -i 's|export const KAKAOMAP_APIKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APIKEY;|export const KAKAOMAP_APIKEY = "d78dd05718abdb9d49e256bad60b07ec";|' frontend/src/config/index.js
 
       - name: Copy prod ServiceApplication.java file
         run: |

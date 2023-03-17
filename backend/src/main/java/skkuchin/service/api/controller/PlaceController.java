@@ -5,13 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.dto.PlaceDto;
+import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.service.PlaceService;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,21 +42,35 @@ public class PlaceController {
 
     @PostMapping("")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> add(@Valid @RequestBody PlaceDto.Request dto) {
+    public ResponseEntity<?> add(@Valid @ModelAttribute PlaceDto.PostRequest dto, BindingResult bindingResult) {
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("식당 필수 정보를 모두 작성해주시기 바랍니다", errorMap);
+        }
         placeService.add(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 추가 완료", null), HttpStatus.CREATED);
     }
 
     @PostMapping("/all")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> addAll(@Valid @RequestBody List<PlaceDto.Request> dto) {
+    public ResponseEntity<?> addAll(@Valid @RequestBody List<PlaceDto.PostRequest> dto) {
         placeService.addAll(dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "여러 장소 추가 완료", null), HttpStatus.CREATED);
     }
 
     @PutMapping("/{placeId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long placeId, @Valid @RequestBody PlaceDto.Request dto) {
+    public ResponseEntity<?> update(@PathVariable Long placeId, @Valid @ModelAttribute PlaceDto.PutRequest dto, BindingResult bindingResult) {
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("식당 필수 정보를 모두 작성해주시기 바랍니다", errorMap);
+        }
         placeService.update(placeId, dto);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 수정 완료", null), HttpStatus.OK);
     }

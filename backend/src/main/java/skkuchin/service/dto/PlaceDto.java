@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.domain.Map.*;
 
 import javax.validation.constraints.NotBlank;
@@ -15,15 +17,16 @@ import java.util.stream.Collectors;
 
 public class PlaceDto {
 
-    @Getter
+    @Setter
     @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class Request {
+    public static class PostRequest {
         @NotBlank
         private String name;
+        @NotNull
         private Category category;
         @JsonProperty
-        private String detailCategory;
+        @NotBlank
+        private String detail_category;
         @NotNull
         private Campus campus;
         private Gate gate;
@@ -34,29 +37,169 @@ public class PlaceDto {
         @NotNull
         private Double ycoordinate;
         @JsonProperty
-        private String serviceTime;
+        private String service_time;
         @JsonProperty
-        private String breakTime;
+        private String break_time;
         @JsonProperty
-        private Boolean discountAvailability;
+        private Boolean discount_availability;
         @JsonProperty
-        private String discountContent;
+        private String discount_content;
+        private List<MultipartFile> images;
 
         public Place toEntity() {
             return Place.builder()
                     .name(this.name)
-                    .detailCategory(this.detailCategory)
+                    .detailCategory(this.detail_category)
                     .gate(this.gate)
                     .address(this.address)
                     .xcoordinate(this.xcoordinate)
                     .ycoordinate(this.ycoordinate)
-                    .serviceTime(this.serviceTime)
-                    .breakTime(this.breakTime)
-                    .discountAvailability(this.discountAvailability)
-                    .discountContent(this.discountContent)
+                    .serviceTime(this.service_time)
+                    .breakTime(this.break_time)
+                    .discountAvailability(this.discount_availability)
+                    .discountContent(this.discount_content)
                     .category(this.category)
                     .campus(this.campus)
                     .build();
+        }
+
+        public @NotBlank String getName() {
+            return this.name;
+        }
+
+        public @NotNull Category getCategory() {
+            return this.category;
+        }
+
+        public @NotBlank String getDetailCategory() {
+            return this.detail_category;
+        }
+
+        public @NotNull Campus getCampus() {
+            return this.campus;
+        }
+
+        public Gate getGate() {
+            return this.gate;
+        }
+
+        public @NotBlank String getAddress() {
+            return this.address;
+        }
+
+        public @NotNull Double getXcoordinate() {
+            return this.xcoordinate;
+        }
+
+        public @NotNull Double getYcoordinate() {
+            return this.ycoordinate;
+        }
+
+        public String getServiceTime() {
+            return this.service_time;
+        }
+
+        public String getBreakTime() {
+            return this.break_time;
+        }
+
+        public Boolean getDiscountAvailability() {
+            return this.discount_availability;
+        }
+
+        public String getDiscountContent() {
+            return this.discount_content;
+        }
+
+        public List<MultipartFile> getImages() {
+            return this.images;
+        }
+    }
+
+    @Setter
+    @AllArgsConstructor
+    public static class PutRequest {
+        @NotBlank
+        private String name;
+        @NotNull
+        private Category category;
+        @JsonProperty
+        @NotBlank
+        private String detail_category;
+        @NotNull
+        private Campus campus;
+        private Gate gate;
+        @NotBlank
+        private String address;
+        @NotNull
+        private Double xcoordinate;
+        @NotNull
+        private Double ycoordinate;
+        @JsonProperty
+        private String service_time;
+        @JsonProperty
+        private String break_time;
+        @JsonProperty
+        private Boolean discount_availability;
+        @JsonProperty
+        private String discount_content;
+        private List<String> urls;
+        private List<MultipartFile> images;
+
+        public @NotBlank String getName() {
+            return this.name;
+        }
+
+        public @NotNull Category getCategory() {
+            return this.category;
+        }
+
+        public @NotBlank String getDetailCategory() {
+            return this.detail_category;
+        }
+
+        public @NotNull Campus getCampus() {
+            return this.campus;
+        }
+
+        public Gate getGate() {
+            return this.gate;
+        }
+
+        public @NotBlank String getAddress() {
+            return this.address;
+        }
+
+        public @NotNull Double getXcoordinate() {
+            return this.xcoordinate;
+        }
+
+        public @NotNull Double getYcoordinate() {
+            return this.ycoordinate;
+        }
+
+        public String getServiceTime() {
+            return this.service_time;
+        }
+
+        public String getBreakTime() {
+            return this.break_time;
+        }
+
+        public Boolean getDiscountAvailability() {
+            return this.discount_availability;
+        }
+
+        public String getDiscountContent() {
+            return this.discount_content;
+        }
+
+        public List<String> getUrls() {
+            return this.urls;
+        }
+
+        public List<MultipartFile> getImages() {
+            return this.images;
         }
     }
 

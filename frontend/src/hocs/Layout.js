@@ -31,6 +31,7 @@ const Layout = ({title, content, children}) => {
     const user = useSelector(state => state.auth.user);
     const anotherStompClient = useSelector(state => state.stompClient.stompClient);
     const subscriptions = {};
+    const currentPathname = window.location.pathname;
 
     const notify = async () => {
         if (!("Notification" in window)) {
@@ -97,7 +98,7 @@ const Layout = ({title, content, children}) => {
     let stompClient = null;
 
     const onError = (e) => {
-        console.log(e);
+        // console.log(e);
         connectStompClient();
     }
 
@@ -116,13 +117,19 @@ const Layout = ({title, content, children}) => {
 
     useEffect(() => {
         connectStompClient();
-        router.push('/splash');
+        if (currentPathname !== "/admin") {
+            router.push('/splash');
+        }
     }, []);
 
     useEffect(() => {
-        setTimeout(() => {
+        if (currentPathname !== "/admin") {
+            setTimeout(() => {
+                setShow(true);
+            }, 2000);
+        } else {
             setShow(true);
-        }, 2000);
+        }
     }, [])
 
     return ( 
