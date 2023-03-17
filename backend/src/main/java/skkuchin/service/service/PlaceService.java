@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.domain.Map.*;
 import skkuchin.service.exception.CustomRuntimeException;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class PlaceService {
+    private static final String CATEGORY = "place";
     private final PlaceRepo placeRepo;
     private final ImageRepo imageRepo;
     private final ReviewRepo reviewRepo;
@@ -73,9 +75,22 @@ public class PlaceService {
             @CacheEvict(value = "placeSearch", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
-    public void add(PlaceDto.Request dto) {
+    public void add(PlaceDto.PostRequest dto) {
+        List<Image> placeImages = new ArrayList<>();
+
         Place place = dto.toEntity();
         placeRepo.save(place);
+
+        for (MultipartFile image : dto.getImages()) {
+            if (!image.isEmpty()) {
+                String url = s3Service.uploadObject(image, CATEGORY, place.getCampus().name(), place.getName());
+                Image placeImage = Image.builder().place(place).url(url).build();
+                placeImages.add(placeImage);
+            }
+        }
+        if (placeImages.size() > 0) {
+            imageRepo.saveAll(placeImages);
+        }
     }
 
     @Transactional
@@ -83,7 +98,7 @@ public class PlaceService {
             @CacheEvict(value = "placeSearch", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
-    public void addAll(List<PlaceDto.Request> dto) {
+    public void addAll(List<PlaceDto.PostRequest> dto) {
         List<Place> places = dto.stream().map(placeDto -> placeDto.toEntity()).collect(Collectors.toList());
         placeRepo.saveAll(places);
     }
@@ -94,10 +109,35 @@ public class PlaceService {
             @CacheEvict(value = "placeSearch", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
-    public void update(Long placeId, PlaceDto.Request dto) {
+    public void update(Long placeId, PlaceDto.PutRequest dto) {
+        List<Image> newImages = new ArrayList<>();
+
         Place existingPlace = placeRepo.findById(placeId).orElseThrow();
         BeanUtils.copyProperties(dto, existingPlace);
         placeRepo.save(existingPlace);
+
+        List<Image> existingImages = imageRepo.findByPlace(existingPlace);
+
+        // s3에 업로드 후 newImages 배열에 url 정보 저장
+        for (MultipartFile image : dto.getImages()) {
+            if (!image.isEmpty()) {
+                String url = s3Service.uploadObject(image, CATEGORY, existingPlace.getCampus().name(), existingPlace.getName());
+                Image newImage = Image.builder().place(existingPlace).url(url).build();
+                newImages.add(newImage);
+            }
+        }
+
+        if (newImages.size() > 0) {
+            imageRepo.saveAll(newImages);
+        }
+
+        // 기존 image url 중 없어진 url 삭제
+        for (Image existingImage : existingImages) {
+            if (!dto.getUrls().contains(existingImage.getUrl())) {
+                s3Service.deleteObject(existingImage.getUrl());
+                imageRepo.delete(existingImage);
+            }
+        }
     }
 
     @Transactional
@@ -365,7 +405,7 @@ public class PlaceService {
 
                 for (Object o : jsonArray) {
                     JSONObject temp = (JSONObject) o;
-                    PlaceDto.Request dto = gson.fromJson(temp.toString(), PlaceDto.Request.class);
+                    PlaceDto.PostRequest dto = gson.fromJson(temp.toString(), PlaceDto.PostRequest.class);
                     placeRepo.save(dto.toEntity());
                 }
             }

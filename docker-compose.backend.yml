@@ -34,6 +34,7 @@ services:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:8080
       - NEXT_PUBLIC_KAKAOMAP_APPKEY=53a909c464c1aac1af1ee43c1f03ce86
+      - NEXT_PUBLIC_KAKAOMAP_APIKEY=eec1369924fcf9860f419cd6fcb0b82c
     volumes:
       - ./frontend:/app
       - /app/node_modules

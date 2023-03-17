@@ -7,10 +7,17 @@ import {
     LOAD_PLACE_SUCCESS,
     LOAD_PLACES_FAIL,
     LOAD_PLACES_SUCCESS,
+    ENROLL_PLACE_FAIL,
+    ENROLL_PLACE_SUCCESS,
+    MODIFY_PLACE_FAIL,
+    MODIFY_PLACE_SUCCESS,
+    DELETE_PLACE_SUCCESS,
+    DELETE_PLACE_FAIL,
     SEARCH_PLACES_SUCCESS,
     SEARCH_PLACES_FAIL,
     CLEAR_SEARCH_RESULTS
 } from './types'
+import { getCoordinate } from '../../utils/getCoordinate';
 
 //load_places
 export const load_places = (callback) => async dispatch => {
@@ -365,3 +372,223 @@ export const search_places_keyword = (keyword, callback) => async dispatch => {
 export const clear_search_results = () => ({
     type: CLEAR_SEARCH_RESULTS
 });
+
+export const enroll_place = (
+    data,
+    callback
+) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const coordinate = await getCoordinate(data.address);
+
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('category', data.category);
+        formData.append('detail_category', data.detail_category);
+        formData.append('campus', data.campus);
+        formData.append('gate', data.gate);
+        formData.append('address', data.address);
+        formData.append('xcoordinate', Number(coordinate.x));
+        formData.append('ycoordinate', Number(coordinate.y));
+        formData.append('service_time', data.service_time);
+        formData.append('break_time', data.break_time);
+        formData.append('discount_availability', data.discount_availability);
+        formData.append('discount_content', data.discount_content);
+    
+        if (data.images && data.images.length > 0) {
+            for (const image of data.images) {
+                formData.append('images', image);
+            }
+        } else {
+            formData.append('images', new File([""], { type: 'image/png' }));
+        }
+
+        const res = await fetch(`${API_URL}/api/place`, {
+            method: 'POST',
+            headers: {
+                'Authorization' : `Bearer ${access}`
+            },
+            body: formData
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 201) {
+            await dispatch({
+                type: ENROLL_PLACE_SUCCESS
+            })
+            dispatch(load_places());
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
+        } else {
+            dispatch({
+                type: ENROLL_PLACE_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch (error) {
+        dispatch({
+            type: ENROLL_PLACE_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+        
+        
+    };
+}
+
+export const modify_place = (
+    place_id,
+    data,
+    callback
+) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const coordinate = await getCoordinate(data.address);
+
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('category', data.category);
+        formData.append('detail_category', data.detail_category);
+        formData.append('campus', data.campus);
+
+        if (data.gate === null) {
+            formData.append('gate', "기타");
+        } else {
+            formData.append('gate', data.gate); 
+        }
+
+        formData.append('address', data.address);
+        formData.append('xcoordinate', Number(coordinate.x));
+        formData.append('ycoordinate', Number(coordinate.y));
+        formData.append('service_time', data.service_time);
+        formData.append('break_time', data.break_time);
+
+        if (data.discount_availability === null) {
+            formData.append('discount_availability', false);
+        } else {
+            formData.append('discount_availability', data.discount_availability); 
+        }
+
+        formData.append('discount_content', data.discount_content);
+    
+        if (data.images && data.images.length > 0) {
+            for (const image of data.images) {
+                formData.append('images', image);
+            }
+        } else {
+            formData.append('images', new File([""], { type: 'image/png' }));
+        }
+    
+        if (data.urls && data.urls.length > 0) {
+            for (const url of data.urls) {
+                formData.append('urls', url);
+            }
+        } else {
+            formData.append('urls', '');
+        }
+
+        const res = await fetch(`${API_URL}/api/place/${place_id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization' : `Bearer ${access}`
+            },
+            body: formData
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            await dispatch({
+                type: MODIFY_PLACE_SUCCESS
+            })
+            dispatch(load_places());
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
+        } else {
+            dispatch({
+                type: MODIFY_PLACE_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch (error) {
+        dispatch({
+            type: MODIFY_PLACE_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+        
+        
+    };
+}
+
+export const delete_place = (place_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/${place_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization' : `Bearer ${access}`
+            },
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: DELETE_PLACE_SUCCESS
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: DELETE_PLACE_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: DELETE_PLACE_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    }
+};

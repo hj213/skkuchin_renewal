@@ -3,9 +3,15 @@ import {
     LOAD_PLACE_FAIL,
     LOAD_PLACES_SUCCESS,
     LOAD_PLACES_FAIL,
+    ENROLL_PLACE_SUCCESS,
+    ENROLL_PLACE_FAIL,
+    MODIFY_PLACE_SUCCESS,
+    MODIFY_PLACE_FAIL,
+    DELETE_PLACE_SUCCESS,
+    DELETE_PLACE_FAIL,
     SEARCH_PLACES_SUCCESS,
     SEARCH_PLACES_FAIL,
-    CLEAR_SEARCH_RESULTS
+    CLEAR_SEARCH_RESULTS,
 } from '../actions/place/types'
 
 const initialState = {
@@ -35,6 +41,30 @@ const placeReducer = (state= initialState, action) => {
             return {
                 ...state,
                 place: null
+            }
+        case ENROLL_PLACE_SUCCESS:
+            return {
+                ...state
+            }
+        case ENROLL_PLACE_FAIL:
+            return {
+                ...state
+            }
+        case MODIFY_PLACE_SUCCESS:
+            return {
+                ...state
+            }
+        case MODIFY_PLACE_FAIL:
+            return {
+                ...state
+            }
+        case DELETE_PLACE_SUCCESS:
+            return {
+                ...state
+            }
+        case DELETE_PLACE_FAIL:
+            return {
+                ...state
             }
         case SEARCH_PLACES_SUCCESS:
             return {
