@@ -251,7 +251,7 @@ const chatPage = () => {
                             top: '0px',
                             width: '100%',
                             maxWidth: '600px',
-                            height: '90px',
+                            height: '130px',
                             zIndex: '4',
                             borderRadius:'0',
                             boxShadow:'none',
@@ -400,7 +400,7 @@ const chatPage = () => {
             <Grid >
                 <Grid
                     sx={{
-                    marginTop: '95px',
+                    marginTop: '83px',
                     display: 'flex',
                     flexDirection: 'column',
                     }}
@@ -441,14 +441,7 @@ const chatPage = () => {
                     </Grid>
                 </Grid>
 
-                {/* 날짜 정보 */}
-                {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Grid>
-                        <Typography sx={{fontSize:'12px', color:'#A1A1A1'}}>
-                            {message.data}
-                        </Typography>
-                    </Grid>
-                </div> */}
+
                 <Grid style={{ marginBottom: '90px'}}>
                 { messages && messages.slice().reverse().map((message, index) => {
                     // 이어서 메시지를 보냈는지 확인
@@ -467,7 +460,7 @@ const chatPage = () => {
                             {
                                 (!prevMessage || (prevMessage.date !== message.date))
                                 ?
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                                     <Grid>
                                         <Typography sx={{fontSize:'12px', color:'#A1A1A1'}}>
                                             {message.date}
