@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
-import { search_places, load_places, clear_search_results } from "../actions/place/place";
+import { search_places_keyword, load_places, clear_search_results } from "../actions/place/place";
 import Image from 'next/image';
 import Link from 'next/link';
 import theme from "../theme/theme";
@@ -51,7 +51,7 @@ export default function searchList(){
     useEffect(() => {
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(clear_search_results());
-            dispatch(search_places(keyword));
+            dispatch(search_places_keyword(keyword));
         }
     }, [keyword]);
 
@@ -120,7 +120,7 @@ export default function searchList(){
             setPassValue(value);
             setPlaceholderValue(value);
             dispatch(clear_search_results());
-            dispatch(search_places(value));
+            dispatch(search_places_keyword(value));
             setValue('');
         }
     }
@@ -134,7 +134,7 @@ export default function searchList(){
         setValue(autoValue);
         setAuto(autoValue);
         dispatch(clear_search_results());
-        dispatch(search_places(autoValue));
+        dispatch(search_places_keyword(autoValue));
         setPlaceholderValue(autoValue);
         setValue('')
         setAuto([]);
