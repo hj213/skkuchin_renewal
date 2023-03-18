@@ -2,7 +2,7 @@
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
-import { search_places } from "../actions/place/place";
+// import { search_places } from "../actions/place/place";
 import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
 import downexplain from '../image/downexplain.jpg';
 import downebutton from '../image/downbutton.png';
-
+import { search_places_discount, search_places_category, search_places_tag, search_places_keyword } from "../actions/place/place";
 
 // 상단바
 import UpperBar from "../components/UpperBar"
@@ -68,21 +68,21 @@ export default function list(){
     const [alertMessage, setAlertMessage] = useState('');
     const [changed, setChanged] = useState(false);
     const [tagsId, setTagsId] = useState([
-        {id: '학생 할인', exclusiveGroup: null},
-        {id: '스페셜', exclusiveGroup: null},
+        {id: '학생 할인', exclusiveGroup: 'discount'},
+        // {id: '스페셜', exclusiveGroup: null},
         {id: '한식', exclusiveGroup: 'cuisine'},
         {id: '양식', exclusiveGroup: 'cuisine'},
         {id: '중식', exclusiveGroup: 'cuisine'},
         {id: '일식', exclusiveGroup: 'cuisine'},
         {id: '기타', exclusiveGroup: 'cuisine'},
-        {id: '간단한 한 끼', exclusiveGroup: null},
-        {id: '분위기 좋은', exclusiveGroup: null},
-        {id: '맛집', exclusiveGroup: null},
         {id: '술집', exclusiveGroup: 'cuisine'},
-        {id: '친절', exclusiveGroup: null},
-        {id: '가성비', exclusiveGroup: null},
-        {id: '청결도', exclusiveGroup: null},
-        {id: '둘이 가요', exclusiveGroup: null},
+        {id: '간단한 한 끼', exclusiveGroup: 'tag'},
+        {id: '분위기 좋은', exclusiveGroup: 'tag'},
+        {id: '맛집', exclusiveGroup: 'tag'},
+        {id: '친절', exclusiveGroup: 'tag'},
+        {id: '가성비', exclusiveGroup: 'tag'},
+        {id: '청결도', exclusiveGroup: 'tag'},
+        {id: '둘이 가요', exclusiveGroup: 'tag'},
     ]);
 
     // key props warning 해러 필요
@@ -139,7 +139,7 @@ export default function list(){
             } else {
                 // 키워드 확인
                 dispatch(clear_search_results());
-                dispatch(search_places(keyword));
+                dispatch(search_places_keyword(keyword));
 
                 if((open.bool) == false) {
                     if( router.query.length == 1 || filteredPlace?.length == 1){
@@ -320,39 +320,37 @@ export default function list(){
             setKeyword(remainingTags.join(', '));
         }
       }
-    
+      
     const onTagClick = (id) => {
         const selectedTag = tagsId.find(tag => tag.id === id);
         if (!selectedTag) return;
         
-        const exclusiveGroup = selectedTag.exclusiveGroup;
         let newTags;
-
+      
         if (tags.includes(id)) {
-          newTags = tags.filter(tag => tag !== id);
+          // 선택된 태그가 이미 있으면 선택 해제
+          newTags = [];
         } else {
-          // exclusiveGroup 내의 태그 중 하나가 이미 선택된 경우 첫 번째 태그를 선택해제
-          if (exclusiveGroup && tags.some(tag => tagsId.find(t => t.id === tag)?.exclusiveGroup === exclusiveGroup)) {
-            const firstTagInExclusiveGroup = tags.find(tag => tagsId.find(t => t.id === tag)?.exclusiveGroup === exclusiveGroup);
-            newTags = tags.filter(tag => tag !== firstTagInExclusiveGroup).concat(id);
+          // 선택된 태그가 없으면 클릭한 태그 추가
+          newTags = [id];
+        }
+      
+        // 검색 실행
+        if (newTags.length > 0) {
+          const exclusiveGroup = selectedTag.exclusiveGroup;
+          if (exclusiveGroup === 'discount') {
+            search_places_discount();
+          } else if (exclusiveGroup === 'cuisine') {
+            search_places_category(selectedTag.id);
+          } else if (exclusiveGroup === 'tag') {
+            search_places_tag(selectedTag.id);
           } else {
-            // 2개 이상 선택되지 않도록 조건 추가
-            if (tags.length >= 2) {
-              const firstSelected = tags[0];
-              if (tagsId.find(tag => tag.id === firstSelected)?.exclusiveGroup === exclusiveGroup
-                && exclusiveGroup === selectedTag.exclusiveGroup) {
-                newTags = tags.filter(tag => tag !== firstSelected).concat(id);
-              } else {
-                newTags = tags.filter(tag => tag !== firstSelected).concat(id);
-              }
-            } else {
-              newTags = tags.concat(id);
-            }
+            search_places_keyword(selectedTag.id);
           }
         }
-     
+        
         setTags(newTags);
-        setKeyword(newTags.join(', '));
+        setKeyword(newTags[0] || '');
         if(newTags.length == 0) handleReset();
         setIsTall(false);
       }
