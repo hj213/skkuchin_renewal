@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class PlaceDto {
 
+    @Getter
     @Setter
     @AllArgsConstructor
     public static class PostRequest {
@@ -24,9 +25,8 @@ public class PlaceDto {
         private String name;
         @NotNull
         private Category category;
-        @JsonProperty
         @NotBlank
-        private String detail_category;
+        private String detailCategory;
         @NotNull
         private Campus campus;
         private Gate gate;
@@ -36,86 +36,31 @@ public class PlaceDto {
         private Double xcoordinate;
         @NotNull
         private Double ycoordinate;
-        @JsonProperty
-        private String service_time;
-        @JsonProperty
-        private String break_time;
-        @JsonProperty
-        private Boolean discount_availability;
-        @JsonProperty
-        private String discount_content;
+        private String serviceTime;
+        private String breakTime;
+        private Boolean discountAvailability;
+        private String discountContent;
         private List<MultipartFile> images;
 
         public Place toEntity() {
             return Place.builder()
                     .name(this.name)
-                    .detailCategory(this.detail_category)
+                    .detailCategory(this.detailCategory)
                     .gate(this.gate)
                     .address(this.address)
                     .xcoordinate(this.xcoordinate)
                     .ycoordinate(this.ycoordinate)
-                    .serviceTime(this.service_time)
-                    .breakTime(this.break_time)
-                    .discountAvailability(this.discount_availability)
-                    .discountContent(this.discount_content)
+                    .serviceTime(this.serviceTime)
+                    .breakTime(this.breakTime)
+                    .discountAvailability(this.discountAvailability)
+                    .discountContent(this.discountContent)
                     .category(this.category)
                     .campus(this.campus)
                     .build();
         }
-
-        public @NotBlank String getName() {
-            return this.name;
-        }
-
-        public @NotNull Category getCategory() {
-            return this.category;
-        }
-
-        public @NotBlank String getDetailCategory() {
-            return this.detail_category;
-        }
-
-        public @NotNull Campus getCampus() {
-            return this.campus;
-        }
-
-        public Gate getGate() {
-            return this.gate;
-        }
-
-        public @NotBlank String getAddress() {
-            return this.address;
-        }
-
-        public @NotNull Double getXcoordinate() {
-            return this.xcoordinate;
-        }
-
-        public @NotNull Double getYcoordinate() {
-            return this.ycoordinate;
-        }
-
-        public String getServiceTime() {
-            return this.service_time;
-        }
-
-        public String getBreakTime() {
-            return this.break_time;
-        }
-
-        public Boolean getDiscountAvailability() {
-            return this.discount_availability;
-        }
-
-        public String getDiscountContent() {
-            return this.discount_content;
-        }
-
-        public List<MultipartFile> getImages() {
-            return this.images;
-        }
     }
 
+    @Getter
     @Setter
     @AllArgsConstructor
     public static class PutRequest {
@@ -123,9 +68,9 @@ public class PlaceDto {
         private String name;
         @NotNull
         private Category category;
-        @JsonProperty
+
         @NotBlank
-        private String detail_category;
+        private String detailCategory;
         @NotNull
         private Campus campus;
         private Gate gate;
@@ -135,72 +80,12 @@ public class PlaceDto {
         private Double xcoordinate;
         @NotNull
         private Double ycoordinate;
-        @JsonProperty
-        private String service_time;
-        @JsonProperty
-        private String break_time;
-        @JsonProperty
-        private Boolean discount_availability;
-        @JsonProperty
-        private String discount_content;
+        private String serviceTime;
+        private String breakTime;
+        private Boolean discountAvailability;
+        private String discountContent;
         private List<String> urls;
         private List<MultipartFile> images;
-
-        public @NotBlank String getName() {
-            return this.name;
-        }
-
-        public @NotNull Category getCategory() {
-            return this.category;
-        }
-
-        public @NotBlank String getDetailCategory() {
-            return this.detail_category;
-        }
-
-        public @NotNull Campus getCampus() {
-            return this.campus;
-        }
-
-        public Gate getGate() {
-            return this.gate;
-        }
-
-        public @NotBlank String getAddress() {
-            return this.address;
-        }
-
-        public @NotNull Double getXcoordinate() {
-            return this.xcoordinate;
-        }
-
-        public @NotNull Double getYcoordinate() {
-            return this.ycoordinate;
-        }
-
-        public String getServiceTime() {
-            return this.service_time;
-        }
-
-        public String getBreakTime() {
-            return this.break_time;
-        }
-
-        public Boolean getDiscountAvailability() {
-            return this.discount_availability;
-        }
-
-        public String getDiscountContent() {
-            return this.discount_content;
-        }
-
-        public List<String> getUrls() {
-            return this.urls;
-        }
-
-        public List<MultipartFile> getImages() {
-            return this.images;
-        }
     }
 
     /* 리뷰 전체 조회, 리뷰 상세 조회 */

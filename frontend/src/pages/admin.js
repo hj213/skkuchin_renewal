@@ -1,15 +1,27 @@
-import { load_places } from '../actions/place/place';
+import { load_places, clear_search_results } from '../actions/place/place';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from "react"; 
 import Link from 'next/link';
+import { check_admin } from '../actions/auth/auth';
+import { useRouter } from 'next/router';
 
 const AdminPage = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const places = useSelector(state => state.place.allplaces);
 
     useEffect(() => {
-        dispatch(load_places());
+        dispatch(check_admin(([result, message]) => {
+            if (result) {
+                dispatch(load_places());
+            } else {
+                router.push('/');
+            }
+        }))
+        return (() => {
+            dispatch(clear_search_results());
+        })
     }, []);
 
     return (

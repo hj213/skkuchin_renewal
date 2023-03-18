@@ -4,12 +4,14 @@ import { enroll_place } from '../actions/place/place';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { clear_search_results } from '../actions/place/place';
+import { check_admin } from '../actions/auth/auth';
 
 const EnrollPlace = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
     useEffect(() => {
+        dispatch(check_admin());
         return (() => {
             dispatch(clear_search_results());
         })

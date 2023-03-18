@@ -393,16 +393,16 @@ export const enroll_place = (
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('category', data.category);
-        formData.append('detail_category', data.detail_category);
+        formData.append('detailCategory', data.detail_category);
         formData.append('campus', data.campus);
         formData.append('gate', data.gate);
         formData.append('address', data.address);
         formData.append('xcoordinate', Number(coordinate.x));
         formData.append('ycoordinate', Number(coordinate.y));
-        formData.append('service_time', data.service_time);
-        formData.append('break_time', data.break_time);
-        formData.append('discount_availability', data.discount_availability);
-        formData.append('discount_content', data.discount_content);
+        formData.append('serviceTime', data.service_time);
+        formData.append('breakTime', data.break_time);
+        formData.append('discountAvailability', data.discount_availability);
+        formData.append('discountContent', data.discount_content);
     
         if (data.images && data.images.length > 0) {
             for (const image of data.images) {
@@ -472,7 +472,9 @@ export const modify_place = (
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('category', data.category);
-        formData.append('detail_category', data.detail_category);
+        formData.append('discountAvailability', data.discount_availability);
+
+        formData.append('detailCategory', data.detail_category);
         formData.append('campus', data.campus);
 
         if (data.gate === null) {
@@ -484,16 +486,22 @@ export const modify_place = (
         formData.append('address', data.address);
         formData.append('xcoordinate', Number(coordinate.x));
         formData.append('ycoordinate', Number(coordinate.y));
-        formData.append('service_time', data.service_time);
-        formData.append('break_time', data.break_time);
 
-        if (data.discount_availability === null) {
-            formData.append('discount_availability', false);
-        } else {
-            formData.append('discount_availability', data.discount_availability); 
+        if (data.service_time !== null) {
+            formData.append('serviceTime', data.service_time);
         }
 
-        formData.append('discount_content', data.discount_content);
+        if (data.break_time !== null) {
+            formData.append('breakTime', data.break_time);
+        }
+
+        if (data.discount_availability !== null) {
+            formData.append('discountAvailability', data.discount_availability);
+        }
+
+        if (data.discount_content !== null) {
+            formData.append('discountContent', data.discount_content);
+        }
     
         if (data.images && data.images.length > 0) {
             for (const image of data.images) {

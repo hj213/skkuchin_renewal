@@ -712,3 +712,38 @@ export const reset_password = (email, new_password, new_re_password, callback) =
         
     }
 }
+
+export const check_admin = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/user/check/admin`,{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            if (callback) callback([false, apiRes.message]);
+        }
+
+    } catch (error) {
+        console.log(error);
+        if (callback) callback([false, error]);
+    }
+}

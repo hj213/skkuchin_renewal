@@ -111,12 +111,16 @@ public class UserService {
         log.info("Adding role {} to user {}", roleName, username);
         AppUser user = userRepo.findByUsername(username);
         Role role = roleRepo.findByName(roleName);
-        if (userRoleRepo.findByRole(role) != null) {
-            throw new DuplicateException("role_duplicate_error");
-        } else {
-            UserRole userRole = UserRole.builder().user(user).role(role).build();
-            userRoleRepo.save(userRole);
+        List<UserRole> myRoles = userRoleRepo.findByUser(user);
+
+        for (UserRole myRole : myRoles) {
+            if (Objects.equals(myRole.getRole().getId(), role.getId())) {
+                throw new CustomRuntimeException("이미 해당 역할이 존재합니다");
+            }
         }
+
+        UserRole userRole = UserRole.builder().user(user).role(role).build();
+        userRoleRepo.save(userRole);
     }
 
     @Transactional
