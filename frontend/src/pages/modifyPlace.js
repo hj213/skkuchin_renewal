@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { load_menu } from '../actions/menu/menu';
 import Image from 'next/image';
+import { check_admin } from '../actions/auth/auth';
 
 const EnrollPlace = () => {
     const dispatch = useDispatch();
@@ -15,14 +16,18 @@ const EnrollPlace = () => {
     const place_id = router.query.place_id;
 
     useEffect(() => {
+        dispatch(check_admin());
+        return (() => {
+            dispatch(clear_search_results());
+        })
+    }, [])
+
+    useEffect(() => {
         if (place_id) {
             dispatch(load_place(place_id, ([result, message]) => {
                 dispatch(load_menu(place_id));
             }));
         }
-        return (() => {
-            dispatch(clear_search_results());
-        })
     }, [place_id]);
 
     const [formData, setFormData] = useState({
@@ -104,7 +109,7 @@ const EnrollPlace = () => {
         <form onSubmit={handleSubmit}>
             <div>
                 <label>
-                이름:
+                * 이름:
                 <input
                     type="text"
                     name="name"
@@ -116,7 +121,7 @@ const EnrollPlace = () => {
             </div>
             <div>
                 <label>
-                카테고리:
+                * 카테고리:
                 <select name="category" value={formData ? formData.category : ""} onChange={handleInputChange}>
                     <option value="한식">한식</option>
                     <option value="일식">일식</option>
@@ -135,18 +140,19 @@ const EnrollPlace = () => {
             </div>
             <div>
                 <label>
-                세부 카테고리:
+                * 세부 카테고리:
                 <input
                     type="text"
                     name="detail_category"
                     value={formData ? formData.detail_category : ''}
                     onChange={handleInputChange}
+                    required
                 />
                 </label>
             </div>
             <div>
                 <label>
-                캠퍼스:
+                * 캠퍼스:
                 <select name="campus" value={formData ? formData.campus : ""} onChange={handleInputChange}>
                     <option value="명륜">명륜</option>
                     <option value="율전">율전</option>
@@ -168,7 +174,7 @@ const EnrollPlace = () => {
             </div>
             <div>
                 <label>
-                주소:
+                * 주소:
                 <input
                     type="text"
                     name="address"

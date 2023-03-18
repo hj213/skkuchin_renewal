@@ -4,12 +4,14 @@ import { enroll_place } from '../actions/place/place';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { clear_search_results } from '../actions/place/place';
+import { check_admin } from '../actions/auth/auth';
 
 const EnrollPlace = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
     useEffect(() => {
+        dispatch(check_admin());
         return (() => {
             dispatch(clear_search_results());
         })
@@ -64,7 +66,7 @@ const EnrollPlace = () => {
         <form onSubmit={handleSubmit}>
             <div>
                 <label>
-                이름:
+                * 이름:
                 <input
                     type="text"
                     name="name"
@@ -76,7 +78,7 @@ const EnrollPlace = () => {
             </div>
             <div>
                 <label>
-                카테고리:
+                * 카테고리:
                 <select name="category" value={formData.category} onChange={handleInputChange}>
                     <option value="한식">한식</option>
                     <option value="일식">일식</option>
@@ -95,18 +97,19 @@ const EnrollPlace = () => {
             </div>
             <div>
                 <label>
-                세부 카테고리:
+                * 세부 카테고리:
                 <input
                     type="text"
                     name="detail_category"
                     value={formData.detail_category}
                     onChange={handleInputChange}
+                    required
                 />
                 </label>
             </div>
             <div>
                 <label>
-                캠퍼스:
+                * 캠퍼스:
                 <select name="campus" value={formData.campus} onChange={handleInputChange}>
                     <option value="명륜">명륜</option>
                     <option value="율전">율전</option>
@@ -128,7 +131,7 @@ const EnrollPlace = () => {
             </div>
             <div>
                 <label>
-                주소:
+                * 주소:
                 <input
                     type="text"
                     name="address"

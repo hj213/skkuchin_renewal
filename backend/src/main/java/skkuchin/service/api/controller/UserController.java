@@ -186,6 +186,12 @@ public class UserController {
         return new ResponseEntity<>(new CMRespDto<>(1, "사용 가능한 아이디입니다", null), HttpStatus.OK);
     }
 
+    @GetMapping("/check/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> checkAdmin() {
+        return new ResponseEntity<>(new CMRespDto<>(1, "유저 admin 권한 확인 완료", true), HttpStatus.OK);
+    }
+
     @PostMapping("/check/nickname")
     public ResponseEntity<?> checkNickName(@RequestBody Map<String, String> nicknameMap) {
         userService.checkNickname(nicknameMap.get("nickname"));

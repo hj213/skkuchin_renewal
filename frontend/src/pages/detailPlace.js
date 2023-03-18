@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { load_menu } from '../actions/menu/menu';
 import Image from 'next/image';
 import { clear_search_results } from '../actions/place/place';
+import { check_admin } from '../actions/auth/auth';
 
 const DetailPlace = () => {
     const dispatch = useDispatch();
@@ -15,14 +16,18 @@ const DetailPlace = () => {
     const place_id = router.query.place_id;
 
     useEffect(() => {
+        dispatch(check_admin());
+        return (() => {
+            dispatch(clear_search_results());
+        })
+    }, []);
+
+    useEffect(() => {
         if (place_id) {
             dispatch(load_place(place_id, ([result, message]) => {
                 dispatch(load_menu(place_id));
             }));
         }
-        return (() => {
-            dispatch(clear_search_results());
-        })
     }, [place_id]);
 
     return (
