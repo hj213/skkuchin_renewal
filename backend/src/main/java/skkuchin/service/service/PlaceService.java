@@ -72,7 +72,10 @@ public class PlaceService {
 
     @Transactional
     @Caching(evict = {
-            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
     public void add(PlaceDto.PostRequest dto) {
@@ -95,7 +98,10 @@ public class PlaceService {
 
     @Transactional
     @Caching(evict = {
-            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
     public void addAll(List<PlaceDto.PostRequest> dto) {
@@ -106,7 +112,10 @@ public class PlaceService {
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "placeDetail", key = "#placeId"),
-            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
     public void update(Long placeId, PlaceDto.PutRequest dto) {
@@ -143,7 +152,10 @@ public class PlaceService {
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "placeDetail", key = "#placeId"),
-            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
     public void delete(Long placeId) {

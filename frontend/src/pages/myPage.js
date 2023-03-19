@@ -255,8 +255,8 @@ export default function myPage() {
                 <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '16px', fontWeight: '500'}}>문의하기</Typography>
                 
                 {/* 예시 Login 유도, 지워야함! */}
-                <Typography onClick={handleGoLogin} style={{fontSize: '16px', fontWeight: '500'}}>로그인 유도 팝업</Typography>
-                {isLogin && <GoLogin open={isLogin}/> }
+                {/* <Typography onClick={handleGoLogin} style={{fontSize: '16px', fontWeight: '500'}}>로그인 유도 팝업</Typography>
+                {isLogin && <GoLogin open={isLogin}/> } */}
 
             </Container>
 
