@@ -17,6 +17,7 @@ export const getCoordinate = async (address) => {
     
         if (data && data.documents && data.documents.length === 0) {
             console.log('No address found');
+            alert("주소를 찾지 못했습니다")
             return null;
         }
     

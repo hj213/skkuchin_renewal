@@ -116,4 +116,25 @@ public class PlaceController {
         List<PlaceDto.Response> places = placeService.searchKeyword(keyword);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 검색 완료", places), HttpStatus.OK);
     }
+
+    @GetMapping("/noreview")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getNoReview() {
+        List<PlaceDto.AdminResponse> places = placeService.getNoReview();
+        return new ResponseEntity<>(new CMRespDto<>(1, "리뷰 없는 장소 조회 완료", places), HttpStatus.OK);
+    }
+
+    @GetMapping("/noimage")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getNoImage() {
+        List<PlaceDto.AdminResponse> places = placeService.getNoImage();
+        return new ResponseEntity<>(new CMRespDto<>(1, "이미지 없는 장소 조회 완료", places), HttpStatus.OK);
+    }
+
+    @GetMapping("/nomenu")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getNoMenu() {
+        List<PlaceDto.AdminResponse> places = placeService.getNoMenu();
+        return new ResponseEntity<>(new CMRespDto<>(1, "메뉴 없는 장소 조회 완료", places), HttpStatus.OK);
+    }
 }

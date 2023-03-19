@@ -144,4 +144,19 @@ public class PlaceDto {
             this.tags = tags.stream().map(tag -> tag.getName()).collect(Collectors.toList());
         }
     }
+
+    @Getter
+    public static class AdminResponse {
+        private Long id;
+        private String name;
+        private Category category;
+        private Campus campus;
+
+        public AdminResponse(Place place) {
+            this.id = place.getId();
+            this.name = place.getName();
+            this.category = place.getCategory();
+            this.campus = place.getCampus();
+        }
+    }
 }

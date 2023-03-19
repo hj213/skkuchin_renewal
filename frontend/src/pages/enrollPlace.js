@@ -38,7 +38,7 @@ const EnrollPlace = () => {
                 alert(message);
                 router.back();
             } else {
-                alert(message);
+                alert("장소 등록 실패");
             }
         }));
     };
