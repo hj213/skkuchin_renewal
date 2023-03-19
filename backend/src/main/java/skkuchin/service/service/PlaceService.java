@@ -371,6 +371,30 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
+    public List<PlaceDto.AdminResponse> getNoReview() {
+        List<Place> places = placeRepo.findNoReviewPlaces();
+        return places
+                .stream()
+                .map(PlaceDto.AdminResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceDto.AdminResponse> getNoImage() {
+        List<Place> places = placeRepo.findNoImagePlaces();
+        return places
+                .stream()
+                .map(PlaceDto.AdminResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaceDto.AdminResponse> getNoMenu() {
+        List<Place> places = placeRepo.findNoMenuPlaces();
+        return places
+                .stream()
+                .map(PlaceDto.AdminResponse::new)
+                .collect(Collectors.toList());
+    }
+
     private List<Tag> getTop3TagsByPlace(Place place) {
         List<Review> reviews = reviewRepo.findByPlace(place);
         Map<Tag, Long> tagsCount = new HashMap<>();
