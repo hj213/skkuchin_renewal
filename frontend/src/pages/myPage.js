@@ -19,6 +19,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import { load_token, set_chat_push, set_info_push } from '../actions/pushToken/pushToken';
+import GoLogin from "../components/GoLogin";
 
 export default function myPage() {
     const dispatch = useDispatch();
@@ -193,6 +194,10 @@ export default function myPage() {
             },
     }));
 
+    const [isLogin, setIsLogin] = useState(false);
+    const handleGoLogin = () => {
+        setIsLogin(!isLogin);
+    }
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -248,6 +253,11 @@ export default function myPage() {
                 <Button onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} variant="text" style={{fontSize: '16px', fontWeight: '500', color: '#000000', padding: '0', justifySelf: 'start'}}>문의하기</Button> */}
                 <Typography onClick={handleDialogOpen} style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>로그아웃</Typography>
                 <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '16px', fontWeight: '500'}}>문의하기</Typography>
+                
+                {/* 예시 Login 유도, 지워야함! */}
+                <Typography onClick={handleGoLogin} style={{fontSize: '16px', fontWeight: '500'}}>로그인 유도 팝업</Typography>
+                {isLogin && <GoLogin open={isLogin}/> }
+
             </Container>
 
             {/* 하단 */}
