@@ -138,17 +138,16 @@ export default function list(){
                 setHeight(0);
             } else {
                 // 키워드 확인
-                dispatch(clear_search_results());
-                dispatch(search_places_keyword(keyword));
-
+                if(tags.length == 0) {
+                    dispatch(clear_search_results());
+                    dispatch(search_places_keyword(keyword));
+                }
                 if((open.bool) == false) {
                     if( router.query.length == 1 || filteredPlace?.length == 1){
                         setHeight(187)
                     } 
                     else if( filteredPlace?.length == 0 ){
                         setHeight(0);
-                        // setAlertOpen(true);
-                        // setAlertMessage('검색 결과가 없습니다.');
                     }
                     else if(WINDOW_HEIGHT < 750){
                         setHeight(187)
@@ -324,9 +323,9 @@ export default function list(){
     const onTagClick = (id) => {
         const selectedTag = tagsId.find(tag => tag.id === id);
         if (!selectedTag) return;
-        
-        let newTags;
       
+        let newTags;
+
         if (tags.includes(id)) {
           // 선택된 태그가 이미 있으면 선택 해제
           newTags = [];
