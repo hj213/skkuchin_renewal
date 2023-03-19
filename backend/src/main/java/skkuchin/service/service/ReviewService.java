@@ -69,7 +69,10 @@ public class ReviewService {
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "placeDetail", key = "#dto.placeId"),
-            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
     public void write(AppUser user, ReviewDto.PostRequest dto) {
@@ -103,7 +106,10 @@ public class ReviewService {
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "placeDetail", allEntries = true),
-            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
     public void update(Long reviewId, ReviewDto.PutRequest dto, AppUser user) {
@@ -160,7 +166,10 @@ public class ReviewService {
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "placeDetail", allEntries = true),
-            @CacheEvict(value = "placeSearch", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
             @CacheEvict(value = "placeAll", allEntries = true)
     })
     public void delete(Long reviewId, AppUser user) {

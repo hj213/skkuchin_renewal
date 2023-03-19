@@ -300,7 +300,6 @@ export const search_places_tag = (tag, callback) => async dispatch => {
         });
 
         const apiRes = await res.json();
-        console.log(apiRes)
 
         if (res.status === 200) {
             dispatch({
