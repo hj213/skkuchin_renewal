@@ -83,7 +83,7 @@ const PlaceMenu = () => {
     };
 
     const handleDeleteClick = (menu) => {
-        const confirmDelete = window.confirm(`${menu.name}를 삭제하시겠습니까?`);
+        const confirmDelete = window.confirm(`${menu.name}을/를 삭제하시겠습니까?`);
         if (confirmDelete) {
             setLoading(true);
             dispatch(delete_menu(place_id, menu.id, () => {
@@ -130,7 +130,7 @@ const PlaceMenu = () => {
                         padding: '16px 24px', 
                         boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' 
                     }}>
-                        <p>Loading...</p>
+                        <p>로딩중...</p>
                     </div>
                 </div>
             }

@@ -432,10 +432,9 @@ export const enroll_place = (
         const apiRes = await res.json();
 
         if (res.status === 201) {
-            await dispatch({
+            dispatch({
                 type: ENROLL_PLACE_SUCCESS
             })
-            dispatch(load_places());
             
             if (callback) callback([true, apiRes.message]);
             
@@ -539,10 +538,9 @@ export const modify_place = (
         const apiRes = await res.json();
 
         if (res.status === 200) {
-            await dispatch({
+            dispatch({
                 type: MODIFY_PLACE_SUCCESS
             })
-            dispatch(load_places());
             
             if (callback) callback([true, apiRes.message]);
             
@@ -609,3 +607,138 @@ export const delete_place = (place_id, callback) => async dispatch => {
         if (callback) callback([false, error]);
     }
 };
+
+export const get_no_review_places = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/noreview`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: LOAD_PLACES_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: LOAD_PLACES_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: LOAD_PLACES_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    }
+}
+
+export const get_no_image_places = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/noimage`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: LOAD_PLACES_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: LOAD_PLACES_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: LOAD_PLACES_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    }
+}
+
+export const get_no_menu_places = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        console.log('access 토큰이 존재하지 않습니다')
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/place/nomenu`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: LOAD_PLACES_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: LOAD_PLACES_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: LOAD_PLACES_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    }
+}
