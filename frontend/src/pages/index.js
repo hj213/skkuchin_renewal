@@ -339,13 +339,13 @@ export default function list(){
         if (newTags.length > 0) {
           const exclusiveGroup = selectedTag.exclusiveGroup;
           if (exclusiveGroup === 'discount') {
-            search_places_discount();
+            dispatch(search_places_discount());
           } else if (exclusiveGroup === 'cuisine') {
-            search_places_category(selectedTag.id);
+            dispatch(search_places_category(selectedTag.id));
           } else if (exclusiveGroup === 'tag') {
-            search_places_tag(selectedTag.id);
+            dispatch(search_places_tag(selectedTag.id));
           } else {
-            search_places_keyword(selectedTag.id);
+            dispatch(search_places_keyword(selectedTag.id));
           }
         }
         

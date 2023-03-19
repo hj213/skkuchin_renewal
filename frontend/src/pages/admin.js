@@ -62,6 +62,17 @@ const AdminPage = () => {
                                 </button>
                             </Link>
                             <Link href={{
+                                pathname: '/placeMenu',
+                                query: {
+                                    place_id: place.id,
+                                    place_name: place.name
+                                }
+                            }}>
+                                <button>
+                                    메뉴 관리
+                                </button>
+                            </Link>
+                            <Link href={{
                                 pathname: '/modifyPlace',
                                 query: {
                                     place_id: place.id

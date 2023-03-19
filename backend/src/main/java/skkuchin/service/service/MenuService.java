@@ -28,26 +28,37 @@ public class MenuService {
     private final MenuRepo menuRepo;
 
     @Transactional
-    public void write(MenuDto.PostRequest dto) {
-        Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
+    public List<MenuDto.Response> getPlaceReview(Long placeId) {
+        Place place = placeRepo.findById(placeId).orElseThrow();
+        return menuRepo.findByPlace(place)
+                .stream().map(menu -> new MenuDto.Response(menu)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void write(Long placeId, MenuDto.Request dto) {
+        Place place = placeRepo.findById(placeId).orElseThrow();
         Menu menu = dto.toEntity(place);
         menuRepo.save(menu);
     }
 
-
     @Transactional
-    public void addAll(List<MenuDto.PostRequest1> dto, Long placeId) {
+    public void addAll(Long placeId, List<MenuDto.Request> dto) {
         Place place = placeRepo.findById(placeId).orElseThrow();
         List<Menu> menus = dto.stream().map(menuDto -> menuDto.toEntity(place)).collect(Collectors.toList());
         menuRepo.saveAll(menus);
     }
 
+    @Transactional
+    public void update(Long menuId, MenuDto.Request dto) {
+        Menu existingMenu = menuRepo.findById(menuId).orElseThrow();
+        existingMenu.setName(dto.getName());
+        existingMenu.setPrice(dto.getPrice());
+        menuRepo.save(existingMenu);
+    }
 
     @Transactional
-    public List<MenuDto.Response> getPlaceReview(Long placeId) {
-        Place place = placeRepo.findById(placeId).orElseThrow();
-        return menuRepo.findByPlace(place)
-                .stream().map(menu -> new MenuDto.Response(menu)).collect(Collectors.toList());
+    public void delete(Long menuId) {
+        menuRepo.deleteById(menuId);
     }
 
     public void insertData(String path) throws IOException, ParseException {
@@ -65,7 +76,7 @@ public class MenuService {
 
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject temp = (JSONObject) jsonArray.get(i);
-                    MenuDto.PostRequest dto = gson.fromJson(temp.toString(), MenuDto.PostRequest.class);
+                    MenuDto.InsertRequest dto = gson.fromJson(temp.toString(), MenuDto.InsertRequest.class);
                     Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
                     menuRepo.save(dto.toEntity(place));
                 }
