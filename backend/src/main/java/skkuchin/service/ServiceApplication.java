@@ -54,9 +54,9 @@ public class ServiceApplication {
 				menuService.insertData(path);
 				keywordService.insertData(path);
 				reviewService.insertData(path);
-//				userService.saveTestMatchingUsers(100);
-//				chatRoomService.insertData();
-//				chatMessageService.insertData();
+				userService.saveTestMatchingUsers(100);
+				chatRoomService.insertData();
+				chatMessageService.insertData();
 			} catch (Exception e) {
 				System.out.println(e);
 			}
