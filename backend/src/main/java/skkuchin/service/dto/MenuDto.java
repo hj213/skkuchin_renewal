@@ -14,14 +14,31 @@ import javax.validation.constraints.NotNull;
 
 public class MenuDto {
 
-    /* 메뉴 등록 */
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static class Request {
+        @NotBlank
+        private String name;
+        @NotNull
+        private int price;
+
+        public Menu toEntity(Place place) {
+            return Menu.builder()
+                    .place(place)
+                    .name(name)
+                    .price(price)
+                    .build();
+        }
+    }
+
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class PostRequest {
-        @JsonProperty
+    public static class InsertRequest {
         @NotNull
+        @JsonProperty
         private Long placeId;
         @NotBlank
         private String name;
@@ -37,29 +54,6 @@ public class MenuDto {
         }
     }
 
-    @Getter
-    @RequiredArgsConstructor
-    @AllArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class PostRequest1 {
-       /* @JsonProperty
-        @NotNull
-        private Long placeId;*/
-        @NotBlank
-        private String name;
-        @NotNull
-        private int price;
-
-        public Menu toEntity(Place place) {
-            return Menu.builder()
-                    .place(place)
-                    .name(name)
-                    .price(price)
-                    .build();
-        }
-    }
-
-    /* 메뉴조회 */
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {

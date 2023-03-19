@@ -11,6 +11,14 @@ import {
     DELETE_PLACE_FAIL,
     SEARCH_PLACES_SUCCESS,
     SEARCH_PLACES_FAIL,
+    SEARCH_PLACES_DISCOUNT_SUCCESS,
+    SEARCH_PLACES_DISCOUNT_FAIL,
+    SEARCH_PLACES_CATEGORY_SUCCESS,
+    SEARCH_PLACES_CATEGORY_FAIL,
+    SEARCH_PLACES_TAG_SUCCESS,
+    SEARCH_PLACES_TAG_FAIL,
+    SEARCH_PLACES_KEYWORD_SUCCESS,
+    SEARCH_PLACES_KEYWORD_FAIL,
     CLEAR_SEARCH_RESULTS,
 } from '../actions/place/types'
 
@@ -72,6 +80,46 @@ const placeReducer = (state= initialState, action) => {
                 searchplace: payload
             }
         case SEARCH_PLACES_FAIL:
+            return {
+                ...state,
+                searchplace: null
+            }
+        case SEARCH_PLACES_DISCOUNT_SUCCESS:
+            return {
+                ...state,
+                searchplace: payload
+            }
+        case SEARCH_PLACES_DISCOUNT_FAIL:
+            return {
+                ...state,
+                searchplace: null
+            }
+        case SEARCH_PLACES_CATEGORY_SUCCESS:
+            return {
+                ...state,
+                searchplace: payload
+            }
+        case SEARCH_PLACES_CATEGORY_FAIL:
+            return {
+                ...state,
+                searchplace: null
+            }
+        case SEARCH_PLACES_TAG_SUCCESS:
+            return {
+                ...state,
+                searchplace: payload
+            }
+        case SEARCH_PLACES_TAG_FAIL:
+            return {
+                ...state,
+                searchplace: null
+            }
+        case SEARCH_PLACES_KEYWORD_SUCCESS:
+            return {
+                ...state,
+                searchplace: payload
+            }
+        case SEARCH_PLACES_KEYWORD_FAIL:
             return {
                 ...state,
                 searchplace: null

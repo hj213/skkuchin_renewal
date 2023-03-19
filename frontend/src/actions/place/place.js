@@ -15,7 +15,15 @@ import {
     DELETE_PLACE_FAIL,
     SEARCH_PLACES_SUCCESS,
     SEARCH_PLACES_FAIL,
-    CLEAR_SEARCH_RESULTS
+    CLEAR_SEARCH_RESULTS,
+    SEARCH_PLACES_DISCOUNT_SUCCESS,
+    SEARCH_PLACES_DISCOUNT_FAIL,
+    SEARCH_PLACES_CATEGORY_SUCCESS,
+    SEARCH_PLACES_CATEGORY_FAIL,
+    SEARCH_PLACES_TAG_SUCCESS,
+    SEARCH_PLACES_TAG_FAIL,
+    SEARCH_PLACES_KEYWORD_SUCCESS,
+    SEARCH_PLACES_KEYWORD_FAIL
 } from './types'
 import { getCoordinate } from '../../utils/getCoordinate';
 
@@ -197,7 +205,7 @@ export const search_places_discount = (callback) => async dispatch => {
 
         if (res.status === 200) {
             dispatch({
-                type: SEARCH_PLACES_SUCCESS,
+                type: SEARCH_PLACES_DISCOUNT_SUCCESS,
                 payload: apiRes.data
             })
             
@@ -206,7 +214,7 @@ export const search_places_discount = (callback) => async dispatch => {
 
         } else {
             dispatch({
-                type: SEARCH_PLACES_FAIL
+                type: SEARCH_PLACES_DISCOUNT_FAIL
             })
             
             if (callback) callback([false, apiRes.message]);
@@ -215,7 +223,7 @@ export const search_places_discount = (callback) => async dispatch => {
         }
     } catch (error) {
         dispatch({
-            type: SEARCH_PLACES_FAIL
+            type: SEARCH_PLACES_DISCOUNT_FAIL
         })
         
         if (callback) callback([false, error]);
@@ -246,7 +254,7 @@ export const search_places_category = (category ,callback) => async dispatch => 
 
         if (res.status === 200) {
             dispatch({
-                type: SEARCH_PLACES_SUCCESS,
+                type: SEARCH_PLACES_CATEGORY_SUCCESS,
                 payload: apiRes.data
             })
             
@@ -255,7 +263,7 @@ export const search_places_category = (category ,callback) => async dispatch => 
 
         } else {
             dispatch({
-                type: SEARCH_PLACES_FAIL
+                type: SEARCH_PLACES_CATEGORY_FAIL
             })
             
             if (callback) callback([false, apiRes.message]);
@@ -264,7 +272,7 @@ export const search_places_category = (category ,callback) => async dispatch => 
         }
     } catch (error) {
         dispatch({
-            type: SEARCH_PLACES_FAIL
+            type: SEARCH_PLACES_CATEGORY_FAIL
         })
         
         if (callback) callback([false, error]);
@@ -292,10 +300,11 @@ export const search_places_tag = (tag, callback) => async dispatch => {
         });
 
         const apiRes = await res.json();
+        console.log(apiRes)
 
         if (res.status === 200) {
             dispatch({
-                type: SEARCH_PLACES_SUCCESS,
+                type: SEARCH_PLACES_TAG_SUCCESS,
                 payload: apiRes.data
             })
             
@@ -304,7 +313,7 @@ export const search_places_tag = (tag, callback) => async dispatch => {
 
         } else {
             dispatch({
-                type: SEARCH_PLACES_FAIL
+                type: SEARCH_PLACES_TAG_FAIL
             })
             
             if (callback) callback([false, apiRes.message]);
@@ -313,7 +322,7 @@ export const search_places_tag = (tag, callback) => async dispatch => {
         }
     } catch (error) {
         dispatch({
-            type: SEARCH_PLACES_FAIL
+            type: SEARCH_PLACES_TAG_FAIL
         })
         
         if (callback) callback([false, error]);
@@ -344,7 +353,7 @@ export const search_places_keyword = (keyword, callback) => async dispatch => {
 
         if (res.status === 200) {
             dispatch({
-                type: SEARCH_PLACES_SUCCESS,
+                type: SEARCH_PLACES_KEYWORD_SUCCESS,
                 payload: apiRes.data
             })
             
@@ -353,7 +362,7 @@ export const search_places_keyword = (keyword, callback) => async dispatch => {
 
         } else {
             dispatch({
-                type: SEARCH_PLACES_FAIL
+                type: SEARCH_PLACES_KEYWORD_FAIL
             })
             
             if (callback) callback([false, apiRes.message]);
@@ -362,7 +371,7 @@ export const search_places_keyword = (keyword, callback) => async dispatch => {
         }
     } catch (error) {
         dispatch({
-            type: SEARCH_PLACES_FAIL
+            type: SEARCH_PLACES_KEYWORD_FAIL
         })
         
         if (callback) callback([false, error]);
