@@ -47,6 +47,8 @@ const PlacePage = () => {
     const [tags, setTags] = useState([]); // 태그 2개까지
 
     const user = useSelector(state => state.auth.user);
+    const toggle = useSelector(state => state.auth.toggle_for_not_user);
+
     const [filteredPlace, setFilteredPlace] = useState([]);
 
     const [isLogin, setIsLogin] = useState(false);
@@ -54,10 +56,12 @@ const PlacePage = () => {
     useEffect(() => {
         if (place && user != null && user.toggle!=null) {
             setFilteredPlace(place.filter(item => item.campus === user.toggle));
+        } else if (place && toggle) {
+            setFilteredPlace(place.filter(item => item.campus === toggle));
         } else {
             if (tags != null) setFilteredPlace(null);
         }
-    }, [place, user]);
+    }, [place, user, toggle]);
 
     // Part 2) menu, 가게 정보 (menu API)
     const menus = useSelector(state => state.menu.menu);
@@ -319,12 +323,12 @@ const PlacePage = () => {
     const handleGoLogin = () => {
         setIsLogin(true);
     }
-
+    
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
-                {isLogin && <GoLogin open={isLogin}/> }
+                {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
                 <div style={{ position: 'fixed', height:'100%', width:'100%',overflow: 'hidden'}}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
                     <SearchBox openID={openID} handleFocus={handleFocus}/> 
@@ -492,12 +496,12 @@ const PlacePage = () => {
                                                 <Grid container style={{marginTop: '7.5px'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        학생 할인 : {(selectedPlace.discount_content != null) ? 'O' : 'X'}   
+                                                        학생 할인 : {(selectedPlace.discount_availability === true) ? 'O' : 'X'}   
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#BABABA" component="div">
-                                                        {(selectedPlace.discount_content != null) ? '('+selectedPlace.discount_content+')' : ''}
+                                                        {(selectedPlace.discount_content !== null && selectedPlace.discount_content !== '') ? '('+selectedPlace.discount_content+')' : ''}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>

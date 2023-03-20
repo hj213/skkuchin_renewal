@@ -15,7 +15,6 @@ export const get_realtime_chat_alarm = (username, stompClient) => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -47,7 +46,6 @@ export const get_chat_alarm_info = (stompClient) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

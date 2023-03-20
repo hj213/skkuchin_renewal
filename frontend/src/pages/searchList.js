@@ -26,6 +26,8 @@ export default function searchList(){
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.auth.user);
+    const toggle = useSelector(state => state.auth.toggle_for_not_user);
+
     const searchplace = useSelector(state => state.place.searchplace);
     const allplaces = useSelector(state => state.place.allplaces);
     const favorites = useSelector(state => state.favorite.favorite);
@@ -43,10 +45,8 @@ export default function searchList(){
 
     //api 받아오기
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(clear_search_results());
-            dispatch(search_places_keyword(keyword));
-        }
+        dispatch(clear_search_results());
+        dispatch(search_places_keyword(keyword));
     }, [keyword]);
 
     useEffect(() => {
@@ -60,11 +60,14 @@ export default function searchList(){
         if (searchplace && allplaces && user) {
             setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
             setFilteredAllPlace(allplaces.filter((item)=> item.campus === user.toggle));
+        } else if (searchplace && allplaces && toggle) {
+            setFilteredPlace(searchplace.filter((item) => item.campus === toggle));
+            setFilteredAllPlace(allplaces.filter((item)=> item.campus === toggle));
         } else {
             setFilteredPlace([]);
             setFilteredAllPlace([]);
         }
-    }, [searchplace, user, allplaces]);
+    }, [searchplace, user, allplaces, toggle]);
   
     const handleValue = (e) => {
         setValue(e.target.value);

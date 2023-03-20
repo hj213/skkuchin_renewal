@@ -35,6 +35,7 @@ export default function list(){
     const searchplace = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user);
+    const toggle = useSelector(state => state.auth.toggle_for_not_user);
     const WINDOW_HEIGHT = window.innerHeight;
     const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
     
@@ -92,10 +93,12 @@ export default function list(){
     useEffect(() => {
         if (searchplace && keyword != '' && user && user.toggle != null) {
           setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
+        } else if (searchplace && keyword != '' && toggle) {
+            setFilteredPlace(searchplace.filter((item) => item.campus === toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
-    }, [searchplace, user]);
+    }, [searchplace, user, toggle]);
 
 
     useEffect(()=>{
@@ -104,7 +107,7 @@ export default function list(){
         setFilteredPlace(null);
         setIsTall(false);
         dispatch(clear_search_results());
-    },[user?.toggle])
+    },[user?.toggle, toggle])
 
 
     useEffect(() => {

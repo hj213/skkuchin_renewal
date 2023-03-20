@@ -40,7 +40,7 @@ const PlaceReview = ({ index, review, user, handleEdit, handleDelete }) => {
         <Grid container key={index} style={{margin:"-10px 0 30px 0"}}>
             <Grid container style={{margin:'0px 0px 0px', justifyContent:'left'}}>
                 <Grid item xs={2} style={{marginTop:'3px'}}>
-                    { review && review.user_id === user.id ?
+                    { review && user && review.user_id === user.id ?
                         <StyledBadge badgeContent={"나"}>
                             {displayProfile(user.image, 40, 40)}
                         </StyledBadge> : <Grid>
@@ -63,7 +63,7 @@ const PlaceReview = ({ index, review, user, handleEdit, handleDelete }) => {
                             {review.nickname}
                         </Typography>
                         </Grid>
-                        { review.user_id === user.id && handleEdit!=undefined?
+                        { user && review.user_id === user.id && handleEdit!=undefined?
                         <Grid item style={{marginTop:'-10px'}}>
                             <IconButton onClick={handleMoreClick} style={{top:5}}>
                                 <Image src={more} width={5} height={17.33} layout='fixed' />

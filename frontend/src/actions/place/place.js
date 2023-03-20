@@ -29,22 +29,12 @@ import { getCoordinate } from '../../utils/getCoordinate';
 
 //load_places
 export const load_places = (callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
     
     try {
         const res = await fetch(`${API_URL}/api/place`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -81,22 +71,12 @@ export const load_places = (callback) => async dispatch => {
 
 //load_place
 export const load_place = (id, callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/place/${id}`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -137,7 +117,7 @@ export const search_places = (keyword, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -182,22 +162,12 @@ export const search_places = (keyword, callback) => async dispatch => {
 }
 
 export const search_places_discount = (callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/place/search/discount`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -231,22 +201,12 @@ export const search_places_discount = (callback) => async dispatch => {
 }
 
 export const search_places_category = (category ,callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/place/search/category/${category}`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -280,22 +240,12 @@ export const search_places_category = (category ,callback) => async dispatch => 
 }
 
 export const search_places_tag = (tag, callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/place/search/tag/${tag}`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -329,22 +279,12 @@ export const search_places_tag = (tag, callback) => async dispatch => {
 }
 
 export const search_places_keyword = (keyword, callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/place/search/keyword?q=${keyword}`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -389,7 +329,7 @@ export const enroll_place = (
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -467,7 +407,7 @@ export const modify_place = (
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -569,7 +509,7 @@ export const delete_place = (place_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -612,7 +552,7 @@ export const get_no_review_places = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -657,7 +597,7 @@ export const get_no_image_places = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -702,7 +642,7 @@ export const get_no_menu_places = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

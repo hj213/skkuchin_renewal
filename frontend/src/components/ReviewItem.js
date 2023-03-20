@@ -8,6 +8,7 @@ import { displayReviewTag, reviewsTags } from "./TagList";
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { displayProfile } from '../components/MyPage/ProfileList';
+import GoLogin from './GoLogin';
 
 // ReviewItem 컴포넌트 추출
 const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
@@ -58,10 +59,9 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
         setOpen(false);
     }
 
-
     return (
         <Grid container key={index} style={{margin:"-10px 0 40px 0"}}>
-            {isLogin && <GoLogin open={isLogin}/> }
+            {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
             <Grid container style={{margin:'0px 0px 0px', justifyContent:'left'}}>
                 <Grid item xs={2} style={{marginTop:'3px'}}>
                     { review && user && review.user_id === user.id ?

@@ -8,7 +8,7 @@ export const enroll_report = (report_type, content, review_id, chat_room_id, cal
     const access = Cookies.get('access') ?? null;
 
         if (access === null) {
-            console.log('access 토큰이 존재하지 않습니다')
+            
             return dispatch({
                 type: AUTHENTICATED_FAIL
             });

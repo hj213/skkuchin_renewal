@@ -9,12 +9,13 @@ import character from '../image/skkuchinFind.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { clear_room_list, get_chat_room_info, get_realtime_chat_room } from '../actions/chat/chatRoom';
-import { get_chat_request_info, get_realtime_chat_request } from '../actions/chat/chatRequest';
+import { clear_room_list, get_chat_room_info, get_realtime_chat_room, get_chat_room_for_not_user } from '../actions/chat/chatRoom';
+import { get_chat_request_info, get_realtime_chat_request, get_chat_request_for_not_user } from '../actions/chat/chatRequest';
 import NewPromise from './Chat/NewPromise';
 import { request_refresh } from '../actions/auth/auth';
 import { clear_matching } from '../actions/matchingUser/matchingUser';
 import { displayProfile } from './MyPage/ProfileList';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -78,6 +79,9 @@ export default function MessageTab() {
   useEffect(() => {
     if (stompClient && user && user.username) {
       get_info();
+    } else {
+      dispatch(get_chat_room_for_not_user());
+      dispatch(get_chat_request_for_not_user());
     }
     return () => {
       dispatch(clear_room_list());

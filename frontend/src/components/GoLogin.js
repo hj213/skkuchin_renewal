@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 
-const GoLogin = ({open}) => {
+const GoLogin = ({open, onClose}) => {
 
     const router = useRouter();
 
@@ -13,8 +13,10 @@ const GoLogin = ({open}) => {
     const handleSubmit= (e) => {
         if(open){
             setSubmit(false);
+            onClose(false);
         } else{
             setSubmit(true);
+            onClose(true);
         }
     }
 
@@ -45,7 +47,6 @@ const GoLogin = ({open}) => {
                         <DialogContent sx={{p: '20px 24px 13px'}}>
                             <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
                                 <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>
-                                    로그인이 필요합니다. <br/>
                                     로그인 하시겠습니까?
                                 </DialogTitle>
                             </DialogContentText>
