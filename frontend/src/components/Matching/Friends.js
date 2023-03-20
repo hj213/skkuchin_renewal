@@ -9,26 +9,24 @@ const Friends = () => {
 
     const candidate = useSelector(state => state.candidate.candidate);
     const requestId = useSelector(state => state.chatRoom.requestId);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
+        if (isAuthenticated) {
             dispatch(load_request_id(([result, message]) => {
                 if (result) {
                     dispatch(load_candidate(([result, message]) => {
-                        if (result) {
-                        } else {
+                        if (!result) {
                             if (typeof(message) == 'string') {
                                 setDialogMsg(message);
                             }
                         }
                         setDialogOpen2(true);
                     }));
-                } else {
                 }
-                
             }))
         }
-    }, []);
+    }, [isAuthenticated]);
     
 
     const [height, setHeight] = useState('383px');

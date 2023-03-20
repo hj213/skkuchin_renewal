@@ -20,29 +20,22 @@ import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
 import downexplain from '../image/downexplain.jpg';
-import downebutton from '../image/downbutton.png';
 import { search_places_discount, search_places_category, search_places_tag, search_places_keyword } from "../actions/place/place";
 
 // 상단바
 import UpperBar from "../components/UpperBar"
-import AlertMessage from "../components/Alert";
 
 export default function list(){
     const isSmallScreen = useMediaQuery('(max-width: 375px)');
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
     const dispatch = useDispatch();
     const router = useRouter();
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
-    }
 
     // 장소 정보 불러오기
     const searchplace = useSelector(state => state.place.searchplace);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user);
+    const toggle = useSelector(state => state.auth.toggle_for_not_user);
     const WINDOW_HEIGHT = window.innerHeight;
     const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
     
@@ -64,9 +57,6 @@ export default function list(){
     const [startY, setStartY] = useState(0);
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
-    const [changed, setChanged] = useState(false);
     const [tagsId, setTagsId] = useState([
         {id: '학생 할인', exclusiveGroup: 'discount'},
         // {id: '스페셜', exclusiveGroup: null},
@@ -89,7 +79,6 @@ export default function list(){
     const tagName = tagsId.map(tag => tag.id);
 
     const [filteredPlace, setFilteredPlace] =useState([]);
-    const [focus, setFocus] = useState();
 
     const cardRef = useRef(null);
     const listRef = useRef(null);
@@ -104,10 +93,12 @@ export default function list(){
     useEffect(() => {
         if (searchplace && keyword != '' && user && user.toggle != null) {
           setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
+        } else if (searchplace && keyword != '' && toggle) {
+            setFilteredPlace(searchplace.filter((item) => item.campus === toggle));
         } else {
             if(tags != null) setFilteredPlace(null);
         }
-    }, [searchplace, user]);
+    }, [searchplace, user, toggle]);
 
 
     useEffect(()=>{
@@ -116,7 +107,7 @@ export default function list(){
         setFilteredPlace(null);
         setIsTall(false);
         dispatch(clear_search_results());
-    },[user?.toggle])
+    },[user?.toggle, toggle])
 
 
     useEffect(() => {
@@ -205,8 +196,6 @@ export default function list(){
         setHeight('0');
         setPreventScroll('');
         setIsTall(false);
-        setAlertOpen(false);
-        setAlertMessage('');
     }
 
     const handleTouchStart = (event) => {
@@ -357,14 +346,9 @@ export default function list(){
 
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
-        setFocus(bool);
         if(bool) {
-            // setKeyword('');
-            // setTags([]);
-            // setFilteredPlace(null);
             setHeight('0');
             setIsTall(false);
-            // dispatch(clear_search_results());
         }
     }
 
@@ -380,10 +364,6 @@ export default function list(){
             setOpenDialog(false);
         }
     }, [])
-
-    const handleClickOpen = () => {
-      setOpenDialog(true);
-    };
   
     const handleClose = () => {
       setOpenDialog(false);
@@ -484,7 +464,7 @@ export default function list(){
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}} >
-                        <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
+                        <Image width={70} height={4} src={line} layout='fixed' /> 
                     </div>
                     : null
                     }

@@ -11,8 +11,9 @@ import yyj from '../image/YJ_on.png'; //캠퍼스 율전
 import ymr from '../image/MR_off.png'; //캠퍼스 율전
 import myj from '../image/YJ_off.png'; //캠퍼스 명륜
 import mmr from '../image/MR_on.png'; //캠퍼스 명륜
-import { change_toggle, load_user } from '../actions/auth/auth';
+import { change_toggle, change_toggle_for_not_user } from '../actions/auth/auth';
 import theme from '../theme/theme';
+import GoLogin from './GoLogin';
 
 //mbti 프로필
 import profile1 from '../image/mbti/profile/mainCharacter.png';
@@ -36,145 +37,178 @@ import ESFP from '../image/mbti/profile/ESFP.png';
 
 export default function MapDrawer(openID){
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
-    const dispatch = useDispatch();
-    const router = useRouter();
-    let open = false;
+  const dispatch = useDispatch();
+  const router = useRouter();
+  let open = false;
   
-    if(typeof window !== 'undefined' && !isAuthenticated){
-      router.push('/login');
-    }
-    
-    //api
-    const user = useSelector(state => state.auth.user);
+  //api
+  const user = useSelector(state => state.auth.user);
+  const toggle = useSelector(state => state.auth.toggle_for_not_user);
 
-    //state
-    const [drawerOpen, setDrawerOpen] = useState(open);
-    const [toggleImage, setToggleImage] = useState('');
-    
-    useEffect(() => {
-      if (user) {
-        if (user.campus == '명륜') {
-          if (user.toggle == '율전') {
-            setToggleImage(myj)
-          } else if (user.toggle == '명륜') {
-            setToggleImage(mmr)
-          }
-        } else if(user.campus == '율전') {
-          if (user.toggle == '율전') {
-            setToggleImage(yyj)
-          } else if (user.toggle == '명륜') {
-            setToggleImage(ymr)
-          }
+  //state
+  const [drawerOpen, setDrawerOpen] = useState(open);
+  const [toggleImage, setToggleImage] = useState('');
+  const [isLogin, setIsLogin] = useState(false);
+  
+  useEffect(() => {
+      if (user && user.campus == '명륜') {
+        if (user.toggle == '율전') {
+          setToggleImage(myj)
+        } else if (user.toggle == '명륜') {
+          setToggleImage(mmr)
+        }
+      } else if (user && user.campus == '율전') {
+        if (user.toggle == '율전') {
+          setToggleImage(yyj)
+        } else if (user.toggle == '명륜') {
+          setToggleImage(ymr)
         }
       }
-      
-    },[user])
+  },[user])
+
+  useEffect(() => {
+    if (toggle && toggle == '명륜') {
+      setToggleImage(mmr)
+      localStorage.setItem('map', '명륜');
+    } else if (toggle && toggle == '율전') {
+      setToggleImage(myj)
+      localStorage.setItem('map', '율전');
+    }
+  },[toggle])
 
 
-    //뒤로가기 시 드로워 열리도록
-    useEffect(()=>{
-      if(openID.open){
-        setDrawerOpen(true)
-      }
-    }, []);
+  //뒤로가기 시 드로워 열리도록
+  useEffect(()=>{
+    if(openID.open){
+      setDrawerOpen(true)
+    }
+  }, []);
 
-    //drawer 열리는
-    const handleDrawerClick = (bool) => (e) => {
-      e.preventDefault();
-      open = bool;
-      setDrawerOpen(open);  
-    };
+  //drawer 열리는
+  const handleDrawerClick = (bool) => (e) => {
+    e.preventDefault();
+    open = bool;
+    setDrawerOpen(open);  
+  };
 
-    //drawer 하위 페이지로 이동
-    const handleMove = (e) =>{
+  //drawer 하위 페이지로 이동
+  const handleMove = (e) => {
+    if (user) {
       router.push('/myFavorite');
+    } else {
+      setIsLogin(true);
     }
+  }
 
-    const handleMyReview = (e) =>{
+  const handleMyReview = (e) => {
+    if (user) {
       router.push('/myReview');
+    } else {
+      setIsLogin(true);
     }
-    //토글 클릭
-    const handleToggle = (e) => {
-      if (user.toggle === '명륜') {
-        dispatch(change_toggle('율전'));
-      } else if (user.toggle === '율전') {
-        dispatch(change_toggle('명륜'))
-      }
-    };
-    
-    const list = (anchor) => (
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={handleDrawerClick(false)}
-          onKeyDown={handleDrawerClick(false)}
-        >   
-            <Box style={{ textAlign:'center', marginTop:'40px'}}>
-                <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} placeholder="blur" layout='fixed'  />
-                <div>
-                <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
-                <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
-                </div>
-            </Box>
-            <List style={{marginLeft:'55px', marginTop:'54px'}}>
-                <ListItem disablePadding >
-                    <Grid container style={{fontSize:'20px', fontWeight:'400', lineHeight: '28px'}} >
-                        <Grid item style={{marginRight:'9px'}}>
-                            <Image src={bookmark} alt='즐겨찾기' width={16} height={16} layout='fixed' />
-                        </Grid>
-                        <Grid item>
-                            <ListItemText primary="즐겨찾기 장소" style={{marginTop:'1px'}} onClick={handleMove} />  
-                        </Grid>
-                    </Grid>
-                </ListItem>
-                <ListItem disablePadding>
-                    <Grid container style={{marginTop:'37px', fontSize: '20px', fontWeight:'400', lineHeight: '28px'}}>
-                        <Grid item style={{marginRight:'9px',}}>
-                            <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}} layout='fixed' />
-                        </Grid>
-                        <Grid item>
-                            <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMyReview}/>
-                        </Grid>
-                    </Grid>
-                </ListItem>
-            </List>
-        </Box>
-    );
+  }
+  //토글 클릭
+  const handleToggle = (e) => {
+    if (user.toggle === '명륜') {
+      dispatch(change_toggle('율전'));
+    } else if (user.toggle === '율전') {
+      dispatch(change_toggle('명륜'))
+    }
+  };
 
-    const src ={
-      DEFAULT1: profile1,
-      DEFAULT2: profile2,
-      INFP:INFP,
-      ENFJ:ENFJ,
-      ENTP:ENTP,
-      ENFP:ENFP,
-      ISTJ:ISTJ,
-      ISTP:ISTP,
-      ISFP:ISFP,
-      INTP:INTP,
-      ESTJ:ESTJ,
-      INFJ:INFJ,
-      ENTJ:ENTJ,
-      ESTP:ESTP,
-      ESFJ:ESFJ,
-      INTJ:INTJ,
-      ISFJ:ISFJ,
-      ESFP:ESFP,
+  const handleToggleForNotUser = (e) => {
+    if (toggle === '명륜') {
+      dispatch(change_toggle_for_not_user('율전'));
+      localStorage.setItem('map', '율전');
+    } else if (toggle === '율전') {
+      dispatch(change_toggle_for_not_user('명륜'));
+      localStorage.setItem('map', '명륜');
     }
-    
-    return(
-        <ThemeProvider theme={theme}>
-            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} layout='fixed' />
-            <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
-              <Grid container style={{position:'relative'}}>
-                <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
-                  {user && <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />}
-                </Grid>
+  };
+
+  const goMyPage = () =>{
+    router.push('/myPage');
+  }
+  
+  const list = (anchor) => (
+      <Box
+        sx={{ width: 250 }}
+        role="presentation"
+        onClick={handleDrawerClick(false)}
+        onKeyDown={handleDrawerClick(false)}
+      >   
+          <Box style={{ textAlign:'center', marginTop:'40px'}} onClick={goMyPage}>
+              <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} placeholder="blur" layout='fixed'  />
+              <div>
+              <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : '로그인하기'}</Typography>
+              <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
+              </div>
+          </Box>
+          <List style={{marginLeft:'55px', marginTop:'54px'}}>
+              <ListItem disablePadding >
+                  <Grid container style={{fontSize:'20px', fontWeight:'400', lineHeight: '28px'}} >
+                      <Grid item style={{marginRight:'9px'}}>
+                          <Image src={bookmark} alt='즐겨찾기' width={16} height={16} layout='fixed' />
+                      </Grid>
+                      <Grid item>
+                          <ListItemText primary="즐겨찾기 장소" style={{marginTop:'1px'}} onClick={handleMove} />  
+                      </Grid>
+                  </Grid>
+              </ListItem>
+              <ListItem disablePadding>
+                  <Grid container style={{marginTop:'37px', fontSize: '20px', fontWeight:'400', lineHeight: '28px'}}>
+                      <Grid item style={{marginRight:'9px',}}>
+                          <Image src={star} alt='나의 리뷰' width={16} height={16} style={{marginTop:'0px'}} layout='fixed' />
+                      </Grid>
+                      <Grid item>
+                          <ListItemText primary="나의 리뷰" style={{marginTop:'2px'}} onClick={handleMyReview}/>
+                      </Grid>
+                  </Grid>
+              </ListItem>
+          </List>
+      </Box>
+  );
+
+  const src ={
+    DEFAULT1: profile1,
+    DEFAULT2: profile2,
+    INFP:INFP,
+    ENFJ:ENFJ,
+    ENTP:ENTP,
+    ENFP:ENFP,
+    ISTJ:ISTJ,
+    ISTP:ISTP,
+    ISFP:ISFP,
+    INTP:INTP,
+    ESTJ:ESTJ,
+    INFJ:INFJ,
+    ENTJ:ENTJ,
+    ESTP:ESTP,
+    ESFJ:ESFJ,
+    INTJ:INTJ,
+    ISFJ:ISFJ,
+    ESFP:ESFP,
+  }
+  
+  return(
+      <ThemeProvider theme={theme}>
+        {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
+        <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} layout='fixed' />
+        <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
+          <Grid container style={{position:'relative'}}>
+            {
+              user ?
+              <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
+                <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />
               </Grid>
-                {list('left')}
-            </Drawer>
-        </ ThemeProvider>
-    )
+              :
+              <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggleForNotUser}>
+                <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />
+              </Grid>
+            }
+          </Grid>
+            {list('left')}
+        </Drawer>
+      </ ThemeProvider>
+  )
 }

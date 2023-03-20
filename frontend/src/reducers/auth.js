@@ -24,6 +24,8 @@ import {
     CHANGE_PASSWORD_FAIL,
     CHANGE_TOGGLE_SUCCESS,
     CHANGE_TOGGLE_FAIL,
+    CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS,
+    CHANGE_TOGGLE_NOT_FOR_USER_FAIL,
     DELETE_USER_SUCCESS,
     DELETE_USER_FAIL,
     FIND_USERNAME_SUCCESS,
@@ -35,7 +37,8 @@ import {
 const initialState = {
     user: null,
     isAuthenticated: false,
-    loading: false
+    loading: false,
+    toggle_for_not_user: null
 };
 
 const authReducer = (state = initialState, action) => {
@@ -79,10 +82,12 @@ const authReducer = (state = initialState, action) => {
                 ...state
             }
         case LOAD_USER_SUCCESS:
+            localStorage.removeItem("map");
             return {
                 ...state,
                 isAuthenticated: true,
-                user: payload
+                user: payload,
+                toggle_for_not_user: null
             }
         case LOAD_USER_FAIL:
             return {
@@ -167,6 +172,16 @@ const authReducer = (state = initialState, action) => {
         case CHANGE_TOGGLE_FAIL:
             return {
                 ...state
+            }
+        case CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS:
+            return {
+                ...state,
+                toggle_for_not_user: payload,
+            }
+        case CHANGE_TOGGLE_NOT_FOR_USER_FAIL:
+            return {
+                ...state,
+                toggle_for_not_user: null
             }
         case DELETE_USER_SUCCESS:
             Cookies.remove('access');

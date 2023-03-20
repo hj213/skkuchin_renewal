@@ -23,6 +23,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
 
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
+    const toggle = useSelector(state => state.auth.toggle_for_not_user);
 
     useEffect(() => {
         if (!allPlaces || allPlaces.length === 0) {
@@ -34,10 +35,12 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     useEffect(() => {
         if (allPlaces && user) {
             setFilteredPlace(allPlaces.filter((item) => item.campus === user.toggle));
+        } else if (allPlaces && toggle) {
+            setFilteredPlace(allPlaces.filter((item) => item.campus === toggle));
         } else {
             setFilteredPlace([]);
         }
-    }, [allPlaces, user]);
+    }, [allPlaces, user, toggle]);
 
     const handleValue = (e) => {
         setValue(e.target.value);
@@ -135,7 +138,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                                     >   
                                         <Grid container>
                                             <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={16} height={21} placeholder="blur" layout='fixed' />
+                                                <Image src={marker} width={16} height={21} layout='fixed' />
                                             </Grid>
                                             <Grid item style={{margin:'0px 0px 0px 12px'}}>
                                                 <div style={{fontSize:'16px'}}>

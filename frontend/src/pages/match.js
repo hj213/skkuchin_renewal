@@ -1,26 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react"; 
 import { CssBaseline, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
-import { load_matching_info } from '../actions/matchingUser/matchingUser';
 
 import Friends from '../components/Matching/Friends';
 
-import fireIcon from '../image/fire.png'
-import Image from 'next/image'
 import UpperBar from '../components/UpperBar';
 import AiGreeting from '../components/AiGreeting'
-import { useRouter } from 'next/router';
-import { displayMBTI } from "../components/Matching/MBTIList";
 
 const MatchPage = () => {
-    const router = useRouter();
-    const user = useSelector(state => state.auth.user); 
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    if (typeof window !== 'undefined' && !isAuthenticated) {
-        router.push('/login');
-    }
 
     return(
         <ThemeProvider theme={theme}>

@@ -10,7 +10,6 @@ import food from '../image/food.png';
 import star from '../image/Star2.png';
 import back from '../image/arrow_back_ios.png';
 import closeIcon from '../image/close.png';
-import down from '../image/down.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
 
@@ -29,14 +28,6 @@ export default function myFavorite(){
     }
     
     const favorites = useSelector(state => state.favorite.favorite);
-
-    const isFavorite = (placeId) => {
-        const favorite = favorites.some(favorite => favorite.place_id === placeId)
-        if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn} layout='fixed' />
-        }
-        return null;
-    };
 
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
@@ -63,19 +54,6 @@ export default function myFavorite(){
         if(favorite_id) {
             dispatch(delete_favorite(favorite_id.id));
         }
-    };
-
-    //최신순 버튼
-    const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
-    };
-
-    const handleClose = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
-        }
-    
-        setOpen(false);
     };
 
     const prevOpen = useRef(open);
@@ -125,12 +103,12 @@ export default function myFavorite(){
                         }}>
                         <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
                             <Grid style={{padding: '2px 10px 0px 4px'}} >
-                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                             <Grid>
                                 <Grid container>
                                     <Grid item xs style={{marginTop:'4px'}} >
-                                        <Image src={bookmarkOn} width={20} height={20} placeholder="blur" layout='fixed' />
+                                        <Image src={bookmarkOn} width={20} height={20} layout='fixed' />
                                     </Grid>
                                     <Grid item>
                                         <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>즐겨찾기 장소</Typography>
@@ -186,7 +164,7 @@ export default function myFavorite(){
                                                             </Typography>
                                                             }
                                                             <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 10px 0px 5px'}} onClick={handleFavClick(item.place_id)}>
-                                                                <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
+                                                                <Image width={15} height={15} src={bookmarkOn} layout='fixed' />
                                                             </Grid>
                                                         </Grid>
                                                     </Grid>

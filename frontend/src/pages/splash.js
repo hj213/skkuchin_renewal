@@ -9,7 +9,7 @@ import loading1 from '../image/loading1.png';
 import loading2 from '../image/loading2.png';
 import loading3 from '../image/loading3.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { load_user_callback } from '../actions/auth/auth';
+import { load_user_callback, change_toggle_for_not_user } from '../actions/auth/auth';
 
 const loadingImages = [loading0, loading1, loading2, loading3];
 
@@ -19,6 +19,7 @@ export default function splash(){
     const [loadingIndex, setLoadingIndex] = useState(0);
     const router = useRouter();
     const dispatch = useDispatch();
+    const campus = localStorage.getItem('map');
 
     useEffect(() => {
         /*
@@ -33,25 +34,29 @@ export default function splash(){
         }, 10000);*/
 
         setTimeout(() => {
-            if (dispatch && dispatch !== null && dispatch !== undefined) {
-                dispatch(load_user_callback(([result, message]) => {
-                    if (result) {
-                        router.push('/');
-                    } else {
-                        if (message == 'authenticated_fail') {
-                            let isUser = localStorage.getItem("user");
-                            if (isUser == "true") {
-                                router.push('/login')
-                            } else {
-                                localStorage.setItem("user", "true")
-                                router.push('/nextSplash')
-                            }
+            dispatch(load_user_callback(([result, message]) => {
+                if (result) {
+                    router.push('/');
+                } else {
+                    if (message == 'authenticated_fail') {
+                        if (campus) {
+                            dispatch(change_toggle_for_not_user(campus))
                         } else {
-                            router.push('/')
+                            localStorage.setItem('map', '명륜');
+                            dispatch(change_toggle_for_not_user('명륜'))
                         }
+                        let isUser = localStorage.getItem("user");
+                        if (isUser == "true") {
+                            router.push('/');
+                        } else {
+                            localStorage.setItem("user", "true")
+                            router.push('/nextSplash')
+                        }
+                    } else {
+                        router.push('/');
                     }
-                }))
-            }
+                }
+            }))
         }, 3000);
 
     }, []);

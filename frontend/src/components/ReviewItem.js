@@ -8,11 +8,13 @@ import { displayReviewTag, reviewsTags } from "./TagList";
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { displayProfile } from '../components/MyPage/ProfileList';
+import GoLogin from './GoLogin';
 
 // ReviewItem 컴포넌트 추출
 const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
     const router = useRouter();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [isLogin, setIsLogin] = useState(false);
 
     const handleMoreClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -46,18 +48,23 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
       // 밥약 신청하기 버튼
     const [open, setOpen] = useState(false);
     const handleSubmit = () => {
-        setOpen(true);
+        if (user) {
+            setOpen(true);
+        } else {
+            handleMenuClose();
+            setIsLogin(true);
+        }
     }
     const handleClose = () => {
         setOpen(false);
     }
 
-
     return (
         <Grid container key={index} style={{margin:"-10px 0 40px 0"}}>
+            {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
             <Grid container style={{margin:'0px 0px 0px', justifyContent:'left'}}>
                 <Grid item xs={2} style={{marginTop:'3px'}}>
-                    { review && review.user_id === user.id ?
+                    { review && user && review.user_id === user.id ?
                         <StyledBadge badgeContent={"나"}>
                             {displayProfile(user.image, 40, 40)}
                         </StyledBadge> : <Grid>
@@ -81,10 +88,10 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                             {review.nickname}
                         </Typography>
                         </Grid>
-                        { review.user_id === user.id && handleEdit!=undefined?
+                        { user && review.user_id === user.id && handleEdit!=undefined?
                         <Grid item style={{marginTop:'-10px'}}>
                             <IconButton onClick={handleMoreClick} style={{top:5}}>
-                                <Image src={more} width={5} height={17.33} placeholder="blur" layout='fixed' />
+                                <Image src={more} width={5} height={17.33} layout='fixed' />
                             </IconButton>
                             <Menu
                                 anchorEl={anchorEl}
@@ -137,7 +144,7 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                         </Grid>
                         : <Grid item style={{marginTop:'-10px'}}>
                             <IconButton onClick={handleMoreClick} style={{top:5}}>
-                                <Image src={more} width={5} height={17.33} placeholder="blur" layout='fixed' />
+                                <Image src={more} width={5} height={17.33} layout='fixed' />
                             </IconButton>
                             <Menu
                                 anchorEl={anchorEl}

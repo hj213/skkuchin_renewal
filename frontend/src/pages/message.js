@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconButton, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
@@ -13,11 +12,6 @@ const MessagePage = () => {
     };  
 
     const router = useRouter();
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    if (typeof window !== 'undefined' && !isAuthenticated) {
-        router.push('/login');
-    }
 
     return(
         <ThemeProvider theme={theme} >
@@ -39,7 +33,7 @@ const MessagePage = () => {
                 }}>
                     <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '5px 10px 0px 0px'}}>
-                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick}/>
+                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick} layout='fixed' />
                         </Grid>
                 
                         <Grid >

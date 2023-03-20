@@ -1,22 +1,16 @@
 import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react"; 
+import { useEffect, useState } from "react"; 
 
-import { load_review,  delete_review, modify_review, clear_my_review} from "../actions/review/review"
+import { load_review,  delete_review } from "../actions/review/review"
 import { load_places, load_place } from "../actions/place/place";
-
-import {BadgeProps} from '@mui/material/Badge'
-import {styled} from '@mui/material/styles';
 import { CssBaseline, IconButton, Rating, ThemeProvider, Select, Card, MenuItem, Menu, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
 import star from '../image/Star-1.png'
 import closeIcon from '../image/close.png';
-import profile from '../image/profile.png'
-import { displayReviewTag, reviewsTags } from "../components/TagList";
 import MyReviewItem from "../components/MyReviewItem";
-import more from '../image/more_vert.png';
 
 const MyReviewPage = () => {
 
@@ -116,12 +110,12 @@ const MyReviewPage = () => {
                         }}>
                         <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
                             <Grid style={{padding: '2px 10px 0px 4px'}} >
-                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                             <Grid>
                                 <Grid container>
                                     <Grid item xs style={{marginTop:'4px'}} >
-                                        <Image src={star} width={20} height={20} placeholder="blur" layout='fixed' />
+                                        <Image src={star} width={20} height={20} layout='fixed' />
                                     </Grid>
                                     <Grid item>
                                         <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>나의 리뷰</Typography>

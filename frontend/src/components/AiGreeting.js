@@ -6,6 +6,7 @@ import theme from '../theme/theme';
 import { useState, useEffect } from 'react';
 import {Container} from '@mui/material';
 import { change_status_info, load_matching_info } from '../actions/matchingUser/matchingUser';
+import GoLogin from './GoLogin';
 
 // 스위치
 import { styled } from '@mui/material/styles';
@@ -70,7 +71,7 @@ const AiGreeting = () => {
     }
     
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
+        if (isAuthenticated) {
             dispatch(load_matching_info(([result, message]) => {
                 if (result) {
                     setLoad(true);
@@ -78,8 +79,10 @@ const AiGreeting = () => {
                     setLoad(false);
                 }
             }));
+        } else {
+            setLoad(false);
         }
-    }, [dispatch]);
+    }, [isAuthenticated]);
 
     useEffect(() => {
         if (userInfo) {
@@ -101,15 +104,7 @@ const AiGreeting = () => {
     }
 
     const handleMatching = () => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(change_status_info(!status, ([result, message]) => {
-                if (result) {
-
-                } else {
-
-                }
-            }))
-        }
+        dispatch(change_status_info(!status));
         setStatus(!status);
     }
 
@@ -172,8 +167,8 @@ const AiGreeting = () => {
             setOpen(true);
             setDialogOpen(false);
         }else{
-        setOpen(false);
-        setDialogOpen(true);
+            setOpen(false);
+            setDialogOpen(true);
         }
     };
 
@@ -212,13 +207,13 @@ const AiGreeting = () => {
     );
 
     const guestLinks = (
-        <>
-            <div>
-                <Typography>
+        <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"600px"}}>
+            <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px"}}>
+                <Typography style={{fontWeight:700}}>
                     회원가입 및 로그인 후 이용해주세요!
                 </Typography>
             </div>
-        </>
+        </div>
     );
 
     return (

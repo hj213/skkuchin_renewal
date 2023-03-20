@@ -14,22 +14,12 @@ import {
 } from './types'
 
 export const load_menu = (place_id, callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
     
     try {
         const res = await fetch(`${API_URL}/api/menu/place/${place_id}`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -60,7 +50,7 @@ export const enroll_menu = (place_id, name, price, callback) => async dispatch =
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -113,7 +103,7 @@ export const modify_menu = (place_id, menu_id, name, price, callback) => async d
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -161,7 +151,7 @@ export const delete_menu = (place_id, menu_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

@@ -17,22 +17,12 @@ import {
 } from './types'
 
 export const load_reviews = (place_id, callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/review/place/${place_id}`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -72,7 +62,7 @@ export const load_review = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -121,7 +111,7 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -193,7 +183,7 @@ export const modify_review = (review_id, rate, content, images, urls, tags, call
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -270,7 +260,7 @@ export const delete_review = (review_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

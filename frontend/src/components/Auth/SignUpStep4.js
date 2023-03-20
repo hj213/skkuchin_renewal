@@ -59,7 +59,7 @@ const SignUpStep4 = (props) => {
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                {/* <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} placeholder="blur" layout='fixed' /> */}
+                                {/* <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} layout='fixed' /> */}
                                 <div style={{width: '11px', height: '18px'}}></div>
                             </Grid>
                             <Grid item style={{marginLeft:'35%'}}>
@@ -122,7 +122,7 @@ const SignUpStep4 = (props) => {
         <div style={{display:'flex', height: '28px', alignItems: 'center', justifyItems: 'center', marginBottom: '37px'}}>
             {
               checkState ?
-                <Image src={check} onClick={handleCheck} width={15.83} height={15.83} placeholder="blur" layout='fixed' />
+                <Image src={check} onClick={handleCheck} width={15.83} height={15.83} layout='fixed' />
               :  
                 <Image src={uncheck} onClick={handleCheck} width={15.83} height={15.83} layout='fixed' />
             }

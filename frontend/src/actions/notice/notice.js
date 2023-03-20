@@ -21,7 +21,7 @@ export const load_notices = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -73,7 +73,7 @@ export const load_notice = (notice_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -124,7 +124,7 @@ export const enroll_notice = (notice_id, type, title, content, callback) => asyn
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -181,7 +181,7 @@ export const modify_notice = (notice_id, type, title, content, callback) => asyn
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -237,7 +237,7 @@ export const delete_notice = (notice_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

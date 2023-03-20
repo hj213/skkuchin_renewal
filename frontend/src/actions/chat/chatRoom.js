@@ -27,7 +27,9 @@ import {
     GET_CHAT_ROOM_INFO_SUCCESS,
     GET_CHAT_ROOM_INFO_FAIL,
     CLEAR_ROOM_LIST_SUCCESS,
-    CLEAR_ROOM_LIST_FAIL
+    CLEAR_ROOM_LIST_FAIL,
+    GET_CHAT_ROOM_FOR_NOT_USER_SUCCESS,
+    GET_CHAT_ROOM_FOR_NOT_USER_FAIL
 }
     from './types';
 import { send_message } from './chatMessage';
@@ -37,7 +39,6 @@ export const load_request_id = (callback) => async dispatch => {
         const access = Cookies.get('access') ?? null;
     
         if (access === null) {
-            console.log('access 토큰이 존재하지 않습니다')
             return dispatch({
                 type: AUTHENTICATED_FAIL
             });
@@ -79,7 +80,6 @@ export const request_chat = (id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -128,7 +128,6 @@ export const reply_chat_request = (reaction, room_id, callback) => async dispatc
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -175,7 +174,7 @@ export const set_user_block = (reaction, room_id, callback) => async dispatch =>
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -222,7 +221,7 @@ export const set_chat_room_alarm = (reaction, room_id, callback) => async dispat
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -269,7 +268,7 @@ export const set_meet_time = (time, room_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -316,7 +315,7 @@ export const set_meet_place = (place, room_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -363,7 +362,7 @@ export const delete_meet_time = (room_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -403,7 +402,7 @@ export const delete_meet_place = (room_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -443,7 +442,7 @@ export const exit_room = (room_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -482,7 +481,7 @@ export const get_realtime_chat_room = (username, stompClient) => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -524,7 +523,7 @@ export const get_chat_room_info = (stompClient) => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -552,6 +551,19 @@ export const clear_room_list = () => dispatch => {
         console.log(error)
         dispatch({
             type: CLEAR_ROOM_LIST_FAIL
+        });
+    }
+};
+
+export const get_chat_room_for_not_user = () => dispatch => {
+    try {
+        dispatch({
+            type: GET_CHAT_ROOM_FOR_NOT_USER_SUCCESS
+        });
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: GET_CHAT_ROOM_FOR_NOT_USER_FAIL
         });
     }
 };

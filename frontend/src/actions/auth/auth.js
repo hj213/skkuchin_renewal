@@ -31,7 +31,9 @@ import {
     FIND_USERNAME_SUCCESS,
     FIND_USERNAME_FAIL,
     RESET_PASSWORD_SUCCESS,
-    RESET_PASSWORD_FAIL
+    RESET_PASSWORD_FAIL,
+    CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS,
+    CHANGE_TOGGLE_NOT_FOR_USER_FAIL
 } 
     from './types';
 
@@ -165,7 +167,6 @@ export const load_user_callback = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -214,7 +215,6 @@ export const load_user = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -262,7 +262,6 @@ export const request_verify = () => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -298,7 +297,6 @@ export const request_refresh = () => async dispatch => {
     const refresh = Cookies.get('refresh') ?? null;
 
     if (refresh === null) {
-        console.log('refresh 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -422,7 +420,6 @@ export const change_user = (nickname, major, image, student_id, callback) => asy
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -474,7 +471,6 @@ export const change_password = (password, new_password, new_re_password, callbac
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -529,7 +525,6 @@ export const change_toggle = (campus) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -568,12 +563,25 @@ export const change_toggle = (campus) => async dispatch => {
     }
 }
 
+export const change_toggle_for_not_user = (campus) => async dispatch => {
+    try {
+        dispatch({
+            type: CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS,
+            payload: campus
+        });
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: CHANGE_TOGGLE_NOT_FOR_USER_FAIL
+        });
+    }
+}
+
 export const delete_user = (callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -719,7 +727,6 @@ export const check_admin = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

@@ -24,7 +24,7 @@ export default function nextSplash(){
         setSplashIndex(index);
     };
     const handleStartClick = () => {
-        router.push('/login')
+        router.push('/')
     }
 
     const height = window.innerHeight / 2 - 250;

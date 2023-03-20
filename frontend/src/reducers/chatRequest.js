@@ -2,7 +2,9 @@ import {
     GET_REALTIME_REQUEST_SUCCESS,
     GET_REALTIME_REQUEST_FAIL,
     GET_CHAT_REQUEST_INFO_SUCCESS,
-    GET_CHAT_REQUEST_INFO_FAIL
+    GET_CHAT_REQUEST_INFO_FAIL,
+    GET_CHAT_REQUEST_FOR_NOT_USER_SUCCESS,
+    GET_CHAT_REQUEST_FOR_NOT_USER_FAIL
 } from '../actions/chat/types'
 
 const initialState = {
@@ -28,6 +30,15 @@ const chatRequestReducer = (state= initialState, action) => {
                 ...state
             }
         case GET_CHAT_REQUEST_INFO_FAIL:
+            return {
+                ...state
+            }
+        case GET_CHAT_REQUEST_FOR_NOT_USER_SUCCESS:
+            return {
+                ...state,
+                chatRequest: []
+            }
+        case GET_CHAT_REQUEST_FOR_NOT_USER_FAIL:
             return {
                 ...state
             }

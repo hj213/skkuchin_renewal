@@ -25,7 +25,7 @@ import { load_reviews } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 import PlaceReview from "../components/PlaceReview";
 import morePic from '../image/morePicY.png';
-import { textAlign } from "@mui/system";
+import GoLogin from '../components/GoLogin';
 
 const PlacePage = () => {
 
@@ -33,9 +33,6 @@ const PlacePage = () => {
     const TARGET_HEIGHT = WINDOW_HEIGHT - 78;
     const router = useRouter();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    if (typeof window !== 'undefined' && !isAuthenticated) {
-        router.push('/login');
-    }
 
     // list.js 에서 전달 받은 id 값 받아오기
     const { id, fullScreen } = router.query;
@@ -50,15 +47,21 @@ const PlacePage = () => {
     const [tags, setTags] = useState([]); // 태그 2개까지
 
     const user = useSelector(state => state.auth.user);
+    const toggle = useSelector(state => state.auth.toggle_for_not_user);
+
     const [filteredPlace, setFilteredPlace] = useState([]);
+
+    const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
         if (place && user != null && user.toggle!=null) {
             setFilteredPlace(place.filter(item => item.campus === user.toggle));
+        } else if (place && toggle) {
+            setFilteredPlace(place.filter(item => item.campus === toggle));
         } else {
             if (tags != null) setFilteredPlace(null);
         }
-    }, [place, user]);
+    }, [place, user, toggle]);
 
     // Part 2) menu, 가게 정보 (menu API)
     const menus = useSelector(state => state.menu.menu);
@@ -87,10 +90,6 @@ const PlacePage = () => {
     const listRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
-    }
 
     useEffect(()=>{
         if(WINDOW_HEIGHT < 750){
@@ -223,11 +222,15 @@ const PlacePage = () => {
     }
     
     const handleFavClick = (placeId) => {
-        const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
-        if(favorite_id) {
-            dispatch(delete_favorite(favorite_id.id));
+        if (isAuthenticated) {
+            const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
+            if(favorite_id) {
+                dispatch(delete_favorite(favorite_id.id));
+            } else {
+                dispatch(enroll_favorite(placeId));
+            }
         } else {
-            dispatch(enroll_favorite(placeId));
+            setIsLogin(true);
         }
     }
 
@@ -317,10 +320,15 @@ const PlacePage = () => {
         setFilter(event.target.value);
     };
 
+    const handleGoLogin = () => {
+        setIsLogin(true);
+    }
+    
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
+                {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
                 <div style={{ position: 'fixed', height:'100%', width:'100%',overflow: 'hidden'}}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
                     <SearchBox openID={openID} handleFocus={handleFocus}/> 
@@ -350,7 +358,7 @@ const PlacePage = () => {
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
-                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick} layout='fixed' />
                                 </Grid>
 
                                 <Grid>
@@ -367,7 +375,7 @@ const PlacePage = () => {
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
-                                    <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />
+                                    <Image width={20} height={21.85} src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />
                                 </Grid> 
                             </Grid>
                         </Card>
@@ -398,10 +406,10 @@ const PlacePage = () => {
                     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" style={{ visibility:cardStyle.iconVisibility}}>
                         <Box gridColumn="span 4"></Box>
                         <Box style={{textAlign: 'center', verticalAlign: 'top', padding: '8px'}}gridColumn="span 4">
-                            <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
+                            <Image width={70} height={4} src={line} layout='fixed' /> 
                         </Box>
                         <Box style={{textAlign: 'right', padding: '15px 15px 0'}} gridColumn="span 4" onClick={()=> handleFavClick(place_id)}>
-                            <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} placeholder="blur" layout='fixed' />
+                            <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />
                         </Box> 
                     </Box>
                     )}
@@ -434,7 +442,7 @@ const PlacePage = () => {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid sx={{height: '100%', margin:'5px 4px 0px'}}>
-                                                        <Image width={20} height={19} src={star} placeholder="blur" layout='fixed' />
+                                                        <Image width={20} height={19} src={star} layout='fixed' />
                                                     </Grid>
                                                     <Grid >
                                                         <Typography sx={{fontSize: '15px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
@@ -488,19 +496,19 @@ const PlacePage = () => {
                                                 <Grid container style={{marginTop: '7.5px'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        학생 할인 : {(selectedPlace.discount_content != null) ? 'O' : 'X'}   
+                                                        학생 할인 : {(selectedPlace.discount_availability === true) ? 'O' : 'X'}   
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#BABABA" component="div">
-                                                        {(selectedPlace.discount_content != null) ? '('+selectedPlace.discount_content+')' : ''}
+                                                        {(selectedPlace.discount_content !== null && selectedPlace.discount_content !== '') ? '('+selectedPlace.discount_content+')' : ''}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{marginTop: '7.5px', flexDirection: 'column'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px', flexDirection: 'row'}}>
                                                         <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        영업시간  <Image src={expand} width={10} height={6.5}  placeholder="blur" layout='fixed' />                                          
+                                                        영업시간  <Image src={expand} width={10} height={6.5} layout='fixed' />                                          
                                                         </Typography>          
                                                     </Grid>
                                                     <Grid>
@@ -545,11 +553,18 @@ const PlacePage = () => {
                         }
                         { selectedPlace && 
                             <li key={selectedPlace.id} style={{listStyleType:"none", height:'100%'}} onClick={handleReviewClick} >
-                                <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
-                                    <div>
-                                    <ReviewStar rating={rating} handleTouch={handleTouch}/>
+                                {
+                                    isAuthenticated ?
+                                    <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
+                                        <div>
+                                            <ReviewStar rating={rating} handleTouch={handleTouch}/>
+                                        </div>
+                                    </Link>
+                                    :
+                                    <div onClick={handleGoLogin}>
+                                        <ReviewStar rating={rating} handleTouch={handleTouch}/>
                                     </div>
-                                </Link>
+                                }
                             </li>
                         }
                         </div>

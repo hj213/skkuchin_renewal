@@ -72,7 +72,7 @@ const SignUpStep1 = (props) => {
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={backClick} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={backClick} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'35%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
@@ -106,7 +106,7 @@ const SignUpStep1 = (props) => {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (validUsername) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
+                    endAdornment: (validUsername) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
                 }}
                 />
                 {/* 중복확인 메소드 추가 */}
@@ -133,7 +133,7 @@ const SignUpStep1 = (props) => {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
+                    endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
                 }}
                 />
                 {/* {(props.data.password != '') ? 
@@ -163,7 +163,7 @@ const SignUpStep1 = (props) => {
                 }}
                 required
                 InputProps={{
-                    endAdornment: (props.data.password === props.data.re_password && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} placeholder="blur" layout='fixed' /> : null 
+                    endAdornment: (props.data.password === props.data.re_password && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
                 }}
                 />
                 { (props.data.re_password != '') ? ((props.data.password == props.data.re_password) ? 

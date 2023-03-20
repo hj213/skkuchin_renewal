@@ -23,7 +23,6 @@ export const send_message = (message, room_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -70,7 +69,6 @@ export const read_message = (message_id, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -116,7 +114,6 @@ export const get_realtime_otherUser = (room_id, user_number, stompClient) => dis
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -144,7 +141,6 @@ export const get_realtime_setting = (room_id, user_number, stompClient) => dispa
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -172,7 +168,6 @@ export const get_realtime_message = (room_id, user_number, username, stompClient
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -214,7 +209,6 @@ export const get_chat_info = (stompClient, room_id)  => dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

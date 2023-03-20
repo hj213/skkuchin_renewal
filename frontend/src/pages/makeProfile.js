@@ -625,7 +625,7 @@ export default function makeProfile(){
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility: visibility.back}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'27%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>

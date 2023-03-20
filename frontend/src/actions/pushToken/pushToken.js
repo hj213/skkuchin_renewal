@@ -18,7 +18,7 @@ export const load_token = (callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -62,7 +62,7 @@ export const enroll_token = (subscription, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -112,7 +112,7 @@ export const set_chat_push = (chat, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -162,7 +162,7 @@ export const set_info_push = (info, callback) => async dispatch => {
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('access 토큰이 존재하지 않습니다')
+        
         return dispatch({
             type: AUTHENTICATED_FAIL
         });

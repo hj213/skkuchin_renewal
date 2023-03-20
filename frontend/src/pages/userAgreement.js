@@ -301,7 +301,7 @@ export default function userAgreement() {
         <Container style={{position: 'fixed', left: '0', right: '0', top: '0', padding:'0px', alignItems: 'center', paddingTop: '45px', paddingBottom: '10px', backgroundColor: 'white'}}> 
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={backClick} />
+                                <Image src={back} width={11} height={18} name='back' onClick={backClick} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'33%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>이용약관</Typography>
