@@ -42,7 +42,7 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
                                 </Link>
                                 <Grid item>
                                     <IconButton onClick={(event) => handleMoreClick(event, review.id)}>
-                                        <Image src={more} width={4.33} height={17.33} placeholder="blur" layout='fixed' />
+                                        <Image src={more} width={4.33} height={17.33} layout='fixed' />
                                     </IconButton>
                                     <Menu
                                         anchorEl={anchorEl}

@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Container, Grid, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select } from '@mui/material';
@@ -11,8 +9,6 @@ export default function agreementList() {
     const router = useRouter();
 
     const list = ["이용약관", "개인정보 처리방침"]
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const backClick = e => {
         router.push('/myPage');
@@ -38,7 +34,7 @@ export default function agreementList() {
         <Container style={{padding:'0px', alignItems: 'center', marginBottom: '55px', marginTop: '45px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={backClick} style={{justifySelf: 'start'}} />
+                                <Image src={back} width={11} height={18} name='back' onClick={backClick} style={{justifySelf: 'start'}} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'32%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>약관 및 정책</Typography>

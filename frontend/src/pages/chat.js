@@ -260,7 +260,7 @@ const chatPage = () => {
                     <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '5px 0px 0px 0px'}}>
                             <a>
-                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick}/>
+                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick} layout='fixed' />
                             </a>
                         </Grid>
                         <Grid>

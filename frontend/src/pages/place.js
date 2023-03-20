@@ -350,7 +350,7 @@ const PlacePage = () => {
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px', marginTop:'6px'}}>
-                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
+                                    <Image src={back} width={12} height={22} name='back' onClick={handleOnclick} layout='fixed' />
                                 </Grid>
 
                                 <Grid>
@@ -367,7 +367,7 @@ const PlacePage = () => {
                                 </Grid>
                             
                                 <Grid onClick={()=> handleFavClick(place_id)}>
-                                    <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />
+                                    <Image width={20} height={21.85} src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />
                                 </Grid> 
                             </Grid>
                         </Card>
@@ -398,10 +398,10 @@ const PlacePage = () => {
                     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" style={{ visibility:cardStyle.iconVisibility}}>
                         <Box gridColumn="span 4"></Box>
                         <Box style={{textAlign: 'center', verticalAlign: 'top', padding: '8px'}}gridColumn="span 4">
-                            <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
+                            <Image width={70} height={4} src={line} layout='fixed' /> 
                         </Box>
                         <Box style={{textAlign: 'right', padding: '15px 15px 0'}} gridColumn="span 4" onClick={()=> handleFavClick(place_id)}>
-                            <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} placeholder="blur" layout='fixed' />
+                            <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />
                         </Box> 
                     </Box>
                     )}
@@ -434,7 +434,7 @@ const PlacePage = () => {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid sx={{height: '100%', margin:'5px 4px 0px'}}>
-                                                        <Image width={20} height={19} src={star} placeholder="blur" layout='fixed' />
+                                                        <Image width={20} height={19} src={star} layout='fixed' />
                                                     </Grid>
                                                     <Grid >
                                                         <Typography sx={{fontSize: '15px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
@@ -500,7 +500,7 @@ const PlacePage = () => {
                                                 <Grid container style={{marginTop: '7.5px', flexDirection: 'column'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px', flexDirection: 'row'}}>
                                                         <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                        영업시간  <Image src={expand} width={10} height={6.5}  placeholder="blur" layout='fixed' />                                          
+                                                        영업시간  <Image src={expand} width={10} height={6.5} layout='fixed' />                                          
                                                         </Typography>          
                                                     </Grid>
                                                     <Grid>

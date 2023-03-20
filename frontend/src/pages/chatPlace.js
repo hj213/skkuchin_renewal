@@ -123,7 +123,7 @@ export default function chatPlace(){
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleBack} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={handleBack} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'32%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>장소 정하기</Typography>
@@ -133,7 +133,7 @@ export default function chatPlace(){
                     <Container style={{padding:'0px'}}>
                         <Grid container style={{margin:'50px 0px 0px 20px'}}>
                             <Grid item>
-                                <Image src={marker} width={15} height={19} placeholder="blur" layout='fixed' />
+                                <Image src={marker} width={15} height={19} layout='fixed' />
                             </Grid>
                             <Grid item style={{margin:'0px 0px 0px 5px'}}>
                                 <Typography style={{ margin:'2px 0px 0px 0px', textAlign:'left', fontSize:'16px'}} fontWeight={theme.typography.h1}>약속 장소</Typography>
@@ -143,7 +143,7 @@ export default function chatPlace(){
                     <Container style={{padding:'0px', margin:'30px 0px 0px 20px'}}>
                         <Grid container justify="space-around" >
                             <Grid item style={{ margin:'6px 10px 0px 5px', position:'absolute', zIndex:'2'}}>
-                                <Image src={search} width={20} height={20} onClick={handleDownClick} placeholder="blur" layout='fixed' />
+                                <Image src={search} width={20} height={20} onClick={handleDownClick} layout='fixed' />
                             </Grid>
                             <Grid item style={{width:'100%'}}> 
                                 <Input 

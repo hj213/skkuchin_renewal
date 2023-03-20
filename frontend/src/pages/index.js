@@ -484,7 +484,7 @@ export default function list(){
                     {
                         !open.bool ?
                     <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}} >
-                        <Image width={70} height={4} src={line} placeholder="blur" layout='fixed' /> 
+                        <Image width={70} height={4} src={line} layout='fixed' /> 
                     </div>
                     : null
                     }

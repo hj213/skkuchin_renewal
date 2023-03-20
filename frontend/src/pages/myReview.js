@@ -116,12 +116,12 @@ const MyReviewPage = () => {
                         }}>
                         <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
                             <Grid style={{padding: '2px 10px 0px 4px'}} >
-                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                             <Grid>
                                 <Grid container>
                                     <Grid item xs style={{marginTop:'4px'}} >
-                                        <Image src={star} width={20} height={20} placeholder="blur" layout='fixed' />
+                                        <Image src={star} width={20} height={20} layout='fixed' />
                                     </Grid>
                                     <Grid item>
                                         <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>나의 리뷰</Typography>

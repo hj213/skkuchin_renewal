@@ -125,12 +125,12 @@ export default function myFavorite(){
                         }}>
                         <Grid container style={{padding:'0px 13px 0px 15px', justifyContent: 'space-between', alignItems: 'center', }}>
                             <Grid style={{padding: '2px 10px 0px 4px'}} >
-                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                             <Grid>
                                 <Grid container>
                                     <Grid item xs style={{marginTop:'4px'}} >
-                                        <Image src={bookmarkOn} width={20} height={20} placeholder="blur" layout='fixed' />
+                                        <Image src={bookmarkOn} width={20} height={20} layout='fixed' />
                                     </Grid>
                                     <Grid item>
                                         <Typography style={{margin:'0px 0px 0px 5px', fontSize:'20px'}}>즐겨찾기 장소</Typography>
@@ -186,7 +186,7 @@ export default function myFavorite(){
                                                             </Typography>
                                                             }
                                                             <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 10px 0px 5px'}} onClick={handleFavClick(item.place_id)}>
-                                                                <Image width={15} height={15} src={bookmarkOn} placeholder="blur" layout='fixed' />
+                                                                <Image width={15} height={15} src={bookmarkOn} layout='fixed' />
                                                             </Grid>
                                                         </Grid>
                                                     </Grid>

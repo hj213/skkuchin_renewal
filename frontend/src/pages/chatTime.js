@@ -129,7 +129,7 @@ export default function chatTime(){
                     <Container style={{padding:'0px', alignItems: 'center',}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleBack} placeholder="blur" layout='fixed' />
+                                <Image src={back} width={11} height={18} name='back' onClick={handleBack} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'32%'}}>
                                 <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>시간 정하기</Typography>
@@ -139,7 +139,7 @@ export default function chatTime(){
                     <Container style={{padding:'0px'}}>
                         <Grid container style={{margin:'50px 0px 0px 20px'}}>
                             <Grid item >
-                                <Image src={calendar} width={20} height={23} placeholder="blur" layout='fixed' />
+                                <Image src={calendar} width={20} height={23} layout='fixed' />
                             </Grid>
                             <Grid item style={{margin:'0px 0px 0px 5px'}}>
                                 <Typography style={{ margin:'4px 0px 0px 0px', textAlign:'left', fontSize:'16px'}} fontWeight={theme.typography.h1}>약속 시간</Typography>
@@ -154,7 +154,7 @@ export default function chatTime(){
                                 </div>
                             </Grid>
                             <Grid item style={{ right:'0',position:'absolute', zIndex:'5', marginRight:'40px'}}>
-                                <Image src={down} width={25} height={25} onClick={handleDownClick} placeholder="blur" layout='fixed' style={{ transform: `rotate(${isUp ? "180deg" : "0deg"})` }} />
+                                <Image src={down} width={25} height={25} onClick={handleDownClick} layout='fixed' style={{ transform: `rotate(${isUp ? "180deg" : "0deg"})` }} />
                             </Grid>
                         </Grid>
                         <div>

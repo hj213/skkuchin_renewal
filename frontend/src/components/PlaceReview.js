@@ -66,7 +66,7 @@ const PlaceReview = ({ index, review, user, handleEdit, handleDelete }) => {
                         { review.user_id === user.id && handleEdit!=undefined?
                         <Grid item style={{marginTop:'-10px'}}>
                             <IconButton onClick={handleMoreClick} style={{top:5}}>
-                                <Image src={more} width={5} height={17.33} placeholder="blur" layout='fixed' />
+                                <Image src={more} width={5} height={17.33} layout='fixed' />
                             </IconButton>
                             <Menu
                                 anchorEl={anchorEl}

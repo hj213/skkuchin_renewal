@@ -292,7 +292,6 @@ const EnrollReview = () => {
                                             alt="tag1"
                                             onClick={handleTagClick}
                                             id='맛집'
-                                            placeholder="blur" 
                                             layout='fixed'
                                         />
                                     </Grid>
@@ -304,7 +303,6 @@ const EnrollReview = () => {
                                             alt="tag2"
                                             onClick={handleTagClick}
                                             id='간단한 한 끼'
-                                            placeholder="blur" 
                                             layout='fixed'
                                         />
                                     </Grid>
@@ -316,7 +314,6 @@ const EnrollReview = () => {
                                             alt="tag3"
                                             onClick={handleTagClick}
                                             id='분위기 좋은'
-                                            placeholder="blur" 
                                             layout='fixed'
                                         />
                                     </Grid>
@@ -328,7 +325,6 @@ const EnrollReview = () => {
                                             alt="tag4"
                                             onClick={handleTagClick}
                                             id='가성비'
-                                            placeholder="blur" 
                                             layout='fixed'
                                         />
                                     </Grid>
@@ -340,7 +336,6 @@ const EnrollReview = () => {
                                             alt="tag5"
                                             onClick={handleTagClick}
                                             id='친절'
-                                            placeholder="blur" 
                                             layout='fixed'
                                         />
                                     </Grid>
@@ -352,7 +347,6 @@ const EnrollReview = () => {
                                             alt="tag6"
                                             onClick={handleTagClick}
                                             id='청결도'
-                                            placeholder="blur" 
                                             layout='fixed'
                                         />
                                     </Grid>
@@ -364,7 +358,6 @@ const EnrollReview = () => {
                                             alt="tag7"
                                             onClick={handleTagClick}
                                             id='둘이 가요'
-                                            placeholder="blur" 
                                             layout='fixed'
                                         />
                                     </Grid>

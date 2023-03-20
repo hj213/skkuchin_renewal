@@ -214,7 +214,7 @@ export default function searchList(){
                                     >   
                                         <Grid container>
                                             <Grid item style={{margin:'10px 0px 0px 0px'}}>
-                                                <Image src={marker} width={16} height={21} placeholder="blur" layout='fixed' />
+                                                <Image src={marker} width={16} height={21} layout='fixed' />
                                             </Grid>
                                             <Grid item style={{margin:'0px 0px 0px 12px'}}>
                                                 <div style={{fontSize:'16px'}}>
@@ -284,7 +284,7 @@ export default function searchList(){
                                                             </Typography>
                                                         </Grid>
                                                         <Grid style={{margin:'0px 7px 0px 7px'}}>
-                                                            <Image width={15} height={14} src={star} placeholder="blur" layout='fixed' />
+                                                            <Image width={15} height={14} src={star} layout='fixed' />
                                                         </Grid>
                                                         <Grid >
                                                             <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">

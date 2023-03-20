@@ -108,7 +108,7 @@ const ReviewsPage = () => {
                 }}>
                     <Grid container style={{padding:'45px 15px 11px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 10px 0px 0px'}}>
-                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick} placeholder="blur" layout='fixed' />
+                            <Image src={back} width={12} height={20} name='back' onClick={handleOnclick} layout='fixed' />
                         </Grid>
                 
                         <Grid>
