@@ -3,7 +3,7 @@ import { styled, alpha } from '@mui/material/styles';
 import * as React from 'react';
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { CssBaseline, Avatar, TextField, Box, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import { CssBaseline, Avatar, CircularProgress ,  Box, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
@@ -15,7 +15,8 @@ import send from '../image/chat/send.png';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import notiOff from '../image/chat/notifications_off.png'
+import notiOff from '../image/chat/notifications_off.png';
+import noMessage from '../image/join_enheng_wink.png';
 
 import Link from 'next/link'
 import { get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat, get_chat_info } from '../actions/chat/chatMessage';
@@ -441,9 +442,9 @@ const chatPage = () => {
                     </Grid>
                 </Grid>
 
-
+                { messages ? 
                 <Grid style={{ marginBottom: '90px'}}>
-                { messages && messages.slice().reverse().map((message, index) => {
+                { messages.length > 0 ? (messages.slice().reverse().map((message, index) => {
                     // 이어서 메시지를 보냈는지 확인
                     const prevMessage = messages.slice().reverse()[index - 1];
                     const isContinuedMessage = prevMessage && ((prevMessage.sender === message.sender && prevMessage.sender === user.username) || (prevMessage.sender === message.sender && prevMessage.sender !== user.username));
@@ -514,7 +515,7 @@ const chatPage = () => {
                                             <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"8px 18px"}}>
                                                 <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
                                                     <Typography sx={{fontSize: '10px'}}>
-                                                        {message.message.startsWith('우리') ? 
+                                                        {message.message.startsWith('우리 ') ? 
                                                         <>
                                                             {'우리 '}
                                                             <b>
@@ -599,8 +600,30 @@ const chatPage = () => {
                             }
                         </div>
                     )
-                })}
+                })) :
+                <Grid container style={{ height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                    <Grid item>
+                        <Image src={noMessage} width={89} height={75} />
+                    </Grid>
+                    <Grid item>
+                        <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
+                            밥약이 성사되었습니다 :)
+                            <br/>
+                            상대 학우님에게 간단한 인사를 건넨 후 
+                            <br/> 
+                            약속을 잡아보세요!
+                        </Typography>
+                    </Grid>
+              </Grid>
+                }
                 </Grid>
+                : 
+                (
+                <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', paddingTop: window.innerHeight/3,color:"#FFE885"}}>
+                    <CircularProgress color="inherit" size={60}/>
+                </div>
+                )}
+
                 </Grid>
 
                 {/* 텍스트 인풋 필드 & 버튼 */}
