@@ -1,14 +1,12 @@
 import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react"; 
+import { useEffect, useState } from "react"; 
 
-import { load_reviews, delete_review, modify_review } from "../actions/review/review";
+import { load_reviews } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 
-import {BadgeProps} from '@mui/material/Badge'
 import {styled} from '@mui/material/styles';
 import { IconButton, MenuItem, Menu,Select, Modal, CssBaseline, Box, Rating, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
-import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
@@ -20,11 +18,6 @@ import morePic from '../image/photo_more.png';
 const MorePhotos = () => {
 
     const dispatch = useDispatch();
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    if (typeof window !== 'undefined' && !isAuthenticated) {
-        router.push('/login');
-    }
 
     // 뒤로가기
     const handleOnclick = (event) =>{
@@ -237,10 +230,10 @@ const MorePhotos = () => {
                         right: 0,
                     }}>
                     <Grid item xs={2}>
-                        { review && review.user_id === user.id ?
+                        { review && user && review.user_id === user.id ?
                             <StyledBadge badgeContent={"나"} color="secondary">
                                 <Avatar alt="" src={ user.image} />
-                            </StyledBadge> : <Avatar alt="" src={user.image} />}
+                            </StyledBadge> : <Avatar alt="" src={review.user_image} />}
     
                     </Grid>
                     <Grid item xs={10}>
@@ -300,7 +293,7 @@ const MorePhotos = () => {
                     }}
                     >
                     <Grid item xs={2}>
-                        <Avatar alt="" src={user.image} />
+                        <Avatar alt="" />
                     </Grid>
                     <Grid item xs={10}>
                         <Typography

@@ -25,7 +25,7 @@ import { load_reviews } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 import PlaceReview from "../components/PlaceReview";
 import morePic from '../image/morePicY.png';
-import { textAlign } from "@mui/system";
+import GoLogin from '../components/GoLogin';
 
 const PlacePage = () => {
 
@@ -33,9 +33,6 @@ const PlacePage = () => {
     const TARGET_HEIGHT = WINDOW_HEIGHT - 78;
     const router = useRouter();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    if (typeof window !== 'undefined' && !isAuthenticated) {
-        router.push('/login');
-    }
 
     // list.js 에서 전달 받은 id 값 받아오기
     const { id, fullScreen } = router.query;
@@ -51,6 +48,8 @@ const PlacePage = () => {
 
     const user = useSelector(state => state.auth.user);
     const [filteredPlace, setFilteredPlace] = useState([]);
+
+    const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
         if (place && user != null && user.toggle!=null) {
@@ -87,10 +86,6 @@ const PlacePage = () => {
     const listRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
-    }
 
     useEffect(()=>{
         if(WINDOW_HEIGHT < 750){
@@ -223,11 +218,15 @@ const PlacePage = () => {
     }
     
     const handleFavClick = (placeId) => {
-        const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
-        if(favorite_id) {
-            dispatch(delete_favorite(favorite_id.id));
+        if (isAuthenticated) {
+            const favorite_id = favorites.find(favorite => favorite.place_id == placeId);
+            if(favorite_id) {
+                dispatch(delete_favorite(favorite_id.id));
+            } else {
+                dispatch(enroll_favorite(placeId));
+            }
         } else {
-            dispatch(enroll_favorite(placeId));
+            setIsLogin(true);
         }
     }
 
@@ -317,10 +316,15 @@ const PlacePage = () => {
         setFilter(event.target.value);
     };
 
+    const handleGoLogin = () => {
+        setIsLogin(true);
+    }
+
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
+                {isLogin && <GoLogin open={isLogin}/> }
                 <div style={{ position: 'fixed', height:'100%', width:'100%',overflow: 'hidden'}}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
                     <SearchBox openID={openID} handleFocus={handleFocus}/> 
@@ -545,11 +549,18 @@ const PlacePage = () => {
                         }
                         { selectedPlace && 
                             <li key={selectedPlace.id} style={{listStyleType:"none", height:'100%'}} onClick={handleReviewClick} >
-                                <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
-                                    <div>
-                                    <ReviewStar rating={rating} handleTouch={handleTouch}/>
+                                {
+                                    isAuthenticated ?
+                                    <Link href={{ pathname: '/enrollReview', query: { id: selectedPlace.id, rating: rating } }}>
+                                        <div>
+                                            <ReviewStar rating={rating} handleTouch={handleTouch}/>
+                                        </div>
+                                    </Link>
+                                    :
+                                    <div onClick={handleGoLogin}>
+                                        <ReviewStar rating={rating} handleTouch={handleTouch}/>
                                     </div>
-                                </Link>
+                                }
                             </li>
                         }
                         </div>

@@ -20,24 +20,16 @@ import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
 import downexplain from '../image/downexplain.jpg';
-import downebutton from '../image/downbutton.png';
 import { search_places_discount, search_places_category, search_places_tag, search_places_keyword } from "../actions/place/place";
 
 // 상단바
 import UpperBar from "../components/UpperBar"
-import AlertMessage from "../components/Alert";
 
 export default function list(){
     const isSmallScreen = useMediaQuery('(max-width: 375px)');
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
     const dispatch = useDispatch();
     const router = useRouter();
-
-    if(typeof window !== 'undefined' && !isAuthenticated){
-        router.push('/login');
-    }
 
     // 장소 정보 불러오기
     const searchplace = useSelector(state => state.place.searchplace);
@@ -64,9 +56,6 @@ export default function list(){
     const [startY, setStartY] = useState(0);
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
-    const [changed, setChanged] = useState(false);
     const [tagsId, setTagsId] = useState([
         {id: '학생 할인', exclusiveGroup: 'discount'},
         // {id: '스페셜', exclusiveGroup: null},
@@ -89,7 +78,6 @@ export default function list(){
     const tagName = tagsId.map(tag => tag.id);
 
     const [filteredPlace, setFilteredPlace] =useState([]);
-    const [focus, setFocus] = useState();
 
     const cardRef = useRef(null);
     const listRef = useRef(null);
@@ -205,8 +193,6 @@ export default function list(){
         setHeight('0');
         setPreventScroll('');
         setIsTall(false);
-        setAlertOpen(false);
-        setAlertMessage('');
     }
 
     const handleTouchStart = (event) => {
@@ -357,14 +343,9 @@ export default function list(){
 
     // //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
-        setFocus(bool);
         if(bool) {
-            // setKeyword('');
-            // setTags([]);
-            // setFilteredPlace(null);
             setHeight('0');
             setIsTall(false);
-            // dispatch(clear_search_results());
         }
     }
 
@@ -380,10 +361,6 @@ export default function list(){
             setOpenDialog(false);
         }
     }, [])
-
-    const handleClickOpen = () => {
-      setOpenDialog(true);
-    };
   
     const handleClose = () => {
       setOpenDialog(false);

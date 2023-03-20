@@ -10,7 +10,6 @@ import food from '../image/food.png';
 import star from '../image/Star2.png';
 import back from '../image/arrow_back_ios.png';
 import closeIcon from '../image/close.png';
-import down from '../image/down.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
 
@@ -29,14 +28,6 @@ export default function myFavorite(){
     }
     
     const favorites = useSelector(state => state.favorite.favorite);
-
-    const isFavorite = (placeId) => {
-        const favorite = favorites.some(favorite => favorite.place_id === placeId)
-        if(favorite){
-            return <Image width={15} height={15} src={bookmarkOn} layout='fixed' />
-        }
-        return null;
-    };
 
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
@@ -63,19 +54,6 @@ export default function myFavorite(){
         if(favorite_id) {
             dispatch(delete_favorite(favorite_id.id));
         }
-    };
-
-    //최신순 버튼
-    const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
-    };
-
-    const handleClose = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
-        }
-    
-        setOpen(false);
     };
 
     const prevOpen = useRef(open);

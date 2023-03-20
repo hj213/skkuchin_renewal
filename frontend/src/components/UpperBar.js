@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 const UpperBar = () => {
     const [selected, setSelected] = useState("스꾸맵");
     const chatAlarm = useSelector(state => state.chatAlarm.chatAlarm);
+    const user = useSelector(state => state.auth.user);
 
     // 0226 myPage 적용 안되는 문제 수정 완료
     useEffect(() => {
@@ -111,22 +112,41 @@ const UpperBar = () => {
                 </span>
                 </a>
             </Link>
-            <Link href="/myPage">
-                <a
-                style={{
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    color: selected === "마이페이지" ? "#FFCE00" : "#505050",
-                    textDecoration: "none",
-                    borderBottom: selected === "마이페이지" ? "2px solid #FFCE00" : "none"
-                }}
-                onClick={() => setSelected("마이페이지")}
-                >
-                <span style={{padding:"0 0 2px 0"}}>
-                    마이페이지
-                </span>
-                </a>
-            </Link>
+            {
+                user ?
+                <Link href="/myPage">
+                    <a
+                        style={{
+                            fontSize: "11px",
+                            fontWeight: 700,
+                            color: selected === "마이페이지" ? "#FFCE00" : "#505050",
+                            textDecoration: "none",
+                            borderBottom: selected === "마이페이지" ? "2px solid #FFCE00" : "none"
+                    }}
+                    onClick={() => setSelected("마이페이지")}
+                    >
+                    <span style={{padding:"0 0 2px 0"}}>
+                        마이페이지
+                    </span>
+                    </a>
+                </Link>
+                :
+                <Link href="/login">
+                    <a
+                        style={{
+                            fontSize: "11px",
+                            fontWeight: 700,
+                            color: "#505050",
+                            textDecoration: "none",
+                            borderBottom: "none"
+                        }}
+                    >
+                    <span style={{padding:"0 0 2px 0"}}>
+                        로그인
+                    </span>
+                    </a>
+                </Link>
+            }
         </div>
     </div>
             </Container>

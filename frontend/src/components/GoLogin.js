@@ -1,12 +1,6 @@
-import { ThemeProvider } from '@emotion/react';
 import { Button, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
-
-// 스위치
-import Image from 'next/image';
-import closeIcon from '../image/close.png';
 
 
 const GoLogin = ({open}) => {
@@ -51,7 +45,7 @@ const GoLogin = ({open}) => {
                         <DialogContent sx={{p: '20px 24px 13px'}}>
                             <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
                                 <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>
-                                    로그인이 필요한 서비스입니다. <br/>
+                                    로그인이 필요합니다. <br/>
                                     로그인 하시겠습니까?
                                 </DialogTitle>
                             </DialogContentText>

@@ -70,7 +70,7 @@ const AiGreeting = () => {
     }
     
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
+        if (isAuthenticated) {
             dispatch(load_matching_info(([result, message]) => {
                 if (result) {
                     setLoad(true);
@@ -78,8 +78,10 @@ const AiGreeting = () => {
                     setLoad(false);
                 }
             }));
+        } else {
+            setLoad(false);
         }
-    }, [dispatch]);
+    }, []);
 
     useEffect(() => {
         if (userInfo) {
@@ -172,8 +174,8 @@ const AiGreeting = () => {
             setOpen(true);
             setDialogOpen(false);
         }else{
-        setOpen(false);
-        setDialogOpen(true);
+            setOpen(false);
+            setDialogOpen(true);
         }
     };
 

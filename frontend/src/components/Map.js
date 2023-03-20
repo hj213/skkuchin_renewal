@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
@@ -10,6 +10,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     const user = useSelector(state => state.auth.user); 
     const height = window.innerHeight - 90;
     const mapContainerRef = useRef(null);
+    const mapCampus = localStorage.getItem('map');
 
     const [selectedLevel, setSelectedLevel] = useState(5);
     const [mapCenter, setMapCenter] = useState(null);
@@ -54,7 +55,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     }
 
                     let options;
-                    if(user && user.toggle == '율전' && !selectedPlace) {
+                    if( ((user && user.toggle == '율전') || (mapCampus && mapCampus === 'yj')) && !selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(37.2965, 126.9717),
                             level: 5,
@@ -62,7 +63,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             zoomControl: true
                         };
                     } 
-                    else if(user && user.toggle == '명륜' && !selectedPlace) {
+                    else if(((user && user.toggle == '명륜') || (mapCampus && mapCampus === 'mr')) && !selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
                             level: 5,
@@ -231,7 +232,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
         mapScript.addEventListener("load", onLoadKakaoMap);
 
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
-    }, [latitude, longitude, places, selectedId, user, selectedLevel, mapCenter]);
+    }, [latitude, longitude, places, selectedId, user, selectedLevel, mapCenter, mapCampus]);
 
 
     return (

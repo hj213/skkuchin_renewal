@@ -11,7 +11,7 @@ import yyj from '../image/YJ_on.png'; //캠퍼스 율전
 import ymr from '../image/MR_off.png'; //캠퍼스 율전
 import myj from '../image/YJ_off.png'; //캠퍼스 명륜
 import mmr from '../image/MR_on.png'; //캠퍼스 명륜
-import { change_toggle, load_user } from '../actions/auth/auth';
+import { change_toggle } from '../actions/auth/auth';
 import theme from '../theme/theme';
 
 //mbti 프로필
@@ -36,15 +36,9 @@ import ESFP from '../image/mbti/profile/ESFP.png';
 
 export default function MapDrawer(openID){
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
     const dispatch = useDispatch();
     const router = useRouter();
     let open = false;
-  
-    if(typeof window !== 'undefined' && !isAuthenticated){
-      router.push('/login');
-    }
     
     //api
     const user = useSelector(state => state.auth.user);
@@ -52,25 +46,38 @@ export default function MapDrawer(openID){
     //state
     const [drawerOpen, setDrawerOpen] = useState(open);
     const [toggleImage, setToggleImage] = useState('');
+    const [toggleImageForNotUser, setToggleImageForNotUser] = useState('');
+    const [isLogin, setIsLogin] = useState(false);
+    const mapCampus = localStorage.getItem('map');
     
     useEffect(() => {
-      if (user) {
-        if (user.campus == '명륜') {
+        if (user && user.campus == '명륜') {
           if (user.toggle == '율전') {
             setToggleImage(myj)
           } else if (user.toggle == '명륜') {
             setToggleImage(mmr)
           }
-        } else if(user.campus == '율전') {
+        } else if(user && user.campus == '율전') {
           if (user.toggle == '율전') {
             setToggleImage(yyj)
           } else if (user.toggle == '명륜') {
             setToggleImage(ymr)
           }
+        } else {
+          if (mapCampus && mapCampus === 'mr') {
+            setToggleImage(mmr);
+            setToggleImageForNotUser('mr');
+          } else if (mapCampus && mapCampus === 'yj') {
+            setToggleImage(myj);
+            setToggleImageForNotUser('yj');
+          } else {
+            setToggleImage(mmr);
+            setToggleImageForNotUser('mr');
+            localStorage.setItem('map', 'mr');
+          }
         }
-      }
       
-    },[user])
+    },[user, mapCampus])
 
 
     //뒤로가기 시 드로워 열리도록
@@ -88,12 +95,20 @@ export default function MapDrawer(openID){
     };
 
     //drawer 하위 페이지로 이동
-    const handleMove = (e) =>{
-      router.push('/myFavorite');
+    const handleMove = (e) => {
+      if (user) {
+        router.push('/myFavorite');
+      } else {
+        setIsLogin(true);
+      }
     }
 
-    const handleMyReview = (e) =>{
-      router.push('/myReview');
+    const handleMyReview = (e) => {
+      if (user) {
+        router.push('/myReview');
+      } else {
+        setIsLogin(true);
+      }
     }
     //토글 클릭
     const handleToggle = (e) => {
@@ -103,6 +118,22 @@ export default function MapDrawer(openID){
         dispatch(change_toggle('명륜'))
       }
     };
+
+    const handleToggleForNotUser = (e) => {
+        if (toggleImageForNotUser === "mr") {
+          setToggleImage(myj);
+          setToggleImageForNotUser("yj");
+          localStorage.setItem('map', 'yj');
+        } else {
+          setToggleImage(mmr);
+          setToggleImageForNotUser("mr");
+          localStorage.setItem('map', 'mr');
+        }
+    };
+
+    const goMyPage = () =>{
+      router.push('/myPage');
+    }
     
     const list = (anchor) => (
         <Box
@@ -111,10 +142,10 @@ export default function MapDrawer(openID){
           onClick={handleDrawerClick(false)}
           onKeyDown={handleDrawerClick(false)}
         >   
-            <Box style={{ textAlign:'center', marginTop:'40px'}}>
+            <Box style={{ textAlign:'center', marginTop:'40px'}} onClick={goMyPage}>
                 <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} placeholder="blur" layout='fixed'  />
                 <div>
-                <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : ''}</Typography>
+                <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : '로그인하기'}</Typography>
                 <Typography style={{marginTop:'13px', fontSize:'12px', fontWeight:'500', lineHeight: '28px'}} >{user != null ? user.major : ''}</Typography>
                 </div>
             </Box>
@@ -166,15 +197,23 @@ export default function MapDrawer(openID){
     
     return(
         <ThemeProvider theme={theme}>
-            <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} layout='fixed' />
-            <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
-              <Grid container style={{position:'relative'}}>
+          {isLogin && <GoLogin open={isLogin}/> }
+          <Image src={hamburger} alt='drawer' onClick={handleDrawerClick(true)} width={20} height={15} layout='fixed' />
+          <Drawer anchor='left' open={drawerOpen} onClose={handleDrawerClick(false)} width={250} >
+            <Grid container style={{position:'relative'}}>
+              {
+                user ?
                 <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggle}>
-                  {user && <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />}
+                  <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />
                 </Grid>
-              </Grid>
-                {list('left')}
-            </Drawer>
+                :
+                <Grid item style={{marginTop:'45px', marginLeft:'70%'}} onClick={handleToggleForNotUser}>
+                  <Image src={toggleImage} width={60} height={60} placeholder="blur" layout='fixed' />
+                </Grid>
+              }
+            </Grid>
+              {list('left')}
+          </Drawer>
         </ ThemeProvider>
     )
 }

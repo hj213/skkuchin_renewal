@@ -41,13 +41,13 @@ export default function splash(){
                         if (message == 'authenticated_fail') {
                             let isUser = localStorage.getItem("user");
                             if (isUser == "true") {
-                                router.push('/login')
+                                router.push('/');
                             } else {
                                 localStorage.setItem("user", "true")
                                 router.push('/nextSplash')
                             }
                         } else {
-                            router.push('/')
+                            router.push('/');
                         }
                     }
                 }))

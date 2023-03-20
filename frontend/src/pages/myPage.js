@@ -4,22 +4,16 @@ import { useRouter } from "next/router";
 import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions } from '@mui/material';
 import theme from '../theme/theme';
-import back from '../image/arrow_back_ios.png';
 import next from '../image/arrow_next.png';
-import toggle_off from '../image/toggle_off.png';
-import toggle_on from '../image/toggle on.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
-import { load_user, logout } from '../actions/auth/auth';
+import { logout } from '../actions/auth/auth';
 import UpperBar from '../components/UpperBar';
 
 // 스위치
 import { styled } from '@mui/material/styles';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
 import { load_token, set_chat_push, set_info_push } from '../actions/pushToken/pushToken';
-import GoLogin from "../components/GoLogin";
 
 export default function myPage() {
     const dispatch = useDispatch();
@@ -194,10 +188,6 @@ export default function myPage() {
             },
     }));
 
-    const [isLogin, setIsLogin] = useState(false);
-    const handleGoLogin = () => {
-        setIsLogin(!isLogin);
-    }
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -228,7 +218,6 @@ export default function myPage() {
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '20px'}}>알림 설정</Typography>
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '13px'}}>
                     <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>채팅 알림</Typography>
-                    {/* <Image width={48.58} height={45} src={toggle_off} onClick={arrowClick} style={{alignSelf: 'start'}}/> */}
                     {/* 토글 스위치 */}
                     <FormControlLabel
                         style={{paddingTop:"2px", marginTop:'-5px'}}
@@ -249,15 +238,8 @@ export default function myPage() {
             {/* 기타 */}
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
-                {/* <Button onClick={handleDialogOpen} variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>로그아웃</Button>
-                <Button onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} variant="text" style={{fontSize: '16px', fontWeight: '500', color: '#000000', padding: '0', justifySelf: 'start'}}>문의하기</Button> */}
                 <Typography onClick={handleDialogOpen} style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>로그아웃</Typography>
                 <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '16px', fontWeight: '500'}}>문의하기</Typography>
-                
-                {/* 예시 Login 유도, 지워야함! */}
-                {/* <Typography onClick={handleGoLogin} style={{fontSize: '16px', fontWeight: '500'}}>로그인 유도 팝업</Typography>
-                {isLogin && <GoLogin open={isLogin}/> } */}
-
             </Container>
 
             {/* 하단 */}
