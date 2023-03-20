@@ -515,7 +515,7 @@ const chatPage = () => {
                                             <div style={{ backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'20px', padding:"8px 18px"}}>
                                                 <Grid item sx={{display: 'flex', height: 'fit-content', textAlign:"center"}}>
                                                     <Typography sx={{fontSize: '10px'}}>
-                                                        {message.message.startsWith('우리') ? 
+                                                        {message.message.startsWith('우리 ') ? 
                                                         <>
                                                             {'우리 '}
                                                             <b>
