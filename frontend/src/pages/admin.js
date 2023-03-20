@@ -14,9 +14,11 @@ const AdminPage = () => {
     const [pageName, setPageName] = useState("전체 장소");
 
     useEffect(() => {
+        setLoading(true);
         dispatch(check_admin(([result, message]) => {
             if (result) {
                 dispatch(load_places());
+                setLoading(false);
             } else {
                 router.push('/');
             }

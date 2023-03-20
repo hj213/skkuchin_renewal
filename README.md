@@ -28,7 +28,7 @@
 
 ## 백엔드 스프링 따로 실행시 도커 실행
 1. root 위치
-2. docker-compose -f docker-compose.spring.yml up --build
+2. docker-compose -f docker-compose.backend.yml up --build
 
 <br>
 
@@ -41,4 +41,4 @@
 
 ## 백엔드 스프링 따로 실행시 도커 종료
 1. root 위치
-2. docker volume prune -f && docker image prune -f && docker-compose -f docker-compose.spring.yml down
+2. docker volume prune -f && docker image prune -f && docker-compose -f docker-compose.backend.yml down
