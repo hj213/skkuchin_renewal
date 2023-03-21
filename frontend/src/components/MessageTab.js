@@ -216,7 +216,7 @@ export default function MessageTab() {
             :
             <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Grid item>
-                  <Image src={character} width={138} height={100}/>
+                  <Image src={character} width={138} height={110}/>
               </Grid>
               <Grid item>
                 <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
@@ -230,7 +230,7 @@ export default function MessageTab() {
             }
           </>
           : (
-            <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', paddingTop: window.innerHeight/3,color:"#FFE885"}}>
+            <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', marginLeft:'-20px', paddingTop: window.innerHeight/3,color:"#FFE885"}}>
             <CircularProgress color="inherit" size={60}/>
           </div>
           )
