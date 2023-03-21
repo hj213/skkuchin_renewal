@@ -106,7 +106,7 @@ const EnrollPlace = () => {
         });
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <div>
             <div>
                 <label>
                 * 이름:
@@ -271,8 +271,8 @@ const EnrollPlace = () => {
                 />
                 </label>
             </div>
-            <button type="submit">등록</button>
-        </form>
+            <button onClick={handleSubmit}>등록</button>
+        </div>
     );
 };
     
