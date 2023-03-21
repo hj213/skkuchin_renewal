@@ -187,8 +187,7 @@ const EnrollPlace = () => {
             <div>
                 <label>
                 영업시간:
-                <input
-                    type="text"
+                <textarea
                     name="service_time"
                     value={formData ? formData.service_time : ''}
                     onChange={handleInputChange}
