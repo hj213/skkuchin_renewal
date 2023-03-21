@@ -230,7 +230,8 @@ const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {
                     <Typography
                         style={{
                             padding:'10px 10px 8px 10px',
-                            fontSize: '12px'
+                            fontSize: '12px',
+                            whiteSpace: 'pre-wrap'
                         }}>
                         {review.content}
                     </Typography>

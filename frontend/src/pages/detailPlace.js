@@ -61,7 +61,7 @@ const DetailPlace = () => {
             <p>
                 경도: {place && place.ycoordinate}
             </p>
-            <p>
+            <p style={{whiteSpace: 'pre-wrap'}}>
                 영업시간: {place && place.service_time ? place.service_time : "미 기입"}
             </p>
             <p>
