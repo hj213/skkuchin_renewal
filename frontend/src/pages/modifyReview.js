@@ -31,6 +31,7 @@ import filledStar from '../image/Star-1.png';
 import removeBtn from '../image/close.png';
 
 import TextField from '@mui/material/TextField';
+import dynamic from 'next/dynamic';
 
 const ModifyReview = () => {
     const router = useRouter();
