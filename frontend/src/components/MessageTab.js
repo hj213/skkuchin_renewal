@@ -109,7 +109,7 @@ export default function MessageTab() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider',  backgroundColor:'white',maxWidth:'600px'}}>
+      <Box sx={{ borderBottom: 1, borderColor: 'transparent',  backgroundColor:'white',maxWidth:'600px'}}>
         <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example" sx={{position: 'fixed',width:'100%', pt: '15px'}}>
           <Tab style={{color:value===0? '#565656':'#BABABA', fontWeight:value===0? '700':'500', fontSize:"15px"}} label="채팅방" {...a11yProps(0)} />
           <Tab style={{color:value===1? '#565656':'#BABABA', fontWeight:value===1? '700':'500', fontSize:"15px"}} label="밥약 신청" {...a11yProps(1)} />
@@ -216,7 +216,7 @@ export default function MessageTab() {
             :
             <Grid container style={{marginTop:'16px', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Grid item>
-                  <Image src={character} width={138} height={100}/>
+                  <Image src={character} width={138} height={110}/>
               </Grid>
               <Grid item>
                 <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
@@ -230,7 +230,7 @@ export default function MessageTab() {
             }
           </>
           : (
-            <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', paddingTop: window.innerHeight/3,color:"#FFE885"}}>
+            <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', marginLeft:'-20px', paddingTop: window.innerHeight/3,color:"#FFE885"}}>
             <CircularProgress color="inherit" size={60}/>
           </div>
           )
