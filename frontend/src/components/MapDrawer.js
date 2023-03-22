@@ -13,7 +13,6 @@ import myj from '../image/YJ_off.png'; //캠퍼스 명륜
 import mmr from '../image/MR_on.png'; //캠퍼스 명륜
 import { change_toggle, change_toggle_for_not_user } from '../actions/auth/auth';
 import theme from '../theme/theme';
-import GoLogin from './GoLogin';
 
 //mbti 프로필
 import profile1 from '../image/mbti/profile/mainCharacter.png';
@@ -34,6 +33,10 @@ import ESFJ from '../image/mbti/profile/ESFJ.png';
 import INTJ from '../image/mbti/profile/INTJ.png';
 import ISFJ from '../image/mbti/profile/ISFJ.png';
 import ESFP from '../image/mbti/profile/ESFP.png';
+
+import dynamic from 'next/dynamic';
+
+const GoLogin = dynamic(() => import('./GoLogin'));
 
 export default function MapDrawer(openID){
 

@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { reset_password } from '../../../actions/auth/auth';
 import {  TextField, Button, Typography, Box, Grid, Container, Dialog, DialogContent, DialogActions } from '@mui/material';
 import check from '../../../image/check_circle.png';
-import uncheck from '../../../image/uncheck.png';
 import back from '../../../image/arrow_back_ios.png'
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { password_email_confirm } from '../../../actions/email/email';
 
 const Step3 = (props) => {
     const dispatch = useDispatch();

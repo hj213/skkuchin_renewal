@@ -1,5 +1,4 @@
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
-import { styled, alpha } from '@mui/material/styles';
+import { useEffect, useState, useRef } from "react";
 import * as React from 'react';
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,9 +21,12 @@ import Link from 'next/link'
 import { get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat, get_chat_info } from '../actions/chat/chatMessage';
 import { set_user_block, set_chat_room_alarm, exit_room } from "../actions/chat/chatRoom";
 import { request_refresh } from '../actions/auth/auth';
+
+import dynamic from 'next/dynamic';
+
 import { displayProfile } from "../components/MyPage/ProfileList";
 
-function calculateRows() {
+const calculateRows = () => {
     const input = document.getElementsByName('chat')[0];
     const inputWidth = input.clientWidth;
     const fontSize = parseInt(getComputedStyle(input).fontSize);
@@ -646,4 +648,6 @@ const chatPage = () => {
     )
 }
 
-export default chatPage;
+export default dynamic(() => Promise.resolve(chatPage), {
+    ssr: false,
+});

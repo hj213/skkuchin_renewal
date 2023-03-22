@@ -3,11 +3,11 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import React from 'react';
 
-import UpperBar from '../components/UpperBar';
-
 import markerY from '../image/marker.png'
 import booked from '../image/bookmark-1.png'
+import dynamic from 'next/dynamic';
 
+const UpperBar = dynamic(() => import('../components/UpperBar'));
 
 const Magazine = () => {
     return(
@@ -176,8 +176,10 @@ const Magazine = () => {
                     </Typography>
                 </div>
             </Grid>
-       </ThemeProvider>
+        </ThemeProvider>
     )
 } 
 
-export default Magazine;
+export default dynamic(() => Promise.resolve(Magazine), {
+    ssr: false,
+});

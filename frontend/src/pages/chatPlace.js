@@ -6,14 +6,13 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import marker from '../image/marker.png';
-import marker2 from '../image/location.png';
 import check from '../image/check_3.png';
 import search from '../image/search.png';
 import { load_places } from "../actions/place/place";
-import { load_user } from "../actions/auth/auth";
 import { set_meet_place, delete_meet_place } from "../actions/chat/chatRoom";
+import dynamic from 'next/dynamic';
 
-export default function chatPlace(){
+const chatPlace = () => {
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -211,4 +210,8 @@ export default function chatPlace(){
                 </Dialog>
         </ThemeProvider>
     )
-    }
+}
+
+export default dynamic(() => Promise.resolve(chatPlace), {
+    ssr: false,
+});

@@ -1,19 +1,16 @@
 import { ThemeProvider } from '@emotion/react';
-import { CssBaseline, Typography, Button, Grid, Popover, Modal, IconButton, Dialog,DialogContent,DialogActions,  } from '@mui/material';
+import { CssBaseline, Typography, Button, Grid, Popover, Modal, IconButton, Dialog,DialogContent,DialogActions } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch} from 'react-redux';
 import theme from '../theme/theme';
 import { useState, useEffect } from 'react';
 import {Container} from '@mui/material';
 import { change_status_info, load_matching_info } from '../actions/matchingUser/matchingUser';
-import GoLogin from './GoLogin';
 
 // 스위치
 import { styled } from '@mui/material/styles';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
 
 import Image from 'next/image';
 import Link from 'next/link';

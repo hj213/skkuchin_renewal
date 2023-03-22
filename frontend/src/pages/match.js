@@ -1,10 +1,10 @@
 import { CssBaseline, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
+import dynamic from 'next/dynamic';
 
-import Friends from '../components/Matching/Friends';
-
-import UpperBar from '../components/UpperBar';
-import AiGreeting from '../components/AiGreeting'
+const Friends = dynamic(() => import('../components/Matching/Friends'));
+const UpperBar = dynamic(() => import("../components/UpperBar"));
+const AiGreeting = dynamic(() => import('../components/AiGreeting'));
 
 const MatchPage = () => {
 
@@ -123,4 +123,6 @@ const MatchPage = () => {
     )
 } 
 
-export default MatchPage;
+export default dynamic(() => Promise.resolve(MatchPage), {
+    ssr: false,
+});

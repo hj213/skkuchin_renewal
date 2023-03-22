@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import 'moment/locale/ko';
@@ -11,8 +11,9 @@ import check from '../image/check_3.png';
 import blank from '../image/chat/check_box_outline_blank.png';
 import checked from '../image/chat/check_box.png'
 import { enroll_report } from "../actions/report/report";
+import dynamic from 'next/dynamic';
 
-export default function reportChatUser(){
+const reportChatUser = () => {
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -244,4 +245,8 @@ export default function reportChatUser(){
                 </Container>
         </ThemeProvider>
     )
-    }
+}
+
+export default dynamic(() => Promise.resolve(reportChatUser), {
+    ssr: false,
+});

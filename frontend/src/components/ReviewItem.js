@@ -1,14 +1,15 @@
-import { useEffect, useState, useRef } from "react"; 
+import { useState } from "react"; 
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
-import theme from '../theme/theme';
 import { useRouter } from "next/router";
 import Image from 'next/image';
 import more from '../image/more_vert.png';
-import { displayReviewTag, reviewsTags } from "./TagList";
+import { reviewsTags } from "./TagList";
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { displayProfile } from '../components/MyPage/ProfileList';
-import GoLogin from './GoLogin';
+import dynamic from 'next/dynamic';
+
+const GoLogin = dynamic(() => import('./GoLogin'));
 
 // ReviewItem 컴포넌트 추출
 const ReviewItem = ({ index, review, user, handleEdit, handleDelete }) => {

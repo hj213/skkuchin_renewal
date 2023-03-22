@@ -12,8 +12,9 @@ import back from '../image/arrow_back_ios.png';
 import closeIcon from '../image/close.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
+import dynamic from 'next/dynamic';
 
-export default function myFavorite(){
+const myFavorite = () => {
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
 
     const [open, setOpen] = useState(false);
@@ -247,3 +248,7 @@ export default function myFavorite(){
         </ThemeProvider>
     )
 };
+
+export default dynamic(() => Promise.resolve(myFavorite), {
+    ssr: false,
+});

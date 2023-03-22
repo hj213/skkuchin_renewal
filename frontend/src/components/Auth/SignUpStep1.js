@@ -1,10 +1,8 @@
-// 아이디, 비밀번호
 import { useState } from "react";
 import {  TextField, Button, Typography, Box, Container, Grid } from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { check_username } from '../../actions/auth/auth';

@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import { KAKAOMAP_APPKEY } from '../config';
 
 const Map = ({latitude, longitude, places, selectedId}) => {
-
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
     const toggle = useSelector(state => state.auth.toggle_for_not_user);

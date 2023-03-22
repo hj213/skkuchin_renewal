@@ -105,7 +105,6 @@ export const load_review = (callback) => async dispatch => {
     }
 }
 
-// enroll review
 export const enroll_review = (place_id, rate, content, images, tags, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
@@ -177,7 +176,6 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
     }
 };
 
-// modify review
 export const modify_review = (review_id, rate, content, images, urls, tags, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
@@ -254,7 +252,6 @@ export const modify_review = (review_id, rate, content, images, urls, tags, call
     }
 };
 
-// delete review
 export const delete_review = (review_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;

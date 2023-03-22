@@ -18,7 +18,6 @@ export const enroll_report = (report_type, content, review_id, chat_room_id, cal
             report_type, content, review_id, chat_room_id
         });
 
-        console.log(body);
         try {
             const res = await fetch(`${API_URL}/api/report`, {
                 method: 'POST',

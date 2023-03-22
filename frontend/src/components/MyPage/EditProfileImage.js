@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import {  Container, Typography, Box, Grid, Button } from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
-import check from '../../image/check_circle.png';
 import theme from '../../theme/theme';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from "next/router";
 
 import profile1 from '../../image/mbti/profile/mainCharacter.png';
 import profile2 from '../../image/mbti/profile/mealCharacter.png';
@@ -44,10 +41,8 @@ import profile15On from '../../image/mbti/profile/selectESFJ.png';
 import profile16On from '../../image/mbti/profile/selectINTJ.png';
 import profile17On from '../../image/mbti/profile/selectISFJ.png';
 import profile18On from '../../image/mbti/profile/selectESFP.png';
-import { useDispatch } from 'react-redux';
 
 export default function EditProfileImage(props) {
-    const dispatch = useDispatch();
     const [image, setImage] = useState('');
     const [profile, setProfile] = useState({
         'DEFAULT1': false,

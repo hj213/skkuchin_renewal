@@ -7,10 +7,11 @@ import checkbox from '../image/checkbox.png'
 import checkbox_empty from '../image/checkbox_empty.png'
 import Image from 'next/image';
 import theme from '../theme/theme';
-import { change_password, delete_user, logout } from '../actions/auth/auth';
+import { delete_user, logout } from '../actions/auth/auth';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-export default function deleteUser() {
+const deleteUser = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -101,3 +102,7 @@ export default function deleteUser() {
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(deleteUser), {
+    ssr: false,
+});

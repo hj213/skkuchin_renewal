@@ -1,9 +1,7 @@
-import { useEffect,useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-// import moment from 'moment'; 
-// import 'moment/locale/ko';
 import { CssBaseline, Slide, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, TextField, Button } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
@@ -12,12 +10,13 @@ import calendar from '../image/calendar.png';
 import down from '../image/down-1.png';
 import check from '../image/check_3.png';
 import style from 'styled-components';
-import { styled } from '@mui/material/styles';
 import {TimePicker }from 'antd';
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { set_meet_time, delete_meet_time } from "../actions/chat/chatRoom";
-export default function chatTime(){
+import dynamic from 'next/dynamic';
+
+const chatTime = () => {
 
     const router = useRouter();
     const dispatch =useDispatch();
@@ -220,6 +219,10 @@ export default function chatTime(){
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(chatTime), {
+    ssr: false,
+});
 
 const CalendarContainer = style.div`
     .react-calendar { 

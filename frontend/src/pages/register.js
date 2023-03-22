@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import SignUpStep1 from '../components/Auth/SignUpStep1';
-import SignUpStep2 from '../components/Auth/SignUpStep2';
-import SignUpStep3 from '../components/Auth/SignUpStep3';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
-import SignUpStep4 from '../components/Auth/SignUpStep4';
-import SignUpStep5 from '../components/Auth/SignUpStep5';
-import SignUpStep6 from '../components/Auth/SignUpStep6';
+import dynamic from 'next/dynamic';
+
+const SignUpStep1 = dynamic(() => import('../components/Auth/SignUpStep1'));
+const SignUpStep2 = dynamic(() => import('../components/Auth/SignUpStep2'));
+const SignUpStep3 = dynamic(() => import('../components/Auth/SignUpStep3'));
+const SignUpStep4 = dynamic(() => import('../components/Auth/SignUpStep4'));
+const SignUpStep5 = dynamic(() => import('../components/Auth/SignUpStep5'));
+const SignUpStep6 = dynamic(() => import('../components/Auth/SignUpStep6'));
 
 const RegisterPage = () => {
 
-    const dispatch = useDispatch();
     const router = useRouter();
     const register_success = useSelector(state => state.auth.register_success);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -89,4 +90,6 @@ const RegisterPage = () => {
     )
 };
 
-export default RegisterPage;
+export default dynamic(() => Promise.resolve(RegisterPage), {
+    ssr: false,
+});

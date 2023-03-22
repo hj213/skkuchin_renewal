@@ -2,7 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab, CssBaseline, Box, CircularProgress , Typography, Grid, Stack,  Avatar, } from '@mui/material';
 
-import profile from '../image/profile.png';
 import notiOff from '../image/chat/notifications_off.png';
 import Image from 'next/image';
 import character from '../image/skkuchinFind.png';
@@ -11,10 +10,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { clear_room_list, get_chat_room_info, get_realtime_chat_room, get_chat_room_for_not_user } from '../actions/chat/chatRoom';
 import { get_chat_request_info, get_realtime_chat_request, get_chat_request_for_not_user } from '../actions/chat/chatRequest';
-import NewPromise from './Chat/NewPromise';
 import { request_refresh } from '../actions/auth/auth';
 import { clear_matching } from '../actions/matchingUser/matchingUser';
 import { displayProfile } from './MyPage/ProfileList';
+
+import dynamic from 'next/dynamic';
+
+const NewPromise = dynamic(() => import('./Chat/NewPromise'));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

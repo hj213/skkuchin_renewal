@@ -114,6 +114,7 @@ export const displayTagImage = (tags) => {
 }
 
 export const displayReviewTag = (keyword) => {
+
     switch(keyword) {
         case "맛집":
             return <Image id={"맛집"} src={reviewTag01} width={45} height={20} layout='fixed' />
@@ -178,7 +179,6 @@ export const reviewsTags = (keyword) => {
 }
 
 const TagList = ({keyword, onTagClick}) => {
-    
     return (
         <TagListContainer>
         <ThemeProvider theme={theme}>

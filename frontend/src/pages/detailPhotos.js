@@ -14,8 +14,9 @@ import close from '../image/close.png';
 import next from '../image/photo_next.png';
 import prev from '../image/photo_prev.png';
 import morePic from '../image/photo_more.png';
+import dynamic from 'next/dynamic';
 
-const MorePhotos = () => {
+const DetailPhotos = () => {
 
     const dispatch = useDispatch();
 
@@ -323,4 +324,6 @@ const MorePhotos = () => {
     )
 }
 
-export default MorePhotos;
+export default dynamic(() => Promise.resolve(DetailPhotos), {
+    ssr: false,
+});
