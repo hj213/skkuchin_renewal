@@ -1,6 +1,6 @@
 import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react"; 
+import { useEffect, useState } from "react"; 
 
 import { enroll_review } from "../actions/review/review";
 
@@ -10,7 +10,6 @@ import Image from 'next/image';
 
 // Icons
 import morePhoto  from '../image/addPhoto.png'
-import removeBtn from '../image/close.png';
 import close from '../image/close.png';
 import tag1 from '../image/tags/review_off/review_taste.png';
 import tag1on from '../image/tags/review_on/review_tasteY.png'
@@ -26,14 +25,13 @@ import tag6 from '../image/tags/review_off/review_clean.png';
 import tag6on from '../image/tags/review_on/review_cleanY.png';
 import tag7 from '../image/tags/review_off/review_two.png';
 import tag7on from '../image/tags/review_on/review_twoY.png';
-import image from '../image/morePicY.png';
 
 
 import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 
 import TextField from '@mui/material/TextField';
-import TagList from "../components/TagList";
+import dynamic from 'next/dynamic';
 
 const EnrollReview = () => {
     const router = useRouter();
@@ -417,4 +415,6 @@ const EnrollReview = () => {
     )
 }
 
-export default EnrollReview;
+export default dynamic(() => Promise.resolve(EnrollReview), {
+    ssr: false,
+});

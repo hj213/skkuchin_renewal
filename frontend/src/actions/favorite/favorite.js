@@ -12,14 +12,11 @@ import {
 } 
     from './types';
 
-
-// load FAV
 export const load_favorite = (callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('refresh 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -67,13 +64,11 @@ export const load_favorite = (callback) => async dispatch => {
 }
 
 
-// enroll fav
 export const enroll_favorite = (place_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
     if (access === null) {
-        console.log('refresh 토큰이 존재하지 않습니다');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
@@ -120,7 +115,6 @@ export const enroll_favorite = (place_id, callback) => async dispatch => {
     }
 };
 
-// del fav
 export const delete_favorite = (favorite_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;

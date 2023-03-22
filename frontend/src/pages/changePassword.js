@@ -7,8 +7,9 @@ import Image from 'next/image';
 import theme from '../theme/theme';
 import { change_password } from '../actions/auth/auth';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-export default function changePassword() {
+const changePassword = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -183,3 +184,7 @@ export default function changePassword() {
     </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(changePassword), {
+    ssr: false,
+});

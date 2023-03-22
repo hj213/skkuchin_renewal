@@ -4,8 +4,9 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import logo from '../image/login_enheng.png'
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 
-export default function welcome() {
+const welcome = () => {
     const router = useRouter();
     const [remainHeight, setRemainHeight] = useState(window.innerHeight - (143+56) + "px");
 
@@ -38,3 +39,7 @@ export default function welcome() {
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(welcome), {
+    ssr: false,
+});

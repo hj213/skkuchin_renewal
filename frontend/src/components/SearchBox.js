@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import MapDrawer from "./MapDrawer";
 import theme from "../theme/theme";
 import Image from 'next/image';
 import {Grid, CssBaseline, InputBase,TextField, Paper, styled, ThemeProvider, Container, Typography} from '@mui/material';
@@ -10,9 +9,11 @@ import { load_places } from "../actions/place/place";
 import marker from '../image/location.png';
 import noAuto from '../image/noinfo_enheng.png';
 import Hangul from "hangul-js";
+import dynamic from 'next/dynamic';
+
+const MapDrawer = dynamic(() => import("./MapDrawer"));
 
 export default function SearchBox({openID, handleFocus, handleClick}){
-
     const dispatch = useDispatch();
     const router = useRouter();
     const [value, setValue] = useState('');

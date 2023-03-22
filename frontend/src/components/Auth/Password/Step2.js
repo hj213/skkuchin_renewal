@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {  TextField, Button, InputLabel, Typography, Box, Link, Grid, Container, Dialog, DialogContent, DialogActions} from '@mui/material';
 import back from '../../../image/arrow_back_ios.png';
 import logo from '../../../image/email_enhang.png'
 import Image from 'next/image';
-import { useRouter } from "next/router";
 import { useDispatch } from 'react-redux';
 import { password_email_check, password_email_send } from '../../../actions/email/email';
 

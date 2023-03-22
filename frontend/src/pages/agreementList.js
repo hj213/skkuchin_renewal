@@ -4,8 +4,9 @@ import { CssBaseline, Box, ThemeProvider, Container, Grid, MenuItem, Button, Tex
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import next from '../image/arrow_next.png';
+import dynamic from 'next/dynamic';
 
-export default function agreementList() {
+const agreementList = () => {
     const router = useRouter();
 
     const list = ["이용약관", "개인정보 처리방침"]
@@ -60,3 +61,7 @@ export default function agreementList() {
     </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(agreementList), {
+    ssr: false,
+});

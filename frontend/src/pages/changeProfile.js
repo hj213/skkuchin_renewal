@@ -2,7 +2,6 @@ import { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { change_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
-import { load_user } from "../actions/auth/auth";
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField, Alert} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
@@ -14,7 +13,7 @@ import manCheck from '../image/gender/maleY.png';
 import textForm from '../image/mbti/profile/intro.png';
 import submitOk from '../image/checkY.png';
 import submit from '../image/checkG.png';
-import AlertMessage from '../components/Alert';
+import dynamic from 'next/dynamic';
 
 //mbti
 import E from '../image/mbti/E-1.png';
@@ -152,7 +151,9 @@ import stuTag13On from '../image/tags/interest_on/interest13on.png';
 import stuTag14On from '../image/tags/interest_on/interest14on.png';
 import stuTag15On from '../image/tags/interest_on/interest15on.png';
 
-export default function makeProfile(){ 
+const AlertMessage = dynamic(() => import('../components/Alert'));
+
+const makeProfile = () => { 
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -936,3 +937,7 @@ export default function makeProfile(){
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(makeProfile), {
+    ssr: false,
+});

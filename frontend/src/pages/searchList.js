@@ -13,13 +13,15 @@ import mapIcon from '../image/map-1.png';
 import searchBox from '../image/searchHolder2.png';
 import closeIcon from '../image/close.png';
 import {  displayReviewTag } from "../components/TagList";
-import UpperBar from "../components/UpperBar";
 import noAuto from '../image/noinfo_enheng.png';
 import Hangul from "hangul-js";
 import marker from '../image/location.png';
 import styled from "@emotion/styled";
+import dynamic from 'next/dynamic';
 
-export default function searchList(){
+const UpperBar = dynamic(() => import("../components/UpperBar"));
+
+const searchList = () => {
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
 
     const router = useRouter();
@@ -366,3 +368,7 @@ export default function searchList(){
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(searchList), {
+    ssr: false,
+});

@@ -7,8 +7,9 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import { displayMBTI } from '../components/Matching/MBTIList';
 import back from '../image/arrow_back_ios.png';
+import dynamic from 'next/dynamic';
 
-export default function clickProfile(){
+const clickProfile = () => {
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -88,3 +89,7 @@ export default function clickProfile(){
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(clickProfile), {
+    ssr: false,
+});

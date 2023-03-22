@@ -10,10 +10,11 @@ import loading2 from '../image/loading2.png';
 import loading3 from '../image/loading3.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { load_user_callback, change_toggle_for_not_user } from '../actions/auth/auth';
+import dynamic from 'next/dynamic';
 
 const loadingImages = [loading0, loading1, loading2, loading3];
 
-export default function splash(){
+const splash = () => {
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const [loadingIndex, setLoadingIndex] = useState(0);
@@ -85,3 +86,7 @@ export default function splash(){
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(splash), {
+    ssr: false,
+});

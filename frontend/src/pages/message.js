@@ -3,7 +3,9 @@ import { Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconBu
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
-import MessageTab from "../components/MessageTab";
+import dynamic from 'next/dynamic';
+
+const MessageTab = dynamic(() => import("../components/MessageTab"));
 
 const MessagePage = () => {
     // 뒤로가기 버튼
@@ -59,4 +61,6 @@ const MessagePage = () => {
     )
 }
 
-export default MessagePage;
+export default dynamic(() => Promise.resolve(MessagePage), {
+    ssr: false,
+});

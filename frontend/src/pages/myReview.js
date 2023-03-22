@@ -10,7 +10,9 @@ import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
 import star from '../image/Star-1.png'
 import closeIcon from '../image/close.png';
-import MyReviewItem from "../components/MyReviewItem";
+import dynamic from 'next/dynamic';
+
+const MyReviewItem = dynamic(() => import("../components/MyReviewItem"));
 
 const MyReviewPage = () => {
 
@@ -158,4 +160,6 @@ const MyReviewPage = () => {
     )
 }
 
-export default MyReviewPage;
+export default dynamic(() => Promise.resolve(MyReviewPage), {
+    ssr: false,
+});

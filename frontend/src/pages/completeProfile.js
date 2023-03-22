@@ -1,15 +1,14 @@
 import { useRouter } from 'next/router';
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
 import theme from "../theme/theme";
-import Link from 'next/link';
 import Image from 'next/image';
 import button1 from '../image/goLoginButton.png';
 import button2 from '../image/startAIButton.png';
+import dynamic from 'next/dynamic';
 
-export default function matchingComplete (){
+const matchingComplete = () => {
 
     const router = useRouter();
-    const viewportHeight = router.query.viewportHeight ? parseInt(router.query.viewportHeight) : 0;
     const src= router.query.src;
 
     const handleButtonClick = (e) => {
@@ -50,3 +49,7 @@ export default function matchingComplete (){
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(matchingComplete), {
+    ssr: false,
+});

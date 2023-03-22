@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import { load_menu }  from "../actions/menu/menu";
 import { enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
-import Map from "../components/Map";
 import Image from 'next/image';
 import { CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
@@ -14,18 +13,21 @@ import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import expand from '../image/expand_more2.png'
 import back from '../image/arrow_back_ios.png'
-import ReviewStar from '../components/ReviewStar'
-import TagList from "../components/TagList";
-import SearchBox from "../components/SearchBox";
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
-import UpperBar from "../components/UpperBar";
 import { clear_search_results } from "../actions/place/place";
 import { load_reviews } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
-import PlaceReview from "../components/PlaceReview";
 import morePic from '../image/morePicY.png';
-import GoLogin from '../components/GoLogin';
+import dynamic from 'next/dynamic';
+
+const Map = dynamic(() => import("../components/Map"));
+const ReviewStar = dynamic(() => import("../components/ReviewStar"));
+const TagList = dynamic(() => import("../components/TagList"));
+const SearchBox = dynamic(() => import("../components/SearchBox"));
+const UpperBar = dynamic(() => import("../components/UpperBar"));
+const PlaceReview = dynamic(() => import("../components/PlaceReview"));
+const GoLogin = dynamic(() => import("../components/GoLogin"));
 
 const PlacePage = () => {
 
@@ -694,4 +696,7 @@ const PlacePage = () => {
         </ThemeProvider>
     );
 };
-export default PlacePage;
+
+export default dynamic(() => Promise.resolve(PlacePage), {
+    ssr: false,
+});

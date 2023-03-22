@@ -1,9 +1,9 @@
-import { useDispatch, useSelector} from "react-redux";
-import {useState} from "react"; 
+import { useSelector} from "react-redux";
+import { useState } from "react"; 
 import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,IconButton, MenuItem, Menu,Select, CssBaseline, Box, Rating, ThemeProvider, Slide, CardContent, Typography, Grid, Container, Stack, Hidden,} from '@mui/material';
 import Image from 'next/image';
 import more from '../image/more_vert.png';
-import {reviewsTags } from "./TagList";
+import { reviewsTags } from "./TagList";
 import Link from 'next/link';
 
 // MyReviewItem 컴포넌트 추출

@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, Container, Grid, Autocomplete} from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from "next/router";
-import { check_nickname, register } from "../../actions/auth/auth";
+import { check_nickname } from "../../actions/auth/auth";
 import { useDispatch } from 'react-redux';
 
 const SignUpStep2 = (props) => {
@@ -13,8 +12,6 @@ const SignUpStep2 = (props) => {
     const router = useRouter();
     const [validNickname, setValidNickname] = useState(null);
     const [nicknameMsg, setNicknameMsg] = useState("");
-    const [studentId, setStudentId] = useState("");
-    const [majorValue, setMajorValue] = useState("");
 
     const majorList = [
       '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공', '소비자학과',

@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
 import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Container, Grid, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select } from '@mui/material';
 import theme from '../theme/theme';
 import back from '../image/arrow_back_ios.png';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-export default function policy() {
+const policy = () => {
     const router = useRouter();
     const prevPage = router.query.page;
     const pathUsername = router.query.pathUsername;
@@ -153,3 +152,7 @@ export default function policy() {
     </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(policy), {
+    ssr: false,
+});

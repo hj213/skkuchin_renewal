@@ -7,15 +7,17 @@ import theme from '../theme/theme';
 import next from '../image/arrow_next.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
 import { logout } from '../actions/auth/auth';
-import UpperBar from '../components/UpperBar';
 
 // 스위치
 import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { load_token, set_chat_push, set_info_push } from '../actions/pushToken/pushToken';
+import dynamic from 'next/dynamic';
 
-export default function myPage() {
+const UpperBar = dynamic(() => import('../components/UpperBar'));
+
+const myPage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
@@ -271,3 +273,7 @@ export default function myPage() {
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(myPage), {
+    ssr: false,
+});

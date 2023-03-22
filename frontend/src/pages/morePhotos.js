@@ -6,6 +6,7 @@ import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png';
 import close from '../image/close.png';
+import dynamic from 'next/dynamic';
 
 const MorePhotos = () => {
     const router = useRouter();
@@ -113,4 +114,6 @@ const MorePhotos = () => {
     )
 }
 
-export default MorePhotos;
+export default dynamic(() => Promise.resolve(MorePhotos), {
+    ssr: false,
+});

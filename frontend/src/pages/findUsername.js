@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
-import Step1 from '../components/Auth/Username/Step1';
-import Step2 from '../components/Auth/Username/Step2';
+import dynamic from 'next/dynamic';
 
-export default function findUsername() {
+const Step1 = dynamic(() => import('../components/Auth/Username/Step1'));
+const Step2 = dynamic(() => import('../components/Auth/Username/Step2'));
+
+const findUsername = () => {
 
     const [step, setStep] = useState(1);
 
@@ -32,3 +32,7 @@ export default function findUsername() {
         </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(findUsername), {
+    ssr: false,
+});

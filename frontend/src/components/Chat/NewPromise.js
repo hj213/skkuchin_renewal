@@ -1,4 +1,3 @@
-import { ThemeProvider } from '@emotion/react';
 import { Button, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Grid } from '@mui/material';
 import { displayMBTI } from '../Matching/MBTIList';
 import { useRouter } from 'next/router';

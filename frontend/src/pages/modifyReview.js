@@ -1,11 +1,10 @@
 import { useDispatch, useSelector} from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react"; 
+import { useEffect, useState } from "react"; 
 
 import { modify_review, clear_my_review, load_reviews } from "../actions/review/review";
 
 import { CssBaseline, Box, ThemeProvider, Button, Card, CardContent, Typography, Grid, Container, CircularProgress  } from '@mui/material';
-import Layout from '../hocs/Layout';
 import theme from '../theme/theme';
 import Image from 'next/image';
 
@@ -26,7 +25,6 @@ import tag6 from '../image/tags/review_off/review_clean.png';
 import tag6on from '../image/tags/review_on/review_cleanY.png';
 import tag7 from '../image/tags/review_off/review_two.png';
 import tag7on from '../image/tags/review_on/review_twoY.png';
-import image from '../image/morePicY.png';
 
 import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
@@ -434,4 +432,6 @@ const ModifyReview = () => {
     )
 }
 
-export default ModifyReview;
+export default dynamic(() => Promise.resolve(ModifyReview), {
+    ssr: false,
+});

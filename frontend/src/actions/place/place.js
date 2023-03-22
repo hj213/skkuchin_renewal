@@ -27,7 +27,6 @@ import {
 } from './types'
 import { getCoordinate } from '../../utils/getCoordinate';
 
-//load_places
 export const load_places = (callback) => async dispatch => {
     
     try {
@@ -69,7 +68,6 @@ export const load_places = (callback) => async dispatch => {
     }
 }
 
-//load_place
 export const load_place = (id, callback) => async dispatch => {
 
     try {
@@ -111,7 +109,6 @@ export const load_place = (id, callback) => async dispatch => {
     };
 }
 
-//search_place
 export const search_places = (keyword, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;

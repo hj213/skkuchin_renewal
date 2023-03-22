@@ -4,6 +4,7 @@ import { Button, Card, Dialog, DialogTitle, DialogContent, DialogContentText, Di
 import { displayMBTI } from './MBTIList';
 import { load_candidate } from '../../actions/candidate/candidate'
 import { load_request_id, request_chat } from '../../actions/chat/chatRoom';
+
 const Friends = () => {
     const dispatch = useDispatch();
 

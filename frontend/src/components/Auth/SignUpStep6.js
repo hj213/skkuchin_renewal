@@ -1,27 +1,16 @@
 import { useState, useEffect } from "react";
 import {  TextField, Button,  Typography,  Box, Link, Container, Grid} from '@mui/material';
-import { useSelector, useDispatch } from "react-redux";
-import back from '../../image/arrow_back_ios.png';
-import check from '../../image/check_circle.png';
-import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enheng_wink.png'
 import Image from 'next/image';
-import { register } from "../../actions/auth/auth";
-import { signup_email_check, signup_email_confirm, signup_email_send } from '../../actions/email/email';
 import { useRouter } from 'next/router';
 
 const SignUpStep6 = (props) => {
     const router = useRouter();
-    const dispatch = useDispatch();
     const [remainHeight, setRemainHeight] = useState(window.innerHeight - (143+56) + "px");
 
     useEffect(() => {
         setRemainHeight(window.innerHeight - (143+56) + "px")
     }, [window.innerHeight])
-    
-    const handlePrevStep = () => {
-      props.handlePrevStep();
-    }
 
     const handleButtonClick = () => {
         router.push({

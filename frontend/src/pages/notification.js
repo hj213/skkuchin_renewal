@@ -3,7 +3,9 @@ import { Tabs, Tab, CssBaseline, Box, Rating, ThemeProvider, Slide,Button,IconBu
 import theme from '../theme/theme';
 import Image from 'next/image';
 import back from '../image/arrow_back_ios.png'
-import NotiTab from "../components/notiTab";
+import dynamic from 'next/dynamic';
+
+const NotiTab = dynamic(() => import("../components/notiTab"));
 
 const NotificationPage = () => {
 
@@ -60,4 +62,6 @@ const NotificationPage = () => {
     )
 }
 
-export default NotificationPage;
+export default dynamic(() => Promise.resolve(NotificationPage), {
+    ssr: false,
+});

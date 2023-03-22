@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
-import { login, find_username, check_nickname, check_username } from "../actions/auth/auth";
+import { login } from "../actions/auth/auth";
 import Loader from "react-loader-spinner";
 
 import Image from 'next/image';
@@ -10,8 +10,7 @@ import theme from '../theme/theme';
 import logo from '../image/main_logo.png'
 import check from '../image/check_circle.png';
 import uncheck from '../image/uncheck.png';
-import { load_favorite } from '../actions/favorite/favorite';
-
+import dynamic from 'next/dynamic';
 
 const LoginPage = () => {
 
@@ -177,4 +176,6 @@ const LoginPage = () => {
     )
 };
 
-export default LoginPage;
+export default dynamic(() => Promise.resolve(LoginPage), {
+    ssr: false,
+});

@@ -2,8 +2,6 @@
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
-// import { search_places } from "../actions/place/place";
-import Map from "../components/Map";
 import Image from 'next/image';
 import Link from 'next/link';
 import { CssBaseline, styled,Button,Dialog,  ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogContentText, DialogContent } from '@mui/material';
@@ -14,18 +12,20 @@ import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png';
 import closeIcon from '../image/close.png';
 import bookmarkOn from '../image/bookmark-1.png';
-import SearchBox from "../components/SearchBox";
-import TagList from "../components/TagList";
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
 import downexplain from '../image/downexplain.jpg';
 import { search_places_discount, search_places_category, search_places_tag, search_places_keyword } from "../actions/place/place";
 
-// 상단바
-import UpperBar from "../components/UpperBar"
+import dynamic from 'next/dynamic';
 
-export default function list(){
+const Map = dynamic(() => import("../components/Map"));
+const UpperBar = dynamic(() => import("../components/UpperBar"));
+const SearchBox = dynamic(() => import("../components/SearchBox"));
+const TagList = dynamic(() => import("../components/TagList"));
+
+const list = () => {
     const isSmallScreen = useMediaQuery('(max-width: 375px)');
 
     const dispatch = useDispatch();
@@ -598,3 +598,7 @@ export default function list(){
     </ThemeProvider>
     )
 }
+
+export default dynamic(() => Promise.resolve(list), {
+    ssr: false,
+});
