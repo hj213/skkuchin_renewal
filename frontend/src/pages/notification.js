@@ -34,7 +34,7 @@ const NotificationPage = () => {
                     border:'none',
                     maxWidth:'600px'
                 }}>
-                    <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center', backgroundColor:'white'}}>
                         <Grid style={{padding: '5px 10px 0px 0px'}}>
                             <Image src={back} width={12} height={20} name='back' onClick={handleOnclick} layout='fixed' />
                         </Grid>
