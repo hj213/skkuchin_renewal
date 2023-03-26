@@ -92,7 +92,7 @@ const list = () => {
     //캠퍼스 필터링
     useEffect(() => {
         if (searchplace && keyword != '' && user && user.toggle != null) {
-          setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
+            setFilteredPlace(searchplace.filter((item) => item.campus === user.toggle));
         } else if (searchplace && keyword != '' && toggle) {
             setFilteredPlace(searchplace.filter((item) => item.campus === toggle));
         } else {
@@ -207,7 +207,7 @@ const list = () => {
             setPreventScroll("");
             setStartY(event.touches[0].clientY);
         }
-      };
+    };
 
     const handleTouchMove = (event) => {
         const touchY = event.touches[0].clientY;
@@ -249,7 +249,7 @@ const list = () => {
             });
         } 
         
-      };
+    };
     
     // // 아이콘 클릭했을 때 이벤트
     const handleIconOnclick = (event) =>{
@@ -291,14 +291,14 @@ const list = () => {
     //place 페이지로 넘어가는
     const handleLiClick = (e) => {
         e.preventDefault();
-      };
+    };
     // 헤더영역 태그 해제
     const handleTagClick = (e) => {
         e.preventDefault();
 
         const clickedTag = e.target.id;
         const remainingTags = tags.filter(tag => tag !== clickedTag);
-      
+    
         if (remainingTags.length === 0) {
             setKeyword('');
             setTags([]);
@@ -307,44 +307,44 @@ const list = () => {
             setTags(remainingTags);
             setKeyword(remainingTags.join(', '));
         }
-      }
-      
+    }
+    
     const onTagClick = (id) => {
         const selectedTag = tagsId.find(tag => tag.id === id);
         if (!selectedTag) return;
-      
+    
         let newTags;
 
         if (tags.includes(id)) {
-          // 선택된 태그가 이미 있으면 선택 해제
-          newTags = [];
+            // 선택된 태그가 이미 있으면 선택 해제
+            newTags = [];
         } else {
-          // 선택된 태그가 없으면 클릭한 태그 추가
-          newTags = [id];
+            // 선택된 태그가 없으면 클릭한 태그 추가
+            newTags = [id];
         }
-      
+    
         // 검색 실행
         if (newTags.length > 0) {
-          const exclusiveGroup = selectedTag.exclusiveGroup;
-          if (exclusiveGroup === 'discount') {
-            dispatch(search_places_discount());
-          } else if (exclusiveGroup === 'cuisine') {
-            dispatch(search_places_category(selectedTag.id));
-          } else if (exclusiveGroup === 'tag') {
-            dispatch(search_places_tag(selectedTag.id));
-          } else {
-            dispatch(search_places_keyword(selectedTag.id));
-          }
+            const exclusiveGroup = selectedTag.exclusiveGroup;
+            if (exclusiveGroup === 'discount') {
+                dispatch(search_places_discount());
+            } else if (exclusiveGroup === 'cuisine') {
+                dispatch(search_places_category(selectedTag.id));
+            } else if (exclusiveGroup === 'tag') {
+                dispatch(search_places_tag(selectedTag.id));
+            } else {
+                dispatch(search_places_keyword(selectedTag.id));
+            }
         }
         
         setTags(newTags);
         setKeyword(newTags[0] || '');
-        if(newTags.length == 0) handleReset();
+        if (newTags.length == 0) handleReset();
         setIsTall(false);
-      }
-      
+    }
+    
 
-    // //드로워가 열리거나 검색창에 포커스 잡혔을 때
+    //드로워가 열리거나 검색창에 포커스 잡혔을 때
     const handleFocus = (bool) => {
         if(bool) {
             setHeight('0');
@@ -364,22 +364,22 @@ const list = () => {
             setOpenDialog(false);
         }
     }, [])
-  
+
     const handleClose = () => {
-      setOpenDialog(false);
+        setOpenDialog(false);
     };
     
     const TransparentDialog = styled(Dialog)({
         '& .MuiPaper-root': {
-          backgroundColor: 'transparent',
-          boxShadow:'none',
-          alignItems: 'center',
+            backgroundColor: 'transparent',
+            boxShadow:'none',
+            alignItems: 'center',
         },
-      });
+    });
 
     return(
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+        <CssBaseline />
             <TransparentDialog  open={openDialog} onClose={handleClose}>
                     <Image src={downexplain} style={{borderRadius:"10px"}}/>
                     <Typography onClick={handleClose} style={{fontSize:'12px', fontWeight:'500', width:'100px', marginTop:'15px', backgroundColor:'transparent', color:'white', borderBottom:'1px solid white', textAlign: 'center'}}>
@@ -394,12 +394,8 @@ const list = () => {
                     <div style={{position:'relative', width:'100%'}}>
                         <TagList keyword={keyword} onTagClick={onTagClick} />  
                     </div>
-                </Container> 
+                </Container>
             
-             {/* 태그 목록 */}
-             
-            {/* <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/> */}
-             
             <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
             
             <Slide direction="up" in={open.bool} timeout={1} >
@@ -459,7 +455,7 @@ const list = () => {
                 ref={cardRef}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
-                 >
+                >
                 <div style={{height:height, }} className="card-content">
                     {
                         !open.bool ?
@@ -489,18 +485,6 @@ const list = () => {
                                                             </Typography>
                                                         </Grid>
                                                     }
-                                                    {/* <Grid item style={{padding:'0px 8px 0px 0px', whiteSpace: "normal", display: 'flex' }}>
-                                                        {isSmallScreen && (item.name.length >=13)?
-                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'5px'}} color="#a1a1a1" component="div" >
-                                                            {item.detail_category}
-                                                        </Typography>
-                                                        : 
-                                                        <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop:'22px'}} color="#a1a1a1" component="div" >
-                                                            {item.detail_category}
-                                                        </Typography>
-                                                        }
-                                                        <Grid item sx={{mt: isSmallScreen && (item.name.length >=13) ? '2px' : '19px', p: '0px 5px'}}>{isFavorite(item.id)}</Grid>
-                                                    </Grid> */}
                                                     <Grid item style={{padding:'0px 0px 0px 0px'}}>
                                                             <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
                                                                 {item.detail_category}
@@ -588,7 +572,7 @@ const list = () => {
                             <div style={{textAlign:'center', marginTop: '25%', color:"#FFE885"}}>
                                 <CircularProgress color="inherit"/>
                             </div>
-                         }
+                        }
                         </ul>
                     </div>
                 </Card>

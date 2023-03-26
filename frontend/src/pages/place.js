@@ -296,7 +296,6 @@ const PlacePage = () => {
     const reviews = useSelector(state => state.review.review);
     const [filter, setFilter] = useState('Latest'); // 디폴트 필터는 'Latest'
 
-    const totalImageCount = reviews && reviews.reduce((acc, review) => acc + review.images.length, 0);
     const totalImagesUrl = reviews && reviews.map(review => review.images).flatMap(imageArray => imageArray);
 
     const allImages = selectedPlace && selectedPlace.images ? selectedPlace.images.concat(totalImagesUrl) : [];
