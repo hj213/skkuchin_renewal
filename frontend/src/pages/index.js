@@ -19,11 +19,14 @@ import downexplain from '../image/downexplain.jpg';
 import { search_places_discount, search_places_category, search_places_tag, search_places_keyword } from "../actions/place/place";
 
 import dynamic from 'next/dynamic';
+import { width } from "@mui/system";
 
 const Map = dynamic(() => import("../components/Map"));
 const UpperBar = dynamic(() => import("../components/UpperBar"));
 const SearchBox = dynamic(() => import("../components/SearchBox"));
 const TagList = dynamic(() => import("../components/TagList"));
+
+const PLACE_LIMIT = 20; // 초기에 로드할 장소 개수
 
 const list = () => {
     const isSmallScreen = useMediaQuery('(max-width: 375px)');
@@ -79,6 +82,7 @@ const list = () => {
     const tagName = tagsId.map(tag => tag.id);
 
     const [filteredPlace, setFilteredPlace] =useState([]);
+    const [visibleItems, setVisibleItems] = useState(20);
 
     const cardRef = useRef(null);
     const listRef = useRef(null);
@@ -100,7 +104,10 @@ const list = () => {
         }
     }, [searchplace, user, toggle]);
 
-
+    useEffect(()=> {
+        setVisibleItems(20);
+    }, [filteredPlace])
+    
     useEffect(()=>{
         setKeyword('');
         setTags([]);
@@ -369,6 +376,12 @@ const list = () => {
         setOpenDialog(false);
     };
     
+    // 더보기 버튼
+
+    const handleMoreClick = () => {
+        setVisibleItems(visibleItems + 10);
+    };
+
     const TransparentDialog = styled(Dialog)({
         '& .MuiPaper-root': {
             backgroundColor: 'transparent',
@@ -465,7 +478,7 @@ const list = () => {
                     : null
                     }
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} ref={listRef} >
-                        {filteredPlace? filteredPlace.map((item) => (
+                        {filteredPlace? filteredPlace.slice(0, visibleItems).map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
                                     <Link href={`/place?id=${item.id}`} key={item.id}>
                                     <Grid container style={{margin: '15px 0px 0px 0px'}}>
@@ -574,6 +587,11 @@ const list = () => {
                             </div>
                         }
                         </ul>
+                        {filteredPlace && visibleItems < filteredPlace.length && (
+                            <div style={{width: '100%', textAlign: 'center', padding: '10px'}}>
+                                <button onClick={handleMoreClick} style={{ color: '#fff', backgroundColor: '#FFCE00', fontWeight: 'bold', borderRadius: '20px', border: '0', padding: '12px 15px'}}>더보기</button>
+                            </div>
+                        )}
                     </div>
                 </Card>
                 
