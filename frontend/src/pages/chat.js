@@ -493,7 +493,8 @@ const chatPage = () => {
                                                 <Typography style={{
                                                     padding:'6px 10px 6px 10px',
                                                     fontSize: '14px',
-                                                    maxWidth:'100%',                                                    
+                                                    maxWidth:'100%',   
+                                                    whiteSpace: 'pre-wrap'                                                 
                                                 }}
                                                 >
                                                     {message.message}
@@ -530,7 +531,7 @@ const chatPage = () => {
                                                                 message.message.indexOf('에서')
                                                             )}
                                                         </>
-                                                          : message.message.includes('약속을 만들었어요.') ? (
+                                                            : message.message.includes('약속을 만들었어요.') ? (
                                                         <>
                                                             <span style={{ fontWeight: 'bold' }}>
                                                             {message.message.split('약속을 만들었어요.')[0] }
@@ -584,6 +585,7 @@ const chatPage = () => {
                                                                     padding:'6px 10px 6px 10px',
                                                                     fontSize: '14px',
                                                                     maxWidth:'100%',
+                                                                    whiteSpace: 'pre-wrap'
                                                                     }}>
                                                                     {message.message}
                                                                 </Typography>

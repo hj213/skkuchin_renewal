@@ -163,7 +163,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
                             )}
                         </Container>
                     </Paper>
-                 </div>
+                </div>
                 )}
             </div>
         </ThemeProvider>

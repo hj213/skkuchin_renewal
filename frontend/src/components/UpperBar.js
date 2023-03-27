@@ -37,10 +37,6 @@ const UpperBar = () => {
             <CssBaseline />
             <Container disableGutters={true} maxWidth="xs" style={{height:"90px", margin:"0", padding:"0"}} overflow="hidden">
         <div style={{ zIndex:'99', position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center", paddingBottom:'9px',borderBottom: '1.5px solid rgba(234, 234, 234, 1)', maxWidth:'600px'}}>
-        {/* // 스크롤 X */}
-        {/* // <div style={{ position: "absolute", top: 0, width: "100%", background: "white", alignContent:"center"}}> */}
-
-            {/* 0226 상단바 isAuth 삭제 안료 */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
                 <Link href="/">
                     <Image src={mainLogo} width={85} height={19} />
@@ -48,21 +44,17 @@ const UpperBar = () => {
             <div style={{flex: 1}} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <div style={{marginRight:"18px"}}>
-                        {/* message.js로 연결. 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
                         <Link href="/message">
                             <Image src={chatAlarm ? messageOnIcon : messageIcon} width={24} height={24}/>
                         </Link>
                     </div>
                     <div>
-                        {/* notification.js로 연결. 추후 채팅 API연결 시 조건문으로 이미지 변경 */}
                         <Link href="/notification">
                             <Image src={notiIcon} width={24} height={24}/>
                         </Link>
                     </div>
                 </div>
             </div>
-            {/* 상단 네비게이션 바, link text decoration으로는 하단 밑줄 여백을 조절할 수 없어서
-                border bottom을 만든 뒤 span으로 감싸진 텍스트와 padding으로 여백 줌 */}
             <div style={{ display: "flex", justifyContent: "space-between", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
             <Link href="/">
                 <a

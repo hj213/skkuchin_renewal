@@ -13,40 +13,28 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
     const [selectedLevel, setSelectedLevel] = useState(5);
     const [mapCenter, setMapCenter] = useState(null);
-
-    // ver1 잔상 해결
-    // const removePreviousMap = () => {
-    //     const container = mapContainerRef.current;
-    //     while (container.hasChildNodes()) {
-    //       container.removeChild(container.firstChild);
-    //     }
-    // };
-    // ver2 번쩍 해결
-    function removePreviousMap() {
-        const mapContainer = document.getElementById("map-container");
-        if (mapContainer) {
-          // 기존 지도의 마커와 이벤트 리스너를 모두 삭제합니다.
-          markers.forEach(marker => {
-            window.kakao.maps.event.removeListener(marker, "click");
-            marker.setMap(null);
-        });
-          // 기존 지도의 내용을 삭제합니다.
-        mapContainer.innerHTML = "";
-        }
-      }
+    const [mapObject, setMapObject] = useState(null);
+    const [markersArray, setMarkersArray] = useState(null);
 
     useEffect(() => {
+        const mapScriptSrc = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAOMAP_APPKEY}&autoload=false`;
+
+        const existingScript = document.querySelector(`script[src="${mapScriptSrc}"]`);
+        if (existingScript) {
+            existingScript.remove();
+        }
+
         const mapScript = document.createElement("script");
         
         mapScript.async = true;
-        mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAOMAP_APPKEY}&autoload=false`;
+        mapScript.src = mapScriptSrc;
 
         document.head.appendChild(mapScript);
 
         const onLoadKakaoMap = () => {
             window.kakao.maps.load(() => {
-                removePreviousMap(); 
                 const container = mapContainerRef.current;
+
                 if (container) {
                     let selectedPlace;
                     if (selectedId) {
@@ -54,7 +42,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     }
 
                     let options;
-                    if(user && user.toggle == '율전' && !selectedPlace) {
+                    if (user && user.toggle == '율전' && !selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(37.2965, 126.9717),
                             level: 5,
@@ -62,7 +50,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             zoomControl: true
                         };
                     } 
-                    else if(user && user.toggle == '명륜' && !selectedPlace) {
+                    else if (user && user.toggle == '명륜' && !selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
                             level: 5,
@@ -70,7 +58,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             zoomControl: true
                         };
                     }
-                    else if(toggle && toggle === '율전' && !selectedPlace) {
+                    else if (toggle && toggle === '율전' && !selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(37.2965, 126.9717),
                             level: 5,
@@ -78,7 +66,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                             zoomControl: true
                         };
                     } 
-                    else if(toggle && toggle === '명륜' && !selectedPlace) {
+                    else if (toggle && toggle === '명륜' && !selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
                             level: 5,
@@ -94,101 +82,59 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     } 
                     else {
                         options = {
-                          center : new window.kakao.maps.LatLng(latitude, longitude),
-                          level: 5,
-                          preventDraggable: true,
-                          zoomControl: true,
+                            center : new window.kakao.maps.LatLng(latitude, longitude),
+                            level: 5,
+                            preventDraggable: true,
+                            zoomControl: true,
                         };
-                  }
+                    }
 
-                    const map = new window.kakao.maps.Map(container, options);
+                    let map = null;
 
-                    map.setZoomable(false);
-                    map.setZoomable(true);
-                  
+                    if (mapObject) {
+                        map = mapObject;
+                        map.setCenter(options.center);
+                        map.setLevel(options.level);
+                    } else {
+                        map = new window.kakao.maps.Map(container, options);
+                        setMapObject(map);
+                    }
+            
                     let maxMarker = 30; // maximum number of markers to show
+
+                    if (markersArray) {
+                        markersArray.forEach(marker => {
+                            if (marker.getMap()) {
+                                marker.setMap(null);
+                            }
+                        });
+                    }
+
                     const markers = [];
 
                     { places  &&
                     places.forEach((place,index) => {
-                        if (index < maxMarker) {
                         let marker;
                         if (place.id == selectedId) {
-                            // 음식점
-                            if(place.marker == '음식점') {
-                                const selectedImageSrc = "/markers/식당_red.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: selectedImage,
-                                    zIndex: 10
-                                });
-                            } else if(place.marker == '술집') {
-                                const selectedImageSrc = "/markers/술집_red.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: selectedImage,
-                                    zIndex: 10
-                                });
-                            } else if(place.marker == '카페') {
-                                const selectedImageSrc = "/markers/카페_red.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: selectedImage,
-                                    zIndex: 10
-                                });
-                            }
-                            // 기본
-                            else {
-                                const selectedImageSrc = "/markers/기본_red.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                markerImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
-                                
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: markerImage,
-                                    zIndex: 10
-                                });
-                            }
-                        } else if(place.id != selectedId){
-                            if(place.marker == '음식점') {
-                                const imageSrc = "/markers/식당_yellow.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: markerImage
-                                });
-                            }
-                            else if(place.marker == '술집') {
-                                const imageSrc = "/markers/술집_yellow.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: markerImage
-                                });
-                            } else if(place.marker == '카페') {
-                                const imageSrc = "/markers/카페_yellow.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: markerImage
-                                });
-                            } else {
-                                const imageSrc = "/markers/기본_yellow.png",
-                                imageSize = new window.kakao.maps.Size(27,33),
-                                markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-                                marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                    image: markerImage
-                                });
+                            const selectedImageSrc = `/markers/${place.marker}_red.png`,
+                            imageSize = new window.kakao.maps.Size(27,33),
+                            selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
+                            marker = new window.kakao.maps.Marker({
+                                position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                                image: selectedImage,
+                                zIndex: 10
+                            });
+                            marker.setMap(map);
+                        } else if (place.id != selectedId) {
+                            const imageSrc = `/markers/${place.marker}_yellow.png`,
+                            imageSize = new window.kakao.maps.Size(27,33),
+                            markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+                            marker = new window.kakao.maps.Marker({
+                                position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                                image: markerImage
+                            });
+                            if (index < maxMarker) {
+                                marker.setMap(map);
                             }
                         }
                         
@@ -205,40 +151,41 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         }
 
                         markers.push(marker);
-                        marker.setMap(map);
 
                         window.kakao.maps.event.addListener(marker, "click", function() {
                             setMapCenter(map.getCenter());
                             setSelectedLevel(map.getLevel());
                             router.push(`/place?id=${place.id}`);
-                            // map.panTo(map.getCenter());
                         });
-        
-                    }
                     });
-                    window.kakao.maps.event.addListener(map, 'zoom_changed', function() {
-                        const level = map.getLevel();
-                        if (level == 1) {
-                            maxMarker = 1000;
-                        } else if (level == 2) {
-                            maxMarker = 50;
-                        } else if (level == 3) {
-                            maxMarker = 30;
-                        } else {
-                            maxMarker = 15;
-                        }
+                    
+                    setMarkersArray(markers);
+                    
+                    // window.kakao.maps.event.addListener(map, 'zoom_changed', function() {
+                    //     const level = map.getLevel();
+                    //     if (level == 1) {
+                    //         maxMarker = 1000;
+                    //     } else if (level == 2) {
+                    //         maxMarker = 50;
+                    //     } else if (level == 3) {
+                    //         maxMarker = 30;
+                    //     } else {
+                    //         maxMarker = 15;
+                    //     }
 
-                        markers.forEach(marker => {
-                            if (marker.getMap()) {
-                                marker.setMap(null);
-                            }
-                        });
+                    //     console.log(markers)
 
-                        for (let i = 0; i < maxMarker && i < markers.length; i++) {
-                            markers[i].setMap(map);
-                        }
-                        
-                    });
+                    //     markers.forEach(marker => {
+                    //         if (marker.getMap()) {
+                    //             console.log(marker)
+                    //             marker.setMap(null);
+                    //         }
+                    //     });
+
+                    //     for (let i = 0; i < maxMarker && i < markers.length; i++) {
+                    //         markers[i].setMap(map);
+                    //     }
+                    // });
                 }
                 }
             });
@@ -249,16 +196,14 @@ const Map = ({latitude, longitude, places, selectedId}) => {
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
     }, [latitude, longitude, places, selectedId, user, selectedLevel, mapCenter, toggle]);
 
-
     return (
-        <MapContainer ref={mapContainerRef} style={{width:'100%', height:height, }}>
+        <MapContainer ref={mapContainerRef} style={{width: '100%', height: height}}>
         </MapContainer>
     );
 }
 
 const MapContainer = styled.div`
     weight: 100%;
-    
 `;
 
 export default Map;

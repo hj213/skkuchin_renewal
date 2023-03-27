@@ -37,6 +37,6 @@ public class Candidate {
     @PrePersist
     public void setDate() {
         LocalDateTime now = LocalDateTime.now();
-        this.expireDate = now.plusDays(2);
+        this.expireDate = now.plusDays(5);
     }
 }
