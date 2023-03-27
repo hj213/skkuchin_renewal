@@ -15,18 +15,17 @@ import bookmarkOn from '../image/bookmark-1.png';
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
-import downexplain from '../image/downexplain.jpg';
+import downexplainIos from '../image/downexplain_ios.jpg';
+import downexplainAnd from '../image/downexplain_and.png';
 import { search_places_discount, search_places_category, search_places_tag, search_places_keyword } from "../actions/place/place";
 
 import dynamic from 'next/dynamic';
-import { width } from "@mui/system";
+import { getDevice } from '../utils/getDevice';
 
 const Map = dynamic(() => import("../components/Map"));
 const UpperBar = dynamic(() => import("../components/UpperBar"));
 const SearchBox = dynamic(() => import("../components/SearchBox"));
 const TagList = dynamic(() => import("../components/TagList"));
-
-const PLACE_LIMIT = 20; // 초기에 로드할 장소 개수
 
 const list = () => {
     const isSmallScreen = useMediaQuery('(max-width: 375px)');
@@ -91,7 +90,6 @@ const list = () => {
     
     //뒤로가기에서 drawer 열어두기 위하여
     const {openID} = router.query;
-
 
     //캠퍼스 필터링
     useEffect(() => {
@@ -393,8 +391,13 @@ const list = () => {
     return(
     <ThemeProvider theme={theme}>
         <CssBaseline />
-            <TransparentDialog  open={openDialog} onClose={handleClose}>
-                    <Image src={downexplain} style={{borderRadius:"10px"}}/>
+            <TransparentDialog open={openDialog} onClose={handleClose}>
+                    {
+                        getDevice() === "android" ?
+                        <Image src={downexplainAnd} style={{borderRadius:"10px"}}/>
+                        :
+                        <Image src={downexplainIos} style={{borderRadius:"10px"}}/>
+                    }
                     <Typography onClick={handleClose} style={{fontSize:'12px', fontWeight:'500', width:'100px', marginTop:'15px', backgroundColor:'transparent', color:'white', borderBottom:'1px solid white', textAlign: 'center'}}>
                         모바일 웹에서 볼게요
                     </Typography>
