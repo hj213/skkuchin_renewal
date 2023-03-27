@@ -120,43 +120,41 @@ const list = () => {
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
             
-            if(tagName.includes(router.query.keyword))
+            if (tagName.includes(router.query.keyword)) {
                 tags.push(router.query.keyword);
+            }
             router.query.keyword = '';
         }
     }, [router.query.keyword, tags])
 
     useEffect(() => {
-        
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            if(keyword == '') {
-                setFilteredPlace(null);
-                setHeight(0);
-            } else {
-                // 키워드 확인
-                if(tags.length == 0) {
-                    dispatch(clear_search_results());
-                    dispatch(search_places_keyword(keyword));
+        if(keyword == '') {
+            setFilteredPlace(null);
+            setHeight(0);
+        } else {
+            // 키워드 확인
+            if(tags.length == 0) {
+                dispatch(clear_search_results());
+                dispatch(search_places_keyword(keyword));
+            }
+            if((open.bool) == false) {
+                if( router.query.length == 1 || filteredPlace?.length == 1){
+                    setHeight(187)
+                } 
+                else if( filteredPlace?.length == 0 ){
+                    setHeight(0);
                 }
-                if((open.bool) == false) {
-                    if( router.query.length == 1 || filteredPlace?.length == 1){
-                        setHeight(187)
-                    } 
-                    else if( filteredPlace?.length == 0 ){
-                        setHeight(0);
-                    }
-                    else if(WINDOW_HEIGHT < 750){
-                        setHeight(187)
-                    } else {
-                        setHeight(345)
-                    }
-                    setCardStyle({
-                        radius: '30px 30px 0px 0px',
-                        cardVisibility: 'visible',
-                        iconVisibility: 'visible'
-                    });
-                    
+                else if(WINDOW_HEIGHT < 750){
+                    setHeight(187)
+                } else {
+                    setHeight(345)
                 }
+                setCardStyle({
+                    radius: '30px 30px 0px 0px',
+                    cardVisibility: 'visible',
+                    iconVisibility: 'visible'
+                });
+                
             }
         }
     }, [keyword]);
@@ -337,8 +335,6 @@ const list = () => {
                 dispatch(search_places_category(selectedTag.id));
             } else if (exclusiveGroup === 'tag') {
                 dispatch(search_places_tag(selectedTag.id));
-            } else {
-                dispatch(search_places_keyword(selectedTag.id));
             }
         }
         
