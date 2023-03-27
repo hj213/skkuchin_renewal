@@ -545,7 +545,34 @@ const list = () => {
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
-                                                <Grid container style={{marginTop: '6px'}}>
+                                                {isSmallScreen ?
+                                                        <Grid container style={{marginTop: '6px'}}>
+                                                            <Grid style={{margin:'0px 3px 0px 0px'}}>
+                                                                <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                                위치 : {item.gate}   
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid >
+                                                                <Typography  sx={{fontSize: '8px', fontWeight:'400'}} color="#a1a1a1" component="div">
+                                                                ({item.address.substr(2)})
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        : 
+                                                        <Grid container style={{marginTop: '6px'}}>
+                                                            <Grid style={{margin:'0px 3px 0px 0px'}}>
+                                                                <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                                위치 : {item.gate}   
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid >
+                                                                <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#a1a1a1" component="div">
+                                                                ({item.address})
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                }
+                                                {/* <Grid container style={{marginTop: '6px'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
                                                         위치 : {item.gate}   
@@ -556,7 +583,7 @@ const list = () => {
                                                         ({item.address})
                                                         </Typography>
                                                     </Grid>
-                                                </Grid>
+                                                </Grid> */}
                                                 
                                                 <Grid container>
                                                     {/* 태그 받아오기 */}

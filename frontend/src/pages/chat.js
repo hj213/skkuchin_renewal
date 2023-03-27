@@ -232,7 +232,7 @@ const chatPage = () => {
 
     useEffect(() => {
         if (lastMessageRef.current) {
-            lastMessageRef.current.scrollTo({bottom: '0px'});
+            lastMessageRef.current.scrollIntoView({bottom: '0px'});
         }
     }, []);
 
