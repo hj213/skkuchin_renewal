@@ -114,7 +114,6 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
                     { places  &&
                     places.forEach((place,index) => {
-                        if (index < maxMarker) {
                         let marker;
                         if (place.id == selectedId) {
                             const selectedImageSrc = `/markers/${place.marker}_red.png`,
@@ -125,6 +124,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                                 image: selectedImage,
                                 zIndex: 10
                             });
+                            marker.setMap(map);
                         } else if (place.id != selectedId) {
                             const imageSrc = `/markers/${place.marker}_yellow.png`,
                             imageSize = new window.kakao.maps.Size(27,33),
@@ -133,6 +133,9 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                                 position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
                                 image: markerImage
                             });
+                            if (index < maxMarker) {
+                                marker.setMap(map);
+                            }
                         }
                         
                         // 중첩 마커 제거 및 가장 id가 작은 장소만 마커로 표시
@@ -148,15 +151,12 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         }
 
                         markers.push(marker);
-                        marker.setMap(map);
 
                         window.kakao.maps.event.addListener(marker, "click", function() {
                             setMapCenter(map.getCenter());
                             setSelectedLevel(map.getLevel());
                             router.push(`/place?id=${place.id}`);
                         });
-        
-                    }
                     });
                     
                     setMarkersArray(markers);
