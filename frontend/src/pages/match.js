@@ -11,12 +11,10 @@ const MatchPage = () => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-        {/* 0211 상단바, 내 프로필 보기 병합 완료 */}
             <UpperBar />
             <AiGreeting />
             
             <Container sx={{p: '0 15px', mt: '0', position:'relative'}}>
-                {/* 상대 프로필 */}
                 <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
                     <Grid item >
                         <Friends />
@@ -24,7 +22,7 @@ const MatchPage = () => {
                 </Grid>
             </Container>
 
-            <Grid style={{marginLeft:'15px', marginRight:'15px'}}>
+            {/* <Grid style={{marginLeft:'15px', marginRight:'15px'}}>
                 <Typography style={{fontSize:'18px', fontWeight:'700'}}>
                     더 많은 사람들과 만나고 싶다면?
                 </Typography>
@@ -118,7 +116,7 @@ const MatchPage = () => {
                         </div>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid> */}
         </ThemeProvider>
     )
 } 

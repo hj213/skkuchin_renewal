@@ -19,10 +19,8 @@ const LoginPage = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const loading = useSelector(state => state.auth.loading);
 
-    const [autoLogin, setAutoLogin] = useState(false);
     const [rememberUsername, setRememberUsername] = useState(false);
     const [error, setError] = useState('');
-    //const remainHeight = window.innerHeight - 480 + "px";
     const [remainHeight, setRemainHeight] = useState(window.innerHeight - 480 + "px");
     const [isClicked, setIsClicked] = useState(false);
 
@@ -95,7 +93,6 @@ const LoginPage = () => {
                 <Container component="main" maxWidth="xs">
                     <Box
                         sx={{
-                        //marginTop: '191px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -141,10 +138,6 @@ const LoginPage = () => {
                                 )
                             }
                             <div style={{display: 'flex', marginTop: '10px', marginLeft: '24px'}}>
-                                {/* {autoLogin ? 
-                                    <Image onClick={() => setAutoLogin(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' /> : 
-                                    <Image onClick={() => setAutoLogin(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' />}
-                                <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>자동로그인</span> */}
                                 {rememberUsername ? 
                                     <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' /> : 
                                     <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' />}
@@ -153,13 +146,9 @@ const LoginPage = () => {
                         </form>
                     </div>
 
-                {/* <div style={{display: 'grid', gridTemplateColumns: '1fr 26px 1fr', fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.22)`, marginBottom: '25px'}}>
-                    <div onClick={() => router.push('/register')} style={{justifySelf: 'right'}}>회원가입</div>
-                    <div style={{justifySelf: 'center', textAlign: 'center'}}>|</div>
-                    <div onClick={() => router.push('/resetPassword')} style={{justifySelf: 'left'}}>비밀번호 초기화</div>
-                </div> */}
-
                 <div style={{fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.22)`, marginBottom: '25px', marginLeft: '10px'}}>
+                    <span onClick={() => router.push('/')}>홈 화면</span>
+                    <span style={{padding: '0 13px'}}>|</span>
                     <span onClick={() => router.push('/register')}>회원가입</span>
                     <span style={{padding: '0 13px'}}>|</span>
                     <span onClick={() => router.push('/resetPassword')}>비밀번호 초기화</span>

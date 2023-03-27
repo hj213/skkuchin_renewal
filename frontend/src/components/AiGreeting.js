@@ -173,6 +173,10 @@ const AiGreeting = () => {
         setOpen(false);
     };
 
+    const goLogin = () => {
+        router.push('/register');
+    };
+
     const handleMoveProfile = () => {
         router.push({
             pathname: '/makeProfile',
@@ -207,8 +211,20 @@ const AiGreeting = () => {
         <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"600px"}}>
             <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px"}}>
                 <Typography style={{fontWeight:700}}>
-                    회원가입 및 로그인 후 이용해주세요!
+                    <span style={{color:"#FFCE00"}}>
+                        회원가입 &nbsp;
+                    </span>
+                    후 이용하시면
+                    <br />
+                    더 많은 서비스를 즐길 수 있어요 😍😍
                 </Typography>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px", margin:"0 0 30px 0"}}>
+                <Button sx={{padding:0}} onClick={goLogin}>
+                        <Typography style={{fontSize:"12px", color:"black", borderBottom:"1px solid black"}}>
+                            회원가입하기
+                        </Typography>
+                </Button>
             </div>
         </div>
     );
