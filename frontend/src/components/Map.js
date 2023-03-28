@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import { KAKAOMAP_APPKEY } from '../config';
 
+let markers = [];
+
 const Map = ({latitude, longitude, places, selectedId}) => {
     const router = useRouter();
     const user = useSelector(state => state.auth.user);
@@ -14,8 +16,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
     const [selectedLevel, setSelectedLevel] = useState(5);
     const [mapCenter, setMapCenter] = useState(null);
     const [mapObject, setMapObject] = useState(null);
-    const [markersArray, setMarkersArray] = useState(null);
-
+    
     useEffect(() => {
         const mapScriptSrc = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAOMAP_APPKEY}&autoload=false`;
 
@@ -102,15 +103,7 @@ const Map = ({latitude, longitude, places, selectedId}) => {
             
                     let maxMarker = 30; // maximum number of markers to show
 
-                    if (markersArray) {
-                        markersArray.forEach(marker => {
-                            if (marker.getMap()) {
-                                marker.setMap(null);
-                            }
-                        });
-                    }
-
-                    const markers = [];
+                    removeMarkers();
 
                     { places  &&
                     places.forEach((place,index) => {
@@ -158,8 +151,6 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                         }
                     });
                     
-                    setMarkersArray(markers);
-                    
                     // window.kakao.maps.event.addListener(map, 'zoom_changed', function() {
                     //     const level = map.getLevel();
                     //     if (level == 1) {
@@ -194,6 +185,15 @@ const Map = ({latitude, longitude, places, selectedId}) => {
 
         return () => mapScript.removeEventListener("load", onLoadKakaoMap);
     }, [latitude, longitude, places, selectedId, user, selectedLevel, mapCenter, toggle]);
+
+    const removeMarkers = () => {
+        markers.forEach((marker, index) => {
+            if (marker.getMap()) {
+                marker.setMap(null);
+                markers.slice(index, 1);
+            }
+        });
+    }
 
     return (
         <MapContainer ref={mapContainerRef} style={{width: '100%', height: height}}>
