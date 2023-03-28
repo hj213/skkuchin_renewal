@@ -558,6 +558,7 @@ const list = () => {
                                                                 </Typography>
                                                             </Grid>
                                                         </Grid>
+                                                        
                                                         : 
                                                         <Grid container style={{marginTop: '6px'}}>
                                                             <Grid style={{margin:'0px 3px 0px 0px'}}>
@@ -567,7 +568,7 @@ const list = () => {
                                                             </Grid>
                                                             <Grid >
                                                                 <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#a1a1a1" component="div">
-                                                                ({item.address})
+                                                                ({item.address.substr(2)})
                                                                 </Typography>
                                                             </Grid>
                                                         </Grid>
