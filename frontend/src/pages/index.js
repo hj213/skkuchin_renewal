@@ -120,43 +120,68 @@ const list = () => {
         if(router.query.keyword != undefined && router.query.keyword != '') {
             setKeyword(router.query.keyword);
             
-            if(tagName.includes(router.query.keyword))
+            if (tagName.includes(router.query.keyword)) {
                 tags.push(router.query.keyword);
+            }
             router.query.keyword = '';
         }
     }, [router.query.keyword, tags])
 
     useEffect(() => {
-        
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            if(keyword == '') {
-                setFilteredPlace(null);
-                setHeight(0);
-            } else {
-                // 키워드 확인
-                if(tags.length == 0) {
-                    dispatch(clear_search_results());
+        if(keyword == '' && router.query.keyword == '') {
+            setFilteredPlace(null);
+            setHeight(0);
+        } else {
+            // 키워드 확인
+            if(tags.length == 0) {
+                dispatch(clear_search_results());
+                let newTags;
+
+                const selectedTag = tagsId.find(tag => tag.id == keyword);
+                if (!selectedTag) {
                     dispatch(search_places_keyword(keyword));
-                }
-                if((open.bool) == false) {
-                    if( router.query.length == 1 || filteredPlace?.length == 1){
-                        setHeight(187)
+                    return;
+                };
+
+                if (tags.includes(keyword)) newTags = [];
+                else newTags = [keyword];
+            
+                // 검색 실행
+                if (newTags.length > 0) {
+                    const exclusiveGroup = selectedTag.exclusiveGroup;
+                    if (exclusiveGroup === 'discount') {
+                        dispatch(search_places_discount());
+                    } else if (exclusiveGroup === 'cuisine') {
+                        dispatch(search_places_category(selectedTag.id));
+                    } else if (exclusiveGroup === 'tag') {
+                        dispatch(search_places_tag(selectedTag.id));
                     } 
-                    else if( filteredPlace?.length == 0 ){
-                        setHeight(0);
-                    }
-                    else if(WINDOW_HEIGHT < 750){
-                        setHeight(187)
-                    } else {
-                        setHeight(345)
-                    }
-                    setCardStyle({
-                        radius: '30px 30px 0px 0px',
-                        cardVisibility: 'visible',
-                        iconVisibility: 'visible'
-                    });
-                    
                 }
+                
+                setTags(newTags);
+                setKeyword(newTags[0] || '');
+                if (newTags.length == 0) handleReset();
+                setIsTall(false);
+            }
+
+            if((open.bool) == false) {
+                if( router.query.length == 1 || filteredPlace?.length == 1){
+                    setHeight(187)
+                } 
+                else if( filteredPlace?.length == 0 ){
+                    setHeight(0);
+                }
+                else if(WINDOW_HEIGHT < 750){
+                    setHeight(187)
+                } else {
+                    setHeight(345)
+                }
+                setCardStyle({
+                    radius: '30px 30px 0px 0px',
+                    cardVisibility: 'visible',
+                    iconVisibility: 'visible'
+                });
+                
             }
         }
     }, [keyword]);
@@ -253,7 +278,6 @@ const list = () => {
                 iconVisibility:'visible'
             });
         } 
-        
     };
     
     // // 아이콘 클릭했을 때 이벤트
@@ -337,9 +361,7 @@ const list = () => {
                 dispatch(search_places_category(selectedTag.id));
             } else if (exclusiveGroup === 'tag') {
                 dispatch(search_places_tag(selectedTag.id));
-            } else {
-                dispatch(search_places_keyword(selectedTag.id));
-            }
+            } 
         }
         
         setTags(newTags);

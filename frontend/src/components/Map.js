@@ -115,48 +115,47 @@ const Map = ({latitude, longitude, places, selectedId}) => {
                     { places  &&
                     places.forEach((place,index) => {
                         let marker;
-                        if (place.id == selectedId) {
-                            const selectedImageSrc = `/markers/${place.marker}_red.png`,
-                            imageSize = new window.kakao.maps.Size(27,33),
-                            selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
-                            marker = new window.kakao.maps.Marker({
-                                position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                image: selectedImage,
-                                zIndex: 10
-                            });
+                        if (index < maxMarker) {
+                            if (place.id == selectedId) {
+                                const selectedImageSrc = `/markers/${place.marker}_red.png`,
+                                imageSize = new window.kakao.maps.Size(27,33),
+                                selectedImage = new window.kakao.maps.MarkerImage(selectedImageSrc, imageSize);
+                                marker = new window.kakao.maps.Marker({
+                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                                    image: selectedImage,
+                                    zIndex: 10
+                                });
+                            } else if (place.id != selectedId) {
+                                const imageSrc = `/markers/${place.marker}_yellow.png`,
+                                imageSize = new window.kakao.maps.Size(27,33),
+                                markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+                                marker = new window.kakao.maps.Marker({
+                                    position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
+                                    image: markerImage
+                                });
+                            }
+                            
+                            // 중첩 마커 제거 및 가장 id가 작은 장소만 마커로 표시
+                            var placesAtSameLocation = places.filter(p => p.xcoordinate === place.xcoordinate && p.ycoordinate === place.ycoordinate);
+                            
+                            if (placesAtSameLocation.length > 0) {
+                            
+                                var smallestIdPlace = placesAtSameLocation.reduce((acc, cur) => acc.id < cur.id ? acc : cur);
+                                if (place.id !== smallestIdPlace.id && place.id != selectedId) {
+                                    // 현재 마커와 가장 id가 작은 장소의 id가 다르면 중복 마커를 생성하지 않습니다.
+                                    return;
+                                }
+                            }
+    
+                            markers.push(marker);
                             marker.setMap(map);
-                        } else if (place.id != selectedId) {
-                            const imageSrc = `/markers/${place.marker}_yellow.png`,
-                            imageSize = new window.kakao.maps.Size(27,33),
-                            markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-                            marker = new window.kakao.maps.Marker({
-                                position: new window.kakao.maps.LatLng(place.ycoordinate, place.xcoordinate),
-                                image: markerImage
+    
+                            window.kakao.maps.event.addListener(marker, "click", function() {
+                                setMapCenter(map.getCenter());
+                                setSelectedLevel(map.getLevel());
+                                router.push(`/place?id=${place.id}`);
                             });
-                            if (index < maxMarker) {
-                                marker.setMap(map);
-                            }
                         }
-                        
-                        // 중첩 마커 제거 및 가장 id가 작은 장소만 마커로 표시
-                        var placesAtSameLocation = places.filter(p => p.xcoordinate === place.xcoordinate && p.ycoordinate === place.ycoordinate);
-                        
-                        if (placesAtSameLocation.length > 0) {
-                        
-                            var smallestIdPlace = placesAtSameLocation.reduce((acc, cur) => acc.id < cur.id ? acc : cur);
-                            if (place.id !== smallestIdPlace.id && place.id != selectedId) {
-                                // 현재 마커와 가장 id가 작은 장소의 id가 다르면 중복 마커를 생성하지 않습니다.
-                                return;
-                            }
-                        }
-
-                        markers.push(marker);
-
-                        window.kakao.maps.event.addListener(marker, "click", function() {
-                            setMapCenter(map.getCenter());
-                            setSelectedLevel(map.getLevel());
-                            router.push(`/place?id=${place.id}`);
-                        });
                     });
                     
                     setMarkersArray(markers);
