@@ -128,15 +128,42 @@ const list = () => {
     }, [router.query.keyword, tags])
 
     useEffect(() => {
-        if(keyword == '') {
+        if(keyword == '' && router.query.keyword == '') {
             setFilteredPlace(null);
             setHeight(0);
         } else {
             // 키워드 확인
             if(tags.length == 0) {
                 dispatch(clear_search_results());
-                dispatch(search_places_keyword(keyword));
+                let newTags;
+
+                const selectedTag = tagsId.find(tag => tag.id == keyword);
+                if (!selectedTag) {
+                    dispatch(search_places_keyword(keyword));
+                    return;
+                };
+
+                if (tags.includes(keyword)) newTags = [];
+                else newTags = [keyword];
+            
+                // 검색 실행
+                if (newTags.length > 0) {
+                    const exclusiveGroup = selectedTag.exclusiveGroup;
+                    if (exclusiveGroup === 'discount') {
+                        dispatch(search_places_discount());
+                    } else if (exclusiveGroup === 'cuisine') {
+                        dispatch(search_places_category(selectedTag.id));
+                    } else if (exclusiveGroup === 'tag') {
+                        dispatch(search_places_tag(selectedTag.id));
+                    } 
+                }
+                
+                setTags(newTags);
+                setKeyword(newTags[0] || '');
+                if (newTags.length == 0) handleReset();
+                setIsTall(false);
             }
+
             if((open.bool) == false) {
                 if( router.query.length == 1 || filteredPlace?.length == 1){
                     setHeight(187)
@@ -251,7 +278,6 @@ const list = () => {
                 iconVisibility:'visible'
             });
         } 
-        
     };
     
     // // 아이콘 클릭했을 때 이벤트
@@ -335,7 +361,7 @@ const list = () => {
                 dispatch(search_places_category(selectedTag.id));
             } else if (exclusiveGroup === 'tag') {
                 dispatch(search_places_tag(selectedTag.id));
-            }
+            } 
         }
         
         setTags(newTags);
