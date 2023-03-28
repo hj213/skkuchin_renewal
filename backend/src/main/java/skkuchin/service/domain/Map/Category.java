@@ -17,6 +17,7 @@ public enum Category implements EnumMapperType {
     퓨전("음식점"),
     카페("카페"),
     술집("술집"),
+    금잔디("금잔디"),
     일반("일반");
 
     @Getter

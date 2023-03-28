@@ -92,6 +92,7 @@ const EnrollPlace = () => {
                     <option value="기타">기타</option>
                     <option value="카페">카페</option>
                     <option value="술집">술집</option>
+                    <option value="금잔디">금잔디</option>
                     <option value="일반">일반</option>
                 </select>
                 </label>
