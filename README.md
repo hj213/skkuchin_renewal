@@ -9,7 +9,7 @@
 
 ## 도커 실행
 1. root 위치
-2. docker-compose -f docker-compose.chat.yml up --build
+2. docker-compose up --build
 
 <br>
 
@@ -22,7 +22,7 @@
 
 ## 도커 종료
 1. root 위치
-2. docker volume prune -f && docker image prune -f && docker-compose -f docker-compose.chat.yml down
+2. docker volume prune -f && docker image prune -f && docker-compose down
 
 <br>
 
