@@ -15,7 +15,6 @@ import expand from '../image/expand_more2.png'
 import back from '../image/arrow_back_ios.png'
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
-import { clear_search_results } from "../actions/place/place";
 import { load_reviews } from "../actions/review/review";
 import { load_place } from "../actions/place/place";
 import morePic from '../image/morePicY.png';
@@ -245,7 +244,6 @@ const PlacePage = () => {
 
 
     const onTagClick = (id) => {
-        dispatch(clear_search_results());
         setKeyword(id);
         setIsTall(false);
         if(tags!=null) {
