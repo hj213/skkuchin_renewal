@@ -616,6 +616,13 @@ const list = () => {
                         {filteredPlace && visibleItems < filteredPlace.length && (
                             <div style={{width: '100%', textAlign: 'center', padding: '10px'}}>
                                 <button onClick={handleMoreClick} style={{ color: '#fff', backgroundColor: '#FFCE00', fontWeight: 'bold', borderRadius: '20px', border: '0', padding: '12px 15px'}}>더보기</button>
+                                <style>
+                                    {`
+                                    button:focus {
+                                        outline: none;
+                                    }
+                                    `}
+                                </style>
                             </div>
                         )}
                     </div>
