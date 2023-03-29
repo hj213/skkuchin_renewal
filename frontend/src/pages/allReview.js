@@ -18,8 +18,9 @@ const AllReview = () => {
         setLoading(true);
         dispatch(check_admin(([result, message]) => {
             if (result) {
-                dispatch(load_all_reviews());
-                setLoading(false);
+                dispatch(load_all_reviews(([result, message]) => {
+                    setLoading(false);
+                }));
             } else {
                 router.push('/');
             }
