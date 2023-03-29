@@ -18,8 +18,9 @@ const AdminPage = () => {
         setLoading(true);
         dispatch(check_admin(([result, message]) => {
             if (result) {
-                dispatch(load_places());
-                setLoading(false);
+                dispatch(load_places(([result, message]) => {
+                    setLoading(false);
+                }));
             } else {
                 router.push('/');
             }
