@@ -60,7 +60,7 @@ const list = () => {
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
     const [tagsId, setTagsId] = useState([
-        {id: '금잔디', exclusiveGroup: '금잔디'},
+        {id: '금잔디', exclusiveGroup: 'cuisine'},
         {id: '학생 할인', exclusiveGroup: 'discount'},
         // {id: '스페셜', exclusiveGroup: null},
         {id: '한식', exclusiveGroup: 'cuisine'},
@@ -167,13 +167,13 @@ const list = () => {
 
             if((open.bool) == false) {
                 if( router.query.length == 1 || filteredPlace?.length == 1){
-                    setHeight(187)
+                    setHeight(194)
                 } 
                 else if( filteredPlace?.length == 0 ){
                     setHeight(0);
                 }
                 else if(WINDOW_HEIGHT < 750){
-                    setHeight(187)
+                    setHeight(194)
                 } else {
                     setHeight(345)
                 }
@@ -196,12 +196,12 @@ const list = () => {
 
     useEffect(()=>{
         if(numOfLi == 1){
-            setHeight(187)
+            setHeight(194)
         } else if( numOfLi == 0) {
             setHeight(0)
         } else {
             if(WINDOW_HEIGHT < 750){
-                setHeight(187)
+                setHeight(194)
             } else {
                 setHeight(345)
             }
@@ -262,9 +262,9 @@ const list = () => {
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
             cardRef.current.scrollTo({top:0});
             if(filteredPlace.length == 1){
-                setHeight(187)
+                setHeight(194)
             } else if(WINDOW_HEIGHT < 750){
-                setHeight(187)
+                setHeight(194)
             } else {
                 setHeight(345)
             }
@@ -287,9 +287,9 @@ const list = () => {
             setOpen({ bool:false,
                 Visibility:'hidden'});
                 if(filteredPlace.length == 1){
-                    setHeight(187)
+                    setHeight(194)
                 } else if(WINDOW_HEIGHT < 750){
-                    setHeight(187)
+                    setHeight(194)
                 } else {
                     setHeight(345)
                 }
@@ -506,7 +506,17 @@ const list = () => {
                     <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px', width:'100%'}} ref={listRef} >
                         {filteredPlace? filteredPlace.slice(0, visibleItems).map((item) => (
                                 <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
-                                    <Link href={`/place?id=${item.id}`} key={item.id}>
+                                    <Link 
+                                        href={{
+                                            pathname: '/place',
+                                            query: {
+                                                id: item.id,
+                                                xcoordinate: item.xcoordinate,
+                                                ycoordinate: item.ycoordinate
+                                            }
+                                        }}
+                                        key={item.id}
+                                    >
                                     <Grid container style={{margin: '15px 0px 0px 0px'}}>
                                         <Grid item xs >
                                             <CardContent style={{padding:'0px'}}>
@@ -568,7 +578,35 @@ const list = () => {
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
-                                                <Grid container style={{marginTop: '6px'}}>
+                                                {isSmallScreen ?
+                                                        <Grid container style={{marginTop: '6px'}}>
+                                                            <Grid style={{margin:'0px 3px 0px 0px'}}>
+                                                                <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                                위치 : {item.gate}   
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid >
+                                                                <Typography  sx={{fontSize: '8px', fontWeight:'400'}} color="#a1a1a1" component="div">
+                                                                ({item.address})
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        
+                                                        : 
+                                                        <Grid container style={{marginTop: '6px'}}>
+                                                            <Grid style={{margin:'0px 3px 0px 0px'}}>
+                                                                <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
+                                                                위치 : {item.gate}   
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid >
+                                                                <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#a1a1a1" component="div">
+                                                                ({item.address})
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                }
+                                                {/* <Grid container style={{marginTop: '6px'}}>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '10px', fontWeight:'400'}} color="#505050" component="div">
                                                         위치 : {item.gate}   
@@ -579,7 +617,7 @@ const list = () => {
                                                         ({item.address})
                                                         </Typography>
                                                     </Grid>
-                                                </Grid>
+                                                </Grid> */}
                                                 
                                                 <Grid container>
                                                     {/* 태그 받아오기 */}

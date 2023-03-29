@@ -70,6 +70,7 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false
             }
         case LOGOUT_SUCCESS:
+            localStorage.setItem('map', '명륜');
             Cookies.remove('access');
             Cookies.remove('refresh');
             return {

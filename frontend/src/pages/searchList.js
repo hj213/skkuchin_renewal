@@ -244,7 +244,17 @@ const searchList = () => {
                         <ul style={{listStyleType: "none", padding: '0px 18px 0px 18px', margin: '0px'}} >
                             {searchplace ? filteredPlace.length > 0 ? filteredPlace.map((item) => (
                                     <li key={item.id} data={item} style={{borderBottom: '1px solid #D9D9D9'}} onClick={handleLiClick}>
-                                        <Link href={`/place?id=${item.id}`} key={item.id}>
+                                        <Link 
+                                            href={{
+                                                pathname: '/place',
+                                                query: {
+                                                    id: item.id,
+                                                    xcoordinate: item.xcoordinate,
+                                                    ycoordinate: item.ycoordinate
+                                                }
+                                            }}
+                                            key={item.id}
+                                        >
                                         <Grid container style={{margin: '10px 0px 0px 0px'}}>
                                             <Grid item xs >
                                                 <CardContent style={{padding:'0px'}}>

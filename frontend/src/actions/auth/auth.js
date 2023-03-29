@@ -134,6 +134,7 @@ export const login = (username, password, callback) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try {
+        await dispatch(change_toggle_for_not_user('명륜'));
         dispatch({
             type: LOGOUT_SUCCESS
         });
