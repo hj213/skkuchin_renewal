@@ -94,7 +94,7 @@ const PlacePage = () => {
 
     useEffect(()=>{
         if(WINDOW_HEIGHT < 750){
-            setHeight(270)
+            setHeight(280)
         } else {
             setHeight(430)
         }

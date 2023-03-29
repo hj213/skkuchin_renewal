@@ -167,13 +167,13 @@ const list = () => {
 
             if((open.bool) == false) {
                 if( router.query.length == 1 || filteredPlace?.length == 1){
-                    setHeight(187)
+                    setHeight(194)
                 } 
                 else if( filteredPlace?.length == 0 ){
                     setHeight(0);
                 }
                 else if(WINDOW_HEIGHT < 750){
-                    setHeight(187)
+                    setHeight(194)
                 } else {
                     setHeight(345)
                 }
@@ -196,12 +196,12 @@ const list = () => {
 
     useEffect(()=>{
         if(numOfLi == 1){
-            setHeight(187)
+            setHeight(194)
         } else if( numOfLi == 0) {
             setHeight(0)
         } else {
             if(WINDOW_HEIGHT < 750){
-                setHeight(187)
+                setHeight(194)
             } else {
                 setHeight(345)
             }
@@ -262,9 +262,9 @@ const list = () => {
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
             cardRef.current.scrollTo({top:0});
             if(filteredPlace.length == 1){
-                setHeight(187)
+                setHeight(194)
             } else if(WINDOW_HEIGHT < 750){
-                setHeight(187)
+                setHeight(194)
             } else {
                 setHeight(345)
             }
@@ -287,9 +287,9 @@ const list = () => {
             setOpen({ bool:false,
                 Visibility:'hidden'});
                 if(filteredPlace.length == 1){
-                    setHeight(187)
+                    setHeight(194)
                 } else if(WINDOW_HEIGHT < 750){
-                    setHeight(187)
+                    setHeight(194)
                 } else {
                     setHeight(345)
                 }
