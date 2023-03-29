@@ -36,7 +36,7 @@ const PlacePage = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     // list.js 에서 전달 받은 id 값 받아오기
-    const { id, fullScreen } = router.query;
+    const { id, fullScreen, xcoordinate, ycoordinate, level } = router.query;
 
     // Part 1) place, 가게 정보 (place API)
     const dispatch = useDispatch();
@@ -336,7 +336,7 @@ const PlacePage = () => {
                     </div>
                 </Container> 
                 { selectedPlace ?
-                    <Map latitude={selectedPlace.ycoordinate} longitude={selectedPlace.xcoordinate} places={filteredPlace} selectedId={id}/>  
+                    <Map latitude={ycoordinate} longitude={xcoordinate} level={level} places={filteredPlace} selectedId={id}/>  
                     : <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace}/>            
                 }
     
