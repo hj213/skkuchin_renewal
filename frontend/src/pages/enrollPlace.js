@@ -127,6 +127,7 @@ const EnrollPlace = () => {
                     <option value="후문">후문</option>
                     <option value="철문">철문</option>
                     <option value="대학로">대학로</option>
+                    <option value="금잔디광장">금잔디광장</option>
                     <option value="기타">기타</option>
                 </select>
                 </label>
