@@ -12,18 +12,28 @@ const AllReview = () => {
 
     const reviews = useSelector(state => state.review.allReview);
     const [loading, setLoading] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(null);
 
     useEffect(() => {
         setLoading(true);
         dispatch(check_admin(([result, message]) => {
             if (result) {
-                dispatch(load_all_reviews());
-                setLoading(false);
+                dispatch(load_all_reviews(([result, message]) => {
+                    setLoading(false);
+                }));
             } else {
                 router.push('/');
             }
         }))
     }, []);
+
+    const toggleImages = (index) => {
+        if (activeIndex === index) {
+            setActiveIndex(null);
+        } else {
+            setActiveIndex(index);
+        }
+    }
 
     return (
         <div>
@@ -64,49 +74,52 @@ const AllReview = () => {
             <ul style={{listStyle: 'none'}}>
                 {reviews && reviews.slice().reverse().map((review, index) => (
                     <li key={index}>
-                            <p>
-                                작성자: {review.nickname}
-                            </p>
-                            <p>
-                                전공: {review.major}
-                            </p>
-                            <p>
-                                학번: {review.student_id}
-                            </p>
-                            <p>
-                                장소: {review.place}
-                            </p>
-                            <p>
-                                평점: {review.rate}
-                            </p>
-                            <p style={{whiteSpace: 'pre-wrap'}}>
-                                내용: {review.content}
-                            </p>
-                            <p>
-                                태그: {review.tags.join(', ')}
-                            </p>
-                            <p>
-                                작성일: {review.create_date}
-                            </p>
-                            <div style={{width: '100%', height: '200px', overflowX: 'auto', whiteSpace: 'nowrap'}}>
-                                {review && review.images && review.images.length > 0 && (
-                                <div style={{display: 'inline-block', verticalAlign: 'middle', whiteSpace: 'nowrap'}}>
-                                    {review.images.map((image, index) => (
-                                    <Image 
-                                        key={index} 
-                                        src={image} 
-                                        alt={`Image ${index}`}
-                                        width={150}
-                                        height={150}
-                                        layout='fixed'
-                                        objectFit='cover'
-                                        placeholder='blur'
-                                        blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='                    
-                                    />
-                                    ))}
-                                </div>
-                                )}
+                        <p>
+                            작성자: {review.nickname}
+                        </p>
+                        <p>
+                            전공: {review.major}
+                        </p>
+                        <p>
+                            학번: {review.student_id}
+                        </p>
+                        <p>
+                            장소: {review.place}
+                        </p>
+                        <p>
+                            평점: {review.rate}
+                        </p>
+                        <p style={{whiteSpace: 'pre-wrap'}}>
+                            내용: {review.content}
+                        </p>
+                        <p>
+                            태그: {review.tags.join(', ')}
+                        </p>
+                        <p>
+                            작성일: {review.create_date}
+                        </p>
+                        <button onClick={() => toggleImages(index)}>
+                            {activeIndex === index ? '이미지 숨기기' : '이미지 보기'}
+                        </button>
+                        <div style={{width: '100%', height: '200px', overflowX: 'auto', whiteSpace: 'nowrap'}}>
+                            {review && review.images && review.images.length > 0 && activeIndex === index && (
+                            <div style={{display: 'inline-block', verticalAlign: 'middle', whiteSpace: 'nowrap'}}>
+                                {review.images.map((image, index) => (
+                                <Image 
+                                    key={index} 
+                                    src={image} 
+                                    alt={`Image ${index}`}
+                                    width={150}
+                                    height={150}
+                                    layout='fixed'
+                                    objectFit='cover'
+                                    placeholder='blur'
+                                    blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='                    
+                                />
+                                ))}
                             </div>
+                            )}
+                        </div>
                     </li>
                 ))}
             </ul>
