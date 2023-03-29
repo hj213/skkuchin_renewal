@@ -78,7 +78,7 @@ export const displayTagImage = (tags) => {
             {displayTags.map ((tag) => {
             switch(tag) {
                 case "금잔디":
-                    return <Grid item key={tag}><Image id={"금잔디"} src={mapTagOn0} width={88} height={36} layout='fixed' /></Grid>
+                    return <Grid item key={tag}><Image id={"금잔디"} src={mapTagOn0} width={104} height={36} layout='fixed' /></Grid>
                 case "학생 할인":
                     return <Grid item key={tag}><Image id={"학생 할인"} src={mapTagOn1} width={88} height={36} layout='fixed' /></Grid>
                 case "술집":
