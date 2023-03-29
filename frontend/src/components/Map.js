@@ -88,12 +88,21 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                         };
                     } 
                     else {
-                        options = {
-                            center : new window.kakao.maps.LatLng(latitude, longitude),
-                            level: 5,
-                            preventDraggable: true,
-                            zoomControl: true,
-                        };
+                        if (selectedPlace?.category === '금잔디') {
+                            options = {
+                                center : new window.kakao.maps.LatLng(37.5880155131684, 126.993075302644),
+                                level: 2,
+                                preventDraggable: true,
+                                zoomControl: true,
+                            };
+                        } else {
+                            options = {
+                                center : new window.kakao.maps.LatLng(latitude, longitude),
+                                level: 5,
+                                preventDraggable: true,
+                                zoomControl: true,
+                            };
+                        }
                     }
 
                     let map = null;

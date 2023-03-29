@@ -3,6 +3,8 @@ import{
     LOAD_REVIEW_SUCCESS,
     LOAD_REVIEWS_FAIL,
     LOAD_REVIEWS_SUCCESS,
+    LOAD_ALL_REVIEWS_SUCCESS,
+    LOAD_ALL_REVIEWS_FAIL,
     DELETE_REVIEW_FAIL,
     DELETE_REVIEW_SUCCESS,
     MODIFY_REVIEW_FAIL,
@@ -12,6 +14,8 @@ import{
 
 const initialState = {
     review: null,
+    myReview: null,
+    allReview: null
 }
 
 const reviewReducer = (state = initialState, action) => {
@@ -37,6 +41,16 @@ const reviewReducer = (state = initialState, action) => {
             return{
                 ...state,
                 myReview: null
+            }
+        case LOAD_ALL_REVIEWS_SUCCESS:
+            return{
+                ...state,
+                allReview: payload
+            }
+        case LOAD_ALL_REVIEWS_FAIL:
+            return{
+                ...state,
+                allReview: null
             }
         case DELETE_REVIEW_SUCCESS:
             return{

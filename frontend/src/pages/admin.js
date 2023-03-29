@@ -109,6 +109,9 @@ const AdminPage = () => {
             <button onClick={() => getNoMenuPlaces()}>
                 메뉴 없는 장소 불러오기
             </button>
+            <button onClick={()=>router.push('/allReview')}>
+                전체 리뷰 보기
+            </button>
             <Link href='/enrollPlace'>
                 <button>
                     장소 추가하기
