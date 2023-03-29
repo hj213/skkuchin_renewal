@@ -98,11 +98,16 @@ const AllReview = () => {
                         <p>
                             작성일: {review.create_date}
                         </p>
-                        <button onClick={() => toggleImages(index)}>
-                            {activeIndex === index ? '이미지 숨기기' : '이미지 보기'}
-                        </button>
+                        {
+                            review.images && review.images.length > 0 &&
+                            (
+                                <button onClick={() => toggleImages(index)}>
+                                    {activeIndex === index ? '이미지 숨기기' : '이미지 보기'}
+                                </button>
+                            )
+                        }
                         <div style={{width: '100%', height: '200px', overflowX: 'auto', whiteSpace: 'nowrap'}}>
-                            {review && review.images && review.images.length > 0 && activeIndex === index && (
+                            {review.images && review.images.length > 0 && activeIndex === index && (
                             <div style={{display: 'inline-block', verticalAlign: 'middle', whiteSpace: 'nowrap'}}>
                                 {review.images.map((image, index) => (
                                 <Image 
