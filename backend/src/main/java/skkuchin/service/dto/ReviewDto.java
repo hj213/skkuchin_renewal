@@ -17,7 +17,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ReviewDto {
@@ -130,6 +132,39 @@ public class ReviewDto {
             this.studentId = review.getUser().getStudentId();
             this.userImage = review.getUser().getImage();
             this.tags = tags.stream().map(tag -> tag.getTag().getName()).collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class AdminResponse {
+        private String place;
+        private int rate;
+        private String content;
+        private List<String> images;
+        @JsonProperty
+        private String createDate;
+        private String nickname;
+        private Major major;
+        @JsonProperty
+        private int studentId;
+        private List<String> tags;
+
+        public AdminResponse(Review review, List<ReviewTag> tags, List<ReviewImage> images) {
+            this.place = review.getPlace().getName();
+            this.rate = review.getRate();
+            this.content = review.getContent();
+            this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());
+            this.createDate = formatDate(review.getCreateDate());
+            this.nickname = review.getUser().getNickname();
+            this.major = review.getUser().getMajor();
+            this.studentId = review.getUser().getStudentId();
+            this.tags = tags.stream().map(tag -> tag.getTag().getName()).collect(Collectors.toList());
+        }
+
+        private String formatDate(LocalDateTime date) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 (E) a h시 m분", Locale.KOREAN);
+            return date.format(formatter);
         }
     }
 }

@@ -1,7 +1,7 @@
 # skkuchin_renewal
 
 ## 스프링 빌드
-1. backend 폴더로 이동
+1. cd backend
 2. 맥의 경우 ./gradlew clean build -x test 입력
 3. 윈도우의 경우 gradlew.bat clean build -x test 입력
 

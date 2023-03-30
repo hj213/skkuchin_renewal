@@ -30,9 +30,9 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAll() {
-        List<ReviewDto.Response> reviews = reviewService.getAll();
+        List<ReviewDto.AdminResponse> reviews = reviewService.getAll();
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 리뷰 가져오기 완료", reviews), HttpStatus.OK);
     }
 

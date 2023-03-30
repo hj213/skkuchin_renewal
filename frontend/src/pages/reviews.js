@@ -21,7 +21,12 @@ const ReviewsPage = () => {
     const handleOnclick = (event) =>{
         router.push({
             pathname: '/place',
-            query: { id: place_id, fullScreen: true  },
+            query: { 
+                id: place_id, 
+                xcoordinate: selectedPlace.xcoordinate,
+                ycoordinate: selectedPlace.ycoordinate,
+                fullScreen: true
+            },
         });
     };  
 

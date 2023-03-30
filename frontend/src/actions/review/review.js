@@ -13,7 +13,9 @@ import {
     MODIFY_REVIEW_SUCCESS,
     ENROLL_REVIEW_FAIL,
     ENROLL_REVIEW_SUCCESS,
-    CLEAR_MY_REVIEW
+    CLEAR_MY_REVIEW,
+    LOAD_ALL_REVIEWS_SUCCESS,
+    LOAD_ALL_REVIEWS_FAIL
 } from './types'
 
 export const load_reviews = (place_id, callback) => async dispatch => {
@@ -304,3 +306,54 @@ export const delete_review = (review_id, callback) => async dispatch => {
 export const clear_my_review = () => ({
     type: CLEAR_MY_REVIEW
 });
+
+export const load_all_reviews = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/review`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: LOAD_ALL_REVIEWS_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
+        } else {
+            dispatch({
+                type: LOAD_ALL_REVIEWS_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch (error) {
+        dispatch({
+            type: LOAD_ALL_REVIEWS_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+        
+        
+    }
+}

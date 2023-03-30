@@ -18,8 +18,9 @@ const AdminPage = () => {
         setLoading(true);
         dispatch(check_admin(([result, message]) => {
             if (result) {
-                dispatch(load_places());
-                setLoading(false);
+                dispatch(load_places(([result, message]) => {
+                    setLoading(false);
+                }));
             } else {
                 router.push('/');
             }
@@ -108,6 +109,9 @@ const AdminPage = () => {
             </button>
             <button onClick={() => getNoMenuPlaces()}>
                 메뉴 없는 장소 불러오기
+            </button>
+            <button onClick={()=>router.push('/allReview')}>
+                전체 리뷰 보기
             </button>
             <Link href='/enrollPlace'>
                 <button>

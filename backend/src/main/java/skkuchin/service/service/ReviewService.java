@@ -45,10 +45,10 @@ public class ReviewService {
     private String prefix;
 
     @Transactional
-    public List<ReviewDto.Response> getAll() {
+    public List<ReviewDto.AdminResponse> getAll() {
         return reviewRepo.findAll()
                 .stream()
-                .map(review -> new ReviewDto.Response(
+                .map(review -> new ReviewDto.AdminResponse(
                         review,
                         reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
                         reviewImageRepo.findByReview(review).stream().collect(Collectors.toList())
