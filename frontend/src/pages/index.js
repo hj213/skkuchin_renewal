@@ -60,7 +60,6 @@ const list = () => {
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
     const [tagsId, setTagsId] = useState([
-        {id: '금잔디', exclusiveGroup: 'cuisine'},
         {id: '학생 할인', exclusiveGroup: 'discount'},
         // {id: '스페셜', exclusiveGroup: null},
         {id: '한식', exclusiveGroup: 'cuisine'},

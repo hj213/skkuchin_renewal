@@ -49,21 +49,12 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                         };
                     } 
                     else if (user && user.toggle == '명륜' && !selectedPlace) {
-                        if (places && places[0]?.category === '금잔디') {
-                            options = {
-                                center : new window.kakao.maps.LatLng(37.5880155131684, 126.993075302644),
-                                level: 2,
-                                preventDraggable: true,
-                                zoomControl: true
-                            };
-                        } else {
-                            options = {
-                                center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
-                                level: 5,
-                                preventDraggable: true,
-                                zoomControl: true
-                            };
-                        }
+                        options = {
+                            center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
+                            level: 5,
+                            preventDraggable: true,
+                            zoomControl: true
+                        };
                     }
                     else if (toggle && toggle === '율전' && !selectedPlace) {
                         options = {
@@ -74,21 +65,12 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                         };
                     } 
                     else if (toggle && toggle === '명륜' && !selectedPlace) {
-                        if (places && places[0]?.category === '금잔디') {
-                            options = {
-                                center : new window.kakao.maps.LatLng(37.5880155131684, 126.993075302644),
-                                level: 2,
-                                preventDraggable: true,
-                                zoomControl: true
-                            };
-                        } else {
-                            options = {
-                                center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
-                                level: 5,
-                                preventDraggable: true,
-                                zoomControl: true
-                            };
-                        }
+                        options = {
+                            center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
+                            level: 5,
+                            preventDraggable: true,
+                            zoomControl: true
+                        };
                     }
                     else if (selectedPlace && level) {
                         options = {
@@ -97,21 +79,12 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                         };
                     } 
                     else {
-                        if (selectedPlace?.category === '금잔디') {
-                            options = {
-                                center : new window.kakao.maps.LatLng(37.5880155131684, 126.993075302644),
-                                level: 2,
-                                preventDraggable: true,
-                                zoomControl: true,
-                            };
-                        } else {
-                            options = {
-                                center : new window.kakao.maps.LatLng(latitude, longitude),
-                                level: 5,
-                                preventDraggable: true,
-                                zoomControl: true,
-                            };
-                        }
+                        options = {
+                            center : new window.kakao.maps.LatLng(latitude, longitude),
+                            level: 5,
+                            preventDraggable: true,
+                            zoomControl: true,
+                        };
                     }
 
                     let map = null;
