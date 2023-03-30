@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, styled,Button,Dialog,  ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogContentText, DialogContent } from '@mui/material';
+import { CssBaseline, styled,Button,Dialog, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogContentText, DialogContent } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -652,16 +652,12 @@ const list = () => {
                         }
                         </ul>
                         {filteredPlace && visibleItems < filteredPlace.length && (
-                            <div style={{width: '100%', textAlign: 'center', padding: '10px'}}>
-                                <button onClick={handleMoreClick} style={{ color: '#fff', backgroundColor: '#FFCE00', fontWeight: 'bold', borderRadius: '20px', border: '0', padding: '12px 15px'}}>더보기</button>
-                                <style>
-                                    {`
-                                    button:focus {
-                                        outline: none;
-                                    }
-                                    `}
-                                </style>
-                            </div>
+                            // <div style={{width: '100%', textAlign: 'center', padding: '10px'}}>
+                            //     <button onClick={handleMoreClick} style={{ color: '#fff', backgroundColor: '#FFCE00', fontWeight: 'bold', borderRadius: '20px', border: '0', padding: '12px 15px'}}>더보기</button>
+                            // </div>
+                            <Box style={{width: '100%', textAlign: 'center', padding: '10px', boxShadow: 'none'}}>
+                                <Button variant="contained" disableElevation disableTouchRipple onClick={handleMoreClick} sx={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '20px'}}>더보기</Button>
+                            </Box>
                         )}
                     </div>
                 </Card>
