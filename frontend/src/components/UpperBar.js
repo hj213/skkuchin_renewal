@@ -22,7 +22,7 @@ const UpperBar = () => {
         const currentPathname = window.location.pathname;
         if (currentPathname === "/match") {
             setSelected("AI 매칭");
-        } else if (currentPathname === "/magazine"){
+        } else if (currentPathname === "/magazine" || currentPathname === "/magazineDetail" ){
             setSelected("매거진");
         } else if (currentPathname === "/myPage"){
             setSelected("마이페이지");
