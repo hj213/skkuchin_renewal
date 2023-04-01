@@ -248,9 +248,7 @@ const searchList = () => {
                                             href={{
                                                 pathname: '/place',
                                                 query: {
-                                                    id: item.id,
-                                                    xcoordinate: item.xcoordinate,
-                                                    ycoordinate: item.ycoordinate
+                                                    id: item.id
                                                 }
                                             }}
                                             key={item.id}

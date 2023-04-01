@@ -5,6 +5,7 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react"; 
+import { clear_search_results } from "../actions/place/place";
 
 
 import star from '../image/star3.png';
@@ -127,16 +128,22 @@ const reviewM = [{
 const UpperBar = dynamic(() => import('../components/UpperBar'));
 
 const Magazine = () => {
-
+    const dispatch = useDispatch();
     const router = useRouter();
 
     const [reviewNum, setReviewNum] = useState(0);
-    const [toggleInfo, setToggleInfo] = useState('');
+    const [toggleInfo, setToggleInfo] = useState(null);
 
     const user = useSelector(state => state.auth.user);
+    const toggle = useSelector(state => state.auth.toggle);
 
     useEffect(()=>{
-        if(user.toggle == '명륜'){
+        dispatch(clear_search_results());
+        if(user?.toggle == '명륜'){
+            setToggleInfo(true)
+        } else if (user?.toggle == '율전') {
+            setToggleInfo(false)
+        } else if (toggle == '명륜') {
             setToggleInfo(true)
         } else {
             setToggleInfo(false)

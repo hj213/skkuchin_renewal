@@ -56,8 +56,8 @@ const ReviewsPage = () => {
                 setSortedReviews([...reviews].sort((a, b) => b.rate - a.rate)); // 평점이 높은 순으로 정렬
             } else if (filter === 'Oldest') {
                 setSortedReviews([...reviews]); // 오래된 순으로 정렬 (기본값)
-             }
-             else {
+            }
+            else {
                 setSortedReviews([...reviews].sort((a, b) => a.rate - b.rate));
             }
         }
@@ -66,7 +66,7 @@ const ReviewsPage = () => {
     const [sortedReviews, setSortedReviews] = useState(reviews ? [...reviews] : []);
 
     const handleFilterChange = (event) => {
-      setFilter(event.target.value);
+        setFilter(event.target.value);
     };
 
     // 유저정보
@@ -166,7 +166,7 @@ const ReviewsPage = () => {
                                         xs={2}
                                         sx={{ fontSize: '14px', lineHeight: '200%', width: 'wrapContent', border: 'none',
                                         '& .MuiOutlinedInput-notchedOutline': {
-                                          border: 'none'
+                                            border: 'none'
                                         }, height: '30px', marginTop: '-30px', marginRight: '-15px',border: 'none', p: '5px', textAlign: 'right', color: '#A1A1A1'}}
                                         value={filter}
                                         onChange={handleFilterChange}

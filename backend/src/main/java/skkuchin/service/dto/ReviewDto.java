@@ -104,6 +104,7 @@ public class ReviewDto {
         private Long id;
         @JsonProperty
         private Long placeId;
+        private String place;
         private int rate;
         private String content;
         private List<String> images;
@@ -122,6 +123,7 @@ public class ReviewDto {
         public Response(Review review, List<ReviewTag> tags, List<ReviewImage> images) {
             this.id = review.getId();
             this.placeId = review.getPlace().getId();
+            this.place = review.getPlace().getName();
             this.rate = review.getRate();
             this.content = review.getContent();
             this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());

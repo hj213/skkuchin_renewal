@@ -20,14 +20,12 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAll() {
         List<NoticeDto.Response> notices = noticeService.getAll();
         return new ResponseEntity<>(new CMRespDto<>(1, "전체 공지 조회 완료", notices), HttpStatus.OK);
     }
 
     @GetMapping("/{noticeId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getDetail(@PathVariable Long noticeId) {
         NoticeDto.Response notice = noticeService.getDetail(noticeId);
         return new ResponseEntity<>(new CMRespDto<>(1, "공지 상세 조회 완료", notice), HttpStatus.OK);

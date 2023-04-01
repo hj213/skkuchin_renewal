@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react"; 
 
 import { load_review,  delete_review } from "../actions/review/review"
-import { load_places, load_place } from "../actions/place/place";
+import { load_place, clear_search_results } from "../actions/place/place";
 import { CssBaseline, IconButton, Rating, ThemeProvider, Select, Card, MenuItem, Menu, CardContent, Typography, Grid, Container, Stack, Hidden, Avatar, Badge, ImageList, ImageListItem } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
@@ -21,18 +21,14 @@ const MyReviewPage = () => {
 
     // 리뷰정보 (review API)
     const reviews = useSelector(state => state.review.myReview);
- 
-    const allPlaces = useSelector(state => state.place.allplaces);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_places());
-            dispatch(load_review());
-        }
+        dispatch(clear_search_results());
+        dispatch(load_review());
     }, []);
 
         //아이콘 클릭시
@@ -58,10 +54,10 @@ const MyReviewPage = () => {
                 setSortedReviews([...reviews]); // 오래된 순으로 정렬 (기본값)
             } else  {
                 const sortedReviews = [...reviews].sort((a, b) => {
-                    const aPlace = allPlaces.find(place => place.id === a.place_id);
-                    const bPlace = allPlaces.find(place => place.id === b.place_id);
-                    const aName = aPlace?.name || '';
-                    const bName = bPlace?.name || '';
+                    const aPlace = a.place;
+                    const bPlace = b.place;
+                    const aName = aPlace || '';
+                    const bName = bPlace || '';
                     return aName.localeCompare(bName);
                 });
                 setSortedReviews(sortedReviews);
@@ -85,7 +81,6 @@ const MyReviewPage = () => {
     }
 
     const handleDelete = (reviewId) =>{
-        const review = reviews.find(item => item.id == reviewId);
         dispatch(delete_review(reviewId, ([result, message])=>{
             if(result){
                 dispatch(load_review());

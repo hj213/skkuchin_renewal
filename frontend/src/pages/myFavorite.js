@@ -13,6 +13,7 @@ import closeIcon from '../image/close.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
 import dynamic from 'next/dynamic';
+import { clear_search_results } from '../actions/place/place';
 
 const myFavorite = () => {
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -57,8 +58,12 @@ const myFavorite = () => {
         }
     };
 
+    useEffect(() => {
+        dispatch(clear_search_results());
+    }, []);
+
     const prevOpen = useRef(open);
-    
+
     useEffect(() => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
