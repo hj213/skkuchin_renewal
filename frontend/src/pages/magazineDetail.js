@@ -111,7 +111,7 @@ const MagazineDetail = () => {
                         <Image src={content}/>
                     </div>
                 </div>
-                <div style={{position:'relative', paddingBottom: '30px'}}>
+                <div style={{position:'relative'}}>
                     {contentList.map((item, index) => (
                         <div style={{borderBottom: '2px solid rgba(186, 186, 186, 0.2)'}}>
                         <Grid key={index} sx={{mt: '30px', ml: '15px',color: '#2E2E2E'}}>
