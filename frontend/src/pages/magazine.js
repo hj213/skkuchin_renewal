@@ -234,7 +234,7 @@ const Magazine = () => {
                     </div>
                     <div>
                         <div style={{position:'absolute',zIndex:'3', bottom:'8%', right: '3%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
-                            <Button style={{margin:'', fontSize:'12px', color:'white'}} onClick={()=>{console.log('hi')}}>콘텐츠 보러가기&nbsp;&nbsp; <Image src={arrow} width={15.57} height={15}/></Button>
+                            <Button style={{margin:'', fontSize:'12px', color:'white'}} onClick={()=>{router.push('/magazineDetail')}}>콘텐츠 보러가기&nbsp;&nbsp; <Image src={arrow} width={15.57} height={15}/></Button>
                         </div>
                         <div style={{position:'absolute',zIndex:'3', bottom:'6%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
                             <Image src={circles} width={50} height={6} />
