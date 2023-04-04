@@ -23,43 +23,43 @@ export const displayProfile= (profile, imageWidth, imageHeight) => {
 
     switch(profile) {
         case "DEFAULT1":
-            return <Image id={"DEFAULT1"} src={DEFAULT1} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"DEFAULT1"} src={DEFAULT1} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "DEFAULT2":
-            return <Image id={"DEFAULT2"} src={DEFAULT2} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"DEFAULT2"} src={DEFAULT2} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INTP":
-            return <Image id={"INTP"} src={INTP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"INTP"} src={INTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INTJ":
-            return <Image id={"INTJ"} src={INTJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"INTJ"} src={INTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INFP":
-            return <Image id={"INFP"} src={INFP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"INFP"} src={INFP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INFJ":
-            return <Image id={"INFJ"} src={INFJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"INFJ"} src={INFJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ISFP":
-            return <Image id={"ISFP"} src={ISFP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ISFP"} src={ISFP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ISFJ":
-            return <Image id={"ISFJ"} src={ISFJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ISFJ"} src={ISFJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ISTP":
-            return <Image id={"ISTP"} src={ISTP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ISTP"} src={ISTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ISTJ":
-            return <Image id={"ISTJ"} src={ISTJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ISTJ"} src={ISTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ESTJ":
-            return <Image id={"ESTJ"} src={ESTJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ESTJ"} src={ESTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ENTP":
-            return <Image id={"ENTP"} src={ENTP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ENTP"} src={ENTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ENTJ":
-            return <Image id={"ENTJ"} src={ENTJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ENTJ"} src={ENTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ENFP":
-            return <Image id={"ENFP"} src={ENFP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ENFP"} src={ENFP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ENFJ":
-            return <Image id={"ENFJ"} src={ENFJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ENFJ"} src={ENFJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ESFP":
-            return <Image id={"ESFP"} src={ESFP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ESFP"} src={ESFP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ESFJ":
-            return <Image id={"ESFJ"} src={ESFJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ESFJ"} src={ESFJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ESTP":
-            return <Image id={"ESTP"} src={ESTP} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ESTP"} src={ESTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ESTJ":
-            return <Image id={"ESTJ"} src={ESTJ} width={imageWidth} height={imageHeight} style={{zIndex: '-1'}} placeholder="blur" layout='fixed' />
+            return <Image id={"ESTJ"} src={ESTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         default:
             return null;
     }

@@ -210,13 +210,13 @@ const myPage = () => {
                         <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
                     </div>
                 </div>
-                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} style={{zIndex: '-1'}} layout='fixed' /></div>
+                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} layout='fixed' /></div>
             </div>
             
             {/* 사용자 설정 */}
             <Container style={{display: 'grid', borderBottom: '1px solid #DDDDDD', padding: '0 15px', marginTop: '30px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>사용자 설정</Typography>
-                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start', zIndex: '-1'}}>비밀번호 변경</Button></div>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>비밀번호 변경</Button></div>
             </Container>
 
             {/* 알림 설정 */}
