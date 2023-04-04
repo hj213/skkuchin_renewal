@@ -155,11 +155,11 @@ const changePassword = () => {
             </div>
             <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 auto 50px auto', maxWidth: '420px'}}>
             {validPW && (password == rePassword) ?
-                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+                    <Button variant="contained" onClick={handleNextStep} style={{width: '80%', margin: '0 auto', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인
                     </Button>
                 :
-                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+                    <Button variant="contained" disabled style={{width: '80%', margin: '0 auto', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인
                     </Button>
             }

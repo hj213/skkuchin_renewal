@@ -34,6 +34,7 @@ public class ServiceApplication {
 						  MenuService menuService,
 						  KeywordService keywordService,
 						  ReviewService reviewService,
+						  RankService rankService,
 						  ChatRoomService chatRoomService,
 						  ChatMessageService chatMessageService) {
 		return args -> {
@@ -54,6 +55,7 @@ public class ServiceApplication {
 				menuService.insertData(path);
 				keywordService.insertData(path);
 				reviewService.insertData(path);
+				rankService.addRank();
 				userService.saveTestMatchingUsers(100);
 				chatRoomService.insertData();
 				chatMessageService.insertData();

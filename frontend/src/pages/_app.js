@@ -55,8 +55,8 @@ const App = ({ Component, pageProps }) => {
   return (
       <Provider store={store}>
         <Layout>
-          <div style={{ position: 'fixed', zIndex: '-2', top: 0, left: 0, width:'100%', height:'100%', backgroundColor: '#f4f4f4'}} >
-            <div style={{ margin: '0 auto', zIndex: '-1', width:'100%', height:'100%', backgroundColor: '#fff', maxWidth: '420px'}} />
+          <div style={{ position: 'fixed', zIndex: '-3', top: 0, left: 0, width:'100%', height:'100%', backgroundColor: '#f4f4f4'}} >
+            <div style={{ margin: '0 auto', zIndex: '-2', width:'100%', height:'100%', backgroundColor: '#fff', maxWidth: '420px'}} />
           </div>
             <Container style={{ maxWidth: '420px', margin: '0 auto', padding: '0px', overflowY: 'hidden' }}>
               <Head>
