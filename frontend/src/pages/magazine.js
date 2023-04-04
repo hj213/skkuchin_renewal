@@ -10,7 +10,7 @@ import { load_rank } from '../actions/rank/rank';
 
 import food from '../image/food.png';
 import star from '../image/star3.png';
-import circles from '../image/frames.png';
+// import circles from '../image/frames.png';
 import arrow from '../image/arrow.png';
 import arrowY from '../image/arrowY.png';
 import arrowL from '../image/arrowLeft.png'
@@ -204,9 +204,9 @@ const Magazine = () => {
                         <div style={{position:'absolute',zIndex:'3', bottom:'8%', right: '3%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
                             <Button style={{margin:'', fontSize:'12px', color:'white'}} onClick={()=>{router.push('/magazineDetail')}}>콘텐츠 보러가기&nbsp;&nbsp; <Image src={arrow} width={15.57} height={15} layout='fixed'/></Button>
                         </div>
-                        <div style={{position:'absolute',zIndex:'3', bottom:'6%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
+                        {/* <div style={{position:'absolute',zIndex:'3', bottom:'6%', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
                             <Image src={circles} width={50} height={6} layout='fixed' />
-                        </div>
+                        </div> */}
                     </div>
                     <div style={{position:'relative', width:'100%', height:'100%'}}>
                         <Image 
