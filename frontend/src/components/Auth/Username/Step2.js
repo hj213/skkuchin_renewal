@@ -53,7 +53,7 @@ export default function Step2(props) {
 				}
                 />
             </div>
-        <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '40px'}}>
+        <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '40px auto', maxWidth: '420px'}}>
         <Button variant="contained" onClick={handleButtonClick} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
             로그인 홈 가기
         </Button>

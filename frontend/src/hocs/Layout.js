@@ -9,6 +9,7 @@ import { API_URL } from '../config';
 import { WEB_PUSH_PUBLIC_KEY } from '../config';
 import { enroll_token } from '../actions/pushToken/pushToken';
 import { get_realtime_chat_alarm, get_chat_alarm_info } from '../actions/chat/chatAlarm';
+import { get_realtime_notice_alarm, get_notice_alarm_info } from '../actions/notice/noticeAlarm';
 
 const base64ToUint8Array = base64 => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4)
@@ -87,9 +88,11 @@ const Layout = ({title, content, children}) => {
             notify();
             if (user && anotherStompClient) {
                 subscriptions.alarm = dispatch(get_realtime_chat_alarm(user.username, anotherStompClient));
+                subscriptions.notice = dispatch(get_realtime_notice_alarm(user.username, anotherStompClient));
 
                 Promise.all(Object.values(subscriptions)).then(() => {
                     dispatch(get_chat_alarm_info(anotherStompClient));
+                    dispatch(get_notice_alarm_info(anotherStompClient));
                 });
             }
         }

@@ -253,7 +253,7 @@ const chatPage = () => {
                             position: 'fixed',
                             top: '0px',
                             width: '100%',
-                            maxWidth: '600px',
+                            maxWidth: '420px',
                             height: '130px',
                             zIndex: '4',
                             borderRadius:'0',
@@ -631,7 +631,7 @@ const chatPage = () => {
                 </Grid>
 
                 {/* 텍스트 인풋 필드 & 버튼 */}
-                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '2px 10px 13px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '600px',}}>
+                <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '2px 10px 13px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '420px',}}>
                     <textarea 
                         name='chat' 
                         placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메시지를 입력하세요.'}

@@ -216,7 +216,7 @@ const ModifyReview = () => {
                             position: 'fixed',
                             top: '0px',
                             width: '100%',
-                            maxWidth: '600px',
+                            maxWidth: '420px',
                             height: '98px',
                             zIndex: '4',
                             border: 'none',
@@ -410,7 +410,7 @@ const ModifyReview = () => {
                                     <Box
                                     component="form"
                                     noValidate
-                                    sx={{'& .MuiTextField-root': { m: 1, width: '80vw' }, justifyContent:'center', alignItems:'center',}}>
+                                    sx={{'& .MuiTextField-root': { m: 1, width: '80vw', maxWidth: '372px'  }, justifyContent:'center', alignItems:'center',}}>
                                         <TextField
                                         id="outlined-multiline-statiic"
                                         multiline

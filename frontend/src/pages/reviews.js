@@ -105,7 +105,8 @@ const ReviewsPage = () => {
                     top: '0px',
                     width: '100%',
                     zIndex: '4',
-                    border: 'none',
+                    border: 'none', 
+                    maxWidth: '420px'
                 }}>
                     <Grid container style={{padding:'45px 15px 11px', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Grid style={{padding: '0px 10px 0px 0px'}}>

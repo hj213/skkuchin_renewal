@@ -38,8 +38,8 @@ public class FavoriteService {
                 .stream()
                 .map(favorite -> new FavoriteDto.Response(
                         favorite,
-                        imageRepo.findByPlace(favorite.getPlace()).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(favorite.getPlace()).stream().collect(Collectors.toList()),
+                        imageRepo.findByPlace(favorite.getPlace()),
+                        reviewRepo.findByPlace(favorite.getPlace()),
                         getTop3TagsByPlace(favorite.getPlace())
                 )).collect(Collectors.toList());
     }

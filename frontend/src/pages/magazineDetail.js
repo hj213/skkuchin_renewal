@@ -2,25 +2,21 @@ import { CardContent, CssBaseline, Box, ThemeProvider, Rating, Slide, Card, Badg
 import theme from '../theme/theme';
 import Image from 'next/image';
 import React from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react"; 
 
 
-import character from '../image/login_enheng.png'
-import arrowPrev from '../image/arrow_forward.png'
-import arrowNext from '../image/arrowY.png'
-import emptyStar from '../image/Star_border-1.png';
-import filledStar from '../image/Star-1.png';
+import character from '../image/login_enheng.png';
+import arrowPrev from '../image/arrow_forward.png';
+import arrowNext from '../image/arrowY.png';
 import dynamic from 'next/dynamic';
 import position from '../../public/markers/기본_yellow.png';
 
 // Top 음식 사진
-import food from '../image/exam.png' 
-import content from '../image/content.png'
-import review1 from '../image/burg.png'
-import review2 from '../image/ramen.png'
-import review3 from '../image/sam.png'
+import food from '../image/exam.png';
+import content from '../image/content.png';
+import review1 from '../image/burg.png';
+import review2 from '../image/ramen.png';
+import review3 from '../image/sam.png';
 
 const contentList = [{
     id: 1,
@@ -81,18 +77,6 @@ const MagazineDetail = () => {
 
     const router = useRouter();
 
-    const [toggleInfo, setToggleInfo] = useState('');
-
-    const user = useSelector(state => state.auth.user);
-
-    useEffect(()=>{
-        if(user && user.toggle == '명륜'){
-            setToggleInfo(true)
-        } else {
-            setToggleInfo(false)
-        }
-    },[])
-
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -100,15 +84,15 @@ const MagazineDetail = () => {
             <Grid>
                 <div style={{position:'relative'}}>
                     <div style={{position:'absolute',zIndex:'3', top:'15px', left: '15px'}} onClick={()=>{router.push('/magazine')}}>
-                        <Image width={29} height={29} src={arrowPrev}></Image>
+                        <Image width={29} height={29} src={arrowPrev} layout='fixed' ></Image>
                     </div>
                     <div style={{position:'absolute',zIndex:'3', bottom: '35px'}}>
                         <Typography fontSize='12px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
                         <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>화려한 축제가 끝나고</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">가기 좋은 성대 술집 5곳</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">가기 좋은 성대 술집 6곳</Typography>
                     </div>
                     <div style={{position:'relative', width:'100%', height:'100%'}}>
-                        <Image src={content}/>
+                        <Image src={content} placeholder='blur' />
                     </div>
                 </div>
                 <div style={{position:'relative'}}>
@@ -117,7 +101,7 @@ const MagazineDetail = () => {
                         <Grid key={index} sx={{mt: '30px', ml: '15px',color: '#2E2E2E'}}>
                             <Typography sx={{fontWeight: '700', fontSize: '18px'}}>{item.name}</Typography>
                             <Grid item sx={{display: 'flex' }}>
-                                <Image src={position} width={13} height={14}></Image>
+                                <Image src={position} width={13} height={14} layout='fixed' ></Image>
                                 <Typography sx={{fontWeight: '500', fontSize: '13px', p: '0 4px'}}>{item.place}</Typography>
                                 <Typography sx={{fontWeight: '400', fontSize: '13px', color: '#BABABA'}}>{item.category}</Typography>
                             </Grid>
@@ -125,7 +109,7 @@ const MagazineDetail = () => {
                             <Grid item style={{overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', marginTop:'20px'}}>
                                 {contentImages.map((contentImage, index) => (
                                     <Grid item key={index} style={{ display: 'inline-block', flexShrink: 0, paddingRight: '5px', position: 'relative'}} >
-                                        <Image key={index} height={150} width={150} src={contentImage} alt="contentImg" 
+                                        <Image key={index} height={150} width={150} src={contentImage} alt="contentImg" layout='fixed' placeholder='blur'
                                         style={{ 
                                             objectFit: 'cover', 
                                             objectPosition: 'center center',
@@ -137,7 +121,7 @@ const MagazineDetail = () => {
                             
                             <Grid container sx={{ mt: "15px", alignItems: "flex-start"}}>
                                 <Grid item xs={2}>
-                                    <Image src={character} width={50} height={42}></Image>
+                                    <Image src={character} width={50} height={42} layout='fixed' placeholder='blur' ></Image>
                                 </Grid>
                                 <Grid item xs={10} sx={{ display: "flex", flexDirection: "column", mt: '14px'}}>
                                     {reviews && reviews.slice(0, 2).map((item, index) => (
@@ -171,20 +155,18 @@ const MagazineDetail = () => {
                                 </Grid>
                                 <Grid item sx={{display: 'flex', verticalAlign: 'center', justifyContent: 'flex-end',width: '100%', mr: '15px', pb: '18px'}}>
                                     <Typography sx={{fontSize: '12px', fontWeight: '700', color: '#FFCE00', pr: '8px', pt: '2px'}}>식당 정보를 더 알고 싶다면?</Typography>
-                                    <Image src={arrowNext} width={15.57} height={15} onClick={()=>{alert('식당 정보 더보기')}} />
+                                    <Image src={arrowNext} width={15.57} height={15} onClick={()=>{alert('식당 정보 더보기')}} layout='fixed' />
                                 </Grid>
                             </Grid>
                         </Grid>
                         </div>
                     ))}
                 </div>
-                
             </Grid>
         </ThemeProvider>
     )
 } 
 
-// export default MagazineDetail;
 export default dynamic(() => Promise.resolve(MagazineDetail), {
     ssr: false,
 });

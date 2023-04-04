@@ -35,7 +35,6 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                 const container = mapContainerRef.current;
 
                 if (container) {
-
                     let options;
                     if (user && user.toggle == '율전' && !selectedPlace) {
                         options = {
@@ -82,10 +81,17 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                             preventDraggable: true,
                             zoomControl: true,
                         };
-                    } else {
+                    } else if (selectedPlace) {
                         options = {
                             center : new window.kakao.maps.LatLng(selectedPlace.ycoordinate, selectedPlace.xcoordinate),
                             level: 2,
+                            preventDraggable: true,
+                            zoomControl: true,
+                        };
+                    } else {
+                        options = {
+                            center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
+                            level: 5,
                             preventDraggable: true,
                             zoomControl: true,
                         };

@@ -185,7 +185,7 @@ const chatPlace = () => {
                             <Button onClick={handleDialogOpen} style={{padding:'0px', margin:'25px 0px 0px 0px', fontSize:'12px', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration:'underline'}}>약속 장소 삭제하기</Button>
                         </div>
                     </Container>
-                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'600px', zIndex: calendarOpen ? 0 : 2}}>
+                    <Container style={{justifyContent:'center', position: "absolute", bottom: 0, width:'100%', maxWidth:'420px', zIndex: calendarOpen ? 0 : 2}}>
                         <div onClick={handleSubmit} style={{ textAlign:'center', marginBottom:'53px', cursor: 'pointer'}}>
                             <Image src={check} width={300} height={56} placeholder="blur" layout='fixed' />
                         </div>

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -99,12 +100,19 @@ public class PushTokenService {
     }
 
     @Transactional
-    public Subscription toSubscription(AppUser user) {
+    public Subscription toSubscription(AppUser user, String type) {
         PushToken pushToken = pushTokenRepo.findByUser(user);
 
-        if (pushToken == null || !pushToken.isChatAlarm()) {
+        if (pushToken == null) {
             return null;
         }
+        if (type.equals("chat") && !pushToken.isChatAlarm()) {
+            return null;
+        }
+        if (type.equals("info") && !pushToken.isInfoAlarm()) {
+            return null;
+        }
+
         Subscription.Keys keys = new Subscription.Keys(pushToken.getP256dh(), pushToken.getAuth());
         Subscription subscription = new Subscription(pushToken.getEndpoint(), keys);
         return subscription;

@@ -111,8 +111,8 @@ export default function MessageTab() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'transparent',  backgroundColor:'white',maxWidth:'600px', zIndex: '10'}}>
-        <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example" sx={{position: 'fixed',width:'100%', pt: '15px', backgroundColor:'white'}}>
+      <Box sx={{ borderBottom: 1, borderColor: 'transparent',  backgroundColor:'white', zIndex: '10'}}>
+        <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example" sx={{position: 'fixed',width:'100%', pt: '15px', backgroundColor:'white', maxWidth: '420px'}}>
           <Tab style={{color:value===0? '#565656':'#BABABA', fontWeight:value===0? '700':'500', fontSize:"15px"}} label="채팅방" {...a11yProps(0)} />
           <Tab style={{color:value===1? '#565656':'#BABABA', fontWeight:value===1? '700':'500', fontSize:"15px"}} label="밥약 신청" {...a11yProps(1)} />
         </Tabs>
@@ -232,9 +232,9 @@ export default function MessageTab() {
             }
           </>
           : (
-            <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', marginLeft:'-20px', paddingTop: window.innerHeight/3,color:"#FFE885"}}>
-            <CircularProgress color="inherit" size={60}/>
-          </div>
+            <div style={{position:'fixed', zIndex:'4', height:'100%', width:'100%',textAlign:'center', marginLeft:'-20px', paddingTop: window.innerHeight/3,color:"#FFE885", maxWidth: '420px'}}>
+              <CircularProgress color="inherit" size={60}/>
+            </div>
           )
         }
       </TabPanel>

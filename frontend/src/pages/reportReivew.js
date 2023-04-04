@@ -11,6 +11,7 @@ import blank from '../image/chat/check_box_outline_blank.png';
 import checked from '../image/chat/check_box.png'
 import { enroll_report } from "../actions/report/report";
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
 
 const reportReview = () => {
 
@@ -69,7 +70,7 @@ const reportReview = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-                <Container style={{padding:'0px', margin:'50px 0px 0px 0px', overflow:'hidden'}}>
+                <Container style={{padding:'0px', margin:'50px 0px 0px 0px', overflow:'hidden', maxWidth: '420px'}}>
                     <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
                         <Card elevation={0} style={{
                             position: 'fixed',
@@ -77,9 +78,9 @@ const reportReview = () => {
                             width: '100%',
                             height: '98px',
                             zIndex: '4',
-                            border: 'none',
+                            border: 'none'
                         }}>
-                            <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center', maxWidth: '420px'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px'}}>
                                     <Image src={back} width={12} height={20} name='back' onClick={handleBack} layout='fixed' />
                                 </Grid>

@@ -425,8 +425,7 @@ const list = () => {
                     </Typography>
             </TransparentDialog>
             <UpperBar />
-            <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'600px', overflow: 'hidden'}}>
-                
+            <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'420px' }}>
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
                     <SearchBox openID={openID} handleFocus={handleFocus}/> 
                     <div style={{position:'relative', width:'100%'}}>

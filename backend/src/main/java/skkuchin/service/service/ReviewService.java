@@ -50,8 +50,8 @@ public class ReviewService {
                 .stream()
                 .map(review -> new ReviewDto.AdminResponse(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
-                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList())
+                        reviewTagRepo.findByReview(review),
+                        reviewImageRepo.findByReview(review)
                 ))
                 .collect(Collectors.toList());
     }
@@ -59,10 +59,8 @@ public class ReviewService {
     @Transactional
     public ReviewDto.Response getDetail(Long reviewId) {
         Review review = reviewRepo.findById(reviewId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 리뷰입니다"));
-        List<ReviewTag> reviewTags = reviewTagRepo.findByReview(review)
-                .stream().collect(Collectors.toList());
-        List<ReviewImage> reviewImages = reviewImageRepo.findByReview(review)
-                .stream().collect(Collectors.toList());
+        List<ReviewTag> reviewTags = reviewTagRepo.findByReview(review);
+        List<ReviewImage> reviewImages = reviewImageRepo.findByReview(review);
         return new ReviewDto.Response(review, reviewTags, reviewImages);
     }
 
@@ -192,8 +190,8 @@ public class ReviewService {
                 .stream()
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
-                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList()))
+                        reviewTagRepo.findByReview(review),
+                        reviewImageRepo.findByReview(review))
                 ).collect(Collectors.toList());
     }
 
@@ -202,8 +200,8 @@ public class ReviewService {
         return reviewRepo.findByUser(user)
                 .stream().map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
-                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList()))
+                        reviewTagRepo.findByReview(review),
+                        reviewImageRepo.findByReview(review))
                 ).collect(Collectors.toList());
     }
 
@@ -214,8 +212,8 @@ public class ReviewService {
                 .filter(review -> review.getUser().getId() == userId)
                 .map(review -> new ReviewDto.Response(
                         review,
-                        reviewTagRepo.findByReview(review).stream().collect(Collectors.toList()),
-                        reviewImageRepo.findByReview(review).stream().collect(Collectors.toList())
+                        reviewTagRepo.findByReview(review),
+                        reviewImageRepo.findByReview(review)
                 ))
                 .collect(Collectors.toList());
     }
@@ -233,7 +231,7 @@ public class ReviewService {
 
             List<AppUser> users = userRepo.findAll();
 
-            String imageUrl = this.startUrl + this.prefix + CATEGORY + "/p4v9hOJorE9sAR9clE068RRB.jpeg";
+//            String imageUrl = this.startUrl + this.prefix + CATEGORY + "/p4v9hOJorE9sAR9clE068RRB.jpeg";
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject temp = (JSONObject) jsonArray.get(i);
@@ -241,8 +239,8 @@ public class ReviewService {
                 Place place = placeRepo.findById(dto.getPlaceId()).orElseThrow();
                 Review review = dto.toEntity(users.get(i%2), place);
                 reviewRepo.save(review);
-                ReviewImage reviewImage = ReviewImage.builder().review(review).url(imageUrl).build();
-                reviewImageRepo.save(reviewImage);
+//                ReviewImage reviewImage = ReviewImage.builder().review(review).url(imageUrl).build();
+//                reviewImageRepo.save(reviewImage);
 
                 List<ReviewTag> reviewTags = dto.getTags().stream()
                         .map(k -> {

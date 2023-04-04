@@ -96,7 +96,7 @@ const myFavorite = () => {
             <CssBaseline/>
             <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'0px'}}>
                 <div style={{position: 'absolute',}}>
-                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'87px', maxWidth:'600px'}} >
+                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'87px', maxWidth:'420px'}} >
                 <Card style={{
                             // position: 'absolute',
                             top: '0px',

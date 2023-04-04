@@ -206,7 +206,7 @@ const EnrollReview = () => {
                             position: 'fixed',
                             top: '0px',
                             width: '100%',
-                            maxWidth: '600px',
+                            maxWidth: '420px',
                             height: '98px',
                             zIndex: '4',
                             border: 'none',
@@ -228,7 +228,7 @@ const EnrollReview = () => {
             </Container>
             
             {/* Content */}
-            <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
+            <Container component="main" style={{listStyleType: "none"}}>
                 <Grid container style={{padding: '10px 15px'}}>
                     <Grid style={{width:'100%'}}>
                         <CardContent>
@@ -281,7 +281,7 @@ const EnrollReview = () => {
 
                             <Grid sx={{width: '100%'}}>
                                 <div style={{margin: '-20px -20px 0', padding: '13px 0px 10px 0px',borderBottom: '2px solid rgba(217, 217, 217, 0.54)'}}>
-                                <Grid container style={{margin: '13px 0px 11px 0px',  justifyContent: 'center', maxWidth:'350px'}}>
+                                <Grid container style={{margin: '13px 0px 11px 0px',  justifyContent: 'center'}}>
                                     <Grid style={{marginRight:'8px'}}>
                                         <Image
                                             src={tagChoose['맛집'] ? tag1on : tag1}
@@ -391,16 +391,16 @@ const EnrollReview = () => {
                                     <Box
                                     component="form"
                                     noValidate
-                                    sx={{'& .MuiTextField-root': { m: 1, width: '80vw' }, justifyContent:'center', alignItems:'center'}}>
+                                    sx={{'& .MuiTextField-root': { m: 1, width: '80vw', maxWidth: '372px' }, justifyContent:'center', alignItems:'center'}}>
                                         <TextField
-                                        id="outlined-multiline-statiic"
-                                        multiline
-                                        rows={7}
-                                        label="솔직한 리뷰를 써주세요 :)"
-                                        value={textReview}
-                                        onChange={(e)=>{setTextReview(e.target.value)}}
-                                        maxLength={60}
-                                        />
+                                            id="outlined-multiline-statiic"
+                                            multiline
+                                            rows={7}
+                                            label="솔직한 리뷰를 써주세요 :)"
+                                            value={textReview}
+                                            onChange={(e)=>{setTextReview(e.target.value)}}
+                                            maxLength={60}
+                                    />
                                 </Box>
                                 </Grid>
                             </Grid>
