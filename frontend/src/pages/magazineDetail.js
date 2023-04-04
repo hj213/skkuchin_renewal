@@ -199,9 +199,9 @@ const MagazineDetail = () => {
                                     ))}
                                     <Typography sx={{fontSize: '8px', fontWeight: '400', color: '#BABABA', textAlign: 'right', m: '5px 15px 25px 0'}}>*출처: 스꾸친 및 네이버 리뷰</Typography>
                                 </Grid>
-                                <Grid item sx={{display: 'flex', verticalAlign: 'center', justifyContent: 'flex-end',width: '100%', mr: '15px', pb: '18px'}}>
-                                    <Typography sx={{fontSize: '12px', fontWeight: '700', color: '#FFCE00', pr: '8px', pt: '2px'}}>식당 정보를 더 알고 싶다면?</Typography>
-                                    <Image src={arrowNext} width={15.57} height={15} onClick={()=>{router.push(`/place?id=${item.id}`)}} />
+                                <Grid item sx={{display: 'flex', verticalAlign: 'center', justifyContent: 'flex-end',width: '100%', mr: '15px', pb: '18px'}} onClick={()=>{router.push(`/place?id=${item.id}`)}} >
+                                    <Typography sx={{fontSize: '12px', fontWeight: '700', color: '#FFCE00', pr: '8px', pt: '2px'}} onClic>식당 정보를 더 알고 싶다면?</Typography>
+                                    <Image src={arrowNext} width={15.57} height={15} />
                                 </Grid>
                             </Grid>
                         </Grid>
