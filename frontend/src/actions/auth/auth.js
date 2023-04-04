@@ -36,6 +36,7 @@ import {
     CHANGE_TOGGLE_NOT_FOR_USER_FAIL
 } 
     from './types';
+import { clear_search_results } from '../place/place';
 
 export const register = (registerData, callback) => async dispatch => {
     const body = JSON.stringify(registerData);
@@ -547,10 +548,11 @@ export const change_toggle = (campus) => async dispatch => {
         });
 
         if(res.status === 200){
+            await dispatch(clear_search_results());
             await dispatch({
                 type: CHANGE_TOGGLE_SUCCESS
             });
-            await dispatch(load_user());
+            dispatch(load_user());
         } else{
             dispatch({
                 type: CHANGE_TOGGLE_FAIL
@@ -566,6 +568,7 @@ export const change_toggle = (campus) => async dispatch => {
 
 export const change_toggle_for_not_user = (campus) => async dispatch => {
     try {
+        await dispatch(clear_search_results());
         dispatch({
             type: CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS,
             payload: campus

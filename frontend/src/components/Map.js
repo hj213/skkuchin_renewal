@@ -90,7 +90,7 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                         };
                     } else {
                         options = {
-                            center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
+                            center : new window.kakao.maps.LatLng(latitude, longitude),
                             level: 5,
                             preventDraggable: true,
                             zoomControl: true,
