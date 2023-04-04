@@ -100,7 +100,7 @@ export default function SearchBox({openID, handleFocus, handleClick}){
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div onFocus={handleOnFocus} onBlur={handleInputOnBlur}>
+            <div onFocus={handleOnFocus} onBlur={handleInputOnBlur} >
                 <div style={{marginTop:'5px'}} >
                     <Grid container style={{position:'absolute', top:'53%', left:'60%', transform: 'translate(-50%, -50%)', zIndex:'10', alignItems: 'center'}} >
                         <Grid item name="mapdrawer">

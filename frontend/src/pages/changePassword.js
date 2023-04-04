@@ -153,7 +153,7 @@ const changePassword = () => {
                 : <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
                 : null}
             </div>
-            <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 36px 50px 36px'}}>
+            <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 auto 50px auto', maxWidth: '420px'}}>
             {validPW && (password == rePassword) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
                         확인

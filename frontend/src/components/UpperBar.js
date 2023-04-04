@@ -36,8 +36,8 @@ const UpperBar = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Container disableGutters={true} maxWidth="xs" style={{height:"90px", margin:"0", padding:"0"}} overflow="hidden">
-        <div style={{ zIndex:'99', position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center", paddingBottom:'9px',borderBottom: '1.5px solid rgba(234, 234, 234, 1)', maxWidth:'600px'}}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
+        <div style={{ zIndex:'99', position: "fixed", top: 0, width: "100%", background: "white", alignContent:"center", paddingBottom:'9px',borderBottom: '1.5px solid rgba(234, 234, 234, 1)', maxWidth:'420px'}}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding:"15px 15px 0px 15px"}}>
                 <Link href="/">
                     <Image src={mainLogo} width={85} height={19} />
                 </Link>
@@ -55,7 +55,7 @@ const UpperBar = () => {
                     </div>
                 </div>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
+            <div style={{ display: "flex", justifyContent: "space-between", maxWidth:"420px", padding:"15px 15px 0px 15px"}}>
             <Link href="/">
                 <a
                     style={{

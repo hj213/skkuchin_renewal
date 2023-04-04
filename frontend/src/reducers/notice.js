@@ -8,7 +8,9 @@ import{
     MODIFY_NOTICE_FAIL,
     MODIFY_NOTICE_SUCCESS,
     ENROLL_NOTICE_FAIL,
-    ENROLL_NOTICE_SUCCESS
+    ENROLL_NOTICE_SUCCESS,
+    READ_NOTICE_SUCCESS,
+    READ_NOTICE_FAIL
 } from '../actions/notice/types'
 
 const initialState = {
@@ -60,6 +62,14 @@ const noticeReducer = (state = initialState, action) => {
                 ...state
             }
         case DELETE_NOTICE_FAIL:
+            return{
+                ...state
+            }
+        case READ_NOTICE_SUCCESS:
+            return{
+                ...state
+            }
+        case READ_NOTICE_FAIL:
             return{
                 ...state
             }

@@ -91,6 +91,7 @@ const reportChatUser = () => {
                             height: '98px',
                             zIndex: '4',
                             border: 'none',
+                            maxWidth: '420px'
                         }}>
                             <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Grid style={{padding: '0px 10px 0px 0px'}}>

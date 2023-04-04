@@ -12,27 +12,18 @@ import {
     MODIFY_NOTICE_FAIL,
     MODIFY_NOTICE_SUCCESS,
     ENROLL_NOTICE_SUCCESS,
-    ENROLL_NOTICE_FAIL
+    ENROLL_NOTICE_FAIL,
+    READ_NOTICE_SUCCESS,
+    READ_NOTICE_FAIL
 } from './types'
 
-//load_places
 export const load_notices = (callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
     
     try {
         const res = await fetch(`${API_URL}/api/notice`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -45,16 +36,12 @@ export const load_notices = (callback) => async dispatch => {
             })
             
             if (callback) callback([true, apiRes.message]);
-            
-            
         } else {
             dispatch({
                 type: LOAD_NOTICES_FAIL
             })
             
             if (callback) callback([false, apiRes.message]);
-            
-            
         }
     } catch (error) {
         dispatch({
@@ -62,29 +49,16 @@ export const load_notices = (callback) => async dispatch => {
         })
         
         if (callback) callback([false, error]);
-        
-        
     }
 }
 
-//load_place
 export const load_notice = (notice_id, callback) => async dispatch => {
-    await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/notice/${notice_id}`, {
             method: 'GET',
             headers: {
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${access}`
+                'Accept' : 'application/json'
             }
         });
 
@@ -97,16 +71,12 @@ export const load_notice = (notice_id, callback) => async dispatch => {
             })
             
             if (callback) callback([true, apiRes.message]);
-            
-            
         } else {
             dispatch({
                 type: LOAD_NOTICE_FAIL
             })
             
             if (callback) callback([false, apiRes.message]);
-            
-            
         }
     } catch (error) {
         dispatch({
@@ -114,12 +84,10 @@ export const load_notice = (notice_id, callback) => async dispatch => {
         })
         
         if (callback) callback([false, error]);
-        
-        
     };
 }
 
-export const enroll_notice = (notice_id, type, title, content, callback) => async dispatch => {
+export const enroll_notice = (notice_id, type, title, push_title, push_content, url, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -131,7 +99,7 @@ export const enroll_notice = (notice_id, type, title, content, callback) => asyn
     }
 
     const body = JSON.stringify({
-        type, title, content
+        type, title, push_title, push_content, url
     });
 
     try {
@@ -176,7 +144,7 @@ export const enroll_notice = (notice_id, type, title, content, callback) => asyn
     }
 };
 
-export const modify_notice = (notice_id, type, title, content, callback) => async dispatch => {
+export const modify_notice = (notice_id, type, title, push_title, push_content, url, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = Cookies.get('access') ?? null;
 
@@ -188,7 +156,7 @@ export const modify_notice = (notice_id, type, title, content, callback) => asyn
     }
     
     const body = JSON.stringify({
-        type, title, content
+        type, title, push_title, push_content, url
     });
 
     try {
@@ -273,6 +241,54 @@ export const delete_notice = (notice_id, callback) => async dispatch => {
     } catch(error) {
         dispatch({
             type: DELETE_NOTICE_FAIL
+        })
+        
+        if (callback) callback([false, error]);
+    }
+};
+
+export const read_notice = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/notice/read`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: READ_NOTICE_SUCCESS
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+            
+            
+        } else {
+            dispatch({
+                type: READ_NOTICE_FAIL
+            })
+            
+            if (callback) callback([false, apiRes.message]);
+            
+            
+        }
+    } catch(error) {
+        dispatch({
+            type: READ_NOTICE_FAIL
         })
         
         if (callback) callback([false, error]);

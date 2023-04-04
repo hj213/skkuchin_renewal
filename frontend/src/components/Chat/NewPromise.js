@@ -78,7 +78,7 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
                     padding: '0',
                     borderRadius: "30px",
                 }}>
-                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"22px 15px 0px 15px"}}>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"420px", padding:"22px 15px 0px 15px"}}>
                     <div style={{flex: 1}} />
                     <div style={{ display: "flex", justifyContent: "flex-end", padding:"none" }}>
                     <Image

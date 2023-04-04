@@ -34,7 +34,6 @@ const resetPassword = () => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            {/* <Container component="main" maxWidth="xs"> */}
             {
                 step === 1 && <Step1 handleNextStep={handleNextStep} setEmail={setEmail} />
             }
@@ -47,7 +46,6 @@ const resetPassword = () => {
             {
                 step === 4 && <Step4 />
             }
-            {/* </Container> */}
         </ThemeProvider>
     )
 };

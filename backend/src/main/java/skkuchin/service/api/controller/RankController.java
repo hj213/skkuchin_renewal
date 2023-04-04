@@ -19,10 +19,9 @@ public class RankController {
 
     private final RankService rankService;
 
-    @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public ResponseEntity<?> getRank(@RequestBody Map<String, String> campusMap) {
-        List<RankDto.Response> ranks = rankService.getRank(campusMap.get("campus"));
+    @GetMapping("/campus/{campus}")
+    public ResponseEntity<?> getRank(@PathVariable String campus) {
+        List<RankDto.Response> ranks = rankService.getRank(campus);
         return new ResponseEntity<>(new CMRespDto<>(1, "식당 상위 5곳 불러오기 완료", ranks), HttpStatus.OK);
     }
 

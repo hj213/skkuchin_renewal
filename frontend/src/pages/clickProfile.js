@@ -23,7 +23,7 @@ const clickProfile = () => {
     }
     
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
+        if (otherUser) {
             dispatch(load_other_matching_info(otherUser.id,([result, message]) => {
                 if (result) {
                     setLoad(true);
@@ -31,10 +31,8 @@ const clickProfile = () => {
                     setLoad(false);
                 }
             }));
-    
         }
-    
-    }, [dispatch]);
+    }, [otherUser]);
 
     const [load, setLoad] = useState('');
 

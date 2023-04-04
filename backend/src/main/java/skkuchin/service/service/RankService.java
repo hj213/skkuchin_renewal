@@ -1,12 +1,12 @@
 package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Magazine.Ranks;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.dto.RankDto;
+import skkuchin.service.repo.ImageRepo;
 import skkuchin.service.repo.PlaceRepo;
 import skkuchin.service.repo.RankRepo;
 import skkuchin.service.repo.ReviewRepo;
@@ -15,7 +15,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +22,7 @@ public class RankService {
     private final RankRepo rankRepo;
     private final PlaceRepo placeRepo;
     private final ReviewRepo reviewRepo;
+    private final ImageRepo imageRepo;
 
     @Transactional
     public List<RankDto.Response> getRank(String campus) {
@@ -33,21 +33,20 @@ public class RankService {
         if (!latestRanks.isEmpty()) {
             Ranks latestRank = latestRanks.get(0);
 
-            ranks.add(new RankDto.Response(latestRank.getPlace1(), reviewRepo.findAvgRateOfPlace(latestRank.getPlace1().getId())));
-            ranks.add(new RankDto.Response(latestRank.getPlace2(), reviewRepo.findAvgRateOfPlace(latestRank.getPlace2().getId())));
-            ranks.add(new RankDto.Response(latestRank.getPlace3(), reviewRepo.findAvgRateOfPlace(latestRank.getPlace3().getId())));
-            ranks.add(new RankDto.Response(latestRank.getPlace4(), reviewRepo.findAvgRateOfPlace(latestRank.getPlace4().getId())));
-            ranks.add(new RankDto.Response(latestRank.getPlace5(), reviewRepo.findAvgRateOfPlace(latestRank.getPlace5().getId())));
+            ranks.add(new RankDto.Response(latestRank.getPlace1(), imageRepo.findByPlace(latestRank.getPlace1()), reviewRepo.findAvgRateOfPlace(latestRank.getPlace1().getId())));
+            ranks.add(new RankDto.Response(latestRank.getPlace2(), imageRepo.findByPlace(latestRank.getPlace2()), reviewRepo.findAvgRateOfPlace(latestRank.getPlace2().getId())));
+            ranks.add(new RankDto.Response(latestRank.getPlace3(), imageRepo.findByPlace(latestRank.getPlace3()), reviewRepo.findAvgRateOfPlace(latestRank.getPlace3().getId())));
+            ranks.add(new RankDto.Response(latestRank.getPlace4(), imageRepo.findByPlace(latestRank.getPlace4()), reviewRepo.findAvgRateOfPlace(latestRank.getPlace4().getId())));
+            ranks.add(new RankDto.Response(latestRank.getPlace5(), imageRepo.findByPlace(latestRank.getPlace5()), reviewRepo.findAvgRateOfPlace(latestRank.getPlace5().getId())));
         }
         return ranks;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 ? * 2")
     @Transactional
     public void addRank() {
         addToDb("명륜");
         addToDb("율전");
-
     }
 
     @Transactional

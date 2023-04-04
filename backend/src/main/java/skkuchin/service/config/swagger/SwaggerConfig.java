@@ -217,7 +217,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant("/api/report/**")).build();
     }
 
-        @Bean
+    @Bean
     public Docket apiV12(){
         return new Docket(DocumentationType.OAS_30)
                 .useDefaultResponseMessages(false)
@@ -231,6 +231,54 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.
                         basePackage("skkuchin.service.api.controller"))
                 .paths(PathSelectors.ant("/api/appointment/**")).build();
+    }
+
+    @Bean
+    public Docket apiV13(){
+        return new Docket(DocumentationType.OAS_30)
+                .useDefaultResponseMessages(false)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
+                .groupName("notice")
+                .select()
+                .apis(RequestHandlerSelectors.
+                        basePackage("skkuchin.service.api.controller"))
+                .paths(PathSelectors.ant("/api/notice/**")).build();
+    }
+
+    @Bean
+    public Docket apiV14(){
+        return new Docket(DocumentationType.OAS_30)
+                .useDefaultResponseMessages(false)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
+                .groupName("rank")
+                .select()
+                .apis(RequestHandlerSelectors.
+                        basePackage("skkuchin.service.api.controller"))
+                .paths(PathSelectors.ant("/api/rank/**")).build();
+    }
+
+    @Bean
+    public Docket apiV15(){
+        return new Docket(DocumentationType.OAS_30)
+                .useDefaultResponseMessages(false)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
+                .groupName("push")
+                .select()
+                .apis(RequestHandlerSelectors.
+                        basePackage("skkuchin.service.api.controller"))
+                .paths(PathSelectors.ant("/api/push/**")).build();
     }
 
     // swagger에서 jwt 토큰값 넣기위한 설정

@@ -140,7 +140,7 @@ export default function MapDrawer(openID){
         onClick={handleDrawerClick(false)}
         onKeyDown={handleDrawerClick(false)}
       >   
-          <Box style={{ textAlign:'center', marginTop:'40px'}} onClick={goMyPage}>
+          <Box style={{ textAlign:'center', marginTop:'40px' }} onClick={goMyPage}>
               <Image src={ user && user.image ? src[user.image] : profile} alt='프로필' width={98} height={98} style={{borderRadius: "30px",}} placeholder="blur" layout='fixed'  />
               <div>
               <Typography style={{marginTop:'13px', fontSize:'15px', fontWeight:'700', lineHeight: '28px'}} >{user != null ? user.nickname : '로그인하기'}</Typography>

@@ -13,6 +13,9 @@ import chatRequestReducer from './chatRequest';
 import chatAlarmReducer from './chatAlarm';
 import stompClientReducer from './stompClient';
 import mapReducer from './map';
+import noticeAlarmReducer from './noticeAlarm';
+import noticeReducer from './notice';
+import rankReducer from './rank';
 
 export default combineReducers({
     auth: authReducer,
@@ -27,6 +30,9 @@ export default combineReducers({
     chatRequest: chatRequestReducer,
     chatRoom: chatRoomReducer,
     chatAlarm: chatAlarmReducer,
+    notice: noticeReducer,
+    noticeAlarm: noticeAlarmReducer,
+    rank: rankReducer,
     stompClient: stompClientReducer,
     map: mapReducer
 });

@@ -73,7 +73,7 @@ public class CandidateService {
                     .filter(Objects::nonNull)
                     .map(candidate -> new CandidateDto.Response(
                             candidate,
-                            userKeywordRepo.findByUser(candidate).stream().collect(Collectors.toList())
+                            userKeywordRepo.findByUser(candidate)
                     ))
                     .collect(Collectors.toList());
         } else {
@@ -92,7 +92,7 @@ public class CandidateService {
             return returnUsers.stream()
                     .map(returnUser -> new CandidateDto.Response(
                             returnUser,
-                            userKeywordRepo.findByUser(returnUser).stream().collect(Collectors.toList())
+                            userKeywordRepo.findByUser(returnUser)
                     ))
                     .collect(Collectors.toList());
         }

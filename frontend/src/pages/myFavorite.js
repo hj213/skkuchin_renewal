@@ -13,6 +13,7 @@ import closeIcon from '../image/close.png';
 import theme from '../theme/theme';
 import { displayReviewTag } from "../components/TagList";
 import dynamic from 'next/dynamic';
+import { clear_search_results } from '../actions/place/place';
 
 const myFavorite = () => {
     const isSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -57,8 +58,12 @@ const myFavorite = () => {
         }
     };
 
+    useEffect(() => {
+        dispatch(clear_search_results());
+    }, []);
+
     const prevOpen = useRef(open);
-    
+
     useEffect(() => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
@@ -91,7 +96,7 @@ const myFavorite = () => {
             <CssBaseline/>
             <div name="상단" style={{width:'100%', height:'100%', position:'relative', marginTop:'0px'}}>
                 <div style={{position: 'absolute',}}>
-                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'87px', maxWidth:'600px'}} >
+                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", height:'87px', maxWidth:'420px'}} >
                 <Card style={{
                             // position: 'absolute',
                             top: '0px',

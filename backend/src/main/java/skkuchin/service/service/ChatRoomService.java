@@ -316,12 +316,12 @@ public class ChatRoomService {
     }
 
     @Transactional
-    @Scheduled(cron = "* 0 * * * ?") //정각에 만료된 데이터가 삭제됨
-    public void deleteExpiredData() {
+    @Scheduled(cron = "* 0 * * * ?")
+    public void makeExpired() {
         List<ChatRoom> chatRooms = chatRoomRepo.findByExpireDateBefore(LocalDateTime.now());
-        for (int i = 0; i < chatRooms.size(); i++) {
-            if(chatRooms.get(i).getResponse().equals(ResponseType.HOLD)){
-                chatRoomRepo.delete(chatRooms.get(i));
+        for (ChatRoom chatRoom : chatRooms) {
+            if (chatRoom.getResponse().equals(ResponseType.HOLD)) {
+                chatRoom.setResponse(ResponseType.EXPIRED);
             }
         }
     }

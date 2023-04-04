@@ -16,7 +16,7 @@ import back from '../image/arrow_back_ios.png'
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import { load_reviews } from "../actions/review/review";
-import { load_place } from "../actions/place/place";
+import { clear_search_results, load_place } from "../actions/place/place";
 import morePic from '../image/morePicY.png';
 import dynamic from 'next/dynamic';
 
@@ -328,7 +328,7 @@ const PlacePage = () => {
         <CssBaseline />
             <UpperBar/>
                 {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
-                <div style={{ position: 'fixed', height:'100%', width:'100%',overflow: 'hidden'}}>  
+                <div style={{ position: 'fixed', height:'100%', width:'100%', maxWidth: "420px", backgroundColor: '#fff' }}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
                     <SearchBox openID={openID} handleFocus={handleFocus}/> 
                     <div style={{position:'relative', width:'100%'}}>
@@ -342,7 +342,7 @@ const PlacePage = () => {
     
                     {/* 카드 전체화면 채울 시, 헤더영역 */}
                 <Slide direction="up" in={open.bool} timeout={1} >
-                <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden"}}>
+                <Container fixed style={{padding: '0px 16px 0px 0px', overflow: "hidden" }}>
                         <Card elevation={0}
                         style={{
                             position: 'absolute',
@@ -413,7 +413,7 @@ const PlacePage = () => {
                     </Box>
                     )}
                     { selectedPlace && 
-                    <Container component="main" maxWidth="xs" style={{listStyleType: "none"}}>
+                    <Container component="main" style={{listStyleType: "none"}}>
                             <li key={selectedPlace.id} ref={listRef}>
                                 <>
                                 <Grid container style={{padding: '0px 15px'}}>

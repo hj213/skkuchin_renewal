@@ -32,7 +32,7 @@ const NotificationPage = () => {
                     height: '60px',
                     zIndex: '4',
                     border:'none',
-                    maxWidth:'600px'
+                    maxWidth:'420px'
                 }}>
                     <Grid container style={{padding:'30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center', backgroundColor:'white'}}>
                         <Grid style={{padding: '5px 10px 0px 0px'}}>

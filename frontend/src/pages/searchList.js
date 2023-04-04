@@ -167,9 +167,9 @@ const searchList = () => {
                 <UpperBar/>
             </div>
 
-            <div style={{position:'relative', width:'100%', height:'100%', marginTop:'80px', }}>
+            <div style={{position:'relative', width:'100%', height:'100%', marginTop:'80px'}}>
                 <div style={{position: 'absolute',}}>
-                    <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'620px', height: '85px'}}>
+                    <Container style={{ position:'fixed', zIndex:'4', padding:'0px', overflow: "hidden", maxWidth:'420px', height: '85px'}}>
                         <Card style={{
                                     position: 'absolute',
                                     top: '0px',
@@ -248,9 +248,7 @@ const searchList = () => {
                                             href={{
                                                 pathname: '/place',
                                                 query: {
-                                                    id: item.id,
-                                                    xcoordinate: item.xcoordinate,
-                                                    ycoordinate: item.ycoordinate
+                                                    id: item.id
                                                 }
                                             }}
                                             key={item.id}

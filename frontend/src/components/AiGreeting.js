@@ -185,7 +185,7 @@ const AiGreeting = () => {
     }
 
     const authLinks = (
-        <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"600px"}}>
+        <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"420px"}}>
             <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px"}}>
                 <Typography style={{fontWeight:700}}>
                     안녕하세요 &nbsp;
@@ -208,7 +208,7 @@ const AiGreeting = () => {
     );
 
     const guestLinks = (
-        <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"600px"}}>
+        <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"420px"}}>
             <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px"}}>
                 <Typography style={{fontWeight:700}}>
                     <span style={{color:"#FFCE00"}}>
@@ -251,7 +251,7 @@ const AiGreeting = () => {
                     padding: '0',
                     borderRadius: "30px",
                 }}>
-            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"600px", padding:"15px 15px 0px 15px"}}>
+            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"420px", padding:"15px 15px 0px 15px"}}>
                 <div style={{fontSize:"12px", paddingTop:"3px"}}>
                     매칭 활성화
                 </div>

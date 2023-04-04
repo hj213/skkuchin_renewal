@@ -2,12 +2,15 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.martijndwars.webpush.Subscription;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.NoticeDto;
 import skkuchin.service.domain.Notice.Notice;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.NoticeRepo;
+import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -18,12 +21,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class NoticeService {
     private final NoticeRepo noticeRepo;
+    private final UserRepo userRepo;
+    private final PushTokenService pushTokenService;
 
     public List<NoticeDto.Response> getAll() {
 
         return noticeRepo.findAll()
                 .stream()
-                .map(notice -> new NoticeDto.Response(notice))
+                .map(NoticeDto.Response::new)
                 .collect(Collectors.toList());
     }
 
@@ -36,6 +41,17 @@ public class NoticeService {
     @Transactional
     public void add(NoticeDto.Request dto) {
         Notice notice = dto.toEntity();
+
+        if (notice.getPushTitle().isBlank() || notice.getPushContent().isBlank()) {
+            List<AppUser> users = userRepo.findAll();
+            for (AppUser user : users) {
+                Subscription subscription = pushTokenService.toSubscription(user, "info");
+
+                if (subscription != null) {
+                    pushTokenService.sendNotification(subscription, notice.getPushTitle(), notice.getPushContent());
+                }
+            }
+        }
         noticeRepo.save(notice);
     }
 
@@ -49,5 +65,44 @@ public class NoticeService {
     @Transactional
     public void delete(Long noticeId) {
         noticeRepo.deleteById(noticeId);
+    }
+
+    @Transactional
+    public void readNotice(AppUser user) {
+        List<Notice> notices = noticeRepo.findAll();
+        String username = user.getUsername();
+        for (Notice notice : notices) {
+            String readUsers = notice.getReadUsers();
+            if (readUsers == null) {
+                notice.setReadUsers(username);
+            } else if (!readUsers.contains(username)) {
+                notice.setReadUsers(readUsers + "," + user.getUsername());
+            }
+        }
+    }
+
+    @Transactional
+    public void makePush(NoticeDto.DirectPush dto) {
+        List<AppUser> users = userRepo.findAll();
+        for (AppUser user : users) {
+            Subscription subscription = pushTokenService.toSubscription(user, "info");
+
+            if (subscription != null) {
+                pushTokenService.sendNotification(subscription, dto.getTitle(), dto.getContent());
+            }
+        }
+    }
+
+    @Transactional
+    public Boolean checkUnreadNotice(String username) {
+        List<Notice> notices = noticeRepo.findAll();
+
+        for (Notice notice : notices) {
+            String readUsers = notice.getReadUsers();
+            if (readUsers != null && !readUsers.contains(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

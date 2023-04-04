@@ -47,8 +47,8 @@ public class PlaceService {
                 .stream()
                 .map(place -> new PlaceDto.Response(
                         place,
-                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        imageRepo.findByPlace(place),
+                        reviewRepo.findByPlace(place),
                         getTop3TagsByPlace(place)
                 ))
                 .collect(Collectors.toList());
@@ -59,11 +59,9 @@ public class PlaceService {
     public PlaceDto.Response getDetail(Long placeId) {
         Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
 
-        List<Image> images = imageRepo.findByPlace(place)
-                .stream().collect(Collectors.toList());
+        List<Image> images = imageRepo.findByPlace(place);
 
-        List<Review> reviews = reviewRepo.findByPlace(place)
-                .stream().collect(Collectors.toList());
+        List<Review> reviews = reviewRepo.findByPlace(place);
 
         List<Tag> tags = getTop3TagsByPlace(place);
 
@@ -276,8 +274,8 @@ public class PlaceService {
             .stream()
             .map(place -> new PlaceDto.Response(
                     place,
-                    imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                    reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                    imageRepo.findByPlace(place),
+                    reviewRepo.findByPlace(place),
                     getTop3TagsByPlace(place)
             ))
             .collect(Collectors.toList());
@@ -299,8 +297,8 @@ public class PlaceService {
                 .stream()
                 .map(place -> new PlaceDto.Response(
                         place,
-                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        imageRepo.findByPlace(place),
+                        reviewRepo.findByPlace(place),
                         getTop3TagsByPlace(place)
                 ))
                 .collect(Collectors.toList());
@@ -322,8 +320,8 @@ public class PlaceService {
                 .stream()
                 .map(place -> new PlaceDto.Response(
                         place,
-                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        imageRepo.findByPlace(place),
+                        reviewRepo.findByPlace(place),
                         getTop3TagsByPlace(place)
                 ))
                 .collect(Collectors.toList());
@@ -349,8 +347,8 @@ public class PlaceService {
                 .stream()
                 .map(place -> new PlaceDto.Response(
                         place,
-                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        imageRepo.findByPlace(place),
+                        reviewRepo.findByPlace(place),
                         getTop3TagsByPlace(place)
                 ))
                 .collect(Collectors.toList());
@@ -376,8 +374,8 @@ public class PlaceService {
                 .stream()
                 .map(place -> new PlaceDto.Response(
                         place,
-                        imageRepo.findByPlace(place).stream().collect(Collectors.toList()),
-                        reviewRepo.findByPlace(place).stream().collect(Collectors.toList()),
+                        imageRepo.findByPlace(place),
+                        reviewRepo.findByPlace(place),
                         getTop3TagsByPlace(place)
                 ))
                 .collect(Collectors.toList());

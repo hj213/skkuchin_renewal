@@ -89,7 +89,7 @@ public class DebeziumController {
             }
 
             if (chatPermit) {
-                Subscription subscription = pushTokenService.toSubscription(user);
+                Subscription subscription = pushTokenService.toSubscription(user, "chat");
 
                 if (subscription != null) {
                     pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
@@ -141,7 +141,7 @@ public class DebeziumController {
             String pushTitle = "스꾸친";
             String pushMessage = "새로운 밥약 신청이 도착했습니다!";
 
-            Subscription subscription = pushTokenService.toSubscription(user2);
+            Subscription subscription = pushTokenService.toSubscription(user2, "chat");
 
             if (subscription != null) {
                 pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
@@ -157,7 +157,7 @@ public class DebeziumController {
                 String pushTitle = "스꾸친";
                 String pushMessage = "밥약이 성사되었습니다!";
 
-                Subscription subscription = pushTokenService.toSubscription(user1);
+                Subscription subscription = pushTokenService.toSubscription(user1, "chat");
 
                 if (subscription != null) {
                     pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
