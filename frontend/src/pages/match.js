@@ -1,14 +1,27 @@
 import { CssBaseline, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
 import theme from '../theme/theme';
 import dynamic from 'next/dynamic';
+import styled from '@emotion/styled';
 
 const Friends = dynamic(() => import('../components/Matching/Friends'));
 const UpperBar = dynamic(() => import("../components/UpperBar"));
 const AiGreeting = dynamic(() => import('../components/AiGreeting'));
 
+const MatchContainer = styled.div`
+  /* 데스크톱에서 스크롤 바를 숨김 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  /* 모바일에서 스크롤 바를 숨김 */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const MatchPage = () => {
 
     return(
+        <MatchContainer>
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar />
@@ -118,6 +131,7 @@ const MatchPage = () => {
                 </Grid>
             </Grid> */}
         </ThemeProvider>
+        </MatchContainer>
     )
 } 
 

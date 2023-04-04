@@ -138,27 +138,11 @@ const searchList = () => {
         setValue('')
         setAuto([]);
     }
-    const autoRef= useRef(null);
+
     const handleInputOnFocus = (e) => {
         setAutoBox(true);
 
     }
-
-    const handleInputOnBlur = (e) => { 
-        setAutoBox(false);
-    }
-    const NoScroll = styled.div`
-    /* 모바일에서 스크롤 바를 숨김 */
-    *::-webkit-scrollbar {
-        display: none;
-    }
-    `
-    // useEffect(()=>{
-    //     if(autoBox && autoRef.current){
-    //         autoRef.current.scrollTo({top:0});
-    //         console.log(autoRef.current.scrollTop)
-    //     }
-    // },[autoBox, autoRef.current])
 
     return(
         <ThemeProvider theme={theme} >
