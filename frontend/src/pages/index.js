@@ -546,7 +546,7 @@ const list = () => {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid style={{margin:'0px 7px 0px 7px'}}>
-                                                        <Image width={15} height={14} src={star} layout='fixed' />
+                                                        <Image width={15} height={15} src={star} layout='fixed' />
                                                     </Grid>
                                                     <Grid >
                                                         <Typography  sx={{fontSize: '10px', fontWeight:'700', marginTop:'3px'}} color="#505050" component="div">
