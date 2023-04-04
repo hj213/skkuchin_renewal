@@ -7,9 +7,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react"; 
 import { clear_search_results } from "../actions/place/place";
 import { load_rank } from '../actions/rank/rank';
+import styled from '@emotion/styled';
 
 import food from '../image/food.png';
-import star from '../image/star3.png';
 // import circles from '../image/frames.png';
 import arrow from '../image/arrow.png';
 import arrowY from '../image/arrowY.png';
@@ -101,6 +101,17 @@ const reviewM = [
     },
 ]; 
 
+const MagazineContainer = styled.div`
+  /* 데스크톱에서 스크롤 바를 숨김 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  /* 모바일에서 스크롤 바를 숨김 */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const UpperBar = dynamic(() => import('../components/UpperBar'));
 
 const Magazine = () => {
@@ -156,39 +167,40 @@ const Magazine = () => {
                     <div style={{margin:'5px 0px 21px 15px'}}>
                         <Typography color={theme.palette.fontColor.light} style={{fontSize:'11px'}}>일주일마다 업데이트 돼요!</Typography>
                     </div>
-                    <div style={{margin:'0px 0px 0px 15px'}}>
-                        
-                    <Grid container style={{  position: 'absolute', zIndex: '3', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', width: window.innerWidth <= 375 ? 360 : window.innerWidth <= 400  ? 375 :  400, }}>
-                        {rank && rank.map((item, index) => (
-                            <Grid item style={{display:'inline-block', flexShrink: 0, paddingRight: '9px'}} onClick={()=>{router.push(`/place?id=${item.place_id}`)}} >
-                                <div >
-                                    {/* 식당이미지 */}
-                                    <div style={{display: 'flex', margin:'9px 0px 0px 9px', paddingTop:'2px',position:'absolute',zIndex:'3', alignItems: 'center', justifyContent: 'center', width: '23px', height: '21.41px', borderRadius: '50%', backgroundColor: index === 3 || index === 4 ? 'rgba(186, 186, 186, 0.7)' : 'rgba(255, 206, 0, 0.7)', color:'#fff', fontSize: '13px', fontWeight: 'bold'}}>
-                                        {index+1}
-                                    </div>
-                                    <Image 
-                                        src={item.image ? item.image : food} 
-                                        width={155} 
-                                        height={155} 
-                                        layout='fixed' 
-                                        placeholder='blur' 
-                                        blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
-                                        style={{borderRadius:'20px', position:'relative'}}>
-                                    </Image>
-                                    {/* 식당이름 */}
-                                    <Typography style={{fontSize:'15px', fontWeight:'700'}} color="#2E2E2E">{item.place_name}</Typography>
-                                    {/* 식당평점 */}
-                                    <div style={{ display: "flex"}}>
-                                        <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">스꾸친 평점: &nbsp;</Typography>
-                                        <Image src={filledStar} width={15} height={15} style={{margin:''}}/>
-                                        <Typography style={{fontSize:'10px', fontWeight:'700'}} color="#2E2E2E">&nbsp; {item.rate}</Typography>
-                                        <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">&nbsp;/ 5</Typography>
-                                    </div>
-                                </div>
+                    <MagazineContainer>
+                        <div style={{margin:'0px 0px 0px 15px'}}>
+                            <Grid container style={{  position: 'absolute', zIndex: '3', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', width: window.innerWidth <= 375 ? 360 : window.innerWidth <= 400  ? 375 :  400, }}>
+                                {rank && rank.map((item, index) => (
+                                    <Grid item style={{display:'inline-block', flexShrink: 0, paddingRight: '9px'}} onClick={()=>{router.push(`/place?id=${item.place_id}`)}} >
+                                        <div >
+                                            {/* 식당이미지 */}
+                                            <div style={{display: 'flex', margin:'9px 0px 0px 9px', paddingTop:'2px',position:'absolute',zIndex:'3', alignItems: 'center', justifyContent: 'center', width: '23px', height: '21.41px', borderRadius: '50%', backgroundColor: index === 3 || index === 4 ? 'rgba(186, 186, 186, 0.7)' : 'rgba(255, 206, 0, 0.7)', color:'#fff', fontSize: '13px', fontWeight: 'bold'}}>
+                                                {index+1}
+                                            </div>
+                                            <Image 
+                                                src={item.image ? item.image : food} 
+                                                width={155} 
+                                                height={155} 
+                                                layout='fixed' 
+                                                placeholder='blur' 
+                                                blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
+                                                style={{borderRadius:'20px', position:'relative'}}>
+                                            </Image>
+                                            {/* 식당이름 */}
+                                            <Typography style={{fontSize:'15px', fontWeight:'700'}} color="#2E2E2E">{item.place_name}</Typography>
+                                            {/* 식당평점 */}
+                                            <div style={{ display: "flex"}}>
+                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">스꾸친 평점: &nbsp;</Typography>
+                                                <Image src={filledStar} width={15} height={15} style={{margin:''}}/>
+                                                <Typography style={{fontSize:'10px', fontWeight:'700'}} color="#2E2E2E">&nbsp; {item.rate}</Typography>
+                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">&nbsp;/ 5</Typography>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                ))}
                             </Grid>
-                        ))}
-                    </Grid>
-                    </div>
+                        </div>
+                    </MagazineContainer>
                 </div>
 
                 {/* 맛집 콘텐츠 */}
