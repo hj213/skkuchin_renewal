@@ -155,7 +155,7 @@ const Magazine = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar />
-            <Grid style={{marginTop:'20px',overflowX:'hidden'}}>
+            <Grid style={{overflowX:'hidden'}}>
 
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
