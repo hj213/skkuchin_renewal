@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 import character from '../image/login_enheng.png';
 import arrowPrev from '../image/arrow_forward.png';
-import arrowNext from '../image/arrowY.png';
+import arrowNext from '../image/arrow_forward2.png';
 import dynamic from 'next/dynamic';
 import position from '../../public/markers/기본_yellow.png';
 
@@ -110,10 +110,10 @@ const MagazineDetail = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar />
-            <Grid>
+            <Grid style={{overflowX:'hidden'}}>
                 <div style={{position:'relative'}}>
                     <div style={{position:'absolute',zIndex:'3', top:'15px', left: '15px'}} onClick={()=>{router.push('/magazine')}}>
-                        <Image width={29} height={29} src={arrowPrev} layout='fixed' ></Image>
+                        <Image width={19} height={18} src={arrowPrev} layout='fixed' ></Image>
                     </div>
                     <div style={{position:'absolute',zIndex:'3', bottom: '35px'}}>
                         <Typography fontSize='12px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
@@ -138,7 +138,7 @@ const MagazineDetail = () => {
                         <Grid key={index} sx={{mt: '30px', ml: '15px',color: '#2E2E2E'}}>
                             <Typography sx={{fontWeight: '700', fontSize: '18px'}}>{item.name}</Typography>
                             <Grid item sx={{display: 'flex' }}>
-                                <Image src={position} width={13} height={14} layout='fixed' ></Image>
+                                <Image src={position} width={12} height={16} layout='fixed' ></Image>
                                 <Typography sx={{fontWeight: '500', fontSize: '13px', p: '0 4px'}}>{item.place}</Typography>
                                 <Typography sx={{fontWeight: '400', fontSize: '13px', color: '#BABABA'}}>{item.category}</Typography>
                             </Grid>
@@ -167,7 +167,7 @@ const MagazineDetail = () => {
                             
                             <Grid container sx={{ mt: "15px", alignItems: "flex-start"}}>
                                 <Grid item xs={2}>
-                                    <Image src={character} width={50} height={42} layout='fixed' placeholder='blur' ></Image>
+                                    <Image src={character} width={50} height={36} layout='fixed' placeholder='blur' ></Image>
                                 </Grid>
                                 <Grid item xs={10} sx={{ display: "flex", flexDirection: "column", mt: '14px'}}>
                                     {item.reviews.map((review, index) => (
@@ -201,7 +201,7 @@ const MagazineDetail = () => {
                                 </Grid>
                                 <Grid item sx={{display: 'flex', verticalAlign: 'center', justifyContent: 'flex-end',width: '100%', mr: '15px', pb: '18px'}} onClick={()=>{router.push(`/place?id=${item.id}`)}} >
                                     <Typography sx={{fontSize: '12px', fontWeight: '700', color: '#FFCE00', pr: '8px', pt: '2px'}} onClic>식당 정보를 더 알고 싶다면?</Typography>
-                                    <Image src={arrowNext} width={15.57} height={15} />
+                                    <Image src={arrowNext} width={20} height={14} />
                                 </Grid>
                             </Grid>
                         </Grid>

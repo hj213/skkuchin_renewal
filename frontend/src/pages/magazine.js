@@ -9,7 +9,7 @@ import { clear_search_results } from "../actions/place/place";
 import { load_rank } from '../actions/rank/rank';
 
 import food from '../image/food.png';
-import star from '../image/star3.png';
+import star from '../image/magazineStar.png';
 import circles from '../image/frames.png';
 import arrow from '../image/arrow.png';
 import arrowY from '../image/arrowY.png';
@@ -144,7 +144,7 @@ const Magazine = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar />
-            <Grid style={{marginTop:'20px'}}>
+            <Grid style={{marginTop:'20px',overflowX:'hidden'}}>
 
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
@@ -180,7 +180,7 @@ const Magazine = () => {
                                     {/* 식당평점 */}
                                     <div style={{ display: "flex"}}>
                                         <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">스꾸친 평점: &nbsp;</Typography>
-                                        <Image src={star} width={15} height={3} style={{margin:''}}/>
+                                        <Image src={filledStar} width={15} height={15} style={{margin:''}}/>
                                         <Typography style={{fontSize:'10px', fontWeight:'700'}} color="#2E2E2E">&nbsp; {item.rate}</Typography>
                                         <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">&nbsp;/ 5</Typography>
                                     </div>
@@ -189,7 +189,6 @@ const Magazine = () => {
                         ))}
                     </Grid>
                     </div>
-                    
                 </div>
 
                 {/* 맛집 콘텐츠 */}
