@@ -189,7 +189,6 @@ const Magazine = () => {
                         ))}
                     </Grid>
                     </div>
-                    
                 </div>
 
                 {/* 맛집 콘텐츠 */}
