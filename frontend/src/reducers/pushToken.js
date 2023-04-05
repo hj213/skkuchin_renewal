@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import {
     LOAD_PUSHTOKEN_SUCCESS,
     LOAD_PUSHTOKEN_FAIL,
@@ -51,6 +52,8 @@ const pushTokenReducer = (state= initialState, action) => {
             return {
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

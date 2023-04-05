@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import {
     LOAD_MENU_FAIL,
     LOAD_MENU_SUCCESS,
@@ -57,6 +58,8 @@ const menuReducer = (state= initialState, action) => {
                 ...state,
                 menu: null
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

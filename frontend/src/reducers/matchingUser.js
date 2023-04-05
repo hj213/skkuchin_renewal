@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import {
     ADD_MATCHING_INFO_SUCCESS,
     ADD_MATCHING_INFO_FAIL,
@@ -62,6 +63,8 @@ const matchingUserReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

@@ -6,6 +6,7 @@ import {
     GET_CHAR_ALARM_INFO_SUCCESS,
     GET_CHAR_ALARM_INFO_FAIL,
 } from '../actions/chat/types'
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 
 const initialState = {
     chatAlarm: null,
@@ -44,6 +45,8 @@ const chatAlarmReducer = (state= initialState, action) => {
             return {
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

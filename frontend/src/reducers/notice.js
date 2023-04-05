@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import{
     LOAD_NOTICE_FAIL,
     LOAD_NOTICE_SUCCESS,
@@ -73,6 +74,8 @@ const noticeReducer = (state = initialState, action) => {
             return{
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     }

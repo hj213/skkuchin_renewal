@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import{
     LOAD_REVIEW_FAIL,
     LOAD_REVIEW_SUCCESS,
@@ -73,6 +74,8 @@ const reviewReducer = (state = initialState, action) => {
                 ...state,
                 myReview: null
             };
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     }

@@ -10,6 +10,7 @@ import {
     PASSWORD_EMAIL_CHECK_SUCCESS,
     PASSWORD_EMAIL_CHECK_FAIL
 } from '../actions/auth/types';
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 
 const initialState = {
     isAuthenticated: false
@@ -60,6 +61,8 @@ const emailReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };
