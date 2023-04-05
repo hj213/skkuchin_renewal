@@ -17,10 +17,9 @@ import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
-import skkuchin.service.service.ChatMessageService;
-import skkuchin.service.service.ChatRoomService;
-import skkuchin.service.service.PushTokenService;
+import skkuchin.service.service.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +32,8 @@ public class DebeziumController {
     private final ChatMessageService chatMessageService;
     private final ChatRoomRepo chatRoomRepo;
     private final PushTokenService pushTokenService;
+    private final UserService userService;
+    private final NoticeService noticeService;
 
     @Transactional
     @KafkaListener(topics = "dbserver.service.chat_message")
@@ -200,6 +201,42 @@ public class DebeziumController {
 
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user1",user2Dto);
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user2",user1Dto);
+            }
+        }
+    }
+
+    @Transactional
+    @KafkaListener(topics = "dbserver.service.notice")
+    public void listenNotice(@Payload(required = false) String message) throws Exception{
+        System.out.println("kafka consume test topic : "  + message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        DebeziumDto.NoticeRequest dto= objectMapper.readValue(message, DebeziumDto.NoticeRequest.class);
+
+        if (dto.getPayload().getOp().equals("c")) {
+            List<AppUser> users = userService.getAllUsers();
+
+            for (AppUser user : users) {
+                String username = user.getUsername();
+                template.convertAndSend(CHAT_EXCHANGE_NAME,"notice."+username, true);
+            }
+        } else if (dto.getPayload().getOp().equals("u")) {
+            String readUsersBefore = dto.getPayload().getBefore().getReadUsers();
+            String readUsersAfter = dto.getPayload().getAfter().getReadUsers();
+            if (readUsersBefore == null && readUsersAfter != null) {
+                Boolean alarm = noticeService.checkUnreadNotice(readUsersAfter);
+                template.convertAndSend(CHAT_EXCHANGE_NAME,"notice."+readUsersAfter, alarm);
+            } else if (readUsersBefore != null && !Objects.equals(readUsersBefore, readUsersAfter)) {
+                String[] beforeArray = readUsersBefore.split(",");
+                String[] afterArray = readUsersAfter.split(",");
+                for (String username : afterArray) {
+                    if (!Arrays.asList(beforeArray).contains(username)) {
+                        Boolean alarm = noticeService.checkUnreadNotice(username);
+                        template.convertAndSend(CHAT_EXCHANGE_NAME,"notice."+username, alarm);
+                        break;
+                    }
+                }
             }
         }
     }

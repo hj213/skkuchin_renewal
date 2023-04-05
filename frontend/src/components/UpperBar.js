@@ -8,6 +8,7 @@ import mainLogo from '../image/upperBar/mainLogo.png'
 import messageIcon from '../image/upperBar/message_X.png'
 import notiIcon from '../image/upperBar/notification_X.png'
 import messageOnIcon from '../image/upperBar/message.png'
+import notiOnIcon from '../image/upperBar/notification.png'
 import Image from 'next/image'
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
@@ -15,6 +16,7 @@ import { useSelector } from 'react-redux';
 const UpperBar = () => {
     const [selected, setSelected] = useState("스꾸맵");
     const chatAlarm = useSelector(state => state.chatAlarm.chatAlarm);
+    const noticeAlarm = useSelector(state => state.noticeAlarm.noticeAlarm);
     const user = useSelector(state => state.auth.user);
 
     // 0226 myPage 적용 안되는 문제 수정 완료
@@ -50,7 +52,7 @@ const UpperBar = () => {
                     </div>
                     <div>
                         <Link href="/notification">
-                            <Image src={notiIcon} width={24} height={24}/>
+                            <Image src={noticeAlarm ? notiOnIcon : notiIcon} width={24} height={24}/>
                         </Link>
                     </div>
                 </div>

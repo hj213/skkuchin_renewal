@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
+import lombok.Setter;
 import skkuchin.service.domain.Notice.Notice;
 import skkuchin.service.domain.Notice.NoticeType;
 
@@ -76,5 +77,13 @@ public class NoticeDto {
                 return date.format(DateTimeFormatter.ofPattern("yyyy년 M월 d일", Locale.KOREAN));
             }
         }
+    }
+
+    @Getter
+    @Setter
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class DebeziumDto {
+        @JsonProperty
+        private String readUsers;
     }
 }

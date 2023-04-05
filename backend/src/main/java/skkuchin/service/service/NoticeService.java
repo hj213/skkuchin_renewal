@@ -99,7 +99,10 @@ public class NoticeService {
 
         for (Notice notice : notices) {
             String readUsers = notice.getReadUsers();
-            if (readUsers != null && !readUsers.contains(username)) {
+            if (readUsers == null) {
+                return true;
+            }
+            if (!readUsers.contains(username)) {
                 return true;
             }
         }
