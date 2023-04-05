@@ -28,6 +28,7 @@ import {
     GET_CHAT_ROOM_FOR_NOT_USER_SUCCESS,
     GET_CHAT_ROOM_FOR_NOT_USER_FAIL
 } from '../actions/chat/types'
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 
 const initialState = {
     requestId: null,
@@ -157,6 +158,8 @@ const chatRoomReducer = (state= initialState, action) => {
             return {
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

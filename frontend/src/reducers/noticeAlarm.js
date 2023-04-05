@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import {
     GET_REALTIME_NOTICE_ALARM_SUCCESS,
     GET_REALTIME_NOTICE_ALARM_FAIL,
@@ -44,6 +45,8 @@ const noticeAlarmReducer = (state= initialState, action) => {
             return {
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

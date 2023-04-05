@@ -14,6 +14,7 @@ import {
     CLEAR_CHAT_SUCCESS,
     CLEAR_CHAT_FAIL
 } from '../actions/chat/types'
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 
 const initialState = {
     messages: null,
@@ -90,6 +91,8 @@ const chatMessageReducer = (state= initialState, action) => {
             return {
                 ...state
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

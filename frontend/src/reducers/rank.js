@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import {
     LOAD_RANK_SUCCESS,
     LOAD_RANK_FAIL
@@ -21,6 +22,8 @@ const rankReducer = (state = initialState, action) => {
                 ...state,
                 rank: null
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

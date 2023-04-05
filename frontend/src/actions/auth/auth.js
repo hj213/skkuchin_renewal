@@ -135,7 +135,6 @@ export const login = (username, password, callback) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try {
-        await dispatch(change_toggle_for_not_user('명륜'));
         dispatch({
             type: LOGOUT_SUCCESS
         });
@@ -143,14 +142,16 @@ export const logout = () => async dispatch => {
         if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
             navigator.serviceWorker.ready.then((reg) => {
                 reg.pushManager.getSubscription().then((subscription) => {
-                    subscription
-                    .unsubscribe()
-                    .then((successful) => {
-                    // You've successfully unsubscribed
-                    })
-                    .catch((e) => {
-                        console.log(e)
-                    });
+                    if (subscription) {
+                        subscription
+                        .unsubscribe()
+                        .then((successful) => {
+                        // You've successfully unsubscribed
+                        })
+                        .catch((e) => {
+                            console.log(e)
+                        });
+                    }
                 });
             });
         }

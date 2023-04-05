@@ -1,3 +1,4 @@
+import { LOGOUT_SUCCESS } from '../actions/auth/types';
 import {
     LOAD_PLACE_SUCCESS,
     LOAD_PLACE_FAIL,
@@ -130,6 +131,8 @@ const placeReducer = (state= initialState, action) => {
                 searchplace: null,
                 place: null
             };
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     };

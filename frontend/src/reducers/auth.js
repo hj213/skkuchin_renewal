@@ -76,7 +76,8 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthenticated: false,
-                user: null
+                user: null,
+                toggle_for_not_user: '명륜'
             }
         case LOGOUT_FAIL:
             return {
