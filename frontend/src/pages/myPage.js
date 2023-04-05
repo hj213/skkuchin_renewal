@@ -7,6 +7,7 @@ import theme from '../theme/theme';
 import next from '../image/arrow_next.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
 import { logout } from '../actions/auth/auth';
+import { getSubscription } from '../utils/getSubscription';
 
 // 스위치
 import { styled } from '@mui/material/styles';
@@ -59,15 +60,30 @@ const myPage = () => {
         setDialogOpen(false);
     }
 
+    const notify = () => {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                getSubscription();
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
     const handleChatToggle = (e) => {
         if (pushToken) {
             dispatch(set_chat_push(!chatAlarm))
+        } else {
+            notify();
         }
     }
 
     const handleNoticeToggle = (e) => {
         if (pushToken) {
             dispatch(set_info_push(!infoAlarm))
+        } else {
+            notify();
         }
     }
 
@@ -230,7 +246,6 @@ const myPage = () => {
                         control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} onClick={handleChatToggle} />}
                     />
                 </div>
-                
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
                     <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>스꾸친 공지/이벤트 알림</Typography>
                     {/* 토글 스위치 */}
