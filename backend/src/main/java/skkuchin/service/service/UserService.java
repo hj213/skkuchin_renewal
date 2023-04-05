@@ -217,6 +217,11 @@ public class UserService {
     }
 
     @Transactional
+    public List<AppUser> getAllUsers() {
+        return userRepo.findAll();
+    }
+
+    @Transactional
     public void saveTestMatchingUsers(int count) {
         for (int i = 1; i <= count; i++) {
             UserDto.SignUpForm signUpForm = new UserDto.SignUpForm(
@@ -268,11 +273,5 @@ public class UserService {
                     .collect(Collectors.toList());
             userKeywordRepo.saveAll(userKeywords);
         }
-    }
-
-    @Transactional
-    public UserDto.chatRoomResponse getChatRoomUser(String username) {
-        AppUser user = userRepo.findByUsername(username);
-        return new UserDto.chatRoomResponse(user);
     }
 }

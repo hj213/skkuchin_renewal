@@ -16,7 +16,6 @@ public class DebeziumDto {
         public static class Payload {
             private UserDto.DebeziumDto after;
             private String op;
-
         }
     }
 
@@ -30,7 +29,6 @@ public class DebeziumDto {
         public static class Payload {
             private ChatMessageDto.DebeziumDto after;
             private String op;
-
         }
     }
     @Getter
@@ -44,7 +42,20 @@ public class DebeziumDto {
             private ChatRoomDto.DebeziumDto before;
             private ChatRoomDto.DebeziumDto after;
             private String op;
+        }
+    }
 
+    @Getter
+    @Setter
+    public static class NoticeRequest {
+        private Payload payload;
+
+        @Getter
+        @Setter
+        public static class Payload {
+            private NoticeDto.DebeziumDto before;
+            private NoticeDto.DebeziumDto after;
+            private String op;
         }
     }
 }

@@ -24,22 +24,22 @@ const noticeReducer = (state = initialState, action) => {
         case LOAD_NOTICE_SUCCESS:
             return{
                 ...state,
-                review: payload
+                notice: payload
             }
         case LOAD_NOTICE_FAIL:
             return{
                 ...state,
-                review: null
+                notice: null
             }
         case LOAD_NOTICES_SUCCESS:
             return{
                 ...state,
-                review: payload
+                notice: payload
             }
         case LOAD_NOTICES_FAIL:
             return{
                 ...state,
-                review: null
+                notice: null
             }
         case ENROLL_NOTICE_SUCCESS:
             return{

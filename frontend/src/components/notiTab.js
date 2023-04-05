@@ -53,7 +53,7 @@ export default function MessageTab() {
     useEffect(() => {
         dispatch(load_notices(([result, message]) => {
             if (result && user) {
-                read_notice();
+                dispatch(read_notice());
             }
         }));
     }, [])
@@ -79,9 +79,9 @@ export default function MessageTab() {
             </Box>
             <TabPanel value={value} index={0}>
                 <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
-                    {filteredNotices?.map((notice, index) => (
+                    {filteredNotices?.slice().reverse().map((notice, index) => (
                         <li key={index}>
-                            <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
+                            <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} onClick={() => notice.url.trim().length !== 0 && window.open(notice.url, '_blank')} >
                                 <Grid xs={1} style={{marginTop:'11px', paddingLeft:'5px'}}>
                                     <Image src={bell} width={15} height={15} />
                                 </Grid>
@@ -104,25 +104,25 @@ export default function MessageTab() {
                                         <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
                                             {notice.create_date}
                                         </Typography>
-                                        {/* {
-                                            user && index===0 && !notice.read_users.includes(user.username) &&
-                                            <div
-                                                style={{
-                                                    margin:'0 0 0 auto',
-                                                    width:'fit-content',
-                                                    height:'20px',
-                                                    backgroundColor: '#FFCE00',
-                                                    borderRadius: '15px',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center'
-                                                }}
-                                            >
+                                        <div
+                                            style={{
+                                                margin:'0 0 0 auto',
+                                                width:'fit-content',
+                                                height:'20px',
+                                                backgroundColor: '#FFCE00',
+                                                borderRadius: '15px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center'
+                                            }}
+                                        >
+                                        {
+                                            user && index===0 && !notice.read_users?.includes(user.username) &&
                                                 <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
                                                     NEW
                                                 </Typography>
-                                            </div>
-                                        } */}
+                                        }
+                                        </div>
                                     </Stack>
                                 </Grid>
                             </Grid>
@@ -132,9 +132,9 @@ export default function MessageTab() {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <ul style={{listStyle:'none', paddingLeft:'0', paddingTop:'50px'}}>
-                    {filteredEvents?.map((event, index) => (
+                    {filteredEvents?.slice().reverse().map((event, index) => (
                         <li key={index}>
-                            <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}}>
+                            <Grid container style={{width:"100%",padding:"8px 0 13px 0", justifyContent:'left', borderBottom:"1px solid #F0F0F0"}} onClick={() => event.url.trim().length !== 0 && window.open(event.url, '_blank')} >
                                 <Grid xs={1} style={{marginTop:'11px', paddingLeft:'5px'}}>
                                     <Image src={hurray} width={15} height={17} />
                                 </Grid>
@@ -156,25 +156,25 @@ export default function MessageTab() {
                                         <Typography sx={{paddingRight:"2px",fontSize: '9px', fontWeight:'500', lineHeight: '250%', color:"#A1A1A1"}} align="right">
                                             {event.create_date}
                                         </Typography>
-                                        {/* {
-                                            user && index===0 && !event.read_users.includes(user.username) &&
-                                            <div
-                                                style={{
-                                                    margin:'0 0 0 auto',
-                                                    width:'fit-content',
-                                                    height:'20px',
-                                                    backgroundColor: '#FFCE00',
-                                                    borderRadius: '15px',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center'
-                                                }}
-                                            >
+                                        <div
+                                            style={{
+                                                margin:'0 0 0 auto',
+                                                width:'fit-content',
+                                                height:'20px',
+                                                backgroundColor: '#FFCE00',
+                                                borderRadius: '15px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center'
+                                            }}
+                                        >
+                                        {
+                                            user && index===0 && !event.read_users?.includes(user.username) &&
                                                 <Typography style={{padding:"2px 10px 0px 10px",fontSize: '9px', fontWeight: '700', lineHeight: '100%', color: 'white'}}>
                                                     NEW
                                                 </Typography>
-                                            </div>
-                                        } */}
+                                        }
+                                        </div>
                                     </Stack>
                                 </Grid>
                             </Grid>
