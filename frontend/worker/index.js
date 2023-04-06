@@ -16,6 +16,18 @@ self.addEventListener('push', function (event) {
     )
 })
 
+// self.addEventListener('push', (event) => {
+//     console.log(event)
+//     let pushMessageJSON = event.data.json();
+//     console.log(data)
+//     event.waitUntil(
+//         self.registration.showNotification(pushMessageJSON.title, {
+//             body: pushMessageJSON.message,
+//             icon: '/icons/android-icon-192x192.png'
+//         })
+//     )
+// })
+
 self.addEventListener('notificationclick', function (event) {
     event.notification.close()
     event.waitUntil(
