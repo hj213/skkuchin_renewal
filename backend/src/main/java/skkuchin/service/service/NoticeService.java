@@ -42,7 +42,7 @@ public class NoticeService {
     public void add(NoticeDto.Request dto) {
         Notice notice = dto.toEntity();
 
-        if (notice.getPushTitle().isBlank() || notice.getPushContent().isBlank()) {
+        if (!notice.getPushTitle().isBlank() && !notice.getPushContent().isBlank()) {
             List<AppUser> users = userRepo.findAll();
             for (AppUser user : users) {
                 Subscription subscription = pushTokenService.toSubscription(user, "info");
