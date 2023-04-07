@@ -8,14 +8,15 @@ import Image from 'next/image';
 import { displayMBTI } from '../components/Matching/MBTIList';
 import back from '../image/arrow_back_ios.png';
 import dynamic from 'next/dynamic';
+import { clear_user_profile } from '../actions/chat/chatRoom';
 
 const clickProfile = () => {
 
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const otherUser = router.query.otherUser;
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
+    const userProfile = useSelector(state => state.chatRoom.userProfile);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -23,10 +24,13 @@ const clickProfile = () => {
     }
     
     useEffect(() => {
-        if (otherUser) {
-            dispatch(load_other_matching_info(otherUser.id));
+        if (userProfile) {
+            dispatch(load_other_matching_info(userProfile.id));
         }
-    }, [otherUser]);
+        return () => {
+            dispatch(clear_user_profile());
+        }
+    }, [userProfile]);
 
     const handleBack = (e) => {
         router.back();

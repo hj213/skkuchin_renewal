@@ -29,7 +29,11 @@ import {
     CLEAR_ROOM_LIST_SUCCESS,
     CLEAR_ROOM_LIST_FAIL,
     GET_CHAT_ROOM_FOR_NOT_USER_SUCCESS,
-    GET_CHAT_ROOM_FOR_NOT_USER_FAIL
+    GET_CHAT_ROOM_FOR_NOT_USER_FAIL,
+    SET_USER_PROFILE_SUCCESS,
+    SET_USER_PROFILE_FAIL,
+    CLEAR_USER_PROFILE_SUCCESS,
+    CLEAR_USER_PROFILE_FAIL
 }
     from './types';
 import { send_message } from './chatMessage';
@@ -488,16 +492,13 @@ export const get_realtime_chat_room = (username, stompClient) => dispatch => {
     }
 
     const subscription = stompClient.subscribe(`/exchange/chat.exchange/room.${username}chatRoomList`,(content) => {
-        const datas = JSON.parse(content.body);
-        const updatedRoom = [];
+        const data = JSON.parse(content.body);
+
         try {
-            datas.map((room) => {
-                updatedRoom.push(room);
-            });
 
             dispatch({
                 type: GET_REALTIME_ROOM_SUCCESS,
-                payload: updatedRoom
+                payload: data
             })
 
         } catch(err) {
@@ -562,6 +563,35 @@ export const get_chat_room_for_not_user = () => dispatch => {
         console.log(error)
         dispatch({
             type: GET_CHAT_ROOM_FOR_NOT_USER_FAIL
+        });
+    }
+};
+
+export const set_user_profile = (profile, callback) => async dispatch => {
+    try {
+        await dispatch({
+            type: SET_USER_PROFILE_SUCCESS,
+            payload: profile
+        });
+        if (callback) callback(true);
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: SET_USER_PROFILE_FAIL
+        });
+        if (callback) callback(false);
+    }
+};
+
+export const clear_user_profile = () => dispatch => {
+    try {
+        dispatch({
+            type: CLEAR_USER_PROFILE_SUCCESS
+        });
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: CLEAR_USER_PROFILE_FAIL
         });
     }
 };

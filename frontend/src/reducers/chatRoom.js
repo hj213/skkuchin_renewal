@@ -26,13 +26,18 @@ import {
     CLEAR_ROOM_LIST_SUCCESS,
     CLEAR_ROOM_LIST_FAIL,
     GET_CHAT_ROOM_FOR_NOT_USER_SUCCESS,
-    GET_CHAT_ROOM_FOR_NOT_USER_FAIL
+    GET_CHAT_ROOM_FOR_NOT_USER_FAIL,
+    SET_USER_PROFILE_SUCCESS,
+    SET_USER_PROFILE_FAIL,
+    CLEAR_USER_PROFILE_SUCCESS,
+    CLEAR_USER_PROFILE_FAIL
 } from '../actions/chat/types'
 import { LOGOUT_SUCCESS } from '../actions/auth/types';
 
 const initialState = {
     requestId: null,
-    chatRooms: null
+    chatRooms: null,
+    userProfile: null,
 };
 
 const chatRoomReducer = (state= initialState, action) => {
@@ -155,6 +160,25 @@ const chatRoomReducer = (state= initialState, action) => {
                 chatRooms: []
             }
         case GET_CHAT_ROOM_FOR_NOT_USER_FAIL:
+            return {
+                ...state
+            }
+        case SET_USER_PROFILE_SUCCESS:
+            return {
+                ...state,
+                userProfile: payload
+            }
+        case SET_USER_PROFILE_FAIL:
+            return {
+                ...state,
+                userProfile: null
+            }
+        case CLEAR_USER_PROFILE_SUCCESS:
+            return {
+                ...state,
+                userProfile: null
+            }
+        case CLEAR_USER_PROFILE_FAIL:
             return {
                 ...state
             }
