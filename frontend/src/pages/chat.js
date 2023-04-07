@@ -19,7 +19,7 @@ import noMessage from '../image/join_enheng_wink.png';
 
 import Link from 'next/link'
 import { get_realtime_otherUser, get_realtime_setting, get_realtime_message, send_message, clear_chat, get_chat_info } from '../actions/chat/chatMessage';
-import { set_user_block, set_chat_room_alarm, exit_room } from "../actions/chat/chatRoom";
+import { set_user_block, set_chat_room_alarm, exit_room, set_user_profile } from "../actions/chat/chatRoom";
 import { request_refresh } from '../actions/auth/auth';
 
 import dynamic from 'next/dynamic';
@@ -99,17 +99,14 @@ const chatPage = () => {
         }
     }, [setting])
 
-    // 프로필 보기 (load_matchingUser )
-    const handleProfile = ()=>{
-        router.push({
-            pathname: '/clickProfile',
-            query: { 
-                otherUser : otherUser
+    const handleProfile = () => {
+        dispatch(set_user_profile(otherUser, (result) => {
+            if (result) {
+                router.push('/clickProfile');
             }
-        })
+        }));
     }
 
-    // 차단하기 Dialog
     const [openBlockDialog, setBlockDialog] = useState(false);
     const isUser1Blocked = setting && setting.user1_blocked;
     const isUser2Blocked = setting && setting.user2_blocked;
@@ -148,7 +145,6 @@ const chatPage = () => {
         setBlockDialog(false);
     };
     
-    // 채팅방 나가기 Dialog
     const [openExitDialog, setExitDialog] = useState(false);
 
     const handleExit = () => {
@@ -165,7 +161,6 @@ const chatPage = () => {
         setExitDialog(false);
     };
 
-    // 신고하기
     const handleReportUser = () => {
         router.push({
             pathname: '/reportChatUser',
