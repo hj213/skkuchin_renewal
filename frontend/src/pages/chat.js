@@ -104,7 +104,7 @@ const chatPage = () => {
         router.push({
             pathname: '/clickProfile',
             query: { 
-                otherUSer : otherUser
+                otherUser : otherUser
             }
         })
     }
