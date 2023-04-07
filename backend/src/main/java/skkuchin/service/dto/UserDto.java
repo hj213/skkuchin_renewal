@@ -150,6 +150,7 @@ public class UserDto {
         private Major major;
         private Profile image;
         private Campus campus;
+        private Campus toggle;
         private Gender gender;
 
         public Response(AppUser user) {
@@ -161,6 +162,7 @@ public class UserDto {
                 this.major = user.getMajor();
                 this.image = user.getImage();
                 this.campus = findCampus(user.getMajor());
+                this.toggle = user.getToggle();
                 this.gender = user.getGender();
             } else {
                 this.id = null;
@@ -170,6 +172,7 @@ public class UserDto {
                 this.major = null;
                 this.image = Profile.DEFAULT1;
                 this.campus = null;
+                this.toggle = null;
                 this.gender = null;
             }
         }
