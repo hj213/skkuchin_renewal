@@ -149,7 +149,6 @@ public class ChatRoomService {
         if (chatRoom.getUser1() != null && chatRoom.getUser1().getId().equals(user.getId())) {
             return chatRoom.getUser2();
         } else {
-            System.out.println(chatRoom.getUser1());
             return chatRoom.getUser1();
         }
     }
