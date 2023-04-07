@@ -24,17 +24,9 @@ const clickProfile = () => {
     
     useEffect(() => {
         if (otherUser) {
-            dispatch(load_other_matching_info(otherUser.id,([result, message]) => {
-                if (result) {
-                    setLoad(true);
-                } else {
-                    setLoad(false);
-                }
-            }));
+            dispatch(load_other_matching_info(otherUser.id));
         }
     }, [otherUser]);
-
-    const [load, setLoad] = useState('');
 
     const handleBack = (e) => {
         router.back();
