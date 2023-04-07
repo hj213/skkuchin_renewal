@@ -61,6 +61,7 @@ const list = () => {
     const [tags, setTags] = useState([]); // 태그 2개까지
     const [tagsId, setTagsId] = useState([
         {id: '학생 할인', exclusiveGroup: 'discount'},
+        {id: '카페', exclusiveGroup: 'cuisine'},
         // {id: '스페셜', exclusiveGroup: null},
         {id: '한식', exclusiveGroup: 'cuisine'},
         {id: '양식', exclusiveGroup: 'cuisine'},

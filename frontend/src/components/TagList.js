@@ -2,7 +2,7 @@ import theme from "../theme/theme";
 import Image from 'next/image';
 import {Grid, CssBaseline, ThemeProvider} from '@mui/material';
 import styled from "@emotion/styled";
-// map tags
+
 import mapTag1 from '../image/tags/map_off/top_dc.png';
 import mapTag2 from '../image/tags/map_off/top_alcohol.png';
 import mapTag3 from '../image/tags/map_off/top_korea.png';
@@ -17,6 +17,7 @@ import mapTag11 from '../image/tags/map_off/top_kind.png';
 import mapTag12 from '../image/tags/map_off/top_money.png';
 import mapTag13 from '../image/tags/map_off/top_clean.png';
 import mapTag14 from '../image/tags/map_off/top_two.png';
+import mapTag15 from '../image/tags/map_off/top_cafe.png';
 
 import mapTagOn1 from '../image/tags/map_on/top_dcY.png';
 import mapTagOn2 from '../image/tags/map_on/top_alcoholY.png';
@@ -32,8 +33,8 @@ import mapTagOn11 from '../image/tags/map_on/top_kindY.png';
 import mapTagOn12 from '../image/tags/map_on/top_moneyY.png';
 import mapTagOn13 from '../image/tags/map_on/top_cleanY.png';
 import mapTagOn14 from '../image/tags/map_on/top_twoY.png';
+import mapTagOn15 from '../image/tags/map_off/top_cafeY.png';
 
-// 리뷰 tags
 import reviewTag01 from '../image/tags/mini/mini_taste.png';
 import reviewTag02 from '../image/tags/mini/mini_money.png';
 import reviewTag03 from '../image/tags/mini/mini_kind.png';
@@ -77,6 +78,8 @@ export const displayTagImage = (tags) => {
             switch(tag) {
                 case "학생 할인":
                     return <Grid item key={tag}><Image id={"학생 할인"} src={mapTagOn1} width={88} height={36} layout='fixed' /></Grid>
+                case "카페":
+                    return <Grid item key={tag}><Image id={"카페"} src={mapTagOn15} width={64} height={36} layout='fixed'/></Grid>
                 case "술집":
                     return <Grid item key={tag}><Image id={"술집"} src={mapTagOn2} width={64} height={36} layout='fixed'/></Grid>
                 // case "스페셜":
@@ -199,6 +202,10 @@ const TagList = ({keyword, onTagClick}) => {
                 <Grid item style={{filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block', flexShrink: 0, paddingRight: '5px' }}>
                     { keyword.includes("학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36} layout='fixed' />
                     : <Image id={"학생 할인"} src={mapTag1} width={88} height={36} layout='fixed' /> }
+                </Grid>
+                <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
+                    { keyword.includes("카페") ? <Image id={"카페"} src={mapTagOn15} width={64} height={36} layout='fixed' />
+                    : <Image id={"카페"} src={mapTag15} width={64} height={36} layout='fixed' /> }
                 </Grid>
                 <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block',flexShrink: 0, paddingRight: '5px'  }}>
                     { keyword.includes("술집") ? <Image id={"술집"} src={mapTagOn2} width={64} height={36} layout='fixed' />
