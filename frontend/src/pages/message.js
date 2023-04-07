@@ -28,7 +28,7 @@ const MessagePage = () => {
                     position: 'fixed',
                     top: '0px',
                     width: '100%',
-                    height: '60px',
+                    height: '65px',
                     zIndex: '4',
                     border:'none',
                     maxWidth:'420px'
