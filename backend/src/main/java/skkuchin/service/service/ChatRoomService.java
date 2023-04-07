@@ -146,9 +146,10 @@ public class ChatRoomService {
 
     private AppUser getOtherUser(ChatRoom chatRoom, String username){
         AppUser user = userRepo.findByUsername(username);
-        if (chatRoom.getUser1().getId().equals(user.getId())) {
+        if (chatRoom.getUser1() != null && chatRoom.getUser1().getId().equals(user.getId())) {
             return chatRoom.getUser2();
         } else {
+            System.out.println(chatRoom.getUser1());
             return chatRoom.getUser1();
         }
     }
@@ -300,16 +301,20 @@ public class ChatRoomService {
     public void exitRoom(String roomId, AppUser appUser){
         ChatRoom chatRoom = chatRoomRepo.findByRoomId(roomId);
 
-        if (!appUser.getId().equals(chatRoom.getUser1().getId()) && !appUser.getId().equals(chatRoom.getUser2().getId())) {
+        if (
+                (chatRoom.getUser1() != null && !appUser.getId().equals(chatRoom.getUser1().getId()))
+                &&
+                (chatRoom.getUser2() != null && !appUser.getId().equals(chatRoom.getUser2().getId()))
+        ) {
             throw new CustomRuntimeException("올바르지 않은 접근입니다");
         }
 
-        if(appUser.getId().equals(chatRoom.getUser1().getId())){
+        if(chatRoom.getUser1() != null && appUser.getId().equals(chatRoom.getUser1().getId())){
             chatRoom.setUser1(null);
             chatRoomRepo.save(chatRoom);
         }
 
-        else if(appUser.getId().equals(chatRoom.getUser2().getId())){
+        else if(chatRoom.getUser2() != null && appUser.getId().equals(chatRoom.getUser2().getId())){
             chatRoom.setUser2(null);
             chatRoomRepo.save(chatRoom);
         }

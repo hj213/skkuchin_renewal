@@ -99,14 +99,32 @@ public class ChatRoomDto {
             this.displayTime = formatDate(chatMessage.getDate());
             this.message = chatMessage.getMessage();
             this.roomId = chatroom.getRoomId();
-            this.user1Id = chatroom.getUser1().getId();
-            this.user2Id = chatroom.getUser2().getId();
+
+            if (chatroom.getUser1 () != null) {
+                this.user1Id = chatroom.getUser1().getId();
+            } else {
+                this.user1Id = null;
+            }
+
+            if (chatroom.getUser2 () != null) {
+                this.user2Id = chatroom.getUser2().getId();
+            } else {
+                this.user2Id = null;
+            }
+
             this.messageCount = messageCount;
             this.user1Alarm = chatroom.isUser1Alarm();
             this.user2Alarm = chatroom.isUser2Alarm();
-            this.major = otherUser.getMajor();
-            this.nickname = otherUser.getNickname();
-            this.image = otherUser.getImage();
+
+            if (otherUser != null) {
+                this.major = otherUser.getMajor();
+                this.nickname = otherUser.getNickname();
+                this.image = otherUser.getImage();
+            } else {
+                this.major = null;
+                this.nickname = "알 수 없음";
+                this.image = Profile.DEFAULT1;
+            }
         }
 
         private String formatDate(LocalDateTime date) {
