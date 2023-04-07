@@ -61,7 +61,7 @@ const chatPage = () => {
 
     const handleOnclick = (event) =>{
         if(event.target.name == 'back' ){
-            router.back();
+            router.push('/message');
         } 
     };
 
@@ -123,16 +123,6 @@ const chatPage = () => {
         }
     }
 
-    // const [visibility, setVisibility]=useState('');
-
-    // useEffect(()=>{
-    //     if(!isAlarmOn){
-    //         setVisibility('visible')
-    //     } else{
-    //         setVisibility('hidden')
-    //     }
-    // }, [isAlarmOn])
-
     useEffect(() => {
         setBlocked(isUser1Blocked || isUser2Blocked);
     }, [isUser1Blocked, isUser2Blocked]);
@@ -148,13 +138,7 @@ const chatPage = () => {
     };
 
     const handleConfirmBlockUser = () => {
-        dispatch(
-            set_user_block(!friendBlocked, room_id, ([result, message]) => {
-                if (result) {
-                } else {
-                }
-            })
-        );
+        dispatch(set_user_block(!friendBlocked, room_id));
         handleClose();
         setBlockDialog(false);
     };
@@ -188,11 +172,7 @@ const chatPage = () => {
     }
 
     const handleAlarm = () => {
-        dispatch(set_chat_room_alarm(!isAlarmOn, room_id, ([result, message]) => {
-            if(result) {
-            } else {
-            }
-        }));
+        dispatch(set_chat_room_alarm(!isAlarmOn, room_id));
         handleClose();
     };
 
@@ -211,22 +191,23 @@ const chatPage = () => {
     const [inputMessage, setInputMessage] = useState('');
 
     const handleSubmit = (message) => {
-        dispatch(send_message(message, room_id, ([result, message])=>{
-            if(result){     
-            } else {
-            }
-        }));
+        dispatch(send_message(message, room_id));
         setInputMessage('');
     }
 
-        // more 버튼
-        const options = [
-            {label: '프로필 보기', onClick: handleProfile},
-            {label: isAlarmOn ? '알림끄기' : '알림켜기' , onClick: handleAlarm},
-            {label: friendBlocked ? "차단해제" : "차단하기", onClick: handleBlockUser},
-            {label: '신고하기', onClick: handleReportUser},
-            {label: '채팅방 나가기', onClick: handleExit},
-        ];
+    const options = otherUser?.id ? 
+    [
+        {label: '프로필 보기', onClick: handleProfile},
+        {label: isAlarmOn ? '알림끄기' : '알림켜기' , onClick: handleAlarm},
+        {label: friendBlocked ? "차단해제" : "차단하기", onClick: handleBlockUser},
+        {label: '신고하기', onClick: handleReportUser},
+        {label: '채팅방 나가기', onClick: handleExit},
+    ]
+    :
+    [
+        {label: '신고하기', onClick: handleReportUser},
+        {label: '채팅방 나가기', onClick: handleExit},
+    ];
     
     const lastMessageRef = useRef(null);
 
@@ -409,38 +390,41 @@ const chatPage = () => {
                     }}
                 >
                     <Grid container style={{justifyContent: 'center', width: '100%', height:'40px', alignItems: 'center', zIndex: '9'}}>
-                        <div style={{position:"fixed",width: 'max-content', height:'28px', backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'15px', padding: '0 10px'}}>
-                            <Link href={{
-                                pathname: '/chatTime',
-                                query: {
-                                    room_id: room_id,
-                                    user_number: user_number,
-                                    meetTime: meetTime
-                                }
-                            }}>
-                                <Grid item sx={{display: 'flex', height: 'fit-content', pr:"8px", pt:"6px"}}>
-                                    <Image width={13} height={15} src={time} />
-                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px', paddingTop:'1px'}}>
-                                        { setting && setting.meet_time ? setting.meet_time : "시간 정하기" }
-                                    </Typography>
-                                </Grid>
-                            </Link>
-                            <Link href={{
-                                pathname: '/chatPlace',
-                                query: {
-                                    room_id: room_id,
-                                    user_number: user_number,
-                                    meetPlace: meetPlace
-                                }
-                            }}>
-                                <Grid item sx={{display: 'flex', height: 'fit-content', pl: '8px', pt:"6px"}}>
-                                    <Image width={10.5} height={14.6} src={place} />
-                                    <Typography sx={{fontSize: '10px', paddingLeft:'5px', paddingTop:'1px'}}>
-                                        { setting && setting.meet_place ? setting.meet_place : "장소 정하기" }
-                                    </Typography>
-                                </Grid>
-                            </Link>
-                        </div>
+                        {
+                            otherUser?.id &&
+                            <div style={{position:"fixed",width: 'max-content', height:'28px', backgroundColor: '#FFF8D9', display: 'flex', justifyContent: 'center' , borderRadius:'15px', padding: '0 10px'}}>
+                                <Link href={{
+                                    pathname: '/chatTime',
+                                    query: {
+                                        room_id: room_id,
+                                        user_number: user_number,
+                                        meetTime: meetTime
+                                    }
+                                }}>
+                                    <Grid item sx={{display: 'flex', height: 'fit-content', pr:"8px", pt:"6px"}}>
+                                        <Image width={13} height={15} src={time} />
+                                        <Typography sx={{fontSize: '10px', paddingLeft:'5px', paddingTop:'1px'}}>
+                                            { setting && setting.meet_time ? setting.meet_time : "시간 정하기" }
+                                        </Typography>
+                                    </Grid>
+                                </Link>
+                                <Link href={{
+                                    pathname: '/chatPlace',
+                                    query: {
+                                        room_id: room_id,
+                                        user_number: user_number,
+                                        meetPlace: meetPlace
+                                    }
+                                }}>
+                                    <Grid item sx={{display: 'flex', height: 'fit-content', pl: '8px', pt:"6px"}}>
+                                        <Image width={10.5} height={14.6} src={place} />
+                                        <Typography sx={{fontSize: '10px', paddingLeft:'5px', paddingTop:'1px'}}>
+                                            { setting && setting.meet_place ? setting.meet_place : "장소 정하기" }
+                                        </Typography>
+                                    </Grid>
+                                </Link>
+                            </div>
+                        }
                     </Grid>
                 </Grid>
 
@@ -618,7 +602,7 @@ const chatPage = () => {
                             약속을 잡아보세요!
                         </Typography>
                     </Grid>
-              </Grid>
+                </Grid>
                 }
                 </Grid>
                 : 
@@ -634,13 +618,13 @@ const chatPage = () => {
                 <Grid style={{position:"fixed", width:"100%", bottom:0, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '2px 10px 13px 10px', backgroundColor:"white", zIndex:"4",maxWidth: '420px',}}>
                     <textarea 
                         name='chat' 
-                        placeholder={isBlocked ? '채팅을 입력할 수 없습니다.' : '메시지를 입력하세요.'}
+                        placeholder={(isBlocked || !otherUser?.id) ? '채팅을 입력할 수 없습니다.' : '메시지를 입력하세요.'}
                         required
-                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: isBlocked? 'rgba(186, 186, 186, 0.5)' : '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle', overflow: 'hidden'}}
+                        style={{fontSize:'14px', width: '100%', height: '42px', padding: '13px 14px', backgroundColor: (isBlocked || !otherUser?.id) ? 'rgba(186, 186, 186, 0.5)' : '#FFFCED', border: 'none', borderRadius: '20px', outline:'none', resize: 'none',verticalAlign: 'middle', overflow: 'hidden'}}
                         rows={calculateRows}
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
-                        disabled={isBlocked}
+                        disabled={isBlocked || !otherUser?.id}
                     />
                     <Grid onClick={()=>handleSubmit(inputMessage)} sx={{ marginLeft: '10px', paddingTop:'5px' }}>
                         <Image src={send} width={41} height={41} layout="fixed"/>

@@ -38,9 +38,11 @@ public class S3Service {
                 .builder()
                 .bucket(this.bucket)
                 .prefix(prefix)
+                .encodingType(EncodingType.URL)
                 .build();
 
         ListObjectsResponse res = s3Client.listObjects(listObjects);
+
         List<S3Object> objects = res.contents();
 
         return objects;

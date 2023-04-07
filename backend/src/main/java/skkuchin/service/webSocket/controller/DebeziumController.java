@@ -50,26 +50,28 @@ public class DebeziumController {
 
         String roomId = chatRoom.getRoomId();
 
-        String user1Name = user1.getUsername();
-        String user2Name = user2.getUsername();
-
+        String user1Name = null;
+        String user2Name = null;
 
         List<ChatMessageDto.Response> chatMessages = chatMessageService.getAllMessage(chatRoom);
 
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "chat." + roomId+"user1", chatMessages);
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "chat." + roomId+"user2", chatMessages);
+        if (user1 != null) {
+            user1Name = user1.getUsername();
+            List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(user1Name);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList", chatRooms1);
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "chat." + roomId+"user1", chatMessages);
+            Boolean alarm1 = chatRoomService.checkUnreadMessageOrRequest(user1Name);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+user1Name, alarm1);
+        }
 
-        List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(user1Name);
-        List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(user2Name);
-
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user1Name+"chatRoomList", chatRooms1);
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList", chatRooms2);
-
-        Boolean alarm1 = chatRoomService.checkUnreadMessageOrRequest(user1Name);
-        Boolean alarm2 = chatRoomService.checkUnreadMessageOrRequest(user2Name);
-
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+user1Name, alarm1);
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+user2Name, alarm2);
+        if (user2 != null) {
+            user2Name = user2.getUsername();
+            List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(user2Name);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"room."+user2Name+"chatRoomList", chatRooms2);
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "chat." + roomId+"user2", chatMessages);
+            Boolean alarm2 = chatRoomService.checkUnreadMessageOrRequest(user2Name);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+user2Name, alarm2);
+        }
 
         if (dto.getPayload().getOp().equals("c") && !Objects.equals(dto.getPayload().getAfter().getSender(), "admin")) {
             String sender = dto.getPayload().getAfter().getSender();
@@ -114,29 +116,30 @@ public class DebeziumController {
         AppUser user1 = chatRoom.getUser1();
         AppUser user2 = chatRoom.getUser2();
 
-        String userName1 = user1.getUsername();
-        String userName2 = user2.getUsername();
-
-        List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(userName1);
-        List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(userName2);
+        String userName1 = null;
+        String userName2 = null;
 
         ChatRoomDto.settingResponse settingResponse = chatRoomService.getSettingResponse(chatRoom);
 
-        List<ChatRoomDto.userResponse> requestList = chatRoomService.getRequestList(userName2);
+        if (user1 != null) {
+            userName1 = user1.getUsername();
+            List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(userName1);
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+userName1+"chatRoomList", chatRooms1);
+            Boolean alarm1 = chatRoomService.checkUnreadMessageOrRequest(userName1);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+userName1, alarm1);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user1",settingResponse);
+        }
 
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"request."+ userName2, requestList);
-
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+userName1+"chatRoomList", chatRooms1);
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+userName2+"chatRoomList", chatRooms2);
-
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user1",settingResponse);
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user2",settingResponse);
-
-        Boolean alarm1 = chatRoomService.checkUnreadMessageOrRequest(userName1);
-        Boolean alarm2 = chatRoomService.checkUnreadMessageOrRequest(userName2);
-
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+userName1, alarm1);
-        template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+userName2, alarm2);
+        if (user2 != null) {
+            userName2 = user2.getUsername();
+            List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(userName2);
+            List<ChatRoomDto.userResponse> requestList = chatRoomService.getRequestList(userName2);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"request."+ userName2, requestList);
+            template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+userName2+"chatRoomList", chatRooms2);
+            Boolean alarm2 = chatRoomService.checkUnreadMessageOrRequest(userName2);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"alarm."+userName2, alarm2);
+            template.convertAndSend(CHAT_EXCHANGE_NAME,"setting."+roomId +"user2",settingResponse);
+        }
 
         if (dto.getPayload().getOp().equals("c")) {
             String pushTitle = "스꾸친";
@@ -187,20 +190,25 @@ public class DebeziumController {
                 AppUser user1 = chatRoom.getUser1();
                 AppUser user2 = chatRoom.getUser2();
 
-                String user1Name = user1.getUsername();
-                String user2Name = user2.getUsername();
-
-                List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(user1Name);
-                List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(user2Name);
+                String user1Name = null;
+                String user2Name = null;
 
                 UserDto.Response user1Dto= new UserDto.Response(user1);
                 UserDto.Response user2Dto = new UserDto.Response(user2);
 
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user1Name+"chatRoomList", chatRooms1);
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user2Name+"chatRoomList", chatRooms2);
+                if (user1 != null) {
+                    user1Name = user1.getUsername();
+                    List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(user1Name);
+                    template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user1Name+"chatRoomList", chatRooms1);
+                    template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user1",user2Dto);
+                }
 
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user1",user2Dto);
-                template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user2",user1Dto);
+                if (user2 != null) {
+                    user2Name = user2.getUsername();
+                    List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(user2Name);
+                    template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user2Name+"chatRoomList", chatRooms2);
+                    template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user2",user1Dto);
+                }
             }
         }
     }

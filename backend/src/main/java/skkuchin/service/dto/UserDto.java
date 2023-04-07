@@ -150,19 +150,28 @@ public class UserDto {
         private Major major;
         private Profile image;
         private Campus campus;
-        private Campus toggle;
         private Gender gender;
 
         public Response(AppUser user) {
-            this.id = user.getId();
-            this.nickname = user.getNickname();
-            this.username = user.getUsername();
-            this.studentId = user.getStudentId();
-            this.major = user.getMajor();
-            this.image = user.getImage();
-            this.campus = findCampus(user.getMajor());
-            this.toggle = user.getToggle();
-            this.gender = user.getGender();
+            if (user != null) {
+                this.id = user.getId();
+                this.nickname = user.getNickname();
+                this.username = user.getUsername();
+                this.studentId = user.getStudentId();
+                this.major = user.getMajor();
+                this.image = user.getImage();
+                this.campus = findCampus(user.getMajor());
+                this.gender = user.getGender();
+            } else {
+                this.id = null;
+                this.nickname = "알 수 없음";
+                this.username = null;
+                this.studentId = 0;
+                this.major = null;
+                this.image = Profile.DEFAULT1;
+                this.campus = null;
+                this.gender = null;
+            }
         }
 
         public Campus findCampus(Major major) {

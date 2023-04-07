@@ -492,9 +492,7 @@ export const get_realtime_chat_room = (username, stompClient) => dispatch => {
         const updatedRoom = [];
         try {
             datas.map((room) => {
-                if (room.user1_id !== null && room.user2_id !== null) {
-                    updatedRoom.push(room);
-                }
+                updatedRoom.push(room);
             });
 
             dispatch({

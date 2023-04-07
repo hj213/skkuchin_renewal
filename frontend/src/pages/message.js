@@ -10,7 +10,7 @@ const MessageTab = dynamic(() => import("../components/MessageTab"));
 const MessagePage = () => {
     // 뒤로가기 버튼
     const handleOnclick = () =>{
-        router.back();
+        router.push('/');
     };  
 
     const router = useRouter();

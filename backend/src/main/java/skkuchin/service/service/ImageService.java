@@ -167,7 +167,6 @@ public class ImageService {
     }
 
     public void insertData() {
-        List<Place> places = placeRepo.findAll();
         List<S3Object> objects = s3Service.getObjects(CATEGORY);
 
         for (S3Object object : objects) {

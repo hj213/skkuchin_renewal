@@ -101,6 +101,10 @@ public class PushTokenService {
 
     @Transactional
     public Subscription toSubscription(AppUser user, String type) {
+        if (user == null) {
+            return null;
+        }
+
         PushToken pushToken = pushTokenRepo.findByUser(user);
 
         if (pushToken == null) {
