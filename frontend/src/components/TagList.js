@@ -33,7 +33,7 @@ import mapTagOn11 from '../image/tags/map_on/top_kindY.png';
 import mapTagOn12 from '../image/tags/map_on/top_moneyY.png';
 import mapTagOn13 from '../image/tags/map_on/top_cleanY.png';
 import mapTagOn14 from '../image/tags/map_on/top_twoY.png';
-import mapTagOn15 from '../image/tags/map_off/top_cafeY.png';
+import mapTagOn15 from '../image/tags/map_on/top_cafeY.png';
 
 import reviewTag01 from '../image/tags/mini/mini_taste.png';
 import reviewTag02 from '../image/tags/mini/mini_money.png';
