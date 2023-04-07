@@ -101,7 +101,12 @@ const chatPage = () => {
 
     // 프로필 보기 (load_matchingUser )
     const handleProfile = ()=>{
-        router.push('/clickProfile')
+        router.push({
+            pathname: '/clickProfile',
+            query: { 
+                otherUSer : otherUser
+            }
+        })
     }
 
     // 차단하기 Dialog

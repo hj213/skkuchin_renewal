@@ -14,7 +14,7 @@ const clickProfile = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const otherUser = useSelector(state => state.chatMessage.otherUser);
+    const otherUser = router.query.otherUser;
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
