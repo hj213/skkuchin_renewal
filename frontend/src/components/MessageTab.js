@@ -112,7 +112,7 @@ export default function MessageTab() {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'transparent',  backgroundColor:'white'}}>
-        <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example" sx={{position: 'fixed',width:'100%', mt: '12px', backgroundColor:'white', maxWidth: '420px', zIndex: '10'}}>
+        <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example" sx={{position: 'fixed',width:'100%', mt: '15px', backgroundColor:'white', maxWidth: '420px', zIndex: '10'}}>
           <Tab style={{color:value===0? '#565656':'#BABABA', fontWeight:value===0? '700':'500', fontSize:"15px"}} label="채팅방" {...a11yProps(0)} />
           <Tab style={{color:value===1? '#565656':'#BABABA', fontWeight:value===1? '700':'500', fontSize:"15px"}} label="밥약 신청" {...a11yProps(1)} />
         </Tabs>
