@@ -30,9 +30,9 @@ const chatTime = () => {
     const format = 'HH:mm';
     const defaultValue = dayjs().format(format);
     const innerHeight = window.innerHeight;
-    const height = (window.innerHeight - 550) / 2;
-    const height2 = (window.innerHeight - 500) / 2;
-    const height3 = (window.innerHeight - 400) / 2;
+    const height = (window.innerHeight - 600) / 2;
+    const height2 = (window.innerHeight - 550) / 2;
+    const height3 = (window.innerHeight - 440) / 2;
 
 
     const [date, setDate] = useState(meetTime ? new Date(meetTime.replace(/\./g, '/')) : now);
