@@ -4,29 +4,29 @@
 // eslint-disable-next-line no-underscore-dangle,no-restricted-globals
 self.__WB_DISABLE_DEV_LOGS = true;
 
-self.addEventListener('push', function (event) {
-    // console.log(event)
-    const data = JSON.parse(event.data.text());
-    // console.log(data)
-    event.waitUntil(
-        registration.showNotification(data.title, {
-            body: data.message,
-            icon: '/icons/android-icon-192x192.png'
-        })
-    )
-})
-
-// self.addEventListener('push', (event) => {
-//     console.log(event)
-//     let pushMessageJSON = event.data.json();
-//     console.log(data)
+// self.addEventListener('push', function (event) {
+//     // console.log(event)
+//     const data = JSON.parse(event.data.text());
+//     // console.log(data)
 //     event.waitUntil(
-//         self.registration.showNotification(pushMessageJSON.title, {
-//             body: pushMessageJSON.message,
+//         registration.showNotification(data.title, {
+//             body: data.message,
 //             icon: '/icons/android-icon-192x192.png'
 //         })
 //     )
 // })
+
+self.addEventListener('push', (event) => {
+    // console.log(event)
+    let pushMessageJSON = event.data.json();
+    // console.log(data)
+    event.waitUntil(
+        self.registration.showNotification(pushMessageJSON.title, {
+            body: pushMessageJSON.message,
+            icon: '/icons/android-icon-192x192.png'
+        })
+    )
+})
 
 self.addEventListener('notificationclick', function (event) {
     event.notification.close()

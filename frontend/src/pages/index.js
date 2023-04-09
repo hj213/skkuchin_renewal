@@ -444,10 +444,11 @@ const list = () => {
                     width: '100%',
                     height: '56.43px',
                     zIndex: '4',
-                    boxShadow: '0px 10px 20px -10px rgb(0,0,0, 0.16)',
+                    boxShadow: 'none',
                     visibility: open.visibility,
                     overflowY:'hidden',
                     border: '1px solid transparent',
+                    // borderBottom: '2px solid rgb(241, 241, 241)',
                     borderRadius: '0px'
                     }} 
                     
