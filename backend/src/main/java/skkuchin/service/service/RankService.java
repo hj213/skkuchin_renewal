@@ -42,8 +42,8 @@ public class RankService {
         return ranks;
     }
 
-    @Scheduled(cron = "0 0 0 ? * 2")
     @Transactional
+    @Scheduled(cron = "0 0 0 * * MON")
     public void addRank() {
         addToDb("명륜");
         addToDb("율전");
