@@ -542,12 +542,15 @@ const PlacePage = () => {
                             <>
                                 <Container>
                                     <Grid sx={{display: 'flex', mb: '20px', alignItems: 'center', justifyContent: 'center'}}>
-                                        <button 
-                                            style={{backgroundColor: '#FFE885', borderRadius: '30px', border: 'none', width: '97px', height: '36px', padding: '6px 10px 4px 10px'}}
+                                        <Button 
+                                            variant="contained" 
+                                            disableElevation
+                                            disableTouchRipple
+                                            sx={{color: '#000000', backgroundColor: '#FFE885', borderRadius: '30px', border: 'none', width: '97px', height: '36px', padding: '6px 10px 4px 10px', fontSize: '13px', fontWeight: '500'}}
                                             onClick={handleShowDcCode}
                                         >
                                             할인 코드 보기
-                                        </button>
+                                        </Button>
                                     </Grid>
                                 </Container>
                                 <Image 
