@@ -13,6 +13,7 @@ import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import expand from '../image/expand_more2.png'
 import back from '../image/arrow_back_ios.png'
+import event from '../image/saladweeks/event.png'
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import { load_reviews } from "../actions/review/review";
@@ -27,6 +28,7 @@ const SearchBox = dynamic(() => import("../components/SearchBox"));
 const UpperBar = dynamic(() => import("../components/UpperBar"));
 const PlaceReview = dynamic(() => import("../components/PlaceReview"));
 const GoLogin = dynamic(() => import("../components/GoLogin"));
+const ShowDcCode = dynamic(() => import("../components/ShowDcCode"));
 
 const PlacePage = () => {
 
@@ -53,6 +55,7 @@ const PlacePage = () => {
     const [filteredPlace, setFilteredPlace] = useState([]);
 
     const [isLogin, setIsLogin] = useState(false);
+    const [codeOn, setCodeOn] = useState(false);
 
     useEffect(() => {
         if (place && user != null && user.toggle!=null) {
@@ -322,11 +325,16 @@ const PlacePage = () => {
     const handleGoLogin = () => {
         setIsLogin(true);
     }
+
+    const handleShowDcCode = () => {
+        setCodeOn(true);
+    }
     
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
+                {codeOn && <ShowDcCode open={codeOn} onClose={setCodeOn} /> }
                 {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
                 <div style={{ position: 'fixed', height:'100%', width:'100%', maxWidth: "420px", backgroundColor: '#fff' }}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
@@ -367,7 +375,7 @@ const PlacePage = () => {
                                                 {selectedPlace.name}
                                             </Typography>
                                             <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                                {selectedPlace.detail_category}
+                                                {selectedPlace.detail_category?.includes('샐러드윅스') ? selectedPlace.detail_category.substring(0, selectedPlace.detail_category.length - 6) : selectedPlace.detail_category}
                                             </Typography>
                                         </Grid>
                                     }
@@ -428,7 +436,7 @@ const PlacePage = () => {
                                                         </Grid>
                                                         <Grid>
                                                             <Typography sx={{fontSize: '15px', fontWeight: '500', lineHeight: '129%', paddingLeft: '4px'}} color="#a1a1a1" component="div" >
-                                                                {selectedPlace.detail_category}
+                                                                {selectedPlace.detail_category?.includes('샐러드윅스') ? selectedPlace.detail_category.substring(0, selectedPlace.detail_category.length - 6) : selectedPlace.detail_category}
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
@@ -516,39 +524,62 @@ const PlacePage = () => {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid >
-                                                        <Typography  sx={{margin: '7.5px 0px 11.5px', fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
+                                                        <Typography  sx={{margin: '7.5px 0px 0px', fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
                                                         브레이크 타임 : {selectedPlace.break_time}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
                                             </CardContent>
-                                            <CardContent>
-                                                <Grid sx={{display: 'flex', mb: '10px'}}>
-                                                    <Typography sx={{fontSize: '17px', fontWeight: '700', pr: '4px'}}>
-                                                        메뉴
-                                                    </Typography>
-                                                    <Typography sx={{fontSize: '17px', fontWeight: '700', color: '#FFCE00'}}>
-                                                        { menus ? menus.length : null }
-                                                    </Typography>
-                                                </Grid>
-                                                { menus ? menus.map((menu, index) => (
-                                                    <Grid container key={index} style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
-                                                        <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
-                                                            <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
-                                                            {menu.name}  ({addComma(menu.price)}원)
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                // )) : null }
-                                                )) : <h5>적합한 결과가 없습니다.</h5>}
-                                            </CardContent>
                                         </Grid>
-
                                     </Grid>
                                 </>
                             </li> 
                         </Container>
+                        }
+                        {
+                            selectedPlace?.detail_category?.includes('샐러드윅스') && 
+                            <>
+                                <Container>
+                                    <Grid sx={{display: 'flex', mb: '20px', alignItems: 'center', justifyContent: 'center'}}>
+                                        <button 
+                                            style={{backgroundColor: '#FFE885', borderRadius: '30px', border: 'none', width: '97px', height: '36px', padding: '6px 10px 4px 10px'}}
+                                            onClick={handleShowDcCode}
+                                        >
+                                            할인 코드 보기
+                                        </button>
+                                    </Grid>
+                                </Container>
+                                <Image 
+                                    src={event} 
+                                    style={{width: '100%'}}
+                                    onClick={() => window.open('https://www.saladweeks.co.kr/', '_blank')}
+                                />
+                            </>
+                        }
+                        {
+                            menus && 
+                            <Container style={{padding: '0 32px'}}>
+                                <CardContent>
+                                    <Grid sx={{display: 'flex', mt: '20px', mb: '10px'}}>
+                                        <Typography sx={{fontSize: '17px', fontWeight: '700', pr: '4px'}}>
+                                            메뉴
+                                        </Typography>
+                                        <Typography sx={{fontSize: '17px', fontWeight: '700', color: '#FFCE00'}}>
+                                            {menus.length}
+                                        </Typography>
+                                    </Grid>
+                                    { menus.map((menu, index) => (
+                                        <Grid container key={index} style={{borderBottom: '0.5px solid rgba(151, 151, 151, 0.75)'}}>
+                                            <Grid style={{margin:'0', padding: '20px 0px 14px'}}>
+                                                <Typography sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
+                                                {menu.name}  ({addComma(menu.price)}원)
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    ))}
+                                </CardContent>
+                            </Container>
                         }
                         { selectedPlace && 
                             <li key={selectedPlace.id} style={{listStyleType:"none", height:'100%'}} onClick={handleReviewClick} >

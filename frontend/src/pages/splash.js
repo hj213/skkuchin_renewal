@@ -39,22 +39,18 @@ const splash = () => {
                 if (result) {
                     router.push('/');
                 } else {
-                    if (message == 'authenticated_fail') {
-                        if (campus) {
-                            dispatch(change_toggle_for_not_user(campus))
-                        } else {
-                            localStorage.setItem('map', '명륜');
-                            dispatch(change_toggle_for_not_user('명륜'))
-                        }
-                        let isUser = localStorage.getItem("user");
-                        if (isUser == "true") {
-                            router.push('/');
-                        } else {
-                            localStorage.setItem("user", "true")
-                            router.push('/nextSplash')
-                        }
+                    if (campus) {
+                        dispatch(change_toggle_for_not_user(campus))
                     } else {
+                        localStorage.setItem('map', '명륜');
+                        dispatch(change_toggle_for_not_user('명륜'))
+                    }
+                    let isUser = localStorage.getItem("user");
+                    if (isUser == "true") {
                         router.push('/');
+                    } else {
+                        localStorage.setItem("user", "true")
+                        router.push('/nextSplash')
                     }
                 }
             }))
