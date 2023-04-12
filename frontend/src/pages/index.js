@@ -462,7 +462,7 @@ const list = () => {
                                 onClick={() => router.push({
                                         pathname: '/place',
                                         query: { 
-                                            id: 79,
+                                            id: 366,
                                             fullScreen: true
                                         },
                                     })
