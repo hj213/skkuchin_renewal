@@ -121,7 +121,13 @@ public class PlaceDto {
         public Response(Place place, List<Image> images, List<Review> reviews, List<Tag> tags) {
             this.id = place.getId();
             this.name = place.getName();
-            this.marker = place.getCategory().getTitle();
+
+            if (place.getDetailCategory() != null && place.getDetailCategory().contains("샐러드윅스")) {
+                this.marker = "샐러드윅스";
+            } else {
+                this.marker = place.getCategory().getTitle();
+            }
+
             this.category = place.getCategory();
             this.detailCategory = place.getDetailCategory();
             this.campus = place.getCampus();

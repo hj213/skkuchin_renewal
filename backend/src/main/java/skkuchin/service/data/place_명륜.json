@@ -1,20 +1,6 @@
 {
     "place" : [
         {
-            "name": "기꾸스시",
-            "category": "일식",
-            "detailCategory": "초밥,롤",
-            "campus": "명륜",
-            "gate": "정문",
-            "address": "서울 종로구 성균관로2",
-            "xcoordinate": 126.998615487705,
-            "ycoordinate": 37.5832908106477,
-            "serviceTime": "11:30~22:00",
-            "breakTime": "15:00~17:00",
-            "discountAvailability": false,
-            "discountContent": null
-        },
-        {
             "name": "칸다소바",
             "category": "일식",
             "detailCategory": "일본식라면",
@@ -1091,6 +1077,34 @@
             "breakTime": null,
             "discountAvailability": false,
             "discountContent": null
+        },
+        {
+            "name": "카페김쌤",
+            "category": "카페",
+            "detailCategory": "카페,디저트,샐러드윅스",
+            "campus": "명륜",
+            "gate": "정문",
+            "address": "서울 종로구 성균관로 28",
+            "xcoordinate": 126.997231245152,
+            "ycoordinate": 37.5851782770352,
+            "serviceTime": "09:00~22:00",
+            "breakTime": "15:00~17:00",
+            "discountAvailability": false,
+            "discountContent": null
+        },
+        {
+            "name": "카페코지 성대점",
+            "category": "카페",
+            "detailCategory": "카페,디저트,샐러드윅스",
+            "campus": "명륜",
+            "gate": "정문",
+            "address": "서울 종로구 성균관로 8-1 1층",
+            "xcoordinate": 126.99821299689,
+            "ycoordinate": 37.5836977839387,
+            "serviceTime": "월~금 09:00~20:00\n 토~일 12:30~20:00",
+            "breakTime": "15:00~17:00",
+            "discountAvailability": true,
+            "discountContent": "코코넛 음료에 한해 잔당 500원 할인"
         }
     ]
 }

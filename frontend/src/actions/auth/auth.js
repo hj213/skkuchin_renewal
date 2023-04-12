@@ -300,6 +300,7 @@ export const request_refresh = () => async dispatch => {
     const refresh = Cookies.get('refresh') ?? null;
 
     if (refresh === null) {
+        Cookies.remove('access');
         return dispatch({
             type: AUTHENTICATED_FAIL
         });
