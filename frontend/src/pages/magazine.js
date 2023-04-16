@@ -42,8 +42,7 @@ const reviewM = [
         
     },{
         src: review2_mr,
-        text: '인테리어도 이쁘고 사장님, 알바생도 친절하셔요🙂 이층은 카공하기 좋고, 일층은 수다떨기 좋은 분위기!! 낫컴플에 가면 당연히 크로플 하나씩은 먹어야해요...! 여기저기서 크로플 많이 먹어봤는데 낫컴플 크로플이 진짜 진짜... 맛있어요😭 아이스크림이랑 바나나랑 크로플에 얹어서 한 입👍 그리고 숨겨진 스콘 맛집이랍니다!! 저는 밀크랑, 시나몬 스콘 추천!!\n'
-        + '(사진 속 초는 가게에 허락받고 제가 꽂은 거예요!)',
+        text: '인테리어도 이쁘고 사장님, 알바생도 친절하셔요🙂 이층은 카공하기 좋고, 일층은 수다떨기 좋은 분위기!! 낫컴플에 가면 당연히 크로플 하나씩은 먹어야해요...!',
         user: '효효/컬처앤테크놀로지융합전공',
         id: 369,
         rating: 5,
@@ -77,7 +76,7 @@ const reviewY = [
         rating: 5,
     },{
         src: review2_yj,
-        text: '진짜 거의 맨날 가요 😌🥐🫰🏻\n'
+        text: '진짜 거의 맨날 가요 😌🥐💻\n'
         +'율전 카공 일티어..!\',',
         user: '진/컬처앤테크놀로지융합전공',
         id: 375,
@@ -255,7 +254,7 @@ const Magazine = () => {
                                     );
                                 })}
                                 </div>
-                                <Typography fontSize='16px' fontWeight='700' style={{margin:'15px 0px 0px 0px'}} color="white" maxWidth={237}>"{toggleInfo && toggleInfo === '명륜' ? reviewM[reviewNum].text: reviewY[reviewNum].text}"</Typography>
+                                <Typography fontSize='16px' fontWeight='700' style={{margin:'15px 0px 0px 0px', whiteSpace: 'pre-wrap'}} color="white" maxWidth={237}>"{toggleInfo && toggleInfo === '명륜' ? reviewM[reviewNum].text: reviewY[reviewNum].text}"</Typography>
                                 <Typography fontSize='12px' fontWeight='400' style={{margin:'15px 0px 0px 0px'}} color="white" maxWidth={237}>{toggleInfo && toggleInfo === '명륜'? reviewM[reviewNum].user :  reviewY[reviewNum].user}</Typography>
                             </div>
                         </div>
