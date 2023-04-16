@@ -17,7 +17,7 @@ import event from '../image/saladweeks/event.png'
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import { load_reviews } from "../actions/review/review";
-import { clear_search_results, load_place } from "../actions/place/place";
+import { load_place } from "../actions/place/place";
 import morePic from '../image/morePicY.png';
 import dynamic from 'next/dynamic';
 
@@ -556,6 +556,8 @@ const PlacePage = () => {
                                 <Image 
                                     src={event} 
                                     style={{width: '100%'}}
+                                    placeholder='blur'
+                                    layout='responsive'
                                     onClick={() => window.open('https://www.saladweeks.co.kr/', '_blank')}
                                 />
                             </>

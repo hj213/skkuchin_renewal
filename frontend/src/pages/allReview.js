@@ -84,6 +84,9 @@ const AllReview = () => {
                             학번: {review.student_id}
                         </p>
                         <p>
+                            장소번호: {review.place_id}
+                        </p>
+                        <p>
                             장소: {review.place}
                         </p>
                         <p>
