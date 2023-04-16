@@ -140,6 +140,8 @@ public class ReviewDto {
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class AdminResponse {
+        @JsonProperty
+        private Long placeId;
         private String place;
         private int rate;
         private String content;
@@ -153,7 +155,8 @@ public class ReviewDto {
         private List<String> tags;
 
         public AdminResponse(Review review, List<ReviewTag> tags, List<ReviewImage> images) {
-            this.place = review.getPlace().getName();
+            this.placeId = review.getPlace().getId();
+            this.place = review.getPlace().getName() + '(' + review.getPlace().getCampus().name() + ')';
             this.rate = review.getRate();
             this.content = review.getContent();
             this.images = images.stream().map(image -> image.getUrl()).collect(Collectors.toList());

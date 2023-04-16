@@ -12,7 +12,7 @@ import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png';
 import closeIcon from '../image/close.png';
 import bookmarkOn from '../image/bookmark-1.png';
-import banner from '../image/saladweeks/banner2.png';
+import banner from '../image/saladweeks/banner.png';
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -458,7 +458,7 @@ const list = () => {
                                 src={banner} 
                                 style={{width: '100%'}} 
                                 layout='responsive' 
-                                placeholder='blur' 
+                                placeholder='blur'
                                 onClick={() => router.push({
                                         pathname: '/place',
                                         query: { 
