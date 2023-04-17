@@ -19,7 +19,7 @@ import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 import dynamic from 'next/dynamic';
 
-import content from '../image/magazine/magazine2/content1_1.png';
+import content from '../image/magazine/magazine3/content3.png';
 import review1_mr from '../image/magazine/review1_mr.png';
 import review2_mr from '../image/magazine/review2_mr.png';
 import review3_mr from '../image/magazine/review3_mr.png';
@@ -209,8 +209,8 @@ const Magazine = () => {
                     <div style={{position:'absolute',zIndex:'3'}}>
                         {/* 안에 자유롭게 수정가능 */}
                         <Typography fontSize='12px' fontWeight='700' style={{margin:'23px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>바쁘다 바빠, 시간 없을 때</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">간단하게 먹기 좋은 8곳</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>여기서 공부하면 A+</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">공부하기 좋은 성대 카페 6곳</Typography>
                     </div>
                     <div>
                         <div style={{position:'absolute',zIndex:'3', bottom:'8%', right: '3%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
