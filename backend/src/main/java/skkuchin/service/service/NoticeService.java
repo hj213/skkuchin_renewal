@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.martijndwars.webpush.Subscription;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import skkuchin.service.domain.Notice.NoticeType;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.NoticeDto;
 import skkuchin.service.domain.Notice.Notice;
@@ -107,5 +108,12 @@ public class NoticeService {
             }
         }
         return false;
+    }
+
+    public void insertData() {
+        NoticeDto.Request infoDto = new NoticeDto.Request(NoticeType.공지, "스꾸친 공지입니다!", "", "", "");
+        NoticeDto.Request eventDto = new NoticeDto.Request(NoticeType.이벤트, "스꾸친 이벤트입니다!", "", "", "");
+        add(infoDto);
+        add(eventDto);
     }
 }
