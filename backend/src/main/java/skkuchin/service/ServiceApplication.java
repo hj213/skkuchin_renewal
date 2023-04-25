@@ -36,7 +36,8 @@ public class ServiceApplication {
 						  ReviewService reviewService,
 						  RankService rankService,
 						  ChatRoomService chatRoomService,
-						  ChatMessageService chatMessageService) {
+						  ChatMessageService chatMessageService,
+						  NoticeService noticeService) {
 		return args -> {
 			userService.saveRole(Role.builder().name("ROLE_USER").build());
 			userService.saveRole(Role.builder().name("ROLE_ADMIN").build());
@@ -59,6 +60,7 @@ public class ServiceApplication {
 				userService.saveTestMatchingUsers(100);
 				chatRoomService.insertData();
 				chatMessageService.insertData();
+				noticeService.insertData();
 			} catch (Exception e) {
 				System.out.println(e);
 			}

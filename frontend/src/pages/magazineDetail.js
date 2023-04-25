@@ -11,75 +11,97 @@ import arrowNext from '../image/arrow_forward2.png';
 import dynamic from 'next/dynamic';
 import position from '../../public/markers/기본_yellow.png';
 
-import content1 from '../image/magazine/magazine3/content1.png';
-import content2 from '../image/magazine/magazine3/content2.png';
-import content3 from '../image/magazine/magazine3/content3.png';
-import content4 from '../image/magazine/magazine3/content4.png';
-import content5 from '../image/magazine/magazine3/content5.png';
-import content6 from '../image/magazine/magazine3/content6.png';
+import content1 from '../image/magazine/magazine4/content1.png';
+import content2 from '../image/magazine/magazine4/content2.png';
+import content3 from '../image/magazine/magazine4/content3.png';
+import content4 from '../image/magazine/magazine4/content4.png';
+import content5 from '../image/magazine/magazine4/content5.png';
+import content6 from '../image/magazine/magazine4/content6.png';
+import content7 from '../image/magazine/magazine4/content7.png';
+import content8 from '../image/magazine/magazine4/content8.png';
 
 const contentList = [
     {
-        id: 375,
-        name:'자명문',
-        category: '카페,디저트',
-        place: '율전/정문',
+        id: 8,
+        name:'오이지',
+        category: '한식',
+        place: '명륜/대학로',
         // reviews: [
         // ],
         images: [
             content1
         ]
     },{
-        id: 338,
-        name:'델라',
-        category: '카페,디저트',
-        place: '명륜/정문',
+        id: 9,
+        name:'호호식당',
+        category: '일식당',
+        place: '명륜/대학로',
         // reviews: [
         // ],
         images: [
             content2
         ]
     },{
-        id: 350,
-        name:'하우짓 블랙',
-        category: '카페',
-        place: '율전/쪽문',
+        id: 5,
+        name:'소친친',
+        category: '퓨전음식',
+        place: '명륜/대학로',
         // reviews: [
         // ],
         images: [
             content3
         ]
     },{
-        id: 360,
-        name:'카페김쌤',
-        category: '카페,디저트',
-        place: '명륜/정문',
+        id: 24,
+        name:'파스타마켓',
+        category: '스파게티,파스타전문',
+        place: '명륜/대학로',
         // reviews: [
         // ],
         images: [
             content4
         ]
     },{
-        id: 348,
-        name:'커피 93.0',
+        id: 369,
+        name:'낫컴플리트',
         category: '카페,디저트',
-        place: '율전/쪽문',
+        place: '명륜/정문',
         // reviews: [
         // ],
         images: [
             content5
         ]
     },{
-        id: 335,
-        name:'명륜다락방',
-        category: '카페,디저트',
-        place: '명륜/정문',
+        id: 368,
+        name:'칠린',
+        category: '바(BAR)',
+        place: '명륜/대학로',
         // reviews: [
         // ],
         images: [
             content6
         ]
-    },
+    },{
+        id: 389,
+        name:'릴랙스 인 다운타운',
+        category: '카페,디저트',
+        place: '명륜/대학로',
+        // reviews: [
+        // ],
+        images: [
+            content7
+        ]
+    },{
+        id: 68,
+        name:'도리안그레이',
+        category: '바(BAR)',
+        place: '명륜/대학로',
+        // reviews: [
+        // ],
+        images: [
+            content8
+        ]
+    }
 ]
 
 const UpperBar = dynamic(() => import('../components/UpperBar'));
@@ -111,12 +133,12 @@ const MagazineDetail = () => {
                         </div>
                         <div style={{position:'absolute',zIndex:'3', bottom: '35px'}}>
                             <Typography fontSize='12px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>여기서 공부하면 A+</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">공부하기 좋은 성대 카페 6곳</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>없던 사랑도 꽃피는</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 데이트 코스 명륜편</Typography>
                         </div>
                         <div style={{position:'relative', width:'100%', height:'100%'}}>
                             <Image 
-                                src={content3} 
+                                src={content5} 
                                 height={400}
                                 width={431}
                                 layout='fixed'
