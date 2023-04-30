@@ -87,7 +87,7 @@ const AiGreeting = () => {
         }
     }, [userInfo])
     
-    //매칭프로필 정보 받아오기
+    //추가 프로필 정보 받아오기
     const [load, setLoad] = useState('');
 
     //프로필 설정하라는 다이얼로그
@@ -180,7 +180,7 @@ const AiGreeting = () => {
     const handleMoveProfile = () => {
         router.push({
             pathname: '/makeProfile',
-            query: { src : '매칭프로필설정', }
+            query: { src : '스꾸챗프로필설정', }
         })
     }
 
@@ -194,7 +194,7 @@ const AiGreeting = () => {
                     </span>
                     님
                     <br />
-                    오늘의 AI 매칭 추천을 확인해보세요 👀
+                    오늘의 대화 상대를 확인해보세요 👀
                 </Typography>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px", margin:"0 0 30px 0"}}>
@@ -253,7 +253,7 @@ const AiGreeting = () => {
                 }}>
             <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth:"420px", padding:"15px 15px 0px 15px"}}>
                 <div style={{fontSize:"12px", paddingTop:"3px"}}>
-                    매칭 활성화
+                    대화 활성화
                 </div>
 
                 {/* 토글 스위치 */}
@@ -312,7 +312,7 @@ const AiGreeting = () => {
                     </Grid>
                 </div>
 
-                {/* 유저 관심사, 매칭 프로필 설정 후 연결 필요 */}
+                {/* 유저 관심사, 추가 프로필 설정 후 연결 필요 */}
                 <div style={{textAlign:"center", marginTop:"10px"}}>
                 <Grid style={{fontSize:"12px", color:"#BABABA", textAlign:"center"}}>
                         <Typography style={{
@@ -367,14 +367,14 @@ const AiGreeting = () => {
             <Dialog open={dialogOpen} onClose={handleDialogOpen}>
                 <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
-                    AI 매칭 기능을 이용하시려면<br/>
-                    매칭 프로필이 필요해요!
+                    대화 기능을 이용하시려면<br/>
+                    추가 프로필 등록이 필요해요!
                     </Typography>
                 </DialogContent>
                 <DialogActions style={{justifyContent:'center'}}>
                     <Button style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}} sx={{textDecoration: 'underline'}}>
                         <Typography style={{fontSize:"12px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}} onClick={handleMoveProfile}>
-                            매칭 프로필 설정하기
+                            프로필 등록하기
                         </Typography>
                     </Button> 
                 </DialogActions>

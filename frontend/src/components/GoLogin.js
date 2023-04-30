@@ -7,7 +7,7 @@ const GoLogin = ({open, onClose}) => {
 
     const router = useRouter();
 
-    // // 밥약 신청하기 버튼
+    // // 대화 요청하기 버튼
     const [submit, setSubmit] = useState(open);
 
     const handleSubmit= (e) => {

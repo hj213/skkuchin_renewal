@@ -13,7 +13,6 @@ import bookmarkOn from '../image/bookmark-1.png';
 import star from '../image/Star-1.png';
 import expand from '../image/expand_more2.png'
 import back from '../image/arrow_back_ios.png'
-import event from '../image/saladweeks/event.png'
 import { displayBigReviewTag } from "../components/TagList";
 import Link from 'next/link';
 import { load_reviews } from "../actions/review/review";
@@ -28,7 +27,6 @@ const SearchBox = dynamic(() => import("../components/SearchBox"));
 const UpperBar = dynamic(() => import("../components/UpperBar"));
 const PlaceReview = dynamic(() => import("../components/PlaceReview"));
 const GoLogin = dynamic(() => import("../components/GoLogin"));
-const ShowDcCode = dynamic(() => import("../components/ShowDcCode"));
 
 const PlacePage = () => {
 
@@ -55,7 +53,6 @@ const PlacePage = () => {
     const [filteredPlace, setFilteredPlace] = useState([]);
 
     const [isLogin, setIsLogin] = useState(false);
-    const [codeOn, setCodeOn] = useState(false);
 
     useEffect(() => {
         if (place && user != null && user.toggle!=null) {
@@ -325,16 +322,11 @@ const PlacePage = () => {
     const handleGoLogin = () => {
         setIsLogin(true);
     }
-
-    const handleShowDcCode = () => {
-        setCodeOn(true);
-    }
     
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
-                {codeOn && <ShowDcCode open={codeOn} onClose={setCodeOn} /> }
                 {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
                 <div style={{ position: 'fixed', height:'100%', width:'100%', maxWidth: "420px", backgroundColor: '#fff' }}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
@@ -375,7 +367,7 @@ const PlacePage = () => {
                                                 {selectedPlace.name}
                                             </Typography>
                                             <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                                {selectedPlace.detail_category?.includes('샐러드윅스') ? selectedPlace.detail_category.substring(0, selectedPlace.detail_category.length - 6) : selectedPlace.detail_category}
+                                                {selectedPlace.detail_category}
                                             </Typography>
                                         </Grid>
                                     }
@@ -436,7 +428,7 @@ const PlacePage = () => {
                                                         </Grid>
                                                         <Grid>
                                                             <Typography sx={{fontSize: '15px', fontWeight: '500', lineHeight: '129%', paddingLeft: '4px'}} color="#a1a1a1" component="div" >
-                                                                {selectedPlace.detail_category?.includes('샐러드윅스') ? selectedPlace.detail_category.substring(0, selectedPlace.detail_category.length - 6) : selectedPlace.detail_category}
+                                                                {selectedPlace.detail_category}
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
@@ -537,7 +529,8 @@ const PlacePage = () => {
                             </li> 
                         </Container>
                         }
-                        {
+                        {/* 홍보 배너 */}
+                        {/* {
                             selectedPlace?.detail_category?.includes('샐러드윅스') && 
                             <>
                                 <Container>
@@ -561,7 +554,7 @@ const PlacePage = () => {
                                     onClick={() => window.open('https://www.saladweeks.co.kr/', '_blank')}
                                 />
                             </>
-                        }
+                        } */}
                         {
                             menus && 
                             <Container style={{padding: '0 32px'}}>

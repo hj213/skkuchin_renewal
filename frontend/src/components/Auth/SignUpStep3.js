@@ -145,7 +145,7 @@ export default function SignUpStep3(props) {
                     <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>회원가입</Typography>
             </header> */}
 
-            <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
+            <div name='스꾸챗 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                             <Container  style={{padding:'0px', margin:'0px 0px 0px 10px', justifyContent:'center'}}>
                                 <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필 이미지 선택*</Typography>

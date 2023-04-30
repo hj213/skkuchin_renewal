@@ -12,13 +12,13 @@ const Document = () => {
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
                 <meta name="naver-site-verification" content="a1c9f9dfec618ddcfc1e360479b0de95fb63259a" />
                 <meta name="google-site-verification" content="V5bATJqLVOMYAYwRGWSUtUk9_n5kOhR9kqd3VS-S8-I" />
-                <meta name="description" content="스꾸친은 성균관대학교 학생들 간의 밥 약속을 성사시켜드립니다!" />
-                <meta name="keywords" content="스꾸친, 밥약, 성대 밥약" />
+                <meta name="description" content="성대 네트워킹의 모든 것, 스꾸친" />
+                <meta name="keywords" content="스꾸친, 맛집, 채팅, 대화, 명륜, 율전" />
                 <link rel="canonical" href="https://www.skkuchin.com" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="스꾸친" />
                 <meta property="og:site_name" content="스꾸친" />
-                <meta property="og:description" content="스꾸친은 성균관대학교 학생들 간의 밥 약속을 성사시켜드립니다!" />
+                <meta property="og:description" content="성대 네트워킹의 모든 것, 스꾸친" />
                 <meta property="og:image" content="/icons/maskable_icon.png" />
                 <meta property="og:url" content="https://www.skkuchin.com" />
                 {/* favicon */}

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -37,6 +38,6 @@ public class Candidate {
     @PrePersist
     public void setDate() {
         LocalDateTime now = LocalDateTime.now();
-        this.expireDate = now.plusDays(5);
+        this.expireDate = now.plusDays(14);
     }
 }

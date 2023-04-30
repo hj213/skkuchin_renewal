@@ -3,6 +3,7 @@ package skkuchin.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Map.Review;
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotNull;
 public class ReportDto {
 
     @Getter
+    @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Request {
         @NotNull

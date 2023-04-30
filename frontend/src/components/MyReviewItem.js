@@ -19,7 +19,7 @@ const MyReviewItem = ({ index, review, handleEdit, handleDelete }) => {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
-      // 밥약 신청하기 버튼
+      // 대화 요청하기 버튼
     const [open, setOpen] = useState(false);
     const handleSubmit = () => {
         setOpen(true);

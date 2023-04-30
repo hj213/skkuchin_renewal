@@ -12,7 +12,6 @@ import star from '../image/Star-1.png';
 import mapIcon from '../image/map-1.png';
 import closeIcon from '../image/close.png';
 import bookmarkOn from '../image/bookmark-1.png';
-import banner from '../image/saladweeks/banner.png';
 import { displayTagImage, displayReviewTag } from "../components/TagList";
 import { clear_search_results } from "../actions/place/place";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -61,7 +60,6 @@ const list = () => {
     const [keyword, setKeyword] = useState(''); //태그검색
     const [tags, setTags] = useState([]); // 태그 2개까지
     const [tagsId, setTagsId] = useState([
-        {id: '샐러드윅스', exclusiveGroup: 'salad'},
         {id: '학생 할인', exclusiveGroup: 'discount'},
         {id: '카페', exclusiveGroup: 'cuisine'},
         // {id: '스페셜', exclusiveGroup: null},
@@ -440,7 +438,8 @@ const list = () => {
                     </div>
                 </Container>
             
-                <Container style={{padding: '0px'}}  >
+                {/* 홍보 배너 */}
+                {/* <Container style={{padding: '0px'}}  >
                     <Card 
                         style={{
                             position: 'absolute',
@@ -470,7 +469,7 @@ const list = () => {
                             />
                         </div>
                     </Card>
-                </Container>
+                </Container> */}
 
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
                 

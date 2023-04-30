@@ -14,6 +14,7 @@ public class DebeziumDto {
         @Getter
         @Setter
         public static class Payload {
+            private UserDto.DebeziumDto before;
             private UserDto.DebeziumDto after;
             private String op;
         }

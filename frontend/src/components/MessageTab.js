@@ -114,7 +114,7 @@ export default function MessageTab() {
       <Box sx={{ borderBottom: 1, borderColor: 'transparent',  backgroundColor:'white'}}>
         <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example" sx={{position: 'fixed',width:'100%', mt: '15px', backgroundColor:'white', maxWidth: '420px', zIndex: '10'}}>
           <Tab style={{color:value===0? '#565656':'#BABABA', fontWeight:value===0? '700':'500', fontSize:"15px"}} label="채팅방" {...a11yProps(0)} />
-          <Tab style={{color:value===1? '#565656':'#BABABA', fontWeight:value===1? '700':'500', fontSize:"15px"}} label="밥약 신청" {...a11yProps(1)} />
+          <Tab style={{color:value===1? '#565656':'#BABABA', fontWeight:value===1? '700':'500', fontSize:"15px"}} label="대화 요청" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -222,10 +222,10 @@ export default function MessageTab() {
               </Grid>
               <Grid item>
                 <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
-                참여중인 채팅이 없네요!
+                참여 중인 대화가 아직 없네요!
                 </Typography>
                 <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
-                'AI매칭' 탭에서 새로운 채팅에 참여해보세요.
+                '스꾸챗' 탭에서 새로운 대화에 참여해보세요.
                 </Typography>
               </Grid>
             </Grid> 
@@ -257,7 +257,7 @@ export default function MessageTab() {
                             <Stack direction="column" spacing={1} sx={{margin:"4px 0 0 8px"}}>
                                 <div style={{display:'flex'}}>
                                   <Typography sx={{fontSize: '14px', fontWeight:'700', lineHeight: '200%', verticalAlign: 'top',}} align="left">
-                                      새로운 밥약 신청이 있습니다!
+                                      새로운 대화 요청이 있습니다!
                                   </Typography>
                                 </div>
                                 <Typography sx={{paddingTop:"3px",fontSize: '12px', fontWeight:'500', lineHeight: '0%', verticalAlign: 'top',}} align="left">
@@ -286,10 +286,10 @@ export default function MessageTab() {
                 </Grid>
                 <Grid item>
                     <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
-                    받은 밥약 신청이 없네요!
+                    요청받은 대화가 아직 없네요!
                     </Typography>
                     <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
-                    'AI매칭' 탭에서 새로운 채팅에 참여해보세요.
+                    '스꾸챗' 탭에서 새로운 대화에 참여해보세요.
                     </Typography>
                 </Grid>
               </Grid>

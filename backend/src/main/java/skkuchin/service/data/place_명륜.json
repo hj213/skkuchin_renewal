@@ -1,5 +1,5 @@
 {
-    "place" : [
+    "place": [
         {
             "name": "칸다소바",
             "category": "일식",
@@ -1081,7 +1081,7 @@
         {
             "name": "카페김쌤",
             "category": "카페",
-            "detailCategory": "카페,디저트,샐러드윅스",
+            "detailCategory": "카페,디저트",
             "campus": "명륜",
             "gate": "정문",
             "address": "서울 종로구 성균관로 28",
@@ -1095,7 +1095,7 @@
         {
             "name": "카페코지 성대점",
             "category": "카페",
-            "detailCategory": "카페,디저트,샐러드윅스",
+            "detailCategory": "카페,디저트",
             "campus": "명륜",
             "gate": "정문",
             "address": "서울 종로구 성균관로 8-1 1층",

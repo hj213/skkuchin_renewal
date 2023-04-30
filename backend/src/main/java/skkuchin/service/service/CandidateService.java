@@ -40,14 +40,10 @@ public class CandidateService {
     @Transactional
     public List<CandidateDto.Response> getCandidate(AppUser user) {
         if (user.getMatching() == null) {
-            throw new CustomRuntimeException("매칭 프로필을 등록하여주시기 바랍니다");
+            throw new CustomRuntimeException("스꾸챗 프로필을 등록하여주시기 바랍니다");
         } else if (!user.getMatching()) {
-            throw new CustomRuntimeException("매칭 활성화가 꺼져있습니다");
+            throw new CustomRuntimeException("대화 활성화 버튼이 꺼져있습니다");
         }
-
-//        if (userRepo.findAll().stream().filter(appUser -> appUser.getMatching() == true).collect(Collectors.toList()).size() < 100) {
-//            throw new CustomRuntimeException("매칭을 활성화한 사용자가 100명이 되면\n 스꾸친 AI 매칭이 시작됩니다");
-//        }
 
         List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
         Candidate recentCandidate = null;
@@ -55,7 +51,7 @@ public class CandidateService {
 
         if (candidates.size() > 0) {
             recentCandidate = candidates.get(candidates.size() - 1);
-            LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(5);
+            LocalDateTime createDate = recentCandidate.getExpireDate().minusDays(14);
             Duration duration = Duration.between(createDate, LocalDateTime.now());
             differenceTime = duration.toDays();
         } else {
@@ -147,7 +143,7 @@ public class CandidateService {
     public List<AppUser> orderByKeyword(AppUser user, List<Long> excludeIds) {
         //유저의 키워드 리스트
         List<Long> keywordIds = userKeywordRepo.findKeywordIdsByUserId(user.getId());
-        //이미 매칭 후보로 올랐던 유저는 제외 대상
+        //이미 대화 후보로 올랐던 유저는 제외 대상
         List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
         for (int i = 0; i < candidates.size(); i++) {
             Candidate candidate = candidates.get(i);

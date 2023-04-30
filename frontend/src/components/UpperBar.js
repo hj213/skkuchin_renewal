@@ -23,7 +23,7 @@ const UpperBar = () => {
     useEffect(() => {
         const currentPathname = window.location.pathname;
         if (currentPathname === "/match") {
-            setSelected("AI 매칭");
+            setSelected("스꾸챗");
         } else if (currentPathname === "/magazine" || currentPathname === "/magazineDetail" ){
             setSelected("매거진");
         } else if (currentPathname === "/myPage"){
@@ -95,14 +95,14 @@ const UpperBar = () => {
                     style={{
                         fontSize: "11px",
                         fontWeight: 700,
-                        color: selected === "AI 매칭" ? "#FFCE00" : "#505050",
+                        color: selected === "스꾸챗" ? "#FFCE00" : "#505050",
                         textDecoration: "none",
-                        borderBottom: selected === "AI 매칭" ? "2px solid #FFCE00" : "none"
+                        borderBottom: selected === "스꾸챗" ? "2px solid #FFCE00" : "none"
                 }}
-                onClick={() => setSelected("AI 매칭")}
+                onClick={() => setSelected("스꾸챗")}
                 >
                 <span style={{padding:"0 0 2px 0"}}>
-                    AI 매칭
+                    스꾸챗
                 </span>
                 </a>
             </Link>

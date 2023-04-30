@@ -1,9 +1,6 @@
 import { useRouter } from 'next/router';
 import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField} from '@mui/material';
 import theme from "../theme/theme";
-import Image from 'next/image';
-import button1 from '../image/goLoginButton.png';
-import button2 from '../image/startAIButton.png';
 import dynamic from 'next/dynamic';
 
 const matchingComplete = () => {
@@ -14,7 +11,7 @@ const matchingComplete = () => {
     const handleButtonClick = (e) => {
         if(src == '회원가입'){
             router.push('/login');
-        } else if(src == '매칭프로필설정'){
+        } else if(src == '스꾸챗프로필설정'){
             router.push('/match');
         }
     }
@@ -31,20 +28,34 @@ const matchingComplete = () => {
             </div>
             <div style={{textAlign:'center', marginTop:'12px'}}>
                 <Typography style={{fontSize:'20px'}}>
-                    매칭 프로필 설정으로<br/>
-                    매칭이 활성화되었습니다. 
+                    스꾸챗 프로필 등록으로<br/>
+                    대화 참여가 가능해졌습니다. 
                 </Typography>
             </div>
             <div style={ {marginTop:height2}}>
                 <div style={{textAlign:'center'}}>
                     <Typography style={{fontSize:'10px'}}>
-                        *매칭 프로필을 변경하고 싶은 경우<br/>
-                        [AI매칭 &#62; 내 프로필 보기]에서 변경가능합니다. 
+                        *스꾸챗 프로필을 변경하고 싶은 경우<br/>
+                        [스꾸챗 &#62; 내 프로필 보기]에서 변경가능합니다. 
                     </Typography>
                 </div>
             </div>
             <div style={{textAlign:'center', marginTop:'17px'}}>
-                <Image src={src == '회원가입' ? button1: button2} width={296} height={56} onClick={handleButtonClick} placeholder="blur" layout='fixed' />
+                <Button 
+                    variant="contained" 
+                    onClick={handleButtonClick}
+                    style={{
+                        width: '80%', 
+                        backgroundColor: "#FFCE00", 
+                        color: '#fff', 
+                        fontSize: '16px', 
+                        fontWeight: '700',  
+                        borderRadius: '15px', 
+                        height: '56px', 
+                        boxShadow: 'none'
+                    }}>
+                    {src == '회원가입' ? '로그인 홈 가기' : '스꾸챗 시작하기'}
+                </Button>
             </div>
         </ThemeProvider>
     )

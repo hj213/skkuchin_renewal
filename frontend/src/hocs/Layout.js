@@ -105,7 +105,7 @@ const Layout = ({title, content, children}) => {
 
 Layout.defaultProps = {
     title: '스꾸친',
-    content: '스꾸친은 성균관대학교 학생들 간의 밥 약속을 성사시켜드립니다!'
+    content: '성대 네트워킹의 모든 것, 스꾸친'
 }
 
 export default Layout;

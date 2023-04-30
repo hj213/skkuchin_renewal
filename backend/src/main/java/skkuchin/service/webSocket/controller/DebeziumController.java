@@ -143,7 +143,7 @@ public class DebeziumController {
 
         if (dto.getPayload().getOp().equals("c")) {
             String pushTitle = "스꾸친";
-            String pushMessage = "새로운 밥약 신청이 도착했습니다!";
+            String pushMessage = "새로운 상대방이 대화를 원합니다!";
 
             Subscription subscription = pushTokenService.toSubscription(user2, "chat");
 
@@ -159,7 +159,7 @@ public class DebeziumController {
                 dto.getPayload().getAfter().getResponse() == ResponseType.ACCEPT
             ) {
                 String pushTitle = "스꾸친";
-                String pushMessage = "밥약이 성사되었습니다!";
+                String pushMessage = "대화가 성사되었습니다!";
 
                 Subscription subscription = pushTokenService.toSubscription(user1, "chat");
 
@@ -177,37 +177,38 @@ public class DebeziumController {
     public void listenUser(@Payload(required = false) String message) throws Exception{
         System.out.println("kafka consume test topic : "  + message);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DebeziumDto.UserRequest dto= objectMapper.readValue(message, DebeziumDto.UserRequest.class);
+        if (message != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            DebeziumDto.UserRequest dto= objectMapper.readValue(message, DebeziumDto.UserRequest.class);
 
-        Long userId = dto.getPayload().getAfter().getId();
+            if (dto.getPayload().getOp().equals("u") || dto.getPayload().getOp().equals("d")) {
+                Long userId = dto.getPayload().getBefore().getId();
+                List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(userId);
 
-        if (dto.getPayload().getOp().equals("u") || dto.getPayload().getOp().equals("d")) {
-            List<ChatRoom> chatRooms = chatRoomRepo.findMyRoomList(userId);
+                for (ChatRoom chatRoom : chatRooms) {
+                    AppUser user1 = chatRoom.getUser1();
+                    AppUser user2 = chatRoom.getUser2();
 
-            for (ChatRoom chatRoom : chatRooms) {
-                AppUser user1 = chatRoom.getUser1();
-                AppUser user2 = chatRoom.getUser2();
+                    String user1Name = null;
+                    String user2Name = null;
 
-                String user1Name = null;
-                String user2Name = null;
+                    UserDto.Response user1Dto= new UserDto.Response(user1);
+                    UserDto.Response user2Dto = new UserDto.Response(user2);
 
-                UserDto.Response user1Dto= new UserDto.Response(user1);
-                UserDto.Response user2Dto = new UserDto.Response(user2);
+                    if (user1 != null) {
+                        user1Name = user1.getUsername();
+                        List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(user1Name);
+                        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user1Name+"chatRoomList", chatRooms1);
+                        template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user1",user2Dto);
+                    }
 
-                if (user1 != null) {
-                    user1Name = user1.getUsername();
-                    List<ChatRoomDto.Response> chatRooms1 = chatRoomService.getChatRoomList(user1Name);
-                    template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user1Name+"chatRoomList", chatRooms1);
-                    template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user1",user2Dto);
-                }
-
-                if (user2 != null) {
-                    user2Name = user2.getUsername();
-                    List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(user2Name);
-                    template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user2Name+"chatRoomList", chatRooms2);
-                    template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user2",user1Dto);
+                    if (user2 != null) {
+                        user2Name = user2.getUsername();
+                        List<ChatRoomDto.Response> chatRooms2 = chatRoomService.getChatRoomList(user2Name);
+                        template.convertAndSend(CHAT_EXCHANGE_NAME, "room."+user2Name+"chatRoomList", chatRooms2);
+                        template.convertAndSend(CHAT_EXCHANGE_NAME, "user."+chatRoom.getRoomId()+"user2",user1Dto);
+                    }
                 }
             }
         }

@@ -44,6 +44,6 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewTag> reviewTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports = new ArrayList<>();
 }

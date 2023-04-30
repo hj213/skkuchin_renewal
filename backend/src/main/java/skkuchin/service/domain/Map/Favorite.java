@@ -32,11 +32,5 @@ public class Favorite {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
-
-
-
-
-
-
 }
 
