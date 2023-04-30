@@ -1,6 +1,7 @@
 package skkuchin.service.domain.User;
 
 import lombok.*;
+import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.Map.Review;
@@ -79,9 +80,27 @@ public class AppUser {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Favorite> favorites = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user1")
+    private List<ChatRoom> chatRoomsAsUser1 = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user2")
+    private List<ChatRoom> chatRoomsAsUser2 = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Candidate> candidates = new ArrayList<>();
+    private List<Candidate> candidatesAsUser = new ArrayList<>();
+
+    @OneToMany(mappedBy = "candidate1", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> candidatesAsCandidate1 = new ArrayList<>();
+
+    @OneToMany(mappedBy = "candidate2", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> candidatesAsCandidate2 = new ArrayList<>();
+
+    @OneToMany(mappedBy = "candidate3", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> candidatesAsCandidate3 = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PushToken> pushTokens = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Report> reports = new ArrayList<>();
 }

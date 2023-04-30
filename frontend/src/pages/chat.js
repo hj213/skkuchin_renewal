@@ -346,7 +346,7 @@ const chatPage = () => {
                             </DialogTitle>
                             :
                             <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 15px 5px', m: '0'}}>
-                                차단 시 해당 채팅방의 상대와는 더 이상 채팅이 불가하며 상대는 더 이상 매칭에서 노출되지 않아요. 차단하시겠어요?
+                                차단 시 해당 채팅방의 상대와는 더 이상 채팅이 불가합니다. 차단하시겠어요?
                             </DialogTitle>
                         }
 
@@ -595,11 +595,9 @@ const chatPage = () => {
                     </Grid>
                     <Grid item>
                         <Typography style={{ color: '#A1A1A1', fontSize: '14px', textAlign: 'center' }}>
-                            밥약이 성사되었습니다 :)
+                            대화가 성사되었습니다 :)
                             <br/>
-                            상대 학우님에게 간단한 인사를 건넨 후 
-                            <br/> 
-                            약속을 잡아보세요!
+                            간단한 인사를 건넨 후 대화를 나눠보세요!
                         </Typography>
                     </Grid>
                 </Grid>

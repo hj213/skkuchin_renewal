@@ -257,7 +257,7 @@ const makeProfile = () => {
             back: 'hidden',
             건너뛰기: 'visible',
           });
-        } else if (src == '매칭프로필설정') {
+        } else if (src == '스꾸챗프로필설정') {
           setVisibility({
             back: 'visible',
             건너뛰기: 'hidden',
@@ -545,7 +545,7 @@ const makeProfile = () => {
         
         event.preventDefault();
 
-        if (src == '매칭프로필설정') {
+        if (src == '스꾸챗프로필설정') {
         dispatch(add_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
                     router.push({
@@ -629,14 +629,14 @@ const makeProfile = () => {
                                 <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'27%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>매칭 프로필 설정</Typography>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>스꾸챗 프로필 설정</Typography>
                             </Grid>
                             <Grid item style={{marginLeft:'14%', }} onClick={() => router.push('/welcome')}>
                                 <Typography style={{margin:'3px 0px 0px 0px', textAlign:'center',fontSize:'12px', visibility: visibility.건너뛰기}} fontWeight={theme.typography.h2} color={theme.palette.fontColor.main} name='건너뛰기' onClick={() => router.push('/welcome')}>건너뛰기</Typography>
                             </Grid>
                         </Grid>
                     </Container>
-                    <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'21.63px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸친 AI 매칭을 이용해보세요 😎</Typography>
+                    <Typography style={{fontSize:'12px', textAlign:'center', marginTop:'21.63px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필을 완성하고 스꾸챗을 이용해보세요 😎</Typography>
                     <div name='성별' style={{textAlign:'center',display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
@@ -880,84 +880,6 @@ const makeProfile = () => {
                             </div>
                         </Container>
                     </Container>
-                    {/* <div name='매칭 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
-                        <div>
-                            <Container  style={{padding:'0px', margin:'41.7px 0px 0px 10px', justifyContent:'center'}}>
-                                <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>매칭 프로필 사진*</Typography>
-                                <Typography style={{fontSize:'12px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>1개의 이미지를 선택해주세요.</Typography>
-                                <div style={{marginTop:'10px'}}>
-                                    <Grid container style={{maxWidth:'340px'}}>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.DEFAULT1 ? profile1On : profile1} width={100} height={100} onClick={handleProfileClick} name='DEFAULT1'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.DEFAULT2 ? profile2On : profile2} width={100} height={100} onClick={handleProfileClick} name='DEFAULT2'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ENFJ ? profile3On : profile3} width={100} height={100} onClick={handleProfileClick} name='ENFJ'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.ENTP ? profile4On : profile4} width={100} height={100} onClick={handleProfileClick} name='ENTP'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.INFP ? profile5On : profile5} width={100} height={100} onClick={handleProfileClick} name='INFP'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ENFP ? profile6On : profile6} width={100} height={100} onClick={handleProfileClick} name='ENFP'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.ISTJ ? profile7On : profile7} width={100} height={100} onClick={handleProfileClick} name='ISTJ'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ISTP ? profile8On : profile8} width={100} height={100} onClick={handleProfileClick} name='ISTP'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ISFP ? profile9On : profile9} width={100} height={100} onClick={handleProfileClick} name='ISFP'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.INTP ? profile10On : profile10} width={100} height={100} onClick={handleProfileClick} name='INTP'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ESTJ ? profile11On : profile11} width={100} height={100} onClick={handleProfileClick} name='ESTJ'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.INFJ ? profile12On : profile12} width={100} height={100} onClick={handleProfileClick} name='INFJ'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.ENTJ ? profile13On : profile13} width={100} height={100} onClick={handleProfileClick} name='ENTJ'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ESTP ? profile14On : profile14} width={100} height={100} onClick={handleProfileClick} name='ESTP'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ESFJ ? profile15On : profile15} width={100} height={100} onClick={handleProfileClick} name='ESFJ'/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid style={{marginRight:'15px', marginBottom:'14px'}}>
-                                                <Image src={profile.INTJ ? profile16On : profile16} width={100} height={100} onClick={handleProfileClick} name='INTJ'/>
-                                            </Grid>
-                                            <Grid style={{marginRight:'15px'}}>
-                                                <Image src={profile.ISFJ ? profile17On : profile17} width={100} height={100} onClick={handleProfileClick} name='ISFJ'/>
-                                            </Grid>
-                                            <Grid style={{}}>
-                                                <Image src={profile.ESFP ? profile18On : profile18} width={100} height={100} onClick={handleProfileClick} name='ESFP'/>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </div> 
-                            </Container>
-                        </div>
-                    </div> */}
                     <div name='한줄소개' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                         <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px', justifyContent:'center'}}>

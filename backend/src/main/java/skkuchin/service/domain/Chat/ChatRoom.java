@@ -66,9 +66,9 @@ public class ChatRoom {
         this.expireDate = now.plusDays(2);
     }
 
-    @OneToMany(mappedBy = "chatRoom")
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports = new ArrayList<>();
 }

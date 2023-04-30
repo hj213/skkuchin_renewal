@@ -3,7 +3,7 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
-import org.springframework.scheduling.annotation.Scheduled;
+//import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import skkuchin.service.dto.ChatMessageDto;
@@ -319,16 +319,16 @@ public class ChatRoomService {
         }
     }
 
-    @Transactional
-    @Scheduled(cron = "* 0 * * * ?")
-    public void makeExpired() {
-        List<ChatRoom> chatRooms = chatRoomRepo.findByExpireDateBefore(LocalDateTime.now());
-        for (ChatRoom chatRoom : chatRooms) {
-            if (chatRoom.getResponse().equals(ResponseType.HOLD)) {
-                chatRoom.setResponse(ResponseType.EXPIRED);
-            }
-        }
-    }
+//    @Transactional
+//    @Scheduled(cron = "* 0 * * * ?")
+//    public void makeExpired() {
+//        List<ChatRoom> chatRooms = chatRoomRepo.findByExpireDateBefore(LocalDateTime.now());
+//        for (ChatRoom chatRoom : chatRooms) {
+//            if (chatRoom.getResponse().equals(ResponseType.HOLD)) {
+//                chatRoom.setResponse(ResponseType.EXPIRED);
+//            }
+//        }
+//    }
 
     @Transactional
     public ChatRoomDto.settingResponse getSettingResponse(ChatRoom chatRoom){

@@ -37,7 +37,8 @@ public class ServiceApplication {
 						  RankService rankService,
 						  ChatRoomService chatRoomService,
 						  ChatMessageService chatMessageService,
-						  NoticeService noticeService) {
+						  NoticeService noticeService,
+						  ReportService reportService) {
 		return args -> {
 			userService.saveRole(Role.builder().name("ROLE_USER").build());
 			userService.saveRole(Role.builder().name("ROLE_ADMIN").build());
@@ -61,6 +62,7 @@ public class ServiceApplication {
 				chatRoomService.insertData();
 				chatMessageService.insertData();
 				noticeService.insertData();
+				reportService.insertData();
 			} catch (Exception e) {
 				System.out.println(e);
 			}

@@ -27,14 +27,14 @@ public class CandidateController {
     public ResponseEntity<?> getCandidate(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser user = principalDetails.getUser();
         List<CandidateDto.Response> candidates = candidateService.getCandidate(user);
-        return new ResponseEntity<>(new CMRespDto<>(1, "매칭 3명 불러오기 완료", candidates), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "대화 상대 3명 불러오기 완료", candidates), HttpStatus.OK);
     }
 
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> addCandidate(@Valid @RequestBody CandidateDto.PostRequest dto) {
         candidateService.addCandidate(dto);
-        return new ResponseEntity<>(new CMRespDto<>(1, "매칭 3명 추가 완료", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new CMRespDto<>(1, "대화 상대 3명 추가 완료", null), HttpStatus.CREATED);
     }
 
     @DeleteMapping("")

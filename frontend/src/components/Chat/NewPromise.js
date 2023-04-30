@@ -26,7 +26,7 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
         }));
     },[])
 
-    // 밥약 신청하기 버튼
+    // 대화 요청하기 버튼
     const [submit, setSubmit] = useState(false);
     const handleOpen = () => {
         setSubmit(true);
@@ -142,7 +142,7 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
                     >
                         <DialogContent sx={{p: '20px 24px 13px'}}>
                             <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
-                                <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>{"밥약을 거절하시겠습니까?"}</DialogTitle>
+                                <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>{"대화를 거절하시겠습니까?"}</DialogTitle>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions sx={{p:'0'}}>

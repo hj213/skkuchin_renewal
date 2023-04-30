@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.dto.UserDto;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Matching.*;
@@ -29,6 +30,10 @@ public class UserService {
     private final KeywordRepo keywordRepo;
     private final EmailAuthRepo emailAuthRepo;
     private final PasswordEncoder passwordEncoder;
+    private final ChatRoomRepo chatRoomRepo;
+    private final ReportRepo reportRepo;
+    private final CandidateRepo candidateRepo;
+
 
     private final Random random = new Random();
 
@@ -157,6 +162,17 @@ public class UserService {
     @Transactional
     public void deleteUser(Long userId) {
         AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
+
+        List<ChatRoom> chatRooms = chatRoomRepo.findMyAllRoomList(userId);
+        for (ChatRoom chatRoom : chatRooms) {
+            if (Objects.equals(chatRoom.getUser1().getId(), userId)) {
+                chatRoom.setUser1(null);
+            } else {
+                chatRoom.setUser2(null);
+            }
+            chatRoomRepo.save(chatRoom);
+        }
+
         userRepo.delete(user);
     }
 

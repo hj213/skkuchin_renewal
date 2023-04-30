@@ -3,6 +3,7 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import skkuchin.service.domain.User.ReportType;
 import skkuchin.service.dto.ReportDto;
 import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Map.Review;
@@ -13,6 +14,7 @@ import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.repo.ReportRepo;
 import skkuchin.service.repo.ReviewRepo;
+import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
 
@@ -25,6 +27,7 @@ public class ReportService {
     private final ReportRepo reportRepo;
     private final ChatRoomRepo chatRoomRepo;
     private final ReviewRepo reviewRepo;
+    private final UserRepo userRepo;
 
     @Transactional
     public void reportUser(AppUser user, ReportDto.Request dto) {
@@ -50,5 +53,11 @@ public class ReportService {
 
         Report report = dto.toEntity(user, chatRoom, review);
         reportRepo.save(report);
+    }
+
+    public void insertData() {
+        AppUser testUser = userRepo.findById(2L).orElseThrow();
+        ReportDto.Request dto = new ReportDto.Request(ReportType.욕설_비하, null, null, 1L);
+        reportUser(testUser, dto);
     }
 }

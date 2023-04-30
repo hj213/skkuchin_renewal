@@ -15,6 +15,7 @@ const Friends = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const user = useSelector(state => state.matchingUser.matchingUser);
     const candidate = useSelector(state => state.candidate.candidate);
     const requestId = useSelector(state => state.chatRoom.requestId);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -24,14 +25,7 @@ const Friends = () => {
         if (isAuthenticated) {
             dispatch(load_request_id(([result, message]) => {
                 if (result) {
-                    dispatch(load_candidate(([result, message]) => {
-                        if (!result) {
-                            if (typeof(message) == 'string') {
-                                setDialogMsg(message);
-                            }
-                        }
-                        setDialogOpen2(true);
-                    }));
+                    dispatch(load_candidate());
                 }
             }))
         }
@@ -40,7 +34,7 @@ const Friends = () => {
 
     const [height, setHeight] = useState('383px');
 
-    // 밥약 신청하기 버튼
+    // 대화 요청하기 버튼
     const [open, setOpen] = useState(false);
     const [selectedPersonId, setSelectedPersonId] = useState(null);
 
@@ -56,21 +50,11 @@ const Friends = () => {
         dispatch(request_chat(id));
     }
     
-    // 매칭 활성화 유저 100명 미만 시 경고
-    const [dialogOpen2, setDialogOpen2] = useState(false);
-    const [dialogMsg, setDialogMsg] = useState('');
-    const handleDialogOpen2 = () => {
-        if(dialogOpen2){
-            setDialogOpen2(false);
-        } else{
-            setDialogOpen2(true);
-        }
-    }
     const handleSettingOpen = () => {
         if (isAuthenticated) {
             router.push({
                 pathname: '/makeProfile',
-                query: { src : '매칭프로필설정', }
+                query: { src : '스꾸챗프로필설정', }
             });
         } else {
             setIsLogin(true);
@@ -110,12 +94,12 @@ const Friends = () => {
                 </Grid> 
                 { 
                     requestId && requestId.includes(person.id) ?
-                    <Button key={index} sx={{backgroundColor: '#505050', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                    <Button variant="contained" disableElevation disableTouchRipple key={index} sx={{backgroundColor: '#505050', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
                         신청 완료
                     </Button>
                     : 
-                    <Button key={index} onClick={()=>handleOpen(person.id)}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                        밥약 신청하기
+                    <Button variant="contained" disableElevation disableTouchRipple key={index} onClick={()=>handleOpen(person.id)}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                        대화 요청하기
                     </Button>
                 }
 
@@ -141,7 +125,7 @@ const Friends = () => {
                 >
                     <DialogContent sx={{p: '20px 24px 13px'}}>
                         <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
-                            <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>{"밥약을 신청하시겠습니까?"}</DialogTitle>
+                            <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>{"대화를 요청하시겠습니까?"}</DialogTitle>
                             <Typography sx={{color: '#BABABA', fontSize: '9px'}}>*신청 후 취소는 불가능</Typography>
                         </DialogContentText>
                     </DialogContent>
@@ -179,13 +163,22 @@ const Friends = () => {
                         </Grid>
                     </Grid >
                     <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
-                        <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>
-                        AI 매칭 서비스를 이용하시려면 매칭 프로필을 설정해주세요 👀
+                        <Typography sx={{ fontSize:'13px', fontWeight: '500', whiteSpace: 'pre-wrap'}}>
+                            {
+                                user?.matching === false ?
+                                '성대 학우와 대화를 나누시려면\n\n[내 프로필 보기]에서\n대화 활성화 버튼을 켜주세요 👀' 
+                                : '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀'
+                            }
                         </Typography>
                     </Grid>
-                    <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                            프로필 설정하기
-                    </Button>
+                    {
+                        user?.matching === false ?
+                        null
+                        :
+                        <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                            프로필 등록하기
+                        </Button>
+                    }
                 </Grid>
             </Card>
             <Card variant="outlined" sx={{height: height, width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
@@ -210,13 +203,22 @@ const Friends = () => {
                         </Grid>
                     </Grid >
                     <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
-                        <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>
-                        AI 매칭 서비스를 이용하시려면 매칭 프로필을 설정해주세요 👀
+                        <Typography sx={{ fontSize:'13px', fontWeight: '500', whiteSpace: 'pre-wrap'}}>
+                            {
+                                user?.matching === false ?
+                                '성대 학우와 대화를 나누시려면\n\n[내 프로필 보기]에서\n대화 활성화 버튼을 켜주세요 👀' 
+                                : '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀'
+                            }
                         </Typography>
                     </Grid>
-                    <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                            프로필 설정하기
-                    </Button>
+                    {
+                        user?.matching === false ?
+                        null
+                        :
+                        <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                            프로필 등록하기
+                        </Button>
+                    }
                 </Grid>
             </Card>
             <Card variant="outlined" sx={{height: height, width: '261px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
@@ -241,19 +243,28 @@ const Friends = () => {
                         </Grid>
                     </Grid >
                     <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
-                        <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>
-                            AI 매칭 서비스를 이용하시려면 매칭 프로필을 설정해주세요 👀
+                        <Typography sx={{ fontSize:'13px', fontWeight: '500', whiteSpace: 'pre-wrap'}}>
+                            {
+                                user?.matching === false ?
+                                '성대 학우와 대화를 나누시려면\n\n[내 프로필 보기]에서\n대화 활성화 버튼을 켜주세요 👀' 
+                                : '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀'
+                            }
                         </Typography>
                     </Grid>
-                    <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                            프로필 설정하기
-                    </Button>
+                    {
+                        user?.matching === false ?
+                        null
+                        :
+                        <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                            프로필 등록하기
+                        </Button>
+                    }
                 </Grid>
             </Card>
         </>
         }
 
-        {!candidate && dialogMsg ? 
+        {/* {!candidate && dialogMsg ? 
         <Dialog open={dialogOpen2} onClose={handleDialogOpen2} PaperProps={{ style: { borderRadius: '10px' } }}>
             <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
                 <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight='700'>
@@ -276,7 +287,7 @@ const Friends = () => {
 
             </DialogActions>
         </Dialog> 
-        : null }
+        : null } */}
     </Grid>
     )
 }

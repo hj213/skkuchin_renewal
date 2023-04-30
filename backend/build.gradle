@@ -72,6 +72,7 @@ dependencies {
 	//aws
 	implementation platform('software.amazon.awssdk:bom:2.15.0')
 	implementation 'software.amazon.awssdk:s3'
+	implementation 'software.amazon.awssdk:url-connection-client'
 
 	//swagger ui
 	implementation "io.springfox:springfox-boot-starter:3.0.0"

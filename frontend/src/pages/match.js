@@ -34,7 +34,6 @@ const MatchPage = () => {
                     </Grid>
                 </Grid>
             </Container>
-
             {/* <Grid style={{marginLeft:'15px', marginRight:'15px'}}>
                 <Typography style={{fontSize:'18px', fontWeight:'700'}}>
                     더 많은 사람들과 만나고 싶다면?
