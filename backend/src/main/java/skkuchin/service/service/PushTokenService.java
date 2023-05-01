@@ -172,6 +172,7 @@ public class PushTokenService {
         return subscription;
     }
 
+    @Transactional
     public void sendSMS(String phone, String content) {
         try {
             String targetUrl = "https://api-sms.cloud.toast.com/sms/v3.0/appKeys/" + appKey + "/sender/sms";
