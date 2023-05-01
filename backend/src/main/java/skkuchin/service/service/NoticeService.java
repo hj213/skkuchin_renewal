@@ -48,7 +48,7 @@ public class NoticeService {
             for (AppUser user : users) {
                 Subscription subscription = pushTokenService.toSubscription(user, "info");
 
-                if (subscription != null) {
+                if (subscription != null && subscription.keys.auth != null) {
                     pushTokenService.sendNotification(subscription, notice.getPushTitle(), notice.getPushContent());
                 }
             }
@@ -88,7 +88,7 @@ public class NoticeService {
         for (AppUser user : users) {
             Subscription subscription = pushTokenService.toSubscription(user, "info");
 
-            if (subscription != null) {
+            if (subscription != null && subscription.keys.auth != null) {
                 pushTokenService.sendNotification(subscription, dto.getTitle(), dto.getContent());
             }
         }

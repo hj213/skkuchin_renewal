@@ -2,8 +2,10 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.martijndwars.webpush.Subscription;
 import org.json.simple.parser.ParseException;
 //import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import skkuchin.service.dto.ChatMessageDto;
@@ -20,6 +22,7 @@ import skkuchin.service.repo.UserRepo;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -34,6 +37,7 @@ public class ChatRoomService {
     private final ChatRoomRepo chatRoomRepo;
     private final ChatMessageRepo chatMessageRepo;
     private final UserRepo userRepo;
+    private final PushTokenService pushTokenService;
 
     @Transactional
     public void makeRoom(AppUser user, ChatRoomDto.RoomRequest dto){
@@ -333,6 +337,43 @@ public class ChatRoomService {
     @Transactional
     public ChatRoomDto.settingResponse getSettingResponse(ChatRoom chatRoom){
         return new ChatRoomDto.settingResponse(chatRoom);
+    }
+
+    @Transactional
+    @Scheduled(cron = "* 0 * * * ?")
+    public void sendChatMessageSMS() {
+        List<ChatRoom> chatRooms = chatRoomRepo.findAllAcceptRoom();
+        List<String> sentUsers = new ArrayList<>();
+
+        for (ChatRoom chatRoom : chatRooms) {
+            ChatMessage chatMessage = getLatestMessage(chatRoom);
+
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(chatMessage.getDate(), now);
+
+            if (duration.toHours() < 1 && !chatMessage.isReadStatus()) {
+                Subscription subscription = null;
+                if (
+                        chatRoom.getUser1() != null
+                        && !sentUsers.contains(chatRoom.getUser1().getUsername())
+                        && !Objects.equals(chatRoom.getUser1().getUsername(), chatMessage.getSender())
+                ) {
+                    sentUsers.add(chatRoom.getUser1().getUsername());
+                    subscription = pushTokenService.toSubscription(chatRoom.getUser1(), "chat");
+                } else if (
+                        chatRoom.getUser2() != null
+                        && !sentUsers.contains(chatRoom.getUser2().getUsername())
+                        && !Objects.equals(chatRoom.getUser2().getUsername(), chatMessage.getSender())
+                ) {
+                    sentUsers.add(chatRoom.getUser2().getUsername());
+                    subscription = pushTokenService.toSubscription(chatRoom.getUser2(), "chat");
+                }
+
+                if (subscription != null && subscription.keys.auth == null) {
+                    pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
+                }
+            }
+        }
     }
 
     private class DateComparator implements Comparator<ChatRoomDto.Response> {

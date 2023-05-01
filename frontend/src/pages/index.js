@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, styled,Button,Dialog, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogContentText, DialogContent } from '@mui/material';
+import { CssBaseline, styled,Button,Dialog, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -41,6 +41,8 @@ const list = () => {
     const WINDOW_HEIGHT = window.innerHeight;
     const TARGET_HEIGHT = WINDOW_HEIGHT - 130;
     
+    const [SMSDialogOpen, setSMSDialogOpen] = useState(false);
+
     //상태
     const [height, setHeight] = useState('0');
     const [cardStyle, setCardStyle] = useState({
@@ -156,8 +158,6 @@ const list = () => {
                         dispatch(search_places_category(selectedTag.id));
                     } else if (exclusiveGroup === 'tag') {
                         dispatch(search_places_tag(selectedTag.id));
-                    } else if (exclusiveGroup === 'salad') {
-                        dispatch(search_places_keyword(selectedTag.id));
                     }
                 }
                 
@@ -364,8 +364,6 @@ const list = () => {
                 dispatch(search_places_category(selectedTag.id));
             } else if (exclusiveGroup === 'tag') {
                 dispatch(search_places_tag(selectedTag.id));
-            }  else if (exclusiveGroup === 'salad') {
-                dispatch(search_places_keyword(selectedTag.id));
             }
         }
         
@@ -389,6 +387,7 @@ const list = () => {
 
     useEffect(() => {
         let app = localStorage.getItem("app");
+
         if (app != "true") {
             localStorage.setItem("app", "true");
             setOpenDialog(true);
@@ -397,10 +396,26 @@ const list = () => {
         }
     }, [])
 
+    useEffect(() => {
+        let app = localStorage.getItem("app");
+        let sms = localStorage.getItem("sms");
+
+        if (user && app == "true" && !openDialog) {
+            const now = new Date();
+            const day = now.getDate();
+            const dayString = day.toString().replace(/[^0-9]/g, '');
+
+            if (sms != dayString) {
+                localStorage.setItem('sms', dayString);
+                handleSMSDialogOpen();
+            }
+        }
+    }, [openDialog])
+
     const handleClose = () => {
         setOpenDialog(false);
     };
-    
+
     // 더보기 버튼
 
     const handleMoreClick = () => {
@@ -414,6 +429,18 @@ const list = () => {
             alignItems: 'center',
         },
     });
+
+    const handleSMSDialogOpen = () => {
+        setSMSDialogOpen(true);
+    };
+
+    const handleSMSDialogClose = () => {
+        setSMSDialogOpen(false);
+    };
+
+    const handleSMSConfirm = () => {
+        router.push('/enrollSMS');
+    };
 
     return(
     <ThemeProvider theme={theme}>
@@ -429,6 +456,25 @@ const list = () => {
                         모바일 웹에서 볼게요
                     </Typography>
             </TransparentDialog>
+
+            <Dialog
+                open={SMSDialogOpen}
+                onClose={handleSMSDialogClose}
+                PaperProps={{ style: { borderRadius: '10px' } }}
+            >
+                <DialogContent sx={{p: '20px 24px 13px'}}>
+                    <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
+                        <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>SMS 알림 💌 <br/> 받아보시겠어요?</DialogTitle>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{p:'0'}}>
+                    <div style={{width: '100%', paddingBottom: '20px'}}>
+                        <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={handleSMSConfirm}>예</Button>
+                        <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleSMSDialogClose}>아니요</Button>
+                    </div>
+                </DialogActions>
+            </Dialog>
+
             <UpperBar />
             <div style={{ position: 'fixed', width:'100%', height:'100%' ,maxWidth:'420px' }}>
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >

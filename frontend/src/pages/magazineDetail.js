@@ -11,91 +11,92 @@ import arrowNext from '../image/arrow_forward2.png';
 import dynamic from 'next/dynamic';
 import position from '../../public/markers/기본_yellow.png';
 
-import content1 from '../image/magazine/magazine4/content1.png';
-import content2 from '../image/magazine/magazine4/content2.png';
-import content3 from '../image/magazine/magazine4/content3.png';
-import content4 from '../image/magazine/magazine4/content4.png';
-import content5 from '../image/magazine/magazine4/content5.png';
-import content6 from '../image/magazine/magazine4/content6.png';
-import content7 from '../image/magazine/magazine4/content7.png';
-import content8 from '../image/magazine/magazine4/content8.png';
+import content from '../image/magazine/magazine/content.png';
+import content1 from '../image/magazine/magazine/content1.png';
+import content2 from '../image/magazine/magazine/content2.png';
+import content3 from '../image/magazine/magazine/content3.png';
+import content4 from '../image/magazine/magazine/content4.png';
+import content5 from '../image/magazine/magazine/content5.png';
+import content6 from '../image/magazine/magazine/content6.png';
+import content7 from '../image/magazine/magazine/content7.png';
+import content8 from '../image/magazine/magazine/content8.png';
 
 const contentList = [
     {
-        id: 8,
-        name:'오이지',
-        category: '한식',
-        place: '명륜/대학로',
+        id: 82,
+        name:'아늑',
+        category: '이탈리아음식',
+        place: '율전/쪽문',
         // reviews: [
         // ],
         images: [
             content1
         ]
     },{
-        id: 9,
-        name:'호호식당',
-        category: '일식당',
-        place: '명륜/대학로',
+        id: 123,
+        name:'나나테이블',
+        category: '브런치',
+        place: '율전/기타',
         // reviews: [
         // ],
         images: [
             content2
         ]
     },{
-        id: 5,
-        name:'소친친',
-        category: '퓨전음식',
-        place: '명륜/대학로',
+        id: 141,
+        name:'Four Run Burger',
+        category: '햄버거',
+        place: '율전/기타',
         // reviews: [
         // ],
         images: [
             content3
         ]
     },{
-        id: 24,
-        name:'파스타마켓',
+        id: 96,
+        name:'오스테리아우노',
         category: '스파게티,파스타전문',
-        place: '명륜/대학로',
+        place: '율전/후문',
         // reviews: [
         // ],
         images: [
             content4
         ]
     },{
-        id: 369,
-        name:'낫컴플리트',
-        category: '카페,디저트',
-        place: '명륜/정문',
+        id: 91,
+        name:'백사 104',
+        category: '요리주점',
+        place: '율전/후문',
         // reviews: [
         // ],
         images: [
             content5
         ]
     },{
-        id: 368,
-        name:'칠린',
-        category: '바(BAR)',
-        place: '명륜/대학로',
+        id: 357,
+        name:'비추는별',
+        category: '카페',
+        place: '율전/정문',
         // reviews: [
         // ],
         images: [
             content6
         ]
     },{
-        id: 389,
-        name:'릴랙스 인 다운타운',
-        category: '카페,디저트',
-        place: '명륜/대학로',
+        id: 205,
+        name:'주야',
+        category: '요리주점',
+        place: '율전/후문',
         // reviews: [
         // ],
         images: [
             content7
         ]
     },{
-        id: 68,
-        name:'도리안그레이',
-        category: '바(BAR)',
-        place: '명륜/대학로',
+        id: 207,
+        name:'예술상',
+        category: '요리주점',
+        place: '율전/후문',
         // reviews: [
         // ],
         images: [
@@ -133,12 +134,12 @@ const MagazineDetail = () => {
                         </div>
                         <div style={{position:'absolute',zIndex:'3', bottom: '35px'}}>
                             <Typography fontSize='12px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>없던 사랑도 꽃피는</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 데이트 코스 명륜편</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>수원에 이런 곳이?</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 데이트 코스 율전편</Typography>
                         </div>
                         <div style={{position:'relative', width:'100%', height:'100%'}}>
                             <Image 
-                                src={content5} 
+                                src={content} 
                                 height={400}
                                 width={431}
                                 layout='fixed'

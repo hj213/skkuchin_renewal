@@ -18,7 +18,6 @@ import mapTag12 from '../image/tags/map_off/top_money.png';
 import mapTag13 from '../image/tags/map_off/top_clean.png';
 import mapTag14 from '../image/tags/map_off/top_two.png';
 import mapTag15 from '../image/tags/map_off/top_cafe.png';
-import mapTag16 from '../image/tags/map_off/top_salad.png';
 
 import mapTagOn1 from '../image/tags/map_on/top_dcY.png';
 import mapTagOn2 from '../image/tags/map_on/top_alcoholY.png';
@@ -35,7 +34,6 @@ import mapTagOn12 from '../image/tags/map_on/top_moneyY.png';
 import mapTagOn13 from '../image/tags/map_on/top_cleanY.png';
 import mapTagOn14 from '../image/tags/map_on/top_twoY.png';
 import mapTagOn15 from '../image/tags/map_on/top_cafeY.png';
-import mapTagOn16 from '../image/tags/map_on/top_saladY.png';
 
 import reviewTag01 from '../image/tags/mini/mini_taste.png';
 import reviewTag02 from '../image/tags/mini/mini_money.png';

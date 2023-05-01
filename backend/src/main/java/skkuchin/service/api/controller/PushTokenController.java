@@ -43,6 +43,14 @@ public class PushTokenController {
         return new ResponseEntity<>(new CMRespDto<>(1, "토큰 업로드 완료", null), HttpStatus.CREATED);
     }
 
+    @PostMapping("/phone")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<?> uploadPhone(@Valid @RequestBody PushTokenDto.PhoneRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser user = principalDetails.getUser();
+        pushTokenService.uploadPhone(user, dto);
+        return new ResponseEntity<>(new CMRespDto<>(1, "번호 업로드 완료", null), HttpStatus.CREATED);
+    }
+
     @PutMapping("/chat")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> updateChatAlarm(@RequestBody Map<String, Boolean> alarmMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {

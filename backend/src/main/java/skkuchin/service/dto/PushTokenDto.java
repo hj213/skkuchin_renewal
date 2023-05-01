@@ -28,6 +28,21 @@ public class PushTokenDto {
 
     @Getter
     @Setter
+    public static class PhoneRequest {
+        private String phone;
+
+        public PushToken toEntity(AppUser user) {
+            return PushToken.builder()
+                    .phone(this.phone)
+                    .user(user)
+                    .ChatAlarm(true)
+                    .infoAlarm(true)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Setter
     public static class PutRequest {
         private Boolean chatAlarm;
         private Boolean infoAlarm;
@@ -36,14 +51,24 @@ public class PushTokenDto {
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Response {
+        private String phone;
         @JsonProperty
         private Boolean chatAlarm;
         @JsonProperty
         private Boolean infoAlarm;
+        @JsonProperty
+        private Boolean webPush;
+
 
         public Response(PushToken pushToken) {
+            this.phone = pushToken.getPhone();
             this.chatAlarm = pushToken.isChatAlarm();
             this.infoAlarm =  pushToken.isInfoAlarm();
+            if (pushToken.getAuth() == null) {
+                this.webPush = false;
+            } else {
+                this.webPush = true;
+            }
         }
     }
 }
