@@ -141,7 +141,7 @@ export const enroll_phone = (phone, callback) => async dispatch => {
             await dispatch({
                 type: ENROLL_PHONE_SUCCESS
             });
-
+            dispatch(load_token());
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
