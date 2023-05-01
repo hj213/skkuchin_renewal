@@ -173,7 +173,7 @@ public class PushTokenService {
     }
 
     @Transactional
-    public void sendSMS(String phone, String content) {
+    public Boolean sendSMS(String phone, String content) {
         try {
             String targetUrl = "https://api-sms.cloud.toast.com/sms/v3.0/appKeys/" + appKey + "/sender/sms";
             URL url = new URL(targetUrl);
@@ -211,7 +211,10 @@ public class PushTokenService {
             }
             br.close();
 
-            System.out.println(sb);
+            conn.disconnect();
+
+            System.out.println("Response :" + sb);
+            return true;
 
         } catch (MalformedURLException e) {
             System.err.println("Invalid URL: " + e.getMessage());
@@ -220,5 +223,6 @@ public class PushTokenService {
         } catch (RuntimeException e) {
             System.err.println("Unexpected error: " + e.getMessage());
         }
+        return false;
     }
 }

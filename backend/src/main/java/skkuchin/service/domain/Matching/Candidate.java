@@ -33,6 +33,14 @@ public class Candidate {
     @JoinColumn(name = "candidate3_id")
     private AppUser candidate3;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "candidate4_id")
+    private AppUser candidate4;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "candidate5_id")
+    private AppUser candidate5;
+
     private LocalDateTime expireDate;
 
     @PrePersist

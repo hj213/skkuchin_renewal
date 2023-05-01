@@ -98,6 +98,12 @@ public class AppUser {
     @OneToMany(mappedBy = "candidate3", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Candidate> candidatesAsCandidate3 = new ArrayList<>();
 
+    @OneToMany(mappedBy = "candidate4", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> candidatesAsCandidate4 = new ArrayList<>();
+
+    @OneToMany(mappedBy = "candidate5", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> candidatesAsCandidate5 = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PushToken> pushTokens = new ArrayList<>();
 
