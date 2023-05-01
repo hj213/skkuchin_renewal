@@ -12,7 +12,7 @@ import { logout } from '../actions/auth/auth';
 import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { load_token, set_chat_push, set_info_push } from '../actions/pushToken/pushToken';
+import { set_chat_push, set_info_push } from '../actions/pushToken/pushToken';
 import dynamic from 'next/dynamic';
 
 const UpperBar = dynamic(() => import('../components/UpperBar'));
@@ -70,19 +70,6 @@ const myPage = () => {
             dispatch(set_info_push(!infoAlarm))
         }
     }
-
-    
-    useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(load_token(([result, message]) => {
-                if (result) {
-                } else {
-                    setChatAlarm(false);
-                    setInfoAlarm(false);
-                }
-            }));
-        }
-    }, [])
 
     useEffect(() => {
         if (pushToken) {
