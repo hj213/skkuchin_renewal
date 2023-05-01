@@ -36,7 +36,6 @@ import {
     CLEAR_USER_PROFILE_FAIL
 }
     from './types';
-import { send_message } from './chatMessage';
 
 export const load_request_id = (callback) => async dispatch => {
         await dispatch(request_refresh());

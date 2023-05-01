@@ -35,6 +35,7 @@ const list = () => {
 
     // 장소 정보 불러오기
     const searchplace = useSelector(state => state.place.searchplace);
+    const pushToken = useSelector(state => state.pushToken.pushToken);
     const favorites = useSelector(state => state.favorite.favorite);
     const user = useSelector(state => state.auth.user);
     const toggle = useSelector(state => state.auth.toggle_for_not_user);
@@ -401,13 +402,15 @@ const list = () => {
         let sms = localStorage.getItem("sms");
 
         if (user && app == "true" && !openDialog) {
-            const now = new Date();
-            const day = now.getDate();
-            const dayString = day.toString().replace(/[^0-9]/g, '');
-
-            if (sms != dayString) {
-                localStorage.setItem('sms', dayString);
-                handleSMSDialogOpen();
+            if (!pushToken || !pushToken.phone) {
+                const now = new Date();
+                const day = now.getDate();
+                const dayString = day.toString().replace(/[^0-9]/g, '');
+    
+                if (sms != dayString) {
+                    localStorage.setItem('sms', dayString);
+                    handleSMSDialogOpen();
+                }
             }
         }
     }, [openDialog])

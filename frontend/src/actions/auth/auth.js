@@ -37,6 +37,7 @@ import {
 } 
     from './types';
 import { clear_search_results } from '../place/place';
+import { load_token } from '../pushToken/pushToken';
 
 export const register = (registerData, callback) => async dispatch => {
     const body = JSON.stringify(registerData);
@@ -194,6 +195,7 @@ export const load_user_callback = (callback) => async dispatch => {
                 payload: apiRes.data
             });
             dispatch(load_favorite());
+            dispatch(load_token());
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
@@ -240,6 +242,7 @@ export const load_user = (callback) => async dispatch => {
                 payload: apiRes.data
             });
             dispatch(load_favorite());
+            dispatch(load_token());
             if (callback) callback([true, apiRes.message]);
         } else {
             dispatch({
