@@ -8,6 +8,10 @@ import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Subscription;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jose4j.lang.JoseException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import skkuchin.service.dto.PushTokenDto;
@@ -18,21 +22,33 @@ import skkuchin.service.repo.PushTokenRepo;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PushTokenService {
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^010[0-9]{8}$");
     @Value("${vapid.public.key}")
     private String publicKey;
     @Value("${vapid.private.key}")
     private String privateKey;
+    @Value("${phone.appKey}")
+    private String appKey;
+    @Value("${phone.xSecretKey}")
+    private String xSecretKey;
+    @Value("${phone.sendNo}")
+    private String sendNo;
+
     private final PushTokenRepo pushTokenRepo;
     private PushService pushService;
 
@@ -72,11 +88,34 @@ public class PushTokenService {
         PushToken existingToken = pushTokenRepo.findByUser(user);
         PushToken pushToken = dto.toEntity(user);
         if (existingToken != null) {
+            pushToken.setPhone(existingToken.getPhone());
             pushToken.setInfoAlarm(existingToken.isInfoAlarm());
             pushToken.setChatAlarm(existingToken.isChatAlarm());
             pushTokenRepo.delete(existingToken);
         }
         pushTokenRepo.save(pushToken);
+    }
+
+    @Transactional
+    public void uploadPhone(AppUser user, PushTokenDto.PhoneRequest dto) {
+        if (dto.getPhone() != null && !PHONE_PATTERN.matcher(dto.getPhone()).matches()) {
+            throw new CustomRuntimeException("전화번호가 올바르지 않습니다");
+        }
+
+        PushToken existingToken = pushTokenRepo.findByUser(user);
+        PushToken pushToken = dto.toEntity(user);
+        if (existingToken != null) {
+            pushToken.setAuth(existingToken.getAuth());
+            pushToken.setEndpoint(existingToken.getEndpoint());
+            pushToken.setP256dh(existingToken.getP256dh());
+            pushToken.setInfoAlarm(existingToken.isInfoAlarm());
+            pushToken.setChatAlarm(existingToken.isChatAlarm());
+            pushTokenRepo.delete(existingToken);
+        }
+
+        if (pushToken.getPhone() != null || pushToken.getAuth() != null) {
+            pushTokenRepo.save(pushToken);
+        }
     }
 
     @Transactional
@@ -116,9 +155,69 @@ public class PushTokenService {
         if (type.equals("info") && !pushToken.isInfoAlarm()) {
             return null;
         }
+        if (type.equals("info") && pushToken.getAuth() == null) {
+            return null;
+        }
 
-        Subscription.Keys keys = new Subscription.Keys(pushToken.getP256dh(), pushToken.getAuth());
-        Subscription subscription = new Subscription(pushToken.getEndpoint(), keys);
+        Subscription subscription;
+
+        if (type.equals("chat") && pushToken.getPhone() != null) {
+            Subscription.Keys keys = new Subscription.Keys(null, null);
+            subscription = new Subscription(pushToken.getPhone(), keys);
+        } else {
+            Subscription.Keys keys = new Subscription.Keys(pushToken.getP256dh(), pushToken.getAuth());
+            subscription = new Subscription(pushToken.getEndpoint(), keys);
+        }
+
         return subscription;
+    }
+
+    public void sendSMS(String phone, String content) {
+        try {
+            String targetUrl = "https://api-sms.cloud.toast.com/sms/v3.0/appKeys/" + appKey + "/sender/sms";
+            URL url = new URL(targetUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("X-Secret-Key", xSecretKey);
+
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+            conn.setDoOutput(true);
+
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("body", content);
+            requestBody.put("sendNo", sendNo);
+            JSONArray recipientList = new JSONArray();
+            JSONObject recipient = new JSONObject();
+            recipient.put("recipientNo", phone);
+            recipientList.add(recipient);
+            requestBody.put("recipientList", recipientList);
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            bw.write(requestBody.toJSONString());
+            bw.flush();
+            bw.close();
+
+            Charset charset = Charset.forName("UTF-8");
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), charset));
+
+            String inputLine;
+            StringBuilder sb = new StringBuilder();
+            while ((inputLine = br.readLine()) != null) {
+                sb.append(inputLine);
+            }
+            br.close();
+
+            System.out.println(sb);
+
+        } catch (MalformedURLException e) {
+            System.err.println("Invalid URL: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Error reading HTTP response: " + e.getMessage());
+        } catch (RuntimeException e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+        }
     }
 }

@@ -7,6 +7,8 @@ import {
     LOAD_PUSHTOKEN_SUCCESS,
     ENROLL_PUSHTOKEN_FAIL,
     ENROLL_PUSHTOKEN_SUCCESS,
+    ENROLL_PHONE_FAIL,
+    ENROLL_PHONE_SUCCESS,
     SET_CHAT_PUSH_SUCCESS,
     SET_CHAT_PUSH_FAIL,
     SET_INFO_PUSH_SUCCESS,
@@ -101,6 +103,56 @@ export const enroll_token = (subscription, callback) => async dispatch => {
     } catch(error) {
         dispatch({
             type: ENROLL_PUSHTOKEN_FAIL
+        });
+
+        if (callback) callback([false, error]);
+    }
+};
+
+export const enroll_phone = (phone, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const body = JSON.stringify({
+        phone
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/push/phone`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 201) {
+            await dispatch({
+                type: ENROLL_PHONE_SUCCESS
+            });
+
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: ENROLL_PHONE_FAIL
+            });
+
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch(error) {
+        dispatch({
+            type: ENROLL_PHONE_FAIL
         });
 
         if (callback) callback([false, error]);

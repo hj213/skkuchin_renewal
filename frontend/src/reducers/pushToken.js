@@ -4,6 +4,8 @@ import {
     LOAD_PUSHTOKEN_FAIL,
     ENROLL_PUSHTOKEN_SUCCESS,
     ENROLL_PUSHTOKEN_FAIL,
+    ENROLL_PHONE_SUCCESS,
+    ENROLL_PHONE_FAIL,
     SET_CHAT_PUSH_SUCCESS,
     SET_CHAT_PUSH_FAIL,
     SET_INFO_PUSH_SUCCESS,
@@ -33,6 +35,14 @@ const pushTokenReducer = (state= initialState, action) => {
                 ...state
             }
         case ENROLL_PUSHTOKEN_FAIL:
+            return {
+                ...state
+            }
+        case ENROLL_PHONE_SUCCESS:
+            return {
+                ...state
+            }
+        case ENROLL_PHONE_FAIL:
             return {
                 ...state
             }

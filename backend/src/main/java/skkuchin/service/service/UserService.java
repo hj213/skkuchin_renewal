@@ -31,8 +31,6 @@ public class UserService {
     private final EmailAuthRepo emailAuthRepo;
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomRepo chatRoomRepo;
-    private final ReportRepo reportRepo;
-    private final CandidateRepo candidateRepo;
 
 
     private final Random random = new Random();

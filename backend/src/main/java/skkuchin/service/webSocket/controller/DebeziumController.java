@@ -94,7 +94,7 @@ public class DebeziumController {
             if (chatPermit) {
                 Subscription subscription = pushTokenService.toSubscription(user, "chat");
 
-                if (subscription != null) {
+                if (subscription != null && subscription.keys.auth != null) {
                     pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
                 }
             }
@@ -147,8 +147,10 @@ public class DebeziumController {
 
             Subscription subscription = pushTokenService.toSubscription(user2, "chat");
 
-            if (subscription != null) {
+            if (subscription != null && subscription.keys.auth != null) {
                 pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+            } else if (subscription != null) {
+                pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] " + pushMessage);
             }
 
             template.convertAndSend(CHAT_EXCHANGE_NAME, "alarm." + userName2, true);
@@ -163,8 +165,10 @@ public class DebeziumController {
 
                 Subscription subscription = pushTokenService.toSubscription(user1, "chat");
 
-                if (subscription != null) {
+                if (subscription != null && subscription.keys.auth != null) {
                     pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
+                }  else if (subscription != null) {
+                    pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] " + pushMessage);
                 }
 
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "alarm." + userName1, true);

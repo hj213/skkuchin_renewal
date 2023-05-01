@@ -7,7 +7,6 @@ import theme from '../theme/theme';
 import next from '../image/arrow_next.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
 import { logout } from '../actions/auth/auth';
-import { getSubscription } from '../utils/getSubscription';
 
 // 스위치
 import { styled } from '@mui/material/styles';
@@ -60,30 +59,15 @@ const myPage = () => {
         setDialogOpen(false);
     }
 
-    const notify = () => {
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                getSubscription();
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }
-
     const handleChatToggle = (e) => {
         if (pushToken) {
             dispatch(set_chat_push(!chatAlarm))
-        } else {
-            notify();
         }
     }
 
     const handleNoticeToggle = (e) => {
         if (pushToken) {
             dispatch(set_info_push(!infoAlarm))
-        } else {
-            notify();
         }
     }
 
@@ -238,22 +222,39 @@ const myPage = () => {
             {/* 알림 설정 */}
             <Container style={{borderBottom: '1px solid #DDDDDD', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '20px'}}>알림 설정</Typography>
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '13px'}}>
-                    <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>채팅 알림</Typography>
-                    {/* 토글 스위치 */}
-                    <FormControlLabel
-                        style={{paddingTop:"2px", marginTop:'-5px'}}
-                        control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} onClick={handleChatToggle} />}
-                    />
+                {pushToken ?
+                <>
+                    <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '13px'}}>
+                        <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>채팅 알림</Typography>
+                        {/* 토글 스위치 */}
+                        <FormControlLabel
+                            style={{paddingTop:"2px", marginTop:'-5px'}}
+                            control={<IOSSwitch sx={{ m: 1, marginLeft:"20px" }} onClick={handleChatToggle} />}
+                        />
+                    </div>
+                    {
+                        pushToken.web_push &&
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
+                        <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>스꾸친 공지/이벤트 알림</Typography>
+                            {/* 토글 스위치 */}
+                            <FormControlLabel
+                                style={{paddingTop:"2px", marginTop:'-5px'}}
+                                control={<IOSSwitch2 sx={{ m: 1, marginLeft:"20px" }} onClick={handleNoticeToggle} />}
+                            />
+                        </div>
+                    }
+                    <div onClick={() => router.push('/enrollSMS')} style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
+                        <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>
+                            {pushToken.phone ? 'SMS 알림 변경' : 'SMS 알림 등록'}
+                        </Typography>
+                    </div>
+                </>
+                :
+                <div onClick={() => router.push('/enrollSMS')} style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
+                    <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>SMS 알림 등록</Typography>
                 </div>
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
-                    <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>스꾸친 공지/이벤트 알림</Typography>
-                    {/* 토글 스위치 */}
-                    <FormControlLabel
-                        style={{paddingTop:"2px", marginTop:'-5px'}}
-                        control={<IOSSwitch2 sx={{ m: 1, marginLeft:"20px" }} onClick={handleNoticeToggle} />}
-                    />
-                </div>
+                }
+
             </Container>
 
             {/* 기타 */}

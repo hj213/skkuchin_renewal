@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 public interface ChatRoomRepo extends JpaRepository<ChatRoom,Long> {
     ChatRoom findByRoomId(String roomId);
+    @Query("SELECT a FROM ChatRoom a where a.response = 'ACCEPT'")
+    List<ChatRoom> findAllAcceptRoom();
 
     @Query("SELECT a FROM ChatRoom a where (a.user2.id = :userId OR a.user1.id = :userId )")
     List<ChatRoom> findMyAllRoomList(Long userId);
