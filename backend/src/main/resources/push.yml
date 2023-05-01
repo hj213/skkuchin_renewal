@@ -5,6 +5,6 @@ vapid:
     key: kQ4aymG4ZZQIC4efeWfh8U-xQGZsU_7sK4KIRUeGzhY
 
 phone:
-  appKey: CJkuTwri3blcxRqw
-  xSecretKey: zXMEosbE
-  sendNo: 01036298457
+  appkey: null
+  xsecretkey: null
+  sendno: null

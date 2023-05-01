@@ -42,11 +42,11 @@ public class PushTokenService {
     private String publicKey;
     @Value("${vapid.private.key}")
     private String privateKey;
-    @Value("${phone.appKey}")
+    @Value("${phone.appkey}")
     private String appKey;
-    @Value("${phone.xSecretKey}")
+    @Value("${phone.xsecretkey}")
     private String xSecretKey;
-    @Value("${phone.sendNo}")
+    @Value("${phone.sendno}")
     private String sendNo;
 
     private final PushTokenRepo pushTokenRepo;
