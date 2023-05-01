@@ -402,15 +402,13 @@ const list = () => {
         let sms = localStorage.getItem("sms");
 
         if (user && app == "true" && !openDialog) {
-            if (!pushToken || !pushToken.phone) {
-                const now = new Date();
-                const day = now.getDate();
-                const dayString = day.toString().replace(/[^0-9]/g, '');
-    
-                if (sms != dayString) {
-                    localStorage.setItem('sms', dayString);
-                    handleSMSDialogOpen();
-                }
+            const now = new Date();
+            const day = now.getDate();
+            const dayString = day.toString().replace(/[^0-9]/g, '');
+
+            if (sms != dayString) {
+                localStorage.setItem('sms', dayString);
+                handleSMSDialogOpen();
             }
         }
     }, [openDialog])

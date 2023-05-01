@@ -32,8 +32,10 @@ public class CandidateService {
         AppUser candidate1 = userRepo.findById(dto.getCandidate1Id()).orElseThrow();
         AppUser candidate2 = userRepo.findById(dto.getCandidate2Id()).orElseThrow();
         AppUser candidate3 = userRepo.findById(dto.getCandidate3Id()).orElseThrow();
+        AppUser candidate4 = userRepo.findById(dto.getCandidate4Id()).orElseThrow();
+        AppUser candidate5 = userRepo.findById(dto.getCandidate5Id()).orElseThrow();
 
-        Candidate candidate = dto.toEntity(user, candidate1, candidate2, candidate3);
+        Candidate candidate = dto.toEntity(user, candidate1, candidate2, candidate3, candidate4, candidate5);
         candidateRepo.save(candidate);
     }
 
@@ -59,13 +61,15 @@ public class CandidateService {
         }
 
         if (differenceTime < 1) {
-            List<AppUser> threeCandidates = Arrays.asList(
+            List<AppUser> fiveCandidates = Arrays.asList(
                     recentCandidate.getCandidate1(),
                     recentCandidate.getCandidate2(),
-                    recentCandidate.getCandidate3()
+                    recentCandidate.getCandidate3(),
+                    recentCandidate.getCandidate4(),
+                    recentCandidate.getCandidate5()
             );
 
-            return threeCandidates.stream()
+            return fiveCandidates.stream()
                     .filter(Objects::nonNull)
                     .map(candidate -> new CandidateDto.Response(
                             candidate,
@@ -73,7 +77,8 @@ public class CandidateService {
                     ))
                     .collect(Collectors.toList());
         } else {
-            List<AppUser> returnUsers = findReturnUsers(user);
+//            List<AppUser> returnUsers = findReturnUsers(user);
+            List<AppUser> returnUsers = findRandomUsers(user);
 
             if (returnUsers.size() > 0) {
                 Candidate candidate = Candidate.builder()
@@ -81,6 +86,8 @@ public class CandidateService {
                         .candidate1(returnUsers.get(0))
                         .candidate2(returnUsers.size() > 1 ? returnUsers.get(1) : null)
                         .candidate3(returnUsers.size() > 2 ? returnUsers.get(2) : null)
+                        .candidate4(returnUsers.size() > 3 ? returnUsers.get(3) : null)
+                        .candidate5(returnUsers.size() > 4 ? returnUsers.get(4) : null)
                         .build();
                 candidateRepo.save(candidate);
             }
@@ -92,6 +99,25 @@ public class CandidateService {
                     ))
                     .collect(Collectors.toList());
         }
+    }
+
+    private List<AppUser> findRandomUsers(AppUser user) {
+        List<Long> excludeIds = new ArrayList<>();
+
+        List<Candidate> candidates = candidateRepo.findByUserId(user.getId());
+        for (Candidate candidate : candidates) {
+            excludeIds.add(candidate.getCandidate1().getId());
+            if (candidate.getCandidate2() != null) excludeIds.add(candidate.getCandidate2().getId());
+            if (candidate.getCandidate3() != null) excludeIds.add(candidate.getCandidate3().getId());
+            if (candidate.getCandidate4() != null) excludeIds.add(candidate.getCandidate4().getId());
+            if (candidate.getCandidate5() != null) excludeIds.add(candidate.getCandidate5().getId());
+        }
+        excludeIds.add(user.getId());
+
+        List<AppUser> availableUsers = userRepo.findAvailableUsers(excludeIds);
+
+        Collections.shuffle(availableUsers);
+        return new ArrayList<>(availableUsers.subList(0, Math.min(availableUsers.size(), 5)));
     }
 
     public List<AppUser> findReturnUsers(AppUser user) {

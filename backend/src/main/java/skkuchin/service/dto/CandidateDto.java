@@ -33,13 +33,28 @@ public class CandidateDto {
 
         @JsonProperty
         private Long candidate3Id;
+        @JsonProperty
+        private Long candidate4Id;
 
-        public Candidate toEntity(AppUser user, AppUser candidate1, AppUser candidate2, AppUser candidate3) {
+        @JsonProperty
+        private Long candidate5Id;
+
+
+        public Candidate toEntity(
+                AppUser user,
+                AppUser candidate1,
+                AppUser candidate2,
+                AppUser candidate3,
+                AppUser candidate4,
+                AppUser candidate5
+        ) {
             return Candidate.builder()
                     .user(user)
                     .candidate1(candidate1)
                     .candidate2(candidate2)
                     .candidate3(candidate3)
+                    .candidate4(candidate4)
+                    .candidate5(candidate5)
                     .build();
         }
     }

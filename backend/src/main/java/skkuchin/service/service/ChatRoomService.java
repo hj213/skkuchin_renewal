@@ -370,7 +370,8 @@ public class ChatRoomService {
                 }
 
                 if (subscription != null && subscription.keys.auth == null) {
-                    pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
+                    Boolean returnCode = pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
+                    System.out.println(chatRoom.getId() + " Return code: " + returnCode);
                 }
             }
         }
