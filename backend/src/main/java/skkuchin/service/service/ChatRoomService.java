@@ -380,9 +380,12 @@ public class ChatRoomService {
                 System.out.println("Room Id OUT2: " + chatRoom.getId());
             }
         }
+
         System.out.println("Phones: " + phones);
-        Boolean returnCode = pushTokenService.sendSMS(phones, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
-        System.out.println("Response2: " + returnCode);
+        if (phones.size() > 0) {
+            Boolean returnCode = pushTokenService.sendSMS(phones, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
+            System.out.println("Response2: " + returnCode);
+        }
     }
 
     private class DateComparator implements Comparator<ChatRoomDto.Response> {
