@@ -346,6 +346,9 @@ public class ChatRoomService {
         List<String> sentUsers = new ArrayList<>();
 
         for (ChatRoom chatRoom : chatRooms) {
+            System.out.println("Room Id IN: " + chatRoom.getId());
+            System.out.println("SentUsers: " + sentUsers);
+
             ChatMessage chatMessage = getLatestMessage(chatRoom);
 
             LocalDateTime now = LocalDateTime.now();
@@ -370,9 +373,11 @@ public class ChatRoomService {
                 }
 
                 if (subscription != null && subscription.keys.auth == null) {
-                    Boolean returnCode = pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
-                    System.out.println(chatRoom.getId() + " Return code: " + returnCode);
+//                    Boolean returnCode = pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
+                    System.out.println("Room Id OUT1: " + chatRoom.getId());
                 }
+            } else {
+                System.out.println("Room Id OUT2: " + chatRoom.getId());
             }
         }
     }
