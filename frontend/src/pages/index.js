@@ -406,12 +406,21 @@ const list = () => {
             const day = now.getDate();
             const dayString = day.toString().replace(/[^0-9]/g, '');
 
-            if (sms != dayString) {
+            if (sms != "true" && sms != dayString) {
                 localStorage.setItem('sms', dayString);
                 handleSMSDialogOpen();
             }
         }
     }, [openDialog])
+
+    useEffect(() => {
+        let sms = localStorage.getItem("sms");
+
+        if (pushToken?.phone && sms != "true") {
+            localStorage.setItem("sms", "true");
+        }
+
+    }, [pushToken])
 
     const handleClose = () => {
         setOpenDialog(false);
@@ -443,6 +452,11 @@ const list = () => {
         router.push('/enrollSMS');
     };
 
+    const handleSMSDeny = () => {
+        localStorage.setItem("sms", "true");
+        setSMSDialogOpen(false);
+    };
+
     return(
     <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -466,6 +480,9 @@ const list = () => {
                 <DialogContent sx={{p: '20px 24px 13px'}}>
                     <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
                         <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>SMS 알림 💌 <br/> 받아보시겠어요?</DialogTitle>
+                    </DialogContentText>
+                    <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
+                        <Button sx={{color: '#000', fontSize: '8px', p: '0', m: '0', textDecoration: 'underline'}} onClick={handleSMSDeny}>팝업 다시 보지 않기</Button>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{p:'0'}}>

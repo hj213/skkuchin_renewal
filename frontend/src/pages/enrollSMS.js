@@ -31,6 +31,7 @@ const enrollSMS = () => {
     const handleSubmit = () => {
         dispatch(enroll_phone(phone, ([result, message]) => {
             if (result) {
+                localStorage.setItem("sms", "true");
                 router.push('/myPage');
             }
         }));
@@ -70,6 +71,7 @@ const enrollSMS = () => {
     const handleDelete = () => {
         dispatch(enroll_phone(null, ([result, message]) => {
             if (result) {
+                localStorage.removeItem("sms");
                 router.push('/myPage');
             }
         }));
