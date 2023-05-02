@@ -19,6 +19,7 @@ import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.repo.ChatRoomRepo;
 import skkuchin.service.service.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -150,7 +151,9 @@ public class DebeziumController {
             if (subscription != null && subscription.keys.auth != null) {
                 pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
             } else if (subscription != null) {
-                pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] " + pushMessage);
+                List<String> phones = new ArrayList<>();
+                phones.add(subscription.endpoint);
+                pushTokenService.sendSMS(phones, "[스꾸친] " + pushMessage);
             }
 
             template.convertAndSend(CHAT_EXCHANGE_NAME, "alarm." + userName2, true);
@@ -168,7 +171,9 @@ public class DebeziumController {
                 if (subscription != null && subscription.keys.auth != null) {
                     pushTokenService.sendNotification(subscription, pushTitle, pushMessage);
                 }  else if (subscription != null) {
-                    pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] " + pushMessage);
+                    List<String> phones = new ArrayList<>();
+                    phones.add(subscription.endpoint);
+                    pushTokenService.sendSMS(phones, "[스꾸친] " + pushMessage);
                 }
 
                 template.convertAndSend(CHAT_EXCHANGE_NAME, "alarm." + userName1, true);
