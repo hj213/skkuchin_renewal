@@ -29,6 +29,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.Security;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
@@ -173,7 +174,7 @@ public class PushTokenService {
     }
 
     @Transactional
-    public Boolean sendSMS(String phone, String content) {
+    public Boolean sendSMS(List<String> phones, String content) {
         try {
             String targetUrl = "https://api-sms.cloud.toast.com/sms/v3.0/appKeys/" + appKey + "/sender/sms";
             URL url = new URL(targetUrl);
@@ -191,9 +192,14 @@ public class PushTokenService {
             requestBody.put("body", content);
             requestBody.put("sendNo", sendNo);
             JSONArray recipientList = new JSONArray();
-            JSONObject recipient = new JSONObject();
-            recipient.put("recipientNo", phone);
-            recipientList.add(recipient);
+
+            for (String phone : phones) {
+                JSONObject recipient = new JSONObject();
+                recipient.put("recipientNo", phone);
+                recipientList.add(recipient);
+            }
+
+
             requestBody.put("recipientList", recipientList);
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));

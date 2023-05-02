@@ -339,11 +339,11 @@ public class ChatRoomService {
         return new ChatRoomDto.settingResponse(chatRoom);
     }
 
-    @Transactional
     @Scheduled(cron = "* 0 * * * ?")
     public void sendChatMessageSMS() {
         List<ChatRoom> chatRooms = chatRoomRepo.findAllAcceptRoom();
         List<String> sentUsers = new ArrayList<>();
+        List<String> phones = new ArrayList<>();
 
         for (ChatRoom chatRoom : chatRooms) {
             System.out.println("Room Id IN: " + chatRoom.getId());
@@ -373,13 +373,16 @@ public class ChatRoomService {
                 }
 
                 if (subscription != null && subscription.keys.auth == null) {
-//                    Boolean returnCode = pushTokenService.sendSMS(subscription.endpoint, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
+                    phones.add(subscription.endpoint);
                     System.out.println("Room Id OUT1: " + chatRoom.getId());
                 }
             } else {
                 System.out.println("Room Id OUT2: " + chatRoom.getId());
             }
         }
+        System.out.println("Phones: " + phones);
+        Boolean returnCode = pushTokenService.sendSMS(phones, "[스꾸친] 읽지 않은 채팅이 도착해있습니다!");
+        System.out.println("Response2: " + returnCode);
     }
 
     private class DateComparator implements Comparator<ChatRoomDto.Response> {
