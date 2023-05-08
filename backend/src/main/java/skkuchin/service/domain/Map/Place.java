@@ -52,6 +52,8 @@ public class Place {
 
     private String discountContent;
 
+    private int views;
+
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 

@@ -117,6 +117,7 @@ public class PlaceDto {
         private Long reviewCount;
         private Double rate;
         private List<String> tags;
+        private int views;
 
         public Response(Place place, List<Image> images, List<Review> reviews, List<Tag> tags) {
             this.id = place.getId();
@@ -142,6 +143,7 @@ public class PlaceDto {
                     .average()
                     .orElse(0.0)*10)/10.0;
             this.tags = tags.stream().map(tag -> tag.getName()).collect(Collectors.toList());
+            this.views = place.getViews();
         }
     }
 
