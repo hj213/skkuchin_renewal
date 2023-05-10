@@ -234,7 +234,6 @@ const Magazine = () => {
                             width={431}
                             layout='fixed'
                             objectFit='cover'
-                            placeholder='blur'
                             style={{ filter: 'brightness(0.6)' }}
                         />
                     </div>
