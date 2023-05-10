@@ -20,6 +20,16 @@ import { load_place } from "../actions/place/place";
 import morePic from '../image/morePicY.png';
 import dynamic from 'next/dynamic';
 
+import menu1 from '../image/festival/menu/11_디자인과_디디네 만화주점.png';
+import menu2 from '../image/festival/menu/11_의상학과_상하의상실.png';
+import menu3 from '../image/festival/menu/11_경영4반_SKKUB4DIVE.png';
+import menu4 from '../image/festival/menu/11_글로벌융합_융금이네 주막.png';
+import menu5 from '../image/festival/menu/11_문과대학_환상의 나라 문대랜드.png';
+import menu6 from '../image/festival/menu/11_사과대_Rendezvous.png';
+import menu7 from '../image/festival/menu/11_글경제_차린 건 GE뿔도 없지만.png';
+import menu8 from '../image/festival/menu/11_미컴_미컴의 낭만엔딩.png';
+import menu9 from '../image/festival/menu/11_심리학과_지금 우리 대학원은.png';
+
 const Map = dynamic(() => import("../components/Map"));
 const ReviewStar = dynamic(() => import("../components/ReviewStar"));
 const TagList = dynamic(() => import("../components/TagList"));
@@ -480,6 +490,87 @@ const PlacePage = () => {
                                                 </Grid>
                                             </Grid>
                                             <Grid container style={{width: '100%', paddingTop: '14px', justifyContent: 'center', padding: '22px 2% 0'}}>
+                                                {
+                                                    selectedPlace.name == '용BEER천가'
+                                                    ?
+                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
+                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
+                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
+                                                            제73대 국어국문학과 학생회 '도란도란'입니다:) 
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    :
+                                                    selectedPlace.name == 'SKKU:dium'
+                                                    ?
+                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
+                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
+                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
+                                                            영어영문학과 학생회: 유서깊은 전통을 가진 성균관대학교 영어영문학과를 이끌어가고 있는 학생회입니다. 학우들이 화합할 수 있는 여러 활동을 주도함으로써 최고의 학과로 거듭나도록 최선을 다하고 있습니다!
+                                                            <br/>
+                                                            성균축구단: 성균관대학교 인사캠 유일한 중앙축구동아리로써 29년의 전통과 실력을 가지고 있는 동아리입니다! 매년 1학기 열리는 교내 축구 대회 '성축배'를 주관하고, 성균관대학교를 대표하여 외부 경기를 뛰고 있는 성대 대표 축구동아리 입니다!
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    :
+                                                    selectedPlace.name == '디디네 만화주점'
+                                                    ?
+                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
+                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
+                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
+                                                            성균관대학교 34대 디자인학과 학생회 D:D (Draw:Design)입니다🌱
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    :
+                                                    selectedPlace.name == '환상의 나라 문대랜드'
+                                                    ?
+                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
+                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
+                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
+                                                            반갑습니다!! 성균관대학교 제51대 문과대학 학생회 ‘문득’입니다 환상의나라 문대랜드에 오셔서 즐거운 시간 보내세요~!
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    :
+                                                    selectedPlace.name == '미컴의 낭만엔딩'
+                                                    ?
+                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
+                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
+                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
+                                                            안녕하세요🏠 5월 11일 대동제의 아름다운 낭만엔딩을 장식할 미디어커뮤니케이션학과 야간 주점 '미컴의 낭만엔딩'입니다 :) 미디어커뮤니케이션학과 원전공생은 12,000원, 타과생 및 외부인은 15,000원의 입장료가 있습니다! 무제한 팝콘과 나쵸, 컵밥과 함께 영화와 같은 낭만적인 밤 보내봐요🤗 미니게임에 참여하면 음료수🍹와 폴라로이드 서비스 📸까지 드리니 많은 관심 부탁 드립니다~!
+                                                            <br/>
+                                                            <br/>
+                                                            그럼, 좋은 관람 되세요! 🍿🎬
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    :
+                                                    selectedPlace.name == '차린 건 GE뿔도 없지만'
+                                                    ?
+                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
+                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
+                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
+                                                            안녕하세요, 제15대 글로벌경제학과 학생회 GE:nie입니다.
+                                                            <br/>
+                                                            저렴한 가격의 안주와 두근두근 설레는 이벤트까지 준비되어 있으니 많이많이 놀러오세요(●'◡'●)
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    :
+                                                    selectedPlace.name == '지금 우리 대학원은'
+                                                    ?
+                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
+                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
+                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
+                                                            제23대 심리학과 학생회 ‘사이’입니다. 논문이랑 연구로 바쁘지만 야간 주점에 참가하면 가산점을 준다는 박사님 말씀에 주점을 운영하게 되었습니다. 아. 정신이 아득해지네요. 대학원생 살려~~. 조심하세요. 당신도 박사님의 노예가 될지 몰라요.
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    :
+                                                    null
+                                                }
+
                                                 <Grid container>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
@@ -530,33 +621,92 @@ const PlacePage = () => {
                         </Container>
                         }
                         {/* 홍보 배너 */}
-                        {/* {
-                            selectedPlace?.detail_category?.includes('샐러드윅스') && 
-                            <>
-                                <Container>
-                                    <Grid sx={{display: 'flex', mb: '20px', alignItems: 'center', justifyContent: 'center'}}>
-                                        <Button 
-                                            variant="contained" 
-                                            disableElevation
-                                            disableTouchRipple
-                                            sx={{color: '#000000', backgroundColor: '#FFE885', borderRadius: '30px', border: 'none', width: '97px', height: '36px', padding: '6px 10px 4px 10px', fontSize: '13px', fontWeight: '500'}}
-                                            onClick={handleShowDcCode}
-                                        >
-                                            할인 코드 보기
-                                        </Button>
-                                    </Grid>
-                                </Container>
-                                <Image 
-                                    src={event} 
-                                    style={{width: '100%'}}
-                                    placeholder='blur'
-                                    layout='responsive'
-                                    onClick={() => window.open('https://www.saladweeks.co.kr/', '_blank')}
-                                />
-                            </>
-                        } */}
                         {
-                            menus && 
+                            selectedPlace?.name == 'Rendezvous'
+                            ?
+                            <Image 
+                                src={menu6} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == 'SKKUB4DIVE'
+                            ?
+                            <Image 
+                                src={menu3} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == '상하의 상실'
+                            ?
+                            <Image 
+                                src={menu2} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == '디디네 만화주점'
+                            ?
+                            <Image 
+                                src={menu1} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == '융금이네 주막'
+                            ?
+                            <Image 
+                                src={menu4} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == '환상의 나라 문대랜드'
+                            ?
+                            <Image 
+                                src={menu5} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == '미컴의 낭만엔딩'
+                            ?
+                            <Image 
+                                src={menu8} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == '차린 건 GE뿔도 없지만'
+                            ?
+                            <Image 
+                                src={menu7} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            selectedPlace?.name == '지금 우리 대학원은'
+                            ?
+                            <Image 
+                                src={menu9} 
+                                style={{width: '100%'}}
+                                placeholder='blur'
+                                layout='responsive'
+                            />
+                            :
+                            null
+                        }
+                        {
+                            menus?.length > 0 &&
                             <Container style={{padding: '0 32px'}}>
                                 <CardContent>
                                     <Grid sx={{display: 'flex', mt: '20px', mb: '10px'}}>

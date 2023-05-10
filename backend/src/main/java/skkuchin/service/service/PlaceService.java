@@ -416,7 +416,7 @@ public class PlaceService {
 
     @Transactional
     public List<PlaceDto.Response> getTopPlaces() {
-        List<PlaceDto.Response> places = searchCategory("축제");
+        List<PlaceDto.Response> places = searchCategory("대동제");
 
         if (places == null) {
             return Collections.emptyList();

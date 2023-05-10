@@ -81,6 +81,7 @@ const EnrollPlace = () => {
                 <label>
                 * 카테고리:
                 <select name="category" value={formData.category} onChange={handleInputChange}>
+                    <option value="대동제">대동제</option>
                     <option value="한식">한식</option>
                     <option value="일식">일식</option>
                     <option value="중식">중식</option>
@@ -121,6 +122,9 @@ const EnrollPlace = () => {
                 <label>
                 위치:
                 <select name="gate" value={formData.gate} onChange={handleInputChange}>
+                    <option value="금잔디광장">금잔디광장</option>
+                    <option value="경영관">경영관</option>
+                    <option value="대운동장">대운동장</option>
                     <option value="정문">정문</option>
                     <option value="쪽문">쪽문</option>
                     <option value="후문">후문</option>

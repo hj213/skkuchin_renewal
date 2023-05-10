@@ -45,12 +45,21 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                         };
                     } 
                     else if (user && user.toggle == '명륜' && !selectedPlace) {
-                        options = {
-                            center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
-                            level: 5,
-                            preventDraggable: true,
-                            zoomControl: true
-                        };
+                        if (places && places[0]?.category === '대동제') {
+                            options = {
+                                center : new window.kakao.maps.LatLng(37.58764109865712, 126.99223862612932),
+                                level: 2,
+                                preventDraggable: true,
+                                zoomControl: true
+                            };
+                        } else {
+                            options = {
+                                center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
+                                level: 5,
+                                preventDraggable: true,
+                                zoomControl: true
+                            };
+                        }
                     }
                     else if (toggle && toggle === '율전' && !selectedPlace) {
                         options = {
@@ -61,12 +70,21 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                         };
                     } 
                     else if (toggle && toggle === '명륜' && !selectedPlace) {
-                        options = {
-                            center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
-                            level: 5,
-                            preventDraggable: true,
-                            zoomControl: true
-                        };
+                        if (places && places[0]?.category === '대동제') {
+                            options = {
+                                center : new window.kakao.maps.LatLng(37.58764109865712, 126.99223862612932),
+                                level: 2,
+                                preventDraggable: true,
+                                zoomControl: true
+                            };
+                        } else {
+                            options = {
+                                center : new window.kakao.maps.LatLng(37.58622450673971, 126.99709024757782),
+                                level: 5,
+                                preventDraggable: true,
+                                zoomControl: true
+                            };
+                        }
                     }
                     else if (level) {
                         options = {
