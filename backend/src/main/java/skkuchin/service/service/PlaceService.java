@@ -381,6 +381,7 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public List<PlaceDto.AdminResponse> getNoReview() {
         List<Place> places = placeRepo.findNoReviewPlaces();
         return places
@@ -389,6 +390,7 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public List<PlaceDto.AdminResponse> getNoImage() {
         List<Place> places = placeRepo.findNoImagePlaces();
         return places
@@ -397,12 +399,35 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public List<PlaceDto.AdminResponse> getNoMenu() {
         List<Place> places = placeRepo.findNoMenuPlaces();
         return places
                 .stream()
                 .map(PlaceDto.AdminResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void increaseViews(Long placeId) {
+        Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
+        place.setViews(place.getViews() + 1);
+    }
+
+    @Transactional
+    public List<PlaceDto.Response> getTopPlaces() {
+        List<PlaceDto.Response> places = searchCategory("대동제");
+
+        if (places == null) {
+            return Collections.emptyList();
+        }
+
+        List<PlaceDto.Response> topPlaces = places.stream()
+                .sorted(Comparator.comparingInt(PlaceDto.Response::getViews).reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+
+        return topPlaces;
     }
 
     private List<Tag> getTop3TagsByPlace(Place place) {

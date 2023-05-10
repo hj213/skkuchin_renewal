@@ -34,6 +34,7 @@ public class PlaceController {
 
     @GetMapping("/{placeId}")
     public ResponseEntity<?> getDetail(@PathVariable Long placeId) {
+        placeService.increaseViews(placeId);
         PlaceDto.Response place = placeService.getDetail(placeId);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 상세 정보 조회 완료", place), HttpStatus.OK);
     }
@@ -130,5 +131,11 @@ public class PlaceController {
     public ResponseEntity<?> getNoMenu() {
         List<PlaceDto.AdminResponse> places = placeService.getNoMenu();
         return new ResponseEntity<>(new CMRespDto<>(1, "메뉴 없는 장소 조회 완료", places), HttpStatus.OK);
+    }
+
+    @GetMapping("/topfive")
+    public ResponseEntity<?> getTopPlaces() {
+        List<PlaceDto.Response> places = placeService.getTopPlaces();
+        return new ResponseEntity<>(new CMRespDto<>(1, "Top5 축제 장소 조회 완료", places), HttpStatus.OK);
     }
 }
