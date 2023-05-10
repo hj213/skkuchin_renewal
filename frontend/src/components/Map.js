@@ -47,7 +47,7 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                     else if (user && user.toggle == '명륜' && !selectedPlace) {
                         if (places && places[0]?.category === '대동제') {
                             options = {
-                                center : new window.kakao.maps.LatLng(37.58764109865712, 126.99223862612932),
+                                center : new window.kakao.maps.LatLng(37.58752847568264, 126.99225564211353),
                                 level: 2,
                                 preventDraggable: true,
                                 zoomControl: true
@@ -72,7 +72,7 @@ const Map = ({latitude, longitude, level, places, selectedId}) => {
                     else if (toggle && toggle === '명륜' && !selectedPlace) {
                         if (places && places[0]?.category === '대동제') {
                             options = {
-                                center : new window.kakao.maps.LatLng(37.58764109865712, 126.99223862612932),
+                                center : new window.kakao.maps.LatLng(37.58732575231526, 126.99225564211353),
                                 level: 2,
                                 preventDraggable: true,
                                 zoomControl: true
