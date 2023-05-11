@@ -216,8 +216,8 @@ const Magazine = () => {
                     <div style={{position:'absolute',zIndex:'3'}}>
                         {/* 안에 자유롭게 수정가능 */}
                         <Typography fontSize='12px' fontWeight='700' style={{margin:'23px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>수원에 이런 곳이?</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 데이트 코스 율전편</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>엄마 손맛이 그리워</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">집밥 같은 성대 맛집 7곳</Typography>
                     </div>
                     <div>
                         <div style={{position:'absolute',zIndex:'3', bottom:'8%', right: '3%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
