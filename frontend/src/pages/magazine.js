@@ -163,7 +163,7 @@ const Magazine = () => {
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
                     <div style={{ display: "flex", margin:'21px 0px 0px 15px' }}>
-                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">목요일 주점 순위</Typography>
+                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">금요일 주점 순위</Typography>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>TOP 5</Typography>
                         <Typography>🔥</Typography>
                     </div>
