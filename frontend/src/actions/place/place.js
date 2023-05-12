@@ -7,8 +7,6 @@ import {
     LOAD_PLACE_SUCCESS,
     LOAD_PLACES_FAIL,
     LOAD_PLACES_SUCCESS,
-    LOAD_TOP_PLACES_FAIL,
-    LOAD_TOP_PLACES_SUCCESS,
     ENROLL_PLACE_FAIL,
     ENROLL_PLACE_SUCCESS,
     MODIFY_PLACE_FAIL,
@@ -675,41 +673,6 @@ export const get_no_menu_places = (callback) => async dispatch => {
     } catch(error) {
         dispatch({
             type: LOAD_PLACES_FAIL
-        })
-        
-        if (callback) callback([false, error]);
-    }
-}
-
-export const get_top_places = (callback) => async dispatch => {
-
-    try {
-        const res = await fetch(`${API_URL}/api/place/topfive`, {
-            method: 'GET',
-            headers: {
-                'Accept' : 'application/json'
-            },
-        });
-
-        const apiRes = await res.json();
-
-        if (res.status === 200) {
-            dispatch({
-                type: LOAD_TOP_PLACES_SUCCESS,
-                payload: apiRes.data
-            })
-            
-            if (callback) callback([true, apiRes.message]);
-        } else {
-            dispatch({
-                type: LOAD_TOP_PLACES_FAIL
-            })
-            
-            if (callback) callback([false, apiRes.message]);
-        }
-    } catch(error) {
-        dispatch({
-            type: LOAD_TOP_PLACES_FAIL
         })
         
         if (callback) callback([false, error]);

@@ -124,7 +124,6 @@ const EnrollPlace = () => {
                 <label>
                 * 카테고리:
                 <select name="category" value={formData ? formData.category : ""} onChange={handleInputChange}>
-                    <option value="대동제">대동제</option>
                     <option value="한식">한식</option>
                     <option value="일식">일식</option>
                     <option value="중식">중식</option>

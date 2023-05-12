@@ -4,8 +4,6 @@ import {
     LOAD_PLACE_FAIL,
     LOAD_PLACES_SUCCESS,
     LOAD_PLACES_FAIL,
-    LOAD_TOP_PLACES_SUCCESS,
-    LOAD_TOP_PLACES_FAIL,
     ENROLL_PLACE_SUCCESS,
     ENROLL_PLACE_FAIL,
     MODIFY_PLACE_SUCCESS,
@@ -26,8 +24,7 @@ import {
 } from '../actions/place/types'
 
 const initialState = {
-    place: null,
-    topPlace: null
+    place: null
 };
 
 const placeReducer = (state= initialState, action) => {
@@ -53,16 +50,6 @@ const placeReducer = (state= initialState, action) => {
             return {
                 ...state,
                 place: null
-            }
-        case LOAD_TOP_PLACES_SUCCESS:
-            return {
-                ...state,
-                topPlace: payload
-            }
-        case LOAD_TOP_PLACES_FAIL:
-            return {
-                ...state,
-                topPlace: null
             }
         case ENROLL_PLACE_SUCCESS:
             return {
