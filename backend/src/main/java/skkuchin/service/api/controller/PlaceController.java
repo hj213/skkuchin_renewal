@@ -14,6 +14,7 @@ import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.service.PlaceService;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,7 @@ public class PlaceController {
     @GetMapping("/search/category/{category}")
     public ResponseEntity<?> searchCategory(@PathVariable String category) {
         List<PlaceDto.Response> places = placeService.searchCategory(category);
+        Collections.shuffle(places);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 카태고리 검색 완료", places), HttpStatus.OK);
     }
 
