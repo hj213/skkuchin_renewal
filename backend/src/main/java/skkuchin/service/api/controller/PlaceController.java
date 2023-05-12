@@ -92,6 +92,7 @@ public class PlaceController {
     @GetMapping("/search/discount")
     public ResponseEntity<?> searchDiscount() {
         List<PlaceDto.Response> places = placeService.searchDiscount();
+        Collections.shuffle(places);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 학생 할인 검색 완료", places), HttpStatus.OK);
     }
 
@@ -105,6 +106,7 @@ public class PlaceController {
     @GetMapping("/search/tag/{tag}")
     public ResponseEntity<?> searchTag(@PathVariable String tag) {
         List<PlaceDto.Response> places = placeService.searchTag(tag);
+        Collections.shuffle(places);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 태그 검색 완료", places), HttpStatus.OK);
     }
 

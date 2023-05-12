@@ -376,7 +376,7 @@ const PlacePage = () => {
                                                 {selectedPlace.name}
                                             </Typography>
                                             <Typography sx={{fontSize: '15px', fontWeight: '500'}} color="#a1a1a1" component="span" >
-                                                {selectedPlace.detail_category}
+                                                {selectedPlace.detail_category.length > 10 ? selectedPlace.detail_category.substr(0, 10)+'...' : selectedPlace.detail_category}
                                             </Typography>
                                         </Grid>
                                     }
