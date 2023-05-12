@@ -136,10 +136,4 @@ public class PlaceController {
         List<PlaceDto.AdminResponse> places = placeService.getNoMenu();
         return new ResponseEntity<>(new CMRespDto<>(1, "메뉴 없는 장소 조회 완료", places), HttpStatus.OK);
     }
-
-    @GetMapping("/topfive")
-    public ResponseEntity<?> getTopPlaces() {
-        List<PlaceDto.Response> places = placeService.getTopPlaces();
-        return new ResponseEntity<>(new CMRespDto<>(1, "Top5 축제 장소 조회 완료", places), HttpStatus.OK);
-    }
 }
