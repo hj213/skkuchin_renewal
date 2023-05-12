@@ -636,7 +636,7 @@ const list = () => {
                                                         }
                                                         <Grid item style={{padding:'0px 0px 0px 0px'}}>
                                                                 <Typography sx={{fontSize: '10px', fontWeight: '500'}} style={{marginTop: '22px'}} color="#a1a1a1" component="div" >
-                                                                    {item.detail_category}
+                                                                    {item.detail_category.length > 10 ? item.detail_category.substr(0, 10)+'...' : item.detail_category}
                                                                 </Typography>
                                                             </Grid>
                                                             <Grid item style={{padding:'0px 0px 0px 8px', marginTop:'19px'}}>
