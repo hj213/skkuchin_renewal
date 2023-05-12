@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react"; 
-import { clear_search_results, get_top_places } from "../actions/place/place";
+import { clear_search_results } from "../actions/place/place";
 import { load_rank } from '../actions/rank/rank';
 import styled from '@emotion/styled';
 
@@ -125,11 +125,9 @@ const Magazine = () => {
     const user = useSelector(state => state.auth.user);
     const toggle = useSelector(state => state.auth.toggle_for_not_user);
     const rank = useSelector(state => state.rank.rank);
-    const places = useSelector(state => state.place.topPlace);
 
     useEffect(()=>{
         dispatch(clear_search_results());
-        dispatch(get_top_places());
     },[])
 
     useEffect(() => {
@@ -163,28 +161,25 @@ const Magazine = () => {
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
                     <div style={{ display: "flex", margin:'21px 0px 0px 15px' }}>
-                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">금요일 주점 순위</Typography>
+                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 2주차 식당</Typography>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>TOP 5</Typography>
                         <Typography>🔥</Typography>
                     </div>
                     <div style={{margin:'5px 0px 21px 15px'}}>
-                        <Typography color={theme.palette.fontColor.light} style={{fontSize:'11px'}}>실시간으로 업데이트 돼요!</Typography>
-                        {/* <Typography color={theme.palette.fontColor.light} style={{fontSize:'11px'}}>일주일마다 업데이트 돼요!</Typography> */}
+                        <Typography color={theme.palette.fontColor.light} style={{fontSize:'11px'}}>일주일마다 업데이트 돼요!</Typography>
                     </div>
                     <MagazineContainer>
                         <div style={{margin:'0px 0px 0px 15px'}}>
                             <Grid container style={{  position: 'absolute', zIndex: '3', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', width: window.innerWidth <= 375 ? 360 : window.innerWidth <= 400  ? 375 :  400, }}>
-                                {places && places.map((item, index) => (
-                                    <Grid item style={{display:'inline-block', flexShrink: 0, paddingRight: '9px'}} onClick={()=>{router.push(`/place?id=${item.id}`)}} >
-                                    {/* <Grid item style={{display:'inline-block', flexShrink: 0, paddingRight: '9px'}} onClick={()=>{router.push(`/place?id=${item.place_id}`)}} > */}
+                                {rank && rank.map((item, index) => (
+                                    <Grid item style={{display:'inline-block', flexShrink: 0, paddingRight: '9px'}} onClick={()=>{router.push(`/place?id=${item.place_id}`)}} >
                                         <div >
                                             {/* 식당이미지 */}
                                             <div style={{display: 'flex', margin:'9px 0px 0px 9px', paddingTop:'2px',position:'absolute',zIndex:'3', alignItems: 'center', justifyContent: 'center', width: '23px', height: '21.41px', borderRadius: '50%', backgroundColor: index === 3 || index === 4 ? 'rgba(186, 186, 186, 0.7)' : 'rgba(255, 206, 0, 0.7)', color:'#fff', fontSize: '13px', fontWeight: 'bold'}}>
                                                 {index+1}
                                             </div>
                                             <Image 
-                                                // src={item.image ? item.image : food} 
-                                                src={ item.images && item.images.length > 0 ? item.images[0] : food }
+                                                src={item.image ? item.image : food}
                                                 width={155} 
                                                 height={155} 
                                                 layout='fixed' 
@@ -193,15 +188,13 @@ const Magazine = () => {
                                                 style={{borderRadius:'20px', position:'relative'}}>
                                             </Image>
                                             {/* 식당이름 */}
-                                            {/* <Typography style={{fontSize:'15px', fontWeight:'700'}} color="#2E2E2E">{item.place_name}</Typography> */}
-                                            <Typography style={{fontSize:'15px', fontWeight:'700'}} color="#2E2E2E">{item.name}</Typography>
+                                            <Typography style={{fontSize:'15px', fontWeight:'700'}} color="#2E2E2E">{item.place_name}</Typography>
                                             {/* 식당평점 */}
                                             <div style={{ display: "flex"}}>
-                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">{item.detail_category}</Typography>
-                                                {/* <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">스꾸친 평점: &nbsp;</Typography> */}
-                                                {/* <Image src={filledStar} width={15} height={15} style={{margin:''}}/>
+                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">스꾸친 평점: &nbsp;</Typography>
+                                                <Image src={filledStar} width={15} height={15} style={{margin:''}}/>
                                                 <Typography style={{fontSize:'10px', fontWeight:'700'}} color="#2E2E2E">&nbsp; {item.rate}</Typography>
-                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">&nbsp;/ 5</Typography> */}
+                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">&nbsp;/ 5</Typography>
                                             </div>
                                         </div>
                                     </Grid>

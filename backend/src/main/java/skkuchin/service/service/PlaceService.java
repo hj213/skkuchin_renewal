@@ -408,27 +408,11 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public void increaseViews(Long placeId) {
-        Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
-        place.setViews(place.getViews() + 1);
-    }
-
-    @Transactional
-    public List<PlaceDto.Response> getTopPlaces() {
-        List<PlaceDto.Response> places = searchCategory("대동제");
-
-        if (places == null) {
-            return Collections.emptyList();
-        }
-
-        List<PlaceDto.Response> topPlaces = places.stream()
-                .sorted(Comparator.comparingInt(PlaceDto.Response::getViews).reversed())
-                .limit(5)
-                .collect(Collectors.toList());
-
-        return topPlaces;
-    }
+    // @Transactional
+    // public void increaseViews(Long placeId) {
+    //     Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
+    //     place.setViews(place.getViews() + 1);
+    // }
 
     private List<Tag> getTop3TagsByPlace(Place place) {
         List<Review> reviews = reviewRepo.findByPlace(place);

@@ -35,7 +35,7 @@ public class PlaceController {
 
     @GetMapping("/{placeId}")
     public ResponseEntity<?> getDetail(@PathVariable Long placeId) {
-        placeService.increaseViews(placeId);
+        // placeService.increaseViews(placeId);
         PlaceDto.Response place = placeService.getDetail(placeId);
         return new ResponseEntity<>(new CMRespDto<>(1, "장소 상세 정보 조회 완료", place), HttpStatus.OK);
     }

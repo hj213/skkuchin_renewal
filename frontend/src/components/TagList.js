@@ -18,7 +18,6 @@ import mapTag12 from '../image/tags/map_off/top_money.png';
 import mapTag13 from '../image/tags/map_off/top_clean.png';
 import mapTag14 from '../image/tags/map_off/top_two.png';
 import mapTag15 from '../image/tags/map_off/top_cafe.png';
-import mapTag16 from '../image/tags/map_off/top_festival.png';
 
 import mapTagOn1 from '../image/tags/map_on/top_dcY.png';
 import mapTagOn2 from '../image/tags/map_on/top_alcoholY.png';
@@ -35,7 +34,6 @@ import mapTagOn12 from '../image/tags/map_on/top_moneyY.png';
 import mapTagOn13 from '../image/tags/map_on/top_cleanY.png';
 import mapTagOn14 from '../image/tags/map_on/top_twoY.png';
 import mapTagOn15 from '../image/tags/map_on/top_cafeY.png';
-import mapTagOn16 from '../image/tags/map_on/top_festivalY.png';
 
 import reviewTag01 from '../image/tags/mini/mini_taste.png';
 import reviewTag02 from '../image/tags/mini/mini_money.png';
@@ -78,8 +76,6 @@ export const displayTagImage = (tags) => {
         <Grid container spacing={1}>
             {displayTags.map ((tag) => {
             switch(tag) {
-                case "대동제":
-                    return <Grid item key={tag}><Image id={"대동제"} src={mapTagOn16} width={104} height={36} layout='fixed' /></Grid>
                 case "학생 할인":
                     return <Grid item key={tag}><Image id={"학생 할인"} src={mapTagOn1} width={88} height={36} layout='fixed' /></Grid>
                 case "카페":
@@ -204,10 +200,6 @@ const TagList = ({keyword, onTagClick}) => {
                         }
             }}>
                 <Grid item style={{filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block', flexShrink: 0, paddingRight: '5px' }}>
-                    { keyword.includes("대동제") ? <Image id={"대동제"} src={mapTagOn16} width={104} height={36} layout='fixed' />
-                    : <Image id={"대동제"} src={mapTag16} width={104} height={36} layout='fixed' /> }
-                </Grid>
-                <Grid item style={{pl: '5px', filter: "drop-shadow(1px 1px 2px rgba(0,0,0,0.25))", display:'inline-block', flexShrink: 0, paddingRight: '5px' }}>
                     { keyword.includes("학생 할인") ? <Image id={"학생 할인"} src={mapTagOn1} width={88} height={36} layout='fixed' />
                     : <Image id={"학생 할인"} src={mapTag1} width={88} height={36} layout='fixed' /> }
                 </Grid>
