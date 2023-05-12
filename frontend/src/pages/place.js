@@ -20,15 +20,6 @@ import { load_place } from "../actions/place/place";
 import morePic from '../image/morePicY.png';
 import dynamic from 'next/dynamic';
 
-import menu1 from '../image/festival/menu/12_경영4반_SKKUB4DIVE.png';
-import menu2 from '../image/festival/menu/12_글리_석양의무법자.png';
-import menu3 from '../image/festival/menu/12_도서관자치위원회_도주못해.png';
-import menu4 from '../image/festival/menu/12_동아리연합_동글한맘속에피어난.png';
-import menu5 from '../image/festival/menu/12_문헌정보_Moon 정 多 주막.png';
-import menu6 from '../image/festival/menu/12_방사연랜드카지노.png';
-import menu7 from '../image/festival/menu/12_철학과_아테네 학당.png';
-import menu8 from '../image/festival/menu/12_컬텍_컬랭방구 스토어.png';
-
 const Map = dynamic(() => import("../components/Map"));
 const ReviewStar = dynamic(() => import("../components/ReviewStar"));
 const TagList = dynamic(() => import("../components/TagList"));
@@ -489,52 +480,6 @@ const PlacePage = () => {
                                                 </Grid>
                                             </Grid>
                                             <Grid container style={{width: '100%', paddingTop: '14px', justifyContent: 'center', padding: '22px 2% 0'}}>
-                                                {
-                                                    selectedPlace.name == '동글한 맘속에 피어난'
-                                                    ?
-                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
-                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
-                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
-                                                            안녕하세요 제42대 인사캠 동아리연합회 동글입니다! 
-                                                            <br/>
-                                                            동아리연합회는 교내 동아리들을 위한 단체로, 중앙/준중앙동아리를 관리하는 독립기구입니다. 동아리 활동 지원, 학생회관 관리 및 공간 대여 등의 일을 진행합니다:)
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                    :
-                                                    selectedPlace.name == '컬랭방구스토어'
-                                                    ?
-                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
-                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
-                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
-                                                            컬처앤테크놀로지융합전공 제4대 학생회 CNT:role과 함께 그때 그 시절 컬랭방구~스토어로 떠나요!
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                    :
-                                                    selectedPlace.name == 'Moon정 多 주막'
-                                                    ?
-                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
-                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
-                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
-                                                            학생회가 미쳤어요! 퀄리티 높은 안주 무.한.제.공! 게다가 전래동화와 주막 컨셉으로 다양한 이벤트도 준비되어있으니 전래동화 속 등장인물이 된 기분으로 정과 재미가 넘치는 Moon정多주막에서 놀다 가세요~!
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                    :
-                                                    selectedPlace.name == '아테네 학당'
-                                                    ?
-                                                    <Grid container sx={{justifyContent: 'center', marginBottom: '7.5px'}}>
-                                                        <Grid style={{margin:'0px 3px 10px 0px'}}>
-                                                            <Typography  sx={{fontSize: '15px', fontWeight:'500'}} color="#000000" component="div">
-                                                            제55대 철학과 학생회 필라이트입니다!
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                    :
-                                                    null
-                                                }
-
                                                 <Grid container>
                                                     <Grid style={{margin:'0px 3px 0px 0px'}}>
                                                         <Typography  sx={{fontSize: '15px', fontWeight:'400'}} color="#000000" component="div">
@@ -585,90 +530,12 @@ const PlacePage = () => {
                         </Container>
                         }
                         {/* 홍보 배너 */}
-                        {
-                            selectedPlace?.name == 'SKKUB4DIVE'
-                            ?
-                            <Image 
-                                src={menu1} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == '석양의 무법자'
-                            ?
-                            <Image 
-                                src={menu2} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == '도주못해'
-                            ?
-                            <Image 
-                                src={menu3} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == '동글한 맘속에 피어난'
-                            ?
-                            <Image 
-                                src={menu4} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == 'Moon정 多 주막'
-                            ?
-                            <Image 
-                                src={menu5} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == '환상의 나라 문대랜드'
-                            ?
-                            <Image 
-                                src={menu5} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == '방사연랜드 카지노'
-                            ?
-                            <Image 
-                                src={menu6} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == '아테네 학당'
-                            ?
-                            <Image 
-                                src={menu7} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            selectedPlace?.name == '컬랭방구스토어'
-                            ?
-                            <Image 
-                                src={menu8} 
-                                style={{width: '100%'}}
-                                placeholder='blur'
-                                layout='responsive'
-                            />
-                            :
-                            null
-                        }
+                        {/* <Image 
+                            src={menu8} 
+                            style={{width: '100%'}}
+                            placeholder='blur'
+                            layout='responsive'
+                        /> */}
                         {
                             menus?.length > 0 &&
                             <Container style={{padding: '0 32px'}}>
