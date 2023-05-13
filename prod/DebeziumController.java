@@ -35,7 +35,7 @@ public class DebeziumController {
     private final PushTokenService pushTokenService;
     private final UserService userService;
     private final NoticeService noticeService;
-    private final PlaceService placeService;
+    private final CacheService cacheService;
 
     @Transactional
     @KafkaListener(topics = "dbserver.service.chat_message")
