@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.dto.PlaceDto;
@@ -24,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -408,11 +410,32 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    // @Transactional
-    // public void increaseViews(Long placeId) {
-    //     Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 장소입니다"));
-    //     place.setViews(place.getViews() + 1);
-    // }
+    @Transactional
+    @Scheduled(cron = "0 0 5 * * ?")
+    @Caching(evict = {
+            @CacheEvict(value = "placeDetail", allEntries = true),
+            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
+            @CacheEvict(value = "placeSearchCategory", allEntries = true),
+            @CacheEvict(value = "placeSearchTag", allEntries = true),
+            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
+            @CacheEvict(value = "placeAll", allEntries = true)
+    })
+    public void renewCache() {
+        caching();
+    }
+
+    @Transactional
+    public void caching() {
+        getAll();
+        searchDiscount();
+        for (Category category : Category.values()) {
+            searchCategory(String.valueOf(category));
+        }
+        String[] tags = {"맛집", "간단한 한 끼", "분위기 좋은", "가성비", "친절", "청결도", "둘이 가요"};
+        for (String tag: tags) {
+            searchTag(tag);
+        }
+    }
 
     private List<Tag> getTop3TagsByPlace(Place place) {
         List<Review> reviews = reviewRepo.findByPlace(place);

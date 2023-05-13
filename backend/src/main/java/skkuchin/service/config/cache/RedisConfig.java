@@ -23,7 +23,7 @@ import java.time.Duration;
 @Configuration
 @EnableCaching
 public class RedisConfig {
-    private static final Long expire = 8L;
+    private static final Long expire = 24L;
     @Value("${spring.redis.host}")
     private String host;
 
