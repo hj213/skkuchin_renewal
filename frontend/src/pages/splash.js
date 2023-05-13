@@ -9,7 +9,7 @@ import loading1 from '../image/loading1.png';
 import loading2 from '../image/loading2.png';
 import loading3 from '../image/loading3.png';
 import { useDispatch } from 'react-redux';
-import { load_user, change_toggle_for_not_user, update_last_accessed_time } from '../actions/auth/auth';
+import { load_user_callback, change_toggle_for_not_user, update_last_accessed_time } from '../actions/auth/auth';
 import dynamic from 'next/dynamic';
 
 const loadingImages = [loading0, loading1, loading2, loading3];
@@ -23,7 +23,7 @@ const splash = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            dispatch(load_user(([result, message]) => {
+            dispatch(load_user_callback(([result, message]) => {
                 if (result) {
                     dispatch(update_last_accessed_time(true));
                     router.push('/');
