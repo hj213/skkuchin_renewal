@@ -167,6 +167,55 @@ export const logout = () => async dispatch => {
     }
 }
 
+export const load_user_callback = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+        if (callback) callback([false, 'authenticated_fail']);
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/user/me`,{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            await dispatch({
+                type: LOAD_USER_SUCCESS,
+                payload: apiRes.data
+            });
+            dispatch(load_favorite());
+            dispatch(load_token());
+            if (callback) callback([true, apiRes.message]);
+        } else {
+            dispatch({
+                type: LOAD_USER_FAIL,
+                payload: apiRes.data
+            });
+            if (callback) callback([false, apiRes.message]);
+        }
+
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: LOAD_USER_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}
+
 export const load_user = (callback) => async dispatch => {
     await dispatch(request_refresh());
 
