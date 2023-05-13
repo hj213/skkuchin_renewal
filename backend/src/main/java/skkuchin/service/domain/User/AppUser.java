@@ -60,6 +60,8 @@ public class AppUser {
 
     private LocalDateTime startDate;
 
+    private LocalDateTime lastAccessedTime;
+
     private Boolean emailAuth;
 
     private Boolean agreement;

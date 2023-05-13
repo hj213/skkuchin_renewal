@@ -8,35 +8,24 @@ import loading0 from '../image/loading0.png';
 import loading1 from '../image/loading1.png';
 import loading2 from '../image/loading2.png';
 import loading3 from '../image/loading3.png';
-import { useDispatch, useSelector } from 'react-redux';
-import { load_user_callback, change_toggle_for_not_user } from '../actions/auth/auth';
+import { useDispatch } from 'react-redux';
+import { load_user, change_toggle_for_not_user, update_last_accessed_time } from '../actions/auth/auth';
 import dynamic from 'next/dynamic';
 
 const loadingImages = [loading0, loading1, loading2, loading3];
 
 const splash = () => {
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const [loadingIndex, setLoadingIndex] = useState(0);
     const router = useRouter();
     const dispatch = useDispatch();
     const campus = localStorage.getItem('map');
 
     useEffect(() => {
-        /*
         setTimeout(() => {
-            if (typeof window !== 'undefined') {
-                if (isAuthenticated) {
-                    router.push('/');
-                } else {
-                    router.push('/nextSplash');
-                }
-            }
-        }, 10000);*/
-
-        setTimeout(() => {
-            dispatch(load_user_callback(([result, message]) => {
+            dispatch(load_user(([result, message]) => {
                 if (result) {
+                    dispatch(update_last_accessed_time(true));
                     router.push('/');
                 } else {
                     if (campus) {

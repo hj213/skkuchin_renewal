@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
-import { login } from "../actions/auth/auth";
+import { login, update_last_accessed_time } from "../actions/auth/auth";
 import Loader from "react-loader-spinner";
 
 import Image from 'next/image';
@@ -40,32 +40,31 @@ const LoginPage = () => {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(login(username, password, ([result, message]) => {
-                if (result) {
-                    if (rememberUsername) {
-                        localStorage.setItem("username", username);
-                    } else {
-                        localStorage.removeItem("username");
-                    }
+        dispatch(login(username, password, ([result, message]) => {
+            if (result) {
+                dispatch(update_last_accessed_time(true));
+                if (rememberUsername) {
+                    localStorage.setItem("username", username);
                 } else {
-                    if (message == '이메일 등록이 필요한 유저입니다') {
-                        router.push({
-                            pathname: '/register', 
-                            query: {src: '이메일', username: username}
-                        })
-                    } else if (typeof(message) == 'string' && message.includes('@')) {
-                        router.push({
-                            pathname: '/register',
-                            query: {src: '인증', username: username, email: message}
-                        })
-                    }
-                    else if (typeof(message) == 'string') {
-                        setError(message);
-                    }
+                    localStorage.removeItem("username");
                 }
-            }));
-        }
+            } else {
+                if (message == '이메일 등록이 필요한 유저입니다') {
+                    router.push({
+                        pathname: '/register', 
+                        query: {src: '이메일', username: username}
+                    })
+                } else if (typeof(message) == 'string' && message.includes('@')) {
+                    router.push({
+                        pathname: '/register',
+                        query: {src: '인증', username: username, email: message}
+                    })
+                }
+                else if (typeof(message) == 'string') {
+                    setError(message);
+                }
+            }
+        }));
     };
 
     if (typeof window !== 'undefined' && isAuthenticated){
