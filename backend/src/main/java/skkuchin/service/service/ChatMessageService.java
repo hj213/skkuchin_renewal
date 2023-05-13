@@ -3,6 +3,7 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import skkuchin.service.dto.ChatMessageDto;
 import skkuchin.service.domain.Chat.ChatMessage;
@@ -55,6 +56,15 @@ public class ChatMessageService {
 
         chatMessage.setReadStatus(dto.getRead());
         chatMessageRepo.save(chatMessage);
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 6 * * ?")
+    public void activateKafka() {
+        AppUser user1 = userRepo.findById(707L).orElseThrow();
+        String chatRoomId = "f14bd79d-9373-4caf-bb86-5e8a3d4aca89";
+        ChatMessageDto.Request dto = new ChatMessageDto.Request("ㅎㅎ", chatRoomId);
+        write(user1, dto);
     }
 
     @Transactional

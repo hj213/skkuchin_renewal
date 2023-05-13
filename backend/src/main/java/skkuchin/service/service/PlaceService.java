@@ -410,8 +410,8 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    @Scheduled(cron = "0 0 5 * * ?")
     @Transactional
+    @Scheduled(cron = "0 0 5 * * ?")
     @Caching(evict = {
             @CacheEvict(value = "placeDetail", allEntries = true),
             @CacheEvict(value = "placeSearchDiscount", allEntries = true),
