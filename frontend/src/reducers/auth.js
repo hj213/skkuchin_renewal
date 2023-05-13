@@ -26,6 +26,8 @@ import {
     CHANGE_TOGGLE_FAIL,
     CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS,
     CHANGE_TOGGLE_NOT_FOR_USER_FAIL,
+    UPDATE_LAST_ACCESSED_TIME_SUCCESS,
+    UPDATE_LAST_ACCESSED_TIME_FAIL,
     DELETE_USER_SUCCESS,
     DELETE_USER_FAIL,
     FIND_USERNAME_SUCCESS,
@@ -184,6 +186,14 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 toggle_for_not_user: null
+            }
+        case UPDATE_LAST_ACCESSED_TIME_SUCCESS:
+            return {
+                ...state
+            }
+        case UPDATE_LAST_ACCESSED_TIME_FAIL:
+            return {
+                ...state
             }
         case DELETE_USER_SUCCESS:
             Cookies.remove('access');

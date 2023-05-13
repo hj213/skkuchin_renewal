@@ -15,6 +15,7 @@ import skkuchin.service.repo.*;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -227,6 +228,16 @@ public class UserService {
 
         AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
         user.setToggle(campus);
+        userRepo.save(user);
+    }
+
+    @Transactional
+    public void updateLastAccess(Boolean last, Long userId) {
+        if (!last) {
+            throw new CustomValidationApiException("올바르지 않은 접근입니다");
+        }
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 유저입니다"));
+        user.setLastAccessedTime(LocalDateTime.now());
         userRepo.save(user);
     }
 

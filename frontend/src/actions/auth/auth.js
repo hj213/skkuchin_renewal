@@ -33,7 +33,9 @@ import {
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_FAIL,
     CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS,
-    CHANGE_TOGGLE_NOT_FOR_USER_FAIL
+    CHANGE_TOGGLE_NOT_FOR_USER_FAIL,
+    UPDATE_LAST_ACCESSED_TIME_SUCCESS,
+    UPDATE_LAST_ACCESSED_TIME_FAIL
 } 
     from './types';
 import { clear_search_results } from '../place/place';
@@ -115,7 +117,7 @@ export const login = (username, password, callback) => async dispatch => {
                 type: LOGIN_SUCCESS,
                 payload: apiRes.data
             })
-            await dispatch(load_user());
+            dispatch(load_user());
             if (callback) callback([true, apiRes.message]);
 
         } else {
@@ -162,55 +164,6 @@ export const logout = () => async dispatch => {
         dispatch({
             type: LOGOUT_FAIL
         });
-    }
-}
-
-export const load_user_callback = (callback) => async dispatch => {
-    await dispatch(request_refresh());
-
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-        if (callback) callback([false, 'authenticated_fail']);
-        return;
-    }
-
-    try {
-        const res = await fetch(`${API_URL}/api/user/me`,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization' : `Bearer ${access}`
-            }
-        });
-
-        const apiRes = await res.json();
-
-        if (res.status === 200) {
-            await dispatch({
-                type: LOAD_USER_SUCCESS,
-                payload: apiRes.data
-            });
-            dispatch(load_favorite());
-            dispatch(load_token());
-            if (callback) callback([true, apiRes.message]);
-        } else {
-            dispatch({
-                type: LOAD_USER_FAIL,
-                payload: apiRes.data
-            });
-            if (callback) callback([false, apiRes.message]);
-        }
-
-    } catch (error) {
-        console.log(error);
-        dispatch({
-            type: LOAD_USER_FAIL
-        });
-        if (callback) callback([false, error]);
     }
 }
 
@@ -582,6 +535,42 @@ export const change_toggle_for_not_user = (campus) => async dispatch => {
         console.log(error);
         dispatch({
             type: CHANGE_TOGGLE_NOT_FOR_USER_FAIL
+        });
+    }
+}
+
+export const update_last_accessed_time = (last) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = Cookies.get('access') ?? null;
+
+    if (access === null) {
+        return dispatch({
+            type: AUTHENTICATED_FAIL
+        });
+    }
+
+    const body = JSON.stringify({
+        last
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/user/access`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+            body: body
+        });
+
+        dispatch({
+            type: UPDATE_LAST_ACCESSED_TIME_SUCCESS
+        });
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: UPDATE_LAST_ACCESSED_TIME_FAIL
         });
     }
 }

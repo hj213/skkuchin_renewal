@@ -243,6 +243,14 @@ public class UserController {
         userService.updateToggleValue(campusMap.get("campus"), userId);
         return new ResponseEntity<>(new CMRespDto<>(1, "토글값 변경 완료", null), HttpStatus.OK);
     }
+
+    @PutMapping("/access")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updateLastAccess(@RequestBody Map<String, Boolean> lastAccessMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long userId = principalDetails.getUser().getId();
+        userService.updateLastAccess(lastAccessMap.get("last"), userId);
+        return new ResponseEntity<>(new CMRespDto<>(1, "마지막 접속시간 업데이트 완료", null), HttpStatus.OK);
+    }
 }
 
 
