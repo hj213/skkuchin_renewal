@@ -29,6 +29,7 @@ public class ImageService {
     private static final String CATEGORY = "place";
     private final ImageRepo imageRepo;
     private final PlaceRepo placeRepo;
+    private final PlaceService placeService;
     private final S3Service s3Service;
     @Value("${aws.s3.start-url}")
     private String startUrl;
@@ -49,14 +50,6 @@ public class ImageService {
     }
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "placeDetail", key = "#dto.placeId"),
-            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
-            @CacheEvict(value = "placeSearchCategory", allEntries = true),
-            @CacheEvict(value = "placeSearchTag", allEntries = true),
-            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
-            @CacheEvict(value = "placeAll", allEntries = true)
-    })
     public void upload(ImageDto.PostRequest dto) {
         checkFile(dto.getImage());
 
@@ -66,17 +59,11 @@ public class ImageService {
 
         Image image = dto.toEntity(place, url);
         imageRepo.save(image);
+
+        placeService.renewCache();
     }
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "placeDetail", key = "#dtos.get(0).placeId"),
-            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
-            @CacheEvict(value = "placeSearchCategory", allEntries = true),
-            @CacheEvict(value = "placeSearchTag", allEntries = true),
-            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
-            @CacheEvict(value = "placeAll", allEntries = true)
-    })
     public void uploadAll(List<ImageDto.PostRequest> dtos) {
         List<Image> images = new ArrayList<>();
 
@@ -92,18 +79,12 @@ public class ImageService {
         }
 
         imageRepo.saveAll(images);
+
+        placeService.renewCache();
     }
 
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "placeDetail", allEntries = true),
-            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
-            @CacheEvict(value = "placeSearchCategory", allEntries = true),
-            @CacheEvict(value = "placeSearchTag", allEntries = true),
-            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
-            @CacheEvict(value = "placeAll", allEntries = true)
-    })
     public void update(Long imageId, ImageDto.PutRequest dto) {
         checkFile(dto.getImage());
 
@@ -117,23 +98,19 @@ public class ImageService {
         imageRepo.save(existingImage);
 
         s3Service.deleteObject(originalUrl);
+
+        placeService.renewCache();
     }
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "placeDetail", allEntries = true),
-            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
-            @CacheEvict(value = "placeSearchCategory", allEntries = true),
-            @CacheEvict(value = "placeSearchTag", allEntries = true),
-            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
-            @CacheEvict(value = "placeAll", allEntries = true)
-    })
     public void delete(Long imageId) {
         Image existingImage = imageRepo.findById(imageId).orElseThrow();
         String url = existingImage.getUrl();
 
         imageRepo.deleteById(imageId);
         s3Service.deleteObject(url);
+
+        placeService.renewCache();
     }
 
     @Transactional
@@ -147,14 +124,6 @@ public class ImageService {
     }
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "placeDetail", allEntries = true),
-            @CacheEvict(value = "placeSearchDiscount", allEntries = true),
-            @CacheEvict(value = "placeSearchCategory", allEntries = true),
-            @CacheEvict(value = "placeSearchTag", allEntries = true),
-            @CacheEvict(value = "placeSearchKeyword", allEntries = true),
-            @CacheEvict(value = "placeAll", allEntries = true)
-    })
     public void deletePlaceImages(Long placeId) {
         Place place = placeRepo.findById(placeId).orElseThrow();
         List<Image> images =  imageRepo.findByPlace(place);
@@ -164,6 +133,8 @@ public class ImageService {
             imageRepo.delete(image);
             s3Service.deleteObject(url);
         }
+
+        placeService.renewCache();
     }
 
     public void insertData() {
