@@ -11,7 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.dto.PlaceDto;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PlaceService {
     private static final String CATEGORY = "place";
-    private final RedisTemplate<String, Object> redisTemplate;
     private final PlaceRepo placeRepo;
     private final ImageRepo imageRepo;
     private final ReviewRepo reviewRepo;
