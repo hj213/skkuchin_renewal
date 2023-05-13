@@ -31,9 +31,10 @@ jobs:
           sed -i 's|export const KAKAOMAP_APPKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY;|export const KAKAOMAP_APPKEY = "0d8f0e65047ebb4fce295a83614d7fae";|' frontend/src/config/index.js
           sed -i 's|export const KAKAOMAP_APIKEY = process.env.NEXT_PUBLIC_KAKAOMAP_APIKEY;|export const KAKAOMAP_APIKEY = "d78dd05718abdb9d49e256bad60b07ec";|' frontend/src/config/index.js
 
-      - name: Copy prod ServiceApplication.java file
+      - name: Copy prod files
         run: |
           cp prod/ServiceApplication.java backend/src/main/java/skkuchin/service/
+          cp prod/DebeziumController.java backend/src/main/java/skkuchin/service/webSocket/controller/
 
       - name: Build backend
         working-directory: ./backend
