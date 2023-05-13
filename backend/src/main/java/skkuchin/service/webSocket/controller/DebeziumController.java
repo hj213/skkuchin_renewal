@@ -35,7 +35,7 @@ public class DebeziumController {
     private final PushTokenService pushTokenService;
     private final UserService userService;
     private final NoticeService noticeService;
-    private final PlaceService placeService;
+    private final CacheService cacheService;
 
     @Transactional
     @KafkaListener(topics = "dbserver.service.chat_message")
@@ -263,18 +263,18 @@ public class DebeziumController {
 //    @Transactional
 //    @KafkaListener(topics = "dbserver.service.place")
 //    public void listenPlace(@Payload(required = false) String message) {
+//        System.out.println("kafka consume test topic : " + message);
 //        if (message != null) {
-//            System.out.println("kafka consume test topic : " + message);
-//            placeService.caching();
+//            cacheService.caching();
 //        }
 //    }
 //
 //    @Transactional
 //    @KafkaListener(topics = "dbserver.service.review")
 //    public void listenReview(@Payload(required = false) String message) {
+//        System.out.println("kafka consume test topic : " + message);
 //        if (message != null) {
-//            System.out.println("kafka consume test topic : " + message);
-//            placeService.caching();
+//            cacheService.caching();
 //        }
 //    }
 }

@@ -263,18 +263,18 @@ public class DebeziumController {
     @Transactional
     @KafkaListener(topics = "dbserver.service.place")
     public void listenPlace(@Payload(required = false) String message) {
-        System.out.println("kafka consume test topic : " + message);
         if (message != null) {
-            placeService.caching();
+            System.out.println("kafka consume test topic : " + message);
+            cacheService.caching();
         }
     }
 
     @Transactional
     @KafkaListener(topics = "dbserver.service.review")
     public void listenReview(@Payload(required = false) String message) {
-        System.out.println("kafka consume test topic : " + message);
         if (message != null) {
-            placeService.caching();
+            System.out.println("kafka consume test topic : " + message);
+            cacheService.caching();
         }
     }
 }
