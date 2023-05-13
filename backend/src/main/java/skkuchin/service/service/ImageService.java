@@ -1,5 +1,6 @@
 package skkuchin.service.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ public class ImageService {
     private final ImageRepo imageRepo;
     private final PlaceRepo placeRepo;
     private final PlaceService placeService;
+    private final CacheService cacheService;
     private final S3Service s3Service;
     @Value("${aws.s3.start-url}")
     private String startUrl;
@@ -60,7 +62,7 @@ public class ImageService {
         Image image = dto.toEntity(place, url);
         imageRepo.save(image);
 
-        placeService.renewCache();
+        cacheService.renewCache();
     }
 
     @Transactional
@@ -80,7 +82,7 @@ public class ImageService {
 
         imageRepo.saveAll(images);
 
-        placeService.renewCache();
+        cacheService.renewCache();
     }
 
 
@@ -99,7 +101,7 @@ public class ImageService {
 
         s3Service.deleteObject(originalUrl);
 
-        placeService.renewCache();
+        cacheService.renewCache();
     }
 
     @Transactional
@@ -110,7 +112,7 @@ public class ImageService {
         imageRepo.deleteById(imageId);
         s3Service.deleteObject(url);
 
-        placeService.renewCache();
+        cacheService.renewCache();
     }
 
     @Transactional
@@ -134,7 +136,7 @@ public class ImageService {
             s3Service.deleteObject(url);
         }
 
-        placeService.renewCache();
+        cacheService.renewCache();
     }
 
     public void insertData() {
