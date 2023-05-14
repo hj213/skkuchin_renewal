@@ -98,7 +98,6 @@ const PlacePage = () => {
         } else {
             setHeight(430)
         }
-        setIsTall(false);
         setOpen({
             bool: false,
             visibility: "hidden"
@@ -110,39 +109,30 @@ const PlacePage = () => {
         cardRef.current.scrollTo({top:0});
     },[])
 
-    useEffect(()=>{
-        if (isTall) {
-            setScroll('scroll');
-        } else {
-            setScroll('');
-        }
-    },[isTall])
-
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            setPlaceId(id);
-            if (fullScreen == 'true') {
-                setHeight(TARGET_HEIGHT);
-                setIsTall(true);
-                setCardStyle({
-                    radius:'0px',
-                    iconVisibility:'hidden'
-                });
-                setOpen({
-                    bool: true,
-                    visibility: 'visible'
-                });
-            } else if(WINDOW_HEIGHT < 750){
-                setHeight(270)
-            } else {
-                setHeight(435)
-            }
-            dispatch(load_place(id, ([result, message]) => {
-                dispatch(load_menu(id, ([result, message]) => {
-                    dispatch(load_reviews(id));
-                }));
-            }));
+        setPlaceId(id);
+        if (fullScreen == 'true') {
+            setHeight(TARGET_HEIGHT);
+            setIsTall(true);
+            setScroll("scroll");
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if(WINDOW_HEIGHT < 750){
+            setHeight(270)
+        } else {
+            setHeight(435)
         }
+        dispatch(load_place(id, ([result, message]) => {
+            dispatch(load_menu(id, ([result, message]) => {
+                dispatch(load_reviews(id));
+            }));
+        }));
     }, [id, click]);
 
         
@@ -162,6 +152,7 @@ const PlacePage = () => {
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
             setIsTall(true);
+            setScroll("scroll");
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
@@ -178,7 +169,7 @@ const PlacePage = () => {
                 setHeight(435)
             }
             setIsTall(false);
-
+            setScroll("");
             setOpen({
                 bool: false,
                 visibility: "hidden"
@@ -206,6 +197,7 @@ const PlacePage = () => {
                 iconVisibility: 'visible'
             });
             setIsTall(false);
+            setScroll('');
             cardRef.current.scrollTo({top:0});
         } 
     
