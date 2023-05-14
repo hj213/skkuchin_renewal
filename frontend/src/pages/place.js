@@ -99,7 +99,6 @@ const PlacePage = () => {
             setHeight(430)
         }
         setIsTall(false);
-        setScroll("");
         setOpen({
             bool: false,
             visibility: "hidden"
@@ -112,10 +111,10 @@ const PlacePage = () => {
     },[])
 
     useEffect(()=>{
-        if(isTall){
-            setScroll('scroll')
-        } else{
-            setScroll('')
+        if (isTall) {
+            setScroll('scroll');
+        } else {
+            setScroll('');
         }
     },[isTall])
 
@@ -125,7 +124,6 @@ const PlacePage = () => {
             if (fullScreen == 'true') {
                 setHeight(TARGET_HEIGHT);
                 setIsTall(true);
-                setScroll("scroll");
                 setCardStyle({
                     radius:'0px',
                     iconVisibility:'hidden'
@@ -150,11 +148,9 @@ const PlacePage = () => {
         
     const handleTouchStart = (event) => {
         if(isTall){
-            setScroll('scroll');
             setStartY(event.touches[0].clientY);
 
         } else if(!isTall){
-            setScroll("");
             setStartY(event.touches[0].clientY);
         }
     };
@@ -166,7 +162,6 @@ const PlacePage = () => {
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
             setIsTall(true);
-            setScroll("scroll");
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
@@ -183,7 +178,7 @@ const PlacePage = () => {
                 setHeight(435)
             }
             setIsTall(false);
-            setScroll("");
+
             setOpen({
                 bool: false,
                 visibility: "hidden"
@@ -211,7 +206,6 @@ const PlacePage = () => {
                 iconVisibility: 'visible'
             });
             setIsTall(false);
-            setScroll('');
             cardRef.current.scrollTo({top:0});
         } 
     

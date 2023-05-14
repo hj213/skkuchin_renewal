@@ -197,7 +197,7 @@ public class CandidateService {
     }
 
     @Transactional
-    @Scheduled(cron = "0 30 8 * * ?") //매일 오전 9시에 만료된 데이터가 삭제됨
+    @Scheduled(cron = "0 30 8 * * ?") //매일 오전 8시 30분에 만료된 데이터가 삭제됨
     public void deleteExpiredData() {
         List<Candidate> candidates = candidateRepo.findByExpireDateBefore(LocalDateTime.now());
         candidateRepo.deleteAll(candidates);

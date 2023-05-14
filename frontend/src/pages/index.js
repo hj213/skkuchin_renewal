@@ -234,11 +234,8 @@ const list = () => {
 
     const handleTouchStart = (event) => {
         if(isTall){
-            setPreventScroll('scroll');
             setStartY(event.touches[0].clientY);
-
         } else if(!isTall){
-            setPreventScroll("");
             setStartY(event.touches[0].clientY);
         }
     };
