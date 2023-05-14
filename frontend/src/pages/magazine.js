@@ -34,17 +34,17 @@ import review5_yj from '../image/magazine/review5_yj.png';
 
 const reviewM = [
     {
-        src: review1_mr,
-        text: '성대 근처 김치찌개 집 1티어 중 하나임. 먹어보시길',
-        user: '강아지는 도그/경영학과',
-        id: 288,
-        rating: 5,
-        
-    },{
         src: review2_mr,
         text: '인테리어도 이쁘고 사장님, 알바생도 친절하셔요🙂 이층은 카공하기 좋고, 일층은 수다떨기 좋은 분위기!! 낫컴플에 가면 당연히 크로플 하나씩은 먹어야해요...!',
         user: '효효/컬처앤테크놀로지융합전공',
         id: 369,
+        rating: 5,
+        
+    },{
+        src: review1_mr,
+        text: '성대 근처 김치찌개 집 1티어 중 하나임. 먹어보시길',
+        user: '강아지는 도그/경영학과',
+        id: 288,
         rating: 5,
     },{
         src: review3_mr,
@@ -69,17 +69,17 @@ const reviewM = [
 
 const reviewY = [
     {
-        src: review1_yj,
-        text: '엄청난 양.. 맵도리탕도 다들 드셔보세요! 엄청난 술안주 겸 식사메뉴 입니다',
-        user: '성대러문김진주/러시아어문학과',
-        id: 135,
-        rating: 5,
-    },{
         src: review2_yj,
         text: '진짜 거의 맨날 가요 😌🥐💻\n'
         +'율전 카공 일티어..!',
         user: '진/컬처앤테크놀로지융합전공',
         id: 375,
+        rating: 5,
+    },{
+        src: review5_yj,
+        text: '초밥 땡길 때 자주 가는 곳입니다 회전초밥집이라 원하는것만 골라먹을 수 있어서 좋아요 맛도 좋아요',
+        user: '세미나시러/화학공학_고분자공학부',
+        id: 102,
         rating: 5,
     },{
         src: review3_yj,
@@ -94,10 +94,10 @@ const reviewY = [
         id: 97,
         rating: 5,
     },{
-        src: review5_yj,
-        text: '초밥 땡길 때 자주 가는 곳입니다 회전초밥집이라 원하는것만 골라먹을 수 있어서 좋아요 맛도 좋아요',
-        user: '세미나시러/화학공학_고분자공학부',
-        id: 102,
+        src: review1_yj,
+        text: '엄청난 양.. 맵도리탕도 다들 드셔보세요! 엄청난 술안주 겸 식사메뉴 입니다',
+        user: '성대러문김진주/러시아어문학과',
+        id: 135,
         rating: 5,
     },
 ]; 
@@ -161,7 +161,7 @@ const Magazine = () => {
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
                     <div style={{ display: "flex", margin:'21px 0px 0px 15px' }}>
-                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 2주차 식당</Typography>
+                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 3주차 식당</Typography>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>TOP 5</Typography>
                         <Typography>🔥</Typography>
                     </div>

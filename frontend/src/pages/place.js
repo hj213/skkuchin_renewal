@@ -139,7 +139,6 @@ const PlacePage = () => {
     const handleTouchStart = (event) => {
         if(isTall){
             setStartY(event.touches[0].clientY);
-
         } else if(!isTall){
             setStartY(event.touches[0].clientY);
         }

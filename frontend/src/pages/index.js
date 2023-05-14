@@ -535,7 +535,7 @@ const list = () => {
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
                 
                 <Slide direction="up" in={open.bool} timeout={1} >
-                    <Container fixed style={{padding: '0px 16px 0px 0px',}}>
+                    <Container fixed style={{padding: '0px 16px 0px 0px'}}>
                         <Card style={{
                         position: 'absolute',
                         top: '0px',
@@ -573,7 +573,7 @@ const list = () => {
                         </Card>
                     </Container>
                 </Slide>
-                <Container style={{padding: '13px 16px 0px 0px',}}  >
+                <Container style={{padding: '13px 16px 0px 0px'}}  >
                     <Card style={{
                     borderRadius: cardStyle.radius,
                     position: 'absolute',
@@ -587,7 +587,6 @@ const list = () => {
                     transition: `height ${animationDuration} ${animationTimingFunction}`,
                     border: '1px solid transparent',
                     marginBottom:'85px',
-                    
                     }} 
                     ref={cardRef}
                     onTouchStart={handleTouchStart}
