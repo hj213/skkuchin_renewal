@@ -163,7 +163,7 @@ const PlacePage = () => {
             });
             setTimeout(() => {
                 setLoading('hidden');
-            }, 100);
+            }, 300);
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
             cardRef.current.scrollTo({top:0});
             if(WINDOW_HEIGHT < 750){
