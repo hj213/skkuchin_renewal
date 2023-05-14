@@ -151,8 +151,8 @@ const PlacePage = () => {
     
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
-            setIsTall(true);
             setScroll("scroll");
+            setIsTall(true);
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
@@ -196,11 +196,10 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
             });
-            setIsTall(false);
             setScroll('');
             cardRef.current.scrollTo({top:0});
+            setIsTall(false);
         } 
-    
     };
 
     // Favorite 관리
