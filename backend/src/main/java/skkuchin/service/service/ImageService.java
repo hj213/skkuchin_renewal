@@ -1,11 +1,8 @@
 package skkuchin.service.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import skkuchin.service.dto.ImageDto;
@@ -30,7 +27,6 @@ public class ImageService {
     private static final String CATEGORY = "place";
     private final ImageRepo imageRepo;
     private final PlaceRepo placeRepo;
-    private final PlaceService placeService;
     private final CacheService cacheService;
     private final S3Service s3Service;
     @Value("${aws.s3.start-url}")
