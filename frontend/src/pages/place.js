@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { load_menu }  from "../actions/menu/menu";
 import { enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
 import Image from 'next/image';
-import { CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { CircularProgress, CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import bookmarkAdd from '../image/bookmark_add.png';
@@ -148,7 +148,8 @@ const PlacePage = () => {
         const touchY = event.touches[0].clientY;
         const deltaY = touchY - startY;
     
-        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {
+            setLoading('visible');
             setHeight(TARGET_HEIGHT);
             setScroll("scroll");
             setIsTall(true);
@@ -160,6 +161,9 @@ const PlacePage = () => {
                 bool: true,
                 visibility: 'visible'
             });
+            setTimeout(() => {
+                setLoading('hidden');
+            }, 100);
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
             cardRef.current.scrollTo({top:0});
             if(WINDOW_HEIGHT < 750){
@@ -306,11 +310,16 @@ const PlacePage = () => {
     const handleGoLogin = () => {
         setIsLogin(true);
     }
+
+    const [loading, setLoading] = useState('hidden');
     
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
+                <div style={{position:'fixed', height: '100%', width:'100%',textAlign:'center', color:"#FFE885", visibility:loading, paddingTop: window.innerHeight /2.2,  zIndex:'6', background:'rgb(0,0,0, 0.4)'}}>
+                    <CircularProgress color="inherit" size={70}/>
+                </div>
                 {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
                 <div style={{ position: 'fixed', height:'100%', width:'100%', maxWidth: "420px", backgroundColor: '#fff' }}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
