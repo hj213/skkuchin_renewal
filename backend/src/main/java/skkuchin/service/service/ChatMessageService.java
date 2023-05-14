@@ -59,7 +59,7 @@ public class ChatMessageService {
     }
 
     @Transactional
-    @Scheduled(cron = "0 0 6 * * ?")
+    @Scheduled(cron = "0 30 6 * * ?")
     public void activateKafka() {
         AppUser user1 = userRepo.findById(707L).orElseThrow();
         String chatRoomId = "f14bd79d-9373-4caf-bb86-5e8a3d4aca89";
