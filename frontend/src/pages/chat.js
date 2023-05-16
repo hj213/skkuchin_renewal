@@ -213,7 +213,7 @@ const chatPage = () => {
 
     useEffect(() => {
         if (lastMessageRef.current) {
-            lastMessageRef.current.scrollIntoView({bottom:'0px'});
+            lastMessageRef.current.scrollIntoView({bottom:'-90px'});
             // lastMessageRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
         }
     }, []);
@@ -221,9 +221,8 @@ const chatPage = () => {
         
     useEffect(() => {
     if (lastMessageRef.current && messages.length > 0) {
-        lastMessageRef.current.scrollIntoView({ bottom:'0px'});
+        lastMessageRef.current.scrollIntoView({bottom:'-90px'});
         // lastMessageRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-
     }
     }, [messages]);
 
@@ -432,7 +431,7 @@ const chatPage = () => {
                 </Grid>
 
                 { messages ? 
-                <Grid style={{ marginBottom: '90px'}}>
+                <Grid style={{ marginBottom: '90px',}}>
                 { messages.length > 0 ? (messages.slice().reverse().map((message, index) => {
                     // 이어서 메시지를 보냈는지 확인
                     const prevMessage = messages.slice().reverse()[index - 1];
