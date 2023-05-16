@@ -27,6 +27,8 @@ const chatPlace = () => {
     const [autoBox, setAutoBox] = useState(false);
     const [value, setValue] = useState('');
     // const [filteredPlace, setFilteredPlace] =useState([]);
+    const WINDOW_HEIGHT = window.innerHeight;
+    const autoHeight = WINDOW_HEIGHT - 350;
 
     const allPlaces = useSelector(state => state.place.allplaces);
     const user = useSelector(state => state.auth.user);
@@ -154,9 +156,9 @@ const chatPlace = () => {
                             </Grid>
                         </Grid>
                         {auto.length > 0 &&
-                        <div style={{position:'absolute', zIndex:'2', width:'90%'}}>
-                            <Paper style={{width:'90%', border: '0px solid transparent', borderRadius: '0px', boxShadow:'none'}}>
-                            <ul style={{padding:'0px 0px 0px 0px', listStyleType: "none",}}>
+                        <div style={{position:'absolute', zIndex:'2', width:'100%', maxHeight:autoHeight}}>
+                            <Paper style={{width:'90%', maxHeight:autoHeight, border: '0px solid transparent', borderRadius: '0px', boxShadow:'none', overflowY:'scroll'}}>
+                            <ul style={{padding:'0px 0px 0px 0px', listStyleType: "none", }}>
                                 {auto.map((autoList) => (
                                     <li
                                         key={autoList.id}

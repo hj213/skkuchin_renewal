@@ -102,7 +102,7 @@ const editProfile = () => {
                             <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick} layout='fixed'/>
                             </Grid>
-                            <Grid item style={{marginLeft:'30%'}}>
+                            <Grid item style={{marginLeft:'25%'}}>
                                 <Typography style={{margin:'0px 0px 0px 10px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>스꾸챗 프로필 수정</Typography>
                             </Grid>
                         </Grid>
