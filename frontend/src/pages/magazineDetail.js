@@ -11,7 +11,7 @@ import arrowNext from '../image/arrow_forward2.png';
 import dynamic from 'next/dynamic';
 import position from '../../public/markers/기본_yellow.png';
 
-import content from '../image/magazine/magazine/content.png';
+import content from '../image/magazine/magazine/content2_1.png';
 import content1_1 from '../image/magazine/magazine/content1_1.png';
 import content1_2 from '../image/magazine/magazine/content1_2.png';
 import content2_1 from '../image/magazine/magazine/content2_1.png';
@@ -29,85 +29,85 @@ import content7_2 from '../image/magazine/magazine/content7_2.png';
 
 const contentList = [
     {
-        id: 10,
-        name:'이유식당',
-        category: '백반, 가정식',
+        id: 62,
+        name:'혜화시장',
+        category: '요리주점',
         place: '명륜/대학로',
         reviews: [
-            '정성이 느껴지는 맛이었어요',
-            '든든한 집밥 먹고 싶을 때 가는 곳!'
+            '혜화 1티어 술집!',
+            '매운사태짐, 한우튀김 국룰이에요'
         ],
         images: [
             content1_1, content1_2
         ]
     },{
-        id: 108,
-        name:'청년밥상',
-        category: '쌈밥',
-        place: '율전/쪽문',
+        id: 81,
+        name:'주량 성대직영점',
+        category: '요리주점',
+        place: '율전/후문',
         reviews: [
-            '율전에서 젤 유명한 갓성비 한식집',
-            '친구랑 둘이 다녀왔는데 맛있게 잘 먹었습니다!'
+            '술 종류 많아서 좋았어요! 분위기 좋아서 또 갈 예정!',
+            '샤브샤브 칼칼하고 담백함 핫플이라 웨이팅 있음'
         ],
         images: [
             content2_1, content2_2
         ]
     },{
-        id: 288,
-        name:'다발김치찌개 대학로점',
-        category: '찌개, 전골',
-        place: '명륜/정문',
+        id: 64,
+        name:'서피동파',
+        category: '한식',
+        place: '명륜/대학로',
         reviews: [
-            '성대 근처 김치찌개 집 1티어 중 하나임',
-            '수업 끝나구 다같이 가서 먹기 좋아용 ㅎㅎ'
+            '막걸리 종류가 진짜 많음 전도 맛있음',
+            '혜화 술집 꼽으라 한다면 무조건 여기 추천'
         ],
         images: [
             content3_1, content3_2
         ]
     },{
-        id: 153,
-        name:'성대밥상',
-        category: '한식',
-        place: '율전/쪽문',
+        id: 66,
+        name:'센꼬치',
+        category: '이자카야',
+        place: '명륜/대학로',
         reviews: [
-            '혼밥하기 좋음. 갠적으로 비빔밥이 젤 맛있다',
-            '반찬 셀프라 넉넉히 먹을 수 있고 혼밥하기도 좋음'
+            '크림파스타 불닭+주먹밥 꼭 드세요ㅜㅜ 너무 맛있어요',
+            '꼬치랑 하이볼 조합 미침'
         ],
         images: [
             content4_1, content4_2
         ]
     },{
-        id: 28,
-        name:'삼삼오오',
-        category: '한식',
-        place: '명륜/쪽문',
+        id: 73,
+        name:'동화',
+        category: '요리주점',
+        place: '명륜/대학로',
         reviews: [
-            '밥약하러 많이 갔었는데 맛있어요!',
-            '쪽문의 갓성비. 오삼비빔밥 혼밥이 국룰'
+            '안주도 다 맛도링!!! 근데 사람 많아서 기다려야해용',
+            '예약하는 걸 추천합니다. 데이터하기 좋은듯합니다'
         ],
         images: [
             content5_1, content5_2
         ]
     },{
-        id: 172,
-        name:'우리집밥',
-        category: '한식',
-        place: '율전/쪽문',
+        id: 208,
+        name:'아무술집 성대직영점',
+        category: '맥주, 호프',
+        place: '율전/후문',
         reviews: [
-            '진짜 우리 집밥 먹는 느낌의 맛집',
-            '요즘 보기 힘든 가성비 맛집. 혼밥하러 가기 너무 좋음'
+            '가성비 좋고 음식도 맛있는데 좀 시끄러워요 ㅎㅎ',
+            '안주 뿌시고 왔어요 맛있어요'
         ],
         images: [
             content6_1, content6_2
         ]
     },{
-        id: 250,
-        name:'제순식당',
-        category: '한식',
-        place: '명륜/대학로',
+        id: 209,
+        name:'옛날사람',
+        category: '요리주점',
+        place: '율전/후문',
         reviews: [
-            '불맛이 살아있어용 제육볶음 좋아하신다면 추천!',
-            '정말 맛있어요! 2천원 추가하면 된찌도 줍니다'
+            '친구들와서 데려갔는데 안주 맛있고 맥주도 맛있어요!',
+            '가성비 좋아요!! 음식도 맛있고 안주도 다양해요~~!'
         ],
         images: [
             content7_1, content7_2
@@ -144,8 +144,8 @@ const MagazineDetail = () => {
                         </div>
                         <div style={{position:'absolute',zIndex:'3', bottom: '35px'}}>
                             <Typography fontSize='12px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>엄마 손맛이 그리워</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">집밥 같은 성대 맛집 7곳</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>5월엔 친구들과 술 한잔!</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">안주가 맛있는 성대 술집 7곳</Typography>
                         </div>
                         <div style={{position:'relative', width:'100%', height:'100%'}}>
                             <Image 
