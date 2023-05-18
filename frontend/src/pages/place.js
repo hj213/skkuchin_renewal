@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { load_menu }  from "../actions/menu/menu";
 import { enroll_favorite, delete_favorite } from "../actions/favorite/favorite";
 import Image from 'next/image';
-import { CircularProgress, CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
+import { CssBaseline, Box, Rating, Select,Button, ThemeProvider,Slide, MenuItem, Card, CardContent, Typography, Grid, Container, Stack, Hidden } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import bookmarkAdd from '../image/bookmark_add.png';
@@ -82,7 +82,7 @@ const PlacePage = () => {
             bool:false,
             visibility: 'hidden'
         });
-    const [scroll, setScroll] = useState('');
+    const [scroll, setScroll] = useState('scroll');
     const [isTall, setIsTall] = useState(false);
     const [startY, setStartY] = useState(0);
 
@@ -96,7 +96,6 @@ const PlacePage = () => {
         if (fullScreen == 'true') {
             setHeight(TARGET_HEIGHT);
             setIsTall(true);
-            setScroll("scroll");
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
@@ -119,13 +118,10 @@ const PlacePage = () => {
 
         
     const handleTouchStart = (event) => {
-        setScroll("scroll");
         setStartY(event.touches[0].clientY);
     };
 
     const handleTouchMove = (event) => {
-        console.log(cardRef?.current?.scrollTop)
-
         const touchY = event.touches[0].clientY;
         const deltaY = touchY - startY;
     
@@ -157,6 +153,9 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setTimeout(() => {
+                setScroll("scroll");
+            }, 100)
         } 
     };
 
@@ -177,6 +176,9 @@ const PlacePage = () => {
             setScroll('');
             cardRef.current.scrollTo({top:0});
             setIsTall(false);
+            setTimeout(() => {
+                setScroll("scroll");
+            }, 100)
         } 
     };
 
