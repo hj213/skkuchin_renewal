@@ -57,7 +57,7 @@ const list = () => {
         bool:false,
         visibility: 'hidden',
     });
-    const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
+    const [preventScroll, setPreventScroll] = useState('scroll'); //스크롤 방지
     const [isTall, setIsTall] = useState(false);
     const [startY, setStartY] = useState(0);
     const [keyword, setKeyword] = useState(''); //태그검색
@@ -218,6 +218,9 @@ const list = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
         }
     
     },[numOfLi])
@@ -230,14 +233,13 @@ const list = () => {
         setHeight('0');
         setPreventScroll('');
         setIsTall(false);
+        setTimeout(() => {
+            setPreventScroll("scroll");
+        }, 100)
     }
 
     const handleTouchStart = (event) => {
-        if(isTall){
-            setStartY(event.touches[0].clientY);
-        } else if(!isTall){
-            setStartY(event.touches[0].clientY);
-        }
+        setStartY(event.touches[0].clientY);
     };
 
     const handleTouchMove = (event) => {
@@ -249,7 +251,6 @@ const list = () => {
     
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
             setHeight(TARGET_HEIGHT);
-            setPreventScroll("scroll");
             setIsTall(true);
             setCardStyle({
                 radius:'0px',
@@ -278,6 +279,9 @@ const list = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
         } 
     };
     
@@ -300,6 +304,9 @@ const list = () => {
             setPreventScroll('');
             cardRef.current.scrollTo({top:0});
             setIsTall(false);
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
         } else{
             setKeyword('');
             setTags([]);
