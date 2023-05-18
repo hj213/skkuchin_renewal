@@ -59,12 +59,20 @@ public class ChatMessageService {
     }
 
     @Transactional
-    @Scheduled(cron = "0 30 6 * * ?")
+    @Scheduled(cron = "* 45 * * * ?")
     public void activateKafka() {
         AppUser user1 = userRepo.findById(707L).orElseThrow();
         String chatRoomId = "f14bd79d-9373-4caf-bb86-5e8a3d4aca89";
         ChatMessageDto.Request dto = new ChatMessageDto.Request("ㅎㅎ", chatRoomId);
         write(user1, dto);
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 7 * * ?")
+    public void deleteMessages() {
+        String chatRoomId = "f14bd79d-9373-4caf-bb86-5e8a3d4aca89";
+        ChatRoom chatRoom = chatRoomRepo.findByRoomId(chatRoomId);
+        chatMessageRepo.deleteByChatRoom(chatRoom);
     }
 
     @Transactional

@@ -83,7 +83,6 @@ const PlacePage = () => {
             visibility: 'hidden'
         });
     const [scroll, setScroll] = useState('');
-    const [isCardVisible, setIsCardVisible] = useState(false);
     const [isTall, setIsTall] = useState(false);
     const [startY, setStartY] = useState(0);
 
@@ -91,23 +90,6 @@ const PlacePage = () => {
     const listRef = useRef(null);
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
-
-    useEffect(()=>{
-        if(WINDOW_HEIGHT < 750){
-            setHeight(280)
-        } else {
-            setHeight(430)
-        }
-        setOpen({
-            bool: false,
-            visibility: "hidden"
-        });
-        setCardStyle({
-            radius:'30px 30px 0px 0px',
-            iconVisibility:'visible'
-        });
-        cardRef.current.scrollTo({top:0});
-    },[])
 
     useEffect(() => {
         setPlaceId(id);
@@ -137,22 +119,19 @@ const PlacePage = () => {
 
         
     const handleTouchStart = (event) => {
-        if(isTall){
-            setStartY(event.touches[0].clientY);
-        } else if(!isTall){
-            setStartY(event.touches[0].clientY);
-        }
+        setScroll("scroll");
+        setStartY(event.touches[0].clientY);
     };
 
     const handleTouchMove = (event) => {
+        console.log(cardRef?.current?.scrollTop)
+
         const touchY = event.touches[0].clientY;
         const deltaY = touchY - startY;
     
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {
-            setLoading('visible');
-            setHeight(TARGET_HEIGHT);
-            setScroll("scroll");
             setIsTall(true);
+            setHeight(TARGET_HEIGHT);
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
@@ -161,17 +140,14 @@ const PlacePage = () => {
                 bool: true,
                 visibility: 'visible'
             });
-            setTimeout(() => {
-                setLoading('hidden');
-            }, 500);
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            setIsTall(false);
             cardRef.current.scrollTo({top:0});
             if(WINDOW_HEIGHT < 750){
                 setHeight(270)
             } else {
                 setHeight(435)
             }
-            setIsTall(false);
             setScroll("");
             setOpen({
                 bool: false,
@@ -183,7 +159,6 @@ const PlacePage = () => {
             });
         } 
     };
-
 
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
     const handleOnclick = (event) =>{
@@ -248,7 +223,6 @@ const PlacePage = () => {
     }
 
     // to enrollReveiw.js Page
-
     const handleReviewClick = (e) => {
         e.preventDefault();
     };
@@ -311,15 +285,10 @@ const PlacePage = () => {
         setIsLogin(true);
     }
 
-    const [loading, setLoading] = useState('hidden');
-    
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar/>
-                <div style={{position:'fixed', height: '100%', width:'100%',textAlign:'center', color:"#FFE885", visibility:loading, paddingTop: window.innerHeight /2.2,  zIndex:'6', background:'rgb(0,0,0, 0.4)'}}>
-                    <CircularProgress color="inherit" size={70}/>
-                </div>
                 {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
                 <div style={{ position: 'fixed', height:'100%', width:'100%', maxWidth: "420px", backgroundColor: '#fff' }}>  
                 <Container style={{position:'absolute', padding:'0px', zIndex:'3', width:'100%'}} >
@@ -390,7 +359,6 @@ const PlacePage = () => {
                     ref={cardRef}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
-
                     >
                     <div>
 
