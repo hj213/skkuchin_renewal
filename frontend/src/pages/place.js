@@ -1,4 +1,3 @@
-
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
@@ -29,7 +28,6 @@ const PlaceReview = dynamic(() => import("../components/PlaceReview"));
 const GoLogin = dynamic(() => import("../components/GoLogin"));
 
 const PlacePage = () => {
-
     const WINDOW_HEIGHT = window.innerHeight;
     const TARGET_HEIGHT = WINDOW_HEIGHT - 78;
     const router = useRouter();
@@ -123,6 +121,48 @@ const PlacePage = () => {
 
     const handleTouchMove = (event) => {
         const touchY = event.touches[0].clientY;
+        const deltaY = touchY - startY;
+    
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {
+            setIsTall(true);
+            setHeight(TARGET_HEIGHT);
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            setIsTall(false);
+            cardRef.current.scrollTo({top:0});
+            if(WINDOW_HEIGHT < 750){
+                setHeight(270)
+            } else {
+                setHeight(435)
+            }
+            setScroll("");
+            setOpen({
+                bool: false,
+                visibility: "hidden"
+            });
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility:'visible'
+            });
+            setTimeout(() => {
+                setScroll("scroll");
+            }, 100)
+        } 
+    };
+
+    const handleDragStart = (event) => {
+        setStartY(event.clientY);
+    };
+
+    const handleDragMove = (event) => {
+        const touchY = event.clientY;
         const deltaY = touchY - startY;
     
         if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {
@@ -367,8 +407,16 @@ const PlacePage = () => {
                     {!open.bool && (
                     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" style={{ visibility:cardStyle.iconVisibility}}>
                         <Box gridColumn="span 4"></Box>
-                        <Box style={{textAlign: 'center', verticalAlign: 'top', padding: '8px'}}gridColumn="span 4">
-                            <Image width={70} height={4} src={line} layout='fixed' /> 
+                        <Box style={{textAlign: 'center', verticalAlign: 'top', padding: '8px'}} gridColumn="span 4"  >
+                            <Image 
+                                width={70} 
+                                height={4} 
+                                src={line} 
+                                layout='fixed' 
+                                style={{cursor: 'pointer'}} 
+                                onMouseDown={handleDragStart}
+                                onDrag={handleDragMove}
+                            /> 
                         </Box>
                         <Box style={{textAlign: 'right', padding: '15px 15px 0'}} gridColumn="span 4" onClick={()=> handleFavClick(place_id)}>
                             <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />

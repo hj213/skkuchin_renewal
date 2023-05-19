@@ -58,13 +58,13 @@ public class ServiceApplication {
 				menuService.insertData(path);
 				keywordService.insertData(path);
 				reviewService.insertData(path);
+				cacheService.caching();
 				rankService.addRank();
 				userService.saveTestMatchingUsers(100);
 				chatRoomService.insertData();
 				chatMessageService.insertData();
 				noticeService.insertData();
 				reportService.insertData();
-				cacheService.caching();
 			} catch (Exception e) {
 				System.out.println(e);
 			}
