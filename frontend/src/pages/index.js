@@ -1,10 +1,9 @@
-
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, styled,Button,Dialog, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@mui/material';
+import { CssBaseline, styled as muiStyled, Button, Dialog, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -284,6 +283,53 @@ const list = () => {
             }, 100)
         } 
     };
+
+    const handleDragStart = (event) => {
+        setStartY(event.clientY);
+    };
+
+    const handleDragMove = (event) => {
+        const touchY = event.clientY;
+        const deltaY = touchY - startY;
+        if(!filteredPlace){
+            return
+        }
+    
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
+            setHeight(TARGET_HEIGHT);
+            setIsTall(true);
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            cardRef.current.scrollTo({top:0});
+            if(filteredPlace.length == 1){
+                setHeight(194)
+            } else if(WINDOW_HEIGHT < 750){
+                setHeight(194)
+            } else {
+                setHeight(345)
+            }
+            setIsTall(false);
+            setPreventScroll("");
+            setOpen({
+                bool: false,
+                visibility: "hidden"
+            });
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility:'visible'
+            });
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
+        } 
+    };
     
     // // 아이콘 클릭했을 때 이벤트
     const handleIconOnclick = (event) =>{
@@ -436,7 +482,7 @@ const list = () => {
         setVisibleItems(visibleItems + 10);
     };
 
-    const TransparentDialog = styled(Dialog)({
+    const TransparentDialog = muiStyled(Dialog)({
         '& .MuiPaper-root': {
             backgroundColor: 'transparent',
             boxShadow:'none',
@@ -603,7 +649,15 @@ const list = () => {
                         {
                             !open.bool ?
                         <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}} >
-                            <Image width={70} height={4} src={line} layout='fixed' /> 
+                            <Image 
+                                width={70} 
+                                height={4} 
+                                src={line} 
+                                layout='fixed' 
+                                style={{cursor: 'pointer'}}
+                                onMouseDown={handleDragStart}
+                                onDrag={handleDragMove}
+                            /> 
                         </div>
                         : null
                         }
