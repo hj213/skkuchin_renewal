@@ -125,6 +125,8 @@ const Magazine = () => {
     const user = useSelector(state => state.auth.user);
     const toggle = useSelector(state => state.auth.toggle_for_not_user);
     const rank = useSelector(state => state.rank.rank);
+    const height = window.innerHeight;
+    const width= window.innerWidth;
 
     useEffect(()=>{
         dispatch(clear_search_results());
@@ -156,7 +158,7 @@ const Magazine = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar />
-            <Grid style={{overflowX:'hidden'}}>
+            <Grid style={{overflowX:'hidden', position:'fixed', height:height, overflowY:'scroll'}}>
 
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
@@ -205,7 +207,7 @@ const Magazine = () => {
                 </div>
 
                 {/* 맛집 콘텐츠 */}
-                <div style={{margin:'45px 0px 0px 0px', position:'relative'}}>
+                <div style={{margin:'45px 0px 0px 0px', position:'relative',width:width}}>
                     <div style={{position:'absolute',zIndex:'3'}}>
                         {/* 안에 자유롭게 수정가능 */}
                         <Typography fontSize='12px' fontWeight='700' style={{margin:'23px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
@@ -233,7 +235,7 @@ const Magazine = () => {
                 </div>
 
                 {/* 리뷰 */}
-                <div style={{position:'relative', margin:'35px 0px 77px 0px' }}>
+                <div style={{position:'relative', margin:'35px 0px 0px 0px' ,width:width,}}>
                     <div style={{ display: "flex",  margin:'0px 0px 0px 15px' }}>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">성대생의</Typography>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>리얼 리뷰</Typography>
@@ -273,7 +275,7 @@ const Magazine = () => {
                                 <Button onClick={handleNext}><Image src={arrowR} width={10.29} height={18.48} layout='fixed' /></Button>
                             </div>
                         </div>
-                        <div style={{position:'relative', width:'100%', height:'100%'}}>
+                        <div style={{position:'relative', width:'100%', height:'100%', marginBottom:'140px'}}>
                             <Image 
                                 src={toggleInfo && toggleInfo === '명륜'? reviewM[reviewNum].src : reviewY[reviewNum].src}
                                 height={250}

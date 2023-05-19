@@ -111,6 +111,7 @@ const chatPage = () => {
     const isUser1Blocked = setting && setting.user1_blocked;
     const isUser2Blocked = setting && setting.user2_blocked;
     const [isBlocked, setBlocked] = useState(isUser1Blocked || isUser2Blocked);
+    const height = window.innerHeight - 200;
 
     let isAlarmOn = null;
     let friendBlocked = null;
@@ -210,10 +211,11 @@ const chatPage = () => {
     ];
     
     const lastMessageRef = useRef(null);
+    const chatBoxRef = useRef(null);
 
     useEffect(() => {
         if (lastMessageRef.current) {
-            lastMessageRef.current.scrollIntoView({bottom:'-90px'});
+            lastMessageRef.current.scrollIntoView({behavior: 'auto', block: 'end'});
             // lastMessageRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
         }
     }, []);
@@ -221,8 +223,8 @@ const chatPage = () => {
         
     useEffect(() => {
     if (lastMessageRef.current && messages.length > 0) {
-        lastMessageRef.current.scrollIntoView({bottom:'-90px'});
-        // lastMessageRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+        lastMessageRef.current.scrollIntoView({behavior: 'auto', block: 'end'});
+        // lastMessageRef.current.scrollIntoView({behavior: "smooth", block: "end"});
     }
     }, [messages]);
 
@@ -431,7 +433,7 @@ const chatPage = () => {
                 </Grid>
 
                 { messages ? 
-                <Grid style={{ marginBottom: '90px',}}>
+                <Grid style={{ height:height, overflowY:'scroll'}} ref={chatBoxRef}>
                 { messages.length > 0 ? (messages.slice().reverse().map((message, index) => {
                     // 이어서 메시지를 보냈는지 확인
                     const prevMessage = messages.slice().reverse()[index - 1];
@@ -462,7 +464,6 @@ const chatPage = () => {
                             {
                                 (message.sender === user.username) ? (
                                     <Grid
-                                    ref={messages.length - 1 === index ? lastMessageRef : null} 
                                     style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingRight:'15px', justifyContent:'flex-end'}}>
                                         <Grid item sx={{pr:"7px"}}>
                                         <Stack direction="column" spacing={1}>
@@ -482,6 +483,8 @@ const chatPage = () => {
                                                     maxWidth:'100%',   
                                                     whiteSpace: 'pre-wrap'                                                 
                                                 }}
+                                    ref={messages.length - 1 === index ? lastMessageRef : null} 
+
                                                 >
                                                     {message.message}
                                                 </Typography>
@@ -544,7 +547,6 @@ const chatPage = () => {
                                     </Grid>
                                     ) : (
                                     <Grid 
-                                    ref={messages.length - 1 === index ? lastMessageRef : null} 
                                     container style={{width:"100%", margin:`${topMargin}px 0px 0px 0px`, paddingLeft:'15px', justifyContent:'left'}}>
                                         {displayAvatar && (
                                             <Grid item>
@@ -567,6 +569,7 @@ const chatPage = () => {
                                                                 maxWidth:'75%'
                                                             }}>
                                                                 <Typography
+                                    ref={messages.length - 1 === index ? lastMessageRef : null} 
                                                                     style={{
                                                                     padding:'6px 10px 6px 10px',
                                                                     fontSize: '14px',
