@@ -213,6 +213,18 @@ const chatPage = () => {
     const lastMessageRef = useRef(null);
     const chatBoxRef = useRef(null);
 
+    const [containerHeight, setContainerHeight] = useState(window.innerHeight - 200);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setContainerHeight(window.innerHeight - 200);
+      };
+      window.addEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
     useEffect(() => {
         const handleScrollToLastMessage = () => {
           if (lastMessageRef.current) {
@@ -443,7 +455,7 @@ const chatPage = () => {
                 </Grid>
 
                 { messages ? 
-                <Grid style={{ height:height, overflowY:'scroll'}} ref={chatBoxRef}>
+                <Grid style={{ height:containerHeight, overflowY:'scroll'}} ref={chatBoxRef}>
                 { messages.length > 0 ? (messages.slice().reverse().map((message, index) => {
                     // 이어서 메시지를 보냈는지 확인
                     const prevMessage = messages.slice().reverse()[index - 1];
