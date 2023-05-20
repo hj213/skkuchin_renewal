@@ -60,7 +60,7 @@ const splash = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Container style={{height:'100vh', width:'100%', position:'relative', padding:'0px', display:'flex'}}>
+            <Container style={{height:'100vh', width:'100%', overflowY:'hidden', position:'relative', padding:'0px'}}>
                 <div style={{ width:'100%', height:'100%', textAlign:'center', position:'absolute', display:'block', justifyContent:'center', marginTop:height}}>
                     <Image src={logo} width={169} height={185}/>
                 </div>
