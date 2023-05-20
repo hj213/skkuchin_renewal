@@ -214,20 +214,30 @@ const chatPage = () => {
     const chatBoxRef = useRef(null);
 
     useEffect(() => {
-        if (lastMessageRef.current) {
-            lastMessageRef.current.scrollIntoView({behavior: 'auto', block: 'end'});
-            // lastMessageRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-        }
-    }, []);
+        const handleScrollToLastMessage = () => {
+          if (lastMessageRef.current) {
+            setTimeout(() => {
+              lastMessageRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+            }, 0);
+            // console.log(chatBoxRef.current.scrollHeight);
+          }
+        };
 
-        
-    useEffect(() => {
-    if (lastMessageRef.current && messages.length > 0) {
-        lastMessageRef.current.scrollIntoView({behavior: 'auto', block: 'end'});
-        // lastMessageRef.current.scrollIntoView({behavior: "smooth", block: "end"});
-    }
-    }, [messages]);
+        handleScrollToLastMessage();
+      }, []);
 
+      useEffect(() => {
+        const handleScrollToLastMessage = () => {
+          if (lastMessageRef.current && messages.length > 0) {
+            setTimeout(() => {
+              lastMessageRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+            }, 0);
+            // console.log(chatBoxRef.current.scrollHeight);
+          }
+        };
+
+        handleScrollToLastMessage();
+      }, [messages]);
 
     return(
         <ThemeProvider theme={theme}>
