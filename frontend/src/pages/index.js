@@ -248,7 +248,7 @@ const list = () => {
             return
         }
     
-        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {  
             setHeight(TARGET_HEIGHT);
             setIsTall(true);
             setCardStyle({
