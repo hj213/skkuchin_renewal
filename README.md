@@ -27,7 +27,7 @@
 
 ## 도커 종료
 1. root 위치
-2. docker volume prune -f && docker image prune -f && docker-compose down
+2. docker image prune -f && docker-compose down && docker volume prune -f
 
 <br>
 
@@ -46,4 +46,4 @@
 
 ## 백엔드 스프링 따로 실행시 도커 종료
 1. root 위치
-2. docker volume prune -f && docker image prune -f && docker-compose -f docker-compose.backend.yml down
+2. docker image prune -f && docker-compose -f docker-compose.backend.yml down && docker volume prune -f

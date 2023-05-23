@@ -19,7 +19,7 @@ import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 import dynamic from 'next/dynamic';
 
-import content from '../image/magazine/magazine/content2_1.png';
+import content from '../image/magazine/magazine/content1_1.png';
 import review1_mr from '../image/magazine/review1_mr.png';
 import review2_mr from '../image/magazine/review2_mr.png';
 import review3_mr from '../image/magazine/review3_mr.png';
@@ -34,12 +34,11 @@ import review5_yj from '../image/magazine/review5_yj.png';
 
 const reviewM = [
     {
-        src: review2_mr,
-        text: '인테리어도 이쁘고 사장님, 알바생도 친절하셔요🙂 이층은 카공하기 좋고, 일층은 수다떨기 좋은 분위기!! 낫컴플에 가면 당연히 크로플 하나씩은 먹어야해요...!',
-        user: '효효/컬처앤테크놀로지융합전공',
-        id: 369,
+        src: review4_mr,
+        text: '여기 옛날 소친친 있던 자리인데, 바뀌고 처음와봤네요! 타코랑 퀘사디아 존맛탱. 가격대는 좀 있지만 매우 만족',
+        user: '경도/경영학과',
+        id: 42,
         rating: 5,
-        
     },{
         src: review1_mr,
         text: '성대 근처 김치찌개 집 1티어 중 하나임. 먹어보시길',
@@ -53,10 +52,10 @@ const reviewM = [
         id: 250,
         rating: 5,
     },{
-        src: review4_mr,
-        text: '여기 옛날 소친친 있던 자리인데, 바뀌고 처음와봤네요! 타코랑 퀘사디아 존맛탱. 가격대는 좀 있지만 매우 만족',
-        user: '경도/경영학과',
-        id: 42,
+        src: review2_mr,
+        text: '인테리어도 이쁘고 사장님, 알바생도 친절하셔요🙂 이층은 카공하기 좋고, 일층은 수다떨기 좋은 분위기!! 낫컴플에 가면 당연히 크로플 하나씩은 먹어야해요...!',
+        user: '효효/컬처앤테크놀로지융합전공',
+        id: 369,
         rating: 5,
     },{
         src: review5_mr,
@@ -69,12 +68,11 @@ const reviewM = [
 
 const reviewY = [
     {
-        src: review2_yj,
-        text: '진짜 거의 맨날 가요 😌🥐💻\n'
-        +'율전 카공 일티어..!',
-        user: '진/컬처앤테크놀로지융합전공',
-        id: 375,
-        rating: 5,
+        src: review3_yj,
+        text: '튀김수육, 뭐 언제까지 맛있어? 내년에도 맛있어? 후년에도 맛있을거니?',
+        user: '박연진/식품생명공학과',
+        id: 207,
+        rating: 4,
     },{
         src: review5_yj,
         text: '초밥 땡길 때 자주 가는 곳입니다 회전초밥집이라 원하는것만 골라먹을 수 있어서 좋아요 맛도 좋아요',
@@ -82,11 +80,12 @@ const reviewY = [
         id: 102,
         rating: 5,
     },{
-        src: review3_yj,
-        text: '튀김수육, 뭐 언제까지 맛있어? 내년에도 맛있어? 후년에도 맛있을거니?',
-        user: '박연진/식품생명공학과',
-        id: 207,
-        rating: 4,
+        src: review2_yj,
+        text: '진짜 거의 맨날 가요 😌🥐💻\n'
+        +'율전 카공 일티어..!',
+        user: '진/컬처앤테크놀로지융합전공',
+        id: 375,
+        rating: 5,
     },{
         src: review4_yj,
         text: '도래창 홍창 다 맛있고 볶음밥 꼭 드세요! ',
@@ -163,7 +162,7 @@ const Magazine = () => {
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
                     <div style={{ display: "flex", margin:'21px 0px 0px 15px' }}>
-                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 3주차 식당</Typography>
+                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 4주차 식당</Typography>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>TOP 5</Typography>
                         <Typography>🔥</Typography>
                     </div>
@@ -211,8 +210,8 @@ const Magazine = () => {
                     <div style={{position:'absolute',zIndex:'3'}}>
                         {/* 안에 자유롭게 수정가능 */}
                         <Typography fontSize='12px' fontWeight='700' style={{margin:'23px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>5월엔 친구들과 술 한잔!</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">안주가 맛있는 성대 술집 7곳</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>스꾸친 마케터 pick</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 돈가스 맛집 리스트</Typography>
                     </div>
                     <div>
                         <div style={{position:'absolute',zIndex:'3', bottom:'8%', right: '3%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
