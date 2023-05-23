@@ -144,8 +144,8 @@ const MagazineDetail = () => {
                         </div>
                         <div style={{position:'absolute',zIndex:'3', bottom: '35px'}}>
                             <Typography fontSize='12px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>5월엔 친구들과 술 한잔!</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">안주가 맛있는 성대 술집 7곳</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>스꾸친 마케터 pick</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 돈가스 맛집 리스트</Typography>
                         </div>
                         <div style={{position:'relative', width:'100%', height:'100%'}}>
                             <Image 
