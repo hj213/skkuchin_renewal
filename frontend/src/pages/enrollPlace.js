@@ -12,7 +12,12 @@ const EnrollPlace = () => {
     const router = useRouter();
 
     useEffect(() => {
-        dispatch(check_admin());
+        dispatch(check_admin())
+            .catch((error) => {
+                console.log(error);
+                router.push('/');
+            });
+            
         return (() => {
             dispatch(clear_search_results());
         })

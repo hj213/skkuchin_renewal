@@ -115,7 +115,7 @@ export default function MapDrawer(openID){
     if (user.toggle === '명륜') {
       dispatch(change_toggle('율전'));
     } else if (user.toggle === '율전') {
-      dispatch(change_toggle('명륜'))
+      dispatch(change_toggle('명륜'));
     }
   };
 

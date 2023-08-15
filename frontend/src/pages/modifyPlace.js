@@ -17,7 +17,12 @@ const EnrollPlace = () => {
     const place_id = router.query.place_id;
 
     useEffect(() => {
-        dispatch(check_admin());
+        dispatch(check_admin())
+            .catch((error) => {
+                console.log(error);
+                router.push('/');
+            });
+            
         return (() => {
             dispatch(clear_search_results());
         })

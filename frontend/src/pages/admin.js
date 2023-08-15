@@ -16,15 +16,17 @@ const AdminPage = () => {
 
     useEffect(() => {
         setLoading(true);
-        dispatch(check_admin(([result, message]) => {
-            if (result) {
+        dispatch(check_admin())
+            .then(() => {
                 dispatch(load_places(([result, message]) => {
                     setLoading(false);
                 }));
-            } else {
+            })
+            .catch((error) => {
+                console.log(error);
                 router.push('/');
-            }
-        }))
+            });
+        
         return (() => {
             dispatch(clear_search_results());
         })

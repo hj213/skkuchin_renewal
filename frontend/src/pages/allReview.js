@@ -16,15 +16,16 @@ const AllReview = () => {
 
     useEffect(() => {
         setLoading(true);
-        dispatch(check_admin(([result, message]) => {
-            if (result) {
+        dispatch(check_admin())
+            .then(() => {
                 dispatch(load_all_reviews(([result, message]) => {
                     setLoading(false);
                 }));
-            } else {
+            })
+            .catch((error) => {
+                console.log(error);
                 router.push('/');
-            }
-        }))
+            });
     }, []);
 
     const toggleImages = (index) => {

@@ -1,45 +1,22 @@
 import Cookies from 'js-cookie';
 import {
-    REGISTER_SUCCESS,
-    REGISTER_FAIL,
     LOGIN_SUCCESS,
-    LOGIN_FAIL,
     LOGOUT_SUCCESS,
-    LOGOUT_FAIL,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
-    AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL,
     REFRESH_SUCCESS,
     REFRESH_FAIL,
-    SET_AUTH_LOADING,
-    REMOVE_AUTH_LOADING,
-    CHECK_USERNAME_SUCCESS,
-    CHECK_USERNAME_FAIL,
-    CHECK_NICKNAME_SUCCESS,
-    CHECK_NICKNAME_FAIL,
-    CHANGE_USER_SUCCESS,
-    CHANGE_USER_FAIL,
-    CHANGE_PASSWORD_SUCCESS,
-    CHANGE_PASSWORD_FAIL,
-    CHANGE_TOGGLE_SUCCESS,
-    CHANGE_TOGGLE_FAIL,
     CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS,
     CHANGE_TOGGLE_NOT_FOR_USER_FAIL,
-    UPDATE_LAST_ACCESSED_TIME_SUCCESS,
-    UPDATE_LAST_ACCESSED_TIME_FAIL,
     DELETE_USER_SUCCESS,
-    DELETE_USER_FAIL,
     FIND_USERNAME_SUCCESS,
     FIND_USERNAME_FAIL,
-    RESET_PASSWORD_SUCCESS,
-    RESET_PASSWORD_FAIL
 } from '../actions/auth/types';
 
 const initialState = {
     user: null,
     isAuthenticated: false,
-    loading: false,
     toggle_for_not_user: null
 };
 
@@ -47,14 +24,6 @@ const authReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch(type) {
-        case REGISTER_SUCCESS:
-            return {
-                ...state
-            }
-        case REGISTER_FAIL:
-            return {
-                ...state
-            }
         case LOGIN_SUCCESS:
             if (process.env.NODE_ENV === 'production') {
                 Cookies.set('access', payload.access, { secure: true, expires: 1 });
@@ -66,11 +35,6 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-        case LOGIN_FAIL:
-            return {
-                ...state,
-                isAuthenticated: false
-            }
         case LOGOUT_SUCCESS:
             localStorage.setItem('map', '명륜');
             Cookies.remove('access');
@@ -80,10 +44,6 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 user: null,
                 toggle_for_not_user: '명륜'
-            }
-        case LOGOUT_FAIL:
-            return {
-                ...state
             }
         case LOAD_USER_SUCCESS:
             localStorage.removeItem("map");
@@ -98,11 +58,6 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: false,
                 user: null
-            }
-        case AUTHENTICATED_SUCCESS:
-            return {
-                ...state,
-                isAuthenticated: true
             }
         case AUTHENTICATED_FAIL:
             return {
@@ -127,56 +82,6 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 user: null
             }
-        case SET_AUTH_LOADING:
-            return {
-                ...state,
-                loading: true
-            }
-        case REMOVE_AUTH_LOADING:
-            return {
-                ...state,
-                loading: false
-            }
-        case CHECK_USERNAME_SUCCESS:
-            return {
-                ...state
-            }
-        case CHECK_USERNAME_FAIL:
-            return {
-                ...state
-            }
-        case CHECK_NICKNAME_SUCCESS:
-            return {
-                ...state
-            }
-        case CHECK_NICKNAME_FAIL:
-            return {
-                ...state
-            }
-        case CHANGE_USER_SUCCESS:
-            return {
-                ...state
-            }
-        case CHANGE_USER_FAIL:
-            return {
-                ...state
-            }
-        case CHANGE_PASSWORD_SUCCESS:
-            return {
-                ...state
-            }
-        case CHANGE_PASSWORD_FAIL:
-            return {
-                ...state
-            }
-        case CHANGE_TOGGLE_SUCCESS:
-            return {
-                ...state
-            }
-        case CHANGE_TOGGLE_FAIL:
-            return {
-                ...state
-            }
         case CHANGE_TOGGLE_NOT_FOR_USER_SUCCESS:
             return {
                 ...state,
@@ -187,23 +92,13 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 toggle_for_not_user: null
             }
-        case UPDATE_LAST_ACCESSED_TIME_SUCCESS:
-            return {
-                ...state
-            }
-        case UPDATE_LAST_ACCESSED_TIME_FAIL:
-            return {
-                ...state
-            }
         case DELETE_USER_SUCCESS:
             Cookies.remove('access');
             Cookies.remove('refresh');
             return {
-                ...state
-            }
-        case DELETE_USER_FAIL:
-            return {
-                ...state
+                ...state,
+                isAuthenticated: false,
+                user: null
             }
         case FIND_USERNAME_SUCCESS:
             return {
@@ -217,14 +112,6 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 user: null
             }
-        case RESET_PASSWORD_SUCCESS:
-            return {
-                ...state
-            }
-        case RESET_PASSWORD_FAIL:
-            return {
-                ...state
-                }
         default:
             return state;
     };

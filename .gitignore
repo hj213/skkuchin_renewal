@@ -1,1 +1,5 @@
-docker-compose.mobile.yml
+# DS_Store
+.DS_Store
+
+# github action
+.github/workflows/

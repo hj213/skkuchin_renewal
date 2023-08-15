@@ -30,23 +30,23 @@ const deleteUser = () => {
     }
 
     const handleNextStep = () => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(delete_user(([result, message]) => {
-                if (result) {
-                    let username = localStorage.getItem("username");
-                    if (username != null) {
-                        localStorage.removeItem("username");
-                    }
-                    if (chatAlarmSubscription) {
-                        chatAlarmSubscription.unsubscribe();
-                    }
-                    if (noticeAlarmSubscription) {
-                        noticeAlarmSubscription.unsubscribe();
-                    }
-                    dispatch(logout());
+        dispatch(delete_user())
+            .then(() => {
+                let username = localStorage.getItem("username");
+                if (username != null) {
+                    localStorage.removeItem("username");
                 }
-            }));
-        }
+                if (chatAlarmSubscription) {
+                    chatAlarmSubscription.unsubscribe();
+                }
+                if (noticeAlarmSubscription) {
+                    noticeAlarmSubscription.unsubscribe();
+                }
+                dispatch(logout());
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
 
     return (

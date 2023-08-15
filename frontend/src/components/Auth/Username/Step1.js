@@ -22,16 +22,14 @@ export default function Step1(props) {
     const handleSubmit= (e) => {
         e.preventDefault();
 
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(find_username(emailId+domain, ([result, message]) => {
-                if (result) {
-                    props.handleNextStep();
-                } else {
-                    setDialogMsg(message);
-                    setDialogOpen(true);
-                }
-            }));
-        }
+        dispatch(find_username(emailId+domain))
+            .then(() => {
+                props.handleNextStep();
+            })
+            .catch((error) => {
+                setDialogMsg(error);
+                setDialogOpen(true);
+            });
     }
 
     const backClick = () => {

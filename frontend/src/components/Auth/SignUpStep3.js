@@ -102,22 +102,18 @@ export default function SignUpStep3(props) {
     }
 
     const handleNextStep = () => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            let data = props.data;
-            if (props.data.major == '화학공학/고분자공학부') {
-                data = {...props.data, major: '화학공학_고분자공학부'}
-            }
-            dispatch(register(data, ([result, message]) => {
-            if (result) {
-                
-                props.handleNextStep();
-            } else {
-                
-                //setDialogMsg(message);
-                //setDialogOpen(true);
-            }
-            }));
+        let data = props.data;
+        if (props.data.major == '화학공학/고분자공학부') {
+            data = {...props.data, major: '화학공학_고분자공학부'}
         }
+
+        dispatch(register(data))
+            .then(() => {
+                props.handleNextStep();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     return (
