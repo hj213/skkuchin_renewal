@@ -1,4 +1,3 @@
-
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
@@ -29,7 +28,6 @@ const PlaceReview = dynamic(() => import("../components/PlaceReview"));
 const GoLogin = dynamic(() => import("../components/GoLogin"));
 
 const PlacePage = () => {
-
     const WINDOW_HEIGHT = window.innerHeight;
     const TARGET_HEIGHT = WINDOW_HEIGHT - 78;
     const router = useRouter();
@@ -82,8 +80,7 @@ const PlacePage = () => {
             bool:false,
             visibility: 'hidden'
         });
-    const [scroll, setScroll] = useState('');
-    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [scroll, setScroll] = useState('scroll');
     const [isTall, setIsTall] = useState(false);
     const [startY, setStartY] = useState(0);
 
@@ -92,81 +89,43 @@ const PlacePage = () => {
     const animationDuration = '0.3s';
     const animationTimingFunction = 'ease-out';
 
-    useEffect(()=>{
-        if(WINDOW_HEIGHT < 750){
-            setHeight(280)
-        } else {
-            setHeight(430)
-        }
-        setIsTall(false);
-        setScroll("");
-        setOpen({
-            bool: false,
-            visibility: "hidden"
-        });
-        setCardStyle({
-            radius:'30px 30px 0px 0px',
-            iconVisibility:'visible'
-        });
-        cardRef.current.scrollTo({top:0});
-    },[])
-
-    useEffect(()=>{
-        if(isTall){
-            setScroll('scroll')
-        } else{
-            setScroll('')
-        }
-    },[isTall])
-
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            setPlaceId(id);
-            if (fullScreen == 'true') {
-                setHeight(TARGET_HEIGHT);
-                setIsTall(true);
-                setScroll("scroll");
-                setCardStyle({
-                    radius:'0px',
-                    iconVisibility:'hidden'
-                });
-                setOpen({
-                    bool: true,
-                    visibility: 'visible'
-                });
-            } else if(WINDOW_HEIGHT < 750){
-                setHeight(270)
-            } else {
-                setHeight(435)
-            }
-            dispatch(load_place(id, ([result, message]) => {
-                dispatch(load_menu(id, ([result, message]) => {
-                    dispatch(load_reviews(id));
-                }));
-            }));
+        setPlaceId(id);
+        if (fullScreen == 'true') {
+            setHeight(TARGET_HEIGHT);
+            setIsTall(true);
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if(WINDOW_HEIGHT < 750){
+            setHeight(270)
+        } else {
+            setHeight(435)
         }
+        dispatch(load_place(id, ([result, message]) => {
+            dispatch(load_menu(id, ([result, message]) => {
+                dispatch(load_reviews(id));
+            }));
+        }));
     }, [id, click]);
 
         
     const handleTouchStart = (event) => {
-        if(isTall){
-            setScroll('scroll');
-            setStartY(event.touches[0].clientY);
-
-        } else if(!isTall){
-            setScroll("");
-            setStartY(event.touches[0].clientY);
-        }
+        setStartY(event.touches[0].clientY);
     };
 
     const handleTouchMove = (event) => {
         const touchY = event.touches[0].clientY;
         const deltaY = touchY - startY;
     
-        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
-            setHeight(TARGET_HEIGHT);
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {
             setIsTall(true);
-            setScroll("scroll");
+            setHeight(TARGET_HEIGHT);
             setCardStyle({
                 radius:'0px',
                 iconVisibility:'hidden'
@@ -176,13 +135,13 @@ const PlacePage = () => {
                 visibility: 'visible'
             });
         } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            setIsTall(false);
             cardRef.current.scrollTo({top:0});
             if(WINDOW_HEIGHT < 750){
                 setHeight(270)
             } else {
                 setHeight(435)
             }
-            setIsTall(false);
             setScroll("");
             setOpen({
                 bool: false,
@@ -192,9 +151,53 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setTimeout(() => {
+                setScroll("scroll");
+            }, 100)
         } 
     };
 
+    const handleDragStart = (event) => {
+        setStartY(event.clientY);
+    };
+
+    const handleDragMove = (event) => {
+        const touchY = event.clientY;
+        const deltaY = touchY - startY;
+    
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {
+            setIsTall(true);
+            setHeight(TARGET_HEIGHT);
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            setIsTall(false);
+            cardRef.current.scrollTo({top:0});
+            if(WINDOW_HEIGHT < 750){
+                setHeight(270)
+            } else {
+                setHeight(435)
+            }
+            setScroll("");
+            setOpen({
+                bool: false,
+                visibility: "hidden"
+            });
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility:'visible'
+            });
+            setTimeout(() => {
+                setScroll("scroll");
+            }, 100)
+        } 
+    };
 
      // 전체화면 시, 헤더영역 아이콘 클릭 이벤트
     const handleOnclick = (event) =>{
@@ -210,11 +213,13 @@ const PlacePage = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility: 'visible'
             });
-            setIsTall(false);
             setScroll('');
             cardRef.current.scrollTo({top:0});
+            setIsTall(false);
+            setTimeout(() => {
+                setScroll("scroll");
+            }, 100)
         } 
-    
     };
 
     // Favorite 관리
@@ -260,7 +265,6 @@ const PlacePage = () => {
     }
 
     // to enrollReveiw.js Page
-
     const handleReviewClick = (e) => {
         e.preventDefault();
     };
@@ -322,7 +326,7 @@ const PlacePage = () => {
     const handleGoLogin = () => {
         setIsLogin(true);
     }
-    
+
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -397,15 +401,22 @@ const PlacePage = () => {
                     ref={cardRef}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
-
                     >
                     <div>
 
                     {!open.bool && (
                     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" style={{ visibility:cardStyle.iconVisibility}}>
                         <Box gridColumn="span 4"></Box>
-                        <Box style={{textAlign: 'center', verticalAlign: 'top', padding: '8px'}}gridColumn="span 4">
-                            <Image width={70} height={4} src={line} layout='fixed' /> 
+                        <Box style={{textAlign: 'center', verticalAlign: 'top', padding: '8px'}} gridColumn="span 4"  >
+                            <Image 
+                                width={70} 
+                                height={4} 
+                                src={line} 
+                                layout='fixed' 
+                                style={{cursor: 'pointer'}} 
+                                onMouseDown={handleDragStart}
+                                onDrag={handleDragMove}
+                            /> 
                         </Box>
                         <Box style={{textAlign: 'right', padding: '15px 15px 0'}} gridColumn="span 4" onClick={()=> handleFavClick(place_id)}>
                             <Image width={20} height={21.85}  src={isFavorite(place_id)? bookmarkOn : bookmarkAdd} layout='fixed' />

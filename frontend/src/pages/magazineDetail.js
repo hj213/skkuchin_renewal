@@ -11,7 +11,7 @@ import arrowNext from '../image/arrow_forward2.png';
 import dynamic from 'next/dynamic';
 import position from '../../public/markers/기본_yellow.png';
 
-import content from '../image/magazine/magazine/content.png';
+import content from '../image/magazine/magazine/content1_1.png';
 import content1_1 from '../image/magazine/magazine/content1_1.png';
 import content1_2 from '../image/magazine/magazine/content1_2.png';
 import content2_1 from '../image/magazine/magazine/content2_1.png';
@@ -29,85 +29,85 @@ import content7_2 from '../image/magazine/magazine/content7_2.png';
 
 const contentList = [
     {
-        id: 10,
-        name:'이유식당',
-        category: '백반, 가정식',
+        id: 43,
+        name:'정돈',
+        category: '돈가스',
         place: '명륜/대학로',
         reviews: [
-            '정성이 느껴지는 맛이었어요',
-            '든든한 집밥 먹고 싶을 때 가는 곳!'
+            '웨이팅이 조금 길긴 하지만 혜화에서 먹을만한 돈까스',
+            '카레 맛있으니 카레도 추가해서 드세요!'
         ],
         images: [
             content1_1, content1_2
         ]
     },{
-        id: 108,
-        name:'청년밥상',
-        category: '쌈밥',
-        place: '율전/쪽문',
+        id: 234,
+        name:'혼가츠',
+        category: '돈가스',
+        place: '명륜/대학로',
         reviews: [
-            '율전에서 젤 유명한 갓성비 한식집',
-            '친구랑 둘이 다녀왔는데 맛있게 잘 먹었습니다!'
+            '개인적으로 정돈보다 더 좋음. 특히 치즈가츠',
+            '1학년때 맨날 갔던,, 매운 돈까스 강추합니당'
         ],
         images: [
             content2_1, content2_2
         ]
     },{
-        id: 288,
-        name:'다발김치찌개 대학로점',
-        category: '찌개, 전골',
+        id: 16,
+        name:'포보',
+        category: '국수',
         place: '명륜/정문',
         reviews: [
-            '성대 근처 김치찌개 집 1티어 중 하나임',
-            '수업 끝나구 다같이 가서 먹기 좋아용 ㅎㅎ'
+            '양도 엄청 많고 친절하고 혼밥하기 좋아요',
+            '자타공인 명륜동 최고 맛집! 가성비도 최고'
         ],
         images: [
             content3_1, content3_2
         ]
     },{
-        id: 153,
-        name:'성대밥상',
-        category: '한식',
+        id: 139,
+        name:'본찌돈까스 성대점',
+        category: '돈가스',
         place: '율전/쪽문',
         reviews: [
-            '혼밥하기 좋음. 갠적으로 비빔밥이 젤 맛있다',
-            '반찬 셀프라 넉넉히 먹을 수 있고 혼밥하기도 좋음'
+            "가게가 조금 좁은 것 빼고는 완벽해요!",
+            "율전동 돈까스 1티어 \'본찌돈가스\'"
         ],
         images: [
             content4_1, content4_2
         ]
     },{
-        id: 28,
-        name:'삼삼오오',
-        category: '한식',
-        place: '명륜/쪽문',
+        id: 128,
+        name:'카츠요이',
+        category: '돈가스',
+        place: '율전/정문',
         reviews: [
-            '밥약하러 많이 갔었는데 맛있어요!',
-            '쪽문의 갓성비. 오삼비빔밥 혼밥이 국룰'
+            '웨이팅이 있지만, 기다릴만한 맛집입니다 혼밥 개추',
+            '맛있으면멍: 멍멍!!!!!!!'
         ],
         images: [
             content5_1, content5_2
         ]
     },{
-        id: 172,
-        name:'우리집밥',
-        category: '한식',
+        id: 154,
+        name:'명동돈까스',
+        category: '돈가스',
         place: '율전/쪽문',
         reviews: [
-            '진짜 우리 집밥 먹는 느낌의 맛집',
-            '요즘 보기 힘든 가성비 맛집. 혼밥하러 가기 너무 좋음'
+            '코돈브루 + 요구르트 조합은 ㄹㅇ 극락이다.',
+            '요즘 물가에 이런 돈까스집은 더 없는 행복이다.'
         ],
         images: [
             content6_1, content6_2
         ]
     },{
-        id: 250,
-        name:'제순식당',
-        category: '한식',
-        place: '명륜/대학로',
+        id: 180,
+        name:'최고당돈가스 율전점',
+        category: '돈가스',
+        place: '율전/후문',
         reviews: [
-            '불맛이 살아있어용 제육볶음 좋아하신다면 추천!',
-            '정말 맛있어요! 2천원 추가하면 된찌도 줍니다'
+            '사장님도 친절하시고 돈까스도 맛있어서 너무 좋음',
+            '세트 메뉴도 있어서 든든하게 먹고 싶을때 가도 좋음'
         ],
         images: [
             content7_1, content7_2
@@ -144,8 +144,8 @@ const MagazineDetail = () => {
                         </div>
                         <div style={{position:'absolute',zIndex:'3', bottom: '35px'}}>
                             <Typography fontSize='12px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>엄마 손맛이 그리워</Typography>
-                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">집밥 같은 성대 맛집 7곳</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>스꾸친 마케터 pick</Typography>
+                            <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 돈가스 맛집 리스트</Typography>
                         </div>
                         <div style={{position:'relative', width:'100%', height:'100%'}}>
                             <Image 

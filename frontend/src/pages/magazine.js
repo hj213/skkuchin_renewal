@@ -19,7 +19,7 @@ import emptyStar from '../image/Star_border-1.png';
 import filledStar from '../image/Star-1.png';
 import dynamic from 'next/dynamic';
 
-import content from '../image/magazine/magazine/content.png';
+import content from '../image/magazine/magazine/content1_1.png';
 import review1_mr from '../image/magazine/review1_mr.png';
 import review2_mr from '../image/magazine/review2_mr.png';
 import review3_mr from '../image/magazine/review3_mr.png';
@@ -34,17 +34,16 @@ import review5_yj from '../image/magazine/review5_yj.png';
 
 const reviewM = [
     {
+        src: review4_mr,
+        text: '여기 옛날 소친친 있던 자리인데, 바뀌고 처음와봤네요! 타코랑 퀘사디아 존맛탱. 가격대는 좀 있지만 매우 만족',
+        user: '경도/경영학과',
+        id: 42,
+        rating: 5,
+    },{
         src: review1_mr,
         text: '성대 근처 김치찌개 집 1티어 중 하나임. 먹어보시길',
         user: '강아지는 도그/경영학과',
         id: 288,
-        rating: 5,
-        
-    },{
-        src: review2_mr,
-        text: '인테리어도 이쁘고 사장님, 알바생도 친절하셔요🙂 이층은 카공하기 좋고, 일층은 수다떨기 좋은 분위기!! 낫컴플에 가면 당연히 크로플 하나씩은 먹어야해요...!',
-        user: '효효/컬처앤테크놀로지융합전공',
-        id: 369,
         rating: 5,
     },{
         src: review3_mr,
@@ -53,10 +52,10 @@ const reviewM = [
         id: 250,
         rating: 5,
     },{
-        src: review4_mr,
-        text: '여기 옛날 소친친 있던 자리인데, 바뀌고 처음와봤네요! 타코랑 퀘사디아 존맛탱. 가격대는 좀 있지만 매우 만족',
-        user: '경도/경영학과',
-        id: 42,
+        src: review2_mr,
+        text: '인테리어도 이쁘고 사장님, 알바생도 친절하셔요🙂 이층은 카공하기 좋고, 일층은 수다떨기 좋은 분위기!! 낫컴플에 가면 당연히 크로플 하나씩은 먹어야해요...!',
+        user: '효효/컬처앤테크놀로지융합전공',
+        id: 369,
         rating: 5,
     },{
         src: review5_mr,
@@ -69,10 +68,16 @@ const reviewM = [
 
 const reviewY = [
     {
-        src: review1_yj,
-        text: '엄청난 양.. 맵도리탕도 다들 드셔보세요! 엄청난 술안주 겸 식사메뉴 입니다',
-        user: '성대러문김진주/러시아어문학과',
-        id: 135,
+        src: review3_yj,
+        text: '튀김수육, 뭐 언제까지 맛있어? 내년에도 맛있어? 후년에도 맛있을거니?',
+        user: '박연진/식품생명공학과',
+        id: 207,
+        rating: 4,
+    },{
+        src: review5_yj,
+        text: '초밥 땡길 때 자주 가는 곳입니다 회전초밥집이라 원하는것만 골라먹을 수 있어서 좋아요 맛도 좋아요',
+        user: '세미나시러/화학공학_고분자공학부',
+        id: 102,
         rating: 5,
     },{
         src: review2_yj,
@@ -82,22 +87,16 @@ const reviewY = [
         id: 375,
         rating: 5,
     },{
-        src: review3_yj,
-        text: '튀김수육, 뭐 언제까지 맛있어? 내년에도 맛있어? 후년에도 맛있을거니?',
-        user: '박연진/식품생명공학과',
-        id: 207,
-        rating: 4,
-    },{
         src: review4_yj,
         text: '도래창 홍창 다 맛있고 볶음밥 꼭 드세요! ',
         user: '100M/스포츠과학과',
         id: 97,
         rating: 5,
     },{
-        src: review5_yj,
-        text: '초밥 땡길 때 자주 가는 곳입니다 회전초밥집이라 원하는것만 골라먹을 수 있어서 좋아요 맛도 좋아요',
-        user: '세미나시러/화학공학_고분자공학부',
-        id: 102,
+        src: review1_yj,
+        text: '엄청난 양.. 맵도리탕도 다들 드셔보세요! 엄청난 술안주 겸 식사메뉴 입니다',
+        user: '성대러문김진주/러시아어문학과',
+        id: 135,
         rating: 5,
     },
 ]; 
@@ -125,6 +124,8 @@ const Magazine = () => {
     const user = useSelector(state => state.auth.user);
     const toggle = useSelector(state => state.auth.toggle_for_not_user);
     const rank = useSelector(state => state.rank.rank);
+    const height = window.innerHeight;
+    const width= window.innerWidth;
 
     useEffect(()=>{
         dispatch(clear_search_results());
@@ -156,12 +157,12 @@ const Magazine = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar />
-            <Grid style={{overflowX:'hidden'}}>
+            <Grid style={{overflowX:'hidden', position:'fixed', height:height, overflowY:'scroll'}}>
 
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
                     <div style={{ display: "flex", margin:'21px 0px 0px 15px' }}>
-                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 2주차 식당</Typography>
+                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 4주차 식당</Typography>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>TOP 5</Typography>
                         <Typography>🔥</Typography>
                     </div>
@@ -205,12 +206,12 @@ const Magazine = () => {
                 </div>
 
                 {/* 맛집 콘텐츠 */}
-                <div style={{margin:'45px 0px 0px 0px', position:'relative'}}>
+                <div style={{margin:'45px 0px 0px 0px', position:'relative',width:width}}>
                     <div style={{position:'absolute',zIndex:'3'}}>
                         {/* 안에 자유롭게 수정가능 */}
                         <Typography fontSize='12px' fontWeight='700' style={{margin:'23px 0px 0px 15px'}} color="white">스꾸친 마케터의 특별한 맛집 가이드</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>엄마 손맛이 그리워</Typography>
-                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">집밥 같은 성대 맛집 7곳</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color={theme.palette.primary.main}>스꾸친 마케터 pick</Typography>
+                        <Typography fontSize='25px' fontWeight='700' style={{margin:'0px 0px 0px 15px'}} color="white">성대 돈가스 맛집 리스트</Typography>
                     </div>
                     <div>
                         <div style={{position:'absolute',zIndex:'3', bottom:'8%', right: '3%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
@@ -233,7 +234,7 @@ const Magazine = () => {
                 </div>
 
                 {/* 리뷰 */}
-                <div style={{position:'relative', margin:'35px 0px 77px 0px' }}>
+                <div style={{position:'relative', margin:'35px 0px 0px 0px' ,width:width,}}>
                     <div style={{ display: "flex",  margin:'0px 0px 0px 15px' }}>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">성대생의</Typography>
                         <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>리얼 리뷰</Typography>
@@ -273,7 +274,7 @@ const Magazine = () => {
                                 <Button onClick={handleNext}><Image src={arrowR} width={10.29} height={18.48} layout='fixed' /></Button>
                             </div>
                         </div>
-                        <div style={{position:'relative', width:'100%', height:'100%'}}>
+                        <div style={{position:'relative', width:'100%', height:'100%', marginBottom:'140px'}}>
                             <Image 
                                 src={toggleInfo && toggleInfo === '명륜'? reviewM[reviewNum].src : reviewY[reviewNum].src}
                                 height={250}

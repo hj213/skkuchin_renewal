@@ -9,7 +9,7 @@ import loading1 from '../image/loading1.png';
 import loading2 from '../image/loading2.png';
 import loading3 from '../image/loading3.png';
 import { useDispatch } from 'react-redux';
-import { load_user_callback, change_toggle_for_not_user, update_last_accessed_time } from '../actions/auth/auth';
+import { load_user, change_toggle_for_not_user, update_last_accessed_time } from '../actions/auth/auth';
 import dynamic from 'next/dynamic';
 
 const loadingImages = [loading0, loading1, loading2, loading3];
@@ -22,17 +22,19 @@ const splash = () => {
     const campus = localStorage.getItem('map');
 
     useEffect(() => {
-        setTimeout(() => {
-            dispatch(load_user_callback(([result, message]) => {
-                if (result) {
+        const timerId = setTimeout(() => {
+            dispatch(load_user())
+                .then(() => {
                     dispatch(update_last_accessed_time(true));
                     router.push('/');
-                } else {
+                })
+                .catch((error) => {
+                    console.log(error);
                     if (campus) {
-                        dispatch(change_toggle_for_not_user(campus))
+                        dispatch(change_toggle_for_not_user(campus));
                     } else {
                         localStorage.setItem('map', '명륜');
-                        dispatch(change_toggle_for_not_user('명륜'))
+                        dispatch(change_toggle_for_not_user('명륜'));
                     }
                     let isUser = localStorage.getItem("user");
                     if (isUser == "true") {
@@ -41,10 +43,10 @@ const splash = () => {
                         localStorage.setItem("user", "true")
                         router.push('/nextSplash')
                     }
-                }
-            }))
+                })
         }, 3000);
 
+        return () => clearTimeout(timerId);
     }, []);
 
     useEffect(() => {
@@ -60,7 +62,7 @@ const splash = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Container style={{height:'100vh', width:'100%', position:'relative', padding:'0px', display:'flex'}}>
+            <Container style={{height:'100vh', width:'100%', overflowY:'hidden', position:'relative', padding:'0px'}}>
                 <div style={{ width:'100%', height:'100%', textAlign:'center', position:'absolute', display:'block', justifyContent:'center', marginTop:height}}>
                     <Image src={logo} width={169} height={185}/>
                 </div>

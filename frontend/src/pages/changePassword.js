@@ -32,13 +32,18 @@ const changePassword = () => {
     }
 
     const handleNextStep = () => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(change_password(curPassword, password, rePassword, ([result, message]) => {
-                setApiResult(result);
+        change_password(curPassword, password, rePassword)
+            .then((message) => {
+                setApiResult(true);
                 setDialogMsg(message);
+            })
+            .catch((error) => {
+                setApiResult(false);
+                setDialogMsg(error);
+            })
+            .finally(() => {
                 setDialogOpen(true);
-            }));
-        }
+            });
     }
     
     const handlePasswordChange = (e) => {

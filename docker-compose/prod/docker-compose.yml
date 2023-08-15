@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  server:
+    image: server
+    build:
+      context: ../../backend
+      dockerfile: ./docker/dev/Dockerfile
+  client:
+    image: client
+    build:
+      context: ../../frontend
+      dockerfile: ./docker/dev/Dockerfile
+  nginx:
+    image: nginx
+    build:
+      context: "../../nginx"
+      dockerfile: Dockerfile

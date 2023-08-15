@@ -27,25 +27,24 @@ const SignUpStep1 = (props) => {
     }
 
     const checkUsername = () => {
-        dispatch(check_username(props.data.username, ([result, message]) => {
-            setValidUsername(result);
-            if (typeof(message) == 'string') {
-                setUsernameMsg(message);
-            }
-            //setUsernameMsg(message);
-        }))
+        check_username(props.data.username)
+            .then((message) => {
+                setValidUsername(true);
+                if (typeof(message) == 'string') {
+                    setUsernameMsg(message);
+                }
+            })
+            .catch((error) => {
+                setValidUsername(false);
+                if (typeof(error) == 'string') {
+                    setUsernameMsg(error);
+                }
+            })
     }
     
     const handlePasswordChange = (e) => {
         const password = e.target.value;
-        props.setData({...props.data, password})
-/*
-        // if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*|\\\'\";:\/?])[A-Za-z\d!@#$%^&*]{8,16}$/)) {
-        if (password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*|\\\'\";:\/?\(\)-_=+{},<.>])[A-Za-z\d`~!@#$%^&*|\\\'\";:\/?\(\)-_=+\[\]{},<.>]{8,16}$/)) {
-            setValidPW(true);
-        } else {
-            setValidPW(false);
-        }*/
+        props.setData({...props.data, password});
 
         let num = password.search(/[0-9]/g)
         let eng = password.search(/[a-z]/ig)

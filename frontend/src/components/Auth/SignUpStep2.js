@@ -36,8 +36,6 @@ const SignUpStep2 = (props) => {
     }
 
     const handleNextStep = () => {
-      //dispatch(register(props.data))
-      //props.setData({...props.data, major: majorValue});
       props.handleNextStep();
     }
 
@@ -49,10 +47,15 @@ const SignUpStep2 = (props) => {
     }
 
     const checkNickname = () => {
-      dispatch(check_nickname(props.data.nickname, ([result, message]) => {
-          setValidNickname(result);
+      check_nickname(props.data.nickname)
+        .then((message) => {
+          setValidNickname(true);
           setNicknameMsg(message);
-      }))
+        })
+        .catch((error) => {
+          setValidNickname(false);
+          setNicknameMsg(error);
+        })
   }
 
 

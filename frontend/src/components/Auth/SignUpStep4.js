@@ -1,13 +1,11 @@
 import { useState } from "react";
 import {  TextField, Button,  Typography,  Box, Select, MenuItem, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import theme from '../../theme/theme';
-import back from '../../image/arrow_back_ios.png';
 import check from '../../image/check_circle.png';
 import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enhang.png'
 import Image from 'next/image';
-import { register } from "../../actions/auth/auth";
 import { signup_email_send } from '../../actions/email/email';
 import { useRouter } from 'next/router';
 

@@ -25,16 +25,14 @@ const Step3 = (props) => {
     }
 
     const handleNextStep = () => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(reset_password(props.email, password, rePassword, ([result, message]) => {
-                if (result) {
-                    props.handleNextStep();
-                } else {
-                    setDialogMsg(message);
-                    setDialogOpen(true);
-                }
-            }));
-        }
+        reset_password(props.email, password, rePassword)
+            .then(() => {
+                props.handleNextStep();
+            })
+            .catch((error) => {
+                setDialogMsg(error);
+                setDialogOpen(true);
+            });
     }
     
     const handlePasswordChange = (e) => {

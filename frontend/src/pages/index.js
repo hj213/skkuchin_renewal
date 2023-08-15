@@ -1,10 +1,9 @@
-
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react"; 
 import Image from 'next/image';
 import Link from 'next/link';
-import { CssBaseline, styled,Button,Dialog, Box, ThemeProvider,Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@mui/material';
+import { CssBaseline, styled as muiStyled, Button, Dialog, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, useMediaQuery, Paper, Alert, DialogActions, DialogContentText, DialogContent, DialogTitle } from '@mui/material';
 import theme from '../theme/theme';
 import line from '../image/Line1.png';
 import food from '../image/food.png';
@@ -57,7 +56,7 @@ const list = () => {
         bool:false,
         visibility: 'hidden',
     });
-    const [preventScroll, setPreventScroll] = useState(''); //스크롤 방지
+    const [preventScroll, setPreventScroll] = useState('scroll'); //스크롤 방지
     const [isTall, setIsTall] = useState(false);
     const [startY, setStartY] = useState(0);
     const [keyword, setKeyword] = useState(''); //태그검색
@@ -218,6 +217,9 @@ const list = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
         }
     
     },[numOfLi])
@@ -230,17 +232,13 @@ const list = () => {
         setHeight('0');
         setPreventScroll('');
         setIsTall(false);
+        setTimeout(() => {
+            setPreventScroll("scroll");
+        }, 100)
     }
 
     const handleTouchStart = (event) => {
-        if(isTall){
-            setPreventScroll('scroll');
-            setStartY(event.touches[0].clientY);
-
-        } else if(!isTall){
-            setPreventScroll("");
-            setStartY(event.touches[0].clientY);
-        }
+        setStartY(event.touches[0].clientY);
     };
 
     const handleTouchMove = (event) => {
@@ -250,9 +248,8 @@ const list = () => {
             return
         }
     
-        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {  
             setHeight(TARGET_HEIGHT);
-            setPreventScroll("scroll");
             setIsTall(true);
             setCardStyle({
                 radius:'0px',
@@ -281,6 +278,56 @@ const list = () => {
                 radius:'30px 30px 0px 0px',
                 iconVisibility:'visible'
             });
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
+        } 
+    };
+
+    const handleDragStart = (event) => {
+        setStartY(event.clientY);
+    };
+
+    const handleDragMove = (event) => {
+        const touchY = event.clientY;
+        const deltaY = touchY - startY;
+        if(!filteredPlace){
+            return
+        }
+    
+        if (!isTall && deltaY < 0 && cardRef.current.offsetHeight < TARGET_HEIGHT) {   
+            setHeight(TARGET_HEIGHT);
+            setIsTall(true);
+            setCardStyle({
+                radius:'0px',
+                iconVisibility:'hidden'
+            });
+            setOpen({
+                bool: true,
+                visibility: 'visible'
+            });
+        } else if (isTall && deltaY > 0 && cardRef.current.scrollTop == 0) {
+            cardRef.current.scrollTo({top:0});
+            if(filteredPlace.length == 1){
+                setHeight(194)
+            } else if(WINDOW_HEIGHT < 750){
+                setHeight(194)
+            } else {
+                setHeight(345)
+            }
+            setIsTall(false);
+            setPreventScroll("");
+            setOpen({
+                bool: false,
+                visibility: "hidden"
+            });
+            setCardStyle({
+                radius:'30px 30px 0px 0px',
+                iconVisibility:'visible'
+            });
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
         } 
     };
     
@@ -303,6 +350,9 @@ const list = () => {
             setPreventScroll('');
             cardRef.current.scrollTo({top:0});
             setIsTall(false);
+            setTimeout(() => {
+                setPreventScroll("scroll");
+            }, 100)
         } else{
             setKeyword('');
             setTags([]);
@@ -432,7 +482,7 @@ const list = () => {
         setVisibleItems(visibleItems + 10);
     };
 
-    const TransparentDialog = styled(Dialog)({
+    const TransparentDialog = muiStyled(Dialog)({
         '& .MuiPaper-root': {
             backgroundColor: 'transparent',
             boxShadow:'none',
@@ -538,7 +588,7 @@ const list = () => {
                 <Map latitude={37.58622450673971} longitude={126.99709024757782} places={filteredPlace} />
                 
                 <Slide direction="up" in={open.bool} timeout={1} >
-                    <Container fixed style={{padding: '0px 16px 0px 0px',}}>
+                    <Container fixed style={{padding: '0px 16px 0px 0px'}}>
                         <Card style={{
                         position: 'absolute',
                         top: '0px',
@@ -576,7 +626,7 @@ const list = () => {
                         </Card>
                     </Container>
                 </Slide>
-                <Container style={{padding: '13px 16px 0px 0px',}}  >
+                <Container style={{padding: '13px 16px 0px 0px'}}  >
                     <Card style={{
                     borderRadius: cardStyle.radius,
                     position: 'absolute',
@@ -590,7 +640,6 @@ const list = () => {
                     transition: `height ${animationDuration} ${animationTimingFunction}`,
                     border: '1px solid transparent',
                     marginBottom:'85px',
-                    
                     }} 
                     ref={cardRef}
                     onTouchStart={handleTouchStart}
@@ -600,7 +649,15 @@ const list = () => {
                         {
                             !open.bool ?
                         <div style={{textAlign:'center', paddingTop:'8px', visibility:cardStyle.iconVisibility}} >
-                            <Image width={70} height={4} src={line} layout='fixed' /> 
+                            <Image 
+                                width={70} 
+                                height={4} 
+                                src={line} 
+                                layout='fixed' 
+                                style={{cursor: 'pointer'}}
+                                onMouseDown={handleDragStart}
+                                onDrag={handleDragMove}
+                            /> 
                         </div>
                         : null
                         }

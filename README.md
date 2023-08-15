@@ -5,45 +5,29 @@
 
 <br>
 
-## 스프링 빌드
-1. cd backend
-2. 맥의 경우 ./gradlew clean build -x test 입력
-3. 윈도우의 경우 gradlew.bat clean build -x test 입력
+## 실행 순서
+1. make build-mac (윈도우는 build-win)
+2. make run
+3. make connect (백엔드 초기 데이터 주입 시작됐을 때)
 
 <br>
+
+## 스프링 빌드
+make build-mac
+<br>
+make build-win
 
 ## 도커 실행
-1. root 위치
-2. docker-compose up --build
-
-<br>
-
-## 실시간 감지 켜기
-1. 백엔드 초기 데이터 주입 시작됐을 때
-2. root 위치에서
-3. curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-mysql.json 실행
-
-<br>
+make run
 
 ## 도커 종료
-1. root 위치
-2. docker volume prune -f && docker image prune -f && docker-compose down
+make stop
 
-<br>
+## client 컨테이너만 시작
+make run-client
 
-## 백엔드 스프링 따로 실행시 도커 실행
-1. root 위치
-2. docker-compose -f docker-compose.backend.yml up --build
+## client 컨테이너만 종료
+make stop-client
 
-<br>
-
-## 백엔드 스프링 따로 실행시 실시간 감지 켜기
-1. 백엔드 초기 데이터 주입 시작됐을 때
-2. root 위치에서
-3. curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-mysql-backend.json 실행
-
-<br>
-
-## 백엔드 스프링 따로 실행시 도커 종료
-1. root 위치
-2. docker volume prune -f && docker image prune -f && docker-compose -f docker-compose.backend.yml down
+## 실시간 감지 켜기
+make connect
