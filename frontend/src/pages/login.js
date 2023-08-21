@@ -135,7 +135,7 @@ const LoginPage = () => {
                             <div style={{display: 'flex', margin: '10px 24px', marginTop: '12px'}}>
                                 {rememberUsername ? 
                                     <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' style={{marginTop: '5px'}} /> : 
-                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' />}
+                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' style={{marginTop: '5px'}} />}
                                 <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '12px', color: '#777777'}} >아이디 기억하기</span>
                             </div>
                             {
