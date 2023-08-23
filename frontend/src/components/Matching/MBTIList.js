@@ -18,9 +18,7 @@ import ENFP from '../../image/mbti/profile/ENFP.png';
 import ENTJ from '../../image/mbti/profile/ENTJ.png';
 import ENTP from '../../image/mbti/profile/ENTP.png';
 
-export const displayMBTI= (mbti) => {
-    const imageWidth = 140;
-    const imageHeight = 140;
+export const displayMBTI= (mbti, imageWidth= 140, imageHeight= 140) => {
 
     switch(mbti) {
         case "INTP":

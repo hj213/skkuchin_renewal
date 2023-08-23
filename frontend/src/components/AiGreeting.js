@@ -186,23 +186,10 @@ const AiGreeting = () => {
 
     const authLinks = (
         <div style={{ position:"relative", paddingTop:"10px", width: "100%", background: "white", alignContent:"center", maxWidth:"420px"}}>
-            <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px"}}>
-                <Typography style={{fontWeight:700}}>
-                    안녕하세요 &nbsp;
-                    <span style={{color:"#FFCE00"}}>
-                        {user !== null && user.nickname}
-                    </span>
-                    님
-                    <br />
-                    오늘의 대화 상대를 확인해보세요 👀
+            <div style={{ display: "flex", justifyContent: "space-between"}}>
+                <Typography style={{fontWeight:700, color: '#3C3C3C', fontSize: '21px', fontWeight: 700, padding:"10px 24px"}}>
+                    같이 한끼 해요🍚
                 </Typography>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", padding:"10px 15px 0px 15px", margin:"0 0 30px 0"}}>
-                <Button sx={{padding:0}} onClick={handleOpen}>
-                        <Typography style={{fontSize:"12px", color:"black", borderBottom:"1px solid black"}}>
-                            내 프로필 보기
-                        </Typography>
-                </Button>
             </div>
         </div>
     );
@@ -232,7 +219,7 @@ const AiGreeting = () => {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container disableGutters={true} maxWidth="xs" style={{height:"120px", margin:"0", padding:"0"}} overflow="hidden">
+            <Container disableGutters={true} maxWidth="xs" style={{height:"max-content", margin:"0", padding:"0"}} overflow="hidden">
                     {
                         isAuthenticated ? authLinks: guestLinks
                     }
@@ -328,8 +315,10 @@ const AiGreeting = () => {
                         {userInfo.mbti}
                         </Typography>
                             {(userInfo.keywords) != null?
-                                ((userInfo.keywords).slice(0,2).map((interest =>
-                                    <Typography style={{
+                                ((userInfo.keywords).slice(0,2).map(((index,interest) =>
+                                    <Typography 
+                                        key={index}
+                                        style={{
                                         color:"white", 
                                         background:"#BABABA",
                                         borderRadius:"20px", 
