@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions } from '@mui/material';
 import theme from '../theme/theme';
 import next from '../image/arrow_next.png';
+import insta from '../image/insta.png';
 import { displayProfile } from '../components/MyPage/ProfileList';
 import { logout } from '../actions/auth/auth';
 
@@ -37,7 +38,7 @@ const myPage = () => {
     
 
     const arrowClick = () => {
-        router.push('/editProfile')
+        router.push('/editNickname')
     }
 
     const handleLogout = () => {
@@ -187,28 +188,56 @@ const myPage = () => {
         <UpperBar />
         {user && <div style={{marginTop: '30px'}}>
             {/* 상단 회원 정보 */}
-            <div style={{display: 'grid', gridTemplateColumns: '72px 1fr 38px', alignItems: 'center', padding: '0 15px'}}>
-                {displayProfile(user.image, 72, 72)}
-                <div style={{display: 'flex', flexDirection: 'column', marginLeft: '9px'}}>
-                    <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname} 님</Typography>
-                    {/* 캠퍼스, 학과, 학번 */}
-                    <div style={{display: 'flex'}}>
-                        <Typography sx={{height: '18px', border: "1px solid #BABABA", fontSize: '10px', p: '1px 6.5px', borderRadius: '17px', marginTop:"-2px"}} color={theme.palette.fontColor.main}>{user.campus}</Typography>
-                        <Typography sx={{fontSize: '10px', p: '0px 3.5px'}} color={theme.palette.fontColor.main}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
-                    </div>
+            <div style={{display: 'flex', gridTemplateColumns: '72px 1fr 38px', alignItems: 'center', margin: '0 10px 15px 0px'}}>
+                <div style={{width: '80px', height:'80px', margin:'0 15px', backgroundColor:'#FFF8D9', border:'0px solid transparent', borderRadius:'10px'}}>
+                    {displayProfile(user.image, 80, 80)}
                 </div>
-                <div onClick={arrowClick}><Image width={38} height={38} src={next} onClick={arrowClick} layout='fixed' /></div>
+                <div style={{display: 'flex', flexDirection: 'column', marginLeft: '0px'}}>
+                    {/* 닉네임, 캠퍼스, 학과, 학번 */}
+                    <div style={{display: 'flex'}}>
+                        <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname}</Typography>
+                        <Typography sx={{height: '24px', border: "1px solid #FFFCE4", borderRadius:'10px', fontSize: '12px',  fontWeight:'700',p: '2px 4px 0px 4px', color:'#FFAC0B', backgroundColor:'#FFFCE4', margin:'-2px 0px 0px 5px'}} >{user.campus}</Typography>
+                    </div>
+                    <Typography sx={{fontSize: '12px', p: '0px 3.5px 0px 0px', color:'#3C3C3C'}}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
+
+                </div>
             </div>
+            <div style={{height:'10px',backgroundColor:"#FBFBFB"}}></div>
             
             {/* 사용자 설정 */}
-            <Container style={{display: 'grid', borderBottom: '1px solid #DDDDDD', padding: '0 15px', marginTop: '30px'}}>
+            <Container style={{display: 'grid', padding: '0 15px', marginTop: '30px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>사용자 설정</Typography>
-                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px', color: '#000000', padding: '0', justifySelf: 'start'}}>비밀번호 변경</Button></div>
+                <div onClick={() => router.push('/editNickname')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>닉네임 변경</Button></div>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>비밀번호 재설정</Button></div>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>프로필 이미지 변경</Button></div>
             </Container>
+            <div style={{height:'1px', backgroundColor:'#E2E2E2', margin:'0 10px'}}></div>
+
+            {/* 커뮤니티 */}
+            <Container style={{display: 'grid', padding: '0 15px', marginTop: '30px'}}>
+                <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>커뮤니티</Typography>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>내 게시글</Button></div>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>좋아요 누른 게시글</Button></div>
+            </Container>
+            <div style={{height:'1px', backgroundColor:'#E2E2E2', margin:'0 10px'}}></div>
+
+            {/* 커뮤니티 */}
+            <Container style={{display: 'grid', padding: '0 15px', marginTop: '30px'}}>
+                <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>밥약 매칭 설정</Typography>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>매칭 프로필 변경</Button></div>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>매칭 ON/OFF</Button></div>
+            </Container>
+            <div style={{height:'1px', backgroundColor:'#E2E2E2', margin:'0 10px'}}></div>
 
             {/* 알림 설정 */}
-            <Container style={{borderBottom: '1px solid #DDDDDD', padding: '0 15px', marginTop: '25px'}}>
+            <Container style={{padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '20px'}}>알림 설정</Typography>
+                <div onClick={() => router.push('/enrollSMS')} style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
+                    <Typography style={{fontSize: '14px', fontWeight: '400', alignSelf: 'center'}}>채팅 알림</Typography>
+                </div>
+                <div onClick={() => router.push('/enrollSMS')} style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
+                    <Typography style={{fontSize: '14px', fontWeight: '400', alignSelf: 'center'}}>공지 이벤트 알림</Typography>
+                </div>
                 {pushToken ?
                 <>
                     <div style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '13px'}}>
@@ -237,18 +266,20 @@ const myPage = () => {
                     </div>
                 </>
                 :
-                <div onClick={() => router.push('/enrollSMS')} style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
-                    <Typography style={{fontSize: '16px', fontWeight: '500', alignSelf: 'center'}}>SMS 알림 등록</Typography>
+                 <div onClick={() => router.push('/enrollSMS')} style={{display: 'grid', gridTemplateColumns: '1fr 49px', alignItems: 'start', marginBottom: '20px'}}>
+                    <Typography style={{fontSize: '14px', fontWeight: '400', alignSelf: 'center'}}>SMS 알림 등록</Typography>
                 </div>
-                }
+                } 
 
             </Container>
+            <div style={{height:'1px', backgroundColor:'#E2E2E2', margin:'0 10px'}}></div>
 
             {/* 기타 */}
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
-                <Typography onClick={handleDialogOpen} style={{fontSize: '16px', fontWeight: '500', marginBottom: '25px'}}>로그아웃</Typography>
-                <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '16px', fontWeight: '500'}}>문의하기</Typography>
+                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>식당 추가 요청</Button></div>
+                <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '14px', fontWeight: '400',marginBottom: '10px', color: '#3C3C3C',}}>문의하기</Typography>
+                <Typography onClick={handleDialogOpen} style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C'}}>로그아웃</Typography>
             </Container>
 
             {/* 하단 */}
@@ -256,6 +287,7 @@ const myPage = () => {
                 <div style={{display: 'flex', fontSize: '14px'}}>
                     <Button onClick={() => router.push('/deleteUser')} variant="text" style={{color: "#BABABA"}}>탈퇴하기</Button>
                     <Button onClick={() => router.push('/agreementList')} variant="text" style={{color: "#BABABA"}}>약관 및 정책</Button>
+                    <Button onClick={() => router.push('/agreementList')} variant="text" style={{color: "#BABABA"}}><Image src={insta} width={20} height={20}></Image></Button>
                 </div>
             </Container>
 
