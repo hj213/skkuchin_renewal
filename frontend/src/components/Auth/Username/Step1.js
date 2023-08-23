@@ -48,11 +48,11 @@ export default function Step1(props) {
         <div>
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                            <Grid item style={{margin:'0px 0px 0px 39px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={backClick} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'33%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>아이디 찾기</Typography>
+                                {/* <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>아이디 찾기</Typography> */}
                             </Grid>
                         </Grid>
         </Container>
@@ -70,46 +70,60 @@ export default function Step1(props) {
                 <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>아이디 찾기</Typography>
         </header> */}
         <form onSubmit={handleSubmit} style={{ width: '100%'}}>
-        <div style={{margin: '0 36px'}}>
-        <Typography style={{fontSize: '14px', fontWeight: '400', marginBottom: '13px'}}>이메일 입력</Typography>
-            <div style={{textAlign: 'center', display: 'flex'}}>
-            <TextField
-                variant="standard"
-                placeholder="킹고 이메일 주소"
-                value={emailId}
-                onChange={(e) => setEmailId(e.target.value)}
-                InputProps={{
-                    style: {
-                        fontSize: '12px',
-                        padding: '4px 24px 5px 0',
-                        height: '32px'
-                    }
-                }}    
-            />
-            <Select
-                variant="standard"
-                value={domain}
-                onChange={(e) => setDomain(e.target.value)}
-                InputProps={{
-                    style: {
-                        fontSize: '12px',
-                    }
-                }}
-            >
-                <MenuItem value="@g.skku.edu">@g.skku.edu</MenuItem>
-                <MenuItem value="@skku.edu">@skku.edu</MenuItem>
-            </Select>
-            </div>
-            <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', marginBottom: '200px'}}>회원가입시 입력하신 이메일을 입력해주세요.</Typography>
-            </div>
-            <div style={{margin: '53px 36px 12px'}}>
-            {emailId != '' ?
-                <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                    확인
+        <div style={{margin: '0 24px'}}>
+        <Typography style={{fontSize: '24px', fontWeight: '900', marginBottom: '12px', color: '#3C3C3C'}}>아이디 찾기</Typography>
+        <Typography style={{fontSize: '12px', fontWeight: '400', marginBottom: '13px', color: '#777777'}}>회원가입시 입력하신 이메일을 입력해주세요.</Typography>
+        <Typography style={{fontSize: '12px', fontWeight: '900', marginTop: '45px', color: '#3C3C3C'}}>이메일 입력</Typography>
+        <div style={{textAlign: 'center', display: 'grid', gridTemplateColumns: '1fr 1fr', marginTop: '8px'}}>
+        <input
+            variant="standard"
+            placeholder="이메일 주소"
+            value={emailId}
+            onClick={e => setDialogOpen(false)}
+            onChange={(e) => setEmailId(e.target.value)}
+            style={{
+                fontSize: '16px',
+                padding: '20px 15px 21px 12px',
+                height: '56px',
+                border: dialogOpen ? '1px solid #FF3B3B' : '1px solid #E2E2E2',
+                borderRadius: '8px 0 0 8px',
+                width: '100%',
+                outline: 'none'
+            }}
+        />
+        <Select
+            //xs={2}
+            sx={{ 
+            '& .MuiOutlinedInput-notchedOutline': {
+                border: 'none'
+            }, 
+            color: '#3C3C3C',
+            fontSize: '16px',
+            //padding: '0px 0px 1px 12px',
+            textAlign: 'left',
+            height: '56px',
+            border: dialogOpen ? '1px solid #FF3B3B' : '1px solid #E2E2E2',
+            borderLeft: '1px solid white',
+            borderRadius: '0 8px 8px 0',
+            outline: 'none',
+            appearance: 'none',}}
+            value={domain}
+            onChange={(e) => setDomain(e.target.value)}
+        >
+            <MenuItem value='@g.skku.edu'>@g.skku.edu</MenuItem>
+            <MenuItem value='@skku.edu'>@skku.edu</MenuItem>
+        </Select>   
+        </div>
+        <div>{dialogOpen ? <Typography sx={{fontSize: '12px', fontWeight: '500', color: '#FF3B3B', mt: '4px'}}>가입되어 있지 않은 이메일 주소입니다.</Typography> : <div style={{height: '20px'}}></div>}</div>
+        </div>
+            <div style={{margin: '32px 24px 12px'}}>
+            {emailId != '' && !dialogOpen?
+                <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
+                    아이디 찾기
                 </Button>
                 :
-                <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                    확인
+                <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#E2E2E2", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
+                    아이디 찾기
                 </Button>
             }
             </div>
@@ -120,22 +134,6 @@ export default function Step1(props) {
             </div>
         </Box>
 
-        <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
-                <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
-                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px', fontWeight: '700'}}>
-                      {dialogMsg}
-                    </Typography>
-                </DialogContent>
-                <DialogActions style={{justifyContent:'center'}}>
-                    
-                        <Button onClick={e => setDialogOpen(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:'#505050'}}>
-                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#505050', marginBottom:'10px'}}>
-                                확인
-                            </Typography>
-                        </Button>
-
-                </DialogActions>
-          </Dialog>
         </div>
     );
 }
