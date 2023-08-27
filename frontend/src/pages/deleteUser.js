@@ -30,8 +30,8 @@ const deleteUser = () => {
     }
 
     const handleNextStep = () => {
-        dispatch(delete_user())
-            .then(() => {
+        dispatch(delete_user(([result, message]) => {
+            if (result) {
                 let username = localStorage.getItem("username");
                 if (username != null) {
                     localStorage.removeItem("username");
@@ -43,10 +43,8 @@ const deleteUser = () => {
                     noticeAlarmSubscription.unsubscribe();
                 }
                 dispatch(logout());
-            })
-            .catch((error) => {
-                console.log(error)
-            });
+            }
+        }));
     }
 
     return (

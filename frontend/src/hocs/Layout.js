@@ -67,6 +67,10 @@ const Layout = ({title, content, children}) => {
         }, onError);
     };
 
+    useEffect(() => {
+        connectStompClient();
+    }, []);
+    
     const campus = localStorage.getItem('map');
 
     useEffect(() => {

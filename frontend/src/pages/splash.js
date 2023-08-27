@@ -23,13 +23,11 @@ const splash = () => {
 
     useEffect(() => {
         const timerId = setTimeout(() => {
-            dispatch(load_user())
-                .then(() => {
+            dispatch(load_user(([result, message]) => {
+                if (result) {
                     dispatch(update_last_accessed_time(true));
                     router.push('/');
-                })
-                .catch((error) => {
-                    console.log(error);
+                } else {
                     if (campus) {
                         dispatch(change_toggle_for_not_user(campus));
                     } else {
@@ -43,7 +41,8 @@ const splash = () => {
                         localStorage.setItem("user", "true")
                         router.push('/nextSplash')
                     }
-                })
+                }
+            }));
         }, 3000);
 
         return () => clearTimeout(timerId);

@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
-import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
+import { getToken, request_refresh } from '../auth/auth';
 import {
     LOAD_PLACE_FAIL,
     LOAD_PLACE_SUCCESS,
@@ -111,14 +109,7 @@ export const load_place = (id, callback) => async dispatch => {
 
 export const search_places = (keyword, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/place/search?q=${keyword}`, {
@@ -323,14 +314,7 @@ export const enroll_place = (
     callback
 ) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const coordinate = await getCoordinate(data.address);
@@ -401,14 +385,7 @@ export const modify_place = (
     callback
 ) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const coordinate = await getCoordinate(data.address);
@@ -503,14 +480,7 @@ export const modify_place = (
 
 export const delete_place = (place_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/place/${place_id}`, {
@@ -546,14 +516,7 @@ export const delete_place = (place_id, callback) => async dispatch => {
 
 export const get_no_review_places = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/place/noreview`, {
@@ -591,14 +554,7 @@ export const get_no_review_places = (callback) => async dispatch => {
 
 export const get_no_image_places = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/place/noimage`, {
@@ -636,14 +592,7 @@ export const get_no_image_places = (callback) => async dispatch => {
 
 export const get_no_menu_places = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/place/nomenu`, {
