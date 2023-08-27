@@ -7,7 +7,6 @@ import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter

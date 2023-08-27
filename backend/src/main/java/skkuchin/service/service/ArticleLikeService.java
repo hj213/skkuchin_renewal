@@ -5,11 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Forum.Article;
 import skkuchin.service.domain.Forum.ArticleLike;
-import skkuchin.service.domain.Map.Favorite;
-import skkuchin.service.domain.Map.Place;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleLikeDto;
-import skkuchin.service.dto.FavoriteDto;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.ArticleLikeRepo;
@@ -18,7 +15,6 @@ import skkuchin.service.repo.CommentRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

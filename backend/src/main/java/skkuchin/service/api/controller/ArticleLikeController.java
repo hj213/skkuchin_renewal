@@ -13,8 +13,6 @@ import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleLikeDto;
 import skkuchin.service.dto.CMRespDto;
-import skkuchin.service.dto.FavoriteDto;
-import skkuchin.service.dto.ReviewDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.service.ArticleLikeService;
 

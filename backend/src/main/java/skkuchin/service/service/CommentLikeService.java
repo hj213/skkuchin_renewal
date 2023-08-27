@@ -2,14 +2,10 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.scope.ScopedObject;
 import org.springframework.stereotype.Service;
-import skkuchin.service.domain.Forum.Article;
-import skkuchin.service.domain.Forum.ArticleLike;
 import skkuchin.service.domain.Forum.Comment;
 import skkuchin.service.domain.Forum.CommentLike;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.dto.ArticleLikeDto;
 import skkuchin.service.dto.CommentLikeDto;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;

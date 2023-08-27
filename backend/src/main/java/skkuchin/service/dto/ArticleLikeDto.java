@@ -9,12 +9,10 @@ import lombok.RequiredArgsConstructor;
 import skkuchin.service.domain.Forum.Article;
 import skkuchin.service.domain.Forum.ArticleLike;
 import skkuchin.service.domain.Forum.Comment;
-import skkuchin.service.domain.Forum.CommentLike;
 import skkuchin.service.domain.User.AppUser;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
