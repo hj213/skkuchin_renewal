@@ -1,8 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 
-const NotoSansKRBold = "../font/NotoSansKR-Bold.otf"
-const NotoSansKRMedium = "../font/NotoSansKR-Medium.otf"
-const NotoSansKRRegular = "../font/NotoSansKR-Regular.otf"
+const NanumSquareRoundExtraBold = "../font/NanumSquareRoundOTFEB.otf";
+const NanumSquareRoundBold = "../font/NanumSquareRoundOTFB.otf";
+const NanumSquareRound = "../font/NanumSquareRoundOTFR.otf";
 
 const theme = createTheme({
     palette: {
@@ -16,12 +16,13 @@ const theme = createTheme({
         }
     },
     typography: {
-        fontFamily: 'Noto Sans KR, sans-serif',
+        fontFamily: 'NanumSquareRound, sans-serif',
+        fontStyle: 'normal',
         h1: {
-            fontWeight: 700,
+            fontWeight: 800,
         },
         h2: {
-            fontWeight: 500,
+            fontWeight: 700,
         },
         h3: {
             fontWeight: 400,
@@ -31,19 +32,22 @@ const theme = createTheme({
         MuiCssBaseline: {
             styleOverrides: `
                 @font-face {
-                    font-family: 'Noto Sans KR';
+                    font-family: 'NanumSquareRound';
+                    font-weight: 800;
+                    font-style: normal;
+                    src: url(${NanumSquareRoundExtraBold}) format('otf');
+                },
+                @font-face {
+                    font-family: 'NanumSquareRound';
                     font-weight: 700;
-                    src: local('NotoSansKR-Bold'), url(${NotoSansKRBold}) format('otf');
+                    font-style: normal;
+                    src: url(${NanumSquareRoundBold}) format('otf');
                 },
                 @font-face {
-                    font-family: 'Noto Sans KR';
-                    font-weight: 500;
-                    src: local('NotoSansKR-Medium'), url(${NotoSansKRMedium}) format('otf');
-                },
-                @font-face {
-                    font-family: 'Noto Sans KR';
+                    font-family: 'NanumSquareRound';
                     font-weight: 400;
-                    src: local('NotoSansKR-Regular'), url(${NotoSansKRRegular}) format('otf');
+                    font-style: normal;
+                    src: url(${NanumSquareRound}) format('otf');
                 },
             `,
         },
