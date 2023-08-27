@@ -52,11 +52,11 @@ public class ArticleLikeController {
     public ResponseEntity<?> getMyLikes(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser appUser = principalDetails.getUser();
         List<ArticleLikeDto.Response> articleLikes = articleLikeService.getMyArticleLikes(appUser);
-        return new ResponseEntity<>(new CMRespDto<>(1, "내가 좋아요 추가한 게시글 가져오기 완료", articleLikes), HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1, "내가 좋아요 누른 게시글 가져오기 완료", articleLikes), HttpStatus.OK);
     }
     
     
-    @PostMapping("/{articleLikeId}")
+    @DeleteMapping("/{articleLikeId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<?> deleteArticleLike(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long articleLikeId){
         

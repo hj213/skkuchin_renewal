@@ -36,11 +36,11 @@ public class ArticleLikeService {
     @Transactional
     public List<ArticleLikeDto.Response> getMyArticleLikes(AppUser user) {
 
-        return articleLikeRepo.findByUser(user)
+        return articleLikeRepo.findByUser(user.getId())
                 .stream()
                 .map(articleLike -> new ArticleLikeDto.Response(
                         articleLike,
-                        articleLikeRepo.findByArticle(articleLike.getArticle()),
+                        articleLikeRepo.findByArticle(articleLike.getArticle().getId()),
                         commentRepo.findByArticle(articleLike.getArticle())
                 )).collect(Collectors.toList());
     }

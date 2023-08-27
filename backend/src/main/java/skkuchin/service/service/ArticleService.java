@@ -38,7 +38,7 @@ public class ArticleService {
                 .map(article -> new ArticleDto.Response(
                        article,
                         commentRepo.findByArticle(article),
-                        articleLikeRepo.findByArticle(article)
+                        articleLikeRepo.findByArticle(article.getId())
                 ))
                 .collect(Collectors.toList());
     }
@@ -50,7 +50,7 @@ public class ArticleService {
                 .map(article -> new ArticleDto.Response(
                         article,
                         commentRepo.findByArticle(article),
-                        articleLikeRepo.findByArticle(article)
+                        articleLikeRepo.findByArticle(article.getId())
                 ))
                 .collect(Collectors.toList());
 

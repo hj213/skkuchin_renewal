@@ -13,6 +13,6 @@ public interface CommentRepo extends JpaRepository<Comment, Long> {
 
     List<Comment> findByArticle(Article article);
 
-    @Query("SELECT a FROM Comment a WHERE a.article.id = :articleId ORDER BY a.date DESC")
+    @Query("SELECT a FROM Comment a WHERE a.article.id = :articleId ORDER BY a.date ASC")
     List<Comment> findByLatestCommentTime(@Param("articleId") Long articleId);
 }
