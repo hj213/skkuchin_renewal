@@ -6,76 +6,61 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import skkuchin.service.domain.Forum.*;
+import skkuchin.service.domain.Forum.Article;
+import skkuchin.service.domain.Forum.ArticleLike;
+import skkuchin.service.domain.Forum.Comment;
+import skkuchin.service.domain.Forum.CommentLike;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Profile;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 
-public class CommentDto {
+public class ArticleLikeDto {
 
-    @Getter
+
     @AllArgsConstructor
+    @Getter
     @RequiredArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static  class PostRequest{
-        @NotBlank
-        private String content;
-
-        @NotNull
+    public static class PostRequest{
         @JsonProperty
         private Long articleId;
-        public Comment toEntity(AppUser user,Article article){
-            return Comment.builder()
+
+        public ArticleLike toEntity(AppUser user, Article article){
+            return ArticleLike
+                    .builder()
                     .user(user)
                     .article(article)
-                    .content(content)
-                    .date(LocalDateTime.now())
                     .build();
         }
-
-
     }
 
     @Getter
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static  class Response {
-
-        private Long id;
-        private  String content;
-        @JsonProperty
-        private Long userId;
-
-        private String nickname;
+    public static class Response{
 
         @JsonProperty
-        private Profile userImage;
-        @JsonProperty
-        private String displayTime;
-        @JsonProperty
-        private Long commentLikes;
-        @JsonProperty
-        private boolean myComment;
-        @JsonProperty
-        private boolean writer;
+        private Long articleId;
+        private String title;
+        private String content;
+        private String date;
 
-        public Response(Comment comment, List<CommentLike> commentLikes,AppUser user){
-            this.id =comment.getId();
-            this.content = comment.getContent();
-            this.userId = comment.getUser().getId();
-            this.nickname = comment.getUser().getNickname();
-            this.userImage = comment.getUser().getImage();
-            this.displayTime = formatDate(comment.getDate());
-            this.commentLikes = commentLikes.stream().count();
-            this.myComment = user.getId().equals(comment.getUser().getId());
-            this.writer = comment.getArticle().getUser().getId().equals(comment.getUser().getId());
+        @JsonProperty
+        private Long commentCounts;
+        @JsonProperty
+        private Long articleLikeCounts;
 
+        public Response(ArticleLike articleLike, List<ArticleLike> articleLikes, List<Comment> comments){
+            this.articleId = articleLike.getArticle().getId();
+            this.title = articleLike.getArticle().getTitle();
+            this.content = articleLike.getArticle().getContent();
+            this.date = formatDate(articleLike.getArticle().getDate());
+            this.commentCounts = comments.stream().count();
+            this.articleLikeCounts =articleLikes.stream().count();
         }
         private String formatDate(LocalDateTime date) {
             LocalDateTime now = LocalDateTime.now();
@@ -95,5 +80,6 @@ public class CommentDto {
             }
         }
     }
+
 
 }

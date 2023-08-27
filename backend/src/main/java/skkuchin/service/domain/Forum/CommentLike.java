@@ -11,6 +11,14 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(
+        name="commentLike",
+        uniqueConstraints={
+                @UniqueConstraint(
+                        columnNames={"comment_id", "user_id"}
+                )
+        }
+)
 public class CommentLike {
 
     @Id
@@ -21,7 +29,7 @@ public class CommentLike {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private AppUser user;
 
-    @JoinColumn(name = "article_id", nullable = false)
+    @JoinColumn(name = "comment_id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Comment comment;
 }
