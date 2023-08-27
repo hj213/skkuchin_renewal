@@ -20,7 +20,6 @@ const SignUpStep5 = (props) => {
     }
     
     const handleResend = () => {
-      if (dispatch && dispatch !== null && dispatch !== undefined) {
         dispatch(signup_email_send(props.data.username, props.data.email, true, ([result, message]) => {
           if (result) {
             setDialogMsg("이메일을 재전송했습니다.");
@@ -31,22 +30,19 @@ const SignUpStep5 = (props) => {
           }
           setDialogOpen(true);
         }));
-      }
     }
 
     const handleSubmit= (e) => {
       e.preventDefault();
 
-      if (dispatch && dispatch !== null && dispatch !== undefined) {
-        dispatch(signup_email_check(props.data.username, ([result, message]) => {
-          if (result) {
-            props.handleNextStep();
-          } else {
-            setDialogMsg(message);
-            setDialogOpen(true);
-          }
-        }));
-      }
+      dispatch(signup_email_check(props.data.username, ([result, message]) => {
+        if (result) {
+          props.handleNextStep();
+        } else {
+          setDialogMsg(message);
+          setDialogOpen(true);
+        }
+      }));
     }
 
     const handleDialogOpen = (e) => {

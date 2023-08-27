@@ -74,9 +74,6 @@ const Layout = ({title, content, children}) => {
 
     useEffect(() => {
         connectStompClient();
-        if (currentPathname !== "/admin") {
-            router.push('/splash');
-        }
     }, []);
 
     useEffect(() => {

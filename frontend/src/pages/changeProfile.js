@@ -166,16 +166,11 @@ const makeProfile = () => {
     }
     
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-
-            dispatch(load_matching_info(([result, message]) => {
-                if (result) {
-                } else {
-                }
-            }));
-
-        }
-
+        dispatch(load_matching_info(([result, message]) => {
+            if (result) {
+            } else {
+            }
+        }));
     }, [dispatch]);
 
     //초기값 받아오기

@@ -47,15 +47,9 @@ const SignUpStep2 = (props) => {
     }
 
     const checkNickname = () => {
-      check_nickname(props.data.nickname)
-        .then((message) => {
-          setValidNickname(true);
-          setNicknameMsg(message);
-        })
-        .catch((error) => {
-          setValidNickname(false);
-          setNicknameMsg(error);
-        })
+      check_nickname(props.data.nickname, ([result, message]) => {
+        setValidNickname(result);
+      });
   }
 
 

@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
-import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
+import { getToken, request_refresh } from '../auth/auth';
 import {
     GET_REQUEST_ID_SUCCESS,
     GET_REQUEST_ID_FAIL,
@@ -39,13 +37,7 @@ import {
 
 export const load_request_id = (callback) => async dispatch => {
         await dispatch(request_refresh());
-        const access = Cookies.get('access') ?? null;
-    
-        if (access === null) {
-            return dispatch({
-                type: AUTHENTICATED_FAIL
-            });
-        }
+        const access = dispatch(getToken('access'));
     
         try {
             const res = await fetch(`${API_URL}/api/chat/room/request`, {
@@ -80,13 +72,7 @@ export const load_request_id = (callback) => async dispatch => {
 
 export const request_chat = (id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         id
@@ -128,13 +114,7 @@ export const request_chat = (id, callback) => async dispatch => {
 
 export const reply_chat_request = (reaction, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         reaction
@@ -174,14 +154,7 @@ export const reply_chat_request = (reaction, room_id, callback) => async dispatc
 
 export const set_user_block = (reaction, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         reaction
@@ -221,14 +194,7 @@ export const set_user_block = (reaction, room_id, callback) => async dispatch =>
 
 export const set_chat_room_alarm = (reaction, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         reaction
@@ -268,14 +234,7 @@ export const set_chat_room_alarm = (reaction, room_id, callback) => async dispat
 
 export const set_meet_time = (time, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         time
@@ -315,14 +274,7 @@ export const set_meet_time = (time, room_id, callback) => async dispatch => {
 
 export const set_meet_place = (place, room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         place
@@ -362,14 +314,7 @@ export const set_meet_place = (place, room_id, callback) => async dispatch => {
 
 export const delete_meet_time = (room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/chat/room/meet/time/${room_id}`, {
@@ -402,14 +347,7 @@ export const delete_meet_time = (room_id, callback) => async dispatch => {
 
 export const delete_meet_place = (room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/chat/room/meet/place/${room_id}`, {
@@ -442,14 +380,7 @@ export const delete_meet_place = (room_id, callback) => async dispatch => {
 
 export const exit_room = (room_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/chat/room/exit/${room_id}`, {
@@ -481,14 +412,7 @@ export const exit_room = (room_id, callback) => async dispatch => {
 };
 
 export const get_realtime_chat_room = (username, stompClient) => dispatch => {
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const subscription = stompClient.subscribe(`/exchange/chat.exchange/room.${username}chatRoomList`,(content) => {
         const data = JSON.parse(content.body);
@@ -518,14 +442,7 @@ export const get_realtime_chat_room = (username, stompClient) => dispatch => {
 };
 
 export const get_chat_room_info = (stompClient) => dispatch => {
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         stompClient.send('/app/chat.list', {"pushToken" : access});
