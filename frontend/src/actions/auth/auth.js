@@ -19,8 +19,6 @@ import {
 import { clear_search_results } from '../place/place';
 import { load_token } from '../pushToken/pushToken';
 
-const skkuchinAuthUrl = `${API_URL}/api/user`;
-
 export const getToken = (tokenName) => dispatch => {
     const tokenDic = {
         access: Cookies.get('access') ?? null,
@@ -63,7 +61,7 @@ export const register = async (registerData, callback) => {
     }
 };
 
-export const login = (username, password) => async dispatch => {
+export const login = (username, password, callback) => async dispatch => {
     const body = JSON.stringify({ username, password });
 
     try {
@@ -408,7 +406,6 @@ export const delete_user = (callback) => async dispatch => {
     } catch (error) {
         console.log(error);
         if (callback) callback([false, error]);
-      
     }
 }
 
