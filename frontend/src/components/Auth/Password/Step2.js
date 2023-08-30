@@ -64,8 +64,8 @@ const Step2 = (props) => {
         <div>
         <Box
             sx={{
-            margin: '95px 15px 15px 15px',
-            margin: `calc(${remainHeight} * 0.45) 15px`,
+            margin: '95px 24px 15px 24px',
+            margin: `calc(${remainHeight} * 0.45) 24px`,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -85,8 +85,8 @@ const Step2 = (props) => {
             </Typography>
         </div>
 
-        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', width: '90%', margin: '0 20px'}}>
-        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', margin: '0 20px', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
+        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', width: '100%'}}>
+        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
             확인
         </Button>
         <Link component="button" variant="body2" color="#777777" onClick={handleResend} sx={{fontSize: '12px', mt: '32px'}}>이메일 재발송</Link>

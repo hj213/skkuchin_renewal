@@ -106,8 +106,7 @@ export default function SignUpStep3(props) {
         if (props.data.major == '화학공학/고분자공학부') {
             data = {...props.data, major: '화학공학_고분자공학부'}
         }
-console.log(data)
-if (dispatch && dispatch !== null && dispatch !== undefined) {
+
         dispatch(register(data))
             .then(() => {
                 props.handleNextStep();
@@ -115,7 +114,6 @@ if (dispatch && dispatch !== null && dispatch !== undefined) {
             .catch((error) => {
                 console.log(error);
             });
-        }
     }
 
     return (

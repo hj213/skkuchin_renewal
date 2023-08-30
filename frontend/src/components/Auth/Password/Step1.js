@@ -22,7 +22,7 @@ const Step1 = (props) => {
     const handleSubmit= (e) => {
         e.preventDefault();
         console.log(emailId+domain)
-        /*if (dispatch && dispatch !== null && dispatch !== undefined) {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(password_email_send(emailId+domain, ([result, message]) => {
                 if (result) {
                     props.setEmail(emailId+domain);
@@ -32,8 +32,7 @@ const Step1 = (props) => {
                     setDialogOpen(true);
                 }
             }));
-        }*/
-        props.handleNextStep();
+        }
     }
 
     const backClick = () => {
@@ -53,7 +52,7 @@ const Step1 = (props) => {
     <div>
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 39px', visibility:'none'}}>
+                            <Grid item style={{margin:'0px 0px 0px 24px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={backClick} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'28%'}}>
@@ -63,7 +62,7 @@ const Step1 = (props) => {
         </Container>
     <Box
         sx={{
-        margin: '55px 15px 15px 15px',
+        margin: '55px 0 15px 0',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
