@@ -21,18 +21,16 @@ const Step1 = (props) => {
 
     const handleSubmit= (e) => {
         e.preventDefault();
-        console.log(emailId+domain)
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(password_email_send(emailId+domain, ([result, message]) => {
-                if (result) {
-                    props.setEmail(emailId+domain);
-                    props.handleNextStep();
-                } else {
-                    setDialogMsg(message);
-                    setDialogOpen(true);
-                }
-            }));
-        }
+
+        dispatch(password_email_send(emailId+domain, ([result, message]) => {
+            if (result) {
+                props.setEmail(emailId+domain);
+                props.handleNextStep();
+            } else {
+                setDialogMsg(message);
+                setDialogOpen(true);
+            }
+        }));
     }
 
     const backClick = () => {

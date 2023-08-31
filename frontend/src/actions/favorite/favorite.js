@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import { API_URL } from '../../config/index';
-import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
+import { getToken, request_refresh } from '../auth/auth';
 import { 
     LOAD_FAV_SUCCESS,
     LOAD_FAV_FAIL,
@@ -14,13 +12,7 @@ import {
 
 export const load_favorite = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/favorite`,{
@@ -66,13 +58,7 @@ export const load_favorite = (callback) => async dispatch => {
 
 export const enroll_favorite = (place_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
     
     const body = JSON.stringify({
         place_id
@@ -117,13 +103,7 @@ export const enroll_favorite = (place_id, callback) => async dispatch => {
 
 export const delete_favorite = (favorite_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/favorite/${favorite_id}`, {

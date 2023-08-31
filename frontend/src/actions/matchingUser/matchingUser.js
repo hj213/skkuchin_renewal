@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import { API_URL } from '../../config/index';
-import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
+import { getToken, request_refresh } from '../auth/auth';
 import { 
     ADD_MATCHING_INFO_SUCCESS,
     ADD_MATCHING_INFO_FAIL,
@@ -19,14 +17,7 @@ import { load_candidate } from '../candidate/candidate';
 
 export const add_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         gender, keywords, introduction, mbti
@@ -124,14 +115,7 @@ export const add_new_matching_info = (username, gender, keywords, introduction, 
 
 export const load_matching_info = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
     
     try {
         const res = await fetch(`${API_URL}/api/matching/user/me`,{
@@ -177,14 +161,7 @@ export const load_matching_info = (callback) => async dispatch => {
 
 export const load_other_matching_info = (id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
     
     try {
         const res = await fetch(`${API_URL}/api/matching/user/${id}`,{
@@ -224,14 +201,7 @@ export const load_other_matching_info = (id, callback) => async dispatch => {
 
 export const change_status_info = (status, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         status
@@ -285,14 +255,7 @@ export const change_status_info = (status, callback) => async dispatch => {
 
 export const change_matching_info = (gender, keywords, introduction, mbti, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         gender, keywords, introduction, mbti

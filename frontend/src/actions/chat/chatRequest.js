@@ -8,15 +8,10 @@ import {
     GET_REALTIME_REQUEST_SUCCESS
 }
     from './types';
+import { getToken } from '../auth/auth';
 
 export const get_realtime_chat_request = (username, stompClient) => dispatch => {
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
     const subscription = stompClient.subscribe(`/exchange/chat.exchange/request.${username}`,(content) => {
         const data = JSON.parse(content.body);
         
@@ -34,13 +29,7 @@ export const get_realtime_chat_request = (username, stompClient) => dispatch => 
 };
 
 export const get_chat_request_info = (stompClient) => dispatch => {
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         stompClient.send('/app/chat.request', {"pushToken" : access});

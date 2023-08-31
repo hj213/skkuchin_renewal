@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
-import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
+import { getToken, request_refresh } from '../auth/auth';
 import {
     LOAD_PUSHTOKEN_FAIL,
     LOAD_PUSHTOKEN_SUCCESS,
@@ -17,14 +15,7 @@ import {
 
 export const load_token = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/push`, {
@@ -61,14 +52,7 @@ export const load_token = (callback) => async dispatch => {
 
 export const enroll_token = (subscription, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         subscription
@@ -111,14 +95,7 @@ export const enroll_token = (subscription, callback) => async dispatch => {
 
 export const enroll_phone = (phone, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         phone
@@ -161,14 +138,7 @@ export const enroll_phone = (phone, callback) => async dispatch => {
 
 export const set_chat_push = (chat, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         chat
@@ -211,14 +181,7 @@ export const set_chat_push = (chat, callback) => async dispatch => {
 
 export const set_info_push = (info, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         info

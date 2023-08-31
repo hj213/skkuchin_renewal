@@ -18,18 +18,15 @@ const Step2 = (props) => {
     }
 
     const handleResend = () => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            
-            dispatch(password_email_send(props.email, ([result, message]) => {
-                if (result) {
-                    setDialogMsg("이메일을 재전송했습니다.");
-                    setDialogOpen(true);
-                } else {
-                    setDialogMsg(message);
-                    setDialogOpen(true);
-                }
-            }));
-        }
+        dispatch(password_email_send(props.email, ([result, message]) => {
+            if (result) {
+                setDialogMsg("이메일을 재전송했습니다.");
+                setDialogOpen(true);
+            } else {
+                setDialogMsg(message);
+                setDialogOpen(true);
+            }
+        }));
     }
 
     const handleDialogOpen = (e) => {
@@ -43,16 +40,14 @@ const Step2 = (props) => {
     const handleSubmit= (e) => {
         e.preventDefault();
 
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
-            dispatch(password_email_check(props.email, ([result, message]) => {
-                if (result) {
-                    props.handleNextStep();
-                } else {
-                    setDialogMsg(message);
-                    setDialogOpen(true);
-                }
-            }));
-        }
+        dispatch(password_email_check(props.email, ([result, message]) => {
+            if (result) {
+                props.handleNextStep();
+            } else {
+                setDialogMsg(message);
+                setDialogOpen(true);
+            }
+        }));
     }
 
     useEffect(() => {

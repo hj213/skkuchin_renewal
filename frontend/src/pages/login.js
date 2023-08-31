@@ -42,31 +42,30 @@ const LoginPage = () => {
     const onSubmit = e => {
         e.preventDefault();
 
-        dispatch(login(username, password))
-            .then(() => {
+        dispatch(login(username, password, ([result, message]) => {
+            if (result) {
                 dispatch(update_last_accessed_time(true));
                 if (rememberUsername) {
                     localStorage.setItem("username", username);
                 } else {
                     localStorage.removeItem("username");
                 }
-            })
-            .catch((error) => {
-                if (error == '이메일 등록이 필요한 유저입니다') {
+            } else {
+                if (message == '이메일 등록이 필요한 유저입니다') {
                     router.push({
                         pathname: '/register', 
                         query: {src: '이메일', username: username}
                     })
-                } else if (typeof(error) == 'string' && error.includes('@')) {
+                } else if (typeof(message) == 'string' && message.includes('@')) {
                     router.push({
                         pathname: '/register',
-                        query: {src: '인증', username: username, email: error}
+                        query: {src: '인증', username: username, email: message}
                     })
+                } else if (typeof(message) == 'string') {
+                    setError(message);
                 }
-                else if (typeof(error) == 'string') {
-                    setError(error);
-                }
-            });
+            }
+        }));
     };
 
     if (typeof window !== 'undefined' && isAuthenticated){

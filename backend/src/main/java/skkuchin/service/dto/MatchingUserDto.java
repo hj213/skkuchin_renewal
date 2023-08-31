@@ -19,7 +19,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MatchingUserDto {
@@ -64,7 +66,7 @@ public class MatchingUserDto {
         private Mbti mbti;
         private Boolean matching;
         private Gender gender;
-        private List<String> keywords;
+        private Map<String, List<String>> keywords;
         private String introduction;
         private Campus campus;
 
@@ -77,9 +79,24 @@ public class MatchingUserDto {
             this.mbti = user.getMbti();
             this.matching = user.getMatching();
             this.gender = user.getGender();
-            this.keywords = keywords.stream().map(keyword -> keyword.getKeyword().getName()).collect(Collectors.toList());
+            this.keywords = getKeywordMap(keywords);
             this.introduction = user.getIntroduction();
             this.campus = findCampus(user.getMajor());
+        }
+
+        public Map<String, List<String>> getKeywordMap(List<UserKeyword> keywords) {
+            Map<String, List<String>> keywordMap = new HashMap<>();
+
+            for (UserKeyword userKeyword : keywords) {
+                String category = userKeyword.getKeyword().getCategory();
+                String name = userKeyword.getKeyword().getName();
+
+                if (!keywordMap.containsKey(category)) {
+                    keywordMap.put(category, new ArrayList<>());
+                }
+                keywordMap.get(category).add(name);
+            }
+            return keywordMap;
         }
 
         public Campus findCampus(Major major) {

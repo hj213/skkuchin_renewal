@@ -1,24 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { set_stomp_client } from '../actions/stompClient/stompClient';
 import SockJS from 'sockjs-client';
 import { API_URL } from '../config';
 import { get_realtime_chat_alarm, get_chat_alarm_info } from '../actions/chat/chatAlarm';
 import { get_realtime_notice_alarm, get_notice_alarm_info } from '../actions/notice/noticeAlarm';
 import { getSubscription } from '../utils/getSubscription';
+import { change_toggle_for_not_user, load_user, update_last_accessed_time } from '../actions/auth/auth';
 
 const Layout = ({title, content, children}) => {
     const dispatch = useDispatch();
-    const router = useRouter();
-    const [show, setShow] = useState(false);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const user = useSelector(state => state.auth.user);
     const anotherStompClient = useSelector(state => state.stompClient.stompClient);
     const subscriptions = {};
-    const currentPathname = window.location.pathname;
 
     const notify = async () => {
         if (!("Notification" in window)) {
@@ -55,7 +51,6 @@ const Layout = ({title, content, children}) => {
     let stompClient = null;
 
     const onError = (e) => {
-        // console.log(e);
         connectStompClient();
     }
 
@@ -74,20 +69,28 @@ const Layout = ({title, content, children}) => {
 
     useEffect(() => {
         connectStompClient();
-        if (currentPathname !== "/admin") {
-            router.push('/splash');
-        }
     }, []);
+    
+    const campus = localStorage.getItem('map');
 
     useEffect(() => {
-        if (currentPathname !== "/admin") {
-            setTimeout(() => {
-                setShow(true);
-            }, 2000);
-        } else {
-            setShow(true);
-        }
-    }, [])
+        connectStompClient();
+        localStorage.removeItem('user');
+
+        dispatch(load_user())
+        .then(() => {
+            dispatch(update_last_accessed_time(true));
+        })
+        .catch((error) => {
+            console.log(error);
+            if (campus) {
+                dispatch(change_toggle_for_not_user(campus));
+            } else {
+                localStorage.setItem('map', '명륜');
+                dispatch(change_toggle_for_not_user('명륜'));
+            }
+        })
+    }, []);
 
     return ( 
         <>
@@ -95,10 +98,9 @@ const Layout = ({title, content, children}) => {
                 <title>{title}</title>
                 <meta name="description" content={content} ></meta>
             </Head>
-            
-            {show && <div>
+            <div>
                 {children}
-            </div>}
+            </div>
         </>
     )
 };
