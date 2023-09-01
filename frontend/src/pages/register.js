@@ -30,7 +30,8 @@ const RegisterPage = () => {
         major: "",
         student_id: "",
         email: "",
-        image: ""
+        image: "",
+        phone: ""
     })
 
     const handleNextStep = (stepData) => {
