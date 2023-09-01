@@ -72,7 +72,7 @@ const Step1 = (props) => {
     </header> */}
     <form onSubmit={handleSubmit} style={{ width: '100%'}}>
     <div style={{margin: '0 24px'}}>
-        <Typography style={{fontSize: '24px', fontWeight: '900', marginBottom: '12px', color: '#3C3C3C'}}>비밀번호 재설정</Typography>
+        <Typography style={{fontSize: '24px', fontWeight: '900', marginBottom: '12px', color: '#3C3C3C'}}>비밀번호 초기화</Typography>
         <Typography style={{fontSize: '12px', fontWeight: '400', marginBottom: '13px', color: '#777777'}}>회원가입시 입력하신 이메일을 입력해주세요.</Typography>
         <Typography style={{fontSize: '12px', fontWeight: '900', marginTop: '45px', color: '#3C3C3C'}}>이메일 입력</Typography>
 
@@ -121,11 +121,11 @@ const Step1 = (props) => {
         <div style={{margin: '32px 24px 12px'}}>
         {emailId != '' && !dialogOpen?
             <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
-                비밀번호 재설정하기
+                비밀번호 초기화하기
             </Button>
             :
             <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#E2E2E2", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
-                비밀번호 재설정하기
+                비밀번호 초기화하기
             </Button>
         }
         </div>

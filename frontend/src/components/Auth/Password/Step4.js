@@ -1,11 +1,13 @@
-import React from 'react'
+import {useState} from 'react'
 import {  Button, Typography, Box } from '@mui/material';
-import check from '../../../image/checkedIcon.png';
+import logo from '../../../image/email_enhang.png'
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 const Step4 = (props) => {
   const router = useRouter();
+
+  const [remainHeight, setRemainHeight] = useState(window.innerHeight - 290 + "px");
 
   const handleSubmit = () => {
     router.push('/login');
@@ -14,18 +16,20 @@ const Step4 = (props) => {
   return (
     <Box
       sx={{
-      marginTop: '245px',
+      //marginTop: '245px',
+      margin: `calc(${remainHeight} * 0.45) 24px`,
       innerHeight: window.innerHeight,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       }}
     >
-      <Typography align='center' style={{fontSize: '18px', fontWeight: '700', marginBottom: '18px'}}>비밀번호 초기화 완료</Typography>
-      <Image src={check} width={35.83} height={35.83} sx={{p: '1.58px'}} layout='fixed' />
-      <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '40px auto', maxWidth}}>
-      <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-        로그인 홈 가기
+      <Image width={103} height={85} src={logo} placeholder="blur" layout='fixed' />
+      <Typography align='center' style={{fontSize: '24px', color: '#3C3C3C', fontWeight: '700', margin: '32px 0 12px 0'}}>비밀번호 초기화 완료!</Typography>
+      <Typography align='center' style={{fontSize: '14px', color: '#777777'}}>비밀번호가 초기화되었습니다.</Typography>
+      <div style={{display: 'grid', width: '100%', marginTop: '44px'}}>
+      <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
+        로그인 하러가기
       </Button>
       </div>
     </Box>

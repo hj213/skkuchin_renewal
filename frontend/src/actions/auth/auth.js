@@ -198,7 +198,7 @@ export const check_username = async (username, callback) => {
     const body = JSON.stringify({ username });
 
     try {
-        const res = await fetch(`${API_URL}/api/user/check/nickname`, {
+        const res = await fetch(`${API_URL}/api/user/check/username`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
