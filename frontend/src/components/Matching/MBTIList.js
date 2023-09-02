@@ -22,7 +22,7 @@ export const displayMBTI= (mbti, imageWidth= 140, imageHeight= 140) => {
 
     switch(mbti) {
         case "INTP":
-            return <Image id={"INTP"} src={INTP} width={140} height={140} placeholder="blur" layout='fixed' />
+            return <Image id={"INTP"} src={INTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INTJ":
             return <Image id={"INTJ"} src={INTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INFP":

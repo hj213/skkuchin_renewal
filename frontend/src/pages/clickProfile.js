@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { useRouter } from "next/router";
 import { load_other_matching_info } from '../actions/matchingUser/matchingUser';
@@ -33,6 +33,12 @@ const clickProfile = () => {
         }
     }, [userProfile]);
 
+    useEffect(() => {
+        if (matchingUser) {
+            console.log(matchingUser);
+        }
+    }, [matchingUser]);
+    
     const handleBack = (e) => {
         router.back();
     }
@@ -40,7 +46,7 @@ const clickProfile = () => {
     return (
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
-                <Container fixed style={{ position:'fixed', zIndex:'4', padding:'14px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
+                <Container maxWidth="md"  style={{ position:'fixed', zIndex:'4', padding:'14px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
                     <Card style={{
                         top: '18px',
                         height: '120%',
@@ -62,7 +68,9 @@ const clickProfile = () => {
                 </Container>
                 <div style={{
                     padding: '0',
-                    margin:'48px 24px 0'
+                    margin:'48px 24px 0',
+                    display: 'flex',
+                    flexDirection: 'column',
                 }}>
                 
                 {matchingUser !== null ?
@@ -112,27 +120,25 @@ const clickProfile = () => {
                     : null}
                     </div>
                     <Button
-                        disableElevation
-                        disableTouchRipple
-                        sx={{
-                            position: 'absolute',
-                            bottom: '10px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            color: '#FFF',
-                            fontSize: '16px',
-                            fontWeight: 800,
-                            textAlign: 'center',
-                            p: '16px',
-                            width: 'calc(100% - 48px)', 
-                            backgroundColor: '#FFCE00',
-                            borderRadius: '8px',
-                            height: '56px'
-                        }}
-                    >
-                        밥약 신청하기
-                    </Button>
-
+                            disableElevation
+                            disableTouchRipple
+                            sx={{
+                                position: 'fixed',
+                                color: '#FFF',
+                                fontSize: '16px',
+                                fontWeight: 800,
+                                textAlign: 'center',
+                                backgroundColor: '#FFCE00',
+                                borderRadius: '8px',
+                                bottom: '24px',
+                                width: '327px',
+                                height: '56px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                            }}
+                        >
+                            밥약 신청하기
+                        </Button>
         </ThemeProvider>
     )
 }

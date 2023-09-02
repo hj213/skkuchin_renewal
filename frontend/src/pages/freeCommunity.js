@@ -1,12 +1,12 @@
 import React from 'react';
-import { Grid, Container, Typography, Card, ThemeProvider, CssBaseline} from '@mui/material';
-import back from '../image/arrow_back_ios.png';
-import searchIcon from '../image/search.png';
-import Image from 'next/image';
+import { Grid, Container, Typography, ThemeProvider, CssBaseline, IconButton } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommunityItem from '../components/SkkuChat/CommunityItem';
 import { useRouter } from 'next/router';
 import theme from '../theme/theme';
+import Header from '../components/SkkuChat/Header';
+import AddIcon from '@mui/icons-material/Add';
+
 
 const FreeCommunity = () => {
     const router = useRouter();
@@ -14,6 +14,11 @@ const FreeCommunity = () => {
     const handleBackClick = () => {
         router.back();
     };
+
+    const handleAddClick = () => {
+       router.push('/uploadPost');
+    };
+
     const posts = [
         {
           id: 1,
@@ -74,26 +79,8 @@ const FreeCommunity = () => {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
-            <Container fixed style={{ position:'fixed', zIndex:'4', padding:'14px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
-                <Card style={{
-                    top: '18px',
-                    height: '120%',
-                    zIndex: '4',
-                    borderRadius: 0,
-                    boxShadow: 'none',
-                }}>
-                    <Grid container style={{justifyContent: 'space-between', alignItems: 'center', }}>
-                        <Grid onClick={handleBackClick}>
-                            <Image src={back} width={11} height={18} name='back' layout='fixed' />
-                        </Grid>
-                        <Grid>
-                            <Typography sx={{fontSize: '18px', fontWeight: 700, color: '#3C3C3C'}}>자유게시판</Typography>
-                        </Grid>
-                        <Grid>
-                            <Image src={searchIcon} width={24} height={24} name='search' layout='fixed' />
-                        </Grid>
-                    </Grid>
-                </Card>
+            <Container fixed style={{ position:'fixed', zIndex:'4', padding:'24px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
+                <Header title="스꾸게시판" onBackClick={handleBackClick} showSearchIcon={true}/>
             </Container>
             <Container sx={{p: '0 24px', height: 'max-content', alignItems: 'center', mt: '63px', display: 'flex'}}>
                 <Typography sx={{fontSize: '14px', whiteSpace: 'nowrap', mr: '10px', color: '#FFAC0B', fontWeight: 700}}>인기🔥</Typography>
@@ -109,6 +96,28 @@ const FreeCommunity = () => {
                 {posts.map((post) => (
                     <CommunityItem key={post.id} {...post} />
                 ))}
+            </Container>
+            <Container
+                sx={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '8px',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <IconButton 
+                    onClick={handleAddClick}
+                    sx={{
+                        backgroundColor: theme.palette.primary.main,
+                        width: '50px',
+                        height: '50px',
+                        '&:hover, &:active': {
+                            backgroundColor: theme.palette.primary.main,
+                        },
+                    }} aria-label="add">
+                    <AddIcon sx={{color: '#fff'}} />
+                </IconButton>
             </Container>
         </ThemeProvider>
     );

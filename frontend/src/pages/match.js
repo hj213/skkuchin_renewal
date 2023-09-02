@@ -50,7 +50,6 @@ const MatchPage = () => {
         <CssBaseline />
             <UpperBar />
             <AiGreeting />
-            
             <Container sx={{p: '0 15px', mt: '0', position:'relative'}}>
                 <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
                     <Grid item >
@@ -62,7 +61,7 @@ const MatchPage = () => {
             <Grid sx={{mt: '21px'}}>
                 <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 24px 0'}}>
                     <Typography style={{fontSize:'21px', fontWeight: 700, color: '#3C3C3C'}}>
-                        게시판
+                        스꾸게시판
                     </Typography>
                     <Button sx={{fontSize:'14px', fontWeight: 400, color: '#BABABA', p: 0}} onClick={() => router.push('/freeCommunity')}>
                         전체보기

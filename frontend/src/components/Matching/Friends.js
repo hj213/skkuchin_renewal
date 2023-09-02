@@ -11,6 +11,43 @@ import Image from 'next/image';
 
 const GoLogin = dynamic(() => import('../GoLogin'));
 
+const dummyProfiles = [
+    {
+        name: '바뱍',
+        campus: '명륜',
+        major: '경영학과',
+        student_id: '23학번',
+        gender: '남',
+        mbti: 'ENFP',
+        keywords: ['일식', '음악'],
+        description:
+            '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀',
+    },
+    {
+        name: '김꾸친',
+        campus: '명륜',
+        major: '무용학과',
+        student_id: '20학번',
+        gender: '여',
+        mbti: 'ISFJ',
+        keywords: ['여행', '동아리'],
+        description:
+            '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀',
+    },
+    {
+        name: '웅이',
+        campus: '율전',
+        major: '반도체시스템공학과',
+        student_id: '22학번',
+        gender: '남',
+        mbti: 'INTP',
+        keywords: ['연극/뮤지컬', '카페'],
+        description:
+            '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀',
+    },
+
+];
+  
 const Friends = () => {
     const router = useRouter();
     const dispatch = useDispatch();
@@ -30,9 +67,7 @@ const Friends = () => {
             }))
         }
     }, [isAuthenticated]);
-    
 
-    // 대화 요청하기 버튼
     const [open, setOpen] = useState(false);
     const [selectedPersonId, setSelectedPersonId] = useState(null);
 
@@ -64,11 +99,11 @@ const Friends = () => {
             {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
             { candidate ? 
             candidate.map((person, index) => (
-            <Card key={index} variant="outlined" sx={{height: '292px', width: '242px', borderRadius: '10px', border: '1px solid #E2E2E2', p: '15px', flexShrink: 0, mr: '19px', mb: '21px'}}>
+            <Card key={index} variant="outlined" sx={{height: 'max-content', width: '242px', borderRadius: '10px', border: '1px solid #E2E2E2', p: '15px', flexShrink: 0, mr: '19px', mb: '21px'}}>
                 <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
                     {displayMBTI(person.mbti, 80, 80)}
-                    <Typography sx={{p: '8px 0px', fontSize: '14px', fontWeight: '700'}}>{person !== null && person.nickname}</Typography>
-                    <Grid item sx={{display: 'flex', fontSize: '12px', alignItems: 'center', fontWeight: 400, color: '#3C3C3C'}}>
+                    <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', p: '20px 0px 8px'}}>
+                        <Typography sx={{fontSize: '16px', fontWeight: '700', mr: '5px'}}>{person !== null && person.nickname}</Typography>
                         {
                             person !== null && 
                             person.campus == '명륜' ?
@@ -76,13 +111,14 @@ const Friends = () => {
                             : 
                             <Typography sx={{color: '#58C85A', backgroundColor: '#DCF8DB', fontSize: '12px',fontWeight: 700, p: '3.5px 5px 2.5px', borderRadius: '10px', mr: '5px'}}>{person.campus}</Typography>
                         }
+                    </Grid>
+                    <Grid item sx={{display: 'flex', fontSize: '12px', alignItems: 'center', fontWeight: 400, color: '#3C3C3C'}}>
                         <Grid item sx={{flexGrow: 1, fontSize: '12px'}}>
-                            {person.major}/
-                            {person.student_id}학번/
+                            {person.major}&nbsp;/&nbsp; 
+                            {person.student_id}학번&nbsp;/&nbsp; 
                             {(person.gender).charAt(0)}
                         </Grid>
                     </Grid>
-                    
                     <Grid item sx={{display: 'flex', p: '10px 0', m: '10px 0'}}>
                         <Grid item sx={{color: '#9E9E9E', p: '0px 1.5px', fontSize: '12px', fontWeight: 700}}>
                             {'#'+person.mbti}
@@ -153,7 +189,6 @@ const Friends = () => {
                             </Button>
                         )}
                     </Grid>
-
                     <Dialog
                         key={person.id}
                         open={open}
@@ -192,126 +227,59 @@ const Friends = () => {
             )) 
             :
             <>
-                <Card variant="outlined" sx={{height: '292px', width: '242px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
-                    <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
-                        <Image src={noCharacter} width={140} height={140} placeholder="blur" layout='fixed' />
-                        <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>바뱍</Typography>
-                        <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
-                            <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '1px 6.5px', borderRadius: '17px'}}>명륜</Typography>&nbsp;
-                            경영학과 &nbsp;/&nbsp; 
-                            23학번 &nbsp;/&nbsp; 
-                            남
-                        </Grid>
-                        <Grid item sx={{display: 'flex'}}>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                ENFP
-                            </Grid>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                일식
-                            </Grid>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                음악
-                            </Grid>
-                        </Grid >
-                        <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
-                            <Typography sx={{ fontSize:'13px', fontWeight: '500', whiteSpace: 'pre-wrap'}}>
+                { dummyProfiles.length !== 0 &&
+                    dummyProfiles.map((person, index) => (
+                    <Card key={index} variant="outlined" sx={{height: 'max-content', width: '242px', borderRadius: '10px', border: '1px solid #E2E2E2', p: '15px', flexShrink: 0, mr: '19px', mb: '21px'}}>
+                        <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
+                            <Image src={noCharacter} width={80} height={80} placeholder="blur" layout='fixed' />
+                            <Grid item sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', p: '20px 0px 8px'}}>
+                                <Typography sx={{fontSize: '16px', fontWeight: '700', mr: '5px'}}>{person.name}</Typography>
                                 {
-                                    user?.matching === false ?
-                                    '성대 학우와 대화를 나누시려면\n\n[내 프로필 보기]에서\n대화 활성화 버튼을 켜주세요 👀' 
-                                    : '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀'
+                                        person !== null && 
+                                        person.campus == '명륜' ?
+                                        <Typography sx={{width: 'max-content',color: '#FFAC0B', backgroundColor: '#FFFCE4', fontSize: '12px', fontWeight: 700, p: '3.5px 5px 2.5px', borderRadius: '10px', mr: '5px'}}>{person.campus}</Typography>
+                                        : 
+                                        <Typography sx={{color: '#58C85A', backgroundColor: '#DCF8DB', fontSize: '12px',fontWeight: 700, p: '3.5px 5px 2.5px', borderRadius: '10px', mr: '5px'}}>{person.campus}</Typography>
                                 }
-                            </Typography>
+                            </Grid>
+                            <Grid item sx={{display: 'flex', fontSize: '12px', alignItems: 'center', fontWeight: 400, color: '#3C3C3C'}}>
+                                <Grid item sx={{flexGrow: 1, fontSize: '12px'}}>
+                                    {person.major}&nbsp;/&nbsp; 
+                                    {person.student_id}학번&nbsp;/&nbsp; 
+                                    {(person.gender).charAt(0)}
+                                </Grid>
+                            </Grid>
+                            <Grid item sx={{display: 'flex', p: '10px 0', m: '10px 0'}}>
+                                <Grid item sx={{color: '#9E9E9E', p: '0px 2.5px', fontSize: '12px', fontWeight: 700}}>
+                                    {'#'+person.mbti}
+                                </Grid>
+                                {(person.keywords) != null ?
+                                    ((person.keywords).slice(0, 2).map((interest, index)=> (
+                                        <Grid item key={index} sx={{ color: '#9E9E9E', p: '0px 1.5px', fontSize: '12px', fontWeight: 700}}>
+                                            {'#'+interest}
+                                        </Grid>
+                                    )))
+                                : null}
+                            </Grid >
+                            <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
+                                <Typography sx={{ fontSize:'13px', fontWeight: '500', whiteSpace: 'pre-wrap'}}>
+                                    {
+                                        user?.matching === false ?
+                                        '성대 학우와 대화를 나누시려면\n\n[내 프로필 보기]에서\n대화 활성화 버튼을 켜주세요 👀' 
+                                        : '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀'
+                                    }
+                                </Typography>
+                            </Grid>
+                            {
+                                user?.matching === false ? null
+                                :
+                                <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
+                                    프로필 등록하기
+                                </Button>
+                            }
                         </Grid>
-                        {
-                            user?.matching === false ?
-                            null
-                            :
-                            <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                                프로필 등록하기
-                            </Button>
-                        }
-                    </Grid>
-                </Card>
-                <Card variant="outlined" sx={{height: '292px', width: '242px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
-                    <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
-                        <Image src={noCharacter} width={140} height={140} placeholder="blur" layout='fixed' />
-                        <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>김꾸친</Typography>
-                        <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
-                            <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '1px 6.5px', borderRadius: '17px'}}>명륜</Typography>&nbsp;
-                            무용학과 &nbsp;/&nbsp; 
-                            20학번 &nbsp;/&nbsp; 
-                            여
-                        </Grid>
-                        <Grid item sx={{display: 'flex'}}>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                ISFJ
-                            </Grid>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                여행
-                            </Grid>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                동아리
-                            </Grid>
-                        </Grid >
-                        <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
-                            <Typography sx={{ fontSize:'13px', fontWeight: '500', whiteSpace: 'pre-wrap'}}>
-                                {
-                                    user?.matching === false ?
-                                    '성대 학우와 대화를 나누시려면\n\n[내 프로필 보기]에서\n대화 활성화 버튼을 켜주세요 👀' 
-                                    : '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀'
-                                }
-                            </Typography>
-                        </Grid>
-                        {
-                            user?.matching === false ?
-                            null
-                            :
-                            <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                                프로필 등록하기
-                            </Button>
-                        }
-                    </Grid>
-                </Card>
-                <Card variant="outlined" sx={{height: '292px', width: '242px', borderRadius: '30px', border: '1px solid #BABABA', m: '13px 0px 25px', p: '16px 0 13px', flexShrink: 0, mr: '13px'}}>
-                    <Grid container direction="column" sx={{justifyContent: 'center', alignItems: 'center'}}>
-                        <Image src={noCharacter} width={140} height={140} placeholder="blur" layout='fixed' />
-                        <Typography sx={{p: '8px 0px', fontSize: '15px', fontWeight: '700'}}>웅</Typography>
-                        <Grid item sx={{display: 'flex', fontSize: '10px', alignItems: 'center', fontWeight: '500', color: '#BABABA'}}>
-                            <Typography sx={{border: "1px solid #BABABA", fontSize: '10px', p: '1px 6.5px', borderRadius: '17px'}}>율전</Typography>&nbsp;
-                            반도체시스템공학과 &nbsp;/&nbsp; 
-                            22학번 &nbsp;/&nbsp; 
-                            여
-                        </Grid>
-                        <Grid item sx={{display: 'flex'}}>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                INTP
-                            </Grid>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                연극 / 뮤지컬
-                            </Grid>
-                            <Grid item sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 20px'}}>
-                                카페
-                            </Grid>
-                        </Grid >
-                        <Grid item sx={{width: '169px', height: '48px',textAlign: 'center', pb: '8px'}}>
-                            <Typography sx={{ fontSize:'13px', fontWeight: '500', whiteSpace: 'pre-wrap'}}>
-                                {
-                                    user?.matching === false ?
-                                    '성대 학우와 대화를 나누시려면\n\n[내 프로필 보기]에서\n대화 활성화 버튼을 켜주세요 👀' 
-                                    : '성대 학우와 대화를 나누시려면 추가 프로필을 등록해주세요 👀'
-                                }
-                            </Typography>
-                        </Grid>
-                        {
-                            user?.matching === false ?
-                            null
-                            :
-                            <Button onClick={()=>handleSettingOpen()}  sx={{backgroundColor: '#FFCE00', borderRadius: '30px', color: '#fff', fontSize: '12px', fontWeight: '700', textAlign: 'center', p: '8.5px 11.5px', m : '5px 0px'}}>
-                                프로필 등록하기
-                            </Button>
-                        }
-                    </Grid>
-                </Card>
+                    </Card>
+                ))}
             </>
             }
     </Grid>
