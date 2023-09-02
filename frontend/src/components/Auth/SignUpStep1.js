@@ -27,19 +27,12 @@ const SignUpStep1 = (props) => {
     }
 
     const checkUsername = () => {
-        check_username(props.data.username)
-            .then((message) => {
-                setValidUsername(true);
-                if (typeof(message) == 'string') {
-                    setUsernameMsg(message);
-                }
-            })
-            .catch((error) => {
-                setValidUsername(false);
-                if (typeof(error) == 'string') {
-                    setUsernameMsg(error);
-                }
-            })
+        check_username(props.data.username, ([result, message]) => {
+            setValidUsername(result);
+            if (typeof(message) == 'string') {
+                setUsernameMsg(message);
+            }
+        });
     }
     
     const handlePasswordChange = (e) => {

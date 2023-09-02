@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
-import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
+import { getToken, request_refresh } from '../auth/auth';
 import {
     LOAD_REVIEWS_FAIL,
     LOAD_REVIEWS_SUCCESS,
@@ -61,14 +59,7 @@ export const load_reviews = (place_id, callback) => async dispatch => {
 
 export const load_review = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/review/user/me`, {
@@ -109,14 +100,7 @@ export const load_review = (callback) => async dispatch => {
 
 export const enroll_review = (place_id, rate, content, images, tags, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const formData = new FormData();
     formData.append('place_id', place_id);
@@ -180,14 +164,7 @@ export const enroll_review = (place_id, rate, content, images, tags, callback) =
 
 export const modify_review = (review_id, rate, content, images, urls, tags, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
     
     const formData = new FormData();
     formData.append('rate', rate);
@@ -256,14 +233,7 @@ export const modify_review = (review_id, rate, content, images, urls, tags, call
 
 export const delete_review = (review_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/review/${review_id}`, {
@@ -309,14 +279,7 @@ export const clear_my_review = () => ({
 
 export const load_all_reviews = (callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     try {
         const res = await fetch(`${API_URL}/api/review`, {

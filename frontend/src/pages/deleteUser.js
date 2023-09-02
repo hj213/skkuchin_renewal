@@ -30,8 +30,8 @@ const deleteUser = () => {
     }
 
     const handleNextStep = () => {
-        dispatch(delete_user())
-            .then(() => {
+        dispatch(delete_user(([result, message]) => {
+            if (result) {
                 let username = localStorage.getItem("username");
                 if (username != null) {
                     localStorage.removeItem("username");
@@ -43,10 +43,8 @@ const deleteUser = () => {
                     noticeAlarmSubscription.unsubscribe();
                 }
                 dispatch(logout());
-            })
-            .catch((error) => {
-                console.log(error)
-            });
+            }
+        }));
     }
 
     return (
@@ -82,7 +80,7 @@ const deleteUser = () => {
             </div>
 
             <form style={{ width: '100%'}}>
-                <textarea placeholder='계정을 삭제하려는 이유를 작성해주세요.(10자 이상)' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'Noto Sans KR, sans-serif'}} />
+                <textarea placeholder='계정을 삭제하려는 이유를 작성해주세요.(10자 이상)' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'NanumSquareRound, sans-serif'}} />
                 <div style={{display: 'flex', justifyItems: 'center', alignItems: 'center'}}>
                 {/* <input type="checkbox" checked={agreement} onChange={() => setAgreement(!agreement)}/> */}
                 {agreement ? <Image width={16} height={16} src={checkbox} onClick={() => setAgreement(false)} />

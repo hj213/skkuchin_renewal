@@ -71,9 +71,7 @@ const EnrollReview = () => {
     };
 
     useEffect(() => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            setPlaceId(id);
-        }
+        setPlaceId(id);
     }, [id]);
 
     //리뷰 정보 전달
