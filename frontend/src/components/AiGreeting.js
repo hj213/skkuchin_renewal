@@ -314,7 +314,7 @@ const AiGreeting = () => {
                             }}>
                         {userInfo.mbti}
                         </Typography>
-                            {(userInfo.keywords) != null?
+                            {/* {(userInfo.keywords) != null?
                                 ((userInfo.keywords).slice(0,2).map(((index,interest) =>
                                     <Typography 
                                         key={index}
@@ -330,7 +330,7 @@ const AiGreeting = () => {
                                     {interest}
                                     </Typography>
                                 )))
-                            :null}
+                            :null} */}
                     </Grid>
                 </div>
 

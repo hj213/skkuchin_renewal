@@ -74,7 +74,7 @@ const PostDetail = ({ postId }) => {
               
               <Grid sx={{display: 'flex', overflowX: 'scroll', p: '10px 0', mt: '10px', gap: '10px',
                 scrollbarWidth: 'none',  // Firefox에
-                '-ms-overflow-style': 'none',  // IE, Edge에
+                'msOverflowStyle': 'none',  // IE, Edge에
                 '&::-webkit-scrollbar': {
                   display: 'none',  // Chrome, Safari
               } }}>

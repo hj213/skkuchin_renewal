@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { useRouter } from "next/router";
 import { load_other_matching_info } from '../actions/matchingUser/matchingUser';
@@ -8,16 +8,18 @@ import Image from 'next/image';
 import { displayMBTI } from '../components/Matching/MBTIList';
 import close from '../image/close.png';
 import dynamic from 'next/dynamic';
-import { clear_user_profile } from '../actions/chat/chatRoom';
 import MBTITypes from '../components/SkkuChat/MBTITypes';
+import { clear_matching } from '../actions/matchingUser/matchingUser';
 
 const clickProfile = () => {
 
     const dispatch = useDispatch();
     const router = useRouter();
 
+    const friendId = router.query.id; 
+
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
-    const userProfile = useSelector(state => state.chatRoom.userProfile);
+    const [keywordCategories, setKeywordCategories] = useState([]);
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -25,17 +27,17 @@ const clickProfile = () => {
     }
     
     useEffect(() => {
-        if (userProfile) {
-            dispatch(load_other_matching_info(userProfile.id));
-        }
-        return () => {
-            dispatch(clear_user_profile());
-        }
-    }, [userProfile]);
+        dispatch(clear_matching());
+        if (friendId) {
+            dispatch(load_other_matching_info(friendId));
+        }  
+    }, []);
 
+    
     useEffect(() => {
-        if (matchingUser) {
-            console.log(matchingUser);
+        if (matchingUser && matchingUser.keywords) {
+            const categories = Object.keys(matchingUser.keywords);
+            setKeywordCategories(categories);
         }
     }, [matchingUser]);
     
@@ -66,6 +68,7 @@ const clickProfile = () => {
                         </Grid>
                     </Card>
                 </Container>
+
                 <div style={{
                     padding: '0',
                     margin:'48px 24px 0',
@@ -106,19 +109,27 @@ const clickProfile = () => {
                                 {matchingUser.introduction}
                             </Typography>
                         </Box>
-                        {/*                         
-                            <Grid item sx={{display: 'flex'}}>
-                                {(matchingUser.keywords) != null ?
-                                    ((matchingUser.keywords).slice(0, 3).map((interest, index)=> (
-                                        <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7.5px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 26px'}}>
-                                            {interest}
-                                        </Grid>
-                                    )))
-                                : null}
-                        </Grid > */}
+
+                        <Box sx={{ mt: '30px', mb: '100px' }}>
+                            <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 800, mb: '20px'}}>관심사 태그</Typography>
+                            {keywordCategories && keywordCategories.map((category, index) => (
+                                <div key={index}>
+                                    <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 700, pl: '4px' }}>{category}</Typography>
+                                    <Grid container sx={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'auto', gap: '8px' }}>
+                                        {matchingUser.keywords[category] && matchingUser.keywords[category].map((keyword, index) => (
+                                            <Grid item key={index} sx={{ backgroundColor: '#FFFCE4', color: '#3C3C3C', fontSize: '14px', fontWeight: 400, p: '5px 19px', m: '11px 0px 32px',borderRadius: '100px', whiteSpace: 'nowrap', border: '1px solid #FFCE00' }}>
+                                                {keyword}
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </div>
+                            ))}
+                        </Box>
                     </>
                     : null}
                     </div>
+
+                    <Container sx={{position: 'fixed', backgroundColor: '#fff', width: '100%', height: '100px', bottom: '0px'}}>
                     <Button
                             disableElevation
                             disableTouchRipple
@@ -139,6 +150,7 @@ const clickProfile = () => {
                         >
                             밥약 신청하기
                         </Button>
+                        </Container>
         </ThemeProvider>
     )
 }

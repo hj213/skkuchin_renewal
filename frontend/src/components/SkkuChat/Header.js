@@ -4,8 +4,11 @@ import back from '../../image/arrow_back_ios.png';
 import searchIcon from '../../image/search.png';
 import dotIcon from '../../image/dotIcon.png';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const Header = ({ title, onBackClick, showSearchIcon }) => {
+  const router = useRouter();
+
   return (
     <Card style={{
       height: 'max-content',
@@ -22,7 +25,7 @@ const Header = ({ title, onBackClick, showSearchIcon }) => {
         </Grid>
         <Grid>
             {showSearchIcon ? (
-                <Image src={searchIcon} width={24} height={24} name='search' layout='fixed' />
+                <Image src={searchIcon} width={24} height={24} name='search' layout='fixed' onClick={() => router.push('/communitySearch')}/>
             ) : (
                 <Image src={dotIcon} width={36} height={36} name='menu' layout='fixed' />
             )}

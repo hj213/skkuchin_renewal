@@ -94,6 +94,10 @@ const Friends = () => {
         }
     }
 
+    const handleFriendClick = (friendId) => {
+        router.push(`/clickProfile?id=${friendId}`);
+    };
+
     return (
         <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0'}}>
             {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
@@ -137,7 +141,7 @@ const Friends = () => {
                             disableElevation
                             disableTouchRipple
                             key="profile-button"
-                            onClick={() => router.push('/clickProfile')}
+                            onClick={() => handleFriendClick(person.id)}
                             sx={{
                                 color: '#FFAC0B',
                                 fontSize: '12px',
