@@ -2,11 +2,15 @@ package skkuchin.service.domain.Forum;
 
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,4 +38,13 @@ public class Comment {
 
     @CreationTimestamp
     private LocalDateTime date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    // 자식 정의
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+    private List<Comment> children = new ArrayList<>();
+
 }
