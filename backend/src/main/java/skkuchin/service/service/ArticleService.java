@@ -57,6 +57,19 @@ public class ArticleService {
     }
 
     @Transactional
+    public List<ArticleDto.Response> getSpecificArticle(Long articleId){
+        return articleRepo.findByArticleId(articleId)
+                .stream()
+                .map(article -> new ArticleDto.Response(
+                        article,
+                        commentRepo.findByArticle(article),
+                        articleLikeRepo.findByArticle(article.getId())
+                ))
+                .collect(Collectors.toList());
+
+    }
+
+    @Transactional
     public void deleteArticle(Long articleId, AppUser appUser){
         Article article = articleRepo.findById(articleId).orElseThrow(()-> new CustomValidationApiException("존재하지 않는 게시글입니다."));
         canHandleArticle(article.getUser(),appUser);
@@ -73,6 +86,12 @@ public class ArticleService {
 
 
     }
+
+//    @Transactional
+//    public List<ArticleDto.Response> getArticleByType(AppUser appUser){
+//
+//
+//    }
 
     private void canHandleArticle(AppUser articleUser, AppUser user) {
         if (!(articleUser.getId().equals(user.getId()) || user.getUserRoles().stream().findFirst().get().getRole().getName().equals("ROLE_ADMIN")))

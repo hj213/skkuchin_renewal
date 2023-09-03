@@ -121,19 +121,16 @@ public class CommentDto {
             private String formatDate(LocalDateTime date) {
                 LocalDateTime now = LocalDateTime.now();
                 long diff = ChronoUnit.MINUTES.between(date, now);
-                if (diff < 1) {
-                    return "방금 전";
-                } else if (diff < 60) {
-                    return diff + "분 전";
-                } else if (diff < 1440) {
-                    return (diff / 60) + "시간 전";
-                } else if (diff < 2880) {
-                    return "어제";
-                } else if (date.getYear() == now.getYear()) {
-                    return date.format(DateTimeFormatter.ofPattern("M월 d일", Locale.KOREAN));
+                DateTimeFormatter dateFormatter;
+
+                if (date.getYear() >= now.getYear()) {
+                    // 올해 이후 작성된 댓글
+                    dateFormatter = DateTimeFormatter.ofPattern("M월 d일 HH:mm", Locale.KOREAN);
                 } else {
-                    return date.format(DateTimeFormatter.ofPattern("yyyy. M. d.", Locale.KOREAN));
+                    // 올해 이전 작성된 댓글
+                    dateFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm", Locale.KOREAN);
                 }
+                return date.format(dateFormatter);
             }
         }
 

@@ -52,6 +52,12 @@ public class ArticleController {
         return new ResponseEntity<>(new CMRespDto<>(1,"게시판 조회 완료",article), HttpStatus.OK);
     }
 
+    @GetMapping("/{articleId}")
+    public ResponseEntity<?> getSpecificArticle(@PathVariable Long articleId){
+        List<ArticleDto.Response> articles = articleService.getSpecificArticle(articleId);
+        return new ResponseEntity<>(new CMRespDto<>(1,"특정 게시글 조회 완료",articles),HttpStatus.OK);
+    }
+
 
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
