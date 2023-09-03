@@ -22,7 +22,15 @@ const SignUpStep1 = (props) => {
     const [validLen, setValidLen] = useState(false);
 
     const handleNextStep = () => {
-        props.handleNextStep();
+        check_username(props.data.username, ([result, message]) => {
+            setValidUsername(result);
+            if (result) 
+                props.handleNextStep();
+            else {
+                if (typeof(message) == 'string')
+                    setUsernameMsg(message)
+            }
+        })
     }
 
     const handleUsernameChange = (e) => {
@@ -121,7 +129,7 @@ const SignUpStep1 = (props) => {
                         padding: '20px 15px 21px 12px',
                         height: '56px',
                         border: validUsername == null ? '1px solid #E2E2E2' : (validUsername ? '1px solid #12A054' : '1px solid #FF3B3B'),
-                        margin: '8px 0 4px 0',
+                        margin: '8px 0 0px 0',
                         borderRadius: '8px',
                         width: '100%',
                         outline: 'none'
@@ -129,8 +137,8 @@ const SignUpStep1 = (props) => {
                 />
                 {/* 중복확인 메소드 추가 */}
                 <div style={{display:'flex'}}>
-                    <Button variant="contained" onClick={checkUsername} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '8px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', marginTop: '4px', boxShadow: 'none'}}>중복확인</Button>
-                    {validUsername == null && <Typography sx={{fontSize: '12px', fontWeight: '500', color: '#3C3C3C', margin: '5px 0 0 5px'}}>아이디 중복 확인 체크를 해주세요</Typography>}
+                    {/* <Button variant="contained" onClick={checkUsername} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '8px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', marginTop: '4px', boxShadow: 'none'}}>중복확인</Button> */}
+                    {/* {validUsername == null && <Typography sx={{fontSize: '12px', fontWeight: '500', color: '#3C3C3C', margin: '5px 0 0 5px'}}>아이디 중복 확인 체크를 해주세요</Typography>} */}
                     {validUsername && <Typography sx={{fontSize: '12px', fontWeight: '500', color: '#12A054', margin: '5px 0 0 5px'}}>{usernameMsg}</Typography>}
                     {validUsername == false && <Typography sx={{fontSize: '12px', fontWeight: '500', color: '#FF3B3B', margin: '5px 0 0 5px'}}>{usernameMsg}</Typography>}
                 </div>
@@ -191,7 +199,7 @@ const SignUpStep1 = (props) => {
             </div>
         </form>
         <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', width: '100%', maxWidth: '420px', backgroundColor: '#fff'}}>
-        {validUsername && validPW && (props.data.password == props.data.re_password) && props.data.username != null ?
+        {props.data.username != '' && validUsername != false && validPW && (props.data.password == props.data.re_password) && props.data.username != null ?
                     <Button variant="contained" onClick={handleNextStep} style={{margin: '0 24px', width: '88%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                         다음
                     </Button>

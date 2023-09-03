@@ -36,8 +36,10 @@ export const getToken = (tokenName) => dispatch => {
 };
 
 export const register = async (registerData, callback) => {
-    const body = JSON.stringify({ registerData });
-
+    //const body = JSON.stringify({ registerData });
+    const body = JSON.stringify({
+        ...registerData
+    })
     try {
         const res = await fetch(`${API_URL}/api/user/save`, {
             method: 'POST',
