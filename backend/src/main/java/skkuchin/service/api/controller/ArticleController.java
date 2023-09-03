@@ -12,6 +12,7 @@ import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.CMRespDto;
+import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ArticleService;
@@ -89,6 +90,12 @@ public class ArticleController {
         AppUser appUser = principalDetails.getUser();
         articleService.deleteArticle(articleId,appUser);
         return new ResponseEntity<>(new CMRespDto<>(1,"내 게시글 삭제 완료",null),HttpStatus.OK);
+    }
+
+    @GetMapping("/search/keyword")
+    public ResponseEntity<?> searchKeyword(@RequestParam("q") String keyword) {
+        List<ArticleDto.Response> articles = articleService.searchKeyword(keyword);
+        return new ResponseEntity<>(new CMRespDto<>(1, "게시글 검색 완료", articles), HttpStatus.OK);
     }
 
 

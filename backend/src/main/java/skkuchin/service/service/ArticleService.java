@@ -3,10 +3,14 @@ package skkuchin.service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Forum.Article;
+import skkuchin.service.domain.Map.Place;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleDto;
+import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.ArticleLikeRepo;
@@ -14,6 +18,7 @@ import skkuchin.service.repo.ArticleRepo;
 import skkuchin.service.repo.CommentRepo;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +97,19 @@ public class ArticleService {
 //
 //
 //    }
+    @Transactional
+    public List<ArticleDto.Response> searchKeyword(String keyword) {
+        List<Article> matchingArticles = articleRepo.findByTitleContainingOrContentContainingOrderByDateDesc(keyword, keyword);
 
+        return matchingArticles
+                .stream()
+                .map(article -> new ArticleDto.Response(
+                        article,
+                        commentRepo.findByArticle(article),
+                        articleLikeRepo.findByArticle(article.getId())
+                ))
+                .collect(Collectors.toList());
+    }
     private void canHandleArticle(AppUser articleUser, AppUser user) {
         if (!(articleUser.getId().equals(user.getId()) || user.getUserRoles().stream().findFirst().get().getRole().getName().equals("ROLE_ADMIN")))
             throw new CustomRuntimeException("게시글 작성자 또는 관리자가 아닙니다.");
