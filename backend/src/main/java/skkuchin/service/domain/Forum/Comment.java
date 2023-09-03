@@ -43,8 +43,10 @@ public class Comment {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
-    // 자식 정의
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
     private List<Comment> children = new ArrayList<>();
+
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean anonymous;
 
 }

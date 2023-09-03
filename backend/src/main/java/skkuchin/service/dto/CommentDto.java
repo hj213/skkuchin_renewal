@@ -62,6 +62,8 @@ public class CommentDto {
             @JsonProperty
             private Long articleId;
 
+            private boolean anonymous;
+
             public Comment toEntity(AppUser user, Article article,Comment comment) {
                 return Comment.builder()
                         .user(user)
@@ -69,6 +71,7 @@ public class CommentDto {
                         .parent(comment)
                         .content(content)
                         .date(LocalDateTime.now())
+                        .anonymous(anonymous)
                         .build();
             }
 
@@ -97,6 +100,7 @@ public class CommentDto {
 
             private boolean writer;
 
+            private boolean anonymous;
             private List<CommentDto.ReplyResponse> reply;
 
 
@@ -112,6 +116,7 @@ public class CommentDto {
                 this.commentLikes = commentLikes.stream().count();
                 this.myComment = user.getId().equals(comment.getUser().getId());
                 this.writer = comment.getArticle().getUser().getId().equals(comment.getUser().getId());
+                this.anonymous = comment.isAnonymous();
                 if(comment.getChildren()!= null){
                     this.reply = comment.getChildren().stream().map(c-> new CommentDto.ReplyResponse(c,commentLikes,user)).collect(Collectors.toList());
                 }
@@ -157,7 +162,7 @@ public class CommentDto {
 
         private boolean writer;
 
-
+        private boolean anonymous;
         public ReplyResponse(Comment comment, List<CommentLike> commentLikes, AppUser user) {
             this.id = comment.getId();
             this.content = comment.getContent();
@@ -168,6 +173,7 @@ public class CommentDto {
             this.commentLikes = commentLikes.stream().count();
             this.myComment = user.getId().equals(comment.getUser().getId());
             this.writer = comment.getArticle().getUser().getId().equals(comment.getUser().getId());
+            this.anonymous = comment.isAnonymous();
         }
 
         private String formatDate(LocalDateTime date) {
