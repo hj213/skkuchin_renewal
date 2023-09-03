@@ -73,7 +73,7 @@ const Step2 = (props) => {
         <div style={{ width: '100%', textAlign: 'center' }}>
             <Image width={103} height={85} src={logo} placeholder="blur" layout='fixed' />
             <Typography sx={{fontSize: '24px', fontWeight: '900', mb: '16px', mt: '32px'}}>메일을 확인해주세요!</Typography>
-            <Typography sx={{fontSize: '14px', fontWeight: '500', lineHeight: '21px', color: '#505050', mb: '32px'}}>
+            <Typography sx={{fontSize: '14px', fontWeight: '500', lineHeight: '21px', color: '#777777', mb: '32px'}}>
                 비밀번호 초기화 인증 메일이 발송되었습니다. <br/>
                 발송된 메일을 통해 인증 완료 후 <br/>
                 아래 확인 버튼을 눌러주세요

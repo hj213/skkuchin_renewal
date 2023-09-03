@@ -35,7 +35,8 @@ export const getToken = (tokenName) => dispatch => {
     return tokenDic[tokenName];
 };
 
-export const register = async (registerData, callback) => {
+//export const register = async (registerData, callback) => {
+export const register = (registerData, callback) => async dispatch => {
     //const body = JSON.stringify({ registerData });
     const body = JSON.stringify({
         ...registerData
