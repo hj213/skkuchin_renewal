@@ -48,24 +48,24 @@ public class ServiceApplication {
 			userService.saveTestUser(new UserDto.SignUpForm("테스트", "test", "12341234", "12341234", 20, Major.건축학과, Profile.DEFAULT2));
 
 			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; // Window 공통 경로
-//			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; // Mac 공통 경로
+			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; // Mac 공통 경로
 
-			String path = "C:\\Users\\sunny\\OneDrive\\바탕 화면\\스프링 연습\\skkuchin_renewal\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
+//			String path = "C:\\Users\\sunny\\OneDrive\\바탕 화면\\스프링 연습\\skkuchin_renewal\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
 
 			try {
 				tagService.insertData(path);
 				placeService.insertData(path);
-//				imageService.insertData();
-//				menuService.insertData(path);
-//				keywordService.insertData(path);
-//				reviewService.insertData(path);
-//				cacheService.caching();
-//				rankService.addRank();
-//				userService.saveTestMatchingUsers(100);
-//				chatRoomService.insertData();
-//				chatMessageService.insertData();
-//				noticeService.insertData();
-//				reportService.insertData();
+				imageService.insertData();
+				menuService.insertData(path);
+				keywordService.insertData(path);
+				reviewService.insertData(path);
+				cacheService.caching();
+				rankService.addRank();
+				userService.saveTestMatchingUsers(100);
+				chatRoomService.insertData();
+				chatMessageService.insertData();
+				noticeService.insertData();
+				reportService.insertData();
 			} catch (Exception e) {
 				System.out.println(e);
 			}

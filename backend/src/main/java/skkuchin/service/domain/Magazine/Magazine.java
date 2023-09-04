@@ -3,7 +3,6 @@ package skkuchin.service.domain.Magazine;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import skkuchin.service.domain.Forum.ArticleType;
-import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;

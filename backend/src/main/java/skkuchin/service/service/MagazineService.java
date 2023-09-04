@@ -8,7 +8,6 @@ import skkuchin.service.domain.Magazine.Magazine;
 import skkuchin.service.domain.Magazine.RelatePlace;
 import skkuchin.service.domain.Map.Place;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.MagazineDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.MagazineRepo;
@@ -35,12 +34,10 @@ public class MagazineService {
         List<Long> placeIds = dto.getPlaceId();
         System.out.println("placeIds = " + placeIds);
         while (!placeIds.isEmpty()) {
-            // 리스트가 비어있지 않은 동안 실행할 코드
-            Long placeId = placeIds.remove(0); // 리스트에서 첫 번째 요소를 제거하고 가져옵니다.
+            Long placeId = placeIds.remove(0);
             System.out.println("placeId = " + placeId);
             Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("없는 식당 Id"));
             System.out.println(place.getName());
-            // placeId를 사용한 작업 수행
             RelatePlace relatedPlace = RelatePlace.builder().place(place).magazine(newMagazine).build();
             relatedPlaceRepo.save(relatedPlace);
         }

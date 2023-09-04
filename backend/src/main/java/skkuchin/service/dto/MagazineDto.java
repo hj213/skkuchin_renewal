@@ -6,16 +6,11 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import skkuchin.service.domain.Forum.Article;
-import skkuchin.service.domain.Forum.ArticleLike;
 import skkuchin.service.domain.Forum.ArticleType;
-import skkuchin.service.domain.Forum.Comment;
 import skkuchin.service.domain.Magazine.Magazine;
 import skkuchin.service.domain.Magazine.RelatePlace;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.domain.User.Profile;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;

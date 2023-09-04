@@ -12,7 +12,6 @@ import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.CMRespDto;
-import skkuchin.service.dto.PlaceDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.UserRepo;
 import skkuchin.service.service.ArticleService;

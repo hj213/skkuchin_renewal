@@ -10,15 +10,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.User.AppUser;
-import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.dto.MagazineDto;
 import skkuchin.service.exception.CustomValidationApiException;
-import skkuchin.service.repo.MagazineRepo;
-import skkuchin.service.repo.UserRepo;
-import skkuchin.service.service.ArticleService;
 import skkuchin.service.service.MagazineService;
-import skkuchin.service.service.UserService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
