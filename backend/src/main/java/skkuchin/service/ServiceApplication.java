@@ -49,7 +49,8 @@ public class ServiceApplication {
 
 			//String path = System.getProperty("user.dir") + "\\src\\main\\java\\skkuchin\\service\\data\\"; // Window 공통 경로
 			String path = System.getProperty("user.dir") + "/src/main/java/skkuchin/service/data/"; // Mac 공통 경로
-			//String path = "C:\\Users\\sunny\\skkuchin_renewal2\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
+
+//			String path = "C:\\Users\\sunny\\OneDrive\\바탕 화면\\스프링 연습\\skkuchin_renewal\\backend\\src\\main\\java\\skkuchin\\service\\data\\"; // 병준 경로
 
 			try {
 				tagService.insertData(path);

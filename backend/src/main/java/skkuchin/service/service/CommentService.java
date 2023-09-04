@@ -15,6 +15,7 @@ import skkuchin.service.repo.CommentRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +31,19 @@ public class CommentService {
     public void addComment(AppUser appUser, CommentDto.PostRequest dto){
 
        Article article = articleRepo.findById(dto.getArticleId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다."));
-
         Comment comment = dto.toEntity(appUser,article);
+        commentRepo.save(comment);
+    }
+
+
+    @Transactional
+    public void addReply(AppUser appUser, CommentDto.PostReplyRequest dto, Long commentId){
+
+        Article article = articleRepo.findById(dto.getArticleId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다."));
+        Comment originalComment = commentRepo.findById(commentId).orElseThrow(()-> new CustomValidationApiException("댓글이 존재하지 않습니다"));
+        Comment comment = dto.toEntity(appUser,article,originalComment);
+        originalComment.getChildren().add(comment);
+        commentRepo.save(originalComment);
         commentRepo.save(comment);
     }
 

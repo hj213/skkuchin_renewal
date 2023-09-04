@@ -44,6 +44,24 @@ public class CommentController {
 
     }
 
+    @PostMapping("/{commentId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> addReply(@Valid @RequestBody CommentDto.PostReplyRequest dto
+                                        ,@PathVariable Long commentId,
+                                        @AuthenticationPrincipal PrincipalDetails principalDetails, BindingResult bindingResult){
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("모든 정보를 입력해주시기 바랍니다", errorMap);
+        }
+        AppUser appUser = principalDetails.getUser();
+        commentService.addReply(appUser,dto,commentId);
+        return new ResponseEntity<>(new CMRespDto<>(1,"대댓글 저장 완료",null), HttpStatus.CREATED);
+
+    }
+
     @GetMapping("/{articleId}")
     public ResponseEntity<?> getComment(@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long articleId){
         AppUser appUser = principalDetails.getUser();
