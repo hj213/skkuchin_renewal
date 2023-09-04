@@ -52,6 +52,12 @@ public class ArticleController {
         return new ResponseEntity<>(new CMRespDto<>(1,"게시판 조회 완료",article), HttpStatus.OK);
     }
 
+    @GetMapping("/{articleId}")
+    public ResponseEntity<?> getSpecificArticle(@PathVariable Long articleId){
+        List<ArticleDto.Response> articles = articleService.getSpecificArticle(articleId);
+        return new ResponseEntity<>(new CMRespDto<>(1,"특정 게시글 조회 완료",articles),HttpStatus.OK);
+    }
+
 
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -83,6 +89,12 @@ public class ArticleController {
         AppUser appUser = principalDetails.getUser();
         articleService.deleteArticle(articleId,appUser);
         return new ResponseEntity<>(new CMRespDto<>(1,"내 게시글 삭제 완료",null),HttpStatus.OK);
+    }
+
+    @GetMapping("/search/keyword")
+    public ResponseEntity<?> searchKeyword(@RequestParam("q") String keyword) {
+        List<ArticleDto.Response> articles = articleService.searchKeyword(keyword);
+        return new ResponseEntity<>(new CMRespDto<>(1, "게시글 검색 완료", articles), HttpStatus.OK);
     }
 
 
