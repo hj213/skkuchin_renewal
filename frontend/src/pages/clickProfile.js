@@ -111,13 +111,13 @@ const clickProfile = () => {
                         </Box>
 
                         <Box sx={{ mt: '30px', mb: '100px' }}>
-                            <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 800, mb: '20px'}}>관심사 태그</Typography>
+                            <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 800}}>관심사 태그</Typography>
                             {keywordCategories && keywordCategories.map((category, index) => (
                                 <div key={index}>
-                                    <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 700, pl: '4px' }}>{category}</Typography>
-                                    <Grid container sx={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'auto', gap: '8px' }}>
+                                    <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 700, pl: '4px', mt: '20px' }}>{category}</Typography>
+                                    <Grid container sx={{ display: 'flex', columnGap: '8px' }}>
                                         {matchingUser.keywords[category] && matchingUser.keywords[category].map((keyword, index) => (
-                                            <Grid item key={index} sx={{ backgroundColor: '#FFFCE4', color: '#3C3C3C', fontSize: '14px', fontWeight: 400, p: '5px 19px', m: '11px 0px 32px',borderRadius: '100px', whiteSpace: 'nowrap', border: '1px solid #FFCE00' }}>
+                                            <Grid item key={index} sx={{ backgroundColor: '#FFFCE4', color: '#3C3C3C', fontSize: '14px', fontWeight: 400, p: '4.5px 18px', m: '11px 0px 0px',borderRadius: '100px', whiteSpace: 'nowrap', border: '1px solid #FFCE00' }}>
                                                 {keyword}
                                             </Grid>
                                         ))}

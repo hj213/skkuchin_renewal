@@ -15,6 +15,8 @@ import stompClientReducer from './stompClient';
 import noticeAlarmReducer from './noticeAlarm';
 import noticeReducer from './notice';
 import rankReducer from './rank';
+import postReducer from './post';
+import commentReducer from './comment';
 
 export default combineReducers({
     auth: authReducer,
@@ -33,4 +35,6 @@ export default combineReducers({
     noticeAlarm: noticeAlarmReducer,
     rank: rankReducer,
     stompClient: stompClientReducer,
+    post: postReducer,
+    comment: commentReducer
 });

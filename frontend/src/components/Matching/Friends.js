@@ -215,13 +215,12 @@ const Friends = () => {
                     >
                         <DialogContent sx={{p: '20px 24px 13px'}}>
                             <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
-                                <DialogTitle sx={{color: '#000', fontSize: '15px', p: '11px 23px 5px', m: '0'}}>{"대화를 요청하시겠습니까?"}</DialogTitle>
-                                <Typography sx={{color: '#BABABA', fontSize: '9px'}}>*신청 후 취소는 불가능</Typography>
+                                <DialogTitle sx={{color: '#3C3C3C', fontSize: '16px', fontWeight: 800, p: '11px 23px 5px', m: '0'}}>{"밥약 신청을 하시겠어요?"}</DialogTitle>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions sx={{p:'0'}}>
                             <div style={{width: '100%', paddingBottom: '16px'}}>
-                                <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>취소</Button>
+                                <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>아니요</Button>
                                 <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={() => handleSubmit(selectedPersonId)}>신청</Button>
                             </div>
                         </DialogActions>

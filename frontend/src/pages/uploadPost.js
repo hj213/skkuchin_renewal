@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button, ThemeProvider, CssBaseline, Grid } from '@mui/material';
 import UploadHeader from '../components/SkkuChat/UploadHeader';
 import theme from '../theme/theme';
 import { useRouter } from 'next/router';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
+import { useDispatch } from 'react-redux';
+import { enroll_post, load_all_posts } from '../actions/post/post';
+
+const tagToArticleType = {
+    "뭐 먹을까요?": "WHAT_TO_EAT",
+    "같이 먹어요": "TOGETHER",
+    "기타": "ETC"
+};
 
 const UploadPost = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedTag, setSelectedTag] = useState(null);
+    
     const [images, setImages] = useState([]);
 
     const isValidForm = title !== '' && content !== '' && selectedTag !== null;
@@ -46,7 +56,17 @@ const UploadPost = () => {
     };
 
     const handleCompleteClick = () => {
-        alert("게시글 작성 완료!!");
+        const selectedArticleType = tagToArticleType[selectedTag];
+        console.log(title, content, selectedArticleType);
+        dispatch(enroll_post(title, content, selectedArticleType, ([result, message]) => {
+            if (result) {
+                console.log("게시글 작성 완료!!")
+                dispatch(load_all_posts());
+                router.push('/freeCommunity');
+            } else {
+                alert("게시글 작성 오류" + message);
+            }
+        }));
     };
 
     return (

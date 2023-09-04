@@ -5,10 +5,14 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import send from '../../image/send.png';
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
+import { enroll_comment, load_comment } from '../../actions/comment/comment';
 
-const CustomInputField = () => {
-  const [isChecked, setIsChecked] = useState(false);
-  const [message, setMessage] = useState('');
+const CustomInputField = ({ article_id }) => {
+    const dispatch = useDispatch();
+
+    const [isChecked, setIsChecked] = useState(false);
+    const [message, setMessage] = useState('');
 
     const handleCheck = () => {
         setIsChecked(!isChecked);
@@ -18,7 +22,22 @@ const CustomInputField = () => {
     };
 
     const handleSendClick = () => {
-        setMessage('');
+        if (message !== '') {
+            dispatch(enroll_comment(message, article_id, ([result, message]) => {
+                if (result) {
+                    setMessage('');
+                    console.log("댓글 작성 완료!!")
+                    
+                    dispatch(load_comment(article_id, ([result, message]) => {
+                        if (result) {
+                            console.log("댓글 불러오기 성공")
+                        }
+                    }));
+                } else {
+                    alert("댓글 작성 오류" + message);
+                }
+            }));
+        }
     };
 
     return (

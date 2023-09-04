@@ -4,6 +4,10 @@ import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import CommunityItem from '../components/SkkuChat/CommunityItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { load_all_posts } from '../actions/post/post';
+import { useEffect } from 'react';
+import { getToken } from '../actions/auth/auth';
 
 const Friends = dynamic(() => import('../components/Matching/Friends'));
 const UpperBar = dynamic(() => import("../components/UpperBar"));
@@ -23,24 +27,49 @@ const MatchContainer = styled.div`
 const MatchPage = () => {
     const router = useRouter();
 
+    const dispatch = useDispatch();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const allPosts = useSelector(state => state.post.allPosts);
+
+    useEffect(() => {
+        if(isAuthenticated) {
+            const access = dispatch(getToken('access'));
+            console.log(access);
+
+            console.log('load all posts')
+            dispatch(load_all_posts());
+        }
+    }, []);
+
     const posts = [
         {
             id: 1,
-            title: '게시글 제목',
-            content: '게시글 내용 본문본문본문본문',
-            likes: 10,
-            comments: 5,
-            date: '10분 전',
-            image: 'https://picsum.photos/200',
+            article_type: "WHAT TO EAT",
+            tag_type: "뭐 먹을까요?",
+            title: "게시글 제목제목",
+            content: "안녕본문본붐놉누본ㅁ",
+            user_id: 800,
+            nickname: "진아지롱",
+            user_image: "ESFP",
+            display_time: "3분 전",
+            article_like_count: 0,
+            comment_count: 1,
+            image: 'https://picsum.photos/30',
         },
         {
             id: 2,
-            title: '게시글 제목2',
-            content: '게시글 내용 본문본문본문본문본문본문본문본문본문본문본문본문문본문본문본문본문본문본문',
-            likes: 10,
-            comments: 5,
-            date: '10분 전',
-            image: '',
+            article_type: "TOGETHER",
+            tag_type: "같이 먹어요",
+            title: "크크",
+            content: "안녕",
+            user_id: 102,
+            nickname: "테스트100",
+            user_image: "ENFJ",
+            display_time: "35분 전",
+            article_like_count: 0,
+            comment_count: 1,
+            image: 'https://picsum.photos/200',
         },
     ];
 
@@ -68,7 +97,8 @@ const MatchPage = () => {
                     </Button>
                 </div>
                 <Container sx={{ p: '0 24px', height: 'max-content', alignItems: 'center', mt: '10px' }}>
-                    {posts.map((post) => (
+                    {/* {posts && posts.map((post) => ( */}
+                    {allPosts && allPosts.slice(0,2).map((post) => (
                         <CommunityItem key={post.id} {...post} />
                     ))}
                 </Container>
