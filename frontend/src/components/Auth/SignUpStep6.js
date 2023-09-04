@@ -5,6 +5,7 @@ import theme from '../../theme/theme';
 import check from '../../image/check_circle.png';
 import uncheck from '../../image/uncheck.png';
 import logo from '../../image/email_enhang.png'
+import back from '../../image/arrow_back_ios.png';
 import Image from 'next/image';
 import { signup_email_send } from '../../actions/email/email';
 import { useRouter } from 'next/router';
@@ -26,6 +27,7 @@ const SignUpStep6 = (props) => {
     }
     const handleSubmit= (e) => {
       e.preventDefault();
+      console.log(props.data)
 
       dispatch(signup_email_send(props.data.username, emailId+domain, true, ([result, message]) => {
         if (result) {
@@ -56,7 +58,7 @@ const SignUpStep6 = (props) => {
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
                             <Grid item style={{margin:'0px 0px 0px 24px', visibility:'none'}}>
-                                {/* <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} layout='fixed' /> */}
+                                <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} layout='fixed' />
                                 <div style={{width: '11px', height: '18px'}}></div>
                             </Grid>
                             <Grid item style={{marginLeft:'35%'}}>

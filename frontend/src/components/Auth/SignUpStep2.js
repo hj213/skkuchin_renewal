@@ -331,21 +331,7 @@ const SignUpStep2 = (props) => {
           </Grid>
         </div>
         
-        {/* <div style={{margin: '0 36px 12px'}}>
-            {validNickname && (props.data.nickname != '' && majorList.indexOf(props.data.major) != -1 && validSId) && validPhone2 != false && validPhone3 != false ?
-                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                        다음
-                    </Button>
-                    :
-                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
-                        다음
-                    </Button>
-            }
-        </div> */}
         </form>
-        {/* <div style={{display: 'flex', fontSize: '12px', fontWeight: '500', padding: '6px 0', color: '#505050'}}>
-                <span style={{alignSelf: 'center'}}>이미 회원이신가요?</span><Button onClick={() => router.push('/login')} variant="text" style={{alignSelf: 'start', justifySelf: 'start', fontSize: '12px', color: '#FFCE00', padding: 0, fontWeight: '700'}}>로그인</Button>
-        </div> */}
         <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', width: '100%', maxWidth: '420px', backgroundColor: '#fff'}}>
         {(props.data.nickname != '' && validNickname != false && majorList.indexOf(props.data.major) != -1 && validSId) && validPhone2 != false && validPhone3 != false ?
                     <Button variant="contained" onClick={handleNextStep} style={{margin: '0 24px', width: '88%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>

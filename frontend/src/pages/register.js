@@ -11,6 +11,8 @@ const SignUpStep3 = dynamic(() => import('../components/Auth/SignUpStep3'));
 const SignUpStep4 = dynamic(() => import('../components/Auth/SignUpStep4'));
 const SignUpStep5 = dynamic(() => import('../components/Auth/SignUpStep5'));
 const SignUpStep6 = dynamic(() => import('../components/Auth/SignUpStep6'));
+const SignUpStep7 = dynamic(() => import('../components/Auth/SignUpStep7'));
+const SignUpStep8 = dynamic(() => import('../components/Auth/SignUpStep8')); 
 
 const RegisterPage = () => {
 
@@ -51,15 +53,16 @@ const RegisterPage = () => {
     useEffect(() => {
         if (src == '이메일') {
             setData({...data, username: pathUsername})
-            setStep(4);
-        } else if (src == 'emailDone') {
+            //setStep(4);
             setStep(6);
+        } else if (src == 'emailDone') {
+            setStep(8);
         } else if (src == '인증') {
             setData({...data, username: pathUsername, email: pathEmail})
-            setStep(5);
+            setStep(7);
         } else if (src == 'agreement') {
             setData({...data, username: pathUsername})
-            setStep(4);
+            setStep(6);
         }
     }, [src])
     
@@ -81,10 +84,16 @@ const RegisterPage = () => {
                 step === 4 && <SignUpStep4 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 5 && <SignUpStep5 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
+                step === 5 && <SignUpStep5 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
             }
             {
-                step === 6 && <SignUpStep6 handlePrevStep={handlePrevStep} username={data.username} />
+                step === 6 && <SignUpStep6 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} setData={setData} />
+            }
+            {
+                step === 7 && <SignUpStep7 handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} data={data} />
+            }
+            {
+                step === 8 && <SignUpStep8 handlePrevStep={handlePrevStep} username={data.username} />
             }
             {/* </Container> */}
         </ThemeProvider>
