@@ -1,48 +1,50 @@
 import { useState, useEffect } from "react";
 import {  Container, Typography, Box, Grid, Button } from '@mui/material';
-import back from '../../image/arrow_back_ios.png';
+import back from '../../image/close.png';
 import theme from '../../theme/theme';
 import Image from 'next/image';
+import { useRouter } from "next/router";
 
-import profile1 from '../../image/mbti/profile/mainCharacter.png';
-import profile2 from '../../image/mbti/profile/mealCharacter.png';
-import profile3 from '../../image/mbti/profile/ENFJ.png';
-import profile4 from '../../image/mbti/profile/ENTP.png';
-import profile5 from '../../image/mbti/profile/INFP.png';
-import profile6 from '../../image/mbti/profile/ENFP.png';
-import profile7 from '../../image/mbti/profile/ISTJ.png';
-import profile8 from '../../image/mbti/profile/ISTP.png';
-import profile9 from '../../image/mbti/profile/ISFP.png';
-import profile10 from '../../image/mbti/profile/INTP.png';
-import profile11 from '../../image/mbti/profile/ESTJ.png';
-import profile12 from '../../image/mbti/profile/INFJ.png';
-import profile13 from '../../image/mbti/profile/ENTJ.png';
-import profile14 from '../../image/mbti/profile/ESTP.png';
-import profile15 from '../../image/mbti/profile/ESFJ.png';
-import profile16 from '../../image/mbti/profile/INTJ.png';
-import profile17 from '../../image/mbti/profile/ISFJ.png';
-import profile18 from '../../image/mbti/profile/ESFP.png';
+import profile1 from '../../image/mbti/profile/mbti_non_select/mainCharacter.png';
+import profile2 from '../../image/mbti/profile/mbti_non_select/mealCharacter.png';
+import profile3 from '../../image/mbti/profile/mbti_non_select/ENFJ.png';
+import profile4 from '../../image/mbti/profile/mbti_non_select/ENTP.png';
+import profile5 from '../../image/mbti/profile/mbti_non_select/INFP.png';
+import profile6 from '../../image/mbti/profile/mbti_non_select/ENFP.png';
+import profile7 from '../../image/mbti/profile/mbti_non_select/ISTJ.png';
+import profile8 from '../../image/mbti/profile/mbti_non_select/ISTP.png';
+import profile9 from '../../image/mbti/profile/mbti_non_select/ISFP.png';
+import profile10 from '../../image/mbti/profile/mbti_non_select/INTP.png';
+import profile11 from '../../image/mbti/profile/mbti_non_select/ESTJ.png';
+import profile12 from '../../image/mbti/profile/mbti_non_select/INFJ.png';
+import profile13 from '../../image/mbti/profile/mbti_non_select/ENTJ.png';
+import profile14 from '../../image/mbti/profile/mbti_non_select/ESTP.png';
+import profile15 from '../../image/mbti/profile/mbti_non_select/ESFJ.png';
+import profile16 from '../../image/mbti/profile/mbti_non_select/INTJ.png';
+import profile17 from '../../image/mbti/profile/mbti_non_select/ISFJ.png';
+import profile18 from '../../image/mbti/profile/mbti_non_select/ESFP.png';
 
-import profile1On from '../../image/mbti/profile/selectMainCharacter.png';
-import profile2On from '../../image/mbti/profile/selectMealCharacter.png';
-import profile3On from '../../image/mbti/profile/selectENFJ.png';
-import profile4On from '../../image/mbti/profile/selectENTP.png';
-import profile5On from '../../image/mbti/profile/selectINFP.png';
-import profile6On from '../../image/mbti/profile/selectENFP.png';
-import profile7On from '../../image/mbti/profile/selectISTJ.png';
-import profile8On from '../../image/mbti/profile/selectISTP.png';
-import profile9On from '../../image/mbti/profile/selectISFP.png';
-import profile10On from '../../image/mbti/profile/selectINTP.png';
-import profile11On from '../../image/mbti/profile/selectESTJ.png';
-import profile12On from '../../image/mbti/profile/selectINFJ.png';
-import profile13On from '../../image/mbti/profile/selectENTJ.png';
-import profile14On from '../../image/mbti/profile/selectESTP.png';
-import profile15On from '../../image/mbti/profile/selectESFJ.png';
-import profile16On from '../../image/mbti/profile/selectINTJ.png';
-import profile17On from '../../image/mbti/profile/selectISFJ.png';
-import profile18On from '../../image/mbti/profile/selectESFP.png';
+import profile1On from '../../image/mbti/profile/mbti_select/MainCharacter.png';
+import profile2On from '../../image/mbti/profile/mbti_select/MealCharacter.png';
+import profile3On from '../../image/mbti/profile/mbti_select/ENFJ.png';
+import profile4On from '../../image/mbti/profile/mbti_select/ENTP.png';
+import profile5On from '../../image/mbti/profile/mbti_select/INFP.png';
+import profile6On from '../../image/mbti/profile/mbti_select/ENFP.png';
+import profile7On from '../../image/mbti/profile/mbti_select/ISTJ.png';
+import profile8On from '../../image/mbti/profile/mbti_select/ISTP.png';
+import profile9On from '../../image/mbti/profile/mbti_select/ISFP.png';
+import profile10On from '../../image/mbti/profile/mbti_select/INTP.png';
+import profile11On from '../../image/mbti/profile/mbti_select/ESTJ.png';
+import profile12On from '../../image/mbti/profile/mbti_select/INFJ.png';
+import profile13On from '../../image/mbti/profile/mbti_select/ENTJ.png';
+import profile14On from '../../image/mbti/profile/mbti_select/ESTP.png';
+import profile15On from '../../image/mbti/profile/mbti_select/ESFJ.png';
+import profile16On from '../../image/mbti/profile/mbti_select/INTJ.png';
+import profile17On from '../../image/mbti/profile/mbti_select/ISFJ.png';
+import profile18On from '../../image/mbti/profile/mbti_select/ESFP.png';
 
 export default function EditProfileImage(props) {
+    const router = useRouter();
     const [image, setImage] = useState('');
     const [profile, setProfile] = useState({
         'DEFAULT1': false,
@@ -65,9 +67,9 @@ export default function EditProfileImage(props) {
         'ESFP': false,
     })
 
-    const handlePrevStep = () => {
-        props.setEditImage(false);
-    }
+    // const handlePrevStep = () => {
+    //     props.setEditImage(false);
+    // }
 
     const handleProfileClick = (event) => {
         if(profile[event.target.name]){
@@ -95,9 +97,9 @@ export default function EditProfileImage(props) {
         }
     }
 
-    const handleNextStep = () => {
-        props.setEditImage(false);
-    }
+    // const handleNextStep = () => {
+    //     props.setEditImage(false);
+    // }
 
     useEffect(() => {
         setProfile({
@@ -110,22 +112,31 @@ export default function EditProfileImage(props) {
     return (
         <Box
             sx={{
-            margin: '45px 16px 16px 16px',
+            margin: '45px 20px 16px 20px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             }}
             >
             <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
-                    <Image width={11} height={18} src={back} onClick={handlePrevStep} layout='fixed' />
-                    <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>프로필 이미지 변경</Typography>
+                    <Image width={25} height={25} src={back} onClick={()=> router.push('../myPage')} layout='fixed' />
+                    <Typography align='center' style={{marginLeft:'30px', fontSize: '18px', fontWeight: '700'}}>프로필 이미지</Typography>
+                    { image ?
+                    <Button onClick={()=>router.push('../myPage')} style={{padding:'0', right:'0'}}>
+                        <Typography style={{margin:'0px 0px 0px 10px',color:'#FFCE00', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                    </Button>
+                    :
+                    <Button style={{padding:'0', right:'0'}}>
+                        <Typography style={{margin:'0px 0px 0px 10px',color:'#BABABA', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                    </Button>
+                }
             </header>
 
             <div name='스꾸챗 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
                             <Container  style={{padding:'0px', margin:'0px 0px 0px 10px', justifyContent:'center'}}>
-                                <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필 이미지 선택*</Typography>
-                                <Typography style={{fontSize:'12px', textAlign:'left', margin:'12px 0px 12px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>1개의 이미지를 선택해주세요.</Typography>
+                                {/* <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필 이미지 선택*</Typography>
+                                <Typography style={{fontSize:'12px', textAlign:'left', margin:'12px 0px 12px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>1개의 이미지를 선택해주세요.</Typography> */}
                                 <div style={{marginTop:'10px'}}>
                                     <Grid container style={{maxWidth:'340px'}}>
                                         <Grid container>
@@ -199,19 +210,6 @@ export default function EditProfileImage(props) {
                             </Container>
                         </div>
                     </div>
-            <div style={{width: '100%'}}>
-            <div style={{margin: '20px 20px 50px'}}>
-                {image ?
-                        <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-                            확인
-                        </Button>
-                        :
-                        <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-                            확인
-                        </Button>
-                }
-            </div>
-            </div>
         </Box>
     )
 }

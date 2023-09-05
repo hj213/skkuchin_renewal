@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider, MenuItem, Button, TextField, Typography, Link, FormControl, InputLabel, Select, Container, Grid, Autocomplete } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, Card,styled, Button, TextField, Typography, Link, FormControl, InputLabel, Select, Container, Grid, Autocomplete } from '@mui/material';
 import theme from '../theme/theme';
-import back from '../image/arrow_back_ios.png';
+import back from '../image/close.png';
 import check from '../image/check_circle.png';
-import { displayProfile } from '../components/MyPage/ProfileList';
 import { change_user, check_nickname } from '../actions/auth/auth';
 import dynamic from 'next/dynamic';
+import { Dialog } from "@mui/material";
+import { DialogContent } from "@mui/material";
+
 
 // const EditProfileImage = dynamic(() => import('../components/MyPage/EditProfileImage'));
 
@@ -18,14 +20,18 @@ const editNickname = () => {
     const user = useSelector(state => state.auth.user);
     const [validNickname, setValidNickname] = useState(false);
     const [nicknameMsg, setNicknameMsg] = useState("");
-    const [showCheck, setShowCheck] = useState(false);
+    const [isCorrect, setIsCorrect] = useState("none");
+    const [isNickFocused, setIsNickFocused] = useState(false);
+    const [isNumFocused, setIsNumFocused] = useState(false);
+    const [isMajorFocused, setIsMajorFocused] = useState(false);
 
+    const [dialogOpen,setDialogOpen] = useState(false);
+
+ 
     const [image, setImage] = useState("");
     const [nickname, setNickname] = useState("");
     const [major, setMajor] = useState("");
     const [studentId, setStudentId] = useState("");
-
-    const [editImage, setEditImage] = useState(false);
 
     const majorList = [
         '경영학과', '글로벌경영학과', '앙트레프레너십연계전공', '경제학과','국제통상학전공', '소비자학과',
@@ -59,17 +65,23 @@ const editNickname = () => {
             setValidNickname(null);
         }
         setNickname(e.target.value);
+        
+        Promise.resolve().then(() => {
+            checkNickname(e.target.value);
+          });
     }
 
-    const checkNickname = () => {
-        check_nickname(nickname)
+    const checkNickname = (e) => {
+        check_nickname(e)
         .then((message) => {
           setValidNickname(true);
           setNicknameMsg(message);
+          setIsCorrect("correct");
         })
         .catch((error) => {
           setValidNickname(false);
           setNicknameMsg(error);
+          setIsCorrect("wrong");
         })
     }
 
@@ -80,7 +92,10 @@ const editNickname = () => {
         }
         dispatch(change_user(nickname, finalMajor, image, studentId.slice(0, 2)))
             .then(() => {
-                router.push('/myPage');
+                setDialogOpen(true);
+                setTimeout(() => {
+                    router.push('/myPage');
+                  }, 1000); 
             })
             .catch((error) => {
                 console.log(error);
@@ -96,90 +111,140 @@ const editNickname = () => {
         }
     }, [user])
 
+    const CustomTextField = styled((props) => (
+        <TextField
+          {...props}
+          value={props.value}
+          onChange={props.onChange}
+        />
+      ))(({ theme }) => ({
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: '#E2E2E2',
+            borderRadius:'10px'
+          },
+        },
+      }));
+      
+    const NewDialogContent = styled(Dialog)(({theme}) => ({
+        borderRadius:"10px"
+    })) 
+
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        {!editImage && <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
-                        <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick} layout='fixed'/>
-                            </Grid>
-                            <Grid item style={{marginLeft:'25%'}}>
-                                <Typography style={{margin:'0px 0px 0px 10px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>닉네임 변경</Typography>
-                            </Grid>
-                        </Grid>
-        </Container>}
-        {user && !editImage && 
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+            <Grid container>
+                <Grid item style={{margin:'0px 0px 0px 25px', visibility:'none'}}>
+                    <Image src={back} width={25} height={25} name='back' onClick={handleArrowClick} layout='fixed'/>
+                </Grid>
+                <Grid item style={{marginLeft:'25%'}}>
+                    <Typography style={{margin:'0px 0px 0px 10px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>닉네임 변경</Typography>
+                </Grid>
+                <Grid item style={{padding:'0', marginLeft:'auto', marginRight:'20px'}}>
+                {(nickname === user.nickname || validNickname) && (nickname != '' && majorList.indexOf(major) != -1 && studentIdList.indexOf(studentId) != -1) ?
+                    <Button onClick={handleNextStep} style={{padding:'0', right:'0'}}>
+                        <Typography style={{margin:'0px 0px 0px 10px',color:'#FFCE00', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                    </Button>
+                    :
+                    <Button style={{padding:'0', right:'0'}}>
+                        <Typography style={{margin:'0px 0px 0px 10px',color:'#BABABA', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                    </Button>
+                }
+                </Grid>
+            </Grid>
+        </Container>
+        {user && 
         <Box
             sx={{
-            margin: '45px 16px 16px 16px',
+            margin: '45px 10px 16px 10px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             }}
         >
         <form style={{ width: '100%'}}>
-        <div style={{margin: '0 36px 19px'}}>
-            <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>닉네임</Typography> <Typography>최대 100자</Typography>
+        <div style={{margin: '0 20px 20px'}}>
+            <div style={{display:'flex'}}><Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>닉네임&nbsp;</Typography> <Typography style={{fontSize:'14px', color:'#BABABA'}}>(최대 10자)</Typography></div>
             <TextField
-                variant="standard"
-                //label="닉네임"
+                color={isCorrect}
+                variant="outlined"
+                placeholder="닉네임을 입력해주세요."
                 value={nickname}
                 onChange={handleNicknameChange}
-                style={{width: '100%'}}
+                style={{width: '100%',}}
                 required
+                // InputProps={{
+                //     endAdornment: (validNickname) && (nickname != '') ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
+                // }}
                 InputProps={{
-                    endAdornment: (validNickname) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
-                }}
+                    style: {
+                      backgroundColor: isNickFocused ? 'white' : '#F2F2F2',
+                      borderRadius:'10px'
+                    },
+                    onFocus: () => {
+                      setIsNickFocused(true);
+                    },
+                    onBlur: () => {
+                      setIsNickFocused(false);
+                    },
+                  }}
             />
             {/* 중복확인 메소드 추가 */}
             {nickname !== user.nickname ? 
-            <div style={{display:'flex'}}>
-                <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px', boxShadow: 'none'}}>중복확인</Button>
-                {validNickname && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', margin: '7px 0 0 5px'}}>{nicknameMsg}</Typography>}
-                {validNickname == false && <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', margin: '7px 0 0 5px'}}>{nicknameMsg}</Typography>}
+            <div key={validNickname} style={{display:'flex', margin: '7px 0 0 3px'}}>
+                {/* <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px', boxShadow: 'none'}}>중복확인</Button> */}
+                {validNickname && nickname != "" && <Typography sx={{fontSize: '9px', fontWeight: '500', color:`${theme.palette.correct.main}` }} >사용 가능한 닉네임입니다</Typography>}
+                {validNickname == false &&  <Typography sx={{fontSize: '9px', fontWeight: '500', color:`${theme.palette.wrong.main}`}}>이미 사용중인 닉네임입니다</Typography>}
             </div> :
-            <div style={{height: '20px'}}></div>}
+            null}
+            
         </div>
-        <div style={{margin: '0 36px 39px'}}>
+        <div style={{margin: '0 20px 20px'}}>
             <FormControl variant="standard" style={{width: '100%'}}>
-            <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학부/학과*</Typography>
-            <Autocomplete
-                clearOnEscape
-                value={major}
-                onChange={(e, value) => setMajor(value)}
-                options={majorList.sort()}
-                renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
-            />
-            </FormControl>
-        </div>
-        <div style={{margin: '0 36px 64px'}}>
-            <FormControl variant="standard" style={{width: '100%'}}>
-                <Typography style={{paddingBottom: '4px', fontSize: '15px', color: '#505050'}}>학번*</Typography>
+                <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>학번</Typography>
                 <Autocomplete
-                clearOnEscape
+                freeSolo
                 value={studentId}
                 onChange={(e, value) => setStudentId(value)}
+                onFocus={()=>{setIsNumFocused(true)}}
+                onBlur = {()=>{setIsNumFocused(false)}}
+                sx={{ borderRadius: 1 }}
                 options={studentIdList}
-                renderInput={(params) => <TextField {...params} variant="standard" style={{fontSize: '12px'}} />} 
+                renderInput={(params) => <TextField {...params} variant="outlined" style={{
+                    fontSize: '12px',
+                    borderRadius: '10px',
+                    background: isNumFocused ? 'white' : '#F2F2F2',
+                  }}/>} 
                 />
             </FormControl>
         </div>
-        {/* <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 36px 50px 36px'}}> */}
-        <div style={{display: 'grid', margin: '0 36px 50px 36px'}}>
-            {(nickname === user.nickname || validNickname) && (nickname != '' && majorList.indexOf(major) != -1 && studentIdList.indexOf(studentId) != -1) ?
-                    <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-                        확인
-                    </Button>
-                    :
-                    <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-                        확인
-                    </Button>
-            }
+        <div style={{margin: '0 20px 0px'}}>
+            <FormControl variant="standard" style={{width: '100%', borderRadius:'10px'}}>
+            <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>학부/학과</Typography>
+            <Autocomplete
+                freeSolo
+                value={major}
+                onChange={(e, value) => setMajor(value)}
+                onFocus={()=>{setIsMajorFocused(true)}}
+                onBlur={()=>{setIsMajorFocused(false)}}
+                options={majorList.sort()}
+                sx={{ borderRadius: 1 }}
+                isOptionEqualToValue={(option, value) => option === value}
+                renderInput={(params) => <TextField {...params} variant="outlined" style={{
+                    fontSize: '12px',
+                    borderRadius: '10px',
+                    background: isMajorFocused ? 'white' : '#F2F2F2',
+                }}
+                />} 
+            />
+            </FormControl>
         </div>
+        
         </form>
         </Box>}
+        <Dialog open={dialogOpen}><DialogContent><Typography style={{color:'#3C3C3C', fontWeight:'700', fontSize:'16px'}}>저장이 완료되었습니다.</Typography></DialogContent></Dialog>
 
         {/* {editImage && <EditProfileImage image={image} setImage={setImage} setEditImage={setEditImage} />} */}
         </ThemeProvider>
