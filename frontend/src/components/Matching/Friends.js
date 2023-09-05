@@ -8,6 +8,7 @@ import noCharacter from '../../image/mbti/profile/noCharacter.png'
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import CustomPopup from "../SkkuChat/CustomPopup";
 
 const GoLogin = dynamic(() => import('../GoLogin'));
 
@@ -123,19 +124,19 @@ const Friends = () => {
                             {(person.gender).charAt(0)}
                         </Grid>
                     </Grid>
-                    <Grid item sx={{display: 'flex', p: '10px 0', m: '10px 0'}}>
-                        <Grid item sx={{color: '#9E9E9E', p: '0px 1.5px', fontSize: '12px', fontWeight: 700}}>
-                            {'#'+person.mbti}
+                    <Grid item sx={{display: 'flex', p: '10px 0', m: '10px 0', gap: '4px'}}>
+                        <Grid item sx={{color: '#777777', backgroundColor: '#F2F2F2', p: '4px 12px', fontSize: '12px', fontWeight: 400, borderRadius: '24px'}}>
+                            {person.mbti}
                         </Grid>
                         {(person.keywords) != null ?
                             ((person.keywords).slice(0, 2).map((interest, index)=> (
-                                <Grid item key={index} sx={{ color: '#9E9E9E', p: '0px 1.5px', fontSize: '12px', fontWeight: 700}}>
-                                    {'#'+interest}
+                                <Grid item key={index} sx={{color: '#777777', backgroundColor: '#F2F2F2', p: '4px 12px', fontSize: '12px', fontWeight: 400, borderRadius: '24px'}}>
+                                    {interest}
                                 </Grid>
                             )))
                         : null}
                     </Grid >
-                    <Typography sx={{ fontSize:'12px', fontWeight: 700, backgroundColor: '#FBFBFB', color: '#777', p: '3px 7px 2px', borderRadius: '10px', mb: '10px'}}>{person.introduction}</Typography>
+                    <Typography sx={{ fontSize:'14px', fontWeight: 400, color: '#3C3C3C', mb: '10px'}}>{'"'+person.introduction+'"'}</Typography>
                     <Grid item sx={{ display: 'flex',  alignItems: 'center', width: '100%', justifyContent: 'center' }}>
                         <Button
                             disableElevation
@@ -143,9 +144,9 @@ const Friends = () => {
                             key="profile-button"
                             onClick={() => handleFriendClick(person.id)}
                             sx={{
-                                color: '#FFAC0B',
-                                fontSize: '12px',
-                                fontWeight: 800,
+                                color: '#777777',
+                                fontSize: '14px',
+                                fontWeight: 700,
                                 textAlign: 'center',
                                 pr: '15px',
                             }}
@@ -167,8 +168,8 @@ const Friends = () => {
                                 key="completed-button"
                                 sx={{
                                     color: '#505050',
-                                    fontSize: '12px',
-                                    fontWeight: 800,
+                                    fontSize: '14px',
+                                    fontWeight: 700,
                                     textAlign: 'center',
                                     pl: '15px',
                                 }}
@@ -183,48 +184,27 @@ const Friends = () => {
                                 onClick={() => handleOpen(person.id)}
                                 sx={{
                                     color: '#FFAC0B',
-                                    fontSize: '12px',
-                                    fontWeight: 800,
+                                    fontSize: '14px',
+                                    fontWeight: 700,
                                     textAlign: 'center',
                                     pl: '15px',
                                 }}
                             >
-                                밥약 신청하기
+                                밥약 걸기
                             </Button>
                         )}
                     </Grid>
-                    <Dialog
-                        key={person.id}
+                    <CustomPopup
                         open={open}
                         onClose={handleClose}
-                        PaperProps={{
-                            style: { 
-                                borderRadius: '10px', 
-                                boxShadow: 'none', 
-                                maxWidth: '100vw', 
-                                maxHeight: '100vh'
-                            }
+                        content={`밥약 신청을 하시겠어요?`}
+                        leftButtonLabel="아니요"
+                        rightButtonLabel="신청"
+                        onLeftButtonClick={handleClose}
+                        onRightButtonClick={() => {
+                            handleSubmit(selectedPersonId);
                         }}
-                        BackdropProps={{
-                            sx: {
-                                backgroundColor: 'rgba(50, 50, 50, 0.25)',
-                                maxWidth: '100vw',
-                                maxHeight: '100vh'
-                            }
-                        }}
-                    >
-                        <DialogContent sx={{p: '20px 24px 13px'}}>
-                            <DialogContentText sx={{textAlign: 'center', fontWeight: '500px'}}>
-                                <DialogTitle sx={{color: '#3C3C3C', fontSize: '16px', fontWeight: 800, p: '11px 23px 5px', m: '0'}}>{"밥약 신청을 하시겠어요?"}</DialogTitle>
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions sx={{p:'0'}}>
-                            <div style={{width: '100%', paddingBottom: '16px'}}>
-                                <Button sx={{width: '50%', p: '0', m: '0', color: '#000', borderRadius: '0',borderRight: '0.25px solid #A1A1A1'}} onClick={handleClose}>아니요</Button>
-                                <Button sx={{width: '50%', p: '0', m: '0', color: '#D72D2D', borderRadius: '0', borderLeft: '0.25px solid #A1A1A1'}} onClick={() => handleSubmit(selectedPersonId)}>신청</Button>
-                            </div>
-                        </DialogActions>
-                    </Dialog>
+                    />
                 </Grid>
             </Card> 
             )) 

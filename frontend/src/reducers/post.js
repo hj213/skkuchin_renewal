@@ -10,7 +10,7 @@ import{
     DELETE_POST_SUCCESS,
     MODIFY_POST_FAIL,
     MODIFY_POST_SUCCESS,
-    CLEAR_MY_POST,
+    CLEAR_PREV_POST,
 } from '../actions/post/types'
 
 const initialState = {
@@ -67,7 +67,7 @@ const postReducer = (state = initialState, action) => {
             return{
                 ...state
             }
-        case CLEAR_MY_POST:
+        case CLEAR_PREV_POST:
             return{
                 ...state,
                 post: null

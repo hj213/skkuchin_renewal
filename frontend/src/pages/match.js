@@ -90,9 +90,9 @@ const MatchPage = () => {
             <Grid sx={{mt: '21px'}}>
                 <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 24px 0'}}>
                     <Typography style={{fontSize:'21px', fontWeight: 700, color: '#3C3C3C'}}>
-                        스꾸게시판
+                        스꾸게시판 📌
                     </Typography>
-                    <Button sx={{fontSize:'14px', fontWeight: 400, color: '#BABABA', p: 0}} onClick={() => router.push('/freeCommunity')}>
+                    <Button sx={{fontSize:'14px', fontWeight: 700, color: '#FFAC0B', p: 0}} onClick={() => router.push('/freeCommunity')}>
                         전체보기
                     </Button>
                 </div>
