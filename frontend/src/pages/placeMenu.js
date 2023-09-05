@@ -25,12 +25,12 @@ const PlaceMenu = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        dispatch(check_admin())
-            .catch((error) => {
-                console.log(error);
+        dispatch(check_admin(([result, message]) => {
+            if (!result) {
                 router.push('/');
-            });
-            
+            }
+        }));
+
         return (() => {
             dispatch(clear_search_results());
         })

@@ -46,16 +46,14 @@ const myPage = () => {
     }
 console.log(pushToken);
     const handleLogout = () => {
-        if(dispatch && dispatch !== null && dispatch !== undefined) {
-            if (chatAlarmSubscription) {
-                chatAlarmSubscription.unsubscribe();
-            }
-            if (noticeAlarmSubscription) {
-                noticeAlarmSubscription.unsubscribe();
-            }
-            dispatch(logout());
-            setDialogOpen(false);
+        if (chatAlarmSubscription) {
+            chatAlarmSubscription.unsubscribe();
         }
+        if (noticeAlarmSubscription) {
+            noticeAlarmSubscription.unsubscribe();
+        }
+        dispatch(logout());
+        setDialogOpen(false);
     }
     const handleDialogOpen = () => {
         setDialogOpen(true);

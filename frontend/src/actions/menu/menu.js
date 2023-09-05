@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import { API_URL } from '../../config';
-import { AUTHENTICATED_FAIL } from '../auth/types';
-import { request_refresh } from '../auth/auth';
+import { getToken, request_refresh } from '../auth/auth';
 import {
     LOAD_MENU_FAIL,
     LOAD_MENU_SUCCESS,
@@ -47,14 +45,7 @@ export const load_menu = (place_id, callback) => async dispatch => {
 
 export const enroll_menu = (place_id, name, price, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         name, price
@@ -100,14 +91,7 @@ export const enroll_menu = (place_id, name, price, callback) => async dispatch =
 
 export const modify_menu = (place_id, menu_id, name, price, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
     
     const body = JSON.stringify({
         name, price
@@ -148,14 +132,7 @@ export const modify_menu = (place_id, menu_id, name, price, callback) => async d
 
 export const delete_menu = (place_id, menu_id, callback) => async dispatch => {
     await dispatch(request_refresh());
-    const access = Cookies.get('access') ?? null;
-
-    if (access === null) {
-        
-        return dispatch({
-            type: AUTHENTICATED_FAIL
-        });
-    }
+    const access = dispatch(getToken('access'));
     
     try {
         const res = await fetch(`${API_URL}/api/menu/${menu_id}`, {

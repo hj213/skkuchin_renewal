@@ -30,8 +30,8 @@ const deleteUser = () => {
     }
 
     const handleNextStep = () => {
-        dispatch(delete_user())
-            .then(() => {
+        dispatch(delete_user(([result, message]) => {
+            if (result) {
                 let username = localStorage.getItem("username");
                 if (username != null) {
                     localStorage.removeItem("username");
@@ -43,10 +43,8 @@ const deleteUser = () => {
                     noticeAlarmSubscription.unsubscribe();
                 }
                 dispatch(logout());
-            })
-            .catch((error) => {
-                console.log(error)
-            });
+            }
+        }));
     }
 
     return (
@@ -84,7 +82,7 @@ const deleteUser = () => {
 
             <form style={{ width: '100%'}}>
                 <Typography  sx={{fontSize: '14px', fontWeight: '500', mb: '10px',  color: '#BABABA'}}>탈퇴 사유</Typography>
-                <textarea placeholder='탈퇴 사유를 입력해주세요.' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'Noto Sans KR, sans-serif'}} />
+                <textarea placeholder='탈퇴 사유를 입력해주세요.' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'NanumSquareRound, sans-serif'}} />
                 <div style={{display: 'flex', justifyItems: 'center', alignItems: 'center'}}>
                 {/* <input type="checkbox" checked={agreement} onChange={() => setAgreement(!agreement)}/> */}
                 {agreement ? <Image width={16} height={16} src={checkbox} onClick={() => setAgreement(false)} />

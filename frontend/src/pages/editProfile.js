@@ -62,15 +62,10 @@ const editProfile = () => {
     }
 
     const checkNickname = () => {
-        check_nickname(nickname)
-        .then((message) => {
-          setValidNickname(true);
-          setNicknameMsg(message);
-        })
-        .catch((error) => {
-          setValidNickname(false);
-          setNicknameMsg(error);
-        })
+        check_nickname(nickname, ([result, message]) => {
+            setValidNickname(result);
+            setNicknameMsg(message);
+        });
     }
 
     const handleNextStep = () => {
@@ -78,13 +73,11 @@ const editProfile = () => {
         if (major == '화학공학/고분자공학부') {
             finalMajor = '화학공학_고분자공학부'
         }
-        dispatch(change_user(nickname, finalMajor, image, studentId.slice(0, 2)))
-            .then(() => {
+        dispatch(change_user(nickname, finalMajor, image, studentId.slice(0, 2), ([result, message]) => {
+            if (result) {
                 router.push('/myPage');
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            }
+        }))
     }
 
     useEffect(() => {
