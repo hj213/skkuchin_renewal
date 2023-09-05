@@ -3,3 +3,6 @@
 
 # github action
 .github/workflows/
+
+# db
+/db/
