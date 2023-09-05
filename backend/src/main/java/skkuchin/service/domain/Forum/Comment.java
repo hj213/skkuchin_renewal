@@ -7,6 +7,8 @@ import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,4 +36,15 @@ public class Comment {
 
     @CreationTimestamp
     private LocalDateTime date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+    private List<Comment> children = new ArrayList<>();
+
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean anonymous;
+
 }

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
-import back from '../image/arrow_back_ios.png';
-import logo from '../image/character_tear.png'
+import back from '../image/close.png';
+import logo from '../image/character_tear2.png'
 import checkbox from '../image/checkbox.png'
 import checkbox_empty from '../image/checkbox_empty.png'
 import Image from 'next/image';
@@ -52,12 +52,13 @@ const deleteUser = () => {
         <CssBaseline />
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick} layout='fixed' />
+                            <Grid item style={{marginLeft:'43%'}}>
+                                <Typography style={{margin:'5px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>탈퇴하기</Typography>
                             </Grid>
-                            <Grid item style={{marginLeft:'35%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>탈퇴하기</Typography>
+                            <Grid item style={{marginLeft:'auto', marginRight:'20px', visibility:'none'}}>
+                                <Image src={back} width={25} height={25} name='back' onClick={handleArrowClick} layout='fixed' />
                             </Grid>
+                    
                         </Grid>
         </Container>
         <Box
@@ -69,18 +70,19 @@ const deleteUser = () => {
             }}
         >
             <div style={{ width: '100%', textAlign: 'center' }}>
-            <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
-            {/* <Typography sx={{fontSize: '22px', fontWeight: '500', mb: '22px'}}>너무 아쉬워요...</Typography> */}
-            <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '2px', color: '#BABABA', marginTop: '22px'}}>
+            <Image width={151} height={131} src={logo} placeholder="blur" layout='fixed' />
+            <Typography sx={{fontSize: '24px', fontWeight: '700', mb: '22px'}}>정말 탈퇴하실 건가요?</Typography>
+            <Typography sx={{fontSize: '14px', fontWeight: '500', mb: '2px', color: '#BABABA', marginTop: '22px'}}>
                 계정을 삭제하면 회원님의 저장 목록, 리뷰, 채팅 등
             </Typography>
-            <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '42px',  color: '#BABABA'}}>
+            <Typography sx={{fontSize: '14px', fontWeight: '500', mb: '42px',  color: '#BABABA'}}>
                 모든 활동 정보가 삭제됩니다.
             </Typography>
             </div>
 
             <form style={{ width: '100%'}}>
-                <textarea placeholder='계정을 삭제하려는 이유를 작성해주세요.(10자 이상)' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'NanumSquareRound, sans-serif'}} />
+                <Typography  sx={{fontSize: '14px', fontWeight: '500', mb: '10px',  color: '#BABABA'}}>탈퇴 사유</Typography>
+                <textarea placeholder='탈퇴 사유를 입력해주세요.' onChange={(e) => setReason(e.target.value)} style={{padding: '10px', borderRadius: '5px', borderColor: '#BABABA', fontSize: '12px', width: '100%', height: '125px', resize: 'none', outline: 'none', fontFamily: 'NanumSquareRound, sans-serif'}} />
                 <div style={{display: 'flex', justifyItems: 'center', alignItems: 'center'}}>
                 {/* <input type="checkbox" checked={agreement} onChange={() => setAgreement(!agreement)}/> */}
                 {agreement ? <Image width={16} height={16} src={checkbox} onClick={() => setAgreement(false)} />
