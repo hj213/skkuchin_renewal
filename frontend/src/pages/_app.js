@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Layout from '../hocs/Layout';
-import Script from 'next/script'
-import * as gtag from '../lib/gtag'
+import Script from 'next/script';
+import * as gtag from '../lib/gtag';
+import '../styles.css';
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
