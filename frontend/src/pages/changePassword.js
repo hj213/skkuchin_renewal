@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
-import back from '../image/arrow_back_ios.png';
-import check from '../image/check_circle.png';
+import {  TextField, Button, Typography, Box, Dialog, DialogContent, DialogActions, ThemeProvider, CssBaseline, Container, Grid, OutlinedInput,InputAdornment,IconButton } from '@mui/material';
+import back from '../image/close.png';
 import Image from 'next/image';
 import theme from '../theme/theme';
 import { change_password } from '../actions/auth/auth';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import check from '../image/check.png';
+import check2 from '../image/checkGreen.png';
 
 const changePassword = () => {
     const dispatch = useDispatch();
@@ -17,6 +20,22 @@ const changePassword = () => {
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [validPW, setValidPW] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showRePassword, setShowRePassword] = useState(false);
+    const [isCorrect, setIsCorrect] = useState('none');
+    const [isAlpha, setIsAlpha] = useState(false);
+    const [isNumeric, setIsNumeric] = useState(false);
+    const [isSpecialChar, setIsSpecialChar] = useState(false);
+    const [isLengthValid, setIsLengthValid] = useState(false);
+
+  
+    const checkPassword = (password) => {
+      setIsAlpha(/[a-zA-Z]/.test(password));
+      setIsNumeric(/\d/.test(password));
+      setIsSpecialChar(/[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password));
+      setIsLengthValid(password.length >= 8 && password.length <= 16);
+    }
+
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogMsg, setDialogMsg] = useState("");
@@ -27,20 +46,44 @@ const changePassword = () => {
         router.push('/login');
     }
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+
+    const handleClickShowRePassword = () => setShowRePassword((show) => !show);
+
+    const handleMouseDownRePassword = (event) => {
+      event.preventDefault();
+    };
+
     const handleArrowClick = () => {
         router.push('/myPage');
     }
 
     const handleNextStep = () => {
-        change_password(curPassword, password, rePassword, ([result, message]) => {
-            setApiResult(result);
-        });
+        change_password(curPassword, password, rePassword)
+            .then((message) => {
+                setApiResult(true);
+                setDialogMsg(message);
+            })
+            .catch((error) => {
+                setApiResult(false);
+                setDialogMsg(error);
+            })
+            .finally(() => {
+                setDialogOpen(true);
+                setTimeout(() => {
+                    router.push('/myPage');
+                }, 1000); 
+            });
     }
     
     const handlePasswordChange = (e) => {
         const password = e.target.value;
         setPassword(password);
-
+        checkPassword(password);
         let num = password.search(/[0-9]/g)
         let eng = password.search(/[a-z]/ig)
         let spe = password.search(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g)
@@ -68,19 +111,30 @@ const changePassword = () => {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px', marginBottom: '55px'}}>
-                        <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handleArrowClick} layout='fixed' />
-                            </Grid>
-                            <Grid item style={{marginLeft:'29%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>비밀번호 변경</Typography>
-                            </Grid>
-                        </Grid>
+        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+            <Grid container>
+                <Grid item style={{margin:'0px 0px 0px 25px', visibility:'none'}}>
+                    <Image src={back} width={25} height={25} name='back' onClick={handleArrowClick} layout='fixed'/>
+                </Grid>
+                <Grid item style={{marginLeft:'20%'}}>
+                    <Typography style={{margin:'0px 0px 0px 15px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>비밀번호 재설정</Typography>
+                </Grid>
+                <Grid item style={{padding:'0', marginLeft:'auto', marginRight:'20px'}}>
+                {validPW && (password == rePassword) ?
+                    <Button onClick={handleNextStep} style={{padding:'0', right:'0'}}>
+                        <Typography style={{margin:'0px 0px 0px 10px',color:'#FFCE00', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                    </Button>
+                    :
+                    <Button style={{padding:'0', right:'0'}}>
+                        <Typography style={{margin:'0px 0px 0px 10px',color:'#BABABA', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                    </Button>
+                }
+                </Grid> 
+            </Grid>
         </Container>
         <Box
             sx={{
-            margin: '0px 16px 16px 16px',
+            margin: '46px 10px 16px 10px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -92,7 +146,7 @@ const changePassword = () => {
         </header> */}
 
         <form style={{ width: '100%'}}>
-            <div style={{margin: '0 36px 39px 36px'}}>
+            {/* <div style={{margin: '0 36px 39px 36px'}}>
                 <TextField
                 variant="standard"
                 label="현재 비밀번호"
@@ -105,11 +159,10 @@ const changePassword = () => {
                 }}
                 required
                 />
-            </div>
-            <div style={{margin: '0 36px'}}>
-                <TextField
-                variant="standard"
-                label="새로운 비밀번호"
+            </div> */}
+            <div style={{margin: '0 20px'}}>
+                {/* <TextField
+                variant="outlined"
                 type="password"
                 value={password}
                 onChange={handlePasswordChange}
@@ -121,15 +174,77 @@ const changePassword = () => {
                 InputProps={{
                     endAdornment: (validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
                 }}
+                /> */}
+                <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>새로운 비밀번호</Typography>
+                <OutlinedInput
+                color='none'
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                placeholder="비밀번호"
+                onChange={handlePasswordChange}
+                style={{width:'100%'}}
+                required
+                endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
                 {(password != '') ? 
                     validPW ? 
-                    <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#505050', mt: '6px', mb: '39px'}}>안전한 비밀번호입니다.</Typography>
-                    : <Typography sx={{fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px', mb: '39px'}}>영문, 숫자를 포함한 8~16자 조합으로 입력해주세요.</Typography>
-                : <div style={{height: '21px', marginBottom: '39px'}}></div> }
+                    <div style={{height: '21px', marginBottom: '20px', marginTop:'5px', display:'flex', fontSize:'12px', color:'#12A054'}}>
+                        <div style={{display:'flex'}}>
+                            <Image src={check2} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>영문</span>
+                        </div>
+                        <div style={{display:'flex'}}>
+                            <Image src={check2} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>숫자 </span>
+                        </div>
+                        <div style={{display:'flex'}}>
+                            <Image src={check2} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>특수문자 </span>
+                        </div>
+                        <div style={{display:'flex'}}>
+                            <Image src={check2} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>8~16자 이내</span>
+                        </div>
+                    </div>
+                    : <div style={{height: '21px', marginBottom: '20px', marginTop:'5px', display:'flex', fontSize:'12px'}}>
+                        <div style={{display:'flex', color: isAlpha ? '#12A054' : '#777777'}}>
+                            <Image src={isAlpha ? check2 : check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>영문</span>
+                        </div>
+                        <div style={{display:'flex',color: isNumeric ? '#12A054' : '#777777'}}>
+                            <Image src={isNumeric ? check2 : check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>숫자 </span>
+                        </div>
+                        <div style={{display:'flex',color: isSpecialChar ? '#12A054' : '#777777'}}>
+                            <Image src={isSpecialChar ? check2 :check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>특수문자 </span>
+                        </div>
+                        <div style={{display:'flex',color: isLengthValid ? '#12A054' : '#777777'}}>
+                            <Image src={isLengthValid ? check2 : check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>8~16자 이내</span>
+                        </div>
+                    </div> 
+                :<div style={{height: '21px', marginBottom: '20px', marginTop:'5px', display:'flex', fontSize:'12px', color:'#777777'}}>
+                    <div style={{display:'flex'}}>
+                        <Image src={check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>영문</span>
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <Image src={check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>숫자 </span>
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <Image src={check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>특수문자 </span>
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <Image src={check} width={16} height={16}></Image><span style={{marginTop:'2px', marginRight:'10px'}}>8~16자 이내</span>
+                    </div>
+                </div> 
+                }
             </div>
-            <div style={{margin: '0 36px'}}>
-                <TextField
+            <div style={{margin: '0 20px'}}>
+                {/* <TextField
                 variant="standard"
                 label="비밀번호 확인"
                 type="password"
@@ -143,40 +258,48 @@ const changePassword = () => {
                 InputProps={{
                     endAdornment: (password === rePassword && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
                 }}
+                /> */}
+                <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>비밀번호 확인</Typography>
+                <OutlinedInput
+                color={isCorrect}
+                type={showRePassword ? 'text' : 'password'}
+                value={rePassword}
+                placeholder="비밀번호 재입력"
+                onChange={(e) => {
+                    const newPassword = e.target.value;
+
+                    if (newPassword === password) {
+                      setIsCorrect('none');
+                    } else {
+                      setIsCorrect('wrong');
+                    }
+                
+                    setRePassword(newPassword);
+                }}
+                style={{width:'100%'}}
+                required
+                endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowRePassword}
+                        onMouseDown={handleMouseDownRePassword}
+                        edge="end"
+                      >
+                        {showRePassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
                 { (rePassword != '') ? ((password == rePassword) ? 
-                <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#505050'}}>동일한 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
+                <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#505050'}}></Typography>
+                : <Typography sx={{fontSize: '12px', fontWeight: '400', mt: '6px', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
                 : null}
             </div>
-            <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '0 auto 50px auto', maxWidth: '420px'}}>
-            {validPW && (password == rePassword) ?
-                    <Button variant="contained" onClick={handleNextStep} style={{width: '80%', margin: '0 auto', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-                        확인
-                    </Button>
-                :
-                    <Button variant="contained" disabled style={{width: '80%', margin: '0 auto', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-                        확인
-                    </Button>
-            }
-            </div>
+        
         </form>
-
-        <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
-                <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
-                    <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
-                        {dialogMsg}
-                    </Typography>
-                </DialogContent>
-                <DialogActions style={{justifyContent:'center'}}>
-                        <Button onClick={handleDialogOpen} variant="text" style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}}>
-                            <Typography style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
-                                확인
-                            </Typography>
-                        </Button>
-                </DialogActions>
-        </Dialog>
     </Box>
+    <Dialog open={dialogOpen}><DialogContent><Typography style={{color:'#3C3C3C', fontWeight:'700', fontSize:'16px'}}>비밀번호 재설정이 완료되었습니다.</Typography></DialogContent></Dialog>
     </ThemeProvider>
     )
 }
