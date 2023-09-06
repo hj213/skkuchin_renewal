@@ -10,12 +10,10 @@ import lombok.Setter;
 import skkuchin.service.domain.Forum.*;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.Profile;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -35,12 +33,16 @@ public class CommentDto {
         @Setter
         private Long articleId;
 
+        private boolean anonymous;
+
+
         public Comment toEntity(AppUser user, Article article) {
             Comment comment = Comment.builder()
                     .user(user)
                     .article(article)
                     .content(content)
                     .date(LocalDateTime.now())
+                    .anonymous(anonymous)
                     .build();
 
             return comment;
@@ -112,27 +114,32 @@ public class CommentDto {
                 this.nickname = comment.getUser().getNickname();
                 this.userImage = comment.getUser().getImage();
                 this.displayTime = formatDate(comment.getDate());
-                this.commentLikes = commentLikes.stream().count();
+                this.commentLikes = commentLikesForReply(comment,commentLikes).stream().count();
                 this.myComment = user.getId().equals(comment.getUser().getId());
-                this.writer = comment.getArticle().getUser().getId().equals(comment.getUser().getId());
+                this.writer = comment.getArticle().getUser().getId().equals(user.getId());
                 this.anonymous = comment.isAnonymous();
                 if(comment.getChildren()!= null){
-                    this.reply = comment.getChildren().stream().map(c-> new CommentDto.ReplyResponse(c,commentLikes,user)).collect(Collectors.toList());
+                    this.reply = comment.getChildren().stream().map(c-> new CommentDto.ReplyResponse(c,commentLikesForReply(c,commentLikes),
+                            c.getUser())).collect(Collectors.toList());
                 }
 
             }
 
+            private List<CommentLike> commentLikesForReply(Comment reply, List<CommentLike> allCommentLikes) {
+                // 대댓글과 관련된 commentLikes 목록만 필터링하여 반환합니다.
+                return allCommentLikes.stream()
+                        .filter(like -> like.getComment().getId().equals(reply.getId()))
+                        .collect(Collectors.toList());
+            }
+
             private String formatDate(LocalDateTime date) {
                 LocalDateTime now = LocalDateTime.now();
-                long diff = ChronoUnit.MINUTES.between(date, now);
                 DateTimeFormatter dateFormatter;
 
                 if (date.getYear() >= now.getYear()) {
-                    // 올해 이후 작성된 댓글
-                    dateFormatter = DateTimeFormatter.ofPattern("M월 d일 HH:mm", Locale.KOREAN);
+                    dateFormatter = DateTimeFormatter.ofPattern("MM/dd HH:mm", Locale.KOREAN);
                 } else {
-                    // 올해 이전 작성된 댓글
-                    dateFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm", Locale.KOREAN);
+                    dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM dd HH:mm", Locale.KOREAN);
                 }
                 return date.format(dateFormatter);
             }
@@ -162,6 +169,8 @@ public class CommentDto {
         private boolean writer;
 
         private boolean anonymous;
+
+
         public ReplyResponse(Comment comment, List<CommentLike> commentLikes, AppUser user) {
             this.id = comment.getId();
             this.content = comment.getContent();
@@ -171,26 +180,26 @@ public class CommentDto {
             this.displayTime = formatDate(comment.getDate());
             this.commentLikes = commentLikes.stream().count();
             this.myComment = user.getId().equals(comment.getUser().getId());
-            this.writer = comment.getArticle().getUser().getId().equals(comment.getUser().getId());
+//            System.out.println("comment.getUser().getId() = " + comment.getUser().getId());
+//            System.out.println("user.getId() = " + user.getId());
+            this.writer = comment.getArticle().getUser().getId().equals(user.getId());
             this.anonymous = comment.isAnonymous();
         }
 
+
+
         private String formatDate(LocalDateTime date) {
             LocalDateTime now = LocalDateTime.now();
-            long diff = ChronoUnit.MINUTES.between(date, now);
-            if (diff < 1) {
-                return "방금 전";
-            } else if (diff < 60) {
-                return diff + "분 전";
-            } else if (diff < 1440) {
-                return (diff / 60) + "시간 전";
-            } else if (diff < 2880) {
-                return "어제";
-            } else if (date.getYear() == now.getYear()) {
-                return date.format(DateTimeFormatter.ofPattern("M월 d일", Locale.KOREAN));
+            DateTimeFormatter dateFormatter;
+
+            if (date.getYear() >= now.getYear()) {
+                // 올해 이후 작성된 댓글
+                dateFormatter = DateTimeFormatter.ofPattern("MM/dd HH:mm", Locale.KOREAN);
             } else {
-                return date.format(DateTimeFormatter.ofPattern("yyyy. M. d.", Locale.KOREAN));
+                // 올해 이전 작성된 댓글
+                dateFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm", Locale.KOREAN);
             }
+            return date.format(dateFormatter);
         }
     }
     }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Forum.Article;
+import skkuchin.service.domain.Forum.ArticleType;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.exception.CustomRuntimeException;
@@ -105,6 +106,21 @@ public class ArticleService {
                 ))
                 .collect(Collectors.toList());
     }
+
+
+
+    @Transactional
+    public List<ArticleDto.Response> getSpecificArticle(ArticleType articleType) {
+        return articleRepo.findByArticleType(articleType)
+                .stream()
+                .map(article -> new ArticleDto.Response(
+                        article,
+                        commentRepo.findByArticle(article),
+                        articleLikeRepo.findByArticle(article.getId())
+                ))
+                .collect(Collectors.toList());
+    }
+
     private void canHandleArticle(AppUser articleUser, AppUser user) {
         if (!(articleUser.getId().equals(user.getId()) || user.getUserRoles().stream().findFirst().get().getRole().getName().equals("ROLE_ADMIN")))
             throw new CustomRuntimeException("게시글 작성자 또는 관리자가 아닙니다.");

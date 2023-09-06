@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.config.auth.PrincipalDetails;
+import skkuchin.service.domain.Forum.ArticleType;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.CMRespDto;
@@ -96,6 +97,16 @@ public class ArticleController {
         List<ArticleDto.Response> articles = articleService.searchKeyword(keyword);
         return new ResponseEntity<>(new CMRespDto<>(1, "게시글 검색 완료", articles), HttpStatus.OK);
     }
+
+
+    @GetMapping("/tags/{articleType}")
+    public ResponseEntity<?> getSpecificArticle(@PathVariable("articleType") String articleTypeStr) {
+        ArticleType articleType = ArticleType.valueOf(articleTypeStr);
+        System.out.println("articleType = " + articleType);
+        List<ArticleDto.Response> articles = articleService.getSpecificArticle(articleType);
+        return new ResponseEntity<>(new CMRespDto<>(1, "게시판 조회 완료", articles), HttpStatus.OK);
+    }
+
 
 
 }

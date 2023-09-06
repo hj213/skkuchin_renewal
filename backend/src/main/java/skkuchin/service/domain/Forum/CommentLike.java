@@ -32,5 +32,11 @@ public class CommentLike {
     @JoinColumn(name = "comment_id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Comment comment;
+
+    @JoinColumn(name = "article_id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Article article;
+
+
 }
 
