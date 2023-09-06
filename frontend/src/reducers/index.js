@@ -17,6 +17,7 @@ import noticeReducer from './notice';
 import rankReducer from './rank';
 import postReducer from './post';
 import commentReducer from './comment';
+import likeReducer from './like';
 
 export default combineReducers({
     auth: authReducer,
@@ -36,5 +37,6 @@ export default combineReducers({
     rank: rankReducer,
     stompClient: stompClientReducer,
     post: postReducer,
-    comment: commentReducer
+    comment: commentReducer,
+    like: likeReducer,
 });

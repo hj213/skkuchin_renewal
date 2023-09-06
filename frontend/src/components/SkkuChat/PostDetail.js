@@ -12,6 +12,7 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import CustomInputField from './CustomInputField';
 import { load_comment, clear_prev_comment } from '../../actions/comment/comment';
 import { load_post, clear_prev_post } from '../../actions/post/post';
+import { enroll_like } from '../../actions/like/like';
 import Comment from './Comment';
 
 const posts = [
@@ -72,6 +73,18 @@ const PostDetail = ({ postId }) => {
       router.back();
     };
 
+    const handleLikeBtn = (postId) => {
+        console.log(postId);
+        dispatch(enroll_like(postId, ([result, message]) => {
+          if (result) {
+            console.log("좋아요 성공")
+          }
+          else {
+            console.log("좋아요 실패" + message);
+          }
+        }));
+    };
+
     if(post === null || comments === null) return (<div>loading...</div>);
 
     return (
@@ -125,7 +138,7 @@ const PostDetail = ({ postId }) => {
                       </Typography>
                   </Grid>
                 <div>
-                  <Button startIcon={<FavoriteBorderIcon sx={{ width: '15px' }} />} sx={{backgroundColor: '#FBFBFB', p: '7px 11px', borderRadius: '10px', color: '#9E9E9E', fontWeight: 700, fontSize: '12px'}}>
+                  <Button onClick={()=> handleLikeBtn(post[0].id)} startIcon={<FavoriteBorderIcon sx={{ width: '15px' }} />} sx={{backgroundColor: '#FBFBFB', p: '7px 11px', borderRadius: '10px', color: '#9E9E9E', fontWeight: 700, fontSize: '12px'}}>
                     좋아요
                   </Button>
                 </div>
