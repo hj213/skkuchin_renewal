@@ -21,8 +21,10 @@ const LoginPage = () => {
 
     const [rememberUsername, setRememberUsername] = useState(false);
     const [error, setError] = useState('');
-    const [remainHeight, setRemainHeight] = useState(window.innerHeight - 480 + "px");
+    const [remainHeight, setRemainHeight] = useState(window.innerHeight - 490 + "px");
     const [isClicked, setIsClicked] = useState(false);
+    const [idFocused, setIdFocused] = useState(false);
+    const [pwFocused, setPwFocused] = useState(false);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -71,7 +73,7 @@ const LoginPage = () => {
     } 
 
     useEffect(() => {
-        setRemainHeight(window.innerHeight - 480 + "px");
+        setRemainHeight(window.innerHeight - 490 + "px");
         let username = localStorage.getItem("username");
         if (username != null) {
             setRememberUsername(true);
@@ -96,19 +98,22 @@ const LoginPage = () => {
                         alignItems: 'center',
                         textAlign: 'center'
                         }}
-                        style={{marginTop: `calc(${remainHeight} * 0.54)`}}
+                        style={{marginTop: `calc(${remainHeight} * 0.48)`}}
                     >
                     <Image width={145} height={160} src={logo} placeholder="blur" layout='fixed' />
                     <div style={{ display: 'flex', width: '100%' }}>
                         <form onSubmit={onSubmit} style={{ width: '100%' }}>
-                            <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.22)` }}>
+                            <div style={{ margin: '0 24px 11px', marginTop: `calc(${remainHeight} * 0.1)` }}>
                                 <input 
                                     onClick={() => setIsClicked(true)}
+                                    onFocus={() => setIdFocused(true)}
+                                    onBlur={() => setIdFocused(false)}
                                     type = 'text' name='username' 
                                     placeholder ='아이디' onChange={onChange} value={username}
                                     required
                                     autoComplete='off'
-                                    style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px', outline: 'none'}}
+                                    style={{width: '100%', height: '50px', padding: '16px 12px', border: '1px solid #F2F2F2', borderRadius: '8px', outline: 'none', caretColor: '#FFCE00',
+                                        backgroundColor: idFocused || username ? '#FFFCE4' : 'white'}}
                                 />
                             </div>
                             <div style={{ margin: '0 24px', display: 'flex', flexDirection: 'column' }}>
@@ -116,11 +121,21 @@ const LoginPage = () => {
                                     type = 'password' name='password' 
                                     placeholder ='비밀번호' onChange={onChange} value={password}
                                     onClick={() => {setError(''); setIsClicked(true)}}
+                                    onFocus={() => setPwFocused(true)}
+                                    onBlur={() => setPwFocused(false)}
                                     required
                                     autoComplete='off'
-                                    style={{width: '100%', height: '45px', padding: '13px 14px',backgroundColor: '#FFFCED', border: 'none', borderRadius: '15px', outline: 'none'}}
+                                    style={{width: '100%', height: '50px', padding: '16px 12px', border: '1px solid #F2F2F2', borderRadius: '8px', outline: 'none', caretColor: '#FFCE00',
+                                        backgroundColor: pwFocused || password ? '#FFFCE4' : 'white'}}
+                                    placeholderStyle={{color: 'red'}}
                                 />
                                 <div style={{alignSelf: 'start', justifySelf: 'start'}}><Typography sx={{height: '15px', fontSize: '9px', fontWeight: '500', color: '#FF0000', mt: '6px'}}>{error}</Typography></div>
+                            </div>
+                            <div style={{display: 'flex', margin: '10px 24px', marginTop: '12px'}}>
+                                {rememberUsername ? 
+                                    <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' style={{marginTop: '5px'}} /> : 
+                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' style={{marginTop: '5px'}} />}
+                                <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '12px', color: '#777777'}} >아이디 기억하기</span>
                             </div>
                             {
                                 loading ? (
@@ -129,22 +144,17 @@ const LoginPage = () => {
                                     </div>
                                 ) : (
                                     <div style={{ margin: '5px 24px 10px' }}>
-                                        <Button variant="contained" type="submit" style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+                                        <Button variant="contained" type="submit" style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                                             스꾸친 로그인
                                         </Button>
                                     </div>
                                 )
                             }
-                            <div style={{display: 'flex', marginTop: '10px', marginLeft: '24px'}}>
-                                {rememberUsername ? 
-                                    <Image onClick={() => setRememberUsername(false)} src={check} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' /> : 
-                                    <Image onClick={() => setRememberUsername(true)} src={uncheck} width={15.83} height={15.83} sx={{p: '1.58px'}} layout='fixed' />}
-                                <span style={{marginLeft: '4px', marginRight: '18px', fontSize: '9px'}} color={theme.palette.fontColor.dark}>아이디 기억하기</span>
-                            </div>
+                            
                         </form>
                     </div>
 
-                <div style={{fontSize: '12px', color: '#505050', marginTop: `calc(${remainHeight} * 0.22)`, marginBottom: '25px', marginLeft: '10px'}}>
+                <div style={{fontSize: '12px', color: '#505050', marginTop: '10px', marginBottom: `calc(${remainHeight} * 0.42)`, marginBottom: '25px', marginLeft: '10px'}}>
                     <span onClick={() => router.push('/')}>홈 화면</span>
                     <span style={{padding: '0 13px'}}>|</span>
                     <span onClick={() => router.push('/register')}>회원가입</span>

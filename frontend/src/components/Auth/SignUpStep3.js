@@ -106,43 +106,46 @@ export default function SignUpStep3(props) {
         if (props.data.major == '화학공학/고분자공학부') {
             data = {...props.data, major: '화학공학_고분자공학부'}
         }
-        dispatch(register(data, ([result, message]) => {
-            if (result) {
-                props.handleNextStep();
-            }
-        }));
+        // dispatch(register(data, ([result, message]) => {
+        //     if (result) {
+        //         props.handleNextStep();
+        //     }
+        // }));
+        props.handleNextStep();
     }
 
     return (
         <div>
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                            <Grid item style={{margin:'0px 0px 0px 24px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'35%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography>
+                                {/* <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>회원가입</Typography> */}
                             </Grid>
                         </Grid>
         </Container>
         <Box
             sx={{
-            margin: '45px 15px 15px 15px',
+            margin: '35px 0px 15px 0px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             }}
             >
-            {/* <header style={{display: 'flex',  width: '100%', justifyContent: 'space-between', marginBottom: '42px'}}>
-                    <Image width={12.02} height={21.55} src={back} onClick={handlePrevStep}/>
-                    <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>회원가입</Typography>
-            </header> */}
 
             <div name='스꾸챗 프로필 사진' style={{textAlign:'center', display:'flex', justifyContent:'center'}}>
                         <div>
-                            <Container  style={{padding:'0px', margin:'0px 0px 0px 10px', justifyContent:'center'}}>
-                                <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필 이미지 선택*</Typography>
-                                <Typography style={{fontSize:'12px', textAlign:'left', margin:'12px 0px 12px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>1개의 이미지를 선택해주세요.</Typography>
+                            <Container  style={{padding:'0px', margin:'0px 0px 0px 0px', justifyContent:'center'}}>
+                                <Grid container>
+                                <Typography style={{fontSize: '26px', color: '#E2E2E2', marginRight: '7px'}}>&bull;</Typography>
+                                <Typography style={{fontSize: '26px', color: '#E2E2E2', marginRight: '7px'}}>&bull;</Typography>
+                                <Typography style={{fontSize: '26px', color: '#9E9E9E', marginRight: '7px'}}>&bull;</Typography>
+                                <Typography style={{fontSize: '26px', color: '#E2E2E2', marginRight: '7px'}}>&bull;</Typography>
+                                </Grid>
+                                <Typography style={{fontSize:'24px', textAlign:'left', margin:'0px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>프로필 이미지 선택</Typography>
+                                <Typography style={{fontSize:'12px', textAlign:'left', margin:'12px 0px 30px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>1개의 이미지를 선택해주세요.</Typography>
                                 <div style={{marginTop:'10px'}}>
                                     <Grid container style={{maxWidth:'340px'}}>
                                         <Grid container>
@@ -219,11 +222,11 @@ export default function SignUpStep3(props) {
             <div style={{width: '100%'}}>
             <div style={{margin: '20px 36px 12px'}}>
                 {image ?
-                        <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                             다음
                         </Button>
                         :
-                        <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '15px', fontWeight: '700',  borderRadius: '15px', height: '38px', boxShadow: 'none'}}>
+                        <Button variant="contained" disabled style={{width: '100%', backgroundColor: "#BABABA", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                             다음
                         </Button>
                 }
