@@ -10,6 +10,8 @@ import{
     DELETE_COMMENT_SUCCESS,
     MODIFY_COMMENT_FAIL,
     MODIFY_COMMENT_SUCCESS,
+    ENROLL_REPLY_FAIL,
+    ENROLL_REPLY_SUCCESS,
     CLEAR_PREV_COMMENT,
 } from '../actions/comment/types'
 
@@ -56,6 +58,14 @@ const commentReducer = (state = initialState, action) => {
                 ...state
             }
         case ENROLL_COMMENT_FAIL:
+            return{
+                ...state
+            }
+        case ENROLL_REPLY_SUCCESS:
+            return{
+                ...state
+            }
+        case ENROLL_REPLY_FAIL:
             return{
                 ...state
             }

@@ -1,3 +1,4 @@
+import e from 'express';
 import { API_URL } from '../../config';
 import { getToken, request_refresh } from '../auth/auth';
 import {
@@ -11,6 +12,8 @@ import {
     DELETE_COMMENT_SUCCESS,
     MODIFY_COMMENT_FAIL,
     MODIFY_COMMENT_SUCCESS,
+    ENROLL_REPLY_FAIL,
+    ENROLL_REPLY_SUCCESS,
     CLEAR_PREV_COMMENT,
 } from './types'
 
@@ -91,6 +94,48 @@ export const enroll_comment = (content, article_id, callback) => async dispatch 
         console.log(error);
         dispatch({
             type: ENROLL_COMMENT_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}
+
+export const enroll_reply = (content, comment_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+
+    const body = JSON.stringify({
+        content
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/comment/${comment_id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access}`
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 201) {
+            await dispatch({
+                type: ENROLL_REPLY_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        }
+        else {
+            await dispatch({
+                type: ENROLL_REPLY_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: ENROLL_REPLY_FAIL
         });
         if (callback) callback([false, error]);
     }
