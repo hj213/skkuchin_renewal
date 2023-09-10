@@ -105,8 +105,6 @@ public class CommentDto {
             private List<CommentDto.ReplyResponse> reply;
 
 
-
-
             public Response(Comment comment, List<CommentLike> commentLikes, AppUser user) {
                 this.id = comment.getId();
                 this.content = comment.getContent();
@@ -122,11 +120,9 @@ public class CommentDto {
                     this.reply = comment.getChildren().stream().map(c-> new CommentDto.ReplyResponse(c,commentLikesForReply(c,commentLikes),
                             c.getUser())).collect(Collectors.toList());
                 }
-
             }
 
             private List<CommentLike> commentLikesForReply(Comment reply, List<CommentLike> allCommentLikes) {
-                // 대댓글과 관련된 commentLikes 목록만 필터링하여 반환합니다.
                 return allCommentLikes.stream()
                         .filter(like -> like.getComment().getId().equals(reply.getId()))
                         .collect(Collectors.toList());
@@ -180,8 +176,6 @@ public class CommentDto {
             this.displayTime = formatDate(comment.getDate());
             this.commentLikes = commentLikes.stream().count();
             this.myComment = user.getId().equals(comment.getUser().getId());
-//            System.out.println("comment.getUser().getId() = " + comment.getUser().getId());
-//            System.out.println("user.getId() = " + user.getId());
             this.writer = comment.getArticle().getUser().getId().equals(user.getId());
             this.anonymous = comment.isAnonymous();
         }
