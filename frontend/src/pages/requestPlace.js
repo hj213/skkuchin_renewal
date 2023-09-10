@@ -4,16 +4,24 @@ import Image from 'next/image';
 import theme from '../theme/theme';
 import { backArrow, closeIcon, mainLogo } from '../image/recommend';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 const requestPlace = () => {
-
+    const router = useRouter();
     const [campus, setCampus] = useState('명륜');
     const [name, setName] = useState('');
 
+    const handleClose = () => {
+        router.push('/myPage');
+    }
     const handleCampus = (e) => {
         let cur = e.target.innerText;
         if (cur == '명륜') setCampus('율전')
         else setCampus('명륜')
+    }
+
+    const handleInputClick = () => {
+        router.push('/findPlace');
     }
 
     const handleSubmit = (e) => {
@@ -24,19 +32,20 @@ const requestPlace = () => {
             <CssBaseline/>
             <div style={{ margin: "0 24px" }}>
                 <div style={{ margin: "24px 0", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                    <Image
+                    {/* <Image
                         src={backArrow}
-                        //onClick={handleBack}
+                        onClick={handleBack}
                         layout="fixed"
                         width={24}
                         height={24}
                         style={{ cursor: 'pointer' }}
-                    />
+                    /> */}
+                    <div></div>
                     <Typography style={{ height: '24px', fontSize: '20px', fontWeight: '700', color: '#3C3C3C'}}>식당 추가 요청</Typography>
                     <Image
                         src={closeIcon}
                         name='back'
-                        //onClick={handleClose}
+                        onClick={handleClose}
                         layout='fixed'
                         width={24}
                         height={24}
@@ -67,6 +76,7 @@ const requestPlace = () => {
                 <Box sx={{margin: '24px 0', width: '100%'}}>
                     <Typography style={{height: '21px', padding: '5px 0', fontWeight: '700', fontSize: '14px', color: '#777777'}}>식당 위치</Typography>
                     <input 
+                        onClick={handleInputClick}
                         placeholder="위치를 검색해주세요."
                         style={{width: '100%', padding: '12px', backgroundColor: '#F2F2F2', borderRadius: '8px', border: 'none', outline: 'none', marginTop: '20px'}} />
                 </Box>
