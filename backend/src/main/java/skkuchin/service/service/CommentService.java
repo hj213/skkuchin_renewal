@@ -49,12 +49,12 @@ public class CommentService {
 
     @Transactional
     public List<CommentDto.Response> getComment(AppUser appUser, Long articleId){
-
+        Article article = articleRepo.findById(articleId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다"));
         return commentRepo.findByLatestCommentTime(articleId)
                 .stream()
                 .map(comment -> new CommentDto.Response(
                         comment,
-                        commentLikeRepo.findByComment(comment),
+                        commentLikeRepo.findByArticle(article),
                         appUser
                 )).collect(Collectors.toList());
 
