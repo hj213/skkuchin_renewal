@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Forum.Article;
 import skkuchin.service.domain.Forum.ArticleLike;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.ArticleLikeDto;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;
@@ -34,14 +35,15 @@ public class ArticleLikeService {
 
 
     @Transactional
-    public List<ArticleLikeDto.Response> getMyArticleLikes(AppUser user) {
+    public List<ArticleDto.Response> getMyArticleLikes(AppUser user) {
 
         return articleLikeRepo.findByUser(user.getId())
                 .stream()
-                .map(articleLike -> new ArticleLikeDto.Response(
-                        articleLike,
+                .map(articleLike -> new ArticleDto.Response(
+                        articleLike.getArticle(),
+                        commentRepo.findByArticle(articleLike.getArticle()),
                         articleLikeRepo.findByArticle(articleLike.getArticle().getId()),
-                        commentRepo.findByArticle(articleLike.getArticle())
+                        user
                 )).collect(Collectors.toList());
     }
 
