@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Grid, Container, Typography, ThemeProvider, CssBaseline, IconButton, Card } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommunityItem from '../components/SkkuChat/CommunityItem';
 import { useRouter } from 'next/router';
 import theme from '../theme/theme';
@@ -9,6 +8,7 @@ import { load_my_posts } from '../actions/post/post';
 import close from '../image/close.png';
 import Image from 'next/image';
 
+//  내 게시글 페이지
 const myPost = () => {
     const router = useRouter();
     const dispatch = useDispatch();

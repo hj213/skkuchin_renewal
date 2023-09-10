@@ -8,6 +8,7 @@ import { load_fav_posts } from '../actions/post/post';
 import close from '../image/close.png';
 import Image from 'next/image';
 
+// 좋아요 누른 게시글 페이지
 const myFavPost = () => {
     const router = useRouter();
     const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const myFavPost = () => {
                     </Grid>
                 </Card>
             </Container>
+            {/* API 수정 후 변경 예정 */}
             <Container sx={{ p: '53px 24px 0', height: 'max-content', alignItems: 'center', mt: '10px' }}>
                 {myFavPosts && myFavPosts.map((post) => (
                     <CommunityItem key={post.article_id} {...post} />
