@@ -98,8 +98,11 @@ public class ArticleDto {
         @JsonProperty
         private Long commentCount;
 
+        @JsonProperty
+        private boolean userLiked;
 
-        public Response(Article article, List<Comment> comments, List<ArticleLike> articleLikes){
+
+        public Response(Article article, List<Comment> comments, List<ArticleLike> articleLikes,AppUser appUser){
             this.id =article.getId();
             this.articleType = article.getArticleType();
             this.tagType = article.getArticleType().getLabel();
@@ -111,8 +114,20 @@ public class ArticleDto {
             this.displayTime = formatDate(article.getDate());
             this.commentCount = comments.stream().count();
             this.articleLikeCount = articleLikes.stream().count();
+            this.userLiked = calculateUserLiked(articleLikes,appUser);
 
         }
+
+        private boolean calculateUserLiked(List<ArticleLike> articleLikes, AppUser appUser){
+            for (ArticleLike like: articleLikes){
+                if (like.getUser().getId().equals(appUser.getId())){
+                    return true;
+                }
+            }
+
+            return  false;
+        }
+
         private String formatDate(LocalDateTime date) {
             LocalDateTime now = LocalDateTime.now();
             long diff = ChronoUnit.MINUTES.between(date, now);
