@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { displayMBTI } from '../Matching/MBTIList';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import CustomInputField from './CustomInputField';
@@ -85,6 +86,11 @@ const PostDetail = ({ postId }) => {
         }));
     };
 
+    const handleDeleteBtn = (postId) => {
+        console.log(postId);
+        alert("취소 시도")
+    };
+
     if(post === null || comments === null) return (<div>loading...</div>);
 
     return (
@@ -92,7 +98,7 @@ const PostDetail = ({ postId }) => {
           <CssBaseline />
           <Container fixed style={{ position:'fixed', zIndex:'4', padding:'24px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
                 <Header title="스꾸게시판" onBackClick={handleBackClick}/>
-            </Container>
+          </Container>
           <Container sx={{ p: '0 24px', mt: '72.5px'}}>
             {/* 작성자 프로필 */}
             <Grid sx={{display: 'flex', alignItems: 'center', p: '10px 0'}}>
@@ -127,7 +133,11 @@ const PostDetail = ({ postId }) => {
 
               <Grid sx={{display: 'flex', mt: '10px', justifyContent: 'space-between'}}>
                   <Grid item sx={{ display: 'flex', alignItems: 'center'}}>
-                      <FavoriteBorderIcon sx={{width: '15px', color: '#FFCE00'}} />
+                      { post[0].user_liked === true ?
+                        <FavoriteIcon sx={{width: '15px', color: '#FFCE00'}} />
+                        :
+                        <FavoriteBorderIcon sx={{width: '15px', color: '#FFCE00'}} />
+                      }
                       <Typography sx={{fontSize: '12px', ml: '3px', color: '#FFCE00', fontWeight: 600}}>
                         {post[0].article_like_count}
                       </Typography>
@@ -138,14 +148,21 @@ const PostDetail = ({ postId }) => {
                       </Typography>
                   </Grid>
                 <div>
+                { post[0].user_liked === true ?
+                  <Button onClick={()=> handleDeleteBtn(post[0].id)} startIcon={<FavoriteIcon sx={{ width: '15px', color: '#BABABA' }} />} sx={{backgroundColor: '#FBFBFB', p: '7px 11px', borderRadius: '10px', color: '#9E9E9E', fontWeight: 700, fontSize: '12px'}}>
+                    좋아요 취소
+                  </Button>                
+                  :
                   <Button onClick={()=> handleLikeBtn(post[0].id)} startIcon={<FavoriteBorderIcon sx={{ width: '15px' }} />} sx={{backgroundColor: '#FBFBFB', p: '7px 11px', borderRadius: '10px', color: '#9E9E9E', fontWeight: 700, fontSize: '12px'}}>
                     좋아요
                   </Button>
+                }
                 </div>
               </Grid>
             </Grid>
-            <Divider orientation='horizontal' sx={{width: '100vw', left: 0, position: 'absolute', borderBottom: '10px solid #FBFBFB'}}/> 
           </Container>
+          
+          <Divider orientation='horizontal' sx={{width: '100%', borderBottom: '10px solid #FBFBFB'}}/> 
 
           {/* 댓글 */}
           { comments && 

@@ -4,6 +4,10 @@ import{
     LOAD_POST_SUCCESS,
     LOAD_ALL_POSTS_SUCCESS,
     LOAD_ALL_POSTS_FAIL,
+    LOAD_MY_POSTS_SUCCESS,
+    LOAD_MY_POSTS_FAIL,
+    LOAD_FAV_POSTS_SUCCESS,
+    LOAD_FAV_POSTS_FAIL,
     ENROLL_POST_FAIL,
     ENROLL_POST_SUCCESS,
     DELETE_POST_FAIL,
@@ -15,7 +19,8 @@ import{
 
 const initialState = {
     post: null,
-    // myPost: null,
+    myPosts: null,
+    favPosts: null,
     allPosts: null
 }
 
@@ -42,6 +47,26 @@ const postReducer = (state = initialState, action) => {
             return{
                 ...state,
                 allPosts: null
+            }
+        case LOAD_MY_POSTS_SUCCESS:
+            return{
+                ...state,
+                myPosts: payload
+            }
+        case LOAD_MY_POSTS_FAIL:
+            return{
+                ...state,
+                myPosts: null
+            }
+        case LOAD_FAV_POSTS_SUCCESS:
+            return{
+                ...state,
+                favPosts: payload
+            }
+        case LOAD_FAV_POSTS_FAIL:
+            return{
+                ...state,
+                favPosts: null
             }
         case DELETE_POST_SUCCESS:
             return{

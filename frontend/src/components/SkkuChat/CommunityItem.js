@@ -28,7 +28,7 @@ const CommunityItem = ({ id, title, content, article_like_count, comment_count, 
             {isLogin && <GoLogin open={isLogin} onClose={setIsLogin} /> }
             <Box onClick={handleClick} sx={{ display: 'flex', alignItems: 'center', width: '100%', p: '13px 0px', borderBottom: '1px solid #E2E2E2'}}>
                 <Box sx={{ flexGrow: 1 }}>
-                    <Typography sx={{fontSize: '18px', fontWeight: 700, color: '#3C3C3C'}}>{title}</Typography>
+                    <Typography sx={{fontSize: '14px', fontWeight: 800, color: '#3C3C3C'}}>{title}</Typography>
                     <Typography sx={{p:' 8px 0px', fontSize: '14px', fontWeight: 400, color: '#3C3C3C', textOverflow: 'ellipsis'}}>
                         {content}
                     </Typography>

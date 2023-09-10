@@ -5,6 +5,10 @@ import {
     LOAD_POST_SUCCESS,
     LOAD_ALL_POSTS_SUCCESS,
     LOAD_ALL_POSTS_FAIL,
+    LOAD_MY_POSTS_SUCCESS,
+    LOAD_MY_POSTS_FAIL,
+    LOAD_FAV_POSTS_SUCCESS,
+    LOAD_FAV_POSTS_FAIL,
     ENROLL_POST_FAIL,
     ENROLL_POST_SUCCESS,
     DELETE_POST_FAIL,
@@ -91,6 +95,86 @@ export const load_all_posts = (callback) => async dispatch => {
     } catch (error) {
         dispatch({
             type: LOAD_ALL_POSTS_FAIL
+        })
+
+        if (callback) callback([false, error]);
+    }
+}
+
+export const load_my_posts = (userId, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+
+    try {
+        const res = await fetch(`${API_URL}/api/article/user/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: LOAD_MY_POSTS_SUCCESS,
+                payload: apiRes.data
+            })
+
+            if (callback) callback([true, apiRes.message]);
+
+        } else {
+            dispatch({
+                type: LOAD_MY_POSTS_FAIL
+            })
+
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch (error) {
+        dispatch({
+            type: LOAD_MY_POSTS_FAIL
+        })
+
+        if (callback) callback([false, error]);
+    }
+}
+
+export const load_fav_posts = (callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+
+    try {
+        const res = await fetch(`${API_URL}/api/article/like`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            }
+        });
+        
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: LOAD_FAV_POSTS_SUCCESS,
+                payload: apiRes.data
+            })
+            
+            if (callback) callback([true, apiRes.message]);
+
+        } else {
+            dispatch({
+                type: LOAD_FAV_POSTS_FAIL
+            })
+
+            if (callback) callback([false, apiRes.message]);
+        }
+    } catch (error) {
+        dispatch({
+            type: LOAD_FAV_POSTS_FAIL
         })
 
         if (callback) callback([false, error]);

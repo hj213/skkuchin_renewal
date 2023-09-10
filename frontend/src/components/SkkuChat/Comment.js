@@ -38,8 +38,8 @@ const Comment = ({ comments }) => {
                 {displayMBTI(comment.user_image, 35, 35)}
                 <Typography style={{ fontSize: '12px', fontWeight: 800, color: '#3C3C3C' }}>
                     {comment.nickname}
-                    {(comment.my_comment && comment.writer) || (comment.my_comment && !comment.writer) ? <span style={{ color: '#FFCE00' }}> (나)</span> : null}
-                    {comment.writer && !comment.my_comment ? <span style={{ color: '#FFCE00' }}> (작성자)</span> : null}
+                    {(comment.my_comment && comment.writer) || (comment.my_comment && !comment.writer) ? <span style={{ color: '#FFAC0B' }}> (나)</span> : null}
+                    {comment.writer && !comment.my_comment ? <span style={{ color: '#FFAC0B' }}> (작성자)</span> : null}
                 </Typography>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '7px', backgroundColor: '#FBFBFB', padding: '0px 9px', borderRadius: '10px' }}>
