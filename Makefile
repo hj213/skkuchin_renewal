@@ -8,7 +8,7 @@ build-mac:
 
 build-win:
 	@echo "Build spring boot ..."
-	@cd backend && gradlew.bat clean build -x test
+	@cd backend && ./gradlew clean build -x test
 .PHONY: build-win
 
 run:
