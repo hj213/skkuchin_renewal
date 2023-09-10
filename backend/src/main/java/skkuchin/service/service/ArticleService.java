@@ -32,7 +32,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public List<ArticleDto.Response> searchArticle(){
+    public List<ArticleDto.Response> searchArticle(AppUser appUser){
 
         return articleRepo.findAllByOrderByDateDesc()
                 .stream()
@@ -40,6 +40,7 @@ public class ArticleService {
                        article,
                         commentRepo.findByArticle(article),
                         articleLikeRepo.findByArticle(article.getId())
+                        ,appUser
                 ))
                 .collect(Collectors.toList());
     }
@@ -52,19 +53,21 @@ public class ArticleService {
                         article,
                         commentRepo.findByArticle(article),
                         articleLikeRepo.findByArticle(article.getId())
+                        ,appUser
                 ))
                 .collect(Collectors.toList());
 
     }
 
     @Transactional
-    public List<ArticleDto.Response> getSpecificArticle(Long articleId){
+    public List<ArticleDto.Response> getSpecificArticle(Long articleId,AppUser appUser){
         return articleRepo.findByArticleId(articleId)
                 .stream()
                 .map(article -> new ArticleDto.Response(
                         article,
                         commentRepo.findByArticle(article),
                         articleLikeRepo.findByArticle(article.getId())
+                        ,appUser
                 ))
                 .collect(Collectors.toList());
 
@@ -94,7 +97,7 @@ public class ArticleService {
 //
 //    }
     @Transactional
-    public List<ArticleDto.Response> searchKeyword(String keyword) {
+    public List<ArticleDto.Response> searchKeyword(String keyword,AppUser appUser) {
         List<Article> matchingArticles = articleRepo.findByTitleContainingOrContentContainingOrderByDateDesc(keyword, keyword);
 
         return matchingArticles
@@ -103,6 +106,7 @@ public class ArticleService {
                         article,
                         commentRepo.findByArticle(article),
                         articleLikeRepo.findByArticle(article.getId())
+                        ,appUser
                 ))
                 .collect(Collectors.toList());
     }
@@ -110,13 +114,14 @@ public class ArticleService {
 
 
     @Transactional
-    public List<ArticleDto.Response> getSpecificArticle(ArticleType articleType) {
+    public List<ArticleDto.Response> getSpecificArticle(ArticleType articleType,AppUser appUser) {
         return articleRepo.findByArticleType(articleType)
                 .stream()
                 .map(article -> new ArticleDto.Response(
                         article,
                         commentRepo.findByArticle(article),
                         articleLikeRepo.findByArticle(article.getId())
+                        ,appUser
                 ))
                 .collect(Collectors.toList());
     }
