@@ -27,7 +27,6 @@ const SignUpStep6 = (props) => {
     }
     const handleSubmit= (e) => {
       e.preventDefault();
-      console.log(props.data)
 
       dispatch(signup_email_send(props.data.username, emailId+domain, true, ([result, message]) => {
         if (result) {

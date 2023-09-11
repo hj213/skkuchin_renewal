@@ -20,12 +20,12 @@ const requestPlace = () => {
         else setCampus('명륜')
     }
 
-    const handleInputClick = () => {
-        router.push('/findPlace');
+    const handleInputChange = (e) => {
+        setName(e.target.value);
     }
 
     const handleSubmit = (e) => {
-
+        console.log(name);
     }
     return(
         <ThemeProvider theme={theme}>
@@ -66,7 +66,7 @@ const requestPlace = () => {
                 <Grid container>
                     <Typography style={{height: '21px', padding: '5px 0', marginRight: '10px', fontWeight: '700', fontSize: '14px', color: '#777777'}}>캠퍼스 종류</Typography>
                     <Button 
-                        style={{maxWidth: '33px', minWidth: '33px', fontWeight: '700', fontSize: '12px', marginRight: '10px', padding: '5px', borderRadius: '10px', backgroundColor: '#FFFCE4'}}
+                        style={{maxWidth: '33px', minWidth: '33px', fontWeight: '700', fontSize: '12px', marginRight: '10px', padding: '5px', borderRadius: '10px', backgroundColor: campus == '명륜' ? '#FFFCE4' : '#DCF8DB', color: campus == '명륜' ? '#FDB714' : '#58C85A'}}
                         onClick={handleCampus}>
                     {campus}
                     </Button>
@@ -74,11 +74,12 @@ const requestPlace = () => {
                 </Grid>
 
                 <Box sx={{margin: '24px 0', width: '100%'}}>
-                    <Typography style={{height: '21px', padding: '5px 0', fontWeight: '700', fontSize: '14px', color: '#777777'}}>식당 위치</Typography>
+                    <Typography style={{height: '21px', padding: '5px 0', fontWeight: '700', fontSize: '14px', color: '#777777'}}>식당 이름</Typography>
                     <input 
-                        onClick={handleInputClick}
-                        placeholder="위치를 검색해주세요."
-                        style={{width: '100%', padding: '12px', backgroundColor: '#F2F2F2', borderRadius: '8px', border: 'none', outline: 'none', marginTop: '20px'}} />
+                        value={name}
+                        onChange={handleInputChange}
+                        placeholder="식당 이름을 입력해주세요."
+                        style={{width: '100%', height: '42px', padding: '2px 12px', backgroundColor: '#F2F2F2', borderRadius: '8px', border: 'none', outline: 'none', marginTop: '20px'}} />
                 </Box>
 
                 <Box style={{width: '100%'}}>
@@ -88,8 +89,8 @@ const requestPlace = () => {
                     style={{width: '100%', height: '230px', padding: '16px', border: '1px solid #E2E2E2', borderRadius: '12px', outline: 'none'}}
                 />
                 </Box>
-
-                <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', width: '100%', maxWidth: '420px', backgroundColor: '#fff'}}>
+            </Box>
+            <div style={{position: 'fixed', bottom: '0', display: 'grid', width: '100%', maxWidth: '420px', backgroundColor: '#fff'}}>
                 {name !== '' ?
                             <Button variant="contained" onClick={handleSubmit} style={{margin: '24px', width: '88%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                                 요청하기
@@ -100,7 +101,6 @@ const requestPlace = () => {
                             </Button>
                     }
                 </div>
-            </Box>
         </ThemeProvider>
     )
 }

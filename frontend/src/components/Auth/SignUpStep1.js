@@ -198,11 +198,11 @@ const SignUpStep1 = (props) => {
                     : <div style={{height: '18px'}}></div>}
             </div>
         </form>
-        <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', width: '100%', maxWidth: '420px', backgroundColor: '#fff'}}>
+        <div style={{position: 'fixed', bottom: '0', display: 'grid', width: '100%', maxWidth: '420px', backgroundColor: '#fff'}}>
         {props.data.username != '' && validUsername != false && validPW && (props.data.password == props.data.re_password) && props.data.username != null ?
                     <Button variant="contained" onClick={handleNextStep} style={{margin: '0 24px', width: '88%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                         다음
-                    </Button>
+                    </Button> 
                 :
                     <Button variant="contained" disabled style={{margin: '0 24px', width: '88%', backgroundColor: "#E2E2E2", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                         다음
