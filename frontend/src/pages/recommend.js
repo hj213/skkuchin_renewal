@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from "next/router";
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import Image from 'next/image';
@@ -34,13 +34,13 @@ const MainTitle = () => (
 const Header = () => {
     const router = useRouter();
 
-    const handleBack = (e) => {
+    const handleBack = useCallback((e) => {
         router.back();
-    }
+    }, [])
 
-    const handleClose = (e) => {
+    const handleClose = useCallback((e) => {
         router.push('/');
-    }
+    }, [])
 
     return (
         <div style={{ margin: "15px 0", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
@@ -100,13 +100,13 @@ const Recommend = () => {
                         <Toggle />
                     </div>
                     <OptionContainer style={{ marginBottom: "16px" }}>
-                        {firstButtons.map((buttons) => (
-                            <Options>
-                                {buttons.map((button) => (
+                        {firstButtons.map((buttons, index) => (
+                            <Options key={index}>
+                                {buttons.map((button, index) => (
                                     <Button
                                         isActive={firstButton === button}
                                         onClick={() => setFirstButton(button)}
-                                        key={button}
+                                        key={index}
                                     >
                                         {button}
                                     </Button>
@@ -116,11 +116,11 @@ const Recommend = () => {
                     </OptionContainer>
                     <OptionContainer>
                         <Options>
-                            {secondButtons.map((button) => (
+                            {secondButtons.map((button, index) => (
                                 <Button
                                     isActive={secondButton === button}
                                     onClick={() => setSecondButton(button)}
-                                    key={button}
+                                    key={index}
                                 >
                                     {button}
                                 </Button>

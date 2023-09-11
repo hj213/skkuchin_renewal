@@ -1,16 +1,26 @@
 import styled from '@emotion/styled';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 const Popup = ({ selectedPlace, setPopup }) => {
+    const popupRef = useRef();
 
-    const goToUrl = useCallback(() => {
-        window.location.href = selectedPlace.current.url;
-    }, []);
+    // const handleClickOutside = useCallback((event) => {
+    //     if (popupRef.current && !event.composedPath().includes(popupRef.current)) {
+    //         setPopup(false);
+    //     }
+    // }, []);
+
+    // useEffect(() => {
+    //     document.addEventListener('click', handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener('click', handleClickOutside);
+    //     };
+    // }, []);
 
     return (
-        <PopupContainer onClick={() => setPopup(false)}>
+        <PopupContainer>
             <PopupSubContainer>
-                <PopupWrapper>
+                <PopupWrapper ref={popupRef}>
                     <div
                         style={{
                             width: "100%",
@@ -49,7 +59,9 @@ const Popup = ({ selectedPlace, setPopup }) => {
                                 borderRadius: "10px",
                                 backgroundColor: "#F2F2F2",
                                 border: "none",
+                                cursor: 'pointer',
                             }}
+                            onClick={() => setPopup(false)}
                         >
                             <span
                                 style={{
@@ -69,8 +81,8 @@ const Popup = ({ selectedPlace, setPopup }) => {
                                 borderRadius: "10px",
                                 backgroundColor: "#FFCE00",
                                 border: "none",
+                                cursor: 'pointer',
                             }}
-                            onClick={() => setPopup(false)}
                         >
                             <span
                                 style={{
@@ -79,7 +91,10 @@ const Popup = ({ selectedPlace, setPopup }) => {
                                     fontWeight: 800,
                                     letterSpacing: "-0.32px",
                                 }}
-                                onClick={goToUrl}
+                                onClick={() => {
+                                    setPopup(false);
+                                    window.open(selectedPlace.current.url, '_blank');
+                                }}
                             >
                                 바로가기
                             </span>
@@ -93,7 +108,7 @@ const Popup = ({ selectedPlace, setPopup }) => {
 
 export default Popup;
 
-const PopupContainer = styled`
+const PopupContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,7 +119,7 @@ const PopupContainer = styled`
     height: 100%;
 `;
 
-const PopupSubContainer = styled`
+const PopupSubContainer = styled.div`
     display: flex;
     height: 100%;
     width: 100%;
@@ -113,7 +128,7 @@ const PopupSubContainer = styled`
     padding: 0 24px;
 `;
 
-const PopupWrapper = styled`
+const PopupWrapper = styled.div`
     margin: auto 0;
     height: 210px;
     width: 100%;

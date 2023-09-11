@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { sample, starFilled } from '../../image/recommend';
 import Image from 'next/image';
 import Popup from './Popup';
@@ -23,10 +23,10 @@ const OpacityWrapper = ({ display }) => (
 
 const Restaurant = ({ selectedPlace, places, setPopup }) => {
 
-    const clickPlace = (place) => {
+    const clickPlace = useCallback((place) => {
         selectedPlace.current = place;
         setPopup(true);
-    };
+    }, []);
 
     return (
         <div style={{ width: "100%", height: "100%", marginBottom: "72%" }}>
@@ -111,75 +111,72 @@ const SlideContainer = () => {
     const [display, setDisplay] = useState("none");
     const [popup, setPopup] = useState(false);
 
-    const places = useMemo(() => {
-        return (
-            [
-                {
-                    name: "기꾸스시",
-                    detailCategory: "초밥, 롤",
-                    rate: 4.25,
-                    time: 7,
-                    img: sample,
-                    url: "https://naver.me/535B8MZU",
-                },
-                {
-                    name: "기꾸스시",
-                    detailCategory: "초밥, 롤",
-                    rate: 4.25,
-                    time: 7,
-                    img: sample,
-                    url: "https://naver.me/535B8MZU",
-                },
-                {
-                    name: "기꾸스시",
-                    detailCategory: "초밥, 롤",
-                    rate: 4.25,
-                    time: 7,
-                    img: sample,
-                    url: "https://naver.me/535B8MZU",
-                },
-                {
-                    name: "기꾸스시",
-                    detailCategory: "초밥, 롤",
-                    rate: 4.25,
-                    time: 7,
-                    img: sample,
-                    url: "https://naver.me/535B8MZU",
-                },
-                {
-                    name: "기꾸스시",
-                    detailCategory: "초밥, 롤",
-                    rate: 4.25,
-                    time: 7,
-                    img: sample,
-                    url: "https://naver.me/535B8MZU",
-                },
-                {
-                    name: "기꾸스시",
-                    detailCategory: "초밥, 롤",
-                    rate: 4.25,
-                    time: 7,
-                    img: sample,
-                    url: "https://naver.me/535B8MZU",
-                },
-            ]
-        );
-    }, []);
+    const places = useMemo(() => 
+        [
+            {
+                name: "기꾸스시",
+                detailCategory: "초밥, 롤",
+                rate: 4.25,
+                time: 7,
+                img: sample,
+                url: "https://naver.me/535B8MZU",
+            },
+            {
+                name: "기꾸스시",
+                detailCategory: "초밥, 롤",
+                rate: 4.25,
+                time: 7,
+                img: sample,
+                url: "https://naver.me/535B8MZU",
+            },
+            {
+                name: "기꾸스시",
+                detailCategory: "초밥, 롤",
+                rate: 4.25,
+                time: 7,
+                img: sample,
+                url: "https://naver.me/535B8MZU",
+            },
+            {
+                name: "기꾸스시",
+                detailCategory: "초밥, 롤",
+                rate: 4.25,
+                time: 7,
+                img: sample,
+                url: "https://naver.me/535B8MZU",
+            },
+            {
+                name: "기꾸스시",
+                detailCategory: "초밥, 롤",
+                rate: 4.25,
+                time: 7,
+                img: sample,
+                url: "https://naver.me/535B8MZU",
+            },
+            {
+                name: "기꾸스시",
+                detailCategory: "초밥, 롤",
+                rate: 4.25,
+                time: 7,
+                img: sample,
+                url: "https://naver.me/535B8MZU",
+            },
+        ], []);
 
-    const handleStart = () => {
+    const handleStart = useCallback(() => {
         moving.current = true;
         transition.current = "none";
-        setDisplay("flex");
         topPosition.current = cardRef.current.offsetTop;
-    };
+    }, []);
 
-    const handleMove = (event) => {
+    const handleMove = useCallback((event) => {
         if (moving.current) {
+            setDisplay("flex");
             setSlideTop(`${event.clientY || event.touches[0].clientY}px`);
         }
-    };
+    }, []);
 
-    const handleEnd = () => {
+    const handleEnd = useCallback(() => {
         moving.current = false;
         transition.current = "top 0.2s ease";
 
@@ -189,7 +186,7 @@ const SlideContainer = () => {
             setSlideTop("88%");
             setDisplay("none");
         }
-    };
+    }, []);
 
     return (
         <>
@@ -250,9 +247,7 @@ const SlideContainer = () => {
                     </div>
                 </div>
             </div>
-            {popup &&
-                <Popup selectedPlace={selectedPlace} setPopup={setPopup} />
-            }
+            {popup && <Popup selectedPlace={selectedPlace} setPopup={setPopup} />}
         </>
     );
 };
