@@ -35,9 +35,12 @@ export const getToken = (tokenName) => dispatch => {
     return tokenDic[tokenName];
 };
 
-export const register = async (registerData, callback) => {
-    const body = JSON.stringify({ registerData });
-
+//export const register = async (registerData, callback) => {
+export const register = (registerData, callback) => async dispatch => {
+    //const body = JSON.stringify({ registerData });
+    const body = JSON.stringify({
+        ...registerData
+    })
     try {
         const res = await fetch(`${API_URL}/api/user/save`, {
             method: 'POST',
@@ -198,7 +201,7 @@ export const check_username = async (username, callback) => {
     const body = JSON.stringify({ username });
 
     try {
-        const res = await fetch(`${API_URL}/api/user/check/nickname`, {
+        const res = await fetch(`${API_URL}/api/user/check/username`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

@@ -63,6 +63,7 @@ public class CommentController {
     }
 
     @GetMapping("/{articleId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getComment(@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long articleId){
         AppUser appUser = principalDetails.getUser();
         List<CommentDto.Response> comments = commentService.getComment(appUser,articleId);

@@ -53,6 +53,6 @@ public class CommentLikeController {
     public ResponseEntity<?> deleteMyCommentLike(@PathVariable Long commentLikeId, @AuthenticationPrincipal PrincipalDetails principalDetails){
         AppUser appUser = principalDetails.getUser();
         commentLikeService.delete(commentLikeId,appUser);
-        return new ResponseEntity<>(new CMRespDto<>(1,"댓글 좋아요요 삭제완료",null),HttpStatus.OK);
+        return new ResponseEntity<>(new CMRespDto<>(1,"댓글 좋아요 삭제완료",null),HttpStatus.OK);
     }
 }
