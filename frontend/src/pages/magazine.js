@@ -158,51 +158,18 @@ const Magazine = () => {
         <CssBaseline />
             <UpperBar />
             <Grid style={{overflowX:'hidden', position:'fixed', height:height, overflowY:'scroll'}}>
-
-                {/* 식당TOP5 */}
-                <div className='top' style={{height:'270px'}}>
-                    <div style={{ display: "flex", margin:'21px 0px 0px 15px' }}>
-                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color="#2E2E2E">5월 4주차 식당</Typography>
-                        <Typography style={{ marginRight: "8px", fontSize:'16px',  fontWeight:'700' }} color={theme.palette.primary.main}>TOP 5</Typography>
-                        <Typography>🔥</Typography>
+                <div style={{margin:'30px 0 20px 20px',}}>
+                    <Typography style={{fontSize:'32px', fontWeight:'800'}}>제목제목제목제목</Typography>
+                </div>
+                
+                <div onClick={()=>{router.push('/magazineDetail')}} style={{padding:'0 20px', position: 'relative'}}>
+                    <div style={{ width: '100%', height: '230px', overflow: 'hidden', border: '1px solid transparent', borderRadius: '10px' }}>
+                        <Image src={content} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                     </div>
-                    <div style={{margin:'5px 0px 21px 15px'}}>
-                        <Typography color={theme.palette.fontColor.light} style={{fontSize:'11px'}}>일주일마다 업데이트 돼요!</Typography>
+                    <div style={{ zIndex:'3', position: 'absolute', bottom: '20px', left: '40px', right: '0'}}>
+                        <Typography sx={{width:'42px', height: '24px', border: "1px solid #FFFCE4", borderRadius:'10px', textAlign:'center', fontSize: '12px',  fontWeight:'800',p: '2px 4px 0px 4px', color:'#FFAC0B', backgroundColor:'#FFFCE4', margin:'-2px 0px 0px 5px'}}>쪽문</Typography>
+                        <Typography sx={{fontSize:'24px', margin:"10px 0 0 5px", color:'white', fontWeight:'700'}}>제목제목제목제목</Typography>
                     </div>
-                    <MagazineContainer>
-                        <div style={{margin:'0px 0px 0px 15px'}}>
-                            <Grid container style={{  position: 'absolute', zIndex: '3', overflowX: 'auto', whiteSpace: 'nowrap', flexWrap: 'nowrap', width: window.innerWidth <= 375 ? 360 : window.innerWidth <= 400  ? 375 :  400, }}>
-                                {rank && rank.map((item, index) => (
-                                    <Grid item style={{display:'inline-block', flexShrink: 0, paddingRight: '9px'}} onClick={()=>{router.push(`/place?id=${item.place_id}`)}} >
-                                        <div >
-                                            {/* 식당이미지 */}
-                                            <div style={{display: 'flex', margin:'9px 0px 0px 9px', paddingTop:'2px',position:'absolute',zIndex:'3', alignItems: 'center', justifyContent: 'center', width: '23px', height: '21.41px', borderRadius: '50%', backgroundColor: index === 3 || index === 4 ? 'rgba(186, 186, 186, 0.7)' : 'rgba(255, 206, 0, 0.7)', color:'#fff', fontSize: '13px', fontWeight: 'bold'}}>
-                                                {index+1}
-                                            </div>
-                                            <Image 
-                                                src={item.image ? item.image : food}
-                                                width={155} 
-                                                height={155} 
-                                                layout='fixed' 
-                                                placeholder='blur' 
-                                                blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8UA8AAiUBUcc3qzwAAAAASUVORK5CYII='
-                                                style={{borderRadius:'20px', position:'relative'}}>
-                                            </Image>
-                                            {/* 식당이름 */}
-                                            <Typography style={{fontSize:'15px', fontWeight:'700'}} color="#2E2E2E">{item.place_name}</Typography>
-                                            {/* 식당평점 */}
-                                            <div style={{ display: "flex"}}>
-                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">스꾸친 평점: &nbsp;</Typography>
-                                                <Image src={filledStar} width={15} height={15} style={{margin:''}}/>
-                                                <Typography style={{fontSize:'10px', fontWeight:'700'}} color="#2E2E2E">&nbsp; {item.rate}</Typography>
-                                                <Typography style={{fontSize:'10px', fontWeight:'400'}} color="#2E2E2E">&nbsp;/ 5</Typography>
-                                            </div>
-                                        </div>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </div>
-                    </MagazineContainer>
                 </div>
 
                 {/* 맛집 콘텐츠 */}
@@ -287,7 +254,7 @@ const Magazine = () => {
                         </div>
                     </div>
                 </div>
-            </Grid>
+            </Grid> 
         </ThemeProvider>
     )
 } 

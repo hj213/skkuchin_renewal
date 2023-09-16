@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 const agreementList = () => {
     const router = useRouter();
 
-    const list = ["이용약관", "개인정보 처리방침"]
+    const list = ["이용약관", "개인정보 처리방침", "광고성 정보 수신 동의"]
 
     const backClick = e => {
         router.push('/myPage');
@@ -22,6 +22,9 @@ const agreementList = () => {
                 break;
             case "개인정보 처리방침":
                 router.push({pathname: '/policy', query: {page: 'agreementList'}});
+                break;
+            case "광고성 정보 수신 동의":
+                router.push({pathname: '/marketingConsent', query: {page: 'agreementList'}});
                 break;
 
         }

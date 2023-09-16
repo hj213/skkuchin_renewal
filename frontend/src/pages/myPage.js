@@ -351,7 +351,7 @@ console.log(pushToken);
             </Container>
 
             {/* 하단 */}
-            <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '80px', marginBottom: '50px'}}>
+            <Container style={{width: '100%', display: 'grid', justifyItems: 'center', marginTop: '20px', marginBottom: '50px'}}>
                 <div style={{display: 'flex', fontSize: '14px'}}>
                     <Button onClick={() => router.push('/deleteUser')} variant="text" style={{color: "#BABABA"}}>탈퇴하기</Button>
                     <Button onClick={() => router.push('/agreementList')} variant="text" style={{color: "#BABABA"}}>약관 및 정책</Button>

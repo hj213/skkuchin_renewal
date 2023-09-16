@@ -166,7 +166,7 @@ const editNickname = () => {
         >
         <form style={{ width: '100%'}}>
         <div style={{margin: '0 20px 20px'}}>
-            <div style={{display:'flex'}}><Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>닉네임&nbsp;</Typography> <Typography style={{fontSize:'14px', color:'#BABABA'}}>(최대 10자)</Typography></div>
+            <div style={{display:'flex'}}><Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777', fontWeight:'700'}}>닉네임&nbsp;</Typography> <Typography style={{fontSize:'14px', color:'#BABABA'}}>(최대 10자)</Typography></div>
             <TextField
                 color={isCorrect}
                 variant="outlined"
@@ -181,7 +181,8 @@ const editNickname = () => {
                 InputProps={{
                     style: {
                       backgroundColor: isNickFocused ? 'white' : '#F2F2F2',
-                      borderRadius:'10px'
+                      borderRadius:'10px',
+                      
                     },
                     onFocus: () => {
                       setIsNickFocused(true);
@@ -201,46 +202,52 @@ const editNickname = () => {
             null}
             
         </div>
-        <div style={{margin: '0 20px 20px'}}>
-            <FormControl variant="standard" style={{width: '100%'}}>
-                <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>학번</Typography>
+        <div style={{display:'flex'}}>
+            <div style={{margin: '0 10px 0 20px', width:'30%'}}>
+                <FormControl variant="standard" style={{width: '100%'}}>
+                    <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777', fontWeight:'700'}}>학번</Typography>
+                    <Autocomplete
+                    freeSolo
+                    value={studentId}
+                    onChange={(e, value) => setStudentId(value)}
+                    onFocus={()=>{setIsNumFocused(true)}}
+                    onBlur = {()=>{setIsNumFocused(false)}}
+                    sx={{ borderRadius: 1, }}
+                    options={studentIdList}
+                    renderInput={(params) => <TextField {...params} variant="outlined" style={{
+                        fontSize: '12px',
+                        borderRadius: '10px',
+                        background: isNumFocused ? 'white' : '#F2F2F2',
+                        
+                    }}/>} 
+                    />
+                </FormControl>
+            </div>
+            <div style={{margin: '0 20px 0 0px', width:'60%'}}>
+                <FormControl variant="standard" style={{width: '100%', borderRadius:'10px'}}>
+                <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777', fontWeight:'700'}}>학부/학과</Typography>
                 <Autocomplete
-                freeSolo
-                value={studentId}
-                onChange={(e, value) => setStudentId(value)}
-                onFocus={()=>{setIsNumFocused(true)}}
-                onBlur = {()=>{setIsNumFocused(false)}}
-                sx={{ borderRadius: 1 }}
-                options={studentIdList}
-                renderInput={(params) => <TextField {...params} variant="outlined" style={{
-                    fontSize: '12px',
-                    borderRadius: '10px',
-                    background: isNumFocused ? 'white' : '#F2F2F2',
-                  }}/>} 
+                    freeSolo
+                    value={major}
+                    onChange={(e, value) => setMajor(value)}
+                    onFocus={()=>{setIsMajorFocused(true)}}
+                    onBlur={()=>{setIsMajorFocused(false)}}
+                    options={majorList.sort()}
+                    sx={{ borderRadius: 1 }}
+                    isOptionEqualToValue={(option, value) => option === value}
+                    renderInput={(params) => <TextField {...params} variant="outlined" style={{
+                        fontSize: '12px',
+                        borderRadius: '10px',
+                        background: isMajorFocused ? 'white' : '#F2F2F2',
+                        color: isMajorFocused ? 'white' : '#F2F2F2',
+                    }}
+                    />} 
                 />
-            </FormControl>
+                </FormControl>
+            </div>
         </div>
-        <div style={{margin: '0 20px 0px'}}>
-            <FormControl variant="standard" style={{width: '100%', borderRadius:'10px'}}>
-            <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>학부/학과</Typography>
-            <Autocomplete
-                freeSolo
-                value={major}
-                onChange={(e, value) => setMajor(value)}
-                onFocus={()=>{setIsMajorFocused(true)}}
-                onBlur={()=>{setIsMajorFocused(false)}}
-                options={majorList.sort()}
-                sx={{ borderRadius: 1 }}
-                isOptionEqualToValue={(option, value) => option === value}
-                renderInput={(params) => <TextField {...params} variant="outlined" style={{
-                    fontSize: '12px',
-                    borderRadius: '10px',
-                    background: isMajorFocused ? 'white' : '#F2F2F2',
-                }}
-                />} 
-            />
-            </FormControl>
-        </div>
+        
+        
         
         </form>
         </Box>}
