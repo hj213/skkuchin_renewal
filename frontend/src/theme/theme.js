@@ -1,9 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-const NanumSquareRoundExtraBold = "../font/NanumSquareRoundOTFEB.otf";
-const NanumSquareRoundBold = "../font/NanumSquareRoundOTFB.otf";
-const NanumSquareRound = "../font/NanumSquareRoundOTFR.otf";
-
 const theme = createTheme({
     palette: {
         primary: {
@@ -26,40 +22,6 @@ const theme = createTheme({
     },
     typography: {
         fontFamily: 'NanumSquareRound, sans-serif',
-        fontStyle: 'normal',
-        h1: {
-            fontWeight: 800,
-        },
-        h2: {
-            fontWeight: 700,
-        },
-        h3: {
-            fontWeight: 400,
-        }
-    },
-    components: {
-        MuiCssBaseline: {
-            styleOverrides: `
-                @font-face {
-                    font-family: 'NanumSquareRound';
-                    font-weight: 800;
-                    font-style: normal;
-                    src: url(${NanumSquareRoundExtraBold}) format('otf');
-                },
-                @font-face {
-                    font-family: 'NanumSquareRound';
-                    font-weight: 700;
-                    font-style: normal;
-                    src: url(${NanumSquareRoundBold}) format('otf');
-                },
-                @font-face {
-                    font-family: 'NanumSquareRound';
-                    font-weight: 400;
-                    font-style: normal;
-                    src: url(${NanumSquareRound}) format('otf');
-                },
-            `,
-        },
     },
     shape: {
         borderRadius: 10

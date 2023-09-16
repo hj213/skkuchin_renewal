@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {  TextField, Button, InputLabel, Typography, Box, Link, Grid, Container, Dialog, DialogContent, DialogActions} from '@mui/material';
 import back from '../../../image/arrow_back_ios.png';
 import logo from '../../../image/email_enhang.png'
@@ -11,6 +11,7 @@ const Step2 = (props) => {
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogMsg, setDialogMsg] = useState('');
+    const [remainHeight, setRemainHeight] = useState(window.innerHeight - 456 + "px");
 
     const handlePrevStep = () => {
         props.handlePrevStep();
@@ -49,22 +50,17 @@ const Step2 = (props) => {
         }));
     }
 
+    useEffect(() => {
+        setRemainHeight(window.innerHeight - 446 + "px");
+    })
+
 
     return (
         <div>
-        <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
-                        <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
-                                <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} layout='fixed' />
-                            </Grid>
-                            <Grid item style={{marginLeft:'28%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>비밀번호 초기화</Typography>
-                            </Grid>
-                        </Grid>
-        </Container>
         <Box
             sx={{
-            margin: '55px 15px 15px 15px',
+            margin: '95px 24px 15px 24px',
+            margin: `calc(${remainHeight} * 0.45) 24px`,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -75,26 +71,37 @@ const Step2 = (props) => {
             <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>비밀번호 초기화</Typography>
         </header> */}
         <div style={{ width: '100%', textAlign: 'center' }}>
-            <Image width={121} height={101} src={logo} placeholder="blur" layout='fixed' />
-            <Typography sx={{fontSize: '25px', fontWeight: '400', mb: '37px'}}>메일을 확인해주세요!</Typography>
-            <Typography sx={{fontSize: '12px', fontWeight: '500', mb: '55px', lineHeight: '25px', color: '#505050'}}>
+            <Image width={103} height={85} src={logo} placeholder="blur" layout='fixed' />
+            <Typography sx={{fontSize: '24px', fontWeight: '900', mb: '16px', mt: '32px'}}>메일을 확인해주세요!</Typography>
+            <Typography sx={{fontSize: '14px', fontWeight: '500', lineHeight: '21px', color: '#777777', mb: '32px'}}>
                 비밀번호 초기화 인증 메일이 발송되었습니다. <br/>
                 발송된 메일을 통해 인증 완료 후 <br/>
                 아래 확인 버튼을 눌러주세요
             </Typography>
-            <Typography sx={{fontSize: '10px', fontWeight: '500', mb: '97px', lineHeight: '25px', color: '#505050'}}>
-                        @g.skku.edu인 경우 [성균관대 홈페이지 로그인 {'>'} 우측 상단 Google 메일], <br/>
-                        @skku.edu인 경우 [킹고M 어플 {'>'} 킹고포털 {'>'} 메일]에서 확인 가능합니다
-            </Typography>
-            <Link component="button" variant="body2" color="#BABABA" onClick={handleResend} sx={{fontSize: '12px', mb: '18px'}}>이메일 재전송</Link>
         </div>
 
-        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', width: '90%', margin: '0 20px'}}>
-        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', margin: '0 20px', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
+        <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center', width: '100%'}}>
+        <Button variant="contained" onClick={handleSubmit} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
             확인
         </Button>
+        <Link component="button" variant="body2" color="#777777" onClick={handleResend} sx={{fontSize: '12px', mt: '32px'}}>이메일 재발송</Link>
+        </div>
+        <div>
+        
         </div>
     </Box>
+    <Typography sx={{fontSize: '10px', fontWeight: '500', lineHeight: '18px', color: '#505050', textAlign: 'center'}}>
+                        @g.skku.edu인 경우 [성균관대 홈페이지 로그인 {'>'} 우측 상단 Google 메일], 
+        </Typography>
+        <Typography sx={{fontSize: '10px', fontWeight: '500', lineHeight: '18px', color: '#505050', textAlign: 'center'}}>
+        @skku.edu인 경우 [킹고M 어플 {'>'} 킹고포털 {'>'} 메일]에서 확인 가능합니다
+        </Typography>
+        <Typography sx={{fontSize: '10px', fontWeight: '500', lineHeight: '16px', color: '#E2E2E2', textAlign: 'center'}}>
+        * 이메일 인증을 완료하지 않으면 서비스 이용에 어려움이 있을 수 있습니다. 
+        </Typography>
+        <Typography sx={{fontSize: '10px', fontWeight: '500', lineHeight: '16px', color: '#E2E2E2', textAlign: 'center', mb: '10px'}}>
+        이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.
+        </Typography>
 
     <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
                 <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>

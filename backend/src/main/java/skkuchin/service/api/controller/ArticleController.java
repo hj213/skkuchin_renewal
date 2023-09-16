@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.config.auth.PrincipalDetails;
+import skkuchin.service.domain.Forum.ArticleType;
 import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.CMRespDto;
@@ -47,15 +48,19 @@ public class ArticleController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> getAllArticle(){
-        List<ArticleDto.Response> article = articleService.searchArticle();
-        return new ResponseEntity<>(new CMRespDto<>(1,"게시판 조회 완료",article), HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getAllArticle(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        AppUser appUser = principalDetails.getUser();
+        List<ArticleDto.Response> article = articleService.searchArticle(appUser);
+        return new ResponseEntity<>(new CMRespDto<>(1,"전체 게시글 조회 완료",article), HttpStatus.OK);
     }
 
     @GetMapping("/{articleId}")
-    public ResponseEntity<?> getSpecificArticle(@PathVariable Long articleId){
-        List<ArticleDto.Response> articles = articleService.getSpecificArticle(articleId);
-        return new ResponseEntity<>(new CMRespDto<>(1,"특정 게시글 조회 완료",articles),HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getSpecificArticle(@PathVariable Long articleId,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        AppUser appUser = principalDetails.getUser();
+        List<ArticleDto.Response> articles = articleService.getSpecificArticle(articleId,appUser);
+        return new ResponseEntity<>(new CMRespDto<>(1,"게시글 id별 조회 완료",articles),HttpStatus.OK);
     }
 
 
@@ -92,10 +97,24 @@ public class ArticleController {
     }
 
     @GetMapping("/search/keyword")
-    public ResponseEntity<?> searchKeyword(@RequestParam("q") String keyword) {
-        List<ArticleDto.Response> articles = articleService.searchKeyword(keyword);
-        return new ResponseEntity<>(new CMRespDto<>(1, "게시글 검색 완료", articles), HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> searchKeyword(@RequestParam("q") String keyword,@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        AppUser appUser = principalDetails.getUser();
+        List<ArticleDto.Response> articles = articleService.searchKeyword(keyword,appUser);
+        return new ResponseEntity<>(new CMRespDto<>(1, "게시글 키워드 검색 완료", articles), HttpStatus.OK);
     }
+
+
+    @GetMapping("/tags/{articleType}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getSpecificArticle(@PathVariable("articleType") String articleTypeStr,@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        ArticleType articleType = ArticleType.valueOf(articleTypeStr);
+        AppUser appUser = principalDetails.getUser();
+        System.out.println("articleType = " + articleType);
+        List<ArticleDto.Response> articles = articleService.getSpecificArticle(articleType,appUser);
+        return new ResponseEntity<>(new CMRespDto<>(1, "태그별 게시판 조회 완료", articles), HttpStatus.OK);
+    }
+
 
 
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import { set_stomp_client } from '../actions/stompClient/stompClient';
@@ -15,6 +15,7 @@ const Layout = ({title, content, children}) => {
     const user = useSelector(state => state.auth.user);
     const anotherStompClient = useSelector(state => state.stompClient.stompClient);
     const subscriptions = {};
+    const connection = useRef(false);
 
     const notify = async () => {
         if (!("Notification" in window)) {
@@ -36,7 +37,7 @@ const Layout = ({title, content, children}) => {
     useEffect(() => {
         if (isAuthenticated) {
             notify();
-            if (user && anotherStompClient) {
+            if (user && connection.current) {
                 subscriptions.alarm = dispatch(get_realtime_chat_alarm(user.username, anotherStompClient));
                 subscriptions.notice = dispatch(get_realtime_notice_alarm(user.username, anotherStompClient));
 
@@ -46,11 +47,12 @@ const Layout = ({title, content, children}) => {
                 });
             }
         }
-    }, [isAuthenticated, anotherStompClient]);
+    }, [isAuthenticated, connection]);
 
     let stompClient = null;
 
     const onError = (e) => {
+        connection.current = false;
         connectStompClient();
     }
 
@@ -63,13 +65,10 @@ const Layout = ({title, content, children}) => {
         stompClient.debug = null;
 
         stompClient.connect('guest', 'guest', () => {
+            connection.current = true;
             dispatch(set_stomp_client(stompClient));
         }, onError);
     };
-
-    useEffect(() => {
-        connectStompClient();
-    }, []);
     
     const campus = localStorage.getItem('map');
 
