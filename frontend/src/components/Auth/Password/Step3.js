@@ -230,7 +230,42 @@ const Step3 = (props) => {
         </Grid> */}
 
         <Typography style={{fontSize: '12px', fontWeight: '900', marginTop: '20px', color: '#3C3C3C'}}>비밀번호 확인</Typography>
-        <input
+        <OutlinedInput
+                color={(rePassword != '') && password !== rePassword ? 'wrong' : 'none'}
+                type={showRePassword ? 'text' : 'password'}
+                value={rePassword}
+                placeholder="비밀번호 재입력"
+                onChange={(e) => setRePassword(e.target.value)}
+                style={{width:'100%', marginTop: '8px'}}
+                required
+                endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowRePassword}
+                        onMouseDown={handleMouseDownRePassword}
+                        edge="end"
+                      >
+                        {showRePassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      border: 'none'
+                    },
+                    '& input': {
+                      fontSize: '16px',
+                    },
+                    height: '56px',
+                    border: (rePassword != '') && password !== rePassword ? '1px solid #FF3B3B' : '1px solid #E2E2E2',
+                    borderRadius: '8px',
+                    outline: 'none',
+                    appearance: 'none',
+                    fontSize: '16px',
+                  }}
+                />
+        {/* <input
             variant="standard"
             type="password"
             placeholder="비밀번호 재입력"
@@ -246,31 +281,11 @@ const Step3 = (props) => {
                 width: '100%',
                 outline: 'none'
             }}
-        />
+        /> */}
         {(rePassword != '') && password !== rePassword ? <Typography sx={{fontSize: '12px', fontWeight: '500', color: '#FF3B3B'}}>일치하지 않는 비밀번호입니다.</Typography>
             : <div style={{height: '18px'}}></div>}
         </div>
-            {/* <div style={{margin: '0 36px'}}>
-                <TextField
-                variant="standard"
-                label="비밀번호 확인"
-                type="password"
-                value={rePassword}
-                onChange={(e) => setRePassword(e.target.value)}
-                style={{width: '100%'}}
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                required
-                InputProps={{
-                    endAdornment: (password === rePassword && validPW) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
-                }}
-                />
-                { (rePassword != '') ? ((password == rePassword) ? 
-                <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#505050'}}>동일한 비밀번호입니다.</Typography>
-                : <Typography sx={{fontSize: '9px', fontWeight: '500', mt: '6px', color: '#FF0000'}}>일치하지 않는 비밀번호입니다.</Typography>)
-                : null}
-            </div> */}
+            
             <div style={{margin: '32px 24px'}}>
             {validPW && (password == rePassword) ?
                     <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
