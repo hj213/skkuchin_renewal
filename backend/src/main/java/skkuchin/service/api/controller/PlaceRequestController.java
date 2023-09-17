@@ -9,9 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.dto.CMRespDto;
-import skkuchin.service.dto.RequestDto;
+import skkuchin.service.dto.PlaceRequestDto;
 import skkuchin.service.exception.CustomValidationApiException;
-import skkuchin.service.service.RequestService;
+import skkuchin.service.service.PlaceRequestService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -22,25 +22,25 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/request")
 @Slf4j
-public class RequestController {
-    private final RequestService requestService;
+public class PlaceRequestController {
+    private final PlaceRequestService requestService;
 
     @GetMapping("")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAll() {
-        List<RequestDto.Response> requests = requestService.getAll();
+        List<PlaceRequestDto.Response> requests = requestService.getAll();
         return new ResponseEntity<>(new CMRespDto<>(1, "식당 추가 요청 전체 조회 완료", requests), HttpStatus.OK);
     }
 
     @GetMapping("/{requestId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getDetail(@PathVariable Long requestId) {
-        RequestDto.Response request = requestService.getDetail(requestId);
+        PlaceRequestDto.Response request = requestService.getDetail(requestId);
         return new ResponseEntity<>(new CMRespDto<>(1, "식당 추가 요청 상세 조회 완료", request), HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity<?> add(@Valid @ModelAttribute RequestDto.PostRequest dto, BindingResult bindingResult) {
+    public ResponseEntity<?> add(@Valid @RequestBody PlaceRequestDto.PostRequest dto, BindingResult bindingResult) {
         Map<String, String> errorMap = new HashMap<>();
         if (bindingResult.hasErrors()) {
             for (FieldError error : bindingResult.getFieldErrors()) {
@@ -60,7 +60,7 @@ public class RequestController {
 
     @PutMapping("/{requestId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> update(@PathVariable Long requestId, @Valid @ModelAttribute RequestDto.PutRequest dto, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Long requestId, @Valid @RequestBody PlaceRequestDto.PutRequest dto, BindingResult bindingResult) {
         Map<String, String> errorMap = new HashMap<>();
         if (bindingResult.hasErrors()) {
             for (FieldError error : bindingResult.getFieldErrors()) {
@@ -77,5 +77,12 @@ public class RequestController {
     public ResponseEntity<?> delete(@PathVariable Long requestId) {
         requestService.delete(requestId);
         return new ResponseEntity<>(new CMRespDto<>(1, "식당 추가 요청 삭제 완료", null), HttpStatus.OK);
+    }
+
+    @PutMapping("/check/{requestId}/{isChecked}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateStatus(@PathVariable Long requestId, @PathVariable Boolean isChecked) {
+        requestService.updateCheck(requestId, isChecked);
+        return new ResponseEntity<>(new CMRespDto<>(1, "식당 추가 요청 승인 상태 업데이트 완료", null), HttpStatus.OK);
     }
 }

@@ -5,12 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import skkuchin.service.domain.Map.Campus;
-import skkuchin.service.domain.Map.Request;
+import skkuchin.service.domain.Map.PlaceRequest;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class RequestDto {
+public class PlaceRequestDto {
 
     @Setter
     @AllArgsConstructor
@@ -21,12 +21,12 @@ public class RequestDto {
         private String name;
         private String reason;
 
-        public Request toEntity() {
-            return Request.builder()
+        public PlaceRequest toEntity() {
+            return PlaceRequest.builder()
                     .name(this.name)
                     .campus(this.campus)
                     .reason(this.reason)
-                    .check(false)
+                    .isChecked(false)
                     .build();
         }
     }
@@ -51,12 +51,12 @@ public class RequestDto {
         private String reason;
         private Boolean check;
 
-        public Response(Request request) {
+        public Response(PlaceRequest request) {
             this.id = request.getId();
             this.name = request.getName();
             this.campus = request.getCampus();
             this.reason = request.getReason();
-            this.check = request.getCheck();
+            this.check = request.getIsChecked();
         }
 
     }
