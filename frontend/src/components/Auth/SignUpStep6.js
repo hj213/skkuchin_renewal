@@ -215,7 +215,7 @@ const SignUpStep6 = (props) => {
                 <DialogActions style={{justifyContent:'center'}}>
                     
                         <Button onClick={e => setDialogOpen(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}}>
-                            <Typography style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#FC9712', marginBottom:'10px'}}>
                                 확인
                             </Typography>
                         </Button>

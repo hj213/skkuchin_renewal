@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography, Dialog, DialogContent, DialogActions } from '@mui/material';
 import Image from 'next/image';
 import theme from '../theme/theme';
 import { backArrow, closeIcon, mainLogo } from '../image/recommend';
@@ -15,6 +15,8 @@ const requestPlace = () => {
     const [campus, setCampus] = useState('명륜');
     const [name, setName] = useState('');
     const [reason, setReason] = useState('');
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogMsg, setDialogMsg] = useState('');
 
     const handleClose = () => {
         router.push('/myPage');
@@ -32,11 +34,25 @@ const requestPlace = () => {
     const handleSubmit = (e) => {
         dispatch(enroll_request(campus, name, reason, ([result, message]) => {
             if (result) {
-                console.log(result);
+                setDialogMsg('요청 글이 작성되었습니다.')
             } else {
-                console.log(result);
+                if (typeof(message) == 'string')
+                    setDialogMsg(message);
             }
+            setDialogOpen(true);
         }));
+    }
+
+    const handleDialogOpen = () => {
+        if (dialogOpen) {
+            setDialogOpen(false);
+        } else {
+            setDialogOpen(true);
+        }
+    }
+    const handleDialogClick = () => {
+        setDialogOpen(false);
+        router.push('/myPage');
     }
     return(
         <ThemeProvider theme={theme}>
@@ -114,6 +130,23 @@ const requestPlace = () => {
                             </Button>
                     }
                 </div>
+
+            <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px', width: '327px' } }}>
+                <DialogContent style={{padding:'66px 16px 34px 16px', marginBottom:'0px'}}>
+                    <Typography style={{fontSize:'16px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight='bold'>
+                      {dialogMsg}
+                    </Typography>
+                </DialogContent>
+                <DialogActions style={{justifyContent:'center', padding: '16px'}}>
+                    
+                        <Button onClick={handleDialogClick} style={{fontSize:"16px", fontWeight: '700', color:'#fff', backgroundColor: '#FFCE00', width: '100%', height: '50px', padding: '16px'}}>
+                            {/* <Typography style={{fontSize:"16px", fontWeight: '700', color:'#fff', marginBottom:'10px'}}> */}
+                                확인
+                            {/* </Typography> */}
+                        </Button>
+
+                </DialogActions>
+            </Dialog>
         </ThemeProvider>
     )
 }
