@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux';
 import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
 import Image from 'next/image';
 import theme from '../theme/theme';
 import { backArrow, closeIcon, mainLogo } from '../image/recommend';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { enroll_request } from "../actions/request/request";
+import { test } from "../actions/request/request";
 
 const requestPlace = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
     const [campus, setCampus] = useState('명륜');
     const [name, setName] = useState('');
+    const [reason, setReason] = useState('');
 
     const handleClose = () => {
         router.push('/myPage');
@@ -25,7 +30,13 @@ const requestPlace = () => {
     }
 
     const handleSubmit = (e) => {
-        console.log(name);
+        dispatch(enroll_request(campus, name, reason, ([result, message]) => {
+            if (result) {
+                console.log(result);
+            } else {
+                console.log(result);
+            }
+        }));
     }
     return(
         <ThemeProvider theme={theme}>
@@ -85,6 +96,8 @@ const requestPlace = () => {
                 <Box style={{width: '100%'}}>
                 <Typography style={{height: '21px', padding: '5px 0', fontWeight: '700', fontSize: '14px', color: '#777777', marginBottom: '10px'}}>요청 이유 <span style={{color: '#BABABA'}}>(선택)</span></Typography>
                 <textarea 
+                    value={reason}
+                    onChange={e => setReason(e.target.value)}
                     placeholder="내용을 입력해주세요."
                     style={{width: '100%', height: '230px', padding: '16px', border: '1px solid #E2E2E2', borderRadius: '12px', outline: 'none'}}
                 />
