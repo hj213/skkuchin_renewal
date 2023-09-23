@@ -61,16 +61,16 @@ const Header = ({ title, onBackClick, showSearchIcon, post }) => {
 
     const handleDeletePost = (post) => {
         console.log("삭제하기");
-        console.log(post);
+        console.log(post.id);
 
-        // dispatch(delete_post(post.id, ([result, message]) => {
-        //   if (result) {
-        //     console.log("게시글 삭제 성공");
-        //     router.back();
-        //   } else {
-        //     console.log("게시글 삭제 오류" + message);
-        //   }
-        // }));
+        dispatch(delete_post(post.id, ([result, message]) => {
+          if (result) {
+            console.log("게시글 삭제 성공");
+            router.back();
+          } else {
+            console.log("게시글 삭제 오류" + message);
+          }
+        }));
     }
 
     const handleViewProfile = (post) => {

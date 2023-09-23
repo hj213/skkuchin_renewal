@@ -10,6 +10,9 @@ import close from '../image/close.png';
 import dynamic from 'next/dynamic';
 import MBTITypes from '../components/SkkuChat/MBTITypes';
 import { clear_matching } from '../actions/matchingUser/matchingUser';
+import CustomPopup from '../components/SkkuChat/CustomPopup';
+import CustomPopupNoBtn from '../components/SkkuChat/CustomPopupNoBtn';
+import { request_chat } from '../actions/chat/chatRoom';
 
 const clickProfile = () => {
 
@@ -18,10 +21,12 @@ const clickProfile = () => {
 
     const friendId = router.query.id; 
 
+    const requestId = useSelector(state => state.chatRoom.requestId);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const matchingUser = useSelector(state => state.matchingUser.matchingUser);
+
     const [keywordCategories, setKeywordCategories] = useState([]);
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if (typeof window !== 'undefined' && !isAuthenticated) {
         router.push('/login');
     }
@@ -43,6 +48,27 @@ const clickProfile = () => {
     
     const handleBack = (e) => {
         router.back();
+    }
+
+    const [open, setOpen] = useState(false);
+    const [selectedPersonId, setSelectedPersonId] = useState(null);
+
+    const [isPopupMessageOpen, setIsPopupMessageOpen] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+
+    const handleOpen = (id) => {
+        setOpen(true);
+        setSelectedPersonId(id);
+    }
+    const handleClose = () => {
+        setOpen(false);
+    }
+    const handleSubmit = (id) => {
+        setOpen(false);
+        dispatch(request_chat(id));
+
+        setPopupMessage('신청이 완료되었습니다!');
+        setIsPopupMessageOpen(true);
     }
 
     return (
@@ -128,29 +154,55 @@ const clickProfile = () => {
                     </>
                     : null}
                     </div>
-
-                    <Container sx={{position: 'fixed', backgroundColor: '#fff', width: '100%', height: '100px', bottom: '0px'}}>
-                    <Button
-                            disableElevation
-                            disableTouchRipple
-                            sx={{
-                                position: 'fixed',
-                                color: '#FFF',
-                                fontSize: '16px',
-                                fontWeight: 800,
-                                textAlign: 'center',
-                                backgroundColor: '#FFCE00',
-                                borderRadius: '8px',
-                                bottom: '24px',
-                                width: '327px',
-                                height: '56px',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                            }}
-                        >
-                            밥약 신청하기
-                        </Button>
+                { matchingUser && 
+                    <>
+                        <Container sx={{position: 'fixed', backgroundColor: '#fff', width: '100%', height: '100px', bottom: '0px'}}>
+                            <Button
+                                disableElevation
+                                disableTouchRipple
+                                sx={{
+                                    position: 'fixed',
+                                    color: '#FFF',
+                                    fontSize: '16px',
+                                    fontWeight: 800,
+                                    textAlign: 'center',
+                                    backgroundColor: requestId && requestId.includes(matchingUser.id) ? '#E2E2E2' : '#FFCE00',
+                                    borderRadius: '8px',
+                                    bottom: '24px',
+                                    width: '327px',
+                                    height: '56px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                }}
+                                onClick={() => {
+                                    if (matchingUser !== null && !(requestId && requestId.includes(matchingUser.id))) {
+                                        handleOpen(matchingUser.id);
+                                    }
+                                }}
+                                disabled={requestId && requestId.includes(matchingUser.id)}
+                            >
+                                {requestId && requestId.includes(matchingUser.id) ? '밥약 신청완료' : '밥약 신청하기'}
+                            </Button>
                         </Container>
+                        <CustomPopup
+                            open={open}
+                            onClose={handleClose}
+                            content={`밥약 신청을 하시겠어요?`}
+                            leftButtonLabel="아니요"
+                            rightButtonLabel="신청"
+                            onLeftButtonClick={handleClose}
+                            onRightButtonClick={() => {
+                                handleSubmit(selectedPersonId);
+                        }}
+                        />
+
+                        <CustomPopupNoBtn
+                            open={isPopupMessageOpen}
+                            onClose={() => setIsPopupMessageOpen(false)}
+                            content={popupMessage}
+                        />
+                    </>
+                }
         </ThemeProvider>
     )
 }

@@ -14,6 +14,9 @@ import{
     DELETE_POST_SUCCESS,
     MODIFY_POST_FAIL,
     MODIFY_POST_SUCCESS,
+    SEARCH_POSTS_FAIL,
+    SEARCH_POSTS_SUCCESS,
+    CLEAR_SEARCH_POSTS,
     CLEAR_PREV_POST,
 } from '../actions/post/types'
 
@@ -21,7 +24,8 @@ const initialState = {
     post: null,
     myPosts: null,
     favPosts: null,
-    allPosts: null
+    allPosts: null,
+    filteredPosts: null
 }
 
 const postReducer = (state = initialState, action) => {
@@ -91,6 +95,21 @@ const postReducer = (state = initialState, action) => {
         case MODIFY_POST_FAIL:
             return{
                 ...state
+            }
+        case SEARCH_POSTS_SUCCESS:
+            return{
+                ...state,
+                filteredPosts: payload
+            }
+        case SEARCH_POSTS_FAIL:
+            return{
+                ...state,
+                filteredPosts: null
+            }
+        case CLEAR_SEARCH_POSTS:
+            return{
+                ...state,
+                filteredPosts: null
             }
         case CLEAR_PREV_POST:
             return{
