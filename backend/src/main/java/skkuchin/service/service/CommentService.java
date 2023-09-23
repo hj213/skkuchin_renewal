@@ -2,6 +2,7 @@ package skkuchin.service.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Forum.Article;
 import skkuchin.service.domain.Forum.Comment;
@@ -64,7 +65,8 @@ public class CommentService {
     public void deleteComment(Long commentId, AppUser appUser){
         Comment comment = commentRepo.findById(commentId).orElseThrow(()-> new CustomValidationApiException("존재하지 않는 댓글입니다."));
         canHandleArticle(comment.getUser(),appUser);
-        commentRepo.delete(comment);
+        comment.setDeleted(true);
+        commentRepo.save(comment);
     }
 
     private void canHandleArticle(AppUser articleUser, AppUser user) {

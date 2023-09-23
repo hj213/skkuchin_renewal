@@ -101,6 +101,8 @@ public class CommentDto {
 
             private boolean writer;
 
+            private boolean deleted;
+
             private boolean anonymous;
             private List<CommentDto.ReplyResponse> reply;
 
@@ -118,6 +120,7 @@ public class CommentDto {
                 System.out.println("comment.getArticle().getUser().getId() = " + comment.getArticle().getUser().getId());
                 System.out.println("user = " + user.getId());
                 this.anonymous = comment.isAnonymous();
+                this.deleted = comment.isDeleted();
                 if(comment.getChildren()!= null){
                     this.reply = comment.getChildren().stream().map(c-> new CommentDto.ReplyResponse(c,commentLikesForReply(c,commentLikes),
                             user)).collect(Collectors.toList());
@@ -168,6 +171,7 @@ public class CommentDto {
 
         private boolean anonymous;
 
+        private boolean deleted;
 
         public ReplyResponse(Comment comment, List<CommentLike> commentLikes, AppUser user) {
             this.id = comment.getId();
@@ -180,6 +184,7 @@ public class CommentDto {
             this.myComment = user.getId().equals(comment.getUser().getId());
             this.writer = comment.getArticle().getUser().getId().equals(comment.getUser().getId());
             this.anonymous = comment.isAnonymous();
+            this.deleted = comment.isDeleted();
         }
 
 
