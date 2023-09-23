@@ -13,12 +13,15 @@ import{
     ENROLL_REPLY_FAIL,
     ENROLL_REPLY_SUCCESS,
     CLEAR_PREV_COMMENT,
+    LIKE_COMMENT_FAIL,
+    LIKE_COMMENT_SUCCESS,
 } from '../actions/comment/types'
 
 const initialState = {
     comment: null,
     // myCOMMENT: null,
-    allComments: null
+    allComments: null,
+    favComments: null,
 }
 
 const commentReducer = (state = initialState, action) => {
@@ -84,6 +87,14 @@ const commentReducer = (state = initialState, action) => {
             }
         case LOGOUT_SUCCESS:
             return initialState;
+        case LIKE_COMMENT_SUCCESS:
+            return{
+                ...state
+            }
+        case LIKE_COMMENT_FAIL:
+            return{
+                ...state
+            }
         default:
             return state;
     }

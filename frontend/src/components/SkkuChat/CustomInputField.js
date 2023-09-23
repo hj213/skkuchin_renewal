@@ -24,7 +24,7 @@ const CustomInputField = ({ article_id, isReply, parentCommentId }) => {
     const handleSendClick = () => {
         if (message !== '') {
             if(isReply) {
-                dispatch(enroll_reply(message, article_id, parentCommentId, ([result, message]) => {
+                dispatch(enroll_reply(message, article_id, parentCommentId, isChecked, ([result, message]) => {
                     if (result) {
                         setMessage('');
                         console.log("대댓글 작성 완료!!")
@@ -40,7 +40,7 @@ const CustomInputField = ({ article_id, isReply, parentCommentId }) => {
                 }));
             }
             else {
-                dispatch(enroll_comment(message, article_id, ([result, message]) => {
+                dispatch(enroll_comment(message, article_id, isChecked, ([result, message]) => {
                     if (result) {
                         setMessage('');
                         console.log("댓글 작성 완료!!")

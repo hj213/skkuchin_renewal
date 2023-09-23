@@ -14,6 +14,8 @@ import {
     ENROLL_REPLY_FAIL,
     ENROLL_REPLY_SUCCESS,
     CLEAR_PREV_COMMENT,
+    LIKE_COMMENT_FAIL,
+    LIKE_COMMENT_SUCCESS,
 } from './types'
 import { load_post } from '../post/post';
 
@@ -57,12 +59,12 @@ export const load_comment = (article_id, callback) => async dispatch => {
 }
 
 
-export const enroll_comment = (content, article_id, callback) => async dispatch => {
+export const enroll_comment = (content, article_id, anonymous, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
-        content, article_id
+        content, article_id, anonymous
     });
 
     try {
@@ -100,13 +102,14 @@ export const enroll_comment = (content, article_id, callback) => async dispatch 
     }
 }
 
-export const enroll_reply = (content, article_id, comment_id, callback) => async dispatch => {
+export const enroll_reply = (content, article_id, comment_id, anonymous, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
         content,
         article_id,
+        anonymous
     });
 
     try {
@@ -126,6 +129,7 @@ export const enroll_reply = (content, article_id, comment_id, callback) => async
             await dispatch({
                 type: ENROLL_REPLY_SUCCESS
             })
+            await dispatch(load_post(article_id));
             if (callback) callback([true, apiRes.message]);
         }
         else {
@@ -146,3 +150,46 @@ export const enroll_reply = (content, article_id, comment_id, callback) => async
 export const clear_prev_comment = () => ({
     type: CLEAR_PREV_COMMENT
 });
+
+export const like_comment = (comment_id, article_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+
+    const body = JSON.stringify({
+        comment_id, article_id
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/comment/like`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${access}`
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 201) {
+            await dispatch({
+                type: LIKE_COMMENT_SUCCESS
+            })
+            await dispatch(load_comment(article_id));
+            if (callback) callback([true, apiRes.message]);
+        }
+        else {
+            await dispatch({
+                type: LIKE_COMMENT_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    }
+    catch (error) {
+        dispatch({
+            type: LIKE_COMMENT_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}

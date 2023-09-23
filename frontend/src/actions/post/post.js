@@ -224,6 +224,42 @@ export const enroll_post = (title, content, article_type, callback) => async dis
     }
 }
 
+export const delete_post = (article_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+
+    try {
+        const res = await fetch(`${API_URL}/api/article/${article_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization' : `Bearer ${access}`
+            },
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: DELETE_POST_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+            
+        } else {
+            dispatch({
+                type: DELETE_POST_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+
+    }
+    catch (error) {
+        dispatch({
+            type: DELETE_POST_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}
+
 export const clear_prev_post = () => ({
     type: CLEAR_PREV_POST
 });

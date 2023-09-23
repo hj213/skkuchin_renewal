@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography, Container, Grid, CssBaseline, ThemeProvider, Button, Divider, Box } from '@mui/material';
 import theme from '../../theme/theme';
 import Header from './Header';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { displayMBTI } from '../Matching/MBTIList';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import CustomInputField from './CustomInputField';
 import { load_comment, clear_prev_comment } from '../../actions/comment/comment';
 import { load_post, clear_prev_post } from '../../actions/post/post';
 import { enroll_like } from '../../actions/like/like';
@@ -97,7 +94,7 @@ const PostDetail = ({ postId }) => {
       <ThemeProvider theme={theme}>
           <CssBaseline />
           <Container fixed style={{ position:'fixed', zIndex:'4', padding:'24px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
-                <Header title="스꾸게시판" onBackClick={handleBackClick}/>
+            {post && <Header title="스꾸게시판" onBackClick={handleBackClick} post={post[0]}/> }
           </Container>
           <Container sx={{ p: '0 24px', mt: '72.5px'}}>
             {/* 작성자 프로필 */}
@@ -166,17 +163,13 @@ const PostDetail = ({ postId }) => {
 
           {/* 댓글 */}
           { comments && 
-            <Container sx={{p: '0 0 58px', mt: '10px', overflow: 'hidden', height: 'max-content'}}>
+            <Container sx={{p: '0 0 58px', overflow: 'hidden', height: 'max-content'}}>
               <Grid sx={{display: 'flex', flexDirection: 'column', p: '0 0 10px', overflowX: 'hidden'}}>
                 <Comment comments={comments} postId={post[0].id}/>
               </Grid>
             </Container>
           }
 
-          {/* 입력창 */}
-          {/* <Container sx={{justifyContent: 'center', position: 'fixed', backgroundColor: '#fff', bottom: '0px', pb: '24px'}}>
-            <CustomInputField article_id={postId}/>
-          </Container> */}
       </ThemeProvider>
     );
 };

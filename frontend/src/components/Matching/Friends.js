@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import CustomPopup from "../SkkuChat/CustomPopup";
+import CustomPopupNoBtn from "../SkkuChat/CustomPopupNoBtn";
 
 const GoLogin = dynamic(() => import('../GoLogin'));
 
@@ -72,6 +73,9 @@ const Friends = () => {
     const [open, setOpen] = useState(false);
     const [selectedPersonId, setSelectedPersonId] = useState(null);
 
+    const [isPopupMessageOpen, setIsPopupMessageOpen] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+
     const handleOpen = (id) => {
         setOpen(true);
         setSelectedPersonId(id);
@@ -82,6 +86,9 @@ const Friends = () => {
     const handleSubmit = (id) => {
         setOpen(false);
         dispatch(request_chat(id));
+
+        setPopupMessage('신청이 완료되었습니다!');
+        setIsPopupMessageOpen(true);
     }
     
     const handleSettingOpen = () => {
@@ -204,6 +211,12 @@ const Friends = () => {
                         onRightButtonClick={() => {
                             handleSubmit(selectedPersonId);
                         }}
+                    />
+
+                    <CustomPopupNoBtn
+                        open={isPopupMessageOpen}
+                        onClose={() => setIsPopupMessageOpen(false)}
+                        content={popupMessage}
                     />
                 </Grid>
             </Card> 
