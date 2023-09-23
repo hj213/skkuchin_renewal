@@ -104,15 +104,15 @@ const Step2 = (props) => {
         </Typography>
 
     <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
-                <DialogContent style={{width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                <DialogContent style={{width:'270px', marginBottom:'0px', padding: '28px 16px 24px 16px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px', fontWeight: '700'}}>
                       {dialogMsg}
                     </Typography>
                 </DialogContent>
-                <DialogActions style={{justifyContent:'center'}}>
+                <DialogActions style={{justifyContent:'center', borderTop: '1px solid #E2E2E2'}}>
                     
                         <Button onClick={e => setDialogOpen(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:'#505050'}}>
-                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#505050', marginBottom:'10px'}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#FC9712', marginBottom:'10px', height: '16px'}}>
                                 확인
                             </Typography>
                         </Button>
