@@ -168,15 +168,15 @@ const PostDetail = ({ postId }) => {
           { comments && 
             <Container sx={{p: '0 0 58px', mt: '10px', overflow: 'hidden', height: 'max-content'}}>
               <Grid sx={{display: 'flex', flexDirection: 'column', p: '0 0 10px', overflowX: 'hidden'}}>
-                <Comment comments={comments}/>
+                <Comment comments={comments} postId={post[0].id}/>
               </Grid>
             </Container>
           }
 
           {/* 입력창 */}
-          <Container sx={{justifyContent: 'center', position: 'fixed', backgroundColor: '#fff', bottom: '0px', pb: '24px'}}>
+          {/* <Container sx={{justifyContent: 'center', position: 'fixed', backgroundColor: '#fff', bottom: '0px', pb: '24px'}}>
             <CustomInputField article_id={postId}/>
-          </Container>
+          </Container> */}
       </ThemeProvider>
     );
 };

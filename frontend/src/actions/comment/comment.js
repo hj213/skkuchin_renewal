@@ -15,6 +15,7 @@ import {
     ENROLL_REPLY_SUCCESS,
     CLEAR_PREV_COMMENT,
 } from './types'
+import { load_post } from '../post/post';
 
 export const load_comment = (article_id, callback) => async dispatch => {
     await dispatch(request_refresh());
@@ -81,6 +82,7 @@ export const enroll_comment = (content, article_id, callback) => async dispatch 
             await dispatch({
                 type: ENROLL_COMMENT_SUCCESS
             })
+            await dispatch(load_post(article_id));
             if (callback) callback([true, apiRes.message]);
         }
         else {
@@ -98,12 +100,13 @@ export const enroll_comment = (content, article_id, callback) => async dispatch 
     }
 }
 
-export const enroll_reply = (content, comment_id, callback) => async dispatch => {
+export const enroll_reply = (content, article_id, comment_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
-        content
+        content,
+        article_id,
     });
 
     try {

@@ -6,9 +6,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import send from '../../image/send.png';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
-import { enroll_comment, load_comment } from '../../actions/comment/comment';
+import { enroll_comment, load_comment, enroll_reply } from '../../actions/comment/comment';
 
-const CustomInputField = ({ article_id }) => {
+const CustomInputField = ({ article_id, isReply, parentCommentId }) => {
     const dispatch = useDispatch();
 
     const [isChecked, setIsChecked] = useState(false);
@@ -23,20 +23,38 @@ const CustomInputField = ({ article_id }) => {
 
     const handleSendClick = () => {
         if (message !== '') {
-            dispatch(enroll_comment(message, article_id, ([result, message]) => {
-                if (result) {
-                    setMessage('');
-                    console.log("댓글 작성 완료!!")
-                    
-                    dispatch(load_comment(article_id, ([result, message]) => {
-                        if (result) {
-                            console.log("댓글 불러오기 성공")
-                        }
-                    }));
-                } else {
-                    alert("댓글 작성 오류" + message);
-                }
-            }));
+            if(isReply) {
+                dispatch(enroll_reply(message, article_id, parentCommentId, ([result, message]) => {
+                    if (result) {
+                        setMessage('');
+                        console.log("대댓글 작성 완료!!")
+
+                        dispatch(load_comment(article_id, ([result, message]) => {
+                            if (result) {
+                                console.log("댓글 불러오기 성공")
+                            }
+                        }));
+                    } else {
+                        alert("대댓글 작성 오류" + message);
+                    }
+                }));
+            }
+            else {
+                dispatch(enroll_comment(message, article_id, ([result, message]) => {
+                    if (result) {
+                        setMessage('');
+                        console.log("댓글 작성 완료!!")
+                        
+                        dispatch(load_comment(article_id, ([result, message]) => {
+                            if (result) {
+                                console.log("댓글 불러오기 성공")
+                            }
+                        }));
+                    } else {
+                        alert("댓글 작성 오류" + message);
+                    }
+                }));
+            }
         }
     };
 
