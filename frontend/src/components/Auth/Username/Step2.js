@@ -21,11 +21,11 @@ export default function Step2(props) {
         <div>
         <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
                         <Grid container>
-                            <Grid item style={{margin:'0px 0px 0px 20px', visibility:'none'}}>
+                            <Grid item style={{margin:'0px 0px 0px 39px', visibility:'none'}}>
                                 <Image src={back} width={11} height={18} name='back' onClick={handlePrevStep} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'33%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>아이디 찾기</Typography>
+                                {/* <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>아이디 찾기</Typography> */}
                             </Grid>
                         </Grid>
         </Container>
@@ -42,21 +42,31 @@ export default function Step2(props) {
                 <Typography align='center' style={{margin: 'auto', fontSize: '18px', fontWeight: '700'}}>아이디 찾기</Typography>
         </header> */}
 
-        <div style={{margin: '0 24px', width: '80%'}}>
-                <TextField
+        <div style={{width: '100%'}}>
+        <div style={{margin: '0 24px'}}>
+        <Typography style={{fontSize: '24px', fontWeight: '900', marginBottom: '12px', color: '#3C3C3C'}}>아이디 찾기</Typography>
+        <Typography style={{fontSize: '12px', fontWeight: '400', marginBottom: '13px', color: '#777777'}}>입력하신 정보와 일치하는 아이디입니다.</Typography>
+        <div style={{ width: '100%'}}>
+                <input readOnly
                 variant="standard"
-                label="아이디:"
                 value={user.username}
-                style={{width: '100%'}}
-                inputProps={
-					{ readOnly: true }
-				}
+                style={{fontSize: '16px',
+                    padding: '20px 15px 21px 12px',
+                    height: '56px',
+                    border: '1px solid #E2E2E2',
+                    marginTop: '15px',
+                    borderRadius: '8px',
+                    width: '100%',
+                    outline: 'none'}}
                 />
             </div>
-        <div style={{position: 'fixed', left: '0', right: '0', bottom: '0', display: 'grid', margin: '40px auto', maxWidth: '420px'}}>
-        <Button variant="contained" onClick={handleButtonClick} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '15px', height: '56px', boxShadow: 'none'}}>
-            로그인 홈 가기
+        <Button variant="contained" onClick={() => router.push('/login')} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none', marginTop: '62px'}}>
+            로그인 하러가기
         </Button>
+        <Button variant="contained"  disabled style={{width: '100%', backgroundColor: "#E2E2E2", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none', marginTop: '15px'}}>
+            비밀번호 찾기
+        </Button>
+        </div>
         </div>
         </Box>
         </div>
