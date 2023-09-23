@@ -1,4 +1,3 @@
-import e from 'express';
 import { API_URL } from '../../config';
 import { getToken, request_refresh } from '../auth/auth';
 import {
