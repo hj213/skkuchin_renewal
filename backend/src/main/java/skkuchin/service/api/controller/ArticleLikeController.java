@@ -57,12 +57,11 @@ public class ArticleLikeController {
     }
     
     
-    @DeleteMapping("/{articleLikeId}")
+    @DeleteMapping("/{articleId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> deleteArticleLike(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long articleLikeId){
-        
+    public ResponseEntity<?> deleteArticleLike(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long articleId){
         AppUser user = principalDetails.getUser();
-        articleLikeService.delete(articleLikeId,user);
+        articleLikeService.delete(articleId,user);
         return new ResponseEntity<>(new CMRespDto<>(1, "게시글 좋아요 삭제 완료", null), HttpStatus.OK);
 
     }

@@ -49,10 +49,11 @@ public class ArticleLikeService {
 
 
     @Transactional
-    public void delete(Long articleLikeId, AppUser appUser) {
-        ArticleLike articlelike = articleLikeRepo.findById(articleLikeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다"));
-        canHandleArticle(articlelike.getUser(),appUser);
-        articleLikeRepo.delete(articlelike);
+    public void delete(Long articleId, AppUser appUser) {
+        ArticleLike articleLike = articleLikeRepo.findByArticleAndUser(articleId,appUser.getId());
+        System.out.println("articleLike.getUser().getNickname() = " + articleLike.getUser().getNickname());
+        canHandleArticle(articleLike.getUser(),appUser);
+        articleLikeRepo.delete(articleLike);
     }
 
     private void canHandleArticle(AppUser articleUser, AppUser user) {
