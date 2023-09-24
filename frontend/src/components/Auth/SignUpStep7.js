@@ -114,7 +114,7 @@ const SignUpStep7 = (props) => {
         <Typography sx={{fontSize: '9px', fontWeight: '400', ml: '5.58px', color: '#BABABA', mt: '8px'}}>*이메일이 도착하지 않을 경우, 스팸메일함을 확인해주세요.</Typography>
       </div> */}
         <Dialog open={dialogOpen} onClose={handleDialogOpen} PaperProps={{ style: { borderRadius: '10px' } }}>
-                <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', height:'100px', padding:'29px 0px 0px 0px', marginBottom:'0px'}}>
+                <DialogContent style={{display: 'grid', alignItems: 'center', width:'270px', marginBottom:'0px', padding: '28px 16px 24px 16px'}}>
                     <Typography style={{fontSize:'14px', color:'black', textAlign:'center', lineHeight:'22px'}} fontWeight={theme.typography.h1}>
                       
                       {(dialogMsg||'').split('\n').length > 1 ? 
@@ -125,10 +125,10 @@ const SignUpStep7 = (props) => {
                       : dialogMsg}
                     </Typography>
                 </DialogContent>
-                <DialogActions style={{justifyContent:'center'}}>
+                <DialogActions style={{justifyContent:'center', borderTop: '1px solid #E2E2E2'}}>
                     
                         <Button onClick={e => setDialogOpen(false)} variant="text" style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`}}>
-                            <Typography style={{fontSize:"14px", fontWeight: '700', color:`${theme.palette.fontColor.dark}`, marginBottom:'10px'}}>
+                            <Typography style={{fontSize:"14px", fontWeight: '700', color:'#FC9712', marginBottom:'10px', height: '16px'}}>
                                 확인
                             </Typography>
                         </Button>

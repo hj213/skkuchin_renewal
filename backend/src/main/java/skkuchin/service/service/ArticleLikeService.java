@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import skkuchin.service.domain.Forum.Article;
 import skkuchin.service.domain.Forum.ArticleLike;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.ArticleLikeDto;
 import skkuchin.service.exception.CustomRuntimeException;
 import skkuchin.service.exception.CustomValidationApiException;
@@ -34,23 +35,25 @@ public class ArticleLikeService {
 
 
     @Transactional
-    public List<ArticleLikeDto.Response> getMyArticleLikes(AppUser user) {
+    public List<ArticleDto.Response> getMyArticleLikes(AppUser user) {
 
         return articleLikeRepo.findByUser(user.getId())
                 .stream()
-                .map(articleLike -> new ArticleLikeDto.Response(
-                        articleLike,
+                .map(articleLike -> new ArticleDto.Response(
+                        articleLike.getArticle(),
+                        commentRepo.findByArticle(articleLike.getArticle()),
                         articleLikeRepo.findByArticle(articleLike.getArticle().getId()),
-                        commentRepo.findByArticle(articleLike.getArticle())
+                        user
                 )).collect(Collectors.toList());
     }
 
 
     @Transactional
-    public void delete(Long articleLikeId, AppUser appUser) {
-        ArticleLike articlelike = articleLikeRepo.findById(articleLikeId).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다"));
-        canHandleArticle(articlelike.getUser(),appUser);
-        articleLikeRepo.delete(articlelike);
+    public void delete(Long articleId, AppUser appUser) {
+        ArticleLike articleLike = articleLikeRepo.findByArticleAndUser(articleId,appUser.getId());
+        System.out.println("articleLike.getUser().getNickname() = " + articleLike.getUser().getNickname());
+        canHandleArticle(articleLike.getUser(),appUser);
+        articleLikeRepo.delete(articleLike);
     }
 
     private void canHandleArticle(AppUser articleUser, AppUser user) {

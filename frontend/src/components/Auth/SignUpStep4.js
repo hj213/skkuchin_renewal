@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {  TextField, Button, InputLabel, Typography, Box, FormControl, Select, MenuItem, Container, Grid, Autocomplete} from '@mui/material';
 import back from '../../image/arrow_back_ios.png';
 import Image from 'next/image';
@@ -83,7 +83,9 @@ const SignUpStep4 = (props) => {
         '행시': false,
     })
     const [introduction, setIntroduction] = useState('');
-    const [keywordNum, setKeywordNum] = useState(0);
+    const [keyword, setKeyword] = useState('');
+    const [mbti, setMbti] = useState('');
+    const [condition, setCondition] = useState(false);
     const [remainWidth, setRemainWidth] = useState(window.innerWidth - 84 + "px")
 
     const handlePrevStep = () => {
@@ -126,7 +128,7 @@ const SignUpStep4 = (props) => {
     }
 
     const handleFoodClick = (e) => {
-        if(keywordNum == 8){
+        if(keyword.length == 8){
             setFood({
                 ...food
             })
@@ -135,24 +137,21 @@ const SignUpStep4 = (props) => {
                     ...food,
                     [e.target.innerText] : false
                 })
-                setKeywordNum(keywordNum-1)
             }
         } else if(food[e.target.innerText]){
             setFood({
                 ...food,
                 [e.target.innerText] : false
             })
-            setKeywordNum(keywordNum-1)
         } else{
             setFood({
                 ...food,
                 [e.target.innerText] : true
             })
-            setKeywordNum(keywordNum+1)
         }
     }
     const handleSportsClick = (e) => {
-        if(keywordNum == 8){
+        if(keyword.length == 8){
             setSports({
                 ...sports
             })
@@ -161,24 +160,21 @@ const SignUpStep4 = (props) => {
                     ...sports,
                     [e.target.innerText] : false
                 })
-                setKeywordNum(keywordNum-1)
             }
         } else if(sports[e.target.innerText]){
             setSports({
                 ...sports,
                 [e.target.innerText] : false
             })
-            setKeywordNum(keywordNum-1)
         } else{
             setSports({
                 ...sports,
                 [e.target.innerText] : true
             })
-            setKeywordNum(keywordNum+1)
         }
     }
     const handleArtClick = (e) => {
-        if(keywordNum == 8){
+        if(keyword.length == 8){
             setArt({
                 ...art
             })
@@ -187,58 +183,49 @@ const SignUpStep4 = (props) => {
                     ...art,
                     [e.target.innerText] : false
                 })
-                setKeywordNum(keywordNum-1)
             }
         } else if(art[e.target.innerText]){
             setArt({
                 ...art,
                 [e.target.innerText] : false
             })
-            setKeywordNum(keywordNum-1)
         } else{
             setArt({
                 ...art,
                 [e.target.innerText] : true
             })
-            setKeywordNum(keywordNum+1)
         }
     }
+
     const handleStudyClick = (e) => {
-        if(keywordNum == 8){
+        if(keyword.length == 8){
             setStudy({
                 ...study
             })
-            if(art[e.target.innerText]){
+            if(study[e.target.innerText]){
                 setStudy({
                     ...study,
                     [e.target.innerText] : false
                 })
-                setKeywordNum(keywordNum-1)
             }
         } else if(study[e.target.innerText]){
             setStudy({
                 ...study,
                 [e.target.innerText] : false
             })
-            setKeywordNum(keywordNum-1)
         } else{
             setStudy({
                 ...study,
                 [e.target.innerText] : true
             })
-            setKeywordNum(keywordNum+1)
         }
     }
 
     const handleNextStep = () => {
         let data = props.data;
-        let keywords = ["축구", "야구", "농구"]
-        let mbti="ENFP"
         dispatch(register(data, ([result, message]) => {
             if (result) {
-                props.handleNextStep();
-            }}))
-                /*dispatch(add_new_matching_info(data.username, gender, keywords, introduction, mbti, ([result, message]) => {
+                dispatch(add_new_matching_info(data.username, gender, keyword, introduction, mbti, ([result, message]) => {
                     if (result) {
                         props.handleNextStep();
                     } else {
@@ -248,8 +235,43 @@ const SignUpStep4 = (props) => {
             } else {
                 console.log(result, message)
             }
-        }));*/
+        }))
     }
+
+    useEffect(() => {
+        const newMbti = Object.entries(mbtiChoose)
+          .filter(([, value]) => value)
+          .map(([key]) => key)
+          .join('');
+        if(newMbti.length==4){
+            setMbti(newMbti);
+        } else{
+            setMbti('');
+        }
+
+        const newKeywords = [sports, food, art, study];
+
+        const allKeywords = newKeywords.reduce((acc, current) => {
+            return acc.concat(Object.entries(current));
+        }, [])
+            .filter(([, value]) => value)
+            .map(([key]) => key);
+
+        if(allKeywords.length >= 3 ){
+            setKeyword(allKeywords);
+        }else{
+            setKeyword([]);
+        }
+    }, [mbtiChoose, food, study, art, sports]);
+
+    useEffect(()=>{
+        if(gender && keyword.length >0 && introduction != '' && mbti){
+    
+            setCondition(true);
+        } else {
+            setCondition(false);
+        }
+    }, [gender, keyword, introduction, mbti]);
 
     return (
     <div>
@@ -354,7 +376,7 @@ const SignUpStep4 = (props) => {
 
     <div style={{width: '100%'}}>
             <div style={{margin: '60px 24px 12px'}}>
-                {gender && introduction != '' ?
+                {condition?
                         <Button variant="contained" onClick={handleNextStep} style={{width: '100%', backgroundColor: "#FFCE00", color: '#fff', fontSize: '16px', fontWeight: '700',  borderRadius: '8px', height: '56px', boxShadow: 'none'}}>
                             다음
                         </Button>
