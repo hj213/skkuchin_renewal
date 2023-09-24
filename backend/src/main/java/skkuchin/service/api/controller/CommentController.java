@@ -71,7 +71,7 @@ public class CommentController {
 
     }
 
-    @DeleteMapping("/{commentId}")
+    @PutMapping("/{commentId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> deleteMyArticle(@PathVariable Long commentId, @AuthenticationPrincipal PrincipalDetails principalDetails){
         AppUser appUser = principalDetails.getUser();

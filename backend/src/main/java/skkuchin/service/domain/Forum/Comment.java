@@ -3,6 +3,7 @@ package skkuchin.service.domain.Forum;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@DynamicUpdate
 public class Comment {
 
     @Id
@@ -46,5 +48,8 @@ public class Comment {
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean anonymous;
+
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean deleted;
 
 }

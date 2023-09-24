@@ -2,10 +2,13 @@ package skkuchin.service.domain.Forum;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import skkuchin.service.domain.Map.Image;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,5 +36,14 @@ public class Article {
 
     @CreationTimestamp
     private LocalDateTime date;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleLike> articleLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLike> commentLikes = new ArrayList<>();
 
 }
