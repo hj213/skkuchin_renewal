@@ -17,6 +17,7 @@ import ENFJ from '../../image/mbti/profile/ENFJ.png';
 import ENFP from '../../image/mbti/profile/ENFP.png';
 import ENTJ from '../../image/mbti/profile/ENTJ.png';
 import ENTP from '../../image/mbti/profile/ENTP.png';
+import defaultImg from '../../image/character.png';
 
 export const displayMBTI= (mbti, imageWidth= 140, imageHeight= 140) => {
 
@@ -55,6 +56,8 @@ export const displayMBTI= (mbti, imageWidth= 140, imageHeight= 140) => {
              return <Image id={"ESTP"} src={ESTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ESTJ":
             return <Image id={"ESTJ"} src={ESTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
+        case "defaultY":
+            return <Image id={"defaultY"} src={defaultImg} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         default:
             return null;
     }
