@@ -61,7 +61,7 @@ const CommunitySearch = () => {
         <CssBaseline />
             <Grid container sx={{p: '0 24px'}}>
                 {/* 검색어 입력 */}
-                <Grid item xs={12} sx={{p: '16px 0px'}}>
+                <Grid item xs={12} sx={{p: '24px 0px 16px'}}>
                     <Grid container alignItems="center">
                         <Grid item xs>
                             <TextField
@@ -100,20 +100,13 @@ const CommunitySearch = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-                {
-                    filteredPosts && filteredPosts.length > 0 ? 
-                        ( filteredPosts.map((post) => (
-                                <CommunityItem key={post.id} {...post} />
-                        )))
-
-                    :
-                     (<Grid>
-                        {/* 태그 */}
-                        <Grid item xs={12} sx={{p: '20px 0px 10px'}}>
-                            <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 700 }}>
+                <Grid>
+                    {/* 태그 */}
+                    <Grid item xs={12} sx={{p: '0px'}}>
+                            {/* <Typography sx={{ fontSize: '16px', color: '#3C3C3C', fontWeight: 700 }}>
                                 태그 검색
-                            </Typography>
-                            <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', m: '14px 0 10px'}}>
+                            </Typography> */}
+                            <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', m: '5px 0 10px'}}>
                                 <Grid item>
                                     {
                                     ["뭐 먹을까요?", "같이 먹어요", "기타"].map((tag, index) => (
@@ -135,9 +128,15 @@ const CommunitySearch = () => {
                                     ))}
                                 </Grid>     
                             </Grid>
-                        </Grid>          
-                    </Grid>
-                    )
+                    </Grid>          
+                </Grid>
+                {
+                    filteredPosts && filteredPosts.length > 0 ? 
+                        ( filteredPosts.map((post) => (
+                                <CommunityItem key={post.id} {...post} />
+                        )))
+
+                    : null
                 }
             </Grid>
         </ThemeProvider>
