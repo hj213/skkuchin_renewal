@@ -314,6 +314,8 @@ const makeProfile = () => {
     const [condition, setCondition] = useState(false);
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
+    const [keywordNum, setKeywordNum] = useState(0);
+
 
     //아이콘 클릭시
     const handleIconOnclick = (event) =>{
@@ -327,239 +329,401 @@ const makeProfile = () => {
     };
 
     //성별클릭
-    const handleGenderClick = (event) => {
-        if(event.target.name == '여성'){
-            if(womanClick){
-                setWomanClick(false);
-                setGender('');
-            } else {
-                setWomanClick(true);
-                setManClick(false);
-                setGender('여성');
-            }
-        } else if(event.target.name='남성'){
-            if(manClick){
-                setManClick(false);
-                setGender('');
-            } else {
-                setManClick(true);
-                setWomanClick(false);
-                setGender('남성');
-            }
-        }
+    // const handleGenderClick = (event) => {
+    //     if(event.target.name == '여성'){
+    //         if(womanClick){
+    //             setWomanClick(false);
+    //             setGender('');
+    //         } else {
+    //             setWomanClick(true);
+    //             setManClick(false);
+    //             setGender('여성');
+    //         }
+    //     } else if(event.target.name='남성'){
+    //         if(manClick){
+    //             setManClick(false);
+    //             setGender('');
+    //         } else {
+    //             setManClick(true);
+    //             setWomanClick(false);
+    //             setGender('남성');
+    //         }
+    //     }
+    // }
+
+
+    const handleGenderClick = (e) => {
+        setGender(e.target.value)
     }
 
     //mbti클릭
-    const handleMbtiClick =(event) => {
-        if(event.target.name == 'E'){
-            if(mbtiChoose.E){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'E': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'E': true,
-                    'I': false
-                })
-            }
-        } else if(event.target.name == 'N'){
-            if(mbtiChoose.N){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'N': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'N': true,
-                    'S': false
-                })
-            }
-        } else if(event.target.name == 'F'){
-            if(mbtiChoose.F){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'F': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'F': true,
-                    'T': false
-                })
-            }
-        } else if(event.target.name == 'P'){
-            if(mbtiChoose.P){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'P': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'P': true,
-                    'J': false
-                })
-            }
-        } else if(event.target.name == 'I'){
-            if(mbtiChoose.I){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'I': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'I': true,
-                    'E': false
-                })
-            }
-        } else if(event.target.name == 'S'){
-            if(mbtiChoose.S){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'S': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'S': true,
-                    'N': false
-                })
-            }
-        } else if(event.target.name == 'T'){
-            if(mbtiChoose.T){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'T': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'T': true,
-                    'F': false
-                })
-            }
-        } else if(event.target.name == 'J'){
-            if(mbtiChoose.J){
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'J': false,
-                })
-            } else {
-                setMbtiChoose({
-                    ...mbtiChoose,
-                    'J': true,
-                    'P': false
-                })
-            }
+    // const handleMbtiClick =(event) => {
+    //     if(event.target.name == 'E'){
+    //         if(mbtiChoose.E){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'E': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'E': true,
+    //                 'I': false
+    //             })
+    //         }
+    //     } else if(event.target.name == 'N'){
+    //         if(mbtiChoose.N){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'N': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'N': true,
+    //                 'S': false
+    //             })
+    //         }
+    //     } else if(event.target.name == 'F'){
+    //         if(mbtiChoose.F){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'F': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'F': true,
+    //                 'T': false
+    //             })
+    //         }
+    //     } else if(event.target.name == 'P'){
+    //         if(mbtiChoose.P){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'P': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'P': true,
+    //                 'J': false
+    //             })
+    //         }
+    //     } else if(event.target.name == 'I'){
+    //         if(mbtiChoose.I){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'I': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'I': true,
+    //                 'E': false
+    //             })
+    //         }
+    //     } else if(event.target.name == 'S'){
+    //         if(mbtiChoose.S){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'S': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'S': true,
+    //                 'N': false
+    //             })
+    //         }
+    //     } else if(event.target.name == 'T'){
+    //         if(mbtiChoose.T){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'T': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'T': true,
+    //                 'F': false
+    //             })
+    //         }
+    //     } else if(event.target.name == 'J'){
+    //         if(mbtiChoose.J){
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'J': false,
+    //             })
+    //         } else {
+    //             setMbtiChoose({
+    //                 ...mbtiChoose,
+    //                 'J': true,
+    //                 'P': false
+    //             })
+    //         }
+    //     }
+    // }
+
+    const handleMbtiClick = (e) => {
+        let chosen = e.target.innerText
+        switch(chosen) {
+            case 'E':
+                setMbtiChoose({...mbtiChoose, 'E': true, 'I': false})
+                break
+            case 'I':
+                setMbtiChoose({...mbtiChoose, 'E': false, 'I': true})
+                break
+            case 'N':
+                setMbtiChoose({...mbtiChoose, 'N': true, 'S': false})
+                break
+            case 'S':
+                setMbtiChoose({...mbtiChoose, 'N': false, 'S': true})
+                break
+            case 'F':
+                setMbtiChoose({...mbtiChoose, 'F': true, 'T': false})
+                break
+            case 'T':
+                setMbtiChoose({...mbtiChoose, 'F': false, 'T': true})
+                break
+            case 'P':
+                setMbtiChoose({...mbtiChoose, 'P': true, 'J': false})
+                break
+            case 'J':
+                setMbtiChoose({...mbtiChoose, 'P': false, 'J': true})
+                break
+            default:
+                break
         }
     }
 
     //음식클릭
-    const handleFoodClick = (event) => {
-        if(keyword.length == 8){
+    // const handleFoodClick = (event) => {
+    //     if(keyword.length == 8){
+    //         setFood({
+    //             ...food
+    //         })
+    //         if(food[event.target.name]){
+    //             setFood({
+    //                 ...food,
+    //                 [event.target.name] : false
+    //             })
+    //         }
+    //     }
+    //      else if(food[event.target.name]){
+    //         setFood({
+    //             ...food,
+    //             [event.target.name] : false
+    //         })
+    //     } else{
+    //         setFood({
+    //             ...food,
+    //             [event.target.name] : true
+    //         })
+    //     }
+    // }
+    const handleFoodClick = (e) => {
+        if(keywordNum == 8){
             setFood({
                 ...food
             })
-            if(food[event.target.name]){
+            if(food[e.target.innerText]){
                 setFood({
                     ...food,
-                    [event.target.name] : false
+                    [e.target.innerText] : false
                 })
+                setKeywordNum(keywordNum-1)
             }
-        }
-         else if(food[event.target.name]){
+        } else if(food[e.target.innerText]){
             setFood({
                 ...food,
-                [event.target.name] : false
+                [e.target.innerText] : false
             })
+            setKeywordNum(keywordNum-1)
         } else{
             setFood({
                 ...food,
-                [event.target.name] : true
+                [e.target.innerText] : true
             })
+            setKeywordNum(keywordNum+1)
         }
     }
 
     //운동클릭
-    const handleSportsClick = (event) => {
-        if(keyword.length == 8){
+    // const handleSportsClick = (event) => {
+    //     if(keyword.length == 8){
+    //         setSports({
+    //             ...sports
+    //         })
+    //         if(sports[event.target.name]){
+    //             setSports({
+    //                 ...sports,
+    //                 [event.target.name] : false
+    //             })
+    //         }
+    //     }
+    //      else if(sports[event.target.name]){
+    //         setSports({
+    //             ...sports,
+    //             [event.target.name] : false
+    //         })
+    //     } else{
+    //         setSports({
+    //             ...sports,
+    //             [event.target.name] : true
+    //         })
+    //     }
+    // }
+    
+    // //문화예술
+    // const handleArtClick = (event) => {
+    //     if(keyword.length == 8){
+    //         setArt({
+    //             ...art
+    //         })
+    //         if(art[event.target.name]){
+    //             setArt({
+    //                 ...art,
+    //                 [event.target.name] : false
+    //             })
+    //         }
+    //     }
+    //      else if(art[event.target.name]){
+    //         setArt({
+    //             ...art,
+    //             [event.target.name] : false
+    //         })
+    //     } else{
+    //         setArt({
+    //             ...art,
+    //             [event.target.name] : true
+    //         })
+    //     }
+    // }
+
+    // //interest
+    // const handleStudyClick = (event) => {
+    //     if(keyword.length == 8){
+    //         setStudy({
+    //             ...study
+    //         })
+    //         if(study[event.target.name]){
+    //             setStudy({
+    //                 ...study,
+    //                 [event.target.name] : false
+    //             })
+    //         }
+    //     }
+    //      else if(study[event.target.name]){
+    //         setStudy({
+    //             ...study,
+    //             [event.target.name] : false
+    //         })
+    //     } else{
+    //         setStudy({
+    //             ...study,
+    //             [event.target.name] : true
+    //         })
+    //     }
+    // }
+    const handleSportsClick = (e) => {
+        if(keywordNum == 8){
             setSports({
                 ...sports
             })
-            if(sports[event.target.name]){
+            if(sports[e.target.innerText]){
                 setSports({
                     ...sports,
-                    [event.target.name] : false
+                    [e.target.innerText] : false
                 })
+                setKeywordNum(keywordNum-1)
             }
-        }
-         else if(sports[event.target.name]){
+        } else if(sports[e.target.innerText]){
             setSports({
                 ...sports,
-                [event.target.name] : false
+                [e.target.innerText] : false
             })
+            setKeywordNum(keywordNum-1)
         } else{
             setSports({
                 ...sports,
-                [event.target.name] : true
+                [e.target.innerText] : true
             })
+            setKeywordNum(keywordNum+1)
         }
     }
-    
-    //문화예술
-    const handleArtClick = (event) => {
-        if(keyword.length == 8){
+    const handleArtClick = (e) => {
+        if(keywordNum == 8){
             setArt({
                 ...art
             })
-            if(art[event.target.name]){
+            if(art[e.target.innerText]){
                 setArt({
                     ...art,
-                    [event.target.name] : false
+                    [e.target.innerText] : false
                 })
+                setKeywordNum(keywordNum-1)
             }
-        }
-         else if(art[event.target.name]){
+        } else if(art[e.target.innerText]){
             setArt({
                 ...art,
-                [event.target.name] : false
+                [e.target.innerText] : false
             })
+            setKeywordNum(keywordNum-1)
         } else{
             setArt({
                 ...art,
-                [event.target.name] : true
+                [e.target.innerText] : true
             })
+            setKeywordNum(keywordNum+1)
         }
     }
-
-    //interest
-    const handleStudyClick = (event) => {
-        if(keyword.length == 8){
+    const handleStudyClick = (e) => {
+        if(keywordNum == 8){
             setStudy({
                 ...study
             })
-            if(study[event.target.name]){
+            if(art[e.target.innerText]){
                 setStudy({
                     ...study,
-                    [event.target.name] : false
+                    [e.target.innerText] : false
                 })
+                setKeywordNum(keywordNum-1)
             }
-        }
-         else if(study[event.target.name]){
+        } else if(study[e.target.innerText]){
             setStudy({
                 ...study,
-                [event.target.name] : false
+                [e.target.innerText] : false
             })
+            setKeywordNum(keywordNum-1)
         } else{
             setStudy({
                 ...study,
-                [event.target.name] : true
+                [e.target.innerText] : true
             })
+            setKeywordNum(keywordNum+1)
         }
+    }
+
+    const handleNextStep = () => {
+        let data = props.data;
+        let keywords = ["축구", "야구", "농구"]
+        let mbti="ENFP"
+        dispatch(register(data, ([result, message]) => {
+            if (result) {
+                props.handleNextStep();
+            }}))
+                /*dispatch(add_new_matching_info(data.username, gender, keywords, introduction, mbti, ([result, message]) => {
+                    if (result) {
+                        props.handleNextStep();
+                    } else {
+                        console.log(result, message)
+                    }
+                }))
+            } else {
+                console.log(result, message)
+            }
+        }));*/
     }
 
     // //프로필
@@ -646,7 +810,7 @@ const makeProfile = () => {
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
-                <div style={{height:'100%', marginTop:'820px', zIndex:'6', position:'absolute', left:'50%'}}>
+                <div style={{height:'100%',maxWidth:'420px', marginTop:'820px', zIndex:'6', position:'absolute', left:'50%'}}>
                 <AlertMessage alertOpen={alertOpen} alertMessage={alertMessage}/>
                 </div>
                 <Container style={{padding:'0px', margin:'41px 0px 53px 0px', overflowX:'hidden'}}>
@@ -660,16 +824,15 @@ const makeProfile = () => {
                             </Grid>
                         </Grid>
                     </Container>
-                    <div name='성별' style={{textAlign:'center',display:'flex', justifyContent:'center'}}>
+                    {/* <div name='성별' style={{textAlign:'center',display:'flex', justifyContent:'center', width:'100%'}}>
                         <div>
-                        <Container style={{padding:'0px', margin:'41.7px 0px 0px 0px',}}>
-                            <Typography style={{fontSize:'15px', textAlign:'left', margin:'13px 0px 8px 0px'}} color={theme.palette.fontColor.dark} fontWeight={theme.typography.h2}>성별*</Typography>
-                            <div style={{marginBottom:'9px'}}>
-                                <Image src={manClick ? manCheck : man} width={270} height={35.74} onClick={handleGenderClick} name='남성' placeholder="blur" layout='fixed' />
-                            </div>
-                            <div>
-                                <Image src={womanClick ? womanCheck : woman} width={270} height={35.74} onClick={handleGenderClick} name='여성' placeholder="blur" layout='fixed' />
-                            </div>
+                        <Container style={{padding:'0px', marginTop:'40px'}}>
+                            
+                            <Typography style={{fontSize: '12px', fontWeight: '900', marginBottom: '8px', marginLeft: '4px', color: '#3C3C3C'}}>성별</Typography>
+                            <Grid container style={{marginBottom: '16px'}}>
+                                <Button value="남성" onClick={handleGenderClick} style={{width: '50%', border: '1px solid #E2E2E2', borderRadius: '8px 0 0 8px', height: '48px', color: '#3C3C3C', fontSize: '16px', backgroundColor: gender == '남성' ? '#FFFCE4' : '#fff'}}>남</Button>
+                                <Button value="여성" onClick={handleGenderClick} style={{width: '50%', border: '1px solid #E2E2E2', borderRadius: '0 8px 8px 0', height: '48px', color: '#3C3C3C', fontSize: '16px', backgroundColor: gender == '여성' ? '#FFFCE4' : '#fff'}}>여</Button>
+                            </Grid>
                         </Container>
                         </div>
                     </div>
@@ -922,7 +1085,78 @@ const makeProfile = () => {
                             </div>
                         </Container>
                         </div>
-                    </div>
+                    </div> */}
+                    <form style={{width: '100%'}}>
+                        <div style={{margin: '40px 24px'}}>
+                
+                        {/* 성별 */}
+                        <Typography style={{fontSize: '12px', fontWeight: '900', marginBottom: '8px', marginLeft: '4px', color: '#3C3C3C'}}>성별</Typography>
+                        <Grid container style={{marginBottom: '16px'}}>
+                            <Button value="남성" onClick={handleGenderClick} style={{width: '50%', border: '1px solid #E2E2E2', borderRadius: '8px 0 0 8px', height: '48px', color: '#3C3C3C', fontSize: '16px', backgroundColor: gender == '남성' ? '#FFFCE4' : '#fff'}}>남</Button>
+                            <Button value="여성" onClick={handleGenderClick} style={{width: '50%', border: '1px solid #E2E2E2', borderLeftColor:'transparent', borderRadius: '0 8px 8px 0', height: '48px', color: '#3C3C3C', fontSize: '16px', backgroundColor: gender == '여성' ? '#FFFCE4' : '#fff'}}>여</Button>
+                        </Grid>
+
+                        {/* MBTI */}
+                        <Typography style={{fontSize: '12px', fontWeight: '900', marginBottom: '8px', marginLeft: '4px', color: '#3C3C3C'}}>MBTI</Typography>
+                        <Grid container style={{marginBottom: '16px'}}>
+                            <div style={{width: '22%'}}>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.E == true ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2', borderRadius: '8px 8px 0 0', color: '#3C3C3C', width: '100%'}}>E</Button>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.E == false ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2', borderTopColor:'transparent',  borderRadius: '0 0 8px 8px', color: '#3C3C3C', width: '100%'}}>I</Button>
+                            </div>
+                            <div style={{width: '4%'}}></div>
+                            <div style={{width: '22%'}}>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.N == true ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2', borderRadius: '8px 8px 0 0', color: '#3C3C3C', width: '100%'}}>N</Button>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.N == false ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2', borderTopColor:'transparent', borderRadius: '0 0 8px 8px', color: '#3C3C3C', width: '100%'}}>S</Button>
+                            </div>
+                            <div style={{width: '4%'}}></div>
+                            <div style={{width: '22%'}}>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.F == true ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2', borderRadius: '8px 8px 0 0', color: '#3C3C3C', width: '100%'}}>F</Button>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.F == false ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2',borderTopColor:'transparent', borderRadius: '0 0 8px 8px', color: '#3C3C3C', width: '100%'}}>T</Button>
+                            </div>
+                            <div style={{width: '4%'}}></div>
+                            <div style={{width: '22%'}}>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.P == true ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2', borderRadius: '8px 8px 0 0', color: '#3C3C3C', width: '100%'}}>P</Button>
+                                <Button onClick={handleMbtiClick} style={{backgroundColor: mbtiChoose.P == false ? "#FFFCE4" : "#fff", border: '1px solid #E2E2E2',borderTopColor:'transparent', borderRadius: '0 0 8px 8px', color: '#3C3C3C', width: '100%'}}>J</Button>
+                            </div>
+                        </Grid>
+
+                        {/* 한 줄 자기소개 */}
+                        <Typography style={{fontSize: '12px', fontWeight: '900', marginBottom: '8px', marginLeft: '4px', color: '#3C3C3C'}}>한 줄 자기소개</Typography>
+                        <div style={{width: '100%', border: '1px solid #E2E2E2', borderRadius: '8px'}}>
+                        <textarea 
+                        value={introduction}
+                        onChange={(e)=> {setIntroduction(e.target.value)}}
+                        maxLength={29}
+                        placeholder='스꾸친에 오신 걸 환영합니다'
+                        style={{width: '100%', outline: 'none', resize: 'none', fontSize: '16px', border: 'none', height: '60px', padding: '12px 18px', fontFamily: 'inherit'}}>
+                        </textarea>
+                        <div style={{width: '100%', height: '25px', display: 'flex', justifyContent: 'space-between'}}>
+                            <div></div>
+                            <Typography style={{padding: '0 18px 12px 0', color: '#FC9712', fontSize: '12px'}}>{introduction.length}/30자</Typography>
+                        </div>
+                        </div>
+
+                        {/* 관심사 */}
+                        <Typography style={{fontSize: '16px', marginTop: '60px', marginBottom: '8px', color: '#3C3C3C', fontWeight:'800'}} fontWeight={theme.typography.h1}>관심사</Typography>
+                        <Typography style={{fontSize:'12px', textAlign:'left', margin:'8px 0px 20px 0px'}} color={theme.palette.fontColor.main} fontWeight={theme.typography.h2}>3개 이상의 태그를 선택해주세요.</Typography>
+
+                        {/* 음식 */}
+                        <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '8px', color: '#3C3C3C'}}>음식</Typography>
+                        {Object.keys(food).map((a) => <Button onClick={handleFoodClick} style={{height: '32px', border: food[a] ? '1px solid #FFCE00' : '1px solid #E2E2E2', borderRadius: '30px', backgroundColor: food[a] ? '#FFFCE4' : '#fff', margin: '0 8px 8px 0', color: '#3C3C3C', padding: '6px 10px'}}>{a}</Button>)}
+
+                        {/* 운동 */}
+                        <Typography style={{fontSize: '16px', fontWeight: '700', marginTop: '24px', marginBottom: '8px', color: '#3C3C3C'}}>운동</Typography>
+                        {Object.keys(sports).map((a) => <Button onClick={handleSportsClick} style={{height: '32px', border: sports[a] ? '1px solid #FFCE00' : '1px solid #E2E2E2', borderRadius: '30px', backgroundColor: sports[a] ? '#FFFCE4' : '#fff', margin: '0 8px 8px 0', color: '#3C3C3C', padding: '6px 10px'}}>{a}</Button>)}
+
+                        {/* 문화 예술 */}
+                        <Typography style={{fontSize: '16px', fontWeight: '700', marginTop: '24px', marginBottom: '8px', color: '#3C3C3C'}}>문화 예술</Typography>
+                        {Object.keys(art).map((a) => <Button onClick={handleArtClick} style={{height: '32px', border: art[a] ? '1px solid #FFCE00' : '1px solid #E2E2E2', borderRadius: '30px', backgroundColor: art[a] ? '#FFFCE4' : '#fff', margin: '0 8px 8px 0', color: '#3C3C3C', padding: '6px 10px'}}>{a}</Button>)}
+
+                        {/* 학술 */}
+                        <Typography style={{fontSize: '16px', fontWeight: '700', marginTop: '24px', marginBottom: '8px', color: '#3C3C3C'}}>학술</Typography>
+                        {Object.keys(study).map((a) => <Button onClick={handleStudyClick} style={{height: '32px', border: study[a] ? '1px solid #FFCE00' : '1px solid #E2E2E2', borderRadius: '30px', backgroundColor: study[a] ? '#FFFCE4' : '#fff', margin: '0 8px 8px 0', color: '#3C3C3C', padding: '6px 10px'}}>{a}</Button>)}
+                        </div>
+                    </form>
                     <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
                         <div style={{paddingBottom:'50px', textAlign:'center'}}>
                             <Image src={condition ? submitOk: submit} width={296} height={45} onClick={handleOnSubmit} name='확인' placeholder="blur" layout='fixed' />

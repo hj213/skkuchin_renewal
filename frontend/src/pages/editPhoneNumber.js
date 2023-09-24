@@ -16,13 +16,16 @@ const editPhoneNumber = () => {
     const pushToken = useSelector(state => state.pushToken.pushToken);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
-    console.log(pushToken);
+    const phoneNumList = ['010']
 
-    const [phone, setPhone] = useState("");
-    const [validPhone, setValidPhone] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [smallDialogOpen, setSmallDialogOpen] = useState(false);
     const [smallDialogOpen2, setSmallDialogOpen2] = useState(false);
+    const [phone1, setPhone1] = useState("010");
+    const [phone2, setPhone2] = useState("");
+    const [phone3, setPhone3] = useState("");
+    const [validPhone2, setValidPhone2] = useState(null);
+    const [validPhone3, setValidPhone3] = useState(null);
 
 
 
@@ -51,10 +54,13 @@ const editPhoneNumber = () => {
     useEffect(() => {
         if (pushToken) {
             if (pushToken.phone === null) {
-                setPhone("");
+                setPhone2("");
+                setPhone3("");
             } else {
-                setValidPhone(true);
-                setPhone(pushToken.phone);
+                setValidPhone2(true);
+                setValidPhone3(true);
+                setPhone2(pushToken.phone.substring(3, 7));
+                setPhone3(pushToken.phone.substring(7, 11));
             }
         }
     }, [pushToken])
@@ -73,6 +79,7 @@ const editPhoneNumber = () => {
     };
 
     const handleSubmit = () => {
+        const phone = phone1+phone2+phone3
         dispatch(enroll_phone(phone, ([result, message]) => {
             if (result) {
                 localStorage.setItem("sms", "true");
@@ -84,24 +91,42 @@ const editPhoneNumber = () => {
         }));
     }
 
-    const handlePhoneChange = (e) => {
-        const phone = e.target.value;
-        setPhone(phone);
-
-        const phoneRegex = /^010[0-9]{8}$/;
-        if (!phoneRegex.test(phone)) {
-            setValidPhone(false);
-        } else {
-            setValidPhone(true);
-        }
-    }
-
     const handleDialogOpen = () => {
         setDialogOpen(true);
     }
     const handleDialogClose = () => {
         setDialogOpen(false);
     }
+
+    const handlePhone2Change = (e) => {
+        let p2 = e.target.value
+        let isNum = /^\d+$/.test(p2)
+        setPhone2(p2)
+        if (p2 == "") {
+          setValidPhone2(null)
+        }
+        else if(isNum && p2.length == 4 ){
+            setValidPhone2(true)
+        }
+        else {
+            setValidPhone2(false)
+        } 
+      }
+
+      const handlePhone3Change = (e) => {
+        let p3 = e.target.value
+        let isNum = /^\d+$/.test(p3)
+        setPhone3(p3)
+        if (p3 == "") {
+          setValidPhone3(null)
+        }
+        else if(isNum && p3.length == 4 ){
+            setValidPhone3(true)
+        }
+        else {
+            setValidPhone3(false)
+        } 
+      }
 
     return (
         <ThemeProvider theme={theme}>
@@ -116,7 +141,7 @@ const editPhoneNumber = () => {
                     <Typography style={{margin:'0px 0px 0px 5px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>전화번호 변경</Typography>
                 </Grid>
                 <Grid item style={{padding:'0', marginLeft:'auto', marginRight:'20px'}}>
-                { phone.length > 0 && validPhone ?
+                { validPhone2 !== null && validPhone2 != false &&  validPhone3 !== null && validPhone3 != false ?
                     <Button onClick={handleSubmit} style={{padding:'0', right:'0'}}>
                         <Typography style={{margin:'0px 0px 0px 10px',color:'#FFCE00', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
                     </Button>
@@ -137,28 +162,78 @@ const editPhoneNumber = () => {
             alignItems: 'center',
             }}
         >
-        <form style={{ width: '100%'}}>
-        <div style={{margin: '0 20px 20px'}}>
-            <Typography style={{paddingBottom: '4px', fontSize: '14px', color: '#777777'}}>전화번호</Typography>
-            <TextField
-                variant="outlined"
-                placeholder="닉네임을 입력해주세요."
-                value={phone}
-                onChange={handlePhoneChange}
-                style={{width: '100%'}}
-                required
-                // InputProps={{
-                //     endAdornment: (validNickname) ? <Image src={check} width={15.83} height={15.83} sx={{p: '1.58px', mb: '5.58px'}} layout='fixed' /> : null 
-                // }}
-                // helperText="이미 사용 중인 닉네임입니다."
-            />
-        </div>
-        <div style={{display: 'flex', justifyContent: 'center',}} onClick={handleDialogOpen}>
+        <form style={{ width: '100%', padding:'0 20px'}}>
+        {/* 전화번호 */}
+        <Typography style={{paddingBottom: '4px', fontSize: '12px', fontWeight: '900', color: '#3C3C3C', marginLeft: '4px', marginTop: '16px'}}>전화번호 <span style={{color: '#3C3C3C'}}>(선택)</span></Typography>
+        <Grid>
+            <FormControl variant="standard" style={{width: '31%'}}>
+                <Autocomplete
+                    //disablePortal
+                    value={phone1}
+                    sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        border: 'none'
+                    },
+                    '& input': {
+                        fontSize: '16px',
+                        padding: '0'
+                    },
+                    height: '56px',
+                    border: '1px solid #E2E2E2',
+                    borderRadius: '8px',
+                    outline: 'none',
+                    appearance: 'none',
+                    fontSize: '16px',
+                    padding: '0',
+                    }}
+                    onChange={(e, value) => setPhone1(value)}
+                    options={phoneNumList}
+                    renderInput={(params) => <TextField {...params} style={{fontSize: '12px'}} />} 
+                />
+            </FormControl>
+            <input
+                    variant="standard"
+                    placeholder=""
+                    value={phone2}
+                    onChange={handlePhone2Change}
+                    style={{
+                        fontSize: '18px',
+                        color: '#3C3C3C',
+                        padding: '16px 0px 16px 12px',
+                        height: '56px',
+                        border: validPhone2 == false ? '1px solid #FF3B3B' : '1px solid #E2E2E2',
+                        borderRadius: '8px',
+                        width: '33%',
+                        outline: 'none',
+                        margin: '0 8px'
+                    }}
+                />
+                <input
+                    variant="standard"
+                    placeholder=""
+                    value={phone3}
+                    //onClick={e => setDialogOpen(false)}
+                    onChange={handlePhone3Change}
+                    style={{
+                        fontSize: '18px',
+                        color: '#3C3C3C',
+                        padding: '16px 0px 16px 12px',
+                        height: '56px',
+                        border: validPhone3 == false ? '1px solid #FF3B3B' : '1px solid #E2E2E2',
+                        borderRadius: '8px',
+                        width: '31%',
+                        outline: 'none'
+                    }}
+                />
+        </Grid>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop:'15px'}} onClick={handleDialogOpen}>
             <Button style={{color:'#3C3C3C', fontSize:'12px', textDecoration: 'underline'}}>전화번호 삭제하기</Button>
         </div>
         
         </form>
         </Box>}
+
+        
 
         <Dialog
             open={dialogOpen}

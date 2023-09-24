@@ -157,14 +157,14 @@ const Magazine = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <UpperBar />
-            <Grid style={{overflowX:'hidden', position:'fixed', height:height, overflowY:'scroll'}}>
+            <Grid style={{overflowX:'hidden', position:'fixed', height:height, overflowY:'scroll', maxWidth:'420px',}}>
                 <div style={{margin:'30px 0 20px 20px',}}>
                     <Typography style={{fontSize:'32px', fontWeight:'800'}}>제목제목제목제목</Typography>
                 </div>
                 
                 <div onClick={()=>{router.push('/magazineDetail')}} style={{padding:'0 20px', position: 'relative'}}>
                     <div style={{ width: '100%', height: '230px', overflow: 'hidden', border: '1px solid transparent', borderRadius: '10px' }}>
-                        <Image src={content} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                        <Image src={content} style={{ objectFit: 'cover', width: '100%', height: '100%'}} />
                     </div>
                     <div style={{ zIndex:'3', position: 'absolute', bottom: '20px', left: '40px', right: '0'}}>
                         <Typography sx={{width:'42px', height: '24px', border: "1px solid #FFFCE4", borderRadius:'10px', textAlign:'center', fontSize: '12px',  fontWeight:'800',p: '2px 4px 0px 4px', color:'#FFAC0B', backgroundColor:'#FFFCE4', margin:'-2px 0px 0px 5px'}}>쪽문</Typography>

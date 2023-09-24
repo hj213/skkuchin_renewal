@@ -66,9 +66,9 @@ const editNickname = () => {
         }
         setNickname(e.target.value);
         
-        Promise.resolve().then(() => {
-            checkNickname(e.target.value);
-          });
+        // Promise.resolve().then(() => {
+        //     checkNickname(e.target.value);
+        //   });
     }
 
     const checkNickname = (e) => {
@@ -76,7 +76,7 @@ const editNickname = () => {
         .then((message) => {
           setValidNickname(true);
           setNicknameMsg(message);
-          setIsCorrect("correct");
+        //   setIsCorrect("correct");
         })
         .catch((error) => {
           setValidNickname(false);
@@ -90,7 +90,11 @@ const editNickname = () => {
         if (major == '화학공학/고분자공학부') {
             finalMajor = '화학공학_고분자공학부'
         }
-        dispatch(change_user(nickname, finalMajor, image, studentId.slice(0, 2)))
+        check_nickname(nickname)
+        .then((message) => {
+          setValidNickname(true);
+          setNicknameMsg(message);
+          dispatch(change_user(nickname, finalMajor, image, studentId.slice(0, 2)))
             .then(() => {
                 setDialogOpen(true);
                 setTimeout(() => {
@@ -100,6 +104,15 @@ const editNickname = () => {
             .catch((error) => {
                 console.log(error);
             });
+        //   setIsCorrect("correct");
+        })
+        .catch((error) => {
+          setValidNickname(false);
+          setNicknameMsg(error);
+          setIsCorrect("wrong");
+        })
+
+        
     }
 
     useEffect(() => {
@@ -143,7 +156,7 @@ const editNickname = () => {
                     <Typography style={{margin:'0px 0px 0px 10px', textAlign:'center',fontSize:'18px', fontWeight: '700'}}>닉네임 변경</Typography>
                 </Grid>
                 <Grid item style={{padding:'0', marginLeft:'auto', marginRight:'20px'}}>
-                {(nickname === user.nickname || validNickname) && (nickname != '' && majorList.indexOf(major) != -1 && studentIdList.indexOf(studentId) != -1) ?
+                {(nickname != '' && majorList.indexOf(major) != -1 && studentIdList.indexOf(studentId) != -1) ?
                     <Button onClick={handleNextStep} style={{padding:'0', right:'0'}}>
                         <Typography style={{margin:'0px 0px 0px 10px',color:'#FFCE00', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
                     </Button>
@@ -194,9 +207,9 @@ const editNickname = () => {
             />
             {/* 중복확인 메소드 추가 */}
             {nickname !== user.nickname ? 
-            <div key={validNickname} style={{display:'flex', margin: '7px 0 0 3px'}}>
+            <div key={validNickname} style={{display:'flex', margin: '0px 0 0 3px'}}>
                 {/* <Button variant="contained" onClick={checkNickname} style={{backgroundColor: '#FFCE00', color: '#fff', borderRadius: '15px', width: '47px', height: '20px', fontSize: '9px', padding: '3px 4px', margin: '4px 0px', boxShadow: 'none'}}>중복확인</Button> */}
-                {validNickname && nickname != "" && <Typography sx={{fontSize: '9px', fontWeight: '500', color:`${theme.palette.correct.main}` }} >사용 가능한 닉네임입니다</Typography>}
+                {/* {validNickname && nickname != "" && <Typography sx={{fontSize: '9px', fontWeight: '500', color:`${theme.palette.correct.main}` }} >사용 가능한 닉네임입니다</Typography>} */}
                 {validNickname == false &&  <Typography sx={{fontSize: '9px', fontWeight: '500', color:`${theme.palette.wrong.main}`}}>이미 사용중인 닉네임입니다</Typography>}
             </div> :
             null}
