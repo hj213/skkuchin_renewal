@@ -5,7 +5,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import theme from "../theme/theme";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { search_posts, clear_search_posts } from "../actions/post/post";
+import { search_posts_by_tag, search_posts_by_keyword, clear_search_posts } from "../actions/post/post";
 import CommunityItem from "../components/SkkuChat/CommunityItem";
 
 const tagToArticleType = {
@@ -20,12 +20,25 @@ const CommunitySearch = () => {
 
     const [keyword, setKeyword] = useState('');
 
-    const handleKeywordChange = (event) => {
-        setKeyword(event.target.value);
-    };
-
     const filteredPosts = useSelector(state => state.post.filteredPosts);
     const [selectedTag, setSelectedTag] = useState(null);
+
+    const handleKeywordChange = (e) => {
+        setKeyword(e.target.value);
+    };
+
+    const handleKeyDown = (e) => {
+        if ((e.key === 'Enter' || e.keyCode === 13) && keyword !== '') {
+            setSelectedTag(null);
+            dispatch(search_posts_by_keyword(keyword, ([result, message]) => {
+                if (result) {
+                    console.log("키워드 검색 완료!!");
+                } else {
+                    alert("키워드 검색 오류" + message);
+                }
+            }));
+        }
+    };
 
     useEffect(() => {
         dispatch(clear_search_posts());
@@ -40,7 +53,7 @@ const CommunitySearch = () => {
             setSelectedTag(tag);
             setKeyword('#'+tag);
 
-            dispatch(search_posts(tagToArticleType[tag], ([result, message]) => {
+            dispatch(search_posts_by_tag(tagToArticleType[tag], ([result, message]) => {
                 if (result) {
                     console.log("태그 검색 완료!!");
                 } else {
@@ -49,6 +62,8 @@ const CommunitySearch = () => {
             }));
         }
     };    
+
+
 
     const handleBackClick = () => {
         setSelectedTag(null);
@@ -68,6 +83,7 @@ const CommunitySearch = () => {
                                 fullWidth
                                 value={keyword}
                                 onChange={handleKeywordChange}
+                                onKeyDown={handleKeyDown}
                                 InputProps={{
                                     placeholder: "검색어를 입력해주세요.",
                                     style: {
