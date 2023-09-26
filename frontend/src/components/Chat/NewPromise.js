@@ -102,13 +102,13 @@ const NewPromise = ({ open, onClose, request, selectedUser }) => {
                     </Grid>
                     
                     <Grid item sx={{display: 'flex'}}>
-                        {userInfo && (userInfo.keywords)!=null ?
+                        {/* {userInfo && (userInfo.keywords)!=null ?
                             ((userInfo.keywords).slice(0, 3).map((interest, index)=> (
                                 <Grid item key={index} sx={{backgroundColor: '#BABABA', color: '#fff', p: '4.5px 7px', fontSize: '12px', fontWeight: '500px', borderRadius: '116px', m: '11px 2.5px 26px'}}>
                                     {interest}
                                 </Grid>
                             )))
-                        : null}
+                        : null} */}
                     </Grid >
                     <Grid item sx={{width: '169px', textAlign: 'center'}}>
                         <Typography sx={{ fontSize:'13px', fontWeight: '500'}}>"{userInfo && userInfo.introduction}"</Typography>
