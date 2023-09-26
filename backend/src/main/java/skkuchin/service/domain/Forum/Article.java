@@ -37,6 +37,9 @@ public class Article {
     @CreationTimestamp
     private LocalDateTime date;
 
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean anonymous;
+
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
