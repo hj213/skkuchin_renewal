@@ -34,7 +34,7 @@ const CommunitySearch = () => {
                 if (result) {
                     console.log("키워드 검색 완료!!");
                 } else {
-                    alert("키워드 검색 오류" + message);
+                    console.log("키워드 검색 오류" + message);
                 }
             }));
         }

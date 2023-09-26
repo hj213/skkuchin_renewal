@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Button, ThemeProvider, CssBaseline, Grid } from '@mui/material';
+import { Container, Typography, Button, ThemeProvider, CssBaseline, Grid, Checkbox } from '@mui/material';
 import UploadHeader from '../components/SkkuChat/UploadHeader';
 import theme from '../theme/theme';
 import { useRouter } from 'next/router';
@@ -20,6 +20,7 @@ const UploadPost = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedTag, setSelectedTag] = useState(null);
+    const [isAnonymous, setIsAnonymous] = useState(true);
     
     const [images, setImages] = useState([]);
 
@@ -42,6 +43,10 @@ const UploadPost = () => {
     };
         
     const [previewImages, setPreviewImages] = useState([]);
+
+    const handleAnonymousClick = () => {
+        setIsAnonymous(!isAnonymous);
+    };
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -77,6 +82,17 @@ const UploadPost = () => {
             </Container>
             <Container sx={{ mt: '63px',  p: '24px'}}>
                 <form>
+                    {/* 익명 여부 */}
+                    <Grid sx={{ display: 'flex', mb: '8px', columnGap: '4px', alignItems: 'center', justifyContent: 'end'}}>
+                        <Typography sx={{ fontSize: '14px', color: isAnonymous ? '#FFCE00' : '#777777' , fontWeight: 700}}>
+                            익명
+                        </Typography>
+                        <Checkbox
+                            checked={isAnonymous}
+                            onChange={handleAnonymousClick}
+                            sx={{ color: '#FFCE00', p: 0 }}
+                        />
+                    </Grid>
                     {/* 제목 */}
                     <Grid sx={{ display: 'flex', mb: '8px', columnGap: '4px'}}>
                         <Typography component="div" sx={{ fontSize: '14px', color: '#777777' }}>

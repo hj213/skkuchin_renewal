@@ -21,7 +21,8 @@ const ModifyPost = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedTag, setSelectedTag] = useState(null);
-    
+    const [isAnonymous, setIsAnonymous] = useState(true);
+
     const [images, setImages] = useState([]);
 
     const post = useSelector(state => state.post.post);
@@ -51,6 +52,10 @@ const ModifyPost = () => {
     };
         
     const [previewImages, setPreviewImages] = useState([]);
+
+    const handleAnonymousClick = () => {
+        setIsAnonymous(!isAnonymous);
+    };
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -86,6 +91,17 @@ const ModifyPost = () => {
             </Container>
             <Container sx={{ mt: '63px',  p: '24px'}}>
                 <form>
+                    {/* 익명 여부 */}
+                    <Grid sx={{ display: 'flex', mb: '8px', columnGap: '4px', alignItems: 'center', justifyContent: 'end'}}>
+                        <Typography sx={{ fontSize: '14px', color: isAnonymous ? '#FFCE00' : '#777777' , fontWeight: 700}}>
+                            익명
+                        </Typography>
+                        <Checkbox
+                            checked={isAnonymous}
+                            onChange={handleAnonymousClick}
+                            sx={{ color: '#FFCE00', p: 0 }}
+                        />
+                    </Grid>
                     {/* 제목 */}
                     <Grid sx={{ display: 'flex', mb: '8px', columnGap: '4px'}}>
                         <Typography component="div" sx={{ fontSize: '14px', color: '#777777' }}>
