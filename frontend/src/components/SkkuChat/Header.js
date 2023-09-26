@@ -57,6 +57,8 @@ const Header = ({ title, onBackClick, showSearchIcon, post }) => {
     const handleEditPost = (post) => {
         console.log("수정하기");
         console.log(post.id);
+
+        router.push(`/modifyPost`)
     }
 
     const handleDeletePost = (post) => {

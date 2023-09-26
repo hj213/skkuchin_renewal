@@ -227,6 +227,49 @@ export const enroll_post = (title, content, article_type, callback) => async dis
     }
 }
 
+export const modify_post = (article_id, title, content, article_type, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+    
+    const body = JSON.stringify({
+        title, content, article_type
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/article/${article_id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${access}`,
+                'Content-Type': 'application/json'
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            await dispatch({
+                type: MODIFY_POST_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        }
+        else {
+            await dispatch({
+                type: MODIFY_POST_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    }
+    catch (error) {
+        dispatch({
+            type: MODIFY_POST_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}
+
+
 export const delete_post = (article_id, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));

@@ -10,7 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { load_comment, clear_prev_comment } from '../../actions/comment/comment';
 import { load_post, clear_prev_post } from '../../actions/post/post';
-import { enroll_like } from '../../actions/like/like';
+import { enroll_like, delete_like } from '../../actions/like/like';
 import Comment from './Comment';
 
 const posts = [
@@ -85,7 +85,15 @@ const PostDetail = ({ postId }) => {
 
     const handleDeleteBtn = (postId) => {
         console.log(postId);
-        alert("취소 시도")
+        dispatch(delete_like(postId, ([result, message]) => {
+          if (result) {
+            console.log("좋아요 취소 성공")
+          }
+          else {
+            console.log("좋아요 취소 실패" + message);
+          }
+        }));
+
     };
 
     if(post === null || comments === null) return (<div>loading...</div>);
