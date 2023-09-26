@@ -43,6 +43,7 @@ public class CommentDto {
                     .content(content)
                     .date(LocalDateTime.now())
                     .anonymous(anonymous)
+                    .anonymousIdx(0L)
                     .build();
 
             return comment;
@@ -73,6 +74,7 @@ public class CommentDto {
                         .content(content)
                         .date(LocalDateTime.now())
                         .anonymous(anonymous)
+                        .anonymousIdx(0L)
                         .build();
             }
 
@@ -103,6 +105,8 @@ public class CommentDto {
 
             private boolean deleted;
 
+            private Long anonymousIdx;
+
             private boolean anonymous;
             private List<CommentDto.ReplyResponse> reply;
 
@@ -121,6 +125,7 @@ public class CommentDto {
                 System.out.println("user = " + user.getId());
                 this.anonymous = comment.isAnonymous();
                 this.deleted = comment.isDeleted();
+                this.anonymousIdx = comment.getAnonymousIdx();
                 if(comment.getChildren()!= null){
                     this.reply = comment.getChildren().stream().map(c-> new CommentDto.ReplyResponse(c,commentLikesForReply(c,commentLikes),
                             user)).collect(Collectors.toList());
@@ -171,6 +176,8 @@ public class CommentDto {
 
         private boolean anonymous;
 
+        private Long anonymousIdx;
+
         private boolean deleted;
 
         public ReplyResponse(Comment comment, List<CommentLike> commentLikes, AppUser user) {
@@ -184,6 +191,7 @@ public class CommentDto {
             this.myComment = user.getId().equals(comment.getUser().getId());
             this.writer = comment.getArticle().getUser().getId().equals(comment.getUser().getId());
             this.anonymous = comment.isAnonymous();
+            this.anonymousIdx = comment.getAnonymousIdx();
             this.deleted = comment.isDeleted();
         }
 

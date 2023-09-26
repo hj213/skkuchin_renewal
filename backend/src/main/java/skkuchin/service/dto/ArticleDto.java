@@ -40,6 +40,8 @@ public class ArticleDto {
         @NotBlank
         private String content;
 
+        private boolean anonymous;
+
 
         public Article toEntity(AppUser user){
             return Article.builder()
@@ -48,6 +50,7 @@ public class ArticleDto {
                     .title(title)
                     .articleType(articleType)
                     .date(LocalDateTime.now())
+                    .anonymous(anonymous)
                     .build();
         }
 
@@ -70,6 +73,8 @@ public class ArticleDto {
 
         @NotBlank
         private String content;
+
+        private boolean anonymous;
 
 
 
@@ -104,6 +109,8 @@ public class ArticleDto {
         @JsonProperty
         private String originalTime;
 
+        private boolean anonymous;
+
         public Response(Article article, List<Comment> comments, List<ArticleLike> articleLikes,AppUser appUser){
             this.id =article.getId();
             this.articleType = article.getArticleType();
@@ -117,6 +124,7 @@ public class ArticleDto {
             this.commentCount = comments.stream().count();
             this.articleLikeCount = articleLikes.stream().count();
             this.userLiked = calculateUserLiked(articleLikes,appUser);
+            this.anonymous = article.isAnonymous();
             this.originalTime = originalFormatDate(article.getDate());
 
         }
