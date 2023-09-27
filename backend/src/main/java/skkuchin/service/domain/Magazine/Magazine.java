@@ -40,10 +40,4 @@ public class Magazine {
 
     private String link;
 
-    @ElementCollection
-    @CollectionTable(name = "related_place", uniqueConstraints = @UniqueConstraint(columnNames = { "place_id" }))
-    @Column(name = "place_id")
-    private List<Long> placeIds = new ArrayList<>();
-
-
 }

@@ -15,6 +15,7 @@ import skkuchin.service.repo.CommentLikeRepo;
 import skkuchin.service.repo.CommentRepo;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,8 +32,36 @@ public class CommentService {
     @Transactional
     public void addComment(AppUser appUser, CommentDto.PostRequest dto){
 
-       Article article = articleRepo.findById(dto.getArticleId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다."));
+        Article article = articleRepo.findById(dto.getArticleId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다."));
         Comment comment = dto.toEntity(appUser,article);
+        if (comment.isAnonymous() == true) {
+            System.out.println("들어옴");
+            List<Comment> anonymousComments = commentRepo.findAnonymous(article.getId());
+
+            Long maxAnonymousIdx = 0L;
+            for (Comment comments : anonymousComments) {
+                Long currentAnonymousIdx = comments.getAnonymousIdx();
+                if (currentAnonymousIdx > maxAnonymousIdx) {
+                    maxAnonymousIdx = currentAnonymousIdx;
+                }
+            }
+
+            Long targetUserId = comment.getUser().getId();
+
+            Long idx = 0L;
+
+            for (Comment anonymousComment : anonymousComments) {
+                if (anonymousComment.getUser().getId().equals(targetUserId)) {
+                    idx = anonymousComment.getAnonymousIdx();
+                }
+            }
+
+            if (idx == 0L) {
+                comment.setAnonymousIdx(maxAnonymousIdx + 1);
+            } else {
+                comment.setAnonymousIdx(idx);
+            }
+        }
         commentRepo.save(comment);
     }
 
@@ -43,6 +72,34 @@ public class CommentService {
         Article article = articleRepo.findById(dto.getArticleId()).orElseThrow(() -> new CustomValidationApiException("존재하지 않는 게시글 입니다."));
         Comment originalComment = commentRepo.findById(commentId).orElseThrow(()-> new CustomValidationApiException("댓글이 존재하지 않습니다"));
         Comment comment = dto.toEntity(appUser,article,originalComment);
+        if (comment.isAnonymous() == true) {
+            System.out.println("들어옴");
+            List<Comment> anonymousComments = commentRepo.findAnonymous(article.getId());
+
+            Long maxAnonymousIdx = 0L;
+            for (Comment comments : anonymousComments) {
+                Long currentAnonymousIdx = comments.getAnonymousIdx();
+                if (currentAnonymousIdx > maxAnonymousIdx) {
+                    maxAnonymousIdx = currentAnonymousIdx;
+                }
+            }
+
+            Long targetUserId = comment.getUser().getId();
+
+            Long idx = 0L;
+
+            for (Comment anonymousComment : anonymousComments) {
+                if (anonymousComment.getUser().getId().equals(targetUserId)) {
+                    idx = anonymousComment.getAnonymousIdx();
+                }
+            }
+
+            if (idx == 0L) {
+                comment.setAnonymousIdx(maxAnonymousIdx + 1);
+            } else {
+                comment.setAnonymousIdx(idx);
+            }
+        }
         originalComment.getChildren().add(comment);
         commentRepo.save(originalComment);
         commentRepo.save(comment);

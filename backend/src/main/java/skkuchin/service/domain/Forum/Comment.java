@@ -49,6 +49,9 @@ public class Comment {
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean anonymous;
 
+
+    private Long anonymousIdx;
+
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean deleted;
 

@@ -1,7 +1,13 @@
-import { CssBaseline, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, Slide, Card, CardContent, Typography, Grid, Container, Stack, useScrollTrigger, Button, Divider } from '@mui/material';
 import theme from '../theme/theme';
 import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+import CommunityItem from '../components/SkkuChat/CommunityItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { load_all_posts } from '../actions/post/post';
+import { useEffect } from 'react';
+import { getToken } from '../actions/auth/auth';
 
 const Friends = dynamic(() => import('../components/Matching/Friends'));
 const UpperBar = dynamic(() => import("../components/UpperBar"));
@@ -19,6 +25,53 @@ const MatchContainer = styled.div`
 `;
 
 const MatchPage = () => {
+    const router = useRouter();
+
+    const dispatch = useDispatch();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const allPosts = useSelector(state => state.post.allPosts);
+
+    useEffect(() => {
+        if(isAuthenticated) {
+            const access = dispatch(getToken('access'));
+            console.log(access);
+
+            console.log('load all posts')
+            dispatch(load_all_posts());
+        }
+    }, []);
+
+    const posts = [
+        {
+            id: 1,
+            article_type: "WHAT TO EAT",
+            tag_type: "뭐 먹을까요?",
+            title: "게시글 제목제목",
+            content: "안녕본문본붐놉누본ㅁ",
+            user_id: 800,
+            nickname: "진아지롱",
+            user_image: "ESFP",
+            display_time: "3분 전",
+            article_like_count: 0,
+            comment_count: 1,
+            image: 'https://picsum.photos/30',
+        },
+        {
+            id: 2,
+            article_type: "TOGETHER",
+            tag_type: "같이 먹어요",
+            title: "크크",
+            content: "안녕",
+            user_id: 102,
+            nickname: "테스트100",
+            user_image: "ENFJ",
+            display_time: "35분 전",
+            article_like_count: 0,
+            comment_count: 1,
+            image: 'https://picsum.photos/200',
+        },
+    ];
 
     return(
         <MatchContainer>
@@ -26,7 +79,6 @@ const MatchPage = () => {
         <CssBaseline />
             <UpperBar />
             <AiGreeting />
-            
             <Container sx={{p: '0 15px', mt: '0', position:'relative'}}>
                 <Grid container sx={{overflowX: 'auto', flexWrap: 'nowrap', p: '0px', m: '0px'}}>
                     <Grid item >
@@ -34,101 +86,23 @@ const MatchPage = () => {
                     </Grid>
                 </Grid>
             </Container>
-            {/* <Grid style={{marginLeft:'15px', marginRight:'15px'}}>
-                <Typography style={{fontSize:'18px', fontWeight:'700'}}>
-                    더 많은 사람들과 만나고 싶다면?
-                </Typography>
-                <div style={{display:'flex',marginTop:'10px'}}>
-                    <Typography style={{fontSize:'16px', fontWeight:'500'}}>
-                        OPENCHAT
+            <Divider orientation='horizontal' sx={{width: '100%', borderBottom: '8px solid #FBFBFB'}}/> 
+            <Grid sx={{mt: '21px'}}>
+                <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 24px 0'}}>
+                    <Typography style={{fontSize:'21px', fontWeight: 700, color: '#3C3C3C'}}>
+                        스꾸게시판 📌
                     </Typography>
-                    <Typography style={{fontSize:'10px', fontWeight:'500', color:'#A1A1A1', margin:'5px 0 0 5px'}}>
-                        스꾸친 AI가 추천하는 음식점 채팅방
-                    </Typography>
+                    <Button sx={{fontSize:'14px', fontWeight: 700, color: '#FFAC0B', p: 0}} onClick={() => router.push('/freeCommunity')}>
+                        전체보기
+                    </Button>
                 </div>
-                <Grid container style={{display:'flex', alignItems:'center', width:'100%',marginTop:'3px'}}>
-                    <Grid item style={{width:'61px', height:'61px', borderRadius:'10px',}}>
-                        <div style={{
-                            backgroundImage:`linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5) ), url(https://mblogthumb-phinf.pstatic.net/MjAyMTA5MTJfMTgz/MDAxNjMxNDEwNzg3Mzkz.IBDH6TDTYh5I9_tc5RT29xAUMycdBhXSyZrjFCZwjzcg.jbPFJ1NyFq_3HJ5Mbt2ZCUsyKpMUgRit2s-V1pVzwzcg.JPEG.agong91/IMG_4285.jpg?type=w800)`, 
-                            backgroundSize: 'cover',
-                            backgroundPosition:'50% 50%',
-                            width:'100%',
-                            height:'100%',
-                            borderRadius:'10px',
-                            textAlign:'center',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                        <Typography style={{color:'white', fontSize:'16px', fontWeight:'700'}}>
-                            준비중
-                        </Typography>
-                        </div>
-                    </Grid>
-                    <Grid item style={{marginLeft: '10px', width:'75%'}}>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                        <div>
-                            <Typography style={{fontSize:'16px', fontWeight:'700', marginBottom: '3px'}}>
-                            마돌 OPENCHAT
-                            </Typography>
-                            <Typography style={{fontSize: '12px', color:'#A1A1A1'}}>
-                            마돌 좋아하는 사람들 모여라~!
-                            </Typography>
-                        </div>
-                        <div style={{display: 'flex', marginTop:'3px',}}>
-                            <Typography style={{fontSize:'12px', fontWeight:'700', color:'#FFCE00'}}>
-                            0
-                            </Typography>
-                            <Typography style={{fontSize:'12px', fontWeight:'500'}}>
-                            명 참여 중!
-                            </Typography>
-                        </div>
-                        </div>
-                    </Grid>
-                </Grid>
-                <hr style={{border:'1px solid #F0F0F0'}}/>
-
-                <Grid container style={{display:'flex', alignItems:'center', width:'100%', margin:'10px 0 20px 0'}}>
-                    <Grid item style={{width:'61px', height:'61px', borderRadius:'10px',}}>
-                        <div style={{
-                            backgroundImage:`linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5) ), url(https://img.siksinhot.com/place/1535526024147268.jpg)`, 
-                            backgroundSize: 'cover',
-                            backgroundPosition:'50% 50%',
-                            width:'100%',
-                            height:'100%',
-                            borderRadius:'10px',
-                            textAlign:'center',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                        <Typography style={{color:'white', fontSize:'16px', fontWeight:'700'}}>
-                            준비중
-                        </Typography>
-                        </div>
-                    </Grid>
-                    <Grid item style={{marginLeft: '10px', width:'75%'}}>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                        <div>
-                            <Typography style={{fontSize:'16px', fontWeight:'700', marginBottom: '3px'}}>
-                            옥집 OPENCHAT
-                            </Typography>
-                            <Typography style={{fontSize: '12px', color:'#A1A1A1'}}>
-                            옥집 좋아하는 사람들 모여라~!
-                            </Typography>
-                        </div>
-                        <div style={{display: 'flex', marginTop:'3px'}}>
-                            <Typography style={{fontSize:'12px', fontWeight:'700', color:'#FFCE00'}}>
-                                0
-                            </Typography>
-                            <Typography style={{fontSize:'12px', fontWeight:'500'}}>
-                                명 참여 중!
-                            </Typography>
-                        </div>
-                        </div>
-                    </Grid>
-                </Grid>
-            </Grid> */}
+                <Container sx={{ p: '0 24px', height: 'max-content', alignItems: 'center', mt: '10px' }}>
+                    {/* {posts && posts.map((post) => ( */}
+                    {allPosts && allPosts.slice(0,2).map((post) => (
+                        <CommunityItem key={post.id} {...post} />
+                    ))}
+                </Container>
+            </Grid>
         </ThemeProvider>
         </MatchContainer>
     )
