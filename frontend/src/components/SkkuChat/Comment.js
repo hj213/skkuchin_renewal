@@ -130,7 +130,7 @@ const Comment = ({ comments, postId }) => {
         console.log("신고하기");
         console.log(comment.id);
         router.push({
-            pathname: '/reportReview',
+            pathname: '/reportCommunity',
             // query: { 
             //     room_id : room_id,
             //     user_number: user_number

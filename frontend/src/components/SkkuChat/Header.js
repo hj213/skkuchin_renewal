@@ -83,7 +83,7 @@ const Header = ({ title, onBackClick, showSearchIcon, post }) => {
         console.log("신고하기");
         console.log(post.id);
         router.push({
-            pathname: '/reportReview',
+            pathname: '/reportCommunity',
             // query: { 
             //     room_id : room_id,
             //     user_number: user_number
