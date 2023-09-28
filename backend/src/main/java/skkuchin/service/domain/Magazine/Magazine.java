@@ -3,6 +3,7 @@ package skkuchin.service.domain.Magazine;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import skkuchin.service.domain.Forum.ArticleType;
+import skkuchin.service.domain.Map.Gate;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class Magazine {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ArticleType articleType;
+    private Gate gate;
 
     @Column(nullable = false)
     private String title;

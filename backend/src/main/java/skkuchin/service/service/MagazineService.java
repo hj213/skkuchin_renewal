@@ -31,14 +31,10 @@ public class MagazineService {
     public void addMagazine(AppUser appUser, MagazineDto.PostRequest dto){
         Magazine magazine = dto.toEntity(appUser);
         Magazine newMagazine = magazineRepo.save(magazine);
-        System.out.println("magazine = " + newMagazine.getId());
         List<Long> placeIds = dto.getPlaceId();
-        System.out.println("placeIds = " + placeIds);
         while (!placeIds.isEmpty()) {
             Long placeId = placeIds.remove(0);
-            System.out.println("placeId = " + placeId);
             Place place = placeRepo.findById(placeId).orElseThrow(() -> new CustomValidationApiException("없는 식당 Id"));
-            System.out.println(place.getName());
             RelatePlace relatedPlace = RelatePlace.builder().place(place).magazine(newMagazine).build();
             relatedPlaceRepo.save(relatedPlace);
         }

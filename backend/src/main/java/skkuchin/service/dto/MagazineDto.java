@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import skkuchin.service.domain.Forum.ArticleType;
 import skkuchin.service.domain.Magazine.Magazine;
 import skkuchin.service.domain.Magazine.RelatePlace;
+import skkuchin.service.domain.Map.Gate;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.validation.constraints.NotBlank;
@@ -28,8 +29,7 @@ public class MagazineDto {
         private String title;
 
         @NotNull
-        @JsonProperty
-        private ArticleType articleType;
+        private Gate gate;
 
         @NotBlank
         private String content;
@@ -45,7 +45,7 @@ public class MagazineDto {
                     .user(user)
                     .content(content)
                     .title(title)
-                    .articleType(articleType)
+                    .gate(gate)
                     .date(LocalDateTime.now())
                     .link(link)
                     .build();
@@ -64,7 +64,7 @@ public class MagazineDto {
 
         @NotNull
         @JsonProperty
-        private ArticleType articleType;
+        private Gate gate;
 
         @NotBlank
         private String content;
@@ -77,7 +77,7 @@ public class MagazineDto {
 
 
         public Response(Magazine magazine, List<RelatePlace> relatePlaces) {
-            this.articleType = magazine.getArticleType();
+            this.gate = magazine.getGate();
             this.title = magazine.getTitle();
             this.content = magazine.getContent();
             this.link = magazine.getLink();
