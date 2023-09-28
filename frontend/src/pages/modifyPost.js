@@ -4,25 +4,37 @@ import UploadHeader from '../components/SkkuChat/UploadHeader';
 import theme from '../theme/theme';
 import { useRouter } from 'next/router';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
-import { useDispatch } from 'react-redux';
-import { enroll_post, load_all_posts } from '../actions/post/post';
+import { useDispatch, useSelector } from 'react-redux';
+import { modify_post, load_all_posts } from '../actions/post/post';
 
 const tagToArticleType = {
     "뭐 먹을까요?": "WHAT_TO_EAT",
+    "뭐 먹을까요": "WHAT_TO_EAT",
     "같이 먹어요": "TOGETHER",
     "기타": "ETC"
 };
 
-const UploadPost = () => {
+const ModifyPost = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedTag, setSelectedTag] = useState(null);
-    const [isAnonymous, setIsAnonymous] = useState(true);
-    
+    const [isAnonymous, setIsAnonymous] = useState(null);
+
     const [images, setImages] = useState([]);
+
+    const post = useSelector(state => state.post.post);
+
+    useEffect(() => {
+        if(post !== null) {
+            setTitle(post[0].title);
+            setContent(post[0].content);
+            setSelectedTag(post[0].tag_type);
+            setIsAnonymous(post[0].anonymous);
+        }
+    }, []);
 
     const isValidForm = title !== '' && content !== '' && selectedTag !== null;
 
@@ -60,16 +72,16 @@ const UploadPost = () => {
         router.back();
     };
 
-    const handleCompleteClick = () => {
+    const handleModifyClick = () => {
         const selectedArticleType = tagToArticleType[selectedTag];
 
-        dispatch(enroll_post(title, content, selectedArticleType, isAnonymous, ([result, message]) => {
+        dispatch(modify_post(post[0].id, title, content, selectedArticleType, isAnonymous, ([result, message]) => {
             if (result) {
-                console.log("게시글 작성 완료!!")
+                console.log("게시글 수정 완료!!")
                 dispatch(load_all_posts());
                 router.push('/freeCommunity');
             } else {
-                alert("게시글 작성 오류" + message);
+                alert("게시글 수정 오류" + message);
             }
         }));
     };
@@ -78,7 +90,7 @@ const UploadPost = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <Container fixed style={{ position:'fixed', zIndex:'4', padding:'24px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
-                <UploadHeader onBackClick={handleBackClick} onCompleteClick={handleCompleteClick} isValidForm={isValidForm} isReport={false}/>
+                <UploadHeader onBackClick={handleBackClick} onCompleteClick={handleModifyClick} isValidForm={isValidForm} isReport={false}/>
             </Container>
             <Container sx={{ mt: '63px',  p: '24px'}}>
                 <form>
@@ -115,6 +127,7 @@ const UploadPost = () => {
                             outline: 'none',
                         }}
                         onChange={handleTitleChange}
+                        value={title}
                     >
                     </input>
                     {/* 게시글 내용 */}
@@ -140,6 +153,7 @@ const UploadPost = () => {
                             resize: 'none',
                         }}
                         onChange={handleContentChange}
+                        value={content}
                     >
                     </textarea>
 
@@ -161,11 +175,11 @@ const UploadPost = () => {
                                         fontSize:'14px', 
                                         fontWeight: 400, 
                                         color: '#3C3C3C',
-                                        backgroundColor: selectedTag === tag ? '#FFFCE4' : 'transparent',
+                                        backgroundColor: (selectedTag === tag) || (tagToArticleType[selectedTag] === tagToArticleType[tag]) ? '#FFFCE4' : 'transparent',
                                         padding: '3px 20px', 
                                         marginRight: '8px', 
                                         borderRadius: '20px', 
-                                        border: selectedTag === tag ? '1px solid #FFCE00' : '1px solid #E2E2E2',
+                                        border: (selectedTag === tag) || (tagToArticleType[selectedTag] === tagToArticleType[tag]) ? '1px solid #FFCE00' : '1px solid #E2E2E2',
                                     }}
                                     onClick={() => handleTagClick(tag)}
                                 >
@@ -211,4 +225,4 @@ const UploadPost = () => {
     );
 };
 
-export default UploadPost;
+export default ModifyPost;
