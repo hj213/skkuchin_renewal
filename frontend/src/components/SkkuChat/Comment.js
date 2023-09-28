@@ -131,10 +131,6 @@ const Comment = ({ comments, postId }) => {
         console.log(comment.id);
         router.push({
             pathname: '/reportCommunity',
-            // query: { 
-            //     room_id : room_id,
-            //     user_number: user_number
-            // }
         })
     }
     
@@ -149,9 +145,7 @@ const Comment = ({ comments, postId }) => {
                             {/* 프로필 이미지, 닉네임 */}
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                                <div style={{ width: '35px', height: '35px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                    {displayMBTI("defaultY", 25, 25)}
-                                </div>
+                                {displayMBTI("DEFAULT2", 35, 35)}
                                 <Typography style={{ fontSize: '12px', fontWeight: 800, color: '#BABABA' }}>
                                     (삭제)
                                 </Typography>
@@ -166,9 +160,9 @@ const Comment = ({ comments, postId }) => {
                         {/* 프로필 이미지, 닉네임 */}
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                            {displayMBTI(comment.user_image, 35, 35)}
+                            {displayMBTI(comment.anonymous ? "DEFAULT2": comment.user_image, 35, 35)}
                             <Typography style={{ fontSize: '12px', fontWeight: 800, color: '#3C3C3C' }}>
-                                {comment.anonymous ? '익명' : comment.nickname}
+                                {comment.anonymous ? ('익명' + comment.anonymous_idx) : comment.nickname}
                                 {(comment.my_comment && comment.writer) || (comment.my_comment && !comment.writer) ? <span style={{ color: '#FFAC0B' }}> (나)</span> : null}
                                 {comment.writer && !comment.my_comment ? <span style={{ color: '#FFAC0B' }}> (작성자)</span> : null}
                             </Typography>
@@ -215,9 +209,7 @@ const Comment = ({ comments, postId }) => {
                                                     {/* 프로필 이미지, 닉네임 */}
                                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                                                        <div style={{ width: '35px', height: '35px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                            {displayMBTI("defaultY", 25, 25)}
-                                                        </div>
+                                                        {displayMBTI("DEFAULT2", 35, 35)}
                                                         <Typography style={{ fontSize: '12px', fontWeight: 800, color: '#BABABA' }}>
                                                             (삭제)
                                                         </Typography>
@@ -234,7 +226,7 @@ const Comment = ({ comments, postId }) => {
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
                                                     {displayMBTI(reply.user_image, 35, 35)}
                                                     <Typography style={{ fontSize: '12px', fontWeight: 800, color: '#3C3C3C' }}>
-                                                        {reply.anonymous ? '익명' : reply.nickname}
+                                                        {reply.anonymous ? ('익명' + reply.anonymous_idx) : reply.nickname}
                                                         {(reply.my_comment && reply.writer) || (reply.my_comment && !reply.writer) ? <span style={{ color: '#FFAC0B' }}> (나)</span> : null}
                                                         {reply.writer && !reply.my_comment ? <span style={{ color: '#FFAC0B' }}> (작성자)</span> : null}
                                                     </Typography>
@@ -291,7 +283,7 @@ const Comment = ({ comments, postId }) => {
         />
 
         <Container sx={{justifyContent: 'center', position: 'fixed', backgroundColor: '#fff', bottom: '0px', pb: '24px'}}>
-            <CustomInputField article_id={postId} isReply={selectedComment ? true : false} parentCommentId={selectedComment ? selectedComment.id : null}/>
+            <CustomInputField article_id={postId} isReply={selectedComment ? true : false} parentCommentId={selectedComment ? selectedComment.id : null} setSelectedComment={setSelectedComment}/>
         </Container>
         </div>
     );

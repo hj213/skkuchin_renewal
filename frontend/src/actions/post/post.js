@@ -186,13 +186,12 @@ export const load_fav_posts = (callback) => async dispatch => {
     }
 }
 
-export const enroll_post = (title, content, article_type, callback) => async dispatch => {
+export const enroll_post = (title, content, article_type, anonymous, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
-    console.log(title, content, article_type);
 
     const body = JSON.stringify({
-        title, content, article_type
+        title, content, article_type, anonymous
     });
 
     try {
@@ -229,12 +228,12 @@ export const enroll_post = (title, content, article_type, callback) => async dis
     }
 }
 
-export const modify_post = (article_id, title, content, article_type, callback) => async dispatch => {
+export const modify_post = (article_id, title, content, article_type, anonymous, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
     
     const body = JSON.stringify({
-        title, content, article_type
+        title, content, article_type, anonymous
     });
 
     try {

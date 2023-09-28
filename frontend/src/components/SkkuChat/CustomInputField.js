@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 import { enroll_comment, load_comment, enroll_reply } from '../../actions/comment/comment';
 
-const CustomInputField = ({ article_id, isReply, parentCommentId }) => {
+const CustomInputField = ({ article_id, isReply, parentCommentId, setSelectedComment }) => {
     const dispatch = useDispatch();
 
     const [isChecked, setIsChecked] = useState(false);
@@ -27,10 +27,11 @@ const CustomInputField = ({ article_id, isReply, parentCommentId }) => {
                     if (result) {
                         setMessage('');
                         console.log("대댓글 작성 완료!!")
-
+                        
                         dispatch(load_comment(article_id, ([result, message]) => {
                             if (result) {
-                                console.log("댓글 불러오기 성공")
+                                console.log("댓글 불러오기 성공");
+                                setSelectedComment(null);
                             }
                         }));
                     } else {

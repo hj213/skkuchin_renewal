@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Button, ThemeProvider, CssBaseline, Grid } from '@mui/material';
+import { Container, Typography, Button, ThemeProvider, CssBaseline, Grid, Checkbox } from '@mui/material';
 import UploadHeader from '../components/SkkuChat/UploadHeader';
 import theme from '../theme/theme';
 import { useRouter } from 'next/router';
@@ -21,16 +21,19 @@ const ModifyPost = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedTag, setSelectedTag] = useState(null);
-    const [isAnonymous, setIsAnonymous] = useState(true);
+    const [isAnonymous, setIsAnonymous] = useState(null);
 
     const [images, setImages] = useState([]);
 
     const post = useSelector(state => state.post.post);
 
     useEffect(() => {
-        setTitle(post[0].title);
-        setContent(post[0].content);
-        setSelectedTag(post[0].tag_type);
+        if(post !== null) {
+            setTitle(post[0].title);
+            setContent(post[0].content);
+            setSelectedTag(post[0].tag_type);
+            setIsAnonymous(post[0].anonymous);
+        }
     }, []);
 
     const isValidForm = title !== '' && content !== '' && selectedTag !== null;
@@ -72,7 +75,7 @@ const ModifyPost = () => {
     const handleModifyClick = () => {
         const selectedArticleType = tagToArticleType[selectedTag];
 
-        dispatch(modify_post(post[0].id, title, content, selectedArticleType, ([result, message]) => {
+        dispatch(modify_post(post[0].id, title, content, selectedArticleType, isAnonymous, ([result, message]) => {
             if (result) {
                 console.log("게시글 수정 완료!!")
                 dispatch(load_all_posts());

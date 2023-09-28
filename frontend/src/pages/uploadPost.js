@@ -62,8 +62,8 @@ const UploadPost = () => {
 
     const handleCompleteClick = () => {
         const selectedArticleType = tagToArticleType[selectedTag];
-        console.log(title, content, selectedArticleType);
-        dispatch(enroll_post(title, content, selectedArticleType, ([result, message]) => {
+
+        dispatch(enroll_post(title, content, selectedArticleType, isAnonymous, ([result, message]) => {
             if (result) {
                 console.log("게시글 작성 완료!!")
                 dispatch(load_all_posts());
