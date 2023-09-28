@@ -2,6 +2,8 @@ package skkuchin.service.domain.User;
 
 import lombok.*;
 import skkuchin.service.domain.Chat.ChatRoom;
+import skkuchin.service.domain.Forum.Article;
+import skkuchin.service.domain.Forum.Comment;
 import skkuchin.service.domain.Map.Campus;
 import skkuchin.service.domain.Map.Favorite;
 import skkuchin.service.domain.Map.Review;
@@ -111,4 +113,12 @@ public class AppUser {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true )
+    private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true )
+    private List<Comment> comments = new ArrayList<>();
+
+
 }
