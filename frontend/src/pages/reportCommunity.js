@@ -1,149 +1,120 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import 'moment/locale/ko';
-import {Box, TextField, CssBaseline, Paper, Input, ThemeProvider, Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, Card, Typography, Grid, Container, Stack, useScrollTrigger, Button } from '@mui/material';
+import {Box, TextField, CssBaseline, Checkbox, ThemeProvider, Typography, Grid, Container } from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
-import back from '../image/arrow_back_ios.png';
-import check from '../image/check_3.png';
-
 import blank from '../image/chat/check_box_outline_blank.png';
 import checked from '../image/chat/check_box.png'
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import UploadHeader from "../components/SkkuChat/UploadHeader";
 
-const ReportReason = ({ tag, checkedTag, onClick }) => {
-    return (
-      <Grid
-        style={{
-          display: 'flex',
-          margin: '25px 15px 0 15px',
-          width: '100%',
-        }}
-      >
-        <Image
-          src={checkedTag ? checked : blank}
-          width={27.6}
-          height={27.6}
-          alt={`tag-${tag}`}
-          onClick={onClick}
-        />
-        <Typography style={{ fontSize: '16px', marginLeft: '8px', paddingTop: '2px' }}>
-          {tag}
-        </Typography>
-      </Grid>
-    );
-};
- 
   
 const reportCommunity = () => {
+  
     const router = useRouter();
     const dispatch = useDispatch();
+   
+    // 신고 선택
+    const tags = [
+      { id: '욕설_비하', text: '욕설/비하' },
+      { id: '음란_선정성', text: '음란/선정적인 내용' },
+      { id: '부적절', text: '게시판 성격에 부적절함' },
+      { id: '영리목적_홍보성', text: '영리/홍보 목적의 내용' },
+      { id: '정당_정치인_비하_및_선거운동', text: '정치/종교적인 내용' },
+      { id: '낚시_도배', text: '낚시/도배' },
+      { id: '기타', text: '기타' },
+    ];
+
     const [checkedTag, setCheckedTag] = useState(null);
+    const [tagChoose, setTagChoose] = useState({});
     const [showInputBox, setShowInputBox] = useState(false);
     const [content, setContent] = useState('');
-  
-    const [tagChoose, setTagChoose] = useState({
-        '관련_없는_주제_허위사실':false,
-        '욕설_비하':false,
-        '음란_선정성':false,
-        '영리목적_홍보성':false,
-        '정당_정치인_비하_및_선거운동':false,
-        '기타':false,
-    })
     
-    const handleBack = () => {
-      router.back();
-    };
-  
-    const handleTagClick = (tag) => {
-      if (tag === checkedTag) {
-        setCheckedTag(null);
-      } else {
-        setCheckedTag(tag);
-      }
-      if (tag === '기타') {
-        setShowInputBox(!showInputBox);
-      } else {
-        setShowInputBox(false);
-      }
-    };
-  
-    const handleSubmit = () => {
-      const selectedTag = checkedTag || '기타';
-      dispatch(enroll_report(selectedTag, content, reviewId, null, ([result, message]) => {
-        if (result) {
-          router.back();
-        } else {
-          console.log('실패!: ' + message);
+    const isValidForm = Object.values(tagChoose).some((value) => value === true) &&
+    (!tagChoose['기타'] || (tagChoose['기타'] && content !== ''));
+    
+    const handleTagClick = (event) => {
+        const tagId = event.currentTarget.id;
+        console.log(tagId);
+        setTagChoose((prevTags) => ({ ...prevTags, [tagId]: !prevTags[tagId] }));
+
+        if (tagId == '기타') {
+          setShowInputBox((prevShowInputBox) => !prevShowInputBox);
         }
-      }));
+    
+        if (tagId == checkedTag) {
+            setCheckedTag(null);
+        } else {
+            setCheckedTag(tagId);
+        }
     };
-  
+
+    const handleCompleteClick = () => {
+      alert("신고하기 클릭!");
+      // const selectedTag = checkedTag || '기타';
+      // dispatch(enroll_report(selectedTag, content, reviewId, null, ([result, message]) => {
+      //   if (result) {
+      //     router.back();
+      //   } else {
+      //     console.log('실패!: ' + message);
+      //   }
+      // }));
+    };
+
+    const handleBackClick = () => {
+        router.back();
+    }
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Container style={{ padding: '0px', margin: '50px 0px 0px 0px', overflow: 'hidden', maxWidth: '420px' }}>
-          <Container fixed style={{ padding: '0px 16px 0px 0px', overflow: 'hidden' }}>
-            <Card elevation={0} style={{ position: 'fixed', top: '0px', width: '100%', height: '98px', zIndex: '4', border: 'none' }}>
-              <Grid container style={{ padding: '30px 15px 0px 15px', justifyContent: 'space-between', alignItems: 'center', maxWidth: '420px' }}>
-                <Grid style={{ padding: '0px 10px 0px 0px' }}>
-                  <Image src={back} width={12} height={20} name='back' onClick={handleBack} layout='fixed' />
+        <Container fixed style={{ position:'fixed', zIndex:'4', padding:'24px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
+            <UploadHeader onBackClick={handleBackClick} onCompleteClick={handleCompleteClick} isValidForm={isValidForm} isReport={true}/>
+        </Container>
+        <Container sx={{ mt: '78px', p: '30px 24px', overflow: 'hidden', maxWidth: '420px' }}>
+          <Typography sx={{fontSize: '18px', fontWeight: 700}}>
+              해당 사용자에 대한 신고사유를 알려주세요.
+          </Typography>
+          <Container sx={{p: 0}}>
+            <Typography sx={{fontSize: '14px', fontWeight: 700, color: '#9E9E9E', p: '30px 0 10px'}}>
+              신고사유
+            </Typography>
+            <Grid>
+              {tags.map((tag) => (
+                <Grid key={tag.id} sx={{ display: 'flex', p: '10px 0', width: '100%', alignItems: 'center' }}>
+                  <Checkbox
+                    checked={tagChoose[tag.id] || false}
+                    onChange={handleTagClick}
+                    id={tag.id}
+                    sx={{ p: '4px', mr: '8px', color: '#9E9E9E' }}
+                  />
+                  <Typography style={{ fontSize: '16px', fontWeight: 400, color: '#3C3C3C' }}>
+                    {tag.text}
+                  </Typography>
                 </Grid>
-                <Grid>
-                  <Grid style={{ flexDirection: 'row' }}>
-                    <Typography sx={{ fontSize: '18px', fontWeight: '500', lineHeight: '28px', pr: '4px' }} color="#000000" component="span">
-                      신고하기
+              ))}
+              <Box>
+                {showInputBox && (
+                  <>
+                    <Typography sx={{color: '#9E9E9E', fontWeight: 700, fontSize: '14px'}}>
+                      기타 신고사유
                     </Typography>
-                  </Grid>
-                </Grid>
-                <Grid style={{ width: '14px' }}></Grid>
-              </Grid>
-            </Card>
-          </Container>
-  
-          <Container style={{ padding: '0px' }}>
-            <Grid container style={{ margin: '45px 0px 0px 20px' }}>
-              <Grid item style={{ margin: '0px 0px 0px 5px' }}>
-                <Typography style={{ margin: '2px 0px 0px 0px', textAlign: 'left', fontSize: '16px' }} fontWeight={theme.typography.h1}>
-                  사용자를 신고하시려는 이유를 선택해주세요.
-                </Typography>
-              </Grid>
+                    <div style={{ margin: '10px auto 10px auto' }}>
+                      <TextField
+                        sx={{ fontSize: 12 }}
+                        fullWidth
+                        multiline
+                        rows={3}
+                        placeholder="상세한 신고 사유를 입력해주세요."
+                        value={content}
+                        onChange={(event) => setContent(event.target.value)}
+                      />
+                    </div>
+                  </>
+                )}
+              </Box>
             </Grid>
-          </Container>
-          <Container style={{ padding: '0px', margin: '20px 0px 0px 30px' }}>
-            <Grid sx={{ width: '100%' }}>
-              <div style={{ margin: '-20px -20px 0', padding: '0 0px 10px 0px' }}>
-                <Grid container style={{ margin: '0 0px 11px 0px', justifyContent: 'left', maxWidth: '350px' }}>
-                  {Object.keys(tagChoose).map((tag) => (
-                    <ReportReason
-                      key={tag}
-                      tag={tag}
-                      checkedTag={checkedTag === tag}
-                      onClick={() => handleTagClick(tag)}
-                    />
-                  ))}
-                  <Box sx={{ width: 1300, maxWidth: '90%', margin: '0 auto 20px auto' }}>
-                    {showInputBox && (
-                      <div style={{ margin: '10px auto 10px auto' }}>
-                        <TextField
-                          sx={{ fontSize: 12 }}
-                          fullWidth
-                          placeholder="기타 신고 사유를 입력해주세요."
-                          value={content}
-                          onChange={(event) => setContent(event.target.value)}
-                        />
-                      </div>
-                    )}
-                  </Box>
-                </Grid>
-              </div>
-            </Grid>
-          </Container>
-          <Container style={{ justifyContent: 'center', position: 'relative', bottom: 0, zIndex: '5' }}>
-            <div style={{ textAlign: 'center', marginBottom: '53px' }}>
-              <Image src={check} width={300} height={56} onClick={handleSubmit} placeholder="blur" layout='fixed' />
-            </div>
           </Container>
         </Container>
       </ThemeProvider>

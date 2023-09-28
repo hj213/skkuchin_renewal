@@ -4,7 +4,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import close from '../../image/close.png';
 import Image from 'next/image';
 
-const UploadHeader = ({ onBackClick, onCompleteClick, isValidForm }) => {
+const UploadHeader = ({ onBackClick, onCompleteClick, isValidForm, isReport }) => {
   
   return (
     <Card
@@ -20,7 +20,7 @@ const UploadHeader = ({ onBackClick, onCompleteClick, isValidForm }) => {
           <Image src={close} width={24} height={24} name='close' layout='fixed' />
         </Grid>
         <Grid>
-          <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#3C3C3C' }}>글쓰기</Typography>
+          <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#3C3C3C' }}>{isReport ? '신고하기' : '글쓰기'}</Typography>
         </Grid>
         <Grid>
           <IconButton onClick={onCompleteClick} sx={{p: 0}} disabled={!isValidForm}>

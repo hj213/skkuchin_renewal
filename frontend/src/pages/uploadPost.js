@@ -78,7 +78,7 @@ const UploadPost = () => {
         <ThemeProvider theme={theme}>
         <CssBaseline />
             <Container fixed style={{ position:'fixed', zIndex:'4', padding:'24px 24px 5px', overflow: "hidden", height:'max-content', maxWidth:'420px', top: '0', backgroundColor: '#fff'}} >
-                <UploadHeader onBackClick={handleBackClick} onCompleteClick={handleCompleteClick} isValidForm={isValidForm}/>
+                <UploadHeader onBackClick={handleBackClick} onCompleteClick={handleCompleteClick} isValidForm={isValidForm} isReport={false}/>
             </Container>
             <Container sx={{ mt: '63px',  p: '24px'}}>
                 <form>
