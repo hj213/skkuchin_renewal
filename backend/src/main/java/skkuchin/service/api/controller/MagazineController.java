@@ -50,6 +50,12 @@ public class MagazineController {
         List<MagazineDto.Response> magazines = magazineService.getMagazine();
         return new ResponseEntity<>(new CMRespDto<>(1,"매거진 조회 완료",magazines), HttpStatus.OK);
     }
+
+    @GetMapping("{magazineId}")
+    public ResponseEntity<?> getSpecificMagazine(@PathVariable Long magazineId){
+        MagazineDto.Response magazine = magazineService.getSpecificMagazine(magazineId);
+        return new ResponseEntity<>(new CMRespDto<>(1,"특정 매거진 조회 완료",magazine),HttpStatus.OK);
+    }
 }
 
 

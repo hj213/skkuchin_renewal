@@ -8,6 +8,7 @@ import skkuchin.service.domain.Magazine.Magazine;
 import skkuchin.service.domain.Magazine.RelatePlace;
 import skkuchin.service.domain.Map.Place;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.MagazineDto;
 import skkuchin.service.exception.CustomValidationApiException;
 import skkuchin.service.repo.MagazineRepo;
@@ -53,4 +54,12 @@ public class MagazineService {
                 )).collect(Collectors.toList());
         }
 
+    public MagazineDto.Response getSpecificMagazine(Long magazineId){
+        Magazine magazine = magazineRepo.findById(magazineId).orElseThrow(()-> new CustomValidationApiException("존재하지 않는 매거진입니다."));
+        MagazineDto.Response response= new MagazineDto.Response(magazine,relatedPlaceRepo.findByMagazine(magazine));
+        return response;
+    }
 }
+
+
+
