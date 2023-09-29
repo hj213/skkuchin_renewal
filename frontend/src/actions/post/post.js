@@ -15,8 +15,10 @@ import {
     DELETE_POST_SUCCESS,
     MODIFY_POST_FAIL,
     MODIFY_POST_SUCCESS,
-    SEARCH_POSTS_FAIL,
-    SEARCH_POSTS_SUCCESS,
+    SEARCH_POSTS_BY_TAG_FAIL,
+    SEARCH_POSTS_BY_TAG_SUCCESS,
+    SEARCH_POSTS_BY_KEYWORD_FAIL,
+    SEARCH_POSTS_BY_KEYWORD_SUCCESS,
     CLEAR_SEARCH_POSTS,
     CLEAR_PREV_POST,
 } from './types'
@@ -184,13 +186,12 @@ export const load_fav_posts = (callback) => async dispatch => {
     }
 }
 
-export const enroll_post = (title, content, article_type, callback) => async dispatch => {
+export const enroll_post = (title, content, article_type, anonymous, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
-    console.log(title, content, article_type);
 
     const body = JSON.stringify({
-        title, content, article_type
+        title, content, article_type, anonymous
     });
 
     try {
@@ -226,6 +227,49 @@ export const enroll_post = (title, content, article_type, callback) => async dis
         if (callback) callback([false, error]);
     }
 }
+
+export const modify_post = (article_id, title, content, article_type, anonymous, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+    
+    const body = JSON.stringify({
+        title, content, article_type, anonymous
+    });
+
+    try {
+        const res = await fetch(`${API_URL}/api/article/${article_id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${access}`,
+                'Content-Type': 'application/json'
+            },
+            body: body
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            await dispatch({
+                type: MODIFY_POST_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        }
+        else {
+            await dispatch({
+                type: MODIFY_POST_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    }
+    catch (error) {
+        dispatch({
+            type: MODIFY_POST_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}
+
 
 export const delete_post = (article_id, callback) => async dispatch => {
     await dispatch(request_refresh());
@@ -265,7 +309,7 @@ export const delete_post = (article_id, callback) => async dispatch => {
     }
 }
 
-export const search_posts = (tag, callback) => async dispatch => {
+export const search_posts_by_tag = (tag, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
 
@@ -283,14 +327,14 @@ export const search_posts = (tag, callback) => async dispatch => {
 
         if (res.status === 200) {
             dispatch({
-                type: SEARCH_POSTS_SUCCESS,
+                type: SEARCH_POSTS_BY_TAG_SUCCESS,
                 payload: apiRes.data
             })
             if (callback) callback([true, apiRes.message]);
 
         } else {
             dispatch({
-                type: SEARCH_POSTS_FAIL
+                type: SEARCH_POSTS_BY_TAG_FAIL
             })
             if (callback) callback([false, apiRes.message]);
         }
@@ -298,11 +342,50 @@ export const search_posts = (tag, callback) => async dispatch => {
     }
     catch (error) {
         dispatch({
-            type: SEARCH_POSTS_FAIL
+            type: SEARCH_POSTS_BY_TAG_FAIL
         });
         if (callback) callback([false, error]);
     }
 }
+
+export const search_posts_by_keyword = (keyword, callback)=> async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+
+    try {
+        const res = await fetch(`${API_URL}/api/article/search/keyword?q=${keyword}`, {
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer ${access}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEARCH_POSTS_BY_KEYWORD_SUCCESS,
+                payload: apiRes.data
+            })
+            if (callback) callback([true, apiRes.message]);
+
+        } else {
+            dispatch({
+                type: SEARCH_POSTS_BY_KEYWORD_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    }
+    catch (error) {
+        dispatch({
+            type: SEARCH_POSTS_BY_KEYWORD_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}
+
 
 export const clear_search_posts = () => ({
     type: CLEAR_SEARCH_POSTS

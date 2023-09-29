@@ -10,7 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { load_comment, clear_prev_comment } from '../../actions/comment/comment';
 import { load_post, clear_prev_post } from '../../actions/post/post';
-import { enroll_like } from '../../actions/like/like';
+import { enroll_like, delete_like } from '../../actions/like/like';
 import Comment from './Comment';
 
 const posts = [
@@ -85,7 +85,15 @@ const PostDetail = ({ postId }) => {
 
     const handleDeleteBtn = (postId) => {
         console.log(postId);
-        alert("취소 시도")
+        dispatch(delete_like(postId, ([result, message]) => {
+          if (result) {
+            console.log("좋아요 취소 성공")
+          }
+          else {
+            console.log("좋아요 취소 실패" + message);
+          }
+        }));
+
     };
 
     if(post === null || comments === null) return (<div>loading...</div>);
@@ -97,14 +105,25 @@ const PostDetail = ({ postId }) => {
             {post && <Header title="스꾸게시판" onBackClick={handleBackClick} post={post[0]}/> }
           </Container>
           <Container sx={{ p: '0 24px', mt: '72.5px'}}>
-            {/* 작성자 프로필 */}
-            <Grid sx={{display: 'flex', alignItems: 'center', p: '10px 0'}}>
-              {post && displayMBTI(post[0].user_image, 60, 60)}
-              <Grid sx={{ml: '10px'}}>
-                  <Typography sx={{fontSize: '14px', fontWeight: 800, color: '#3C3C3C'}}>{post && post[0].nickname}</Typography>
-                  <Typography sx={{fontSize: '12px', fontWeight: 700, color: '#BABABA'}}>{post && post[0].display_time}</Typography>
-              </Grid>
-            </Grid>
+            {
+              /* 작성자 프로필 */
+              post && post[0].anonymous === true ?
+                <Grid sx={{display: 'flex', alignItems: 'center', p: '10px 0'}}>
+                  {post && displayMBTI("DEFAULT2", 60, 60)}
+                  <Grid sx={{ml: '10px'}}>
+                      <Typography sx={{fontSize: '14px', fontWeight: 800, color: '#3C3C3C'}}>익명</Typography>
+                      <Typography sx={{fontSize: '12px', fontWeight: 700, color: '#BABABA'}}>{post[0].display_time}</Typography>
+                  </Grid>
+                </Grid>
+                :
+                <Grid sx={{display: 'flex', alignItems: 'center', p: '10px 0'}}>
+                  {post && displayMBTI(post[0].user_image, 60, 60)}
+                  <Grid sx={{ml: '10px'}}>
+                      <Typography sx={{fontSize: '14px', fontWeight: 800, color: '#3C3C3C'}}>{post && post[0].nickname}</Typography>
+                      <Typography sx={{fontSize: '12px', fontWeight: 700, color: '#BABABA'}}>{post[0].display_time}</Typography>
+                  </Grid>
+                </Grid>
+            }
 
             {/* 게시글 */}
             <Grid sx={{display: 'flex', flexDirection: 'column', p: '10px 0', overflowX: 'hidden'}}>
