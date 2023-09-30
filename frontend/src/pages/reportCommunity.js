@@ -3,12 +3,10 @@ import { useRouter } from "next/router";
 import 'moment/locale/ko';
 import {Box, TextField, CssBaseline, Checkbox, ThemeProvider, Typography, Grid, Container } from '@mui/material';
 import theme from '../theme/theme';
-import Image from 'next/image';
-import blank from '../image/chat/check_box_outline_blank.png';
-import checked from '../image/chat/check_box.png'
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import UploadHeader from "../components/SkkuChat/UploadHeader";
+import { enroll_report_community } from "../actions/community/reportInCommunity";
 
   
 const reportCommunity = () => {
@@ -16,6 +14,14 @@ const reportCommunity = () => {
     const router = useRouter();
     const dispatch = useDispatch();
    
+    const article_id = router.query.article_id;
+    const comment_id = router.query.comment_id;
+
+    useEffect(() => {
+      console.log(router.query);
+    }
+    , []);
+
     // 신고 선택
     const tags = [
       { id: '욕설_비하', text: '욕설/비하' },
@@ -52,15 +58,15 @@ const reportCommunity = () => {
     };
 
     const handleCompleteClick = () => {
-      alert("신고하기 클릭!");
-      // const selectedTag = checkedTag || '기타';
-      // dispatch(enroll_report(selectedTag, content, reviewId, null, ([result, message]) => {
-      //   if (result) {
-      //     router.back();
-      //   } else {
-      //     console.log('실패!: ' + message);
-      //   }
-      // }));
+      const reportContent = checkedTag === '기타' ? content : null;
+      dispatch(enroll_report_community(checkedTag, reportContent, comment_id, article_id, ([result, message]) => {
+        if (result) {
+          router.back();
+          alert("신고 완료!");
+        } else {
+          console.log('실패!: ' + message);
+        }
+      }));
     };
 
     const handleBackClick = () => {

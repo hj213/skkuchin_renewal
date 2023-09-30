@@ -131,6 +131,7 @@ const Comment = ({ comments, postId }) => {
         console.log(comment.id);
         router.push({
             pathname: '/reportCommunity',
+            query: { isComment: true, comment_id: comment.id, article_id: null },
         })
     }
     
