@@ -1,6 +1,7 @@
 package skkuchin.service.domain.Forum;
 
 import lombok.*;
+import skkuchin.service.domain.User.AppUser;
 import skkuchin.service.domain.User.ReportType;
 
 import javax.persistence.*;
@@ -11,6 +12,14 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(
+        name = "article_report",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id","article_id"}),
+                @UniqueConstraint(columnNames = {"user_id","comment_id"})
+
+        }
+)
 
 public class ArticleReport {
 
@@ -31,4 +40,8 @@ public class ArticleReport {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     private Comment comment;
+
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private AppUser appUser;
 }
