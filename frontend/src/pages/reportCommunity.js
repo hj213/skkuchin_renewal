@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import UploadHeader from "../components/SkkuChat/UploadHeader";
 import { enroll_report_community } from "../actions/community/reportInCommunity";
-
+import CustomPopupNoBtn from "../components/SkkuChat/CustomPopupNoBtn";
   
 const reportCommunity = () => {
   
@@ -17,10 +17,8 @@ const reportCommunity = () => {
     const article_id = router.query.article_id;
     const comment_id = router.query.comment_id;
 
-    useEffect(() => {
-      console.log(router.query);
-    }
-    , []);
+    const [isPopupMessageOpen, setPopupMessageOpen] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
 
     // 신고 선택
     const tags = [
@@ -29,7 +27,7 @@ const reportCommunity = () => {
       { id: '부적절', text: '게시판 성격에 부적절함' },
       { id: '영리목적_홍보성', text: '영리/홍보 목적의 내용' },
       { id: '정당_정치인_비하_및_선거운동', text: '정치/종교적인 내용' },
-      { id: '낚시_도배', text: '낚시/도배' },
+      { id: '사칭_사기', text: '낚시/도배' },
       { id: '기타', text: '기타' },
     ];
 
@@ -42,31 +40,40 @@ const reportCommunity = () => {
     (!tagChoose['기타'] || (tagChoose['기타'] && content !== ''));
     
     const handleTagClick = (event) => {
-        const tagId = event.currentTarget.id;
-        console.log(tagId);
-        setTagChoose((prevTags) => ({ ...prevTags, [tagId]: !prevTags[tagId] }));
-
-        if (tagId == '기타') {
-          setShowInputBox((prevShowInputBox) => !prevShowInputBox);
-        }
-    
-        if (tagId == checkedTag) {
-            setCheckedTag(null);
-        } else {
-            setCheckedTag(tagId);
-        }
+      const tagId = event.currentTarget.id;
+  
+      setTagChoose((prevTags) => {
+          const updatedTags = {};
+  
+          Object.keys(prevTags).forEach((tag) => {
+              updatedTags[tag] = false;
+          });
+  
+          updatedTags[tagId] = true;
+  
+          setShowInputBox(tagId === '기타');
+  
+          return updatedTags;
+      });
+  
+      setCheckedTag(tagId);
     };
-
     const handleCompleteClick = () => {
       const reportContent = checkedTag === '기타' ? content : null;
       dispatch(enroll_report_community(checkedTag, reportContent, comment_id, article_id, ([result, message]) => {
         if (result) {
-          router.back();
-          alert("신고 완료!");
+          setPopupMessageOpen(true);
+          setPopupMessage('신고가 완료되었습니다.');
         } else {
           console.log('실패!: ' + message);
+          setPopupMessageOpen(true);
+          setPopupMessage(message);
         }
       }));
+      setCheckedTag(null);
+      setTagChoose({});
+      setShowInputBox(false);
+      setContent('');
     };
 
     const handleBackClick = () => {
@@ -122,6 +129,12 @@ const reportCommunity = () => {
               </Box>
             </Grid>
           </Container>
+
+          <CustomPopupNoBtn
+              open={isPopupMessageOpen}
+              onClose={() => setPopupMessageOpen(false)}
+              content={popupMessage}
+          />
         </Container>
       </ThemeProvider>
     );
