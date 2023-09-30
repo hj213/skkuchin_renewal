@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import skkuchin.service.domain.Forum.ArticleType;
 import skkuchin.service.domain.Magazine.Magazine;
 import skkuchin.service.domain.Magazine.RelatePlace;
@@ -59,6 +60,7 @@ public class MagazineDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static  class Response {
 
+        private Long id;
         @NotBlank
         private String title;
 
@@ -77,11 +79,40 @@ public class MagazineDto {
 
 
         public Response(Magazine magazine, List<RelatePlace> relatePlaces) {
+            this.id = magazine.getId();
             this.gate = magazine.getGate();
             this.title = magazine.getTitle();
             this.content = magazine.getContent();
             this.link = magazine.getLink();
             this.placeId = relatePlaces.stream().map(relatePlace -> relatePlace.getPlace().getId()).collect(Collectors.toList());
         }
+    }
+
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @RequiredArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static  class PutRequest {
+
+        @NotBlank
+        private String title;
+
+        @NotNull
+        @JsonProperty
+        private Gate gate;
+
+        @NotBlank
+        private String content;
+
+        @JsonProperty
+        private List<Long> placeId;
+
+        @NotBlank
+        private String link;
+
+
     }
 }

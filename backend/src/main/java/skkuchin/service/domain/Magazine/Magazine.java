@@ -3,6 +3,7 @@ package skkuchin.service.domain.Magazine;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import skkuchin.service.domain.Forum.ArticleType;
+import skkuchin.service.domain.Forum.CommentLike;
 import skkuchin.service.domain.Map.Gate;
 import skkuchin.service.domain.User.AppUser;
 
@@ -40,5 +41,9 @@ public class Magazine {
     private LocalDateTime date;
 
     private String link;
+
+    @OneToMany(mappedBy = "magazine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RelatePlace> relatePlaces = new ArrayList<>();
+
 
 }
