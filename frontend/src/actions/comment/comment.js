@@ -102,6 +102,43 @@ export const enroll_comment = (content, article_id, anonymous, callback) => asyn
     }
 }
 
+export const delete_comment = (comment_id, callback) => async dispatch => {
+    await dispatch(request_refresh());
+    const access = dispatch(getToken('access'));
+
+    try {
+        const res = await fetch(`${API_URL}/api/comment/${comment_id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access}`
+            }
+        });
+
+        const apiRes = await res.json();
+
+        if (res.status === 200) {
+            await dispatch({
+                type: DELETE_COMMENT_SUCCESS
+            })
+            if (callback) callback([true, apiRes.message]);
+        }
+        else {
+            await dispatch({
+                type: DELETE_COMMENT_FAIL
+            })
+            if (callback) callback([false, apiRes.message]);
+        }
+    }
+    catch (error) {
+        dispatch({
+            type: DELETE_COMMENT_FAIL
+        });
+        if (callback) callback([false, error]);
+    }
+}
+
 export const enroll_reply = (content, article_id, comment_id, anonymous, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));

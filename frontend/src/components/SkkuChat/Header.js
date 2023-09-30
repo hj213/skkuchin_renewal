@@ -41,10 +41,12 @@ const Header = ({ title, onBackClick, showSearchIcon, post }) => {
             });
         } else {
             // 남의 게시글인 경우
-            options.push({
-              label: '프로필 보기',
-              onClick: () => handleViewProfile(post),
-            });
+            if(post.anonymous === false) {
+              options.push({
+                label: '프로필 보기',
+                onClick: () => handleViewProfile(post),
+              });
+            }
             options.push({
               label: '신고하기',
               onClick: () => handleReportPost(post),
@@ -57,6 +59,8 @@ const Header = ({ title, onBackClick, showSearchIcon, post }) => {
     const handleEditPost = (post) => {
         console.log("수정하기");
         console.log(post.id);
+
+        router.push(`/modifyPost`)
     }
 
     const handleDeletePost = (post) => {
@@ -81,11 +85,7 @@ const Header = ({ title, onBackClick, showSearchIcon, post }) => {
         console.log("신고하기");
         console.log(post.id);
         router.push({
-            pathname: '/reportReview',
-            // query: { 
-            //     room_id : room_id,
-            //     user_number: user_number
-            // }
+            pathname: '/reportCommunity',
         })
     }
     
