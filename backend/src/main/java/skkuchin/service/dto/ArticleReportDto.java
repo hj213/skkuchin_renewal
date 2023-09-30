@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import skkuchin.service.domain.Chat.ChatRoom;
 import skkuchin.service.domain.Forum.Article;
 import skkuchin.service.domain.Forum.ArticleReport;
 import skkuchin.service.domain.Forum.Comment;
@@ -32,7 +31,7 @@ public class ArticleReportDto {
             return ArticleReport.builder()
                     .reportType(this.reportType)
                     .content(this.content)
-                    .appUser(user)
+                    .user(user)
                     .article(article)
                     .comment(comment)
                     .build();

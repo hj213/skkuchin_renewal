@@ -43,5 +43,5 @@ public class ArticleReport {
 
     @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private AppUser appUser;
+    private AppUser user;
 }
