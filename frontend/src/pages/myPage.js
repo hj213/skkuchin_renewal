@@ -260,7 +260,7 @@ const myPage = () => {
                     {/* 닉네임, 캠퍼스, 학과, 학번 */}
                     <div style={{display: 'flex'}}>
                         <Typography style={{fontSize: '15px', fontWeight: '700', marginBottom: '9px'}}>{user.nickname}</Typography>
-                        <Typography sx={{height: '24px', border: "1px solid #FFFCE4", borderRadius:'10px', fontSize: '12px',  fontWeight:'700',p: '2px 4px 0px 4px', color:'#FFAC0B', backgroundColor:'#FFFCE4', margin:'-2px 0px 0px 5px'}} >{user.campus}</Typography>
+                        {user.campus == "명륜" ? <Typography sx={{height: '24px', border: "1px solid #FFFCE4", borderRadius:'10px', fontSize: '12px',  fontWeight:'700',p: '2px 4px 0px 4px', color:'#FFAC0B', backgroundColor:'#FFFCE4', margin:'-2px 0px 0px 5px'}} >명륜</Typography> : <Typography sx={{height: '24px', border: "1px solid #DCF8DB", borderRadius:'10px', fontSize: '12px',  fontWeight:'700',p: '2px 4px 0px 4px', color:'#58C85A', backgroundColor:'#DCF8DB', margin:'-2px 0px 0px 5px'}} >율전</Typography>}
                     </div>
                     <Typography sx={{fontSize: '12px', p: '0px 3.5px 0px 0px', color:'#3C3C3C'}}>{user.major} / {user.student_id}학번 {user.gender && <span>/ {user.gender[0]}</span>}</Typography>
 
@@ -280,7 +280,7 @@ const myPage = () => {
             {/* 커뮤니티 */}
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '30px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '15px'}}>커뮤니티</Typography>
-                <div onClick={() => router.push('/myPost')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>내 게시글</Button></div>
+                <div onClick={() => router.push('/myPost')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '5px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>내 게시글 &nbsp; &nbsp;</Button></div>
                 <div onClick={() => router.push('/myFavPost')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>좋아요 누른 게시글</Button></div>
             </Container>
             <div style={{height:'1px', backgroundColor:'#E2E2E2', margin:'0 10px'}}></div>
@@ -345,8 +345,8 @@ const myPage = () => {
             {/* 기타 */}
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
-                <div onClick={() => router.push('/requestPlace')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>식당 추가 요청</Button></div>
-                <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '14px', fontWeight: '400',marginBottom: '10px', color: '#3C3C3C',}}>문의하기</Typography>
+                <div onClick={() => router.push('/requestPlace')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '5px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>식당 추가 요청</Button></div>
+                <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '14px', fontWeight: '400',marginBottom: '5px', color: '#3C3C3C',}}>문의하기</Typography>
                 <Typography onClick={handleDialogOpen} style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C'}}>로그아웃</Typography>
             </Container>
 

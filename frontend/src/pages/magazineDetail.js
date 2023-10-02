@@ -147,7 +147,7 @@ const MagazineDetail = () => {
         <MagazineDetailContainer>
             <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container style={{padding:'0px', alignItems: 'center', marginTop: '45px'}}>
+            <Container style={{padding:'0px', alignItems: 'center', paddingTop: '45px', position:'fixed', height:'100px', background:'white',zIndex:'300'}}>
                 <Grid container>
                     <Grid item style={{margin:'0px 0px 0px 25px', visibility:'none'}}>
                         <Image src={back} width={40} height={40} name='back' onClick={handleArrowClick} layout='fixed'/>
@@ -160,7 +160,10 @@ const MagazineDetail = () => {
                     </Grid>
                 </Grid>
             </Container>
-            <div>
+            <Box style={{paddingTop:'100px'}}>
+            <div style={{overflowX:'hidden', display:'flex'}}>
+                <Image src={content} style={{width:'100%'}}/>
+                <Image src={content}/>
                 <Image src={content}/>
             </div>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',}}>
@@ -216,6 +219,7 @@ const MagazineDetail = () => {
                     </div>
                     
                 </div>
+                </Box>
             </ThemeProvider>
         </MagazineDetailContainer>
     )

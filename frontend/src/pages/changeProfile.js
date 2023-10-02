@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { change_matching_info, load_matching_info } from "../actions/matchingUser/matchingUser";
 import { useRouter } from "next/router";
-import {ThemeProvider, CssBaseline, Typography, Button, Container, Grid, TextField, Alert} from '@mui/material';
+import {ThemeProvider, CssBaseline,Dialog,DialogContent, Typography, Button, Container, Grid, TextField, Alert} from '@mui/material';
 import Image from 'next/image';
 import theme from "../theme/theme";
 import back from '../image/arrow_back_ios.png';
@@ -150,6 +150,7 @@ import stuTag12On from '../image/tags/interest_on/interest12on.png';
 import stuTag13On from '../image/tags/interest_on/interest13on.png';
 import stuTag14On from '../image/tags/interest_on/interest14on.png';
 import stuTag15On from '../image/tags/interest_on/interest15on.png';
+import { match } from "assert";
 
 const AlertMessage = dynamic(() => import('../components/Alert'));
 
@@ -196,35 +197,70 @@ const makeProfile = () => {
 
             //관심사
             const keyword = matchingUser.keywords;
-            keyword.forEach(element => {
-                if(food.hasOwnProperty(element)){
-                    setFood(prevState => ({
-                        ...prevState,
-                        [element]: true
-                      }))
 
-                }
-                if(sports.hasOwnProperty(element)){
-                    setSports(prevState => ({
+            for (const key in keyword) {
+                if (keyword.hasOwnProperty(key)) {
+                  const elements = keyword[key];
+                  elements.forEach((element) => {
+                    if (key === '음식') {
+                      setFood(prevState => ({
                         ...prevState,
-                        [element]: true
-                      }))
-                }
-                if(art.hasOwnProperty(element)){
-                    setArt(prevState => ({
-                        ...prevState,
-                        [element]: true
-                      }))
-                }
-                if(study.hasOwnProperty(element)){
-                    setStudy(prevState => ({
-                        ...prevState,
-                        [element]: true
-                      }))
-                }
-            });
+                        [element]: true,
+                    // 다른 카테고리에 대한 처리도 추가 가능
+                     }))
+                    }
+                    if (key === '운동'){
+                        setSports(prevState => ({
+                            ...prevState,
+                            [element]:true,
+                        }))
+                    }
+                    if (key === '예술'){
+                        setArt(prevState => ({
+                            ...prevState,
+                            [element]:true,
+                        }))
+                    }
+                    if (key === '학술'){
+                        setStudy(prevState => ({
+                            ...prevState,
+                            [element]:true,
+                        }))
+                    }
+
+            })}}
             setKeyword(keyword);
-        
+            
+    
+            // keyword.forEach(element => {
+            //     if(food.hasOwnProperty(element)){
+            //         setFood(prevState => ({
+            //             ...prevState,
+            //             [element]: true
+            //           }))
+
+            //     }
+            //     if(sports.hasOwnProperty(element)){
+            //         setSports(prevState => ({
+            //             ...prevState,
+            //             [element]: true
+            //           }))
+            //     }
+            //     if(art.hasOwnProperty(element)){
+            //         setArt(prevState => ({
+            //             ...prevState,
+            //             [element]: true
+            //           }))
+            //     }
+            //     if(study.hasOwnProperty(element)){
+            //         setStudy(prevState => ({
+            //             ...prevState,
+            //             [element]: true
+            //           }))
+            //     }
+            // });
+            // setKeyword(keyword);
+
 
             //한줄소개
             const introduction = matchingUser.introduction;
@@ -315,6 +351,7 @@ const makeProfile = () => {
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [keywordNum, setKeywordNum] = useState(0);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
 
     //아이콘 클릭시
@@ -467,6 +504,7 @@ const makeProfile = () => {
 
     const handleMbtiClick = (e) => {
         let chosen = e.target.innerText
+
         switch(chosen) {
             case 'E':
                 setMbtiChoose({...mbtiChoose, 'E': true, 'I': false})
@@ -495,6 +533,7 @@ const makeProfile = () => {
             default:
                 break
         }
+
     }
 
     //음식클릭
@@ -756,7 +795,10 @@ const makeProfile = () => {
         
         dispatch(change_matching_info(gender, keyword, introduction, mbti, ([result, message]) => {
                 if (result) {
-                    router.back();
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        router.push('/myPage');
+                    }, 1000); 
                 } else {
                     setAlertOpen(true);
                     setAlertMessage(message);
@@ -788,7 +830,7 @@ const makeProfile = () => {
             .filter(([, value]) => value)
             .map(([key]) => key)
           ));
-    
+            
             if(allKeywords.length >= 3 ){
                 
                 setKeyword(allKeywords);
@@ -799,14 +841,13 @@ const makeProfile = () => {
 
     //확인버튼 이미지 조건 반영 위해
     useEffect(()=>{
-        if(gender && keyword.length > 0 && introduction != '' && mbti){
-    
+        if(gender && keyword.length > 0 && introduction != '' && mbtiChoose){
             setCondition(true);
         } else {
             setCondition(false);
         }
-    }, [gender, keyword, introduction, mbti]);
-   
+    }, [gender, keyword, introduction, mbtiChoose]);
+
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -820,7 +861,18 @@ const makeProfile = () => {
                                 <Image src={back} width={11} height={18} name='back' onClick={handleIconOnclick} layout='fixed' />
                             </Grid>
                             <Grid item style={{marginLeft:'29%'}}>
-                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px'}} fontWeight={theme.typography.h1}>프로필 수정하기</Typography>
+                                <Typography style={{margin:'0px 0px 0px 0px', textAlign:'center',fontSize:'18px', fontWeight:'700'}} >프로필 수정하기</Typography>
+                            </Grid>
+                            <Grid item style={{padding:'0', marginLeft:'auto', marginRight:'20px'}}>
+                                {condition ?
+                                    <Button onClick={handleOnSubmit} style={{padding:'0', right:'0'}}>
+                                        <Typography style={{margin:'0px 0px 0px 10px',color:'#FFCE00', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                                    </Button>
+                                    :
+                                    <Button style={{padding:'0', right:'0'}}>
+                                        <Typography style={{margin:'0px 0px 0px 10px',color:'#BABABA', textAlign:'center',fontSize:'18px', fontWeight: '500'}}>저장</Typography>
+                                    </Button>
+                                }
                             </Grid>
                         </Grid>
                     </Container>
@@ -1157,11 +1209,13 @@ const makeProfile = () => {
                         {Object.keys(study).map((a) => <Button onClick={handleStudyClick} style={{height: '32px', border: study[a] ? '1px solid #FFCE00' : '1px solid #E2E2E2', borderRadius: '30px', backgroundColor: study[a] ? '#FFFCE4' : '#fff', margin: '0 8px 8px 0', color: '#3C3C3C', padding: '6px 10px'}}>{a}</Button>)}
                         </div>
                     </form>
-                    <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
+                    {/* <Container name='확인' style={{padding:'0px', margin:'65px 0px 0px 0px', justifyContent:'center'}}>
                         <div style={{paddingBottom:'50px', textAlign:'center'}}>
                             <Image src={condition ? submitOk: submit} width={296} height={45} onClick={handleOnSubmit} name='확인' placeholder="blur" layout='fixed' />
                         </div>
-                    </Container>
+                    </Container> */}
+                <Dialog open={dialogOpen}><DialogContent><Typography style={{color:'#3C3C3C', fontWeight:'700', fontSize:'16px'}}>저장이 완료되었습니다.</Typography></DialogContent></Dialog>
+
                 </Container>
         </ThemeProvider>
     )
