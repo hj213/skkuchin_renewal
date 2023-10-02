@@ -5,7 +5,7 @@ import { login, update_last_accessed_time } from "../actions/auth/auth";
 import Loader from "react-loader-spinner";
 
 import Image from 'next/image';
-import { CssBaseline, Box, ThemeProvider, Grid,Button, Container, Typography } from '@mui/material';
+import { CssBaseline, Box, ThemeProvider, Button, Container, Typography } from '@mui/material';
 import theme from '../theme/theme';
 import logo from '../image/main_logo.png'
 import check from '../image/check_circle.png';

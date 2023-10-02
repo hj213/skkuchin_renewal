@@ -19,6 +19,9 @@ public interface CommentRepo extends JpaRepository<Comment, Long> {
         "ORDER BY c.date ASC")
     List<Comment> findByLatestCommentTime(@Param("articleId") Long articleId);
 
+    @Query("SELECT c FROM Comment c WHERE c.anonymous = true AND c.article.id = :articleId")
+    List <Comment> findAnonymous(@Param("articleId") Long articleId);
+
 
 
 //    @Query("SELECT a FROM Comment a WHERE a.article.id = :articleId ORDER BY a.groupId ASC NULLS FIRST, a.date ASC")

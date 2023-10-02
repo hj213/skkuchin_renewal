@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import skkuchin.service.config.auth.PrincipalDetails;
 import skkuchin.service.domain.User.AppUser;
+import skkuchin.service.dto.ArticleDto;
 import skkuchin.service.dto.ArticleLikeDto;
 import skkuchin.service.dto.CMRespDto;
 import skkuchin.service.exception.CustomValidationApiException;
@@ -51,17 +52,16 @@ public class ArticleLikeController {
     @GetMapping("")
     public ResponseEntity<?> getMyLikes(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         AppUser appUser = principalDetails.getUser();
-        List<ArticleLikeDto.Response> articleLikes = articleLikeService.getMyArticleLikes(appUser);
+        List<ArticleDto.Response> articleLikes = articleLikeService.getMyArticleLikes(appUser);
         return new ResponseEntity<>(new CMRespDto<>(1, "내가 좋아요 누른 게시글 가져오기 완료", articleLikes), HttpStatus.OK);
     }
     
     
-    @DeleteMapping("/{articleLikeId}")
+    @DeleteMapping("/{articleId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<?> deleteArticleLike(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long articleLikeId){
-        
+    public ResponseEntity<?> deleteArticleLike(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long articleId){
         AppUser user = principalDetails.getUser();
-        articleLikeService.delete(articleLikeId,user);
+        articleLikeService.delete(articleId,user);
         return new ResponseEntity<>(new CMRespDto<>(1, "게시글 좋아요 삭제 완료", null), HttpStatus.OK);
 
     }

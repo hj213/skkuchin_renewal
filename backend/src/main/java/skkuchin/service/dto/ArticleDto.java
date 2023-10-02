@@ -40,6 +40,8 @@ public class ArticleDto {
         @NotBlank
         private String content;
 
+        private boolean anonymous;
+
 
         public Article toEntity(AppUser user){
             return Article.builder()
@@ -48,6 +50,7 @@ public class ArticleDto {
                     .title(title)
                     .articleType(articleType)
                     .date(LocalDateTime.now())
+                    .anonymous(anonymous)
                     .build();
         }
 
@@ -70,6 +73,8 @@ public class ArticleDto {
 
         @NotBlank
         private String content;
+
+        private boolean anonymous;
 
 
 
@@ -101,6 +106,10 @@ public class ArticleDto {
         @JsonProperty
         private boolean userLiked;
 
+        @JsonProperty
+        private String originalTime;
+
+        private boolean anonymous;
 
         public Response(Article article, List<Comment> comments, List<ArticleLike> articleLikes,AppUser appUser){
             this.id =article.getId();
@@ -115,6 +124,8 @@ public class ArticleDto {
             this.commentCount = comments.stream().count();
             this.articleLikeCount = articleLikes.stream().count();
             this.userLiked = calculateUserLiked(articleLikes,appUser);
+            this.anonymous = article.isAnonymous();
+            this.originalTime = originalFormatDate(article.getDate());
 
         }
 
@@ -144,6 +155,21 @@ public class ArticleDto {
             } else {
                 return date.format(DateTimeFormatter.ofPattern("yyyy. M. d.", Locale.KOREAN));
             }
+        }
+
+
+        private String originalFormatDate(LocalDateTime date) {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter dateFormatter;
+
+            if (date.getYear() >= now.getYear()) {
+                // 올해 이후 작성된 댓글
+                dateFormatter = DateTimeFormatter.ofPattern("MM/dd HH:mm", Locale.KOREAN);
+            } else {
+                // 올해 이전 작성된 댓글
+                dateFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm", Locale.KOREAN);
+            }
+            return date.format(dateFormatter);
         }
     }
 }

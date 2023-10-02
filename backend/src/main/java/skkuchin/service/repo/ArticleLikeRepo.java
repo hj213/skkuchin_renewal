@@ -13,6 +13,10 @@ public interface ArticleLikeRepo extends JpaRepository<ArticleLike,Long> {
 
     @Query("SELECT a FROM ArticleLike a WHERE a.article.id = :articleId ORDER BY a.article.date DESC")
     List<ArticleLike> findByArticle(@Param("articleId") Long articleId);
-    @Query("SELECT a FROM ArticleLike a WHERE a.article.user.id = :userId ORDER BY a.article.date DESC")
+
+    @Query("SELECT a FROM ArticleLike a WHERE a.user.id = :userId ORDER BY a.article.date DESC")
     List<ArticleLike> findByUser(@Param("userId") Long userId);
+
+    @Query("SELECT a FROM ArticleLike a WHERE a.article.id = :articleId AND a.user.id = :userId")
+    ArticleLike findByArticleAndUser(@Param("articleId") Long articleId, @Param("userId") Long userId);
 }

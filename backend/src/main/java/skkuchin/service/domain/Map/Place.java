@@ -1,6 +1,7 @@
 package skkuchin.service.domain.Map;
 
 import lombok.*;
+import skkuchin.service.domain.Magazine.RelatePlace;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -60,4 +61,7 @@ public class Place {
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Favorite> favorites = new ArrayList<>();
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RelatePlace> relatePlaces = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package skkuchin.service.domain.Forum;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@DynamicUpdate
 public class Comment {
 
     @Id
@@ -46,5 +48,16 @@ public class Comment {
 
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean anonymous;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLike> commentLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ArticleReport> articleReports = new ArrayList<>();
+
+    private Long anonymousIdx;
+
+    @Column(columnDefinition = "BIT DEFAULT FALSE")
+    private boolean deleted;
 
 }

@@ -3,6 +3,8 @@ package skkuchin.service.domain.Magazine;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import skkuchin.service.domain.Forum.ArticleType;
+import skkuchin.service.domain.Forum.CommentLike;
+import skkuchin.service.domain.Map.Gate;
 import skkuchin.service.domain.User.AppUser;
 
 import javax.persistence.*;
@@ -23,7 +25,7 @@ public class Magazine {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ArticleType articleType;
+    private Gate gate;
 
     @Column(nullable = false)
     private String title;
@@ -40,10 +42,8 @@ public class Magazine {
 
     private String link;
 
-    @ElementCollection
-    @CollectionTable(name = "related_place", uniqueConstraints = @UniqueConstraint(columnNames = { "place_id" }))
-    @Column(name = "place_id")
-    private List<Long> placeIds = new ArrayList<>();
+    @OneToMany(mappedBy = "magazine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RelatePlace> relatePlaces = new ArrayList<>();
 
 
 }

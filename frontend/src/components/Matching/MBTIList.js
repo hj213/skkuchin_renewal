@@ -17,14 +17,13 @@ import ENFJ from '../../image/mbti/profile/ENFJ.png';
 import ENFP from '../../image/mbti/profile/ENFP.png';
 import ENTJ from '../../image/mbti/profile/ENTJ.png';
 import ENTP from '../../image/mbti/profile/ENTP.png';
+import defaultMeal from '../../image/mbti/profile/mealCharacter.png';
 
-export const displayMBTI= (mbti) => {
-    const imageWidth = 140;
-    const imageHeight = 140;
+export const displayMBTI= (mbti, imageWidth= 140, imageHeight= 140) => {
 
     switch(mbti) {
         case "INTP":
-            return <Image id={"INTP"} src={INTP} width={140} height={140} placeholder="blur" layout='fixed' />
+            return <Image id={"INTP"} src={INTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INTJ":
             return <Image id={"INTJ"} src={INTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "INFP":
@@ -57,6 +56,8 @@ export const displayMBTI= (mbti) => {
              return <Image id={"ESTP"} src={ESTP} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         case "ESTJ":
             return <Image id={"ESTJ"} src={ESTJ} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
+        case "DEFAULT2":
+            return <Image id={"defaultMeal"} src={defaultMeal} width={imageWidth} height={imageHeight} placeholder="blur" layout='fixed' />
         default:
             return null;
     }

@@ -44,7 +44,7 @@ const myPage = () => {
     const arrowClick = () => {
         router.push('/editNickname')
     }
-console.log(pushToken);
+
     const handleLogout = () => {
         if (chatAlarmSubscription) {
             chatAlarmSubscription.unsubscribe();
@@ -280,8 +280,8 @@ console.log(pushToken);
             {/* 커뮤니티 */}
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '30px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>커뮤니티</Typography>
-                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>내 게시글</Button></div>
-                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>좋아요 누른 게시글</Button></div>
+                <div onClick={() => router.push('/myPost')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>내 게시글</Button></div>
+                <div onClick={() => router.push('/myFavPost')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>좋아요 누른 게시글</Button></div>
             </Container>
             <div style={{height:'1px', backgroundColor:'#E2E2E2', margin:'0 10px'}}></div>
 
@@ -345,7 +345,7 @@ console.log(pushToken);
             {/* 기타 */}
             <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
                 <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
-                <div onClick={() => router.push('/changePassword')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>식당 추가 요청</Button></div>
+                <div onClick={() => router.push('/requestPlace')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '10px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>식당 추가 요청</Button></div>
                 <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '14px', fontWeight: '400',marginBottom: '10px', color: '#3C3C3C',}}>문의하기</Typography>
                 <Typography onClick={handleDialogOpen} style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C'}}>로그아웃</Typography>
             </Container>
