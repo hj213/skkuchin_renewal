@@ -51,11 +51,36 @@ public class MagazineController {
         return new ResponseEntity<>(new CMRespDto<>(1,"매거진 조회 완료",magazines), HttpStatus.OK);
     }
 
-    @GetMapping("{magazineId}")
+    @GetMapping("/{magazineId}")
     public ResponseEntity<?> getSpecificMagazine(@PathVariable Long magazineId){
         MagazineDto.Response magazine = magazineService.getSpecificMagazine(magazineId);
         return new ResponseEntity<>(new CMRespDto<>(1,"특정 매거진 조회 완료",magazine),HttpStatus.OK);
     }
+
+    @DeleteMapping("/{magazineId}")
+    public ResponseEntity<?> deleteMagazine(@PathVariable Long magazineId,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        AppUser appUser = principalDetails.getUser();
+        magazineService.deleteMagazine(appUser, magazineId);
+        return new ResponseEntity<>(new CMRespDto<>(1,"매거진 삭제 완료",null),HttpStatus.OK);
+    }
+
+    @PutMapping("/{magazineId}")
+    public ResponseEntity<?> updateMagazine(@PathVariable Long magazineId,@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                            @Valid @RequestBody MagazineDto.PutRequest dto, BindingResult bindingResult){
+        AppUser appUser = principalDetails.getUser();
+        Map<String, String> errorMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            throw new CustomValidationApiException("매거진 관련 필수 수정 정보를 모두 작성해주시기 바랍니다", errorMap);
+        }
+        magazineService.updateMagazine(appUser, magazineId,dto);
+        return new ResponseEntity<>(new CMRespDto<>(1,"매거진 수정 완료",null),HttpStatus.OK);
+    }
+
+
+
 }
 
 

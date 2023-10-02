@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from "next/router";
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import Image from 'next/image';
@@ -7,6 +7,9 @@ import { backArrow, closeIcon, mainLogo } from '../image/recommend';
 import { useToggle } from '../components/Recommend/useToggle';
 import styled from '@emotion/styled';
 import SlideContainer from '../components/Recommend/SlideContainer';
+import { useDispatch, useSelector } from 'react-redux';
+import { load_places } from '../actions/place/place';
+import { useLoadingLottie } from '../components/Recommend/useLoadingLottie';
 
 const SubTitle = () => (
     <div style={{ margin: "52px 0 8px" }}>
@@ -34,13 +37,13 @@ const MainTitle = () => (
 const Header = () => {
     const router = useRouter();
 
-    const handleBack = (e) => {
+    const handleBack = useCallback((e) => {
         router.back();
-    }
+    }, [])
 
-    const handleClose = (e) => {
+    const handleClose = useCallback((e) => {
         router.push('/');
-    }
+    }, [])
 
     return (
         <div style={{ margin: "15px 0", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
@@ -66,19 +69,79 @@ const Header = () => {
 };
 
 const Recommend = () => {
+    const dispatch = useDispatch();
+    const { LottieView, getNextLottie, setSpeed, duration } = useLoadingLottie();
     const { Toggle, isOn } = useToggle();
+    const places = useSelector(state => state.place.allplaces);
 
-    const [firstButton, setFirstButton] = useState("ALL");
-    const [secondButton, setSecondButton] = useState("ALL");
+    const [retry, setRetry] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
+    const [categoryButton, setCategoryButton] = useState("ALL");
+    const [gateButton, setGateButton] = useState("ALL");
+    const [filteredPlaces, setFilteredPlaces] = useState([]);
+    const [randomPlace, setRandomPlace] = useState(null);
 
-    const firstButtons = [
-        ["ALL", "한식", "중식", "양식", "일식"],
-        ["아시안음식", "카페/디저트", "술집", "기타"]
+    const categoryButtons = [
+        ["ALL", "한식", "중식", "양식"],
+        ["일식", "카페", "술집", "기타"]
     ];
-
-    const secondButtons = ["ALL", "정문", "쪽문", "철문", "대학로"];
-
+    const gateButtons = ["ALL", "정문", "쪽문", "철문", "대학로"];
+    
     const mainText = "뭘 먹고 싶은 지 모르겠어쩌고\n스꾸친과 함께 스꾸친스꾸친";
+
+    const clickStart = useCallback(() => {
+        if (filteredPlaces.length === 0) {
+            alert("존재하는 식당이 없습니다!");
+            return;
+        }
+        if (!retry) {
+            setRetry(true);
+        }
+        if (!isRunning) {
+            setIsRunning(true);
+        }
+    }, [retry, isRunning, filteredPlaces]);
+
+    const getRandomPlace = useCallback(() => {
+        const randomIndex = Math.floor(Math.random() * filteredPlaces.length);
+        setRandomPlace(filteredPlaces[randomIndex]);
+    }, [filteredPlaces]);
+
+    useEffect(() => {
+        dispatch(load_places());
+    }, [])
+        
+    useEffect(() => {
+        if (places) {
+            let tempPlaces = places;
+            tempPlaces = tempPlaces.filter(place => isOn ? place.campus === "명륜" : place.campus === "율전");
+
+            if (categoryButton !== "ALL") {
+                tempPlaces = tempPlaces.filter(place => place.category === categoryButton);
+            }
+            if (gateButton !== "ALL") {
+                tempPlaces = tempPlaces.filter(place => place.gate === gateButton);
+            }
+            setFilteredPlaces(tempPlaces);
+        }
+    }, [isOn, categoryButton, gateButton, places])
+
+    useEffect(() => {
+        let timeoutId;
+
+        if (isRunning) {
+            setSpeed();
+            timeoutId = setTimeout(() => {
+                getRandomPlace();
+                setIsRunning(false);
+                getNextLottie();
+            }, duration);
+        }
+
+        return () => {
+            clearTimeout(timeoutId);
+        }
+    }, [isRunning])
 
     return (
         <RecommendWrapper>
@@ -100,13 +163,13 @@ const Recommend = () => {
                         <Toggle />
                     </div>
                     <OptionContainer style={{ marginBottom: "16px" }}>
-                        {firstButtons.map((buttons) => (
-                            <Options>
-                                {buttons.map((button) => (
+                        {categoryButtons.map((buttons, index) => (
+                            <Options key={index}>
+                                {buttons.map((button, index) => (
                                     <Button
-                                        isActive={firstButton === button}
-                                        onClick={() => setFirstButton(button)}
-                                        key={button}
+                                        isActive={categoryButton === button}
+                                        onClick={() => setCategoryButton(button)}
+                                        key={index}
                                     >
                                         {button}
                                     </Button>
@@ -116,65 +179,83 @@ const Recommend = () => {
                     </OptionContainer>
                     <OptionContainer>
                         <Options>
-                            {secondButtons.map((button) => (
+                            {gateButtons.map((button, index) => (
                                 <Button
-                                    isActive={secondButton === button}
-                                    onClick={() => setSecondButton(button)}
-                                    key={button}
+                                    isActive={gateButton === button}
+                                    onClick={() => setGateButton(button)}
+                                    key={index}
                                 >
                                     {button}
                                 </Button>
                             ))}
                         </Options>
                     </OptionContainer>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            margin: "28px 0 8px",
-                            padding: "44px 0 40px",
-                            borderRadius: "8px",
-                            background: "#F2F2F2",
-                        }}
-                    >
-                        <Image
-                            src={mainLogo}
-                            width={87}
-                            height={61}
-                            layout='fixed'
-                        />
-                        <p
+                    {isRunning ?
+                        <div
                             style={{
-                                marginBottom: 0,
-                                fontSize: "14px",
-                                lineHeight: "17px",
-                                letterSpacing: "-0.5px",
-                                whiteSpace: "pre-wrap",
-                                textAlign: "center",
+                                width: '100%',
+                                height: '197px',
+                                margin: "28px 0 8px",
                             }}
                         >
-                            {mainText}
-                        </p>
-                    </div>
+                            {LottieView}
+                        </div>
+                    :
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                margin: "28px 0 8px",
+                                padding: "44px 0 40px",
+                                borderRadius: "8px",
+                                background: "#F2F2F2",
+                            }}
+                        >
+                            <Image
+                                src={mainLogo}
+                                width={87}
+                                height={61}
+                                layout='fixed'
+                            />
+                            <p
+                                style={{
+                                    marginTop: "16px",
+                                    marginBottom: 0,
+                                    fontSize: retry ? "32px" : "14px",
+                                    lineHeight: retry ? "normal" : "17px",
+                                    letterSpacing: retry ? "-3px" : "-0.5px",
+                                    whiteSpace: "pre-wrap",
+                                    textAlign: "center",
+                                    fontWeight: retry ? 800 : 400,
+                                }}
+                            >
+                                {retry ? randomPlace.name : mainText}
+                            </p>
+                        </div>
+                    }
                     <button
                         style={{
                             width: "100%",
                             padding: "16px 0",
                             borderRadius: "8px",
-                            background: "#FFCE00",
+                            background: isRunning ? "#E2E2E2" : "#FFCE00",
                             border: "none",
                             color: "#FFF",
                             textAlign: "center",
                             fontSize: "16px",
                             fontWeight: 800,
-                            cursor: "pointer",
+                            cursor: isRunning ? undefined : "pointer",
                         }}
+                        disabled={isRunning}
+                        onClick={clickStart}
                     >
-                        오늘 뭐 먹지?
+                        {retry ? '다시하기' : '오늘 뭐 먹지?'}
                     </button>
                 </div>
-                <SlideContainer />
+                {retry && !isRunning &&
+                    <SlideContainer filteredPlaces={filteredPlaces} />
+                }
             </ThemeProvider>
         </RecommendWrapper>
     );

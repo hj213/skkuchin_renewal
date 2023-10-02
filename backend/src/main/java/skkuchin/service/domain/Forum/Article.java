@@ -49,4 +49,7 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentLike> commentLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ArticleReport> articleReports = new ArrayList<>();
+
 }

@@ -131,6 +131,7 @@ const Comment = ({ comments, postId }) => {
         console.log(comment.id);
         router.push({
             pathname: '/reportCommunity',
+            query: { isComment: true, comment_id: comment.id, article_id: null },
         })
     }
     
@@ -224,7 +225,7 @@ const Comment = ({ comments, postId }) => {
                                                 {/* 프로필 이미지, 닉네임 */}
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                                                    {displayMBTI(reply.user_image, 35, 35)}
+                                                    {displayMBTI(comment.anonymous ? "DEFAULT2": reply.user_image, 35, 35)}
                                                     <Typography style={{ fontSize: '12px', fontWeight: 800, color: '#3C3C3C' }}>
                                                         {reply.anonymous ? ('익명' + reply.anonymous_idx) : reply.nickname}
                                                         {(reply.my_comment && reply.writer) || (reply.my_comment && !reply.writer) ? <span style={{ color: '#FFAC0B' }}> (나)</span> : null}

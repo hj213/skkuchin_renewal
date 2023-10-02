@@ -49,6 +49,11 @@ public class Comment {
     @Column(columnDefinition = "BIT DEFAULT FALSE")
     private boolean anonymous;
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLike> commentLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ArticleReport> articleReports = new ArrayList<>();
 
     private Long anonymousIdx;
 

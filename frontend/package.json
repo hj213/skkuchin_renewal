@@ -19,6 +19,7 @@
     "formidable": "^2.1.1",
     "hangul-js": "^0.2.6",
     "js-cookie": "^3.0.1",
+    "lottie-react": "^2.4.0",
     "moment": "^2.29.4",
     "net": "^1.0.2",
     "next": "12.3.1",

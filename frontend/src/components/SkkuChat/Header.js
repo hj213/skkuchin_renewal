@@ -86,6 +86,7 @@ const Header = ({ title, onBackClick, showSearchIcon, post }) => {
         console.log(post.id);
         router.push({
             pathname: '/reportCommunity',
+            query: { isComment: false, article_id: post.id, comment_id: null },
         })
     }
     
