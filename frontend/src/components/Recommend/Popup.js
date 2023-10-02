@@ -83,6 +83,11 @@ const Popup = ({ selectedPlace, setPopup }) => {
                                 border: "none",
                                 cursor: 'pointer',
                             }}
+                            onClick={() => {
+                                setPopup(false);
+                                window.open("https://naver.me/535B8MZU", '_blank');
+                                // window.open(selectedPlace.current.url, '_blank');
+                            }}
                         >
                             <span
                                 style={{
@@ -90,10 +95,6 @@ const Popup = ({ selectedPlace, setPopup }) => {
                                     fontSize: "16px",
                                     fontWeight: 800,
                                     letterSpacing: "-0.32px",
-                                }}
-                                onClick={() => {
-                                    setPopup(false);
-                                    window.open(selectedPlace.current.url, '_blank');
                                 }}
                             >
                                 바로가기
