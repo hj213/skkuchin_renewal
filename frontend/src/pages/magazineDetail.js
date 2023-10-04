@@ -1,7 +1,8 @@
 import { CardContent, CssBaseline, Box, ThemeProvider, Rating, Slide, Card, Badge, Typography, Grid, Container, Stack, useScrollTrigger, Button,} from '@mui/material';
 import theme from '../theme/theme';
 import Image from 'next/image';
-import React from 'react';
+import Link from 'next/link';
+import React, { useEffect } from 'react';
 import { useRouter } from "next/router";
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +16,7 @@ import position from '../../public/markers/기본_yellow.png';
 import filledStar from '../image/Star-1.png';
 import back from '../image/leftbtn.png';
 import share from '../image/rightbtn.png';
+import naver from '../image/Map_Service_Icon.png';
 
 
 import content from '../image/magazine/magazine/content1_1.png';
@@ -32,6 +34,8 @@ import content6_1 from '../image/magazine/magazine/content6_1.png';
 import content6_2 from '../image/magazine/magazine/content6_2.png';
 import content7_1 from '../image/magazine/magazine/content7_1.png';
 import content7_2 from '../image/magazine/magazine/content7_2.png';
+
+import {  load_magazine } from '../actions/magazine/magazine';
 
 const contentList = [
     {
@@ -136,14 +140,38 @@ const MagazineDetailContainer = styled.div`
 
 const MagazineDetail = () => {
 
+
+    const dispatch = useDispatch();
     const router = useRouter();
+    const magazine = useSelector(state => state.magazine.magazine);
     const rank = useSelector(state => state.rank.rank);
+    const { id } = router.query;
+
+    useEffect(()=>{
+        dispatch(load_magazine(id));
+    },[id]);
+
 
     const handleArrowClick = () => {
         router.push('/magazine');
     }
 
+    let gateWidth = 0;
+    let color = '#FFFCE4';
+    let fontColor = '#FFAC0B';
+    
+    if(magazine){
+        gateWidth = `${magazine.gate.length * 20}px`;
+
+        if (magazine.gate === '후문' || magazine.gate === '대운동장' || magazine.gate === "기타") {
+            color = '#DCF8DB';
+            fontColor = '#58C85A'; 
+        }   
+    }
+
+
     return(
+
         <MagazineDetailContainer>
             <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -160,24 +188,34 @@ const MagazineDetail = () => {
                     </Grid>
                 </Grid>
             </Container>
+            {magazine ? 
             <Box style={{paddingTop:'100px'}}>
             <div style={{overflowX:'hidden', display:'flex'}}>
-                <Image src={content} style={{width:'100%'}}/>
-                <Image src={content}/>
-                <Image src={content}/>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',}}>
-                <Typography sx={{width:'42px', height: '24px', border: "1px solid #FFFCE4", borderRadius:'10px', textAlign:'center', fontSize: '12px',  fontWeight:'700', p: '2px 4px 0px 4px', color:'#FFAC0B', backgroundColor:'#FFFCE4', margin:'20px 0px 0px 5px'}}>쪽문</Typography>
-                <Typography sx={{fontSize:'24px', margin:"10px 0 0 5px", color:'#3C3C3C', fontWeight:'800'}}>제목제목제목제목</Typography>
-                <div style={{width:'25px', height:'5px', background:"#3C3C3C", margin:'30px 0'}}></div>
-                <div style={{margin:'0 20px',wordBreak: 'break-all' }}>
-                    <Typography sx={{fontSize:'16px'}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id risus mauris. Donec facilisis vulputate scelerisque. Sed eu luctus erat. Integer venenatis, nulla sed pretium volutpat, lacus lacus eleifend lorem, sed tincidunt turpis ante et felis. Aliquam erat volutpat. Duis vitae facilisis velit.</Typography>
+                <div style={{width:'100%', height:'350px', overflow:'hidden'}}>
+                    <Image src={content}/><Image src={content}/><Image src={content}/>
                 </div>
             </div>
-
-            <div style={{borderRadius:'10px', background:'#F2F2F2', height:'80px', margin:'20px'}}>
-                
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',}}>
+                <Typography sx={{width: gateWidth, height: '24px', border: "1px solid", borderColor: color, borderRadius:'10px', textAlign:'center', fontSize: '12px',  fontWeight:'700', p: '2px 4px 0px 4px', color: fontColor, backgroundColor: color, margin:'20px 0px 0px 5px'}}>
+                    {magazine.gate}</Typography>
+                <Typography sx={{fontSize:'24px', margin:"10px 0 0 5px", color:'#3C3C3C', fontWeight:'800'}}>{magazine.title}</Typography>
+                <div style={{width:'25px', height:'5px', background:"#3C3C3C", margin:'30px 0'}}></div>
+                <div style={{margin:'0 20px',wordBreak: 'break-all' }}>
+                    <Typography sx={{fontSize:'16px'}}>{magazine.content}</Typography>
+                </div>
             </div>
+            
+            <Link href={magazine.link}>
+            <div style={{borderRadius:'10px', background:'#F2F2F2', height:'64px', margin:'20px', display:'flex'}}>
+                <div style={{width:'60px', display: 'flex', justifyContent:'center', alignItems: 'center',}}>
+                    <Image src={naver} width={40} height={40}></Image>
+                </div>
+                <div style={{marginTop:'10px'}}>
+                    <Typography sx={{fontSize:'14px', color:'#3C3C3C', fontWeight:'700'}}>가게 이름</Typography>
+                    <Typography sx={{fontSize:'14px', color:'#9E9E9E', fontWeight:'700'}}>가게 위치</Typography>
+                </div>
+            </div>
+            </Link>
                 
                 {/* 식당TOP5 */}
                 <div className='top' style={{height:'270px'}}>
@@ -220,6 +258,7 @@ const MagazineDetail = () => {
                     
                 </div>
                 </Box>
+                :<></>}
             </ThemeProvider>
         </MagazineDetailContainer>
     )

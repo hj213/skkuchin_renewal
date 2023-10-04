@@ -18,6 +18,8 @@ import rankReducer from './rank';
 import postReducer from './post';
 import commentReducer from './comment';
 import likeReducer from './like';
+import magazine from './magazine';
+import magazineReducer from './magazine';
 
 export default combineReducers({
     auth: authReducer,
@@ -39,4 +41,5 @@ export default combineReducers({
     post: postReducer,
     comment: commentReducer,
     like: likeReducer,
+    magazine: magazineReducer,
 });

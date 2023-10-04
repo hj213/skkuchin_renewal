@@ -14,12 +14,12 @@ import {
 } 
     from './types';
 
-export const add_magazine = (title, gate ,content, link, callback) => async dispatch => {
+export const add_magazine = (title, gate ,content, link, placeID, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
 
     const body = JSON.stringify({
-        title, gate, content, link
+        title, gate, content, link, placeID
     });
     
     try {
@@ -36,13 +36,13 @@ export const add_magazine = (title, gate ,content, link, callback) => async disp
         const apiRes = await res.json();
 
         if(res.status === 201){
-            dispatch({
+            await dispatch({
                 type: ADD_MAGAZINE_SUCCESS
             })
             if (callback) callback([true, apiRes.message]);
 
         }else {
-            dispatch({
+            await dispatch({
                 type: ADD_MAGAZINE_FAIL
             })
             if (callback) callback([false, apiRes.message]);
@@ -60,7 +60,7 @@ export const add_magazine = (title, gate ,content, link, callback) => async disp
 }
  
 
-export const load_magazine = (articleID, title, gate, content, link, callback) => async dispatch => {
+export const load_magazine = (articleID, callback) => async dispatch => {
     await dispatch(request_refresh());
     const access = dispatch(getToken('access'));
     
@@ -111,7 +111,7 @@ export const load_all_magazine = (callback) => async dispatch => {
     const access = dispatch(getToken('access'));
     
     try {
-        const res = await fetch(`${API_URL}/api/matching/user/${id}`,{
+        const res = await fetch(`${API_URL}/api/magazine`,{
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
