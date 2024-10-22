@@ -474,7 +474,7 @@ export const reset_password = async (email, new_password, new_re_password, callb
         console.log(error);
         if (callback) callback([false, error]);
     }
-}
+} 
 
 export const check_admin = (callback) => async dispatch => {
     await dispatch(request_refresh());

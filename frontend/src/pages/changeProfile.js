@@ -691,6 +691,7 @@ const makeProfile = () => {
             setKeywordNum(keywordNum+1)
         }
     }
+
     const handleArtClick = (e) => {
         if(keywordNum == 8){
             setArt({
@@ -717,6 +718,7 @@ const makeProfile = () => {
             setKeywordNum(keywordNum+1)
         }
     }
+
     const handleStudyClick = (e) => {
         if(keywordNum == 8){
             setStudy({
@@ -735,7 +737,7 @@ const makeProfile = () => {
                 [e.target.innerText] : false
             })
             setKeywordNum(keywordNum-1)
-        } else{
+        } else if(study[e.target.innerText] == false){
             setStudy({
                 ...study,
                 [e.target.innerText] : true

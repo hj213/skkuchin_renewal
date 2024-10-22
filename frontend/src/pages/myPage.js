@@ -343,8 +343,8 @@ const myPage = () => {
             <div style={{height:'1px', backgroundColor:'#E2E2E2', margin:'0 10px'}}></div>
 
             {/* 기타 */}
-            <Container style={{display: 'grid', padding: '0 15px', marginTop: '25px'}}>
-                <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '25px'}}>기타</Typography>
+            <Container style={{display: 'grid', padding: '0 15px', marginTop: '30px'}}>
+                <Typography style={{fontSize: '16px', fontWeight: '700', marginBottom: '15px'}}>기타</Typography>
                 <div onClick={() => router.push('/requestPlace')}><Button variant="text" style={{fontSize: '14px', fontWeight: '400', marginBottom: '5px', color: '#3C3C3C', padding: '0', justifySelf: 'start'}}>식당 추가 요청</Button></div>
                 <Typography onClick={() => window.open('http://pf.kakao.com/_xehRxmxj', '_blank')} style={{fontSize: '14px', fontWeight: '400',marginBottom: '5px', color: '#3C3C3C',}}>문의하기</Typography>
                 <Typography onClick={handleDialogOpen} style={{fontSize: '14px', fontWeight: '400', marginBottom: '25px', color: '#3C3C3C'}}>로그아웃</Typography>
